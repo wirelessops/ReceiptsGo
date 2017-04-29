@@ -29,7 +29,7 @@ public interface Filter<T> {
      *
      * @return a {@link JSONObject} that represents this particular filter. This is used to enable us to
      * reconstruct filters if persistence is desired.
-     * @throws JSONException if invalid parameters were present
+     * @throws JSONException if invalid parameters were presentFirstTimeInformation
      */
 	public JSONObject getJsonRepresentation() throws JSONException;
 

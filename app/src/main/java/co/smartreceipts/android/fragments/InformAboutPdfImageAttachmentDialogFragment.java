@@ -15,7 +15,7 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.model.Attachment;
+import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import dagger.android.support.AndroidSupportInjection;
 
@@ -35,10 +35,10 @@ public class InformAboutPdfImageAttachmentDialogFragment extends DialogFragment 
     }
 
     @NonNull
-    public static InformAboutPdfImageAttachmentDialogFragment newInstance(@NonNull Attachment attachment) {
+    public static InformAboutPdfImageAttachmentDialogFragment newInstance(@NonNull FileType fileType) {
         final InformAboutPdfImageAttachmentDialogFragment fragment = new InformAboutPdfImageAttachmentDialogFragment();
         final Bundle args = new Bundle();
-        final int stringId = Preconditions.checkNotNull(attachment).isPDF() ? R.string.pdf : R.string.image;
+        final int stringId = Preconditions.checkNotNull(fileType) == FileType.Pdf ? R.string.pdf : R.string.image;
         args.putInt(ARG_CONTENT_TYPE_STRING_ID, stringId);
         fragment.setArguments(args);
         return fragment;

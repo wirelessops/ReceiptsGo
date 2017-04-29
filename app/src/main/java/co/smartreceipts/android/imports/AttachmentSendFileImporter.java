@@ -9,7 +9,8 @@ import java.io.File;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
-import co.smartreceipts.android.model.Attachment;
+import co.smartreceipts.android.imports.intents.model.FileType;
+import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
@@ -21,8 +22,6 @@ import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 
 public class AttachmentSendFileImporter {
-
-    private static final String TAG = AttachmentSendFileImporter.class.getSimpleName();
 
     private final Context mContext;
     private final Trip mTrip;
@@ -48,19 +47,19 @@ public class AttachmentSendFileImporter {
     }
 
     @NonNull
-    public Single<File> importAttachment(@NonNull Attachment attachment, @NonNull final Receipt receipt) {
-        Preconditions.checkNotNull(attachment);
+    public Single<File> importAttachment(@NonNull IntentImportResult intentImportResult, @NonNull final Receipt receipt) {
+        Preconditions.checkNotNull(intentImportResult);
 
         final FileImportProcessor importProcessor;
-        if (attachment.isImage()) {
+        if (intentImportResult.getFileType() == FileType.Image) {
             importProcessor = new ImageImportProcessor(mTrip, mStorageManager, mPreferences, mContext);
-        } else if (attachment.isPDF()) {
+        } else if (intentImportResult.getFileType() == FileType.Pdf) {
             importProcessor = new GenericFileImportProcessor(mTrip, mStorageManager, mContext);
         } else {
             importProcessor = new AutoFailImportProcessor();
         }
 
-        return importProcessor.process(attachment.getUri())
+        return importProcessor.process(intentImportResult.getUri())
                 .doOnSuccess(file -> mReceiptTableController.update(receipt,
                         new ReceiptBuilderFactory(receipt).setFile(file).build(), new DatabaseOperationMetadata()))
                 .doOnError(throwable -> mAnalytics.record(new ErrorEvent(AttachmentSendFileImporter.this, throwable)));

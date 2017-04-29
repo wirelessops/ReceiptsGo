@@ -3,7 +3,7 @@ package co.smartreceipts.android.analytics.events;
 public final class Events {
 
     private enum Category implements Event.Category {
-        Purchases, Navigation, Reports, Receipts, Distance, Generate, Ratings, Informational, Sync, Ocr, Identity
+        Purchases, Navigation, Reports, Receipts, Distance, Generate, Ratings, Informational, Sync, Ocr, Identity, Intent, Permissions
     }
 
     public static final class Purchases {
@@ -119,5 +119,16 @@ public final class Events {
         public static final Event OcrRequestSucceeded = new DefaultEvent(Category.Ocr, "OcrRequestSucceeded");
         public static final Event OcrRequestFailed = new DefaultEvent(Category.Ocr, "OcrRequestFailed");
     }
+
+    public static final class Intents {
+        public static final Event ReceivedActionableIntent = new DefaultEvent(Category.Intent, "ReceivedActionableIntent");
+    }
+
+    public static final class Permissions {
+        public static final Event PermissionRequested = new DefaultEvent(Category.Permissions, "PermissionRequested");
+        public static final Event PermissionGranted = new DefaultEvent(Category.Permissions, "PermissionGranted");
+        public static final Event PermissionDenied = new DefaultEvent(Category.Permissions, "PermissionDenied");
+    }
+
 
 }

@@ -21,7 +21,7 @@ import co.smartreceipts.android.utils.log.Logger;
 /** 
  * Some (ie just one) phone manufacturers (ie Huawei) break the Android contract for calls to {@link Context#getExternalFilesDirs(String)}. 
  * Rather than returning {@link Context#getExternalFilesDir(String)} (ie the default entry) as the first entry in the 
- * array returned by the former call, it always returns the external sd card if present. This class provides a reflection-based
+ * array returned by the former call, it always returns the external sd card if presentFirstTimeInformation. This class provides a reflection-based
  * hack to protect against Huawei device weirdness in these cases
  */
 public class ContentUriProvider {

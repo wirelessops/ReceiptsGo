@@ -28,7 +28,12 @@ public class UriUtils {
     @Nullable
     public static String getExtension(@NonNull Uri uri, @NonNull ContentResolver contentResolver) {
         if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) { // scheme is content://
-            return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
+            final String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
+            if (extension == null) {
+                return MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+            } else {
+                return extension;
+            }
         } else { // scheme is file://
             return MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
         }

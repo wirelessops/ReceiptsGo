@@ -83,7 +83,7 @@ public interface Receipt extends Parcelable, Priceable, Comparable<Receipt>, Syn
     /**
      * Gets the Image attached to this receipt. This is identical to calling {@link #getFile()}
      *
-     * @return the {@link File} or {@code null} if none is present
+     * @return the {@link File} or {@code null} if none is presentFirstTimeInformation
      */
     @Nullable
     File getImage();
@@ -91,7 +91,7 @@ public interface Receipt extends Parcelable, Priceable, Comparable<Receipt>, Syn
     /**
      * Gets the PDF attached to this receipt. This is identical to calling {@link #getFile()}
      *
-     * @return the PDF {@link File} or {@code null} if none is present
+     * @return the PDF {@link File} or {@code null} if none is presentFirstTimeInformation
      */
     @Nullable
     File getPDF();
@@ -99,7 +99,7 @@ public interface Receipt extends Parcelable, Priceable, Comparable<Receipt>, Syn
     /**
      * Gets the file attached to this receipt.
      *
-     * @return the Image {@link File} or {@code null} if none is present
+     * @return the Image {@link File} or {@code null} if none is presentFirstTimeInformation
      */
     @Nullable
     File getFile();

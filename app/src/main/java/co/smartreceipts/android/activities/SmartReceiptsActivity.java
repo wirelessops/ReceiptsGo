@@ -1,12 +1,9 @@
 package co.smartreceipts.android.activities;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,30 +21,29 @@ import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
-import co.smartreceipts.android.model.Attachment;
+import co.smartreceipts.android.imports.intents.model.FileType;
+import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
+import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationView;
+import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
-import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.utils.FeatureFlags;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
 
-public class SmartReceiptsActivity extends AppCompatActivity implements Attachable, PurchaseEventsListener,
-        HasSupportFragmentInjector {
-
-    private static final int STORAGE_PERMISSION_REQUEST = 33;
-    private static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
+public class SmartReceiptsActivity extends AppCompatActivity implements HasSupportFragmentInjector,
+        PurchaseEventsListener, IntentImportInformationView, IntentImportProvider {
 
     @Inject
     AdPresenter adPresenter;
@@ -79,8 +75,10 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     @Inject
     NavigationHandler<SmartReceiptsActivity> navigationHandler;
 
+    @Inject
+    IntentImportInformationPresenter intentImportInformationPresenter;
+
     private volatile Set<InAppPurchase> availablePurchases;
-    private Attachment attachment;
     private CompositeDisposable compositeDisposable;
 
     @Override
@@ -102,6 +100,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
         adPresenter.onActivityCreated(this);
 
         backupProvidersManager.initialize(this);
+        intentImportInformationPresenter.subscribe();
     }
 
 
@@ -121,27 +120,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
         super.onResumeFragments();
         Logger.debug(this, "onResumeFragments");
 
-        // Present dialog for viewing an attachment
-        final Attachment attachment = new Attachment(getIntent(), getContentResolver());
-        setAttachment(attachment);
-        if (attachment.isValid()) {
-            final boolean hasStoragePermission = ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (attachment.requiresStoragePermissions() && !hasStoragePermission) {
-                ActivityCompat.requestPermissions(this, new String[] { READ_EXTERNAL_STORAGE }, STORAGE_PERMISSION_REQUEST);
-            } else if (attachment.isDirectlyAttachable()) {
-                final UserPreferenceManager preferences = persistenceManager.getPreferenceManager();
-                if (InformAboutPdfImageAttachmentDialogFragment.shouldInformAboutPdfImageAttachmentDialogFragment(preferences)) {
-                    navigationHandler.showDialog(InformAboutPdfImageAttachmentDialogFragment.newInstance(attachment));
-                } else {
-                    final int stringId = attachment.isPDF() ? R.string.pdf : R.string.image;
-                    Toast.makeText(this, getString(R.string.dialog_attachment_text, getString(stringId)), Toast.LENGTH_LONG).show();
-                }
-            } else if (attachment.isSMR() && attachment.isActionView()) {
-                navigationHandler.showDialog(ImportLocalBackupDialogFragment.newInstance(attachment.getUri()));
-            }
-        }
         adPresenter.onResume();
-
         compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -221,6 +200,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     protected void onPause() {
         Logger.info(this, "onPause");
         adPresenter.onPause();
+        compositeDisposable.clear();
         super.onPause();
     }
 
@@ -234,6 +214,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     @Override
     protected void onDestroy() {
         Logger.info(this, "onDestroy");
+        intentImportInformationPresenter.unsubscribe();
         adPresenter.onDestroy();
         purchaseManager.removeEventListener(this);
         persistenceManager.getDatabase().onDestroy();
@@ -241,27 +222,14 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     }
 
     @Override
-    public Attachment getAttachment() {
-        return attachment;
-    }
-
-    @Override
-    public void setAttachment(Attachment attachment) {
-        this.attachment = attachment;
-    }
-
-    @Override
     public void onPurchaseSuccess(@NonNull final InAppPurchase inAppPurchase, @NonNull final PurchaseSource purchaseSource) {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseSuccess).addDataPoint(new DataPoint("sku", inAppPurchase.getSku())).addDataPoint(new DataPoint("source", purchaseSource)));
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                invalidateOptionsMenu(); // To hide the subscription option
-                Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
+        runOnUiThread(() -> {
+            invalidateOptionsMenu(); // To hide the subscription option
+            Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
 
-                if (InAppPurchase.SmartReceiptsPlus == inAppPurchase) {
-                    adPresenter.onSuccessPlusPurchase();
-                }
+            if (InAppPurchase.SmartReceiptsPlus == inAppPurchase) {
+                adPresenter.onSuccessPlusPurchase();
             }
         });
     }
@@ -269,16 +237,35 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     @Override
     public void onPurchaseFailed(@NonNull final PurchaseSource purchaseSource) {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseFailed).addDataPoint(new DataPoint("source", purchaseSource)));
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show());
     }
 
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentInjector;
     }
+
+    @NonNull
+    @Override
+    public Maybe<Intent> getIntentMaybe() {
+        return Maybe.just(getIntent());
+    }
+
+    @Override
+    public void presentFirstTimeInformation(@NonNull FileType fileType) {
+        navigationHandler.showDialog(InformAboutPdfImageAttachmentDialogFragment.newInstance(fileType));
+    }
+
+    @Override
+    public void presentGenericImportInformation(@NonNull FileType fileType) {
+        final int stringId = fileType == FileType.Pdf ? R.string.pdf : R.string.image;
+        Toast.makeText(this, getString(R.string.dialog_attachment_text, getString(stringId)), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void presentFatalError() {
+        Toast.makeText(this, R.string.attachment_error, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
 }

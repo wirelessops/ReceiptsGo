@@ -7,6 +7,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.di.SmartReceiptsActivityAdModule;
 import co.smartreceipts.android.di.SmartReceiptsActivityBindingModule;
 import co.smartreceipts.android.di.scopes.ActivityScope;
+import co.smartreceipts.android.imports.intents.di.IntentImportInformationModule;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipInteractor;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
@@ -19,6 +20,7 @@ import dagger.android.AndroidInjector;
 @Subcomponent(modules = {
         SmartReceiptsActivitySubcomponent.SmartReceiptsActivityModule.class,
         SmartReceiptsActivityBindingModule.class,
+        IntentImportInformationModule.class,
         SmartReceiptsActivityAdModule.class
 })
 public interface SmartReceiptsActivitySubcomponent extends AndroidInjector<SmartReceiptsActivity> {
