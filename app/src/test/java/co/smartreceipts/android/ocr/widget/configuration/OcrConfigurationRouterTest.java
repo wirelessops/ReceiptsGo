@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.android.activities.DaggerFragmentNavigationHandler;
+import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.identity.IdentityManager;
 
 import static junit.framework.Assert.assertFalse;
@@ -24,7 +24,7 @@ public class OcrConfigurationRouterTest {
     OcrConfigurationRouter router;
 
     @Mock
-    DaggerFragmentNavigationHandler<OcrConfigurationFragment> navigationHandler;
+    NavigationHandler navigationHandler;
 
     @Mock
     IdentityManager identityManager;

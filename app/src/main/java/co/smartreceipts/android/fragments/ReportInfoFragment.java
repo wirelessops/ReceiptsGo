@@ -1,11 +1,9 @@
 package co.smartreceipts.android.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +21,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripFragmentPagerAdapter;
 import co.smartreceipts.android.config.ConfigurationManager;
@@ -33,6 +30,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.StubTableE
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.sync.widget.errors.SyncErrorFragment;
+import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 
@@ -46,8 +44,11 @@ public class ReportInfoFragment extends WBFragment {
     ConfigurationManager configurationManager;
     @Inject
     TripTableController tripTableController;
+    @Inject
+    NavigationHandler navigationHandler;
+    @Inject
+    FragmentArgumentCache fragmentArgumentCache;
 
-    private NavigationHandler mNavigationHandler;
     private LastTripController mLastTripController;
     private TripFragmentPagerAdapter mFragmentPagerAdapter;
     private Trip mTrip;
@@ -57,12 +58,8 @@ public class ReportInfoFragment extends WBFragment {
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
 
     @NonNull
-    public static ReportInfoFragment newInstance(@NonNull Trip currentTrip) {
-        final ReportInfoFragment fragment = new ReportInfoFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(Trip.PARCEL_KEY, currentTrip);
-        fragment.setArguments(args);
-        return fragment;
+    public static ReportInfoFragment newInstance() {
+        return new ReportInfoFragment();
     }
 
     @Override
@@ -76,9 +73,8 @@ public class ReportInfoFragment extends WBFragment {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
         setHasOptionsMenu(true);
-        mNavigationHandler = new NavigationHandler(getActivity(), getFragmentManager(), new FragmentProvider());
         if (savedInstanceState == null) {
-            mTrip = getArguments().getParcelable(Trip.PARCEL_KEY);
+            mTrip = fragmentArgumentCache.get(ReportInfoFragment.class).getParcelable(Trip.PARCEL_KEY);
         } else {
             mTrip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
         }
@@ -119,7 +115,7 @@ public class ReportInfoFragment extends WBFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            mNavigationHandler.navigateUpToTripsFragment();
+            navigationHandler.navigateUpToTripsFragment();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -131,7 +127,7 @@ public class ReportInfoFragment extends WBFragment {
         super.onResume();
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            if (!mNavigationHandler.isDualPane()) {
+            if (!navigationHandler.isDualPane()) {
                 actionBar.setHomeButtonEnabled(true);
                 actionBar.setDisplayHomeAsUpEnabled(true);
             } else {
@@ -155,6 +151,14 @@ public class ReportInfoFragment extends WBFragment {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
         outState.putParcelable(KEY_OUT_TRIP, mTrip);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
+            fragmentArgumentCache.remove(ReportInfoFragment.class);
+        }
+        super.onDestroy();
     }
 
     @NonNull

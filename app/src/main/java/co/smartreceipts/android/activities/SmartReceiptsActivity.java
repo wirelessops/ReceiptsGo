@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,11 +37,14 @@ import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragm
 import co.smartreceipts.android.utils.FeatureFlags;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.AndroidInjection;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasDispatchingSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
 
-public class SmartReceiptsActivity extends AppCompatActivity implements Attachable, PurchaseEventsListener {
+public class SmartReceiptsActivity extends AppCompatActivity implements Attachable, PurchaseEventsListener,
+        HasDispatchingSupportFragmentInjector {
 
     private static final int STORAGE_PERMISSION_REQUEST = 33;
     private static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
@@ -69,8 +73,13 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     @Inject
     BackupProvidersManager backupProvidersManager;
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentInjector;
+
+    @Inject
+    NavigationHandler<SmartReceiptsActivity> navigationHandler;
+
     private volatile Set<InAppPurchase> availablePurchases;
-    private NavigationHandler navigationHandler;
     private Attachment attachment;
     private CompositeDisposable compositeDisposable;
 
@@ -80,8 +89,6 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
 
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-
-        navigationHandler = new NavigationHandler(this, getSupportFragmentManager(), new FragmentProvider());
 
         purchaseManager.addEventListener(this);
 
@@ -264,5 +271,10 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
                 Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
     }
 }

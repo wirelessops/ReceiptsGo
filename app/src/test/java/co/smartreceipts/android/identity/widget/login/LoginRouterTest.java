@@ -8,12 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.android.activities.DaggerFragmentNavigationHandler;
-import co.smartreceipts.android.identity.IdentityManager;
-import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
-import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationRouter;
+import co.smartreceipts.android.activities.NavigationHandler;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -23,7 +19,7 @@ public class LoginRouterTest {
     LoginRouter router;
 
     @Mock
-    DaggerFragmentNavigationHandler<LoginFragment> navigationHandler;
+    NavigationHandler navigationHandler;
 
     @Before
     public void setUp() {

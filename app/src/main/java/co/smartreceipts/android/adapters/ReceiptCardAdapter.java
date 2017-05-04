@@ -19,11 +19,12 @@ import co.smartreceipts.android.sync.widget.backups.AutomaticBackupsInfoDialogFr
 
 public class ReceiptCardAdapter extends CardAdapter<Receipt> {
 
-    private final FragmentActivity mFragmentActivity;
+    private final NavigationHandler navigationHandler;
 
-	public ReceiptCardAdapter(FragmentActivity fragmentActivity, UserPreferenceManager preferences, BackupProvidersManager backupProvidersManager) {
-		super(fragmentActivity, preferences, backupProvidersManager);
-        mFragmentActivity = fragmentActivity;
+	public ReceiptCardAdapter(FragmentActivity activity, NavigationHandler navigationHandler,
+							  UserPreferenceManager preferences, BackupProvidersManager backupProvidersManager) {
+		super(activity, preferences, backupProvidersManager);
+        this.navigationHandler = navigationHandler;
 	}
 	
 	@Override
@@ -95,7 +96,7 @@ public class ReceiptCardAdapter extends CardAdapter<Receipt> {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new NavigationHandler(mFragmentActivity).showDialog(new AutomaticBackupsInfoDialogFragment());
+                    navigationHandler.showDialog(new AutomaticBackupsInfoDialogFragment());
                 }
             });
         }

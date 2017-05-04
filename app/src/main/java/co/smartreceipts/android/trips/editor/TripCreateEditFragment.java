@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
@@ -36,6 +35,7 @@ import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
+import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
@@ -46,6 +46,10 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     Flex flex;
     @Inject
     DateManager dateManager;
+    @Inject
+    NavigationHandler navigationHandler;
+    @Inject
+    FragmentArgumentCache fragmentArgumentCache;
 
     @Inject
     TripCreateEditFragmentPresenter presenter;
@@ -58,24 +62,12 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     private AutoCompleteTextView costCenterBox;
 
     private View focusedView;
-    private NavigationHandler navigationHandler;
     private AutoCompleteAdapter nameAutoCompleteAdapter, costCenterAutoCompleteAdapter;
 
     private ArrayAdapter<CharSequence> currencies;
 
     public static TripCreateEditFragment newInstance() {
         return new TripCreateEditFragment();
-    }
-
-    public static TripCreateEditFragment newInstance(Trip trip) {
-        TripCreateEditFragment fragment = new TripCreateEditFragment();
-
-        Bundle args = new Bundle();
-        args.putParcelable(Trip.PARCEL_KEY, trip);
-
-        fragment.setArguments(args);
-
-        return fragment;
     }
 
     @Override
@@ -87,14 +79,12 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigationHandler = new NavigationHandler(getActivity(), new FragmentProvider());
-
         setHasOptionsMenu(true);
     }
 
     public Trip getTrip() {
-        if (getArguments() != null) {
-            return getArguments().getParcelable(Trip.PARCEL_KEY);
+        if (fragmentArgumentCache.get(TripCreateEditFragment.class) != null) {
+            return fragmentArgumentCache.get(TripCreateEditFragment.class).getParcelable(Trip.PARCEL_KEY);
         } else {
             return null;
         }
@@ -137,8 +127,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -170,6 +158,14 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         SoftKeyboardManager.hideKeyboard(focusedView);
 
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
+            fragmentArgumentCache.remove(TripCreateEditFragment.class);
+        }
+        super.onDestroy();
     }
 
     private void initViews(View rootView) {

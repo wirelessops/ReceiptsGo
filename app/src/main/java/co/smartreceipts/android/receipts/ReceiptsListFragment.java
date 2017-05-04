@@ -27,7 +27,6 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.Attachable;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.ReceiptCardAdapter;
 import co.smartreceipts.android.analytics.Analytics;
@@ -69,27 +68,23 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Inject
     Flex flex;
-
     @Inject
     PersistenceManager persistenceManager;
-
     @Inject
     ConfigurationManager configurationManager;
-
     @Inject
     Analytics analytics;
-
     @Inject
     TripTableController tripTableController;
 
     @Inject
     ReceiptTableController receiptTableController;
-
     @Inject
     BackupProvidersManager backupProvidersManager;
-
     @Inject
     OcrManager ocrManager;
+    @Inject
+    NavigationHandler navigationHandler;
 
     private ReceiptCardAdapter adapter;
     private ActivityFileResultImporter activityFileResultImporter;
@@ -103,7 +98,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     private FloatingActionMenu floatingActionMenu;
     private View floatingActionMenuActiveMaskView;
 
-    private NavigationHandler navigationHandler;
     private CompositeDisposable compositeDisposable;
 
     private OcrStatusAlerterPresenter ocrStatusAlerterPresenter;
@@ -125,9 +119,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        adapter = new ReceiptCardAdapter(getActivity(), persistenceManager.getPreferenceManager(),
-                backupProvidersManager);
-        navigationHandler = new NavigationHandler(getActivity(), new FragmentProvider());
+        adapter = new ReceiptCardAdapter(getActivity(), navigationHandler,
+                persistenceManager.getPreferenceManager(), backupProvidersManager);
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);

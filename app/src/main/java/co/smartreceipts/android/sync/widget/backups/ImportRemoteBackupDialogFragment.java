@@ -3,6 +3,7 @@ package co.smartreceipts.android.sync.widget.backups;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,13 +14,19 @@ import android.widget.CheckBox;
 
 import com.google.common.base.Preconditions;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
+import dagger.android.support.AndroidSupportInjection;
 
 public class ImportRemoteBackupDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static final String ARG_BACKUP_METADATA = "arg_backup_metadata";
+
+    @Inject
+    NavigationHandler navigationHandler;
 
     private RemoteBackupMetadata mBackupMetadata;
 
@@ -31,6 +38,12 @@ public class ImportRemoteBackupDialogFragment extends DialogFragment implements 
         args.putParcelable(ARG_BACKUP_METADATA, remoteBackupMetadata);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 
     @Override
@@ -59,7 +72,7 @@ public class ImportRemoteBackupDialogFragment extends DialogFragment implements 
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            new NavigationHandler(getActivity()).showDialog(ImportRemoteBackupWorkerProgressDialogFragment.newInstance(mBackupMetadata, mOverwriteCheckBox.isChecked()));
+            navigationHandler.showDialog(ImportRemoteBackupWorkerProgressDialogFragment.newInstance(mBackupMetadata, mOverwriteCheckBox.isChecked()));
         }
         dismiss();
     }

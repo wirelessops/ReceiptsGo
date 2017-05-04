@@ -3,6 +3,7 @@ package co.smartreceipts.android.sync.widget.backups;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +15,18 @@ import android.widget.CheckBox;
 
 import com.google.common.base.Preconditions;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import dagger.android.support.AndroidSupportInjection;
 
 public class ImportLocalBackupDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static final String ARG_SMR_URI = "arg_smr_uri";
+
+    @Inject
+    NavigationHandler navigationHandler;
 
     private Uri mUri;
     private CheckBox mOverwriteCheckBox;
@@ -30,6 +37,12 @@ public class ImportLocalBackupDialogFragment extends DialogFragment implements D
         args.putParcelable(ARG_SMR_URI, uri);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 
     @Override
@@ -58,7 +71,7 @@ public class ImportLocalBackupDialogFragment extends DialogFragment implements D
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            new NavigationHandler(getActivity()).showDialog(ImportLocalBackupWorkerProgressDialogFragment.newInstance(mUri, mOverwriteCheckBox.isChecked()));
+            navigationHandler.showDialog(ImportLocalBackupWorkerProgressDialogFragment.newInstance(mUri, mOverwriteCheckBox.isChecked()));
         }
         dismiss();
     }

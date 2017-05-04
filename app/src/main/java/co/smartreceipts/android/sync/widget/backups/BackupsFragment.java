@@ -50,22 +50,19 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
 
     @Inject
     PersistenceManager persistenceManager;
-
     @Inject
     PurchaseWallet purchaseWallet;
-
     @Inject
     NetworkManager networkManager;
-
     @Inject
     BackupProvidersManager backupProvidersManager;
-
     @Inject
     PurchaseManager purchaseManager;
+    @Inject
+    NavigationHandler navigationHandler;
 
     private RemoteBackupsDataCache remoteBackupsDataCache;
     private CompositeDisposable compositeDisposable;
-    private NavigationHandler navigationHandler;
 
     private Toolbar toolbar;
     private View headerView;
@@ -91,7 +88,6 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
         setHasOptionsMenu(true);
         remoteBackupsDataCache = new RemoteBackupsDataCache(getFragmentManager(), getContext(),
                 backupProvidersManager, networkManager, persistenceManager.getDatabase());
-        navigationHandler = new NavigationHandler(getActivity());
     }
 
     @Nullable
@@ -155,7 +151,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setAdapter(new RemoteBackupsListAdapter(headerView, getActivity(),
+        recyclerView.setAdapter(new RemoteBackupsListAdapter(headerView, navigationHandler,
                 backupProvidersManager, persistenceManager.getPreferenceManager(), networkManager));
     }
 
@@ -248,7 +244,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
                             existingBackupsSection.setVisibility(View.VISIBLE);
                         }
                         final RemoteBackupsListAdapter remoteBackupsListAdapter =
-                                new RemoteBackupsListAdapter(headerView, getActivity(),
+                                new RemoteBackupsListAdapter(headerView, navigationHandler,
                                         backupProvidersManager, persistenceManager.getPreferenceManager(), networkManager, remoteBackupMetadatas);
                         recyclerView.setAdapter(remoteBackupsListAdapter);
                     })

@@ -2,15 +2,22 @@ package co.smartreceipts.android.sync.widget.backups;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import dagger.android.support.AndroidSupportInjection;
 
 public class AutomaticBackupsInfoDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
+
+    @Inject
+    NavigationHandler navigationHandler;
 
     @NonNull
     @Override
@@ -24,9 +31,15 @@ public class AutomaticBackupsInfoDialogFragment extends DialogFragment implement
     }
 
     @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
+
+    @Override
     public void onClick(DialogInterface dialogInterface, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            new NavigationHandler(getActivity()).navigateToBackupMenu();
+            navigationHandler.navigateToBackupMenu();
         }
         dismiss();
     }

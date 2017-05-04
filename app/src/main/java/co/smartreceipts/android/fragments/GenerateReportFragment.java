@@ -18,7 +18,6 @@ import java.util.EnumSet;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
@@ -37,6 +36,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     PersistenceManager persistenceManager;
     @Inject
     Analytics analytics;
+    @Inject
+    NavigationHandler navigationHandler;
 
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
@@ -44,7 +45,6 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     private CheckBox zipStampedImagesCheckbox;
 
     private Trip trip;
-    private NavigationHandler navigationHandler;
 
     @NonNull
     public static GenerateReportFragment newInstance() {
@@ -55,12 +55,6 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        navigationHandler = new NavigationHandler(getActivity(), getFragmentManager(), new FragmentProvider());
     }
 
     @Nullable
@@ -157,7 +151,7 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
             options.add(EmailAssistant.EmailOptions.ZIP_IMAGES_STAMPED);
         }
 
-        final EmailAssistant emailAssistant = new EmailAssistant(getActivity(), flex, persistenceManager, trip);
+        final EmailAssistant emailAssistant = new EmailAssistant(navigationHandler, getActivity(), flex, persistenceManager, trip);
         emailAssistant.emailTrip(options);
     }
 }

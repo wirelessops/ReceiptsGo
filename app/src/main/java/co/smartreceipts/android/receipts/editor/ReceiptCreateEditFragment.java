@@ -41,7 +41,6 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
 import co.smartreceipts.android.adapters.TaxAutoCompleteAdapter;
@@ -68,6 +67,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
+import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
@@ -82,8 +82,8 @@ import wb.android.flex.Flex;
 
 public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener {
 
-    private static final String ARG_FILE = "arg_file";
-    private static final String ARG_OCR = "arg_ocr";
+    public static final String ARG_FILE = "arg_file";
+    public static final String ARG_OCR = "arg_ocr";
     private static final String KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE = "key_is_exchange_rate_visible";
 
     @Inject
@@ -98,6 +98,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     CategoriesTableController categoriesTableController;
     @Inject
     PaymentMethodsTableController paymentMethodsTableController;
+    @Inject
+    NavigationHandler navigationHandler;
+    @Inject
+    FragmentArgumentCache fragmentArgumentCache;
+
 
     @Inject
     ReceiptCreateEditFragmentPresenter presenter;
@@ -132,7 +137,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     // Misc
     private MemoryLeakSafeCallback<ExchangeRate, EditText> lastExchangeRateFetchCallback;
-    private NavigationHandler navigationHandler;
     private ExchangeRateServiceManager exchangeRateServiceManager;
     private ReceiptInputCache receiptInputCache;
     private AutoCompleteAdapter receiptsNameAutoCompleteAdapter, receiptsCommentAutoCompleteAdapter;
@@ -141,37 +145,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private ArrayAdapter<Category> categoriesAdpater;
     private ArrayAdapter<PaymentMethod> paymentMethodsAdapter;
 
-    /**
-     * Creates a new instance of this fragment for a new receipt
-     *
-     * @param trip - the parent trip of this receipt
-     * @param file - the file associated with this receipt or null if we do not have one
-     * @return the new instance of this fragment
-     */
-    public static ReceiptCreateEditFragment newInstance(@NonNull Trip trip, @Nullable File file, @Nullable OcrResponse ocrResponse) {
-        return newInstance(trip, null, file, ocrResponse);
-    }
-
-    /**
-     * Creates a new instance of this fragment to edit an existing receipt
-     *
-     * @param trip          - the parent trip of this receipt
-     * @param receiptToEdit - the receipt to edit
-     * @return the new instance of this fragment
-     */
-    public static ReceiptCreateEditFragment newInstance(@NonNull Trip trip, @NonNull Receipt receiptToEdit) {
-        return newInstance(trip, receiptToEdit, null, null);
-    }
-
-    private static ReceiptCreateEditFragment newInstance(@NonNull Trip trip, @Nullable Receipt receiptToEdit, @Nullable File file, @Nullable OcrResponse ocrResponse) {
-        final ReceiptCreateEditFragment fragment = new ReceiptCreateEditFragment();
-        final Bundle args = new Bundle();
-        args.putParcelable(Trip.PARCEL_KEY, trip);
-        args.putParcelable(Receipt.PARCEL_KEY, receiptToEdit);
-        args.putSerializable(ARG_FILE, file);
-        args.putSerializable(ARG_OCR, ocrResponse);
-        fragment.setArguments(args);
-        return fragment;
+    public static ReceiptCreateEditFragment newInstance() {
+        return new ReceiptCreateEditFragment();
     }
 
     @Override
@@ -184,9 +159,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        ocrResponse = (OcrResponse) getArguments().getSerializable(ARG_OCR);
+        ocrResponse = (OcrResponse) fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getSerializable(ARG_OCR);
         receiptInputCache = new ReceiptInputCache(getFragmentManager());
-        navigationHandler = new NavigationHandler(getActivity(), new FragmentProvider());
         exchangeRateServiceManager = new ExchangeRateServiceManager(getFragmentManager());
         currenciesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
                 database.getCurrenciesList());
@@ -197,15 +171,15 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     Trip getParentTrip() {
-        return getArguments().getParcelable(Trip.PARCEL_KEY);
+        return fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getParcelable(Trip.PARCEL_KEY);
     }
 
     Receipt getReceipt() {
-        return getArguments().getParcelable(Receipt.PARCEL_KEY);
+        return fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getParcelable(Receipt.PARCEL_KEY);
     }
 
     File getFile() {
-        return (File) getArguments().getSerializable(ARG_FILE);
+        return (File) fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getSerializable(ARG_FILE);
     }
 
     @Nullable
@@ -692,6 +666,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onDestroy() {
         categoriesTableController.unsubscribe(categoryTableEventsListener);
         paymentMethodsTableController.unsubscribe(paymentMethodTableEventsListener);
+        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
+            fragmentArgumentCache.remove(ReceiptCreateEditFragment.class);
+        }
         super.onDestroy();
     }
 

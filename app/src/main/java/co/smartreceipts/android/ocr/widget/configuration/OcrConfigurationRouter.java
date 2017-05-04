@@ -6,7 +6,6 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.activities.DaggerFragmentNavigationHandler;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.identity.IdentityManager;
@@ -19,7 +18,7 @@ public class OcrConfigurationRouter {
     private final IdentityManager identityManager;
 
     @Inject
-    public OcrConfigurationRouter(@NonNull DaggerFragmentNavigationHandler<OcrConfigurationFragment> navigationHandler, @NonNull IdentityManager identityManager) {
+    public OcrConfigurationRouter(@NonNull NavigationHandler navigationHandler, @NonNull IdentityManager identityManager) {
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
         this.identityManager = Preconditions.checkNotNull(identityManager);
     }

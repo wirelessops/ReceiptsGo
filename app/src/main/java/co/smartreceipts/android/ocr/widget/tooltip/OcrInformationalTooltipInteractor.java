@@ -33,9 +33,9 @@ public class OcrInformationalTooltipInteractor {
     private final IdentityManager identityManager;
 
     @Inject
-    public OcrInformationalTooltipInteractor(Context context, OcrInformationalTooltipFragment fragment, Analytics analytics,
+    public OcrInformationalTooltipInteractor(Context context, NavigationHandler navigationHandler, Analytics analytics,
                                              OcrPurchaseTracker ocrPurchaseTracker, IdentityManager identityManager) {
-        this(new NavigationHandler(fragment.getActivity()), analytics, new OcrInformationalTooltipStateTracker(context), ocrPurchaseTracker, identityManager);
+        this(navigationHandler, analytics, new OcrInformationalTooltipStateTracker(context), ocrPurchaseTracker, identityManager);
     }
 
     @VisibleForTesting

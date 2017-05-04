@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
@@ -32,6 +33,8 @@ public class SyncErrorFragment extends Fragment implements BackupProviderChangeL
     Analytics analytics;
     @Inject
     BackupProvidersManager backupProvidersManager;
+    @Inject
+    NavigationHandler navigationHandler;
 
     private SyncErrorInteractor mSyncErrorInteractor;
     private SyncErrorPresenter mSyncErrorPresenter;
@@ -46,7 +49,7 @@ public class SyncErrorFragment extends Fragment implements BackupProviderChangeL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSyncErrorInteractor = new SyncErrorInteractor(getActivity(), backupProvidersManager, analytics);
+        mSyncErrorInteractor = new SyncErrorInteractor(getActivity(), navigationHandler, backupProvidersManager, analytics);
     }
 
     @Nullable

@@ -19,7 +19,10 @@ import com.google.common.base.Preconditions;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
@@ -30,112 +33,96 @@ import co.smartreceipts.android.utils.log.Logger;
 
 import static android.preference.PreferenceActivity.EXTRA_SHOW_FRAGMENT;
 
-public class NavigationHandler {
+@ActivityScope
+public class NavigationHandler<T extends FragmentActivity> {
 
     private static final int DO_NOT_ANIM = 0;
     private static final int MISSING_RES_ID = -1;
 
-    private final FragmentManager mFragmentManager;
-    private final FragmentProvider mFragmentProvider;
-    private final WeakReference<FragmentActivity> mFragmentActivityWeakReference;
-    private final boolean mIsDualPane;
+    private final FragmentManager fragmentManager;
+    private final FragmentProvider fragmentProvider;
+    private final WeakReference<FragmentActivity> fragmentActivityWeakReference;
+    private final boolean isDualPane;
 
-    public NavigationHandler(Fragment fragment) {
-        this(fragment.getActivity());
-    }
-
-    public NavigationHandler(@NonNull FragmentActivity activity) {
-        this(activity, new FragmentProvider());
-    }
-
-    public NavigationHandler(@NonNull FragmentActivity activity, @NonNull FragmentProvider fragmentProvider) {
-        this(activity, activity.getSupportFragmentManager(), fragmentProvider, activity.getResources().getBoolean(R.bool.isTablet));
-    }
-
-    public NavigationHandler(@NonNull FragmentActivity activity, @NonNull FragmentManager fragmentManager, @NonNull FragmentProvider fragmentProvider) {
-        this(activity, fragmentManager, fragmentProvider, activity.getResources().getBoolean(R.bool.isTablet));
-    }
-
-    public NavigationHandler(@NonNull FragmentActivity activity, @NonNull FragmentManager fragmentManager, @NonNull FragmentProvider fragmentProvider, boolean isDualPane) {
-        mFragmentActivityWeakReference = new WeakReference<>(Preconditions.checkNotNull(activity));
-        mFragmentManager = Preconditions.checkNotNull(fragmentManager);
-        mFragmentProvider = Preconditions.checkNotNull(fragmentProvider);
-        mIsDualPane = Preconditions.checkNotNull(isDualPane);
+    @Inject
+    public NavigationHandler(T fragmentActivity, FragmentProvider fragmentProvider) {
+        fragmentActivityWeakReference = new WeakReference<>(Preconditions.checkNotNull(fragmentActivity));
+        fragmentManager = Preconditions.checkNotNull(fragmentActivity.getSupportFragmentManager());
+        this.fragmentProvider = Preconditions.checkNotNull(fragmentProvider);
+        isDualPane = Preconditions.checkNotNull(fragmentActivity.getResources().getBoolean(R.bool.isTablet));
     }
 
     public void navigateToHomeTripsFragment() {
-        replaceFragment(mFragmentProvider.newTripFragmentInstance(true), R.id.content_list);
+        replaceFragment(fragmentProvider.newTripFragmentInstance(true), R.id.content_list);
     }
 
     public void navigateUpToTripsFragment() {
-        replaceFragment(mFragmentProvider.newTripFragmentInstance(false), R.id.content_list);
+        replaceFragment(fragmentProvider.newTripFragmentInstance(false), R.id.content_list);
     }
 
     public void navigateToReportInfoFragment(@NonNull Trip trip) {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newReportInfoFragment(trip), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newReportInfoFragment(trip), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newReportInfoFragment(trip), R.id.content_list);
+            replaceFragment(fragmentProvider.newReportInfoFragment(trip), R.id.content_list);
         }
     }
 
     public void navigateToReportInfoFragmentWithoutBackStack(@NonNull Trip trip) {
-        mFragmentManager.popBackStackImmediate();
+        fragmentManager.popBackStackImmediate();
         navigateToReportInfoFragment(trip);
     }
 
     public void navigateToCreateNewReceiptFragment(@NonNull Trip trip, @Nullable File file, @Nullable OcrResponse ocrResponse) {
-        if (mIsDualPane) {
-            replaceFragmentWithAnimation(mFragmentProvider.newCreateReceiptFragment(trip, file, ocrResponse), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
+        if (isDualPane) {
+            replaceFragmentWithAnimation(fragmentProvider.newCreateReceiptFragment(trip, file, ocrResponse), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
         } else {
-            replaceFragmentWithAnimation(mFragmentProvider.newCreateReceiptFragment(trip, file, ocrResponse), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
+            replaceFragmentWithAnimation(fragmentProvider.newCreateReceiptFragment(trip, file, ocrResponse), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
         }
     }
 
     public void navigateToEditReceiptFragment(@NonNull Trip trip, @NonNull Receipt receiptToEdit) {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newEditReceiptFragment(trip, receiptToEdit), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newEditReceiptFragment(trip, receiptToEdit), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newEditReceiptFragment(trip, receiptToEdit), R.id.content_list);
+            replaceFragment(fragmentProvider.newEditReceiptFragment(trip, receiptToEdit), R.id.content_list);
         }
     }
 
     public void navigateToCreateTripFragment() {
-        if (mIsDualPane) {
-            replaceFragmentWithAnimation(mFragmentProvider.newCreateTripFragment(), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
+        if (isDualPane) {
+            replaceFragmentWithAnimation(fragmentProvider.newCreateTripFragment(), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
         } else {
-            replaceFragmentWithAnimation(mFragmentProvider.newCreateTripFragment(), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
+            replaceFragmentWithAnimation(fragmentProvider.newCreateTripFragment(), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
         }
     }
 
     public void navigateToEditTripFragment(@NonNull Trip tripToEdit) {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newEditTripFragment(tripToEdit), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newEditTripFragment(tripToEdit), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newEditTripFragment(tripToEdit), R.id.content_list);
+            replaceFragment(fragmentProvider.newEditTripFragment(tripToEdit), R.id.content_list);
         }
     }
 
-
-
     public void navigateToOcrConfigurationFragment() {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newOcrConfigurationFragment(), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newOcrConfigurationFragment(), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newOcrConfigurationFragment(), R.id.content_list);
+            replaceFragment(fragmentProvider.newOcrConfigurationFragment(), R.id.content_list);
         }
     }
 
     public void navigateToViewReceiptImage(@NonNull Receipt receipt) {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newReceiptImageFragment(receipt), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newReceiptImageFragment(receipt), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newReceiptImageFragment(receipt), R.id.content_list);
+            replaceFragment(fragmentProvider.newReceiptImageFragment(receipt), R.id.content_list);
         }
     }
 
     public void navigateToViewReceiptPdf(@NonNull Receipt receipt) {
-        final FragmentActivity activity = mFragmentActivityWeakReference.get();
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
         if (activity != null && receipt.getFile() != null) {
             try {
                 final Intent intent;
@@ -155,23 +142,23 @@ public class NavigationHandler {
     }
 
     public void navigateToBackupMenu() {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newBackupsFragment(), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newBackupsFragment(), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newBackupsFragment(), R.id.content_list);
+            replaceFragment(fragmentProvider.newBackupsFragment(), R.id.content_list);
         }
     }
 
     public void navigateToLoginScreen() {
-        if (mIsDualPane) {
-            replaceFragment(mFragmentProvider.newLoginFragment(), R.id.content_details);
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newLoginFragment(), R.id.content_details);
         } else {
-            replaceFragment(mFragmentProvider.newLoginFragment(), R.id.content_list);
+            replaceFragment(fragmentProvider.newLoginFragment(), R.id.content_list);
         }
     }
 
     public void navigateToSettings() {
-        final FragmentActivity activity = mFragmentActivityWeakReference.get();
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
         if (activity != null) {
             final Intent intent = new Intent(activity, SettingsActivity.class);
             activity.startActivity(intent);
@@ -179,10 +166,10 @@ public class NavigationHandler {
     }
 
     public void navigateToSettingsScrollToReportSection() {
-        final FragmentActivity activity = mFragmentActivityWeakReference.get();
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
         if (activity != null) {
             final Intent intent = new Intent(activity, SettingsActivity.class);
-            if (mIsDualPane) {
+            if (isDualPane) {
                 intent.putExtra(EXTRA_SHOW_FRAGMENT, PreferenceHeaderReportOutputFragment.class.getName());
             } else {
                 intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, R.string.pref_output_header_key);
@@ -194,7 +181,7 @@ public class NavigationHandler {
 
     public boolean navigateBack() {
         try {
-            return mFragmentManager.popBackStackImmediate();
+            return fragmentManager.popBackStackImmediate();
         } catch (final IllegalStateException e) {
             // This exception is always thrown if saveInstanceState was already been called.
             return false;
@@ -203,7 +190,7 @@ public class NavigationHandler {
 
     public boolean navigateBackDelayed() {
         try {
-            mFragmentManager.popBackStack();
+            fragmentManager.popBackStack();
             return true;
         } catch (final IllegalStateException e) {
             // This exception is always thrown if saveInstanceState was already been called.
@@ -214,18 +201,18 @@ public class NavigationHandler {
     public void showDialog(@NonNull DialogFragment dialogFragment) {
         final String tag = dialogFragment.getClass().getName();
         try {
-            dialogFragment.show(mFragmentManager, tag);
+            dialogFragment.show(fragmentManager, tag);
         } catch (IllegalStateException e) {
             // This exception is always thrown if saveInstanceState was already been called.
         }
     }
 
     public boolean isDualPane() {
-        return mIsDualPane;
+        return isDualPane;
     }
 
     public boolean shouldFinishOnBackNaviagtion() {
-        return mFragmentManager.getBackStackEntryCount() == 1;
+        return fragmentManager.getBackStackEntryCount() == 1;
     }
 
     private void replaceFragment(@NonNull Fragment fragment, @IdRes int layoutResId) {
@@ -236,13 +223,13 @@ public class NavigationHandler {
         final String tag = fragment.getClass().getName();
         boolean wasFragmentPopped;
         try {
-            wasFragmentPopped = mFragmentManager.popBackStackImmediate(tag, 0);
+            wasFragmentPopped = fragmentManager.popBackStackImmediate(tag, 0);
         } catch (final IllegalStateException e) {
             // This exception is always thrown if saveInstanceState was already been called.
             wasFragmentPopped = false;
         }
         if (!wasFragmentPopped) {
-            final FragmentTransaction transaction = mFragmentManager.beginTransaction();
+            final FragmentTransaction transaction = fragmentManager.beginTransaction();
             if (enterAnimId >= 0 && exitAnimId >= 0) {
                 transaction.setCustomAnimations(enterAnimId, exitAnimId);
             }

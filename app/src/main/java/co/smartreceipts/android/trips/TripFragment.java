@@ -26,12 +26,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripCardAdapter;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.fragments.WBListFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.LastTripController;
@@ -40,8 +38,10 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
+import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
+import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
@@ -51,7 +51,7 @@ import wb.android.flex.Flex;
 
 public class TripFragment extends WBListFragment implements TableEventsListener<Trip>, AdapterView.OnItemLongClickListener {
 
-    private static final String ARG_NAVIGATE_TO_VIEW_LAST_TRIP = "arg_nav_to_last_trip";
+    public static final String ARG_NAVIGATE_TO_VIEW_LAST_TRIP = "arg_nav_to_last_trip";
     private static final String OUT_NAV_TO_LAST_TRIP = "out_nav_to_last_trip";
 
     @Inject
@@ -64,12 +64,13 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     BackupProvidersManager backupProvidersManager;
     @Inject
     UserPreferenceManager preferenceManager;
-
+    @Inject
+    FragmentArgumentCache fragmentArgumentCache;
+    @Inject
+    NavigationHandler navigationHandler;
 
     @Inject
     TripFragmentPresenter presenter;
-
-    private NavigationHandler navigationHandler;
 
     private TripCardAdapter tripCardAdapter;
     private ProgressBar progressBar;
@@ -79,15 +80,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     private boolean navigateToLastTrip;
 
     public static TripFragment newInstance() {
-        return newInstance(false);
-    }
-
-    public static TripFragment newInstance(boolean navigateToViewLastTrip) {
-        final TripFragment tripFragment = new TripFragment();
-        final Bundle args = new Bundle();
-        args.putBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP, navigateToViewLastTrip);
-        tripFragment.setArguments(args);
-        return tripFragment;
+        return new TripFragment();
     }
 
     @Override
@@ -100,10 +93,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        navigationHandler = new NavigationHandler(getActivity(), getFragmentManager(), new FragmentProvider());
         tripCardAdapter = new TripCardAdapter(getActivity(), preferenceManager, backupProvidersManager);
         if (savedInstanceState == null) {
-            navigateToLastTrip = getArguments().getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
+            navigateToLastTrip = fragmentArgumentCache.get(TripFragment.class).getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
         } else {
             navigateToLastTrip = savedInstanceState.getBoolean(OUT_NAV_TO_LAST_TRIP);
         }
@@ -165,6 +157,14 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
         outState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
+            fragmentArgumentCache.remove(TripFragment.class);
+        }
+        super.onDestroy();
     }
 
     public final void tripMenu(final Trip trip) {

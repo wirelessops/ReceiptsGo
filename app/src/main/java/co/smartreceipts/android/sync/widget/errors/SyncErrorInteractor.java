@@ -20,35 +20,39 @@ import io.reactivex.Observable;
 
 public class SyncErrorInteractor {
 
-    private final FragmentActivity mActivity;
-    private final BackupProvidersManager mBackupProvidersManager;
-    private final Analytics mAnalytics;
+    private final FragmentActivity fragmentntActivity;
+    private final NavigationHandler navigationHandler;
+    private final BackupProvidersManager backupProvidersManager;
+    private final Analytics analytics;
 
-    public SyncErrorInteractor(@NonNull FragmentActivity activity, @NonNull BackupProvidersManager backupProvidersManager, @NonNull Analytics analytics) {
-        mActivity = Preconditions.checkNotNull(activity);
-        mBackupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
-        mAnalytics = Preconditions.checkNotNull(analytics);
+    public SyncErrorInteractor(@NonNull FragmentActivity activity, @NonNull NavigationHandler navigationHandler,
+                               @NonNull BackupProvidersManager backupProvidersManager, @NonNull Analytics analytics) {
+        this.fragmentntActivity = Preconditions.checkNotNull(activity);
+        this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
+        this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
+        this.analytics = Preconditions.checkNotNull(analytics);
     }
 
     @NonNull
     public Observable<SyncErrorType> getErrorStream() {
-        return mBackupProvidersManager.getCriticalSyncErrorStream()
+        return backupProvidersManager.getCriticalSyncErrorStream()
                 .map(CriticalSyncError::getSyncErrorType);
     }
 
     public void handleClick(@NonNull SyncErrorType syncErrorType) {
-        final SyncProvider syncProvider = mBackupProvidersManager.getSyncProvider();
+        final SyncProvider syncProvider = backupProvidersManager.getSyncProvider();
         Preconditions.checkArgument(syncProvider == SyncProvider.GoogleDrive, "Only Google Drive clicks are supported");
 
-        mAnalytics.record(new DefaultDataPointEvent(Events.Sync.ClickSyncError).addDataPoint(new DataPoint(SyncErrorType.class.getName(), syncErrorType)));
+        analytics.record(new DefaultDataPointEvent(Events.Sync.ClickSyncError)
+                .addDataPoint(new DataPoint(SyncErrorType.class.getName(), syncErrorType)));
         Logger.info(this, "Handling click for sync error: {}.", syncErrorType);
         if (syncErrorType == SyncErrorType.NoRemoteDiskSpace) {
-            mBackupProvidersManager.markErrorResolved(syncErrorType);
+            backupProvidersManager.markErrorResolved(syncErrorType);
         } else if (syncErrorType == SyncErrorType.UserDeletedRemoteData) {
-            new NavigationHandler(mActivity).showDialog(new DriveRecoveryDialogFragment());
+            navigationHandler.showDialog(new DriveRecoveryDialogFragment());
         } else if (syncErrorType == SyncErrorType.UserRevokedRemoteRights) {
-            mBackupProvidersManager.initialize(mActivity);
-            mBackupProvidersManager.markErrorResolved(syncErrorType);
+            backupProvidersManager.initialize(fragmentntActivity);
+            backupProvidersManager.markErrorResolved(syncErrorType);
         } else {
             throw new IllegalArgumentException("Unknown SyncErrorType");
         }

@@ -2,7 +2,6 @@ package co.smartreceipts.android.sync.widget.backups;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,34 +34,35 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    private final View mHeaderView;
-    private final FragmentActivity mFragmentActivity;
-    private final BackupProvidersManager mBackupProvidersManager;
-    private final UserPreferenceManager mPreferences;
-    private final NetworkManager mNetworkManager;
-    private final List<RemoteBackupMetadata> mBackupMetadataList;
+    private final View headerView;
+    private final NavigationHandler navigationHandler;
+    private final BackupProvidersManager backupProvidersManager;
+    private final UserPreferenceManager preferences;
+    private final NetworkManager networkManager;
+    private final List<RemoteBackupMetadata> backupMetadataList;
 
-    public RemoteBackupsListAdapter(@NonNull View headerView, @NonNull FragmentActivity fragmentActivity,
+    public RemoteBackupsListAdapter(@NonNull View headerView, @NonNull NavigationHandler navigationHandler,
                                     @NonNull BackupProvidersManager backupProvidersManager, @NonNull UserPreferenceManager preferences,
                                     @NonNull NetworkManager networkManager) {
-        this(headerView, fragmentActivity, backupProvidersManager, preferences, networkManager, Collections.<RemoteBackupMetadata>emptyList());
+        this(headerView, navigationHandler, backupProvidersManager, preferences,
+                networkManager, Collections.<RemoteBackupMetadata>emptyList());
     }
 
-    public RemoteBackupsListAdapter(@NonNull View headerView, @NonNull FragmentActivity fragmentActivity,
+    public RemoteBackupsListAdapter(@NonNull View headerView, @NonNull NavigationHandler navigationHandler,
                                     @NonNull BackupProvidersManager backupProvidersManager, @NonNull UserPreferenceManager preferences,
                                     @NonNull NetworkManager networkManager, @NonNull List<RemoteBackupMetadata> backupMetadataList) {
-        mHeaderView = Preconditions.checkNotNull(headerView);
-        mFragmentActivity = Preconditions.checkNotNull(fragmentActivity);
-        mBackupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
-        mPreferences = Preconditions.checkNotNull(preferences);
-        mNetworkManager = Preconditions.checkNotNull(networkManager);
-        mBackupMetadataList = new ArrayList<>(backupMetadataList);
+        this.headerView = Preconditions.checkNotNull(headerView);
+        this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
+        this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
+        this.preferences = Preconditions.checkNotNull(preferences);
+        this.networkManager = Preconditions.checkNotNull(networkManager);
+        this.backupMetadataList = new ArrayList<>(backupMetadataList);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-            return new HeaderViewHolder(mHeaderView);
+            return new HeaderViewHolder(headerView);
         } else {
             final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.remote_backups_list_item, parent, false);
             return new ItemViewHolder(view);
@@ -74,14 +74,14 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemHolder = (ItemViewHolder) holder;
             final Context context = itemHolder.backupDeviceNameTextView.getContext();
-            final RemoteBackupMetadata metadata = mBackupMetadataList.get(position - 1);
-            if (metadata.getSyncDeviceId().equals(mBackupProvidersManager.getDeviceSyncId())) {
+            final RemoteBackupMetadata metadata = backupMetadataList.get(position - 1);
+            if (metadata.getSyncDeviceId().equals(backupProvidersManager.getDeviceSyncId())) {
                 itemHolder.backupDeviceNameTextView.setText(context.getString(R.string.existing_remote_backup_current_device, metadata.getSyncDeviceName()));
             } else {
                 itemHolder.backupDeviceNameTextView.setText(metadata.getSyncDeviceName());
             }
             itemHolder.backupProviderTextView.setText(R.string.auto_backup_source_google_drive);
-            itemHolder.backupDateTextView.setText(ModelUtils.getFormattedDate(metadata.getLastModifiedDate(), TimeZone.getDefault(), context, mPreferences.get(UserPreference.General.DateSeparator)));
+            itemHolder.backupDateTextView.setText(ModelUtils.getFormattedDate(metadata.getLastModifiedDate(), TimeZone.getDefault(), context, preferences.get(UserPreference.General.DateSeparator)));
             final View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,21 +90,21 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            if (!mNetworkManager.isNetworkAvailable() && mNetworkManager.getSupportedNetworkType() == SupportedNetworkType.WifiOnly) {
-                                Toast.makeText(mFragmentActivity, mFragmentActivity.getString(R.string.error_no_wifi), Toast.LENGTH_SHORT).show();
+                            if (!networkManager.isNetworkAvailable() && networkManager.getSupportedNetworkType() == SupportedNetworkType.WifiOnly) {
+                                Toast.makeText(headerView.getContext(), headerView.getContext().getString(R.string.error_no_wifi), Toast.LENGTH_SHORT).show();
                                 return true;
                             } else {
                                 if (item.getItemId() == R.id.remote_backups_list_item_menu_restore) {
-                                    new NavigationHandler(mFragmentActivity).showDialog(ImportRemoteBackupDialogFragment.newInstance(metadata));
+                                    navigationHandler.showDialog(ImportRemoteBackupDialogFragment.newInstance(metadata));
                                     return true;
                                 } else if (item.getItemId() == R.id.remote_backups_list_item_menu_delete) {
-                                    new NavigationHandler(mFragmentActivity).showDialog(DeleteRemoteBackupDialogFragment.newInstance(metadata));
+                                    navigationHandler.showDialog(DeleteRemoteBackupDialogFragment.newInstance(metadata));
                                     return true;
                                 } else if (item.getItemId() == R.id.remote_backups_list_item_menu_download_images) {
-                                    new NavigationHandler(mFragmentActivity).showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata));
+                                    navigationHandler.showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata));
                                     return true;
                                 } else if (item.getItemId() == R.id.remote_backups_list_item_menu_download_images_debug) {
-                                    new NavigationHandler(mFragmentActivity).showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata, true));
+                                    navigationHandler.showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata, true));
                                     return true;
                                 } else {
                                     throw new IllegalArgumentException("Unsupported menu type was selected");
@@ -122,7 +122,7 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return mBackupMetadataList.size() + 1;
+        return backupMetadataList.size() + 1;
     }
 
     @Override

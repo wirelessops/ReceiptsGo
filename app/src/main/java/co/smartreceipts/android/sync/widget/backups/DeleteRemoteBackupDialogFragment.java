@@ -26,6 +26,9 @@ public class DeleteRemoteBackupDialogFragment extends DialogFragment implements 
     @Inject
     BackupProvidersManager backupProvidersManager;
 
+    @Inject
+    NavigationHandler navigationHandler;
+
     private RemoteBackupMetadata backupMetadata;
 
     public static DeleteRemoteBackupDialogFragment newInstance(@NonNull RemoteBackupMetadata remoteBackupMetadata) {
@@ -68,7 +71,7 @@ public class DeleteRemoteBackupDialogFragment extends DialogFragment implements 
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            new NavigationHandler(getActivity()).showDialog(DeleteRemoteBackupProgressDialogFragment.newInstance(backupMetadata));
+            navigationHandler.showDialog(DeleteRemoteBackupProgressDialogFragment.newInstance(backupMetadata));
         }
         dismiss();
     }

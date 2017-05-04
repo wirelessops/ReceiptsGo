@@ -30,7 +30,6 @@ import java.io.File;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
@@ -44,6 +43,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTab
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
+import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
@@ -68,6 +68,10 @@ public class ReceiptImageFragment extends WBFragment {
     ReceiptTableController receiptTableController;
     @Inject
     OcrManager ocrManager;
+    @Inject
+    NavigationHandler navigationHandler;
+    @Inject
+    FragmentArgumentCache fragmentArgumentCache;
 
 
     private PinchToZoomImageView imageView;
@@ -77,18 +81,13 @@ public class ReceiptImageFragment extends WBFragment {
 
     private Receipt receipt;
     private ActivityFileResultImporter activityFileResultImporter;
-    private NavigationHandler navigationHandler;
     private ImageUpdatedListener imageUpdatedListener;
     private CompositeDisposable compositeDisposable;
     private boolean isRotateOngoing;
     private Uri imageUri;
 
-    public static ReceiptImageFragment newInstance(@NonNull Receipt currentReceipt) {
-        ReceiptImageFragment fragment = new ReceiptImageFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(Receipt.PARCEL_KEY, currentReceipt);
-        fragment.setArguments(args);
-        return fragment;
+    public static ReceiptImageFragment newInstance() {
+        return new ReceiptImageFragment();
     }
 
     @Override
@@ -101,7 +100,7 @@ public class ReceiptImageFragment extends WBFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            receipt = getArguments().getParcelable(Receipt.PARCEL_KEY);
+            receipt = fragmentArgumentCache.get(ReceiptImageFragment.class).getParcelable(Receipt.PARCEL_KEY);
         } else {
             receipt = savedInstanceState.getParcelable(KEY_OUT_RECEIPT);
             imageUri = savedInstanceState.getParcelable(KEY_OUT_URI);
@@ -109,7 +108,6 @@ public class ReceiptImageFragment extends WBFragment {
         isRotateOngoing = false;
         activityFileResultImporter = new ActivityFileResultImporter(getActivity(), getFragmentManager(), receipt.getTrip(),
                 persistenceManager, analytics, ocrManager);
-        navigationHandler = new NavigationHandler(getActivity(), new FragmentProvider());
         imageUpdatedListener = new ImageUpdatedListener();
         setHasOptionsMenu(true);
     }
@@ -166,7 +164,7 @@ public class ReceiptImageFragment extends WBFragment {
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         Logger.debug(this, "Result Code: " + resultCode);
         if (receipt == null) {
-            receipt = getArguments().getParcelable(Receipt.PARCEL_KEY);
+            receipt = fragmentArgumentCache.get(ReceiptImageFragment.class).getParcelable(Receipt.PARCEL_KEY);
         }
 
         // Show the progress bar
@@ -229,6 +227,14 @@ public class ReceiptImageFragment extends WBFragment {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
+            fragmentArgumentCache.remove(ReceiptImageFragment.class);
+        }
+        super.onDestroy();
     }
 
     private void loadImage() {
