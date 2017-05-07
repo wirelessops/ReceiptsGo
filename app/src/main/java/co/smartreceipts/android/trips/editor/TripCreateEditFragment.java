@@ -35,7 +35,7 @@ import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
+import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
@@ -49,7 +49,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Inject
     NavigationHandler navigationHandler;
     @Inject
-    FragmentArgumentCache fragmentArgumentCache;
+    FragmentStateCache fragmentStateCache;
 
     @Inject
     TripCreateEditFragmentPresenter presenter;
@@ -83,8 +83,8 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     }
 
     public Trip getTrip() {
-        if (fragmentArgumentCache.get(TripCreateEditFragment.class) != null) {
-            return fragmentArgumentCache.get(TripCreateEditFragment.class).getParcelable(Trip.PARCEL_KEY);
+        if (fragmentStateCache.getArguments(getClass()) != null) {
+            return fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
         } else {
             return null;
         }
@@ -162,9 +162,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
     @Override
     public void onDestroy() {
-        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
-            fragmentArgumentCache.remove(TripCreateEditFragment.class);
-        }
+        fragmentStateCache.onDestroy(this);
         super.onDestroy();
     }
 

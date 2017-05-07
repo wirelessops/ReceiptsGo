@@ -30,7 +30,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.StubTableE
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.sync.widget.errors.SyncErrorFragment;
-import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
+import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 
@@ -47,7 +47,7 @@ public class ReportInfoFragment extends WBFragment {
     @Inject
     NavigationHandler navigationHandler;
     @Inject
-    FragmentArgumentCache fragmentArgumentCache;
+    FragmentStateCache fragmentStateCache;
 
     private LastTripController mLastTripController;
     private TripFragmentPagerAdapter mFragmentPagerAdapter;
@@ -74,9 +74,9 @@ public class ReportInfoFragment extends WBFragment {
         Logger.debug(this, "onCreate");
         setHasOptionsMenu(true);
         if (savedInstanceState == null) {
-            mTrip = fragmentArgumentCache.get(ReportInfoFragment.class).getParcelable(Trip.PARCEL_KEY);
+            mTrip = fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
         } else {
-            mTrip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
+            mTrip = fragmentStateCache.getSavedState(getClass()).getParcelable(KEY_OUT_TRIP);
         }
         Preconditions.checkNotNull(mTrip, "A valid trip is required");
         mLastTripController = new LastTripController(getActivity());
@@ -150,14 +150,15 @@ public class ReportInfoFragment extends WBFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putParcelable(KEY_OUT_TRIP, mTrip);
+
+        Bundle extraState = new Bundle();
+        extraState.putParcelable(KEY_OUT_TRIP, mTrip);
+        fragmentStateCache.putSavedState(extraState, getClass());
     }
 
     @Override
     public void onDestroy() {
-        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
-            fragmentArgumentCache.remove(ReportInfoFragment.class);
-        }
+        fragmentStateCache.onDestroy(this);
         super.onDestroy();
     }
 

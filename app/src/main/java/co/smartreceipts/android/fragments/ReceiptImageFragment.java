@@ -43,7 +43,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTab
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
+import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
@@ -71,7 +71,7 @@ public class ReceiptImageFragment extends WBFragment {
     @Inject
     NavigationHandler navigationHandler;
     @Inject
-    FragmentArgumentCache fragmentArgumentCache;
+    FragmentStateCache fragmentStateCache;
 
 
     private PinchToZoomImageView imageView;
@@ -100,10 +100,10 @@ public class ReceiptImageFragment extends WBFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            receipt = fragmentArgumentCache.get(ReceiptImageFragment.class).getParcelable(Receipt.PARCEL_KEY);
+            receipt = fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
         } else {
-            receipt = savedInstanceState.getParcelable(KEY_OUT_RECEIPT);
-            imageUri = savedInstanceState.getParcelable(KEY_OUT_URI);
+            receipt = fragmentStateCache.getSavedState(getClass()).getParcelable(KEY_OUT_RECEIPT);
+            imageUri = fragmentStateCache.getSavedState(getClass()).getParcelable(KEY_OUT_URI);
         }
         isRotateOngoing = false;
         activityFileResultImporter = new ActivityFileResultImporter(getActivity(), getFragmentManager(), receipt.getTrip(),
@@ -164,7 +164,7 @@ public class ReceiptImageFragment extends WBFragment {
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         Logger.debug(this, "Result Code: " + resultCode);
         if (receipt == null) {
-            receipt = fragmentArgumentCache.get(ReceiptImageFragment.class).getParcelable(Receipt.PARCEL_KEY);
+            receipt = fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
         }
 
         // Show the progress bar
@@ -215,8 +215,11 @@ public class ReceiptImageFragment extends WBFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putParcelable(KEY_OUT_RECEIPT, receipt);
-        outState.putParcelable(KEY_OUT_URI, imageUri);
+
+        Bundle extraState = new Bundle();
+        extraState.putParcelable(KEY_OUT_RECEIPT, receipt);
+        extraState.putParcelable(KEY_OUT_URI, imageUri);
+        fragmentStateCache.putSavedState(extraState, getClass());
     }
 
     @Override
@@ -231,9 +234,7 @@ public class ReceiptImageFragment extends WBFragment {
 
     @Override
     public void onDestroy() {
-        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
-            fragmentArgumentCache.remove(ReceiptImageFragment.class);
-        }
+        fragmentStateCache.onDestroy(this);
         super.onDestroy();
     }
 

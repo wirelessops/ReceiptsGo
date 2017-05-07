@@ -67,7 +67,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
+import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
@@ -101,7 +101,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     @Inject
     NavigationHandler navigationHandler;
     @Inject
-    FragmentArgumentCache fragmentArgumentCache;
+    FragmentStateCache fragmentStateCache;
 
 
     @Inject
@@ -159,7 +159,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        ocrResponse = (OcrResponse) fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getSerializable(ARG_OCR);
+        ocrResponse = (OcrResponse) fragmentStateCache.getArguments(getClass()).getSerializable(ARG_OCR);
         receiptInputCache = new ReceiptInputCache(getFragmentManager());
         exchangeRateServiceManager = new ExchangeRateServiceManager(getFragmentManager());
         currenciesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
@@ -171,15 +171,15 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     Trip getParentTrip() {
-        return fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getParcelable(Trip.PARCEL_KEY);
+        return fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
     }
 
     Receipt getReceipt() {
-        return fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getParcelable(Receipt.PARCEL_KEY);
+        return fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
     }
 
     File getFile() {
-        return (File) fragmentArgumentCache.get(ReceiptCreateEditFragment.class).getSerializable(ARG_FILE);
+        return (File) fragmentStateCache.getArguments(getClass()).getSerializable(ARG_FILE);
     }
 
     @Nullable
@@ -267,7 +267,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         currencySpinner.setAdapter(currenciesAdapter);
 
         // And the exchange rate processing for our currencies
-        final boolean exchangeRateIsVisible = savedInstanceState != null && savedInstanceState.getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
+        final boolean exchangeRateIsVisible = savedInstanceState != null &&
+                fragmentStateCache.getSavedState(getClass()).getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
         if (exchangeRateIsVisible) {
             // Note: the restoration of selected spinner items (in the currency spinner) is delayed so we use this state tracker to restore immediately
             exchangeRateContainer.setVisibility(View.VISIBLE);
@@ -657,8 +658,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
+
         if (exchangeRateContainer != null && outState != null) {
-            outState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateContainer.getVisibility() == View.VISIBLE);
+            Bundle extraState = new Bundle();
+            extraState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateContainer.getVisibility() == View.VISIBLE);
+            fragmentStateCache.putSavedState(extraState, getClass());
         }
     }
 
@@ -666,9 +670,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onDestroy() {
         categoriesTableController.unsubscribe(categoryTableEventsListener);
         paymentMethodsTableController.unsubscribe(paymentMethodTableEventsListener);
-        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
-            fragmentArgumentCache.remove(ReceiptCreateEditFragment.class);
-        }
+        fragmentStateCache.onDestroy(this);
         super.onDestroy();
     }
 

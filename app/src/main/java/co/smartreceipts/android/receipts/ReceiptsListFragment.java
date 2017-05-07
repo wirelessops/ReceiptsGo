@@ -52,6 +52,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.StubTableE
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.sync.BackupProvidersManager;
+import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -85,6 +86,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     OcrManager ocrManager;
     @Inject
     NavigationHandler navigationHandler;
+    @Inject
+    FragmentStateCache fragmentStateCache;
 
     private ReceiptCardAdapter adapter;
     private ActivityFileResultImporter activityFileResultImporter;
@@ -122,8 +125,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         adapter = new ReceiptCardAdapter(getActivity(), navigationHandler,
                 persistenceManager.getPreferenceManager(), backupProvidersManager);
         if (savedInstanceState != null) {
-            imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
-            highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
+            imageUri = fragmentStateCache.getSavedState(getClass()).getParcelable(OUT_IMAGE_URI);
+            highlightedReceipt = fragmentStateCache.getSavedState(getClass()).getParcelable(OUT_HIGHLIGHTED_RECEIPT);
 
         }
     }
@@ -254,8 +257,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putParcelable(OUT_IMAGE_URI, imageUri);
-        outState.putParcelable(OUT_HIGHLIGHTED_RECEIPT, highlightedReceipt);
+
+        Bundle extraState = new Bundle();
+        extraState.putParcelable(OUT_IMAGE_URI, imageUri);
+        extraState.putParcelable(OUT_HIGHLIGHTED_RECEIPT, highlightedReceipt);
+        fragmentStateCache.putSavedState(extraState, getClass());
     }
 
     @Override
@@ -287,6 +293,12 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onDestroyView() {
         ocrStatusAlerterPresenter.onDestroyView();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        fragmentStateCache.onDestroy(this);
+        super.onDestroy();
     }
 
     @Override

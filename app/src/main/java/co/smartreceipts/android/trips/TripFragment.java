@@ -41,7 +41,7 @@ import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.utils.cache.FragmentArgumentCache;
+import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
@@ -65,7 +65,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Inject
     UserPreferenceManager preferenceManager;
     @Inject
-    FragmentArgumentCache fragmentArgumentCache;
+    FragmentStateCache fragmentStateCache;
     @Inject
     NavigationHandler navigationHandler;
 
@@ -95,9 +95,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         Logger.debug(this, "onCreate");
         tripCardAdapter = new TripCardAdapter(getActivity(), preferenceManager, backupProvidersManager);
         if (savedInstanceState == null) {
-            navigateToLastTrip = fragmentArgumentCache.get(TripFragment.class).getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
+            navigateToLastTrip = fragmentStateCache.getArguments(getClass()).getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
         } else {
-            navigateToLastTrip = savedInstanceState.getBoolean(OUT_NAV_TO_LAST_TRIP);
+            navigateToLastTrip = fragmentStateCache.getSavedState(getClass()).getBoolean(OUT_NAV_TO_LAST_TRIP);
         }
     }
 
@@ -156,14 +156,15 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
+
+        Bundle extraState = new Bundle();
+        extraState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
+        fragmentStateCache.putSavedState(extraState, getClass());
     }
 
     @Override
     public void onDestroy() {
-        if (!getActivity().isChangingConfigurations()) { // clear cache if fragment is not going to be recreated
-            fragmentArgumentCache.remove(TripFragment.class);
-        }
+        fragmentStateCache.onDestroy(this);
         super.onDestroy();
     }
 
