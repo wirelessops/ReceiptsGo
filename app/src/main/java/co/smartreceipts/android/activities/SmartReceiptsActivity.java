@@ -38,13 +38,13 @@ import co.smartreceipts.android.utils.FeatureFlags;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasDispatchingSupportFragmentInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
 
 public class SmartReceiptsActivity extends AppCompatActivity implements Attachable, PurchaseEventsListener,
-        HasDispatchingSupportFragmentInjector {
+        HasSupportFragmentInjector {
 
     private static final int STORAGE_PERMISSION_REQUEST = 33;
     private static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
