@@ -11,7 +11,7 @@ import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager;
 
 public class DatabaseBackupListener<ModelType> extends StubTableEventsListener<ModelType> {
 
-    private final DriveDatabaseManager mDriveDatabaseManager;
+    protected final DriveDatabaseManager mDriveDatabaseManager;
 
     public DatabaseBackupListener(@NonNull DriveDatabaseManager driveDatabaseManager) {
         mDriveDatabaseManager = Preconditions.checkNotNull(driveDatabaseManager);

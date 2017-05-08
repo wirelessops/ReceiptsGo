@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.File;
+
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -14,8 +16,10 @@ import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager;
 import co.smartreceipts.android.sync.drive.managers.DriveReceiptsManager;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class ReceiptBackupListenerTest {
@@ -58,7 +62,7 @@ public class ReceiptBackupListenerTest {
     @Test
     public void onUpdateSuccess() {
         mListener.onUpdateSuccess(mOldReceipt, mReceipt, new DatabaseOperationMetadata());
-        verify(mDriveDatabaseManager).syncDatabase();
+        verify(mDriveDatabaseManager, never()).syncDatabase();
         verify(mDriveReceiptsManager).handleInsertOrUpdate(mReceipt);
     }
 
@@ -66,6 +70,15 @@ public class ReceiptBackupListenerTest {
     public void onSyncUpdateSuccess() {
         mListener.onUpdateSuccess(mOldReceipt, mReceipt, new DatabaseOperationMetadata(OperationFamilyType.Sync));
         verify(mDriveDatabaseManager, never()).syncDatabase();
+        verify(mDriveReceiptsManager, never()).handleInsertOrUpdate(any(Receipt.class));
+    }
+
+    @Test
+    public void onSyncUpdateSuccessForReceiptWithFile() {
+        // We always try to sync database changes when they include a receipt file to ensure we update this stuff immediately
+        when(mReceipt.getFile()).thenReturn(mock(File.class));
+        mListener.onUpdateSuccess(mOldReceipt, mReceipt, new DatabaseOperationMetadata(OperationFamilyType.Sync));
+        verify(mDriveDatabaseManager).syncDatabase();
         verify(mDriveReceiptsManager, never()).handleInsertOrUpdate(any(Receipt.class));
     }
 

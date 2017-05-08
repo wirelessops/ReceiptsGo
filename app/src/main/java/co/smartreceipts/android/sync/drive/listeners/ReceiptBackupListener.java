@@ -29,7 +29,9 @@ public class ReceiptBackupListener extends DatabaseBackupListener<Receipt> {
 
     @Override
     public void onUpdateSuccess(@NonNull Receipt oldReceipt, @NonNull Receipt newReceipt, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        super.onUpdateSuccess(oldReceipt, newReceipt, databaseOperationMetadata);
+        if (newReceipt.getFile() != null) {
+            mDriveDatabaseManager.syncDatabase();
+        }
         if (databaseOperationMetadata.getOperationFamilyType() != OperationFamilyType.Sync) {
             mDriveReceiptsManager.handleInsertOrUpdate(newReceipt);
         }
