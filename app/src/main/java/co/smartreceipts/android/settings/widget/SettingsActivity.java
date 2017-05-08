@@ -366,22 +366,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             // Others for email
             startActivity(IntentUtils.getRatingIntent(this));
             return true;
-        } else if (key.equals(getString(R.string.pref_help_send_feedback_key))) {
-            final Intent intent = EmailAssistant.getEmailDeveloperIntent(getString(R.string.feedback, getString(R.string.sr_app_name)));
-            startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
-            return true;
-        } else if (key.equals(getString(R.string.pref_help_support_email_key))) {
-            List<File> files = new ArrayList<>();
-            File file1 = new File(getFilesDir().getAbsolutePath(), LogConstants.LOG_FILE_NAME_1);
-            File file2 = new File(getFilesDir().getAbsolutePath(), LogConstants.LOG_FILE_NAME_2);
+        } else if (key.equals(getString(R.string.pref_help_send_feedback_key)) || key.equals(getString(R.string.pref_help_support_email_key))) {
+            final String emailSubject;
+            if (key.equals(getString(R.string.pref_help_send_feedback_key))) {
+                emailSubject = getString(R.string.feedback, getString(R.string.sr_app_name));
+            } else {
+                emailSubject = getString(R.string.support, getString(R.string.sr_app_name));
+            }
+
+            final List<File> files = new ArrayList<>();
+            final File file1 = new File(getFilesDir(), LogConstants.LOG_FILE_NAME_1);
+            final File file2 = new File(getFilesDir(), LogConstants.LOG_FILE_NAME_2);
             if (file1.exists()) {
                 files.add(file1);
             }
             if (file2.exists()) {
                 files.add(file2);
             }
-            final Intent intent = EmailAssistant.getEmailDeveloperIntent(this,
-                    getString(R.string.support, getString(R.string.sr_app_name)), getDebugScreen(), files);
+            final Intent intent = EmailAssistant.getEmailDeveloperIntent(this, emailSubject, getDebugScreen(), files);
             startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
             return true;
         } else if (key.equals(getString(R.string.pref_pro_pdf_footer_key))) {
