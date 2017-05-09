@@ -35,6 +35,20 @@ public class OcrResponse implements Serializable {
 
     public OcrResponse() {}
 
+    public OcrResponse(OcrResponseField<Double> totalAmount, OcrResponseField<Double> taxAmount,
+                       OcrResponseField<String> currency, OcrResponseField<String> date,
+                       OcrResponseField<String> merchantName, OcrResponseField<List<String>> merchantTypes,
+                       Double confidenceLevel, String error) {
+        this.totalAmount = totalAmount;
+        this.taxAmount = taxAmount;
+        this.currency = currency;
+        this.date = date;
+        this.merchantName = merchantName;
+        this.merchantTypes = merchantTypes;
+        this.confidenceLevel = confidenceLevel;
+        this.error = error;
+    }
+
     @Nullable
     public OcrResponseField<Double> getTotalAmount() {
         return totalAmount;

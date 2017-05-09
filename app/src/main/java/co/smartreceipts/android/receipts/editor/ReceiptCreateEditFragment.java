@@ -60,6 +60,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
+import co.smartreceipts.android.ocr.util.OcrResponseParser;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
@@ -350,27 +351,19 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 fullpage.setChecked(presenter.isDefaultToFullPage());
 
                 if (ocrResponse != null) {
-                    if (ocrResponse.getMerchant() != null && ocrResponse.getMerchant().getData() != null) {
-                        nameBox.setText(ocrResponse.getMerchant().getData());
+                    final OcrResponseParser ocrResponseParser = new OcrResponseParser(ocrResponse);
+                    if (ocrResponseParser.getMerchant() != null) {
+                        nameBox.setText(ocrResponseParser.getMerchant());
                     }
-                    if (ocrResponse.getTotalAmount() != null && ocrResponse.getTotalAmount().getData() != null) {
-                        priceBox.setText(ModelUtils.getDecimalFormattedValue(new BigDecimal(ocrResponse.getTotalAmount().getData())));
+                    if (ocrResponseParser.getTotalAmount() != null) {
+                        priceBox.setText(ocrResponseParser.getTotalAmount());
                     }
-                    if (ocrResponse.getTaxAmount() != null && ocrResponse.getTaxAmount().getData() != null) {
-                        taxBox.setText(ModelUtils.getDecimalFormattedValue(new BigDecimal(ocrResponse.getTaxAmount().getData())));
+                    if (ocrResponseParser.getTaxAmount() != null) {
+                        taxBox.setText(ocrResponseParser.getTaxAmount());
                     }
-                    if (ocrResponse.getDate() != null && ocrResponse.getDate().getData() != null) {
-                        try {
-                            TimeZone utc = TimeZone.getTimeZone("UTC");
-                            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-                            f.setTimeZone(utc);
-                            GregorianCalendar cal = new GregorianCalendar(utc);
-                            cal.setTime(f.parse(ocrResponse.getDate().getData()));
-                            dateBox.date = new Date(cal.getTime().getTime());
-                            dateBox.setText(DateFormat.getDateFormat(getActivity()).format(dateBox.date));
-                        } catch (ParseException e) {
-                            Logger.error(this, "Failed to parse OCR Date.", e);
-                        }
+                    if (ocrResponseParser.getDate() != null) {
+                        dateBox.date = ocrResponseParser.getDate();
+                        dateBox.setText(DateFormat.getDateFormat(getActivity()).format(dateBox.date));
                     }
                 }
 
