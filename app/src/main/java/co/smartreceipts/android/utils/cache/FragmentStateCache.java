@@ -2,6 +2,7 @@ package co.smartreceipts.android.utils.cache;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -16,7 +17,6 @@ import co.smartreceipts.android.utils.log.Logger;
 public class FragmentStateCache {
 
     private final HashMap<Class<? extends Fragment>, Bundle> argumentsCacheHashMap = new HashMap<>();
-    private final HashMap<Class<? extends Fragment>, Bundle> stateCacheHashMap = new HashMap<>();
 
     @Inject
     public FragmentStateCache() {
@@ -28,14 +28,6 @@ public class FragmentStateCache {
 
     public void putArguments(@NonNull Bundle args, @NonNull Class<? extends Fragment> fragmentClass) {
         argumentsCacheHashMap.put(fragmentClass, args);
-    }
-
-    public Bundle getSavedState(@NonNull Class<? extends Fragment> fragmentClass) {
-        return stateCacheHashMap.get(fragmentClass);
-    }
-
-    public void putSavedState(@NonNull Bundle state, @NonNull Class<? extends Fragment> fragmentClass) {
-        stateCacheHashMap.put(fragmentClass, state);
     }
 
     public void onDestroy(@NonNull Fragment fragment) {
@@ -52,6 +44,5 @@ public class FragmentStateCache {
 
     private void remove(Class<? extends Fragment> fragmentClass) {
         argumentsCacheHashMap.remove(fragmentClass);
-        stateCacheHashMap.remove(fragmentClass);
     }
 }

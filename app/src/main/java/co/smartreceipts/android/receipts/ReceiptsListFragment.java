@@ -125,8 +125,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         adapter = new ReceiptCardAdapter(getActivity(), navigationHandler,
                 persistenceManager.getPreferenceManager(), backupProvidersManager);
         if (savedInstanceState != null) {
-            imageUri = fragmentStateCache.getSavedState(getClass()).getParcelable(OUT_IMAGE_URI);
-            highlightedReceipt = fragmentStateCache.getSavedState(getClass()).getParcelable(OUT_HIGHLIGHTED_RECEIPT);
+            imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
+            highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
 
         }
     }
@@ -257,11 +257,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-
-        Bundle extraState = new Bundle();
-        extraState.putParcelable(OUT_IMAGE_URI, imageUri);
-        extraState.putParcelable(OUT_HIGHLIGHTED_RECEIPT, highlightedReceipt);
-        fragmentStateCache.putSavedState(extraState, getClass());
+        outState.putParcelable(OUT_IMAGE_URI, imageUri);
+        outState.putParcelable(OUT_HIGHLIGHTED_RECEIPT, highlightedReceipt);
     }
 
     @Override

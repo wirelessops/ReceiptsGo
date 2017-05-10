@@ -97,7 +97,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         if (savedInstanceState == null) {
             navigateToLastTrip = fragmentStateCache.getArguments(getClass()).getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
         } else {
-            navigateToLastTrip = fragmentStateCache.getSavedState(getClass()).getBoolean(OUT_NAV_TO_LAST_TRIP);
+            navigateToLastTrip = savedInstanceState.getBoolean(OUT_NAV_TO_LAST_TRIP);
         }
     }
 
@@ -156,10 +156,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-
-        Bundle extraState = new Bundle();
-        extraState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
-        fragmentStateCache.putSavedState(extraState, getClass());
+        outState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
     }
 
     @Override

@@ -76,7 +76,7 @@ public class ReportInfoFragment extends WBFragment {
         if (savedInstanceState == null) {
             mTrip = fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
         } else {
-            mTrip = fragmentStateCache.getSavedState(getClass()).getParcelable(KEY_OUT_TRIP);
+            mTrip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
         }
         Preconditions.checkNotNull(mTrip, "A valid trip is required");
         mLastTripController = new LastTripController(getActivity());
@@ -150,10 +150,7 @@ public class ReportInfoFragment extends WBFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-
-        Bundle extraState = new Bundle();
-        extraState.putParcelable(KEY_OUT_TRIP, mTrip);
-        fragmentStateCache.putSavedState(extraState, getClass());
+        outState.putParcelable(KEY_OUT_TRIP, mTrip);
     }
 
     @Override

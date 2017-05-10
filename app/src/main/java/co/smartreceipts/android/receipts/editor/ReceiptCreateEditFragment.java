@@ -268,8 +268,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         currencySpinner.setAdapter(currenciesAdapter);
 
         // And the exchange rate processing for our currencies
-        final boolean exchangeRateIsVisible = savedInstanceState != null &&
-                fragmentStateCache.getSavedState(getClass()).getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
+        final boolean exchangeRateIsVisible = savedInstanceState != null && savedInstanceState.getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
         if (exchangeRateIsVisible) {
             // Note: the restoration of selected spinner items (in the currency spinner) is delayed so we use this state tracker to restore immediately
             exchangeRateContainer.setVisibility(View.VISIBLE);
@@ -653,9 +652,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         Logger.debug(this, "onSaveInstanceState");
 
         if (exchangeRateContainer != null && outState != null) {
-            Bundle extraState = new Bundle();
-            extraState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateContainer.getVisibility() == View.VISIBLE);
-            fragmentStateCache.putSavedState(extraState, getClass());
+            outState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateContainer.getVisibility() == View.VISIBLE);
         }
     }
 

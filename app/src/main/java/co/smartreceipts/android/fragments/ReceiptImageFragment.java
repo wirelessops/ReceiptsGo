@@ -102,8 +102,8 @@ public class ReceiptImageFragment extends WBFragment {
         if (savedInstanceState == null) {
             receipt = fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
         } else {
-            receipt = fragmentStateCache.getSavedState(getClass()).getParcelable(KEY_OUT_RECEIPT);
-            imageUri = fragmentStateCache.getSavedState(getClass()).getParcelable(KEY_OUT_URI);
+            receipt = savedInstanceState.getParcelable(KEY_OUT_RECEIPT);
+            imageUri = savedInstanceState.getParcelable(KEY_OUT_URI);
         }
         isRotateOngoing = false;
         activityFileResultImporter = new ActivityFileResultImporter(getActivity(), getFragmentManager(), receipt.getTrip(),
@@ -215,11 +215,8 @@ public class ReceiptImageFragment extends WBFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-
-        Bundle extraState = new Bundle();
-        extraState.putParcelable(KEY_OUT_RECEIPT, receipt);
-        extraState.putParcelable(KEY_OUT_URI, imageUri);
-        fragmentStateCache.putSavedState(extraState, getClass());
+        outState.putParcelable(KEY_OUT_RECEIPT, receipt);
+        outState.putParcelable(KEY_OUT_URI, imageUri);
     }
 
     @Override
