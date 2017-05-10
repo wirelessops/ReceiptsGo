@@ -83,8 +83,9 @@ public class OcrManager {
     @NonNull
     public Observable<OcrResponse> scan(@NonNull File file) {
         Preconditions.checkNotNull(file);
+
         ocrProcessingStatusSubject.onNext(OcrProcessingStatus.Idle);
-        if (ocrFeature.isEnabled() && identityManager.isLoggedIn() && ocrPurchaseTracker.hasAvailableScans()) {
+        if (ocrFeature.isEnabled() && identityManager.isLoggedIn() && ocrPurchaseTracker.hasAvailableScans() && userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)) {
             Logger.info(OcrManager.this, "Initiating scan of {}.", file);
             final OcrPushMessageReceiver ocrPushMessageReceiver = pushMessageReceiverFactory.get();
             ocrProcessingStatusSubject.onNext(OcrProcessingStatus.UploadingImage);

@@ -56,5 +56,6 @@
     <!-- =============== Preference Misc =================== -->
     <bool name="pref_no_category_auto_backup_wifi_only_defaultValue">true</bool>
     <bool name="pref_no_category_ocr_incognito_mode_defaultValue">false</bool>
+    <bool name="pref_no_category_ocr_is_enabled_defaultValue">true</bool>
 
 </resources>

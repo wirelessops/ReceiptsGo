@@ -106,6 +106,32 @@ public class OcrConfigurationInteractorTest {
     }
 
     @Test
+    public void getOcrIsEnabled() {
+        when(userPreferenceManager.getObservable(UserPreference.Misc.OcrIsEnabled)).thenReturn(Observable.just(false));
+        final TestObserver<Boolean> testObserver1 = interactor.getOcrIsEnabled().test();
+        testObserver1.awaitTerminalEvent();
+        testObserver1.assertValue(false);
+        testObserver1.assertComplete();
+        testObserver1.assertNoErrors();
+
+        when(userPreferenceManager.getObservable(UserPreference.Misc.OcrIsEnabled)).thenReturn(Observable.just(true));
+        final TestObserver<Boolean> testObserver2 = interactor.getOcrIsEnabled().test();
+        testObserver2.awaitTerminalEvent();
+        testObserver2.assertValue(true);
+        testObserver2.assertComplete();
+        testObserver2.assertNoErrors();
+    }
+
+    @Test
+    public void setOcrIsEnabled() {
+        interactor.setOcrIsEnabled(false);
+        verify(userPreferenceManager).set(UserPreference.Misc.OcrIsEnabled, false);
+
+        interactor.setOcrIsEnabled(true);
+        verify(userPreferenceManager).set(UserPreference.Misc.OcrIsEnabled, true);
+    }
+
+    @Test
     public void getAllowUsToSaveImagesRemotely() {
         when(userPreferenceManager.getObservable(UserPreference.Misc.OcrIncognitoMode)).thenReturn(Observable.just(true));
         final TestObserver<Boolean> testObserver1 = interactor.getAllowUsToSaveImagesRemotely().test();

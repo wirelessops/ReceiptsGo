@@ -18,11 +18,16 @@ public class OcrConfigurationPresenter extends BasePresenter<OcrConfigurationVie
     public void subscribe() {
         view.present(interactor.getEmail());
 
-        // Set the current checkbox value
+        // Set the current checkbox values
+        compositeDisposable.add(interactor.getOcrIsEnabled()
+                .subscribe(view.getOcrIsEnabledConsumer()));
         compositeDisposable.add(interactor.getAllowUsToSaveImagesRemotely()
                 .subscribe(view.getAllowUsToSaveImagesRemotelyConsumer()));
 
         // Persist values from checkbox toggling
+        compositeDisposable.add(view.getOcrIsEnabledCheckboxChanged()
+                .doOnNext(ocrIsEnabled -> Logger.debug(OcrConfigurationPresenter.this, "Updating ocrIsEnabled setting: {}", ocrIsEnabled))
+                .subscribe(interactor::setOcrIsEnabled));
         compositeDisposable.add(view.getAllowUsToSaveImagesRemotelyCheckboxChanged()
                 .doOnNext(saveImagesRemotely -> Logger.debug(OcrConfigurationPresenter.this, "Updating saveImagesRemotely setting: {}", saveImagesRemotely))
                 .subscribe(interactor::setAllowUsToSaveImagesRemotely));

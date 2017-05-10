@@ -79,6 +79,7 @@ public final class UserPreference<T> {
     public static final class Misc {
         public static final UserPreference<Boolean> AutoBackupOnWifiOnly = new UserPreference<>(Boolean.class, R.string.pref_no_category_auto_backup_wifi_only_key, R.bool.pref_no_category_auto_backup_wifi_only_defaultValue);
         public static final UserPreference<Boolean> OcrIncognitoMode = new UserPreference<>(Boolean.class, R.string.pref_no_category_ocr_incognito_mode_key, R.bool.pref_no_category_ocr_incognito_mode_defaultValue);
+        public static final UserPreference<Boolean> OcrIsEnabled = new UserPreference<>(Boolean.class, R.string.pref_no_category_ocr_is_enabled_key, R.bool.pref_no_category_ocr_is_enabled_defaultValue);
     }
 
     private static List<UserPreference<?>> CACHED_VALUES;

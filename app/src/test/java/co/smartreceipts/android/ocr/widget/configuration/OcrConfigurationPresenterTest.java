@@ -24,6 +24,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class OcrConfigurationPresenterTest {
 
+    private static final boolean OCR_IS_ENABLED = false;
     private static final boolean SAVE_IMAGES_REMOTELY = true;
     private static final int REMAINING_SCANS = 25;
     private static final InAppPurchase PURCHASE = InAppPurchase.OcrScans10;
@@ -41,6 +42,9 @@ public class OcrConfigurationPresenterTest {
     EmailAddress emailAddress;
 
     @Mock
+    Consumer<Boolean> ocrIsEnabledConsumer;
+
+    @Mock
     Consumer<Boolean> allowUsToSaveImagesRemotelyConsumer;
 
     @Mock
@@ -52,12 +56,15 @@ public class OcrConfigurationPresenterTest {
 
         when(availablePurchase.getInAppPurchase()).thenReturn(PURCHASE);
         when(interactor.getEmail()).thenReturn(emailAddress);
+        when(interactor.getOcrIsEnabled()).thenReturn(Observable.just(OCR_IS_ENABLED));
         when(interactor.getAllowUsToSaveImagesRemotely()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
         when(interactor.getRemainingScansStream()).thenReturn(Observable.just(REMAINING_SCANS));
         when(interactor.getAvailableOcrPurchases()).thenReturn(Single.just(Collections.singletonList(availablePurchase)));
 
+        when(view.getOcrIsEnabledCheckboxChanged()).thenReturn(Observable.just(OCR_IS_ENABLED));
         when(view.getAllowUsToSaveImagesRemotelyCheckboxChanged()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
         when(view.getAvailablePurchaseClicks()).thenReturn(Observable.just(availablePurchase));
+        doReturn(ocrIsEnabledConsumer).when(view).getOcrIsEnabledConsumer();
         doReturn(allowUsToSaveImagesRemotelyConsumer).when(view).getAllowUsToSaveImagesRemotelyConsumer();
     }
 
@@ -68,10 +75,16 @@ public class OcrConfigurationPresenterTest {
         // Presents Email
         verify(view).present(emailAddress);
 
+        // Consumes OCR Is Enabled State
+        verify(ocrIsEnabledConsumer).accept(OCR_IS_ENABLED);
+
         // Consumes Save Images Remotely State
         verify(allowUsToSaveImagesRemotelyConsumer).accept(SAVE_IMAGES_REMOTELY);
 
-        // Interacts With Save Images Remotely State On Check Changed
+        // Interacts With OCR Is Enabled on Check Changed
+        verify(interactor).setOcrIsEnabled(OCR_IS_ENABLED);
+
+        // Interacts With Save Images Remotely State on Check Changed
         verify(interactor).setAllowUsToSaveImagesRemotely(SAVE_IMAGES_REMOTELY);
 
         // Presents Remaining Scans

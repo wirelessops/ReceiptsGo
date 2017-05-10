@@ -61,6 +61,7 @@ public class UserPreferenceTest {
         Assert.assertTrue(userPreferences.contains(UserPreference.PlusSubscription.PdfFooterString));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.AutoBackupOnWifiOnly));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.OcrIncognitoMode));
+        Assert.assertTrue(userPreferences.contains(UserPreference.Misc.OcrIsEnabled));
     }
 
     @Test
@@ -244,6 +245,10 @@ public class UserPreferenceTest {
         Assert.assertEquals(UserPreference.Misc.OcrIncognitoMode.getType(), Boolean.class);
         Assert.assertEquals(name(UserPreference.Misc.OcrIncognitoMode), "OcrIncognitoMode");
         Assert.assertEquals(UserPreference.Misc.OcrIncognitoMode.getDefaultValue(), R.bool.pref_no_category_ocr_incognito_mode_defaultValue);
+
+        Assert.assertEquals(UserPreference.Misc.OcrIsEnabled.getType(), Boolean.class);
+        Assert.assertEquals(name(UserPreference.Misc.OcrIsEnabled), "OcrIsEnabled");
+        Assert.assertEquals(UserPreference.Misc.OcrIsEnabled.getDefaultValue(), R.bool.pref_no_category_ocr_is_enabled_defaultValue);
     }
 
     @NonNull

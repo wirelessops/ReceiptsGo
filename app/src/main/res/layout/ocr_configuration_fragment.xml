@@ -37,6 +37,17 @@
             android:text="@string/ocr_configuration_information_line2" />
 
         <CheckBox
+            android:id="@+id/ocr_is_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ocr_is_enabled"
+            android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+            android:paddingLeft="@dimen/default_margin_item_separator"
+            android:paddingStart="@dimen/default_margin_item_separator"
+            android:paddingRight="@dimen/default_margin_item_separator"
+            android:paddingEnd="@dimen/default_margin_item_separator" />
+
+        <CheckBox
             android:id="@+id/ocr_save_scans_to_improve_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

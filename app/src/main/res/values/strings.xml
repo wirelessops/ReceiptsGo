@@ -100,6 +100,7 @@
     <string name="ocr_configuration_welcome">Automatic Scans (OCR):</string>
     <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
     <string name="ocr_configuration_information_line2">We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</string>
+    <string name="ocr_is_enabled">Enable Automatic Scans (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Allow us to save images to improve accuracy?</string>
     <string name="ocr_configuration_available_purchases">Available Purchases - Tap to Buy:</string>
 

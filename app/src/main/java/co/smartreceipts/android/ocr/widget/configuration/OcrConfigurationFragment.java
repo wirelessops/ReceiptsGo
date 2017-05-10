@@ -50,6 +50,9 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Inject
     Analytics analytics;
 
+    @BindView(R.id.ocr_is_enabled)
+    CheckBox ocrIsEnabledCheckbox;
+
     @BindView(R.id.ocr_save_scans_to_improve_results)
     CheckBox allowUsToSaveImagesRemotelyCheckbox;
 
@@ -174,6 +177,12 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @NonNull
     @Override
+    public Observable<Boolean> getOcrIsEnabledCheckboxChanged() {
+        return RxCompoundButton.checkedChanges(ocrIsEnabledCheckbox);
+    }
+
+    @NonNull
+    @Override
     public Observable<Boolean> getAllowUsToSaveImagesRemotelyCheckboxChanged() {
         return RxCompoundButton.checkedChanges(allowUsToSaveImagesRemotelyCheckbox);
     }
@@ -182,6 +191,12 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public Observable<AvailablePurchase> getAvailablePurchaseClicks() {
         return ocrPurchasesListAdapter.getAvailablePurchaseClicks();
+    }
+
+    @NonNull
+    @Override
+    public Consumer<? super Boolean> getOcrIsEnabledConsumer() {
+        return RxCompoundButton.checked(ocrIsEnabledCheckbox);
     }
 
     @NonNull

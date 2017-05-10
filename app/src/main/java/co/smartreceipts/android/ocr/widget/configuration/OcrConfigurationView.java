@@ -28,6 +28,13 @@ public interface OcrConfigurationView {
     void present(@NonNull List<AvailablePurchase> availablePurchases);
 
     /**
+     * @return an {@link Observable} that will emit a value as to whether the user elects enabled or
+     * disable OCR
+     */
+    @NonNull
+    Observable<Boolean> getOcrIsEnabledCheckboxChanged();
+
+    /**
      * @return an {@link Observable} that will emit a value as to whether the user elects to allows
      * us to save images remotely or not
      */
@@ -40,6 +47,12 @@ public interface OcrConfigurationView {
      */
     @NonNull
     Observable<AvailablePurchase> getAvailablePurchaseClicks();
+
+    /**
+     * @return a {@link Consumer} for interacting with the user's choice for enabling OCR or not
+     */
+    @NonNull
+    Consumer<? super Boolean> getOcrIsEnabledConsumer();
 
     /**
      * @return a {@link Consumer} for interacting with the user's current select about saving images

@@ -117,6 +117,7 @@ public class OcrManagerTest {
         when(ocrService.scanReceipt(new RecongitionRequest("ocr/" + IMG_NAME, true))).thenReturn(Observable.just(recognitionResponse));
         when(pushMessageReceiver.getOcrPushResponse()).thenReturn(Observable.just(new Object()));
         when(ocrService.getRecognitionResult(ID)).thenReturn(Observable.just(recognitionResponse));
+        when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode)).thenReturn(false);
 
         ocrManager = new OcrManager(context, s3Manager, identityManager, ocrServiceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, ocrFeature);
@@ -151,6 +152,19 @@ public class OcrManagerTest {
     @Test
     public void scanWithNoAvailableScans() {
         when(ocrPurchaseTracker.hasAvailableScans()).thenReturn(false);
+        ocrManager.scan(file).subscribe(testObserver);
+
+        testObserver.awaitTerminalEvent();
+        testObserver.assertValue(new OcrResponse());
+        testObserver.onComplete();
+        testObserver.assertNoErrors();
+        verifyZeroInteractions(s3Manager, ocrServiceManager, pushManager, pushMessageReceiver);
+        verify(ocrPurchaseTracker, never()).decrementRemainingScans();
+    }
+
+    @Test
+    public void scanWhenNotEnabled() {
+        when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(false);
         ocrManager.scan(file).subscribe(testObserver);
 
         testObserver.awaitTerminalEvent();

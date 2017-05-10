@@ -78,6 +78,17 @@ public class OcrConfigurationInteractor {
         }
     }
 
+    @NonNull
+    public Observable<Boolean> getOcrIsEnabled() {
+        return userPreferenceManager.getObservable(UserPreference.Misc.OcrIsEnabled);
+    }
+
+    public void setOcrIsEnabled(boolean ocrIsEnabled) {
+        analytics.record(new DefaultDataPointEvent(Events.Ocr.OcrIsEnabledToggled).addDataPoint(new DataPoint("value", ocrIsEnabled)));
+        userPreferenceManager.set(UserPreference.Misc.OcrIsEnabled, ocrIsEnabled);
+    }
+
+    @NonNull
     public Observable<Boolean> getAllowUsToSaveImagesRemotely() {
         return userPreferenceManager.getObservable(UserPreference.Misc.OcrIncognitoMode)
                 .map(incognito -> !incognito);
