@@ -132,9 +132,9 @@ public class PurchaseManagerTest {
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenThrow(new RemoteException());
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenReturn(getConsumablePurchasesResponse);
 
         // Test
@@ -150,9 +150,9 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSubscriptionsResponse = new Bundle();
         getSubscriptionsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenThrow(new RemoteException());
 
@@ -172,9 +172,9 @@ public class PurchaseManagerTest {
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenReturn(getConsumablePurchasesResponse);
 
         // Test
@@ -190,9 +190,9 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSubscriptionsResponse = new Bundle();
         getSubscriptionsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_ERROR);
@@ -211,15 +211,15 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSubscriptionsResponse = new Bundle();
         getSubscriptionsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenReturn(getConsumablePurchasesResponse);
 
         // Test
@@ -238,9 +238,9 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSubscriptionsResponse = new Bundle();
         getSubscriptionsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
@@ -271,9 +271,9 @@ public class PurchaseManagerTest {
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenReturn(getConsumablePurchasesResponse);
 
         // Test
@@ -292,9 +292,9 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSubscriptionsResponse = new Bundle();
         getSubscriptionsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
@@ -325,9 +325,9 @@ public class PurchaseManagerTest {
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenReturn(getConsumablePurchasesResponse);
 
         // Test
@@ -346,9 +346,9 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSubscriptionsResponse = new Bundle();
         getSubscriptionsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getSubscriptionsResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
@@ -380,9 +380,9 @@ public class PurchaseManagerTest {
         when(inAppBillingService.getPurchases(3, packageName, "subs", null)).thenReturn(getSubscriptionsResponse);
         final Bundle getConsumablePurchasesResponse = new Bundle();
         getConsumablePurchasesResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<String>());
-        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<String>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_ITEM_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_PURCHASE_DATA_LIST", new ArrayList<>());
+        getConsumablePurchasesResponse.putStringArrayList("INAPP_DATA_SIGNATURE_LIST", new ArrayList<>());
         when(inAppBillingService.getPurchases(3, packageName, "inapp", null)).thenReturn(getConsumablePurchasesResponse);
 
         // Test
@@ -466,7 +466,7 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSkuDetailsResponse = new Bundle();
         getSkuDetailsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSkuDetailsResponse.putStringArrayList("DETAILS_LIST", new ArrayList<String>());
+        getSkuDetailsResponse.putStringArrayList("DETAILS_LIST", new ArrayList<>());
         when(inAppBillingService.getSkuDetails(eq(3), eq(packageName), eq("subs"), bundleCaptor.capture())).thenReturn(getSkuDetailsResponse);
 
         // Test
@@ -544,7 +544,7 @@ public class PurchaseManagerTest {
         // Configure
         final Bundle getSkuDetailsResponse = new Bundle();
         getSkuDetailsResponse.putInt("RESPONSE_CODE", RESULT_OK);
-        getSkuDetailsResponse.putStringArrayList("DETAILS_LIST", new ArrayList<String>());
+        getSkuDetailsResponse.putStringArrayList("DETAILS_LIST", new ArrayList<>());
         when(inAppBillingService.getSkuDetails(eq(3), eq(packageName), eq("inapp"), bundleCaptor.capture())).thenReturn(getSkuDetailsResponse);
 
         // Test

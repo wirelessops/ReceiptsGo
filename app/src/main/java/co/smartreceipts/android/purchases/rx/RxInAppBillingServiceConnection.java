@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -20,7 +21,7 @@ public class RxInAppBillingServiceConnection implements ServiceConnection {
 
     private final Context context;
     private final AtomicBoolean isBound = new AtomicBoolean(false);
-    private final BehaviorSubject<IInAppBillingService> inAppBillingServiceSubject = BehaviorSubject.create();
+    private final BehaviorSubject<Optional<IInAppBillingService>> inAppBillingServiceSubject = BehaviorSubject.create();
 
     public RxInAppBillingServiceConnection(@NonNull Context context) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
@@ -28,12 +29,12 @@ public class RxInAppBillingServiceConnection implements ServiceConnection {
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        inAppBillingServiceSubject.onNext(IInAppBillingService.Stub.asInterface(service));
+        inAppBillingServiceSubject.onNext(Optional.of(IInAppBillingService.Stub.asInterface(service)));
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        inAppBillingServiceSubject.onNext(null);
+        inAppBillingServiceSubject.onNext(Optional.absent());
     }
 
     @NonNull
@@ -45,7 +46,8 @@ public class RxInAppBillingServiceConnection implements ServiceConnection {
         }
 
         return inAppBillingServiceSubject
-                .filter(inAppBillingService -> inAppBillingService != null)
-                .take(1);
+                .take(1)
+                .filter(Optional::isPresent)
+                .map(Optional::get);
     }
 }
