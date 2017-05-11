@@ -22,12 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin_item_separator"
-            android:text="@string/ocr_configuration_beta" />
-
-        <TextView style="@style/Widget.SmartReceipts.TextView.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_item_separator"
             android:text="@string/ocr_configuration_information" />
 
         <TextView style="@style/Widget.SmartReceipts.TextView.Subhead"
