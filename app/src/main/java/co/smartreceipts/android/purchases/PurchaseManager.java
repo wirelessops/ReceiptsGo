@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.reactivestreams.Subscriber;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -446,11 +445,15 @@ public class PurchaseManager {
                             emitter.onComplete();
                         } else {
                             Logger.error(PurchaseManager.this, "Failed to get available skus for purchase");
-                            emitter.onError(new Exception("Failed to get available skus for purchase"));
+                            if (!emitter.isDisposed()) {
+                                emitter.onError(new Exception("Failed to get available skus for purchase"));
+                            }
                         }
                     } catch (RemoteException e) {
                         Logger.error(PurchaseManager.this, "Failed to get available skus for purchase", e);
-                        emitter.onError(e);
+                        if (!emitter.isDisposed()) {
+                            emitter.onError(e);
+                        }
                     }
                 }));
     }
