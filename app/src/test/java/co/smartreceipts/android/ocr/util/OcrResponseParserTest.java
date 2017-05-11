@@ -70,11 +70,11 @@ public class OcrResponseParserTest {
 
         assertNull(new OcrResponseParser(null).getDate());
         assertNull(new OcrResponseParser(new OcrResponse(null, null, null, null, null, null, null, null)).getDate());
-        assertNull(new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(null, null), null, null, null, null)).getDate());
+        assertNull(new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(null, 1.0), null, null, null, null)).getDate());
 
         // Change timezone and test
         TestTimezoneToggler.setDefaulTimeZone(TimeZone.getTimeZone("America/New_York"));
-        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, null), null, null, null, null)).getDate();
+        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 1.0), null, null, null, null)).getDate();
         assertNotNull(ocrDate);
         assertTrue(ocrDate.after(date_2016_12_22_at_midnight));
         assertTrue(ocrDate.before(date_2016_12_23_at_midnight));
@@ -82,7 +82,7 @@ public class OcrResponseParserTest {
 
         // Change timezone and test
         TestTimezoneToggler.setDefaulTimeZone(TimeZone.getTimeZone("Europe/London"));
-        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, null), null, null, null, null)).getDate();
+        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 1.0), null, null, null, null)).getDate();
         assertNotNull(ocrDate);
         assertTrue(ocrDate.after(date_2016_12_22_at_midnight));
         assertTrue(ocrDate.before(date_2016_12_23_at_midnight));
@@ -90,7 +90,7 @@ public class OcrResponseParserTest {
 
         // Change timezone and test
         TestTimezoneToggler.setDefaulTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
-        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, null), null, null, null, null)).getDate();
+        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 1.0), null, null, null, null)).getDate();
         assertNotNull(ocrDate);
         System.out.println("Aussie: " + ocrDate.getTime());
         assertTrue(ocrDate.after(date_2016_12_22_at_midnight));
@@ -99,7 +99,7 @@ public class OcrResponseParserTest {
 
         // Change timezone and test
         TestTimezoneToggler.setDefaulTimeZone(TimeZone.getTimeZone("Asia/Istanbul"));
-        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, null), null, null, null, null)).getDate();
+        ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 1.0), null, null, null, null)).getDate();
         assertNotNull(ocrDate);
         assertTrue(ocrDate.after(date_2016_12_22_at_midnight));
         assertTrue(ocrDate.before(date_2016_12_23_at_midnight));
@@ -109,7 +109,13 @@ public class OcrResponseParserTest {
     @Test
     public void getDateForBadString() {
         final String iso8601Date = "badDate";
-        assertNull(new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, null), null, null, null, null)).getDate());
+        assertNull(new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 1.0), null, null, null, null)).getDate());
+    }
+
+    @Test
+    public void getDateWithLowConfidence() {
+        final String iso8601Date = "2016-12-22T12:00:00.000Z";
+        assertNull(new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 0.4), null, null, null, null)).getDate());
     }
 
     @NonNull

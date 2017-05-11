@@ -20,6 +20,13 @@ import co.smartreceipts.android.utils.log.Logger;
  */
 public class OcrResponseParser {
 
+    /**
+     * Tt can be a major pain to control the UI to move our date forward (eg let's say it guesses 11-May-2012
+     * instead of 11-May-2017, then we have to move the calendar forward 5 years). As a result, we define this
+     * minimum confidence threshold level to ensure we only process the date when this level is met
+     */
+    private static final double MINIMUM_DATE_CONFIDENCE = 0.5;
+
     private final OcrResponse ocrResponse;
 
     public OcrResponseParser(@Nullable OcrResponse ocrResponse) {
@@ -67,7 +74,7 @@ public class OcrResponseParser {
      */
     @Nullable
     public Date getDate() {
-        if (ocrResponse != null && ocrResponse.getDate() != null && ocrResponse.getDate().getData() != null) {
+        if (ocrResponse != null && ocrResponse.getDate() != null && ocrResponse.getDate().getData() != null && ocrResponse.getDate().getConfidenceLevel() > MINIMUM_DATE_CONFIDENCE) {
             try {
                 final SimpleDateFormat iso8601Formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
                 final GregorianCalendar ocrResponseCalendar = new GregorianCalendar();

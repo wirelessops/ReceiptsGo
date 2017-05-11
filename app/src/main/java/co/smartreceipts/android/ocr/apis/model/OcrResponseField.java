@@ -19,9 +19,8 @@ public class OcrResponseField<T> implements Serializable {
         return data;
     }
 
-    @Nullable
-    public Double getConfidenceLevel() {
-        return confidenceLevel;
+    public double getConfidenceLevel() {
+        return confidenceLevel != null ? confidenceLevel : 0;
     }
 
     @Override
