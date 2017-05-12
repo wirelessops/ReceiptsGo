@@ -63,7 +63,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
     private final GoogleDriveSyncMetadata mGoogleDriveSyncMetadata;
     private final DriveReceiptsManager mDriveReceiptsManager;
     private final DriveRestoreDataManager mDriveRestoreDataManager;
-    private final BehaviorSubject<Throwable> mSyncErrorStream;
+    private final BehaviorSubject<Optional<Throwable>> mSyncErrorStream;
 
     @Inject
     public GoogleDriveBackupManager(@NonNull Context context, @NonNull DatabaseHelper databaseHelper,
@@ -204,7 +204,9 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
     @NonNull
     @Override
     public Observable<CriticalSyncError> getCriticalSyncErrorStream() {
-        return mSyncErrorStream.<Optional<CriticalSyncError>>map(throwable -> {
+        return mSyncErrorStream.filter(Optional::isPresent)
+                .map(Optional::get)
+                .<Optional<CriticalSyncError>>map(throwable -> {
                     if (throwable instanceof CriticalSyncError) {
                         return Optional.of((CriticalSyncError) throwable);
                     } else {
@@ -217,7 +219,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
 
     @Override
     public void markErrorResolved(@NonNull SyncErrorType syncErrorType) {
-        mSyncErrorStream.onNext(null);
+        mSyncErrorStream.onNext(Optional.absent());
     }
 
     @Override

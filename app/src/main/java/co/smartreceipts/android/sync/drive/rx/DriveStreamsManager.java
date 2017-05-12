@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveFile;
@@ -11,6 +12,7 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import java.io.File;
 import java.util.List;
@@ -33,43 +35,45 @@ import io.reactivex.subjects.Subject;
 
 public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks {
 
-    private final DriveDataStreams mDriveDataStreams;
-    private final DriveStreamMappings mDriveStreamMappings;
-    private final Subject<Throwable> mDriveErrorStream;
-    private final DriveThrowableToSyncErrorTranslator mSyncErrorTranslator;
-    private final AtomicReference<CountDownLatch> mLatchReference;
+    private final DriveDataStreams driveDataStreams;
+    private final DriveStreamMappings driveStreamMappings;
+    private final Subject<Optional<Throwable>> driveErrorStream;
+    private final DriveThrowableToSyncErrorTranslator syncErrorTranslator;
+    private final AtomicReference<CountDownLatch> latchReference;
 
     public DriveStreamsManager(@NonNull Context context, @NonNull GoogleApiClient googleApiClient, @NonNull GoogleDriveSyncMetadata googleDriveSyncMetadata,
-                               @NonNull Subject<Throwable> driveErrorStream, @NonNull DriveUploadCompleteManager driveUploadCompleteManager) {
+                               @NonNull Subject<Optional<Throwable>> driveErrorStream, @NonNull DriveUploadCompleteManager driveUploadCompleteManager) {
         this(new DriveDataStreams(context, googleApiClient, googleDriveSyncMetadata, driveUploadCompleteManager), new DriveStreamMappings(), driveErrorStream, new DriveThrowableToSyncErrorTranslator());
     }
 
-    public DriveStreamsManager(@NonNull DriveDataStreams driveDataStreams, @NonNull DriveStreamMappings driveStreamMappings,
-                               @NonNull Subject<Throwable> driveErrorStream, @NonNull DriveThrowableToSyncErrorTranslator syncErrorTranslator) {
-        mDriveDataStreams = Preconditions.checkNotNull(driveDataStreams);
-        mDriveStreamMappings = Preconditions.checkNotNull(driveStreamMappings);
-        mDriveErrorStream = Preconditions.checkNotNull(driveErrorStream);
-        mSyncErrorTranslator = Preconditions.checkNotNull(syncErrorTranslator);
-        mLatchReference = new AtomicReference<>(new CountDownLatch(1));
+    @VisibleForTesting
+    DriveStreamsManager(@NonNull DriveDataStreams driveDataStreams, @NonNull DriveStreamMappings driveStreamMappings,
+                               @NonNull Subject<Optional<Throwable>> driveErrorStream,
+                               @NonNull DriveThrowableToSyncErrorTranslator syncErrorTranslator) {
+        this.driveDataStreams = Preconditions.checkNotNull(driveDataStreams);
+        this.driveStreamMappings = Preconditions.checkNotNull(driveStreamMappings);
+        this.driveErrorStream = Preconditions.checkNotNull(driveErrorStream);
+        this.syncErrorTranslator = Preconditions.checkNotNull(syncErrorTranslator);
+        this.latchReference = new AtomicReference<>(new CountDownLatch(1));
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Logger.info(this, "GoogleApiClient connection succeeded.");
-        mLatchReference.get().countDown();
+        latchReference.get().countDown();
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
         Logger.info(this, "GoogleApiClient connection suspended with cause {}", cause);
-        mLatchReference.set(new CountDownLatch(1));
+        latchReference.set(new CountDownLatch(1));
     }
 
     @NonNull
     public Single<List<RemoteBackupMetadata>> getRemoteBackups() {
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getSmartReceiptsFolders())
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.getSmartReceiptsFolders())
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -77,8 +81,8 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(identifier);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getDriveId(identifier))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.getDriveId(identifier))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -86,8 +90,8 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(driveFolder);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getFilesInFolder(driveFolder))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.getFilesInFolder(driveFolder))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -96,8 +100,8 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(fileName);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getFilesInFolder(driveFolder, fileName))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.getFilesInFolder(driveFolder, fileName))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -105,8 +109,8 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(driveFile);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getMetadata(driveFile))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.getMetadata(driveFile))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -115,11 +119,11 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(file);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getSmartReceiptsFolder())
+                .andThen(driveDataStreams.getSmartReceiptsFolder())
                 .firstOrError() // hack. because getSmartReceiptsFolder emits just once
-                .flatMap(driveFolder -> mDriveDataStreams.createFileInFolder(driveFolder, file))
-                .flatMap(driveFile -> Single.just(mDriveStreamMappings.postInsertSyncState(currentSyncState, driveFile)))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .flatMap(driveFolder -> driveDataStreams.createFileInFolder(driveFolder, file))
+                .flatMap(driveFile -> Single.just(driveStreamMappings.postInsertSyncState(currentSyncState, driveFile)))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -127,11 +131,11 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(file);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.getSmartReceiptsFolder())
+                .andThen(driveDataStreams.getSmartReceiptsFolder())
                 .firstOrError() // hack. because getSmartReceiptsFolder emits just once
-                .flatMap(driveFolder -> mDriveDataStreams.createFileInFolder(driveFolder, file))
+                .flatMap(driveFolder -> driveDataStreams.createFileInFolder(driveFolder, file))
                 .flatMap(driveFile -> Single.just(new Identifier(driveFile.getDriveId().getResourceId())))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -141,8 +145,8 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
 
         return newBlockUntilConnectedCompletable()
                 .andThen(updateDrive(currentSyncState, file))
-                .flatMap(driveFile -> Single.just(mDriveStreamMappings.postUpdateSyncState(currentSyncState, driveFile)))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .flatMap(driveFile -> Single.just(driveStreamMappings.postUpdateSyncState(currentSyncState, driveFile)))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -151,9 +155,9 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(file);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.updateFile(currentIdentifier, file))
+                .andThen(driveDataStreams.updateFile(currentIdentifier, file))
                 .flatMap(driveFile -> Single.just(new Identifier(driveFile.getDriveId().getResourceId())))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
@@ -164,18 +168,18 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
                 .andThen(deleteDrive(currentSyncState))
                 .flatMap(success -> {
                     if(success) {
-                        return Single.just(mDriveStreamMappings.postDeleteSyncState(currentSyncState, isFullDelete));
+                        return Single.just(driveStreamMappings.postDeleteSyncState(currentSyncState, isFullDelete));
                     } else {
                         return Single.just(currentSyncState);
                     }
                 })
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     private Single<Boolean> deleteDrive(@NonNull SyncState currentSyncState) {
         final Identifier driveIdentifier = currentSyncState.getSyncId(SyncProvider.GoogleDrive);
         if (driveIdentifier != null) {
-            return mDriveDataStreams.delete(driveIdentifier);
+            return driveDataStreams.delete(driveIdentifier);
         } else {
             return Single.just(true);
         }
@@ -184,7 +188,7 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
     private Single<DriveFile> updateDrive(@NonNull final SyncState currentSyncState, @NonNull final File file) {
         final Identifier driveIdentifier = currentSyncState.getSyncId(SyncProvider.GoogleDrive);
         if (driveIdentifier != null) {
-            return mDriveDataStreams.updateFile(driveIdentifier, file);
+            return driveDataStreams.updateFile(driveIdentifier, file);
         } else {
             return Single.error(new Exception("This sync state doesn't include a valid Drive Identifier"));
         }
@@ -195,12 +199,12 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(identifier);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.delete(identifier))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.delete(identifier))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     public void clearCachedData() {
-        mDriveDataStreams.clear();
+        driveDataStreams.clear();
     }
 
     @NonNull
@@ -209,14 +213,14 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
         Preconditions.checkNotNull(downloadLocationFile);
 
         return newBlockUntilConnectedCompletable()
-                .andThen(mDriveDataStreams.download(driveFile, downloadLocationFile))
-                .doOnError(throwable -> mDriveErrorStream.onNext(mSyncErrorTranslator.get(throwable)));
+                .andThen(driveDataStreams.download(driveFile, downloadLocationFile))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
     }
 
     @NonNull
     private Completable newBlockUntilConnectedCompletable() {
         return Completable.fromAction(() -> {
-            final CountDownLatch countDownLatch = mLatchReference.get();
+            final CountDownLatch countDownLatch = latchReference.get();
             try {
                 countDownLatch.await();
             } catch (InterruptedException e) {
