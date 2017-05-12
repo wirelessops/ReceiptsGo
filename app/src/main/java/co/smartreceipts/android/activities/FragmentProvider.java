@@ -3,6 +3,7 @@ package co.smartreceipts.android.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 import java.io.File;
 
@@ -16,6 +17,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
@@ -26,9 +28,6 @@ import static co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment
 import static co.smartreceipts.android.trips.TripFragment.ARG_NAVIGATE_TO_VIEW_LAST_TRIP;
 
 public class FragmentProvider {
-
-    @Inject
-    FragmentStateCache fragmentStateCache;
 
     @Inject
     public FragmentProvider() {
@@ -43,9 +42,8 @@ public class FragmentProvider {
     public TripFragment newTripFragmentInstance(boolean navigateToViewLastTrip) {
         final Bundle args = new Bundle();
         args.putBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP, navigateToViewLastTrip);
-        fragmentStateCache.putArguments(args, TripFragment.class);
 
-        return TripFragment.newInstance();
+        return attachArguments(TripFragment.newInstance(), args);
     }
 
     /**
@@ -58,9 +56,8 @@ public class FragmentProvider {
     public ReportInfoFragment newReportInfoFragment(@NonNull Trip trip) {
         Bundle args = new Bundle();
         args.putParcelable(Trip.PARCEL_KEY, trip);
-        fragmentStateCache.putArguments(args, ReportInfoFragment.class);
 
-        return ReportInfoFragment.newInstance();
+        return attachArguments(ReportInfoFragment.newInstance(), args);
     }
 
     /**
@@ -77,9 +74,8 @@ public class FragmentProvider {
         args.putParcelable(Receipt.PARCEL_KEY, null);
         args.putSerializable(ARG_FILE, file);
         args.putSerializable(ARG_OCR, ocrResponse);
-        fragmentStateCache.putArguments(args, ReceiptCreateEditFragment.class);
 
-        return ReceiptCreateEditFragment.newInstance();
+        return attachArguments(ReceiptCreateEditFragment.newInstance(), args);
     }
 
     /**
@@ -96,9 +92,8 @@ public class FragmentProvider {
         args.putParcelable(Receipt.PARCEL_KEY, receiptToEdit);
         args.putSerializable(ARG_FILE, null);
         args.putSerializable(ARG_OCR, null);
-        fragmentStateCache.putArguments(args, ReceiptCreateEditFragment.class);
 
-        return ReceiptCreateEditFragment.newInstance();
+        return attachArguments(ReceiptCreateEditFragment.newInstance(), args);
     }
 
     /**
@@ -111,9 +106,8 @@ public class FragmentProvider {
     public ReceiptImageFragment newReceiptImageFragment(@NonNull Receipt receipt) {
         Bundle args = new Bundle();
         args.putParcelable(Receipt.PARCEL_KEY, receipt);
-        fragmentStateCache.putArguments(args, ReceiptImageFragment.class);
 
-        return ReceiptImageFragment.newInstance();
+        return attachArguments(ReceiptImageFragment.newInstance(), args);
     }
 
     /**
@@ -166,8 +160,12 @@ public class FragmentProvider {
     public TripCreateEditFragment newEditTripFragment(@NonNull Trip tripToEdit) {
         Bundle args = new Bundle();
         args.putParcelable(Trip.PARCEL_KEY, tripToEdit);
-        fragmentStateCache.putArguments(args, TripCreateEditFragment.class);
+        return attachArguments(TripCreateEditFragment.newInstance(), args);
+    }
 
-        return TripCreateEditFragment.newInstance();
+    @NonNull
+    private <T extends Fragment> T attachArguments(T fragment, @NonNull Bundle args) {
+        fragment.setArguments(args);
+        return fragment;
     }
 }

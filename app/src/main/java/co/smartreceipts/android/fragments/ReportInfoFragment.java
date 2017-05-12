@@ -74,7 +74,7 @@ public class ReportInfoFragment extends WBFragment {
         Logger.debug(this, "onCreate");
         setHasOptionsMenu(true);
         if (savedInstanceState == null) {
-            mTrip = fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
+            mTrip = getArguments().getParcelable(Trip.PARCEL_KEY);
         } else {
             mTrip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
         }

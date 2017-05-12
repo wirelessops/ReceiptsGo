@@ -82,12 +82,9 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         setHasOptionsMenu(true);
     }
 
+    @Nullable
     public Trip getTrip() {
-        if (fragmentStateCache.getArguments(getClass()) != null) {
-            return fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
-        } else {
-            return null;
-        }
+        return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;
     }
 
     @Nullable

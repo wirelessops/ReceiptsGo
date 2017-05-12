@@ -13,21 +13,20 @@ import javax.inject.Inject;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.utils.log.Logger;
 
+/**
+ * Marking as deprecated while revisiting this as a solution for handling {@link android.os.TransactionTooLargeException}
+ * when passing fragment arguments. The main caveat is that Android uses {@link Fragment#onCreate(Bundle)} by default to
+ * recover from low memory situations, so we keep crashing when this was destroyed outside of the application scope and
+ * Android attempts to re-create this
+ */
 @ApplicationScope
+@Deprecated
 public class FragmentStateCache {
 
     private final HashMap<Class<? extends Fragment>, Bundle> argumentsCacheHashMap = new HashMap<>();
 
     @Inject
     public FragmentStateCache() {
-    }
-
-    public Bundle getArguments(@NonNull Class<? extends Fragment> fragmentClass) {
-        return argumentsCacheHashMap.get(fragmentClass);
-    }
-
-    public void putArguments(@NonNull Bundle args, @NonNull Class<? extends Fragment> fragmentClass) {
-        argumentsCacheHashMap.put(fragmentClass, args);
     }
 
     public void onDestroy(@NonNull Fragment fragment) {

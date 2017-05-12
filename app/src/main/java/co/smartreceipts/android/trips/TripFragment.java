@@ -95,7 +95,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         Logger.debug(this, "onCreate");
         tripCardAdapter = new TripCardAdapter(getActivity(), preferenceManager, backupProvidersManager);
         if (savedInstanceState == null) {
-            navigateToLastTrip = fragmentStateCache.getArguments(getClass()).getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
+            navigateToLastTrip = getArguments().getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
         } else {
             navigateToLastTrip = savedInstanceState.getBoolean(OUT_NAV_TO_LAST_TRIP);
         }

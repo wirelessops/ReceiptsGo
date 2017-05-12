@@ -100,7 +100,7 @@ public class ReceiptImageFragment extends WBFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            receipt = fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
+            receipt = getArguments().getParcelable(Receipt.PARCEL_KEY);
         } else {
             receipt = savedInstanceState.getParcelable(KEY_OUT_RECEIPT);
             imageUri = savedInstanceState.getParcelable(KEY_OUT_URI);
@@ -164,7 +164,7 @@ public class ReceiptImageFragment extends WBFragment {
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         Logger.debug(this, "Result Code: " + resultCode);
         if (receipt == null) {
-            receipt = fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
+            receipt = getArguments().getParcelable(Receipt.PARCEL_KEY);
         }
 
         // Show the progress bar

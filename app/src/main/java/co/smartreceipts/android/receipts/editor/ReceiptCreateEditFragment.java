@@ -160,7 +160,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        ocrResponse = (OcrResponse) fragmentStateCache.getArguments(getClass()).getSerializable(ARG_OCR);
+        ocrResponse = (OcrResponse) getArguments().getSerializable(ARG_OCR);
         receiptInputCache = new ReceiptInputCache(getFragmentManager());
         exchangeRateServiceManager = new ExchangeRateServiceManager(getFragmentManager());
         currenciesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
@@ -172,15 +172,15 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     Trip getParentTrip() {
-        return fragmentStateCache.getArguments(getClass()).getParcelable(Trip.PARCEL_KEY);
+        return getArguments().getParcelable(Trip.PARCEL_KEY);
     }
 
     Receipt getReceipt() {
-        return fragmentStateCache.getArguments(getClass()).getParcelable(Receipt.PARCEL_KEY);
+        return getArguments().getParcelable(Receipt.PARCEL_KEY);
     }
 
     File getFile() {
-        return (File) fragmentStateCache.getArguments(getClass()).getSerializable(ARG_FILE);
+        return (File) getArguments().getSerializable(ARG_FILE);
     }
 
     @Nullable
