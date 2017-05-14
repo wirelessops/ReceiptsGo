@@ -15,6 +15,12 @@ public final class BlankColumn<T> extends AbstractColumnImpl<T> {
         super(id, name, syncState);
     }
 
+    @NonNull
+    @Override
+    public String getHeader() {
+        return "";
+    }
+
     @Override
     public String getValue(@NonNull T rowItem) {
         return "";
