@@ -192,7 +192,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         }
 
         for (final GridRowRenderer headerRow : headerRows) {
-            headerRow.getRenderingFormatting().addFormatting(new Alignment(Alignment.Type.Left));
+            headerRow.getRenderingFormatting().addFormatting(new Alignment(Alignment.Type.Start));
         }
         return headerRows;
     }
