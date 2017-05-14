@@ -3,6 +3,8 @@ package co.smartreceipts.android.model.impl.columns.receipts;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -26,5 +28,15 @@ public final class ReportStartDateColumn extends AbstractColumnImpl<Receipt> {
     @Override
     public String getValue(@NonNull Receipt receipt) {
         return receipt.getTrip().getFormattedStartDate(mContext, mPreferences.get(UserPreference.General.DateSeparator));
+    }
+
+    @NonNull
+    @Override
+    public String getFooter(@NonNull List<Receipt> rows) {
+        if (!rows.isEmpty()) {
+            return getValue(rows.get(0));
+        } else {
+            return "";
+        }
     }
 }

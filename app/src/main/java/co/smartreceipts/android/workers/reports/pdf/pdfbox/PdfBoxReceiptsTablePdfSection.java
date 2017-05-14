@@ -206,7 +206,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         }
 
         final PdfTableGenerator<Receipt> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, mReceiptColumns,
-                pdDocument, new LegacyReceiptFilter(mPreferences), true, false);
+                pdDocument, new LegacyReceiptFilter(mPreferences), true, true);
 
         return pdfTableGenerator.generate(receiptsTableList);
     }

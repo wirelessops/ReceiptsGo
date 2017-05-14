@@ -2,7 +2,11 @@ package co.smartreceipts.android.model.impl.columns.receipts;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
+import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;
 import co.smartreceipts.android.sync.model.SyncState;
 
@@ -18,5 +22,11 @@ public final class ReceiptCurrencyCodeColumn extends AbstractColumnImpl<Receipt>
     @Override
     public String getValue(@NonNull Receipt receipt) {
         return receipt.getPrice().getCurrencyCode();
+    }
+
+    @Override
+    @NonNull
+    public String getFooter(@NonNull List<Receipt> receipts) {
+        return new PriceBuilderFactory().setPriceables(receipts, null).build().getCurrencyCode();
     }
 }
