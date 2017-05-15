@@ -192,6 +192,7 @@ public class PurchaseManager {
 
             data.putExtra("RESPONSE_CODE", BILLING_RESPONSE_CODE_OK);
             data.putExtra("INAPP_PURCHASE_DATA", json.toString());
+            data.putExtra("INAPP_DATA_SIGNATURE", "");
             onActivityResult(REQUEST_CODE, Activity.RESULT_OK, data);
         } catch (JSONException e) {
             Logger.error(PurchaseManager.this, e.toString());
