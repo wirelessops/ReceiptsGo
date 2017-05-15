@@ -3,6 +3,7 @@ package co.smartreceipts.android.di.subcomponents;
 import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
+import co.smartreceipts.android.di.SmartReceiptsActivityAdModule;
 import co.smartreceipts.android.di.SmartReceiptsActivityBindingModule;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import dagger.Module;
@@ -13,7 +14,8 @@ import dagger.android.AndroidInjector;
 @ActivityScope
 @Subcomponent(modules = {
         SmartReceiptsActivitySubcomponent.SmartReceiptsActivityModule.class,
-        SmartReceiptsActivityBindingModule.class
+        SmartReceiptsActivityBindingModule.class,
+        SmartReceiptsActivityAdModule.class
 })
 public interface SmartReceiptsActivitySubcomponent extends AndroidInjector<SmartReceiptsActivity> {
 

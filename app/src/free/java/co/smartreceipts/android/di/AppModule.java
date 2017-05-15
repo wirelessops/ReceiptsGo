@@ -5,8 +5,6 @@ import java.util.Collections;
 
 import co.smartreceipts.android.ExtraInitializer;
 import co.smartreceipts.android.ExtraInitializerFreeImpl;
-import co.smartreceipts.android.ad.AdManager;
-import co.smartreceipts.android.ad.FreeAdManager;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.AnalyticsManager;
 import co.smartreceipts.android.analytics.GoogleAnalytics;
@@ -20,12 +18,6 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-
-    @Provides
-    @ApplicationScope
-    public static AdManager provideAdManager(FreeAdManager freeAdManager) {
-        return freeAdManager;
-    }
 
     @Provides
     @ApplicationScope

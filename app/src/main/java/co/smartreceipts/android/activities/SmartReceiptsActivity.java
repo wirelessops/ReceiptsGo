@@ -17,7 +17,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.ad.AdManager;
+import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
@@ -50,7 +50,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     private static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
 
     @Inject
-    AdManager adManager;
+    AdPresenter adPresenter;
 
     @Inject
     Flex flex;
@@ -99,7 +99,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
             navigationHandler.navigateToHomeTripsFragment();
         }
 
-        adManager.onActivityCreated(this, purchaseManager);
+        adPresenter.onActivityCreated(this);
 
         backupProvidersManager.initialize(this);
     }
@@ -140,7 +140,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
                 navigationHandler.showDialog(ImportLocalBackupDialogFragment.newInstance(attachment.getUri()));
             }
         }
-        adManager.onResume();
+        adPresenter.onResume();
 
         compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
@@ -220,7 +220,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     @Override
     protected void onPause() {
         Logger.info(this, "onPause");
-        adManager.onPause();
+        adPresenter.onPause();
         super.onPause();
     }
 
@@ -234,7 +234,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
     @Override
     protected void onDestroy() {
         Logger.info(this, "onDestroy");
-        adManager.onDestroy();
+        adPresenter.onDestroy();
         purchaseManager.removeEventListener(this);
         persistenceManager.getDatabase().onDestroy();
         super.onDestroy();
@@ -258,6 +258,10 @@ public class SmartReceiptsActivity extends AppCompatActivity implements Attachab
             public void run() {
                 invalidateOptionsMenu(); // To hide the subscription option
                 Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
+
+                if (InAppPurchase.SmartReceiptsPlus == inAppPurchase) {
+                    adPresenter.onSuccessPlusPurchase();
+                }
             }
         });
     }

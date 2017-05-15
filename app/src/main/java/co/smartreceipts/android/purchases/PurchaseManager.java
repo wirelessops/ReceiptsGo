@@ -270,15 +270,12 @@ public class PurchaseManager {
     @NonNull
     public Observable<Set<AvailablePurchase>> getAllAvailablePurchases() {
         return Observable.combineLatest(getAvailableConsumablePurchases(), getAvailableSubscriptions(),
-                new BiFunction<Set<AvailablePurchase>, Set<AvailablePurchase>, Set<AvailablePurchase>>() {
-                    @Override
-                    public Set<AvailablePurchase> apply(@io.reactivex.annotations.NonNull Set<AvailablePurchase> consumablePurchases,
-                                                    @io.reactivex.annotations.NonNull Set<AvailablePurchase> subscriptions) throws Exception {
-                        final HashSet<AvailablePurchase> combinedSet = new HashSet<>();
-                        combinedSet.addAll(consumablePurchases);
-                        combinedSet.addAll(subscriptions);
-                        return combinedSet;
-                    }
+                (BiFunction<Set<AvailablePurchase>, Set<AvailablePurchase>, Set<AvailablePurchase>>)
+                        (consumablePurchases, subscriptions) -> {
+                    final HashSet<AvailablePurchase> combinedSet = new HashSet<>();
+                    combinedSet.addAll(consumablePurchases);
+                    combinedSet.addAll(subscriptions);
+                    return combinedSet;
                 })
                 .map(inAppPurchases -> {
                         final Set<AvailablePurchase> trimmedInAppPurchases = new HashSet<>();

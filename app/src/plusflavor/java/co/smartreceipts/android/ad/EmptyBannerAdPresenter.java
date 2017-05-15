@@ -2,22 +2,21 @@ package co.smartreceipts.android.ad;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.purchases.PurchaseManager;
+import co.smartreceipts.android.di.scopes.ActivityScope;
 
-@ApplicationScope
-public class NoOpAdManager implements AdManager {
+@ActivityScope
+public class EmptyBannerAdPresenter implements AdPresenter {
 
     @Inject
-    public NoOpAdManager() {
+    EmptyBannerAdPresenter() {
+        /* no-op */
     }
 
     @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable PurchaseManager purchaseManager) {
+    public void onActivityCreated(@NonNull Activity activity) {
         /* no-op */
     }
 
@@ -33,6 +32,11 @@ public class NoOpAdManager implements AdManager {
 
     @Override
     public void onDestroy() {
+        /* no-op */
+    }
+
+    @Override
+    public void onSuccessPlusPurchase() {
         /* no-op */
     }
 }

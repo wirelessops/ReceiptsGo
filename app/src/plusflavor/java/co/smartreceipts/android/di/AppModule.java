@@ -5,8 +5,6 @@ import java.util.Collections;
 
 import co.smartreceipts.android.ExtraInitializer;
 import co.smartreceipts.android.ExtraInitializerPlusImpl;
-import co.smartreceipts.android.ad.AdManager;
-import co.smartreceipts.android.ad.NoOpAdManager;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.AnalyticsManager;
 import co.smartreceipts.android.analytics.impl.firebase.FirebaseAnalytics;
@@ -19,12 +17,6 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-
-    @Provides
-    @ApplicationScope
-    public static AdManager provideAdManager(NoOpAdManager noOpAdManager) {
-        return noOpAdManager;
-    }
 
     @Provides
     @ApplicationScope
