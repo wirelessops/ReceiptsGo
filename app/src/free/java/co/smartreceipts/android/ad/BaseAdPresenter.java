@@ -31,8 +31,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
 
     private final PurchaseWallet purchaseWallet;
     private final Analytics analytics;
-
-    private PurchaseManager purchaseManager;
+    private final PurchaseManager purchaseManager;
 
     private WeakReference<BannerAdView> adViewReference;
 
