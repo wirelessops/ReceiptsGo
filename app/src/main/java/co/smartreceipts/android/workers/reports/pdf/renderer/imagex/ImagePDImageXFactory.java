@@ -52,7 +52,12 @@ public class ImagePDImageXFactory implements PDImageXFactory {
                     }
                 }
             } else {
-                throw new IllegalArgumentException("Unknown file extension: " + fileExtension);
+                final String mimeType = UriUtils.getMimeType(file, context);
+                if ("image/jpeg".equals(mimeType)) {
+                    return JPEGFactory.createFromStream(pdDocument, fileInputStream);
+                } else {
+                    throw new IllegalArgumentException("Unknown file extension: " + fileExtension + ", with mime type: " + mimeType);
+                }
             }
         } finally {
             IOUtils.closeQuietly(fileInputStream);

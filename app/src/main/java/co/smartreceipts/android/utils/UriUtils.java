@@ -35,6 +35,16 @@ public class UriUtils {
     }
 
     @NonNull
+    public static String getMimeType(@NonNull File file, @NonNull Context context) {
+        return getMimeType(Uri.fromFile(file), context);
+    }
+
+    @NonNull
+    public static String getMimeType(@NonNull Uri uri, @NonNull Context context) {
+        return getMimeType(uri, context.getContentResolver());
+    }
+
+    @NonNull
     public static String getMimeType(@NonNull Uri uri, @NonNull ContentResolver contentResolver) {
         final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getExtension(uri, contentResolver));
         return mimeType != null ? mimeType : "";
