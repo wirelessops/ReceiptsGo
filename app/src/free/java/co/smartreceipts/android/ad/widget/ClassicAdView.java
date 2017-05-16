@@ -97,10 +97,4 @@ public class ClassicAdView implements BannerAdView {
     public Context getContext() {
         return adView.getContext();
     }
-
-    @Override
-    public void post(Runnable runnable) {
-        adView.post(runnable);
-    }
-
 }

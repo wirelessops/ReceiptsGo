@@ -104,11 +104,6 @@ public class NativeAdView implements BannerAdView {
         return adView.getContext();
     }
 
-    @Override
-    public void post(Runnable runnable) {
-        adView.post(runnable);
-    }
-
     @NonNull
     private AdSize calculateAdSize() {
         float density = Resources.getSystem().getDisplayMetrics().density;

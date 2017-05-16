@@ -39,6 +39,4 @@ public interface BannerAdView {
 
     Context getContext();
 
-    void post(Runnable runnable);
-
 }

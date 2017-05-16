@@ -44,7 +44,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
 
 
     @Override
-    public synchronized void onActivityCreated(@NonNull Activity activity) {
+    public void onActivityCreated(@NonNull Activity activity) {
         BannerAdView adView = initAdView(activity);
 
         adViewReference = new WeakReference<>(adView);
@@ -70,7 +70,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
                     });
                     adView.loadAdDelayed();
                 }
-sra
+
                 adView.setUpsellClickListener(view -> {
                     analytics.record(Events.Purchases.AdUpsellTapped);
                     this.purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.AdBanner);
@@ -83,7 +83,7 @@ sra
     }
 
     @Override
-    public synchronized void onResume() {
+    public void onResume() {
         final BannerAdView adView = adViewReference.get();
         if (adView != null) {
             if (shouldShowAds(adView.getContext())) {
@@ -95,7 +95,7 @@ sra
     }
 
     @Override
-    public synchronized void onPause() {
+    public void onPause() {
         final BannerAdView adView = adViewReference.get();
         if (adView != null) {
             if (shouldShowAds(adView.getContext())) {
@@ -107,7 +107,7 @@ sra
     }
 
     @Override
-    public synchronized void onDestroy() {
+    public void onDestroy() {
         final BannerAdView adView = adViewReference.get();
         if (adView != null) {
             if (shouldShowAds(adView.getContext())) {
@@ -132,21 +132,16 @@ sra
     }
 
     @Override
-    public synchronized void onSuccessPlusPurchase() {
+    public void onSuccessPlusPurchase() {
         final BannerAdView adView = adViewReference.get();
         if (adView != null) {
-            adView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (shouldShowAds(adView.getContext())) {
-                        Logger.warn(this, "Showing the original ad following a purchase");
-                        adView.showAd();
-                    } else {
-                        Logger.info(this, "Hiding the original ad following a purchase");
-                        adView.hide();
-                    }
-                }
-            });
+            if (shouldShowAds(adView.getContext())) {
+                Logger.warn(this, "Showing the original ad following a purchase");
+                adView.showAd();
+            } else {
+                Logger.info(this, "Hiding the original ad following a purchase");
+                adView.hide();
+            }
         }
     }
 }
