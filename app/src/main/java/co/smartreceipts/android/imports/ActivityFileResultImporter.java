@@ -104,8 +104,6 @@ public class ActivityFileResultImporter {
                         headlessFragment.importSubject.onComplete();
                     }
                 });
-
-        // TODO: 12.04.2017 !!! check dispose(). not sure if it works correctly
     }
 
     public Observable<ActivityFileResultImporterResponse> getResultStream() {
