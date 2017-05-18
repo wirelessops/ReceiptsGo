@@ -2,7 +2,7 @@
 
 > A Better Receipt Scanner
 
-![SmartReceipts](smartReceiptsLibrary/src/main/res/drawable-xxxhdpi/icon.png)
+![SmartReceipts](app/src/main/res/drawable-xxxhdpi/icon.png)
 
 Turn your phone into a receipt scanner and expense report generator with Smart Receipts! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
  
