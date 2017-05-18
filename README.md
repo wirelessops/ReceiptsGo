@@ -41,26 +41,25 @@ The free and plus versions versions are identical, except the plus version offer
 - [X] Automatic backup support via Google Drive
 - [X] OCR support for receipt scans
 - [ ] Graphical breakdowns of spending per category
+- [ ] Cross-organization setting standardization
 
 ## Install 
 
 Smart Receipts is broken into a few core modules:
 
-- SmartReceiptsFree. An 'application' module, which contains the free version of the app.
-- SmartReceiptsPRO. An 'application' module, which contains the plus version of the app.
-- SmartReceiptsLibrary. All common code between the free and plus versions of the app. Nearly all development work will occur in here
-- WBMiniLibrary. A few legacy items that haven't been moved into the Library module, but it's otherwise unused.
+* **app**. All common application code for both the `free` and `plusFlavor` flavors of the application are defined here. In practice, all development work should occur in this module  
+* **wBMiniLibrary**. A few legacy items that haven't been moved into the Library module, but it's otherwise unused.
 
-To install, clone or pull down this project. Please note that it will **NOT** work out of the box, so you will need to add the following files to ensure it will compile (if desired):
+To install, clone or pull down this project. Please note that it will **NOT** work out of the box, so you will need to add the following files to ensure it will compile:
   
-* google-services.json. This needs to be added to both the free and plus favors at the root level in order for Firebase to function. Please [refer to the Firebase documentation](https://firebase.google.com/) for more details:
- * app/src/free/google-services.json
- * app/src/plusFlavor/google-services.json
-* app/src/main/res/values/secrets.xml. You can copy the secrets.xml.sample file and rename the keys inside to achieve this behavior. This is used for low usage keys
-* app/src/free/res/values/ads.xml. The ads file in smartReceiptsFree. You can add a key here if you wish to enable ads.
-* app/src/free/res/xml/analytics.xml. The analytics file in smartReceiptsFree. You can add a key here if you wish to enable Google Analytics.
+* `google-services.json`. This needs to be added to both the free and plus favors at the root level in order for Firebase to function. Please [refer to the Firebase documentation](https://firebase.google.com/) for more details:
+ * `app/src/free/google-services.json`
+ * `app/src/plusFlavor/google-services.json`
+* `app/src/main/res/values/secrets.xml`. You can copy the secrets.xml.sample file and rename the keys inside to achieve this behavior. This is used for low usage keys
+* `app/src/free/res/values/ads.xml`. The ads file in smartReceiptsFree. You can add `adUnitId` and `classicAdUnitId` to enable support for AdMob Native and Classic Ads, respectively.
+* `app/src/free/res/xml/analytics.xml`. The analytics file in smartReceiptsFree. You can add a key here if you wish to enable Google Analytics.
 
-Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Receipts PlusFlavor), since there are less secrets that have been explicitly gitignored.
+Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Receipts PlusFlavor), since there are less secrets that have been explicitly git ignored to avoid key leaks. 
 
 ## Contribute
 
