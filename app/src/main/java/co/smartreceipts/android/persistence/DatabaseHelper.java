@@ -309,7 +309,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         }
         mFullCurrencyList = new ArrayList<>();
         mFullCurrencyList.addAll(CurrencyUtils.getAllCurrencies());
-        Collections.sort(mFullCurrencyList, new AlphabeticalCaseInsensitiveCharSequenceComparator());
         mFullCurrencyList.addAll(0, getMostRecentlyUsedCurrencies());
         return mFullCurrencyList;
     }

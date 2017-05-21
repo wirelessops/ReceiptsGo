@@ -3,7 +3,10 @@ package co.smartreceipts.android.model.utils;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import co.smartreceipts.android.utils.sorting.AlphabeticalCaseInsensitiveCharSequenceComparator;
 
 public class CurrencyUtils {
 
@@ -12,6 +15,7 @@ public class CurrencyUtils {
         final List<String> currencies = new ArrayList<>();
         currencies.addAll(getIso4217CurrencyCodes());
         currencies.addAll(getNonIso4217CurrencyCodes());
+        Collections.sort(currencies, new AlphabeticalCaseInsensitiveCharSequenceComparator());
         return currencies;
     }
 
@@ -22,214 +26,240 @@ public class CurrencyUtils {
      * @return a List<String> containing all ISO 4217 Currencies
      */
     @NonNull
-    public static List<String> getIso4217CurrencyCodes() {
+    private static List<String> getIso4217CurrencyCodes() {
         final ArrayList<String> iso4217Currencies = new ArrayList<>();
-        iso4217Currencies.add("AED");
-        iso4217Currencies.add("AFN");
-        iso4217Currencies.add("ALL");
-        iso4217Currencies.add("AMD");
-        iso4217Currencies.add("ANG");
-        iso4217Currencies.add("AOA");
-        iso4217Currencies.add("ARS");
-        iso4217Currencies.add("AUD");
-        iso4217Currencies.add("AWG");
-        iso4217Currencies.add("AZN");
-        iso4217Currencies.add("BAM");
-        iso4217Currencies.add("BBD");
-        iso4217Currencies.add("BDT");
-        iso4217Currencies.add("BGN");
-        iso4217Currencies.add("BHD");
-        iso4217Currencies.add("BIF");
-        iso4217Currencies.add("BMD");
-        iso4217Currencies.add("BND");
-        iso4217Currencies.add("BOB");
-        iso4217Currencies.add("BOV");
-        iso4217Currencies.add("BRL");
-        iso4217Currencies.add("BSD");
-        iso4217Currencies.add("BTN");
-        iso4217Currencies.add("BWP");
-        iso4217Currencies.add("BYR");
-        iso4217Currencies.add("BZD");
-        iso4217Currencies.add("CAD");
-        iso4217Currencies.add("CDF");
-        iso4217Currencies.add("CHE");
-        iso4217Currencies.add("CHF");
-        iso4217Currencies.add("CHW");
-        iso4217Currencies.add("CLF");
-        iso4217Currencies.add("CLP");
-        iso4217Currencies.add("CNY");
-        iso4217Currencies.add("COP");
-        iso4217Currencies.add("COU");
-        iso4217Currencies.add("CRC");
-        iso4217Currencies.add("CUC");
-        iso4217Currencies.add("CUP");
-        iso4217Currencies.add("CVE");
-        iso4217Currencies.add("CZK");
-        iso4217Currencies.add("DJF");
-        iso4217Currencies.add("DKK");
-        iso4217Currencies.add("DOP");
-        iso4217Currencies.add("DZD");
-        iso4217Currencies.add("EGP");
-        iso4217Currencies.add("ERN");
-        iso4217Currencies.add("ETB");
-        iso4217Currencies.add("EUR");
-        iso4217Currencies.add("FJD");
-        iso4217Currencies.add("FKP");
-        iso4217Currencies.add("GBP");
-        iso4217Currencies.add("GEL");
-        iso4217Currencies.add("GHS");
-        iso4217Currencies.add("GIP");
-        iso4217Currencies.add("GMD");
-        iso4217Currencies.add("GNF");
-        iso4217Currencies.add("GTQ");
-        iso4217Currencies.add("GYD");
-        iso4217Currencies.add("HKD");
-        iso4217Currencies.add("HNL");
-        iso4217Currencies.add("HRK");
-        iso4217Currencies.add("HTG");
-        iso4217Currencies.add("HUF");
-        iso4217Currencies.add("IDR");
-        iso4217Currencies.add("ILS");
-        iso4217Currencies.add("INR");
-        iso4217Currencies.add("IQD");
-        iso4217Currencies.add("IRR");
-        iso4217Currencies.add("ISK");
-        iso4217Currencies.add("JMD");
-        iso4217Currencies.add("JOD");
-        iso4217Currencies.add("JPY");
-        iso4217Currencies.add("KES");
-        iso4217Currencies.add("KGS");
-        iso4217Currencies.add("KHR");
-        iso4217Currencies.add("KMF");
-        iso4217Currencies.add("KPW");
-        iso4217Currencies.add("KRW");
-        iso4217Currencies.add("KWD");
-        iso4217Currencies.add("KYD");
-        iso4217Currencies.add("KZT");
-        iso4217Currencies.add("LAK");
-        iso4217Currencies.add("LBP");
-        iso4217Currencies.add("LKR");
-        iso4217Currencies.add("LRD");
-        iso4217Currencies.add("LSL");
-        iso4217Currencies.add("LTL");
-        iso4217Currencies.add("LVL");
-        iso4217Currencies.add("LYD");
-        iso4217Currencies.add("MAD");
-        iso4217Currencies.add("MDL");
-        iso4217Currencies.add("MGA");
-        iso4217Currencies.add("MKD");
-        iso4217Currencies.add("MMK");
-        iso4217Currencies.add("MNT");
-        iso4217Currencies.add("MOP");
-        iso4217Currencies.add("MRO");
-        iso4217Currencies.add("MUR");
-        iso4217Currencies.add("MVR");
-        iso4217Currencies.add("MWK");
-        iso4217Currencies.add("MXN");
-        iso4217Currencies.add("MXV");
-        iso4217Currencies.add("MYR");
-        iso4217Currencies.add("MZN");
-        iso4217Currencies.add("NAD");
-        iso4217Currencies.add("NGN");
-        iso4217Currencies.add("NIO");
-        iso4217Currencies.add("NIS");
-        iso4217Currencies.add("NOK");
-        iso4217Currencies.add("NPR");
-        iso4217Currencies.add("NZD");
-        iso4217Currencies.add("OMR");
-        iso4217Currencies.add("PAB");
-        iso4217Currencies.add("PEN");
-        iso4217Currencies.add("PGK");
-        iso4217Currencies.add("PHP");
-        iso4217Currencies.add("PKR");
-        iso4217Currencies.add("PLN");
-        iso4217Currencies.add("PYG");
-        iso4217Currencies.add("QAR");
-        iso4217Currencies.add("RON");
-        iso4217Currencies.add("RSD");
-        iso4217Currencies.add("RUB");
-        iso4217Currencies.add("RWF");
-        iso4217Currencies.add("SAR");
-        iso4217Currencies.add("SBD");
-        iso4217Currencies.add("SCR");
-        iso4217Currencies.add("SDG");
-        iso4217Currencies.add("SEK");
-        iso4217Currencies.add("SGD");
-        iso4217Currencies.add("SHP");
-        iso4217Currencies.add("SLL");
-        iso4217Currencies.add("SOS");
-        iso4217Currencies.add("SRD");
-        iso4217Currencies.add("SSP");
-        iso4217Currencies.add("STD");
-        iso4217Currencies.add("SYP");
-        iso4217Currencies.add("SZL");
-        iso4217Currencies.add("THB");
-        iso4217Currencies.add("TJS");
-        iso4217Currencies.add("TMT");
-        iso4217Currencies.add("TND");
-        iso4217Currencies.add("TOP");
-        iso4217Currencies.add("TRY");
-        iso4217Currencies.add("TTD");
-        iso4217Currencies.add("TWD");
-        iso4217Currencies.add("TZS");
-        iso4217Currencies.add("UAH");
-        iso4217Currencies.add("UGX");
-        iso4217Currencies.add("USD");
-        iso4217Currencies.add("USN");
-        iso4217Currencies.add("USS");
-        iso4217Currencies.add("UYI");
-        iso4217Currencies.add("UYU");
-        iso4217Currencies.add("UZS");
-        iso4217Currencies.add("VEF");
-        iso4217Currencies.add("VND");
-        iso4217Currencies.add("VUV");
-        iso4217Currencies.add("WST");
-        iso4217Currencies.add("XAF");
-        iso4217Currencies.add("XAG");
-        iso4217Currencies.add("XAU");
-        iso4217Currencies.add("XBA");
-        iso4217Currencies.add("XBB");
-        iso4217Currencies.add("XBC");
-        iso4217Currencies.add("XBD");
-        iso4217Currencies.add("XCD");
-        iso4217Currencies.add("XDR");
-        iso4217Currencies.add("XFU");
-        iso4217Currencies.add("XOF");
-        iso4217Currencies.add("XPD");
-        iso4217Currencies.add("XPF");
-        iso4217Currencies.add("XPT");
-        iso4217Currencies.add("XTS");
-        iso4217Currencies.add("XXX");
-        iso4217Currencies.add("YER");
-        iso4217Currencies.add("ZAR");
-        iso4217Currencies.add("ZMW");
-        iso4217Currencies.add("ZWL");
+        iso4217Currencies.add("AED"); // United Arab Emirates dirham
+        iso4217Currencies.add("AFN"); // Afghan afghani
+        iso4217Currencies.add("ALL"); // Albanian lek
+        iso4217Currencies.add("AMD"); // Armenian dram
+        iso4217Currencies.add("ANG"); // Netherlands Antillean guilder
+        iso4217Currencies.add("AOA"); // Angolan kwanza
+        iso4217Currencies.add("ARS"); // Argentine peso
+        iso4217Currencies.add("AUD"); // Australian dollar
+        iso4217Currencies.add("AWG"); // Aruban florin
+        iso4217Currencies.add("AZN"); // Azerbaijani manat
+        iso4217Currencies.add("BAM"); // Bosnia and Herzegovina convertible mark
+        iso4217Currencies.add("BBD"); // Barbados dollar
+        iso4217Currencies.add("BDT"); // Bangladeshi taka
+        iso4217Currencies.add("BGN"); // Bulgarian lev
+        iso4217Currencies.add("BHD"); // Bahraini dinar
+        iso4217Currencies.add("BIF"); // Burundian franc
+        iso4217Currencies.add("BMD"); // Bermudian dollar
+        iso4217Currencies.add("BND"); // Brunei dollar
+        iso4217Currencies.add("BOB"); // Boliviano
+        iso4217Currencies.add("BOV"); // Bolivian Mvdol (funds code)
+        iso4217Currencies.add("BRL"); // Brazilian real
+        iso4217Currencies.add("BSD"); // Bahamian dollar
+        iso4217Currencies.add("BTN"); // Bhutanese ngultrum
+        iso4217Currencies.add("BWP"); // Botswana pula
+        iso4217Currencies.add("BYN"); // Belarusian ruble
+        iso4217Currencies.add("BZD"); // Belize dollar
+        iso4217Currencies.add("CAD"); // Canadian dollar
+        iso4217Currencies.add("CDF"); // Congolese franc
+        iso4217Currencies.add("CHE"); // WIR Euro (complementary currency)
+        iso4217Currencies.add("CHF"); // Swiss franc
+        iso4217Currencies.add("CHW"); // WIR Franc (complementary currency)
+        iso4217Currencies.add("CLF"); // Unidad de Fomento (funds code)
+        iso4217Currencies.add("CLP"); // Chilean peso
+        iso4217Currencies.add("CNY"); // Chinese yuan
+        iso4217Currencies.add("COP"); // Colombian peso
+        iso4217Currencies.add("COU"); // Unidad de Valor Real (UVR) (funds code)[7]
+        iso4217Currencies.add("CRC"); // Costa Rican colon
+        iso4217Currencies.add("CUC"); // Cuban convertible peso
+        iso4217Currencies.add("CUP"); // Cuban peso
+        iso4217Currencies.add("CVE"); // Cape Verde escudo
+        iso4217Currencies.add("CZK"); // Czech koruna
+        iso4217Currencies.add("DJF"); // Djiboutian franc
+        iso4217Currencies.add("DKK"); // Danish krone
+        iso4217Currencies.add("DOP"); // Dominican peso
+        iso4217Currencies.add("DZD"); // Algerian dinar
+        iso4217Currencies.add("EGP"); // Egyptian pound
+        iso4217Currencies.add("ERN"); // Eritrean nakfa
+        iso4217Currencies.add("ETB"); // Ethiopian birr
+        iso4217Currencies.add("EUR"); // Euro
+        iso4217Currencies.add("FJD"); // Fiji dollar
+        iso4217Currencies.add("FKP"); // Falkland Islands pound
+        iso4217Currencies.add("GBP"); // Pound sterling
+        iso4217Currencies.add("GEL"); // Georgian lari
+        iso4217Currencies.add("GHS"); // Ghanaian cedi
+        iso4217Currencies.add("GIP"); // Gibraltar pound
+        iso4217Currencies.add("GMD"); // Gambian dalasi
+        iso4217Currencies.add("GNF"); // Guinean franc
+        iso4217Currencies.add("GTQ"); // Guatemalan quetzal
+        iso4217Currencies.add("GYD"); // Guyanese dollar
+        iso4217Currencies.add("HKD"); // Hong Kong dollar
+        iso4217Currencies.add("HNL"); // Honduran lempira
+        iso4217Currencies.add("HRK"); // Croatian kuna
+        iso4217Currencies.add("HTG"); // Haitian gourde
+        iso4217Currencies.add("HUF"); // Hungarian forint
+        iso4217Currencies.add("IDR"); // Indonesian rupiah
+        iso4217Currencies.add("ILS"); // Israeli new shekel
+        iso4217Currencies.add("INR"); // Indian rupee
+        iso4217Currencies.add("IQD"); // Iraqi dinar
+        iso4217Currencies.add("IRR"); // Iranian rial
+        iso4217Currencies.add("ISK"); // Icelandic króna
+        iso4217Currencies.add("JMD"); // Jamaican dollar
+        iso4217Currencies.add("JOD"); // Jordanian dinar
+        iso4217Currencies.add("JPY"); // Japanese yen
+        iso4217Currencies.add("KES"); // Kenyan shilling
+        iso4217Currencies.add("KGS"); // Kyrgyzstani som
+        iso4217Currencies.add("KHR"); // Cambodian riel
+        iso4217Currencies.add("KMF"); // Comoro franc
+        iso4217Currencies.add("KPW"); // North Korean won
+        iso4217Currencies.add("KRW"); // South Korean won
+        iso4217Currencies.add("KWD"); // Kuwaiti dinar
+        iso4217Currencies.add("KYD"); // Cayman Islands dollar
+        iso4217Currencies.add("KZT"); // Kazakhstani tenge
+        iso4217Currencies.add("LAK"); // Lao kip
+        iso4217Currencies.add("LBP"); // Lebanese pound
+        iso4217Currencies.add("LKR"); // Sri Lankan rupee
+        iso4217Currencies.add("LRD"); // Liberian dollar
+        iso4217Currencies.add("LSL"); // Lesotho loti
+        iso4217Currencies.add("LYD"); // Libyan dinar
+        iso4217Currencies.add("MAD"); // Moroccan dirham
+        iso4217Currencies.add("MDL"); // Moldovan leu
+        iso4217Currencies.add("MGA"); // Malagasy ariary
+        iso4217Currencies.add("MKD"); // Macedonian denar
+        iso4217Currencies.add("MMK"); // Myanmar kyat
+        iso4217Currencies.add("MNT"); // Mongolian tögrög
+        iso4217Currencies.add("MOP"); // Macanese pataca
+        iso4217Currencies.add("MRO"); // Mauritanian ouguiya
+        iso4217Currencies.add("MUR"); // Mauritian rupee
+        iso4217Currencies.add("MVR"); // Maldivian rufiyaa
+        iso4217Currencies.add("MWK"); // Malawian kwacha
+        iso4217Currencies.add("MXN"); // Mexican peso
+        iso4217Currencies.add("MXV"); // Mexican Unidad de Inversion (UDI) (funds code)
+        iso4217Currencies.add("MYR"); // Malaysian ringgit
+        iso4217Currencies.add("MZN"); // Mozambican metical
+        iso4217Currencies.add("NAD"); // Namibian dollar
+        iso4217Currencies.add("NGN"); // Nigerian naira
+        iso4217Currencies.add("NIO"); // Nicaraguan córdoba
+        iso4217Currencies.add("NOK"); // Norwegian krone
+        iso4217Currencies.add("NPR"); // Nepalese rupee
+        iso4217Currencies.add("NZD"); // New Zealand dollar
+        iso4217Currencies.add("OMR"); // Omani rial
+        iso4217Currencies.add("PAB"); // Panamanian balboa
+        iso4217Currencies.add("PEN"); // Peruvian Sol
+        iso4217Currencies.add("PGK"); // Papua New Guinean kina
+        iso4217Currencies.add("PHP"); // Philippine peso
+        iso4217Currencies.add("PKR"); // Pakistani rupee
+        iso4217Currencies.add("PLN"); // Polish złoty
+        iso4217Currencies.add("PYG"); // Paraguayan guaraní
+        iso4217Currencies.add("QAR"); // Qatari riyal
+        iso4217Currencies.add("RON"); // Romanian leu
+        iso4217Currencies.add("RSD"); // Serbian dinar
+        iso4217Currencies.add("RUB"); // Russian ruble
+        iso4217Currencies.add("RWF"); // Rwandan franc
+        iso4217Currencies.add("SAR"); // Saudi riyal
+        iso4217Currencies.add("SBD"); // Solomon Islands dollar
+        iso4217Currencies.add("SCR"); // Seychelles rupee
+        iso4217Currencies.add("SDG"); // Sudanese pound
+        iso4217Currencies.add("SEK"); // Swedish krona/kronor
+        iso4217Currencies.add("SGD"); // Singapore dollar
+        iso4217Currencies.add("SHP"); // Saint Helena pound
+        iso4217Currencies.add("SLL"); // Sierra Leonean leone
+        iso4217Currencies.add("SOS"); // Somali shilling
+        iso4217Currencies.add("SRD"); // Surinamese dollar
+        iso4217Currencies.add("SSP"); // South Sudanese pound
+        iso4217Currencies.add("STD"); // São Tomé and Príncipe dobra
+        iso4217Currencies.add("SVC"); // Salvadoran colón
+        iso4217Currencies.add("SYP"); // Syrian pound
+        iso4217Currencies.add("SZL"); // Swazi lilangeni
+        iso4217Currencies.add("THB"); // Thai baht
+        iso4217Currencies.add("TJS"); // Tajikistani somoni
+        iso4217Currencies.add("TMT"); // Turkmenistani manat
+        iso4217Currencies.add("TND"); // Tunisian dinar
+        iso4217Currencies.add("TOP"); // Tongan paʻanga
+        iso4217Currencies.add("TRY"); // Turkish lira
+        iso4217Currencies.add("TTD"); // Trinidad and Tobago dollar
+        iso4217Currencies.add("TWD"); // New Taiwan dollar
+        iso4217Currencies.add("TZS"); // Tanzanian shilling
+        iso4217Currencies.add("UAH"); // Ukrainian hryvnia
+        iso4217Currencies.add("UGX"); // Ugandan shilling
+        iso4217Currencies.add("USD"); // United States dollar
+        iso4217Currencies.add("USN"); // United States dollar (next day) (funds code)
+        iso4217Currencies.add("UYI"); // Uruguay Peso en Unidades Indexadas (URUIURUI) (funds code)
+        iso4217Currencies.add("UYU"); // Uruguayan peso
+        iso4217Currencies.add("UZS"); // Uzbekistan som
+        iso4217Currencies.add("VEF"); // Venezuelan bolívar
+        iso4217Currencies.add("VND"); // Vietnamese đồng
+        iso4217Currencies.add("VUV"); // Vanuatu vatu
+        iso4217Currencies.add("WST"); // Samoan tala
+        iso4217Currencies.add("XAF"); // CFA franc BEAC
+        iso4217Currencies.add("XAG"); // Silver (one troy ounce)
+        iso4217Currencies.add("XAU"); // Gold (one troy ounce)
+        iso4217Currencies.add("XBA"); // European Composite Unit (EURCO) (bond market unit)
+        iso4217Currencies.add("XBB"); // European Monetary Unit (E.M.U.-6) (bond market unit)
+        iso4217Currencies.add("XBC"); // European Unit of Account 9 (E.U.A.-9) (bond market unit)
+        iso4217Currencies.add("XBD"); // European Unit of Account 17 (E.U.A.-17) (bond market unit)
+        iso4217Currencies.add("XCD"); // East Caribbean dollar
+        iso4217Currencies.add("XDR"); // Special drawing rights
+        iso4217Currencies.add("XOF"); // CFA franc BCEAO
+        iso4217Currencies.add("XPD"); // Palladium (one troy ounce)
+        iso4217Currencies.add("XPF"); // CFP franc (franc Pacifique)
+        iso4217Currencies.add("XPT"); // Platinum (one troy ounce)
+        iso4217Currencies.add("XSU"); // SUCRE
+        iso4217Currencies.add("XTS"); // Code reserved for testing purposes
+        iso4217Currencies.add("XUA"); // ADB Unit of Account
+        iso4217Currencies.add("XXX"); // No currency
+        iso4217Currencies.add("YER"); // Yemeni rial
+        iso4217Currencies.add("ZAR"); // South African rand
+        iso4217Currencies.add("ZMW"); // Zambian kwacha
+        iso4217Currencies.add("ZWL"); // Zimbabwean dollar A/10
         return iso4217Currencies;
     }
 
     /**
      * Returns a list of non ISO 4217 Currency Codes (e.g. crypto-currencies, non-official ones, etc.)
      * Mostly ones that have been requested over time.
+     * <p>
+     * https://en.wikipedia.org/wiki/ISO_4217#Non_ISO_4217_currencies
+     * </p>
      *
      * @return a {@link List} of extra currency codes
      */
     @NonNull
     public static List<String> getNonIso4217CurrencyCodes() {
         final ArrayList<String> nonIso4217Currencies = new ArrayList<>();
-        nonIso4217Currencies.add("BSF");
-        nonIso4217Currencies.add("BTC"); // Bitcoin
-        nonIso4217Currencies.add("BYN"); // New Belarus Currency
+
+        // https://en.wikipedia.org/wiki/ISO_4217#Non_ISO_4217_currencies
+        nonIso4217Currencies.add("BYN");  // New Belarus Currency
+        nonIso4217Currencies.add("CNH");  // Chinese yuan (when traded offshore) - Hong Kong
+        nonIso4217Currencies.add("CNT");  // Chinese yuan (when traded offshore) - Taiwan
+        nonIso4217Currencies.add("GGP");  // Guernsey pound
+        nonIso4217Currencies.add("IMP");  // Isle of Man pound
+        nonIso4217Currencies.add("JEP");  // Jersey pound
+        nonIso4217Currencies.add("KID");  // Kiribati dollar
+        nonIso4217Currencies.add("NIS");  // New Israeli Shekel
+        nonIso4217Currencies.add("PRB");  // Transnistrian ruble
+        nonIso4217Currencies.add("SLS");  // Somaliland Shillings
+        nonIso4217Currencies.add("TVD");  // Tuvalu dollar
+
+        // https://coinmarketcap.com/
+        nonIso4217Currencies.add("BTC");  // Bitcoin (Old Code)
         nonIso4217Currencies.add("DOGE"); // Dogecoin
-        nonIso4217Currencies.add("DRC");
-        nonIso4217Currencies.add("GHS");
-        nonIso4217Currencies.add("GST");
-        nonIso4217Currencies.add("LTC"); // Litecoin
-        nonIso4217Currencies.add("PPC"); // Peercoin
+        nonIso4217Currencies.add("ETH");  // Etherium
+        nonIso4217Currencies.add("GNT");  // Golem Project
+        nonIso4217Currencies.add("LTC");  // Litecoin
+        nonIso4217Currencies.add("PPC");  // Peercoin
+        nonIso4217Currencies.add("SC");   // SiaCoin
         nonIso4217Currencies.add("SJCX"); // Storjcoin
-        nonIso4217Currencies.add("XCP"); // CounterParty
-        nonIso4217Currencies.add("XOF");
-        nonIso4217Currencies.add("ZMK");
-        nonIso4217Currencies.add("ZWD");
+        nonIso4217Currencies.add("XBT");  // Bitcoin (New Code)
+        nonIso4217Currencies.add("XMR");  // Monero
+        nonIso4217Currencies.add("XRP");  // Ripple
+
+        // Misc Requests from over the years:
+        nonIso4217Currencies.add("BYR");  // Belarusian ruble
+        nonIso4217Currencies.add("BSF");  // Venezuelan Bolivar
+        nonIso4217Currencies.add("DRC");  // Congolese Franc
+        nonIso4217Currencies.add("GHS");  // Ghanaian Cedi
+        nonIso4217Currencies.add("GST");  // Goods and Services Tax (Not sure how this got here but...?)
+        nonIso4217Currencies.add("LVL");  // Latvian lats (Replaced by Euro in 2014)
+        nonIso4217Currencies.add("LTL");  // Lithuanian litas (Replaced by Euro in 2015)
+        nonIso4217Currencies.add("XOF");  // West African CFA Franc
+        nonIso4217Currencies.add("XFU");  // UIC Franc (Replaced by Euro in 2013)
+        nonIso4217Currencies.add("ZMK");  // Zambian Kwacha
+        nonIso4217Currencies.add("ZWD");  // Zimbabwean Dollar
         return nonIso4217Currencies;
     }
 }
