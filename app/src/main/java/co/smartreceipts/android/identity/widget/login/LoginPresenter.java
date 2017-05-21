@@ -2,11 +2,8 @@ package co.smartreceipts.android.identity.widget.login;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -45,6 +42,7 @@ public class LoginPresenter extends BasePresenter<LoginView, LoginInteractor> {
                                 view.getPasswordTextChanges(),
                                 (BiFunction<CharSequence, CharSequence, UserCredentialsPayload>) SmartReceiptsUserLogin::new)
                         .flatMap(userCredentialsPayload -> view.getLoginButtonClicks().map(ignored -> userCredentialsPayload)),
+
                         Observable.combineLatest(
                                 view.getEmailTextChanges(),
                                 view.getPasswordTextChanges(),

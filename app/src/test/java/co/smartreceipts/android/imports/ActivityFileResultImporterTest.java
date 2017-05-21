@@ -4,22 +4,21 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.impl.DefaultTripImpl;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import io.reactivex.Observable;
@@ -59,22 +58,25 @@ public class ActivityFileResultImporterTest {
     @Mock
     Intent intent;
 
+    @Mock
+    Trip trip;
+
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        when(factory.get(anyInt())).thenReturn(processor);
+        when(factory.get(anyInt(), any(DefaultTripImpl.class))).thenReturn(processor);
         when(ocrManager.scan(any(File.class))).thenReturn(Observable.just(ocrResponse));
-        FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().get();
 
-        fileResultImporter = new ActivityFileResultImporter(RuntimeEnvironment.application, activity.getSupportFragmentManager(), factory, analytics, ocrManager, Schedulers.trampoline(), Schedulers.trampoline());
+        fileResultImporter = new ActivityFileResultImporter(analytics,
+                ocrManager, factory, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test
     public void onActivityResultCancelled() {
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
 
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_CANCELED, null, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_CANCELED, null, null, trip);
 
         testObserver.assertNoValues();
         testObserver.assertComplete();
@@ -84,7 +86,7 @@ public class ActivityFileResultImporterTest {
     @Test
     public void onActivityResultCancelledWithIndependentOrdering() {
         // Note that we flip the order of these two calls for this test
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_CANCELED, null, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_CANCELED, null, null, trip);
         fileResultImporter.getResultStream().test()
                 .assertNoValues()
                 .assertComplete()
@@ -94,7 +96,7 @@ public class ActivityFileResultImporterTest {
     @Test
     public void onActivityResultWithNullIntentAndNullLocation() {
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, null, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, null, null, trip);
 
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
@@ -105,7 +107,7 @@ public class ActivityFileResultImporterTest {
     @Test
     public void onActivityResultWithNullIntentAndNullLocationWithIndependentOrdering() {
         // Note that we flip the order of these two calls for this test
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, null, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, null, null, trip);
         fileResultImporter.getResultStream().test()
                 .assertNoValues()
                 .assertNotComplete()
@@ -118,7 +120,7 @@ public class ActivityFileResultImporterTest {
         when(intent.getData()).thenReturn(null);
 
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null, trip);
 
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
@@ -131,7 +133,7 @@ public class ActivityFileResultImporterTest {
         when(intent.getData()).thenReturn(null);
 
         // Note that we flip the order of these two calls for this test
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null, trip);
         fileResultImporter.getResultStream().test()
                 .assertNoValues()
                 .assertNotComplete()
@@ -146,7 +148,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.<File>error(new Exception("Test")));
 
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null, trip);
 
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
@@ -161,7 +163,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.<File>error(new Exception("Test")));
 
         // Note that we flip the order of these two calls for this test
-        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null);
+        fileResultImporter.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null, trip);
         fileResultImporter.getResultStream().test()
                 .assertNoValues()
                 .assertNotComplete()
@@ -179,7 +181,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.just(file));
 
         TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
-        fileResultImporter.onActivityResult(requestCode, responseCode, intent, null);
+        fileResultImporter.onActivityResult(requestCode, responseCode, intent, null, trip);
 
         testObserver.assertValue(new ActivityFileResultImporterResponse(file, ocrResponse, requestCode, responseCode));
         testObserver.assertComplete();
@@ -196,7 +198,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.just(file));
 
         // Note that we flip the order of these two calls for this test
-        fileResultImporter.onActivityResult(requestCode, responseCode, intent, null);
+        fileResultImporter.onActivityResult(requestCode, responseCode, intent, null, trip);
         fileResultImporter.getResultStream().test()
                 .assertValue(new ActivityFileResultImporterResponse(file, ocrResponse, requestCode, responseCode))
                 .assertComplete()
@@ -212,7 +214,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.just(file));
 
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
-        fileResultImporter.onActivityResult(requestCode, responseCode, null, uri);
+        fileResultImporter.onActivityResult(requestCode, responseCode, null, uri, trip);
 
         testObserver.assertValue(new ActivityFileResultImporterResponse(file, ocrResponse, requestCode, responseCode));
         testObserver.assertComplete();
@@ -228,7 +230,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.just(file));
 
         // Note that we flip the order of these two calls for this test
-        fileResultImporter.onActivityResult(requestCode, responseCode, null, uri);
+        fileResultImporter.onActivityResult(requestCode, responseCode, null, uri, trip);
         fileResultImporter.getResultStream().test()
                 .assertValue(new ActivityFileResultImporterResponse(file, ocrResponse, requestCode, responseCode))
                 .assertComplete()

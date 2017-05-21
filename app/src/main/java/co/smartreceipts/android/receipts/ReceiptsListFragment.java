@@ -88,9 +88,10 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     NavigationHandler navigationHandler;
     @Inject
     FragmentStateCache fragmentStateCache;
+    @Inject
+    ActivityFileResultImporter activityFileResultImporter;
 
     private ReceiptCardAdapter adapter;
-    private ActivityFileResultImporter activityFileResultImporter;
     private Receipt highlightedReceipt;
     private Uri imageUri;
     private ProgressBar loadingProgress;
@@ -192,8 +193,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         Logger.debug(this, "onActivityCreated");
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
-        activityFileResultImporter = new ActivityFileResultImporter(getActivity(), getFragmentManager(),
-                trip, persistenceManager, analytics, ocrManager);
         setListAdapter(adapter); // Set this here to ensure this has been laid out already
     }
 
@@ -279,7 +278,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         imageUri = null;
 
         updatingDataProgress.setVisibility(View.VISIBLE);
-        activityFileResultImporter.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
+        activityFileResultImporter.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation, trip);
 
         if (resultCode != Activity.RESULT_OK) {
             updatingDataProgress.setVisibility(View.GONE);

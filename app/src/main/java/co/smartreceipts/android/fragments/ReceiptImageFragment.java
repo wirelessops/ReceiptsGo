@@ -72,6 +72,8 @@ public class ReceiptImageFragment extends WBFragment {
     NavigationHandler navigationHandler;
     @Inject
     FragmentStateCache fragmentStateCache;
+    @Inject
+    ActivityFileResultImporter activityFileResultImporter;
 
 
     private PinchToZoomImageView imageView;
@@ -80,7 +82,6 @@ public class ReceiptImageFragment extends WBFragment {
     private Toolbar toolbar;
 
     private Receipt receipt;
-    private ActivityFileResultImporter activityFileResultImporter;
     private ImageUpdatedListener imageUpdatedListener;
     private CompositeDisposable compositeDisposable;
     private boolean isRotateOngoing;
@@ -106,8 +107,6 @@ public class ReceiptImageFragment extends WBFragment {
             imageUri = savedInstanceState.getParcelable(KEY_OUT_URI);
         }
         isRotateOngoing = false;
-        activityFileResultImporter = new ActivityFileResultImporter(getActivity(), getFragmentManager(), receipt.getTrip(),
-                persistenceManager, analytics, ocrManager);
         imageUpdatedListener = new ImageUpdatedListener();
         setHasOptionsMenu(true);
     }
@@ -174,7 +173,7 @@ public class ReceiptImageFragment extends WBFragment {
         final Uri cachedImageSaveLocation = imageUri;
         imageUri = null;
 
-        activityFileResultImporter.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
+        activityFileResultImporter.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation, receipt.getTrip());
     }
 
     @Override
