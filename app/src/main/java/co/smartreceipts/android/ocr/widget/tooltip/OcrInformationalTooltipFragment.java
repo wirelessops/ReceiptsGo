@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
-import co.smartreceipts.android.widget.Tooltip;
+import co.smartreceipts.android.widget.tooltip.Tooltip;
 import dagger.android.support.AndroidSupportInjection;
 
 public class OcrInformationalTooltipFragment extends Fragment {

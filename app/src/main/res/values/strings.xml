@@ -64,7 +64,7 @@
     <!-- ============= Report Navigation ============== -->
     <string name="report_info_receipts">Receipts</string>
     <string name="report_info_distance">Distance</string>
-    <string name="report_info_reports">Reports</string>
+    <string name="report_info_generate">Generate</string>
 
     <!-- ============= Report Generation ============== -->
     <string name="report_header_from">From: %s</string>
@@ -486,5 +486,8 @@
     <string name="apprating_dialog_negative">No Thanks</string>
     <string name="apprating_dialog_neutral">Maybe Later</string>
     <string name="apprating_dialog_positive">Rate It Now!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">Use the \'Generate\' tab to create your reports</string>
 
 </resources>

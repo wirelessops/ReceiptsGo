@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.date.DateUtils;
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Priceable;
 import co.smartreceipts.android.model.Receipt;
@@ -45,6 +46,7 @@ import io.reactivex.Single;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.storage.StorageManager;
 
+@ApplicationScope
 public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdapter.QueryListener, AutoCompleteAdapter.ItemSelectedListener {
 
     // Database Info

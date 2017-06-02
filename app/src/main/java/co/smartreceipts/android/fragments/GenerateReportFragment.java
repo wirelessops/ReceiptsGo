@@ -24,6 +24,7 @@ import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.flex.Flex;
@@ -38,6 +39,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     Analytics analytics;
     @Inject
     NavigationHandler navigationHandler;
+    @Inject
+    GenerateInfoTooltipManager generateInfoTooltipManager;
 
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
@@ -111,6 +114,7 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         }
 
         analytics.record(Events.Generate.GenerateReports);
+        generateInfoTooltipManager.reportWasGenerated();
         if (pdfFullCheckbox.isChecked()) {
             analytics.record(Events.Generate.FullPdfReport);
         }

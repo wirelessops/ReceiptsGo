@@ -59,12 +59,20 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
             if (configurationManager.isDistanceTrackingOptionAvailable()) {
                 return resources.getString(R.string.report_info_distance);
             } else {
-                return resources.getString(R.string.report_info_reports);
+                return resources.getString(R.string.report_info_generate);
             }
         } else if (position == 2) {
-            return resources.getString(R.string.report_info_reports);
+            return resources.getString(R.string.report_info_generate);
         } else {
             throw new IllegalArgumentException("Unexpected Fragment Position");
+        }
+    }
+
+    public int getGenerateTabPosition() {
+        if (configurationManager.isDistanceTrackingOptionAvailable()) {
+            return 2;
+        } else {
+            return 1;
         }
     }
 

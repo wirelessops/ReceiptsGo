@@ -29,12 +29,13 @@ import co.smartreceipts.android.persistence.LastTripController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.sync.widget.errors.SyncErrorFragment;
 import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
+import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
 import dagger.android.support.AndroidSupportInjection;
 
-public class ReportInfoFragment extends WBFragment {
+public class ReportInfoFragment extends WBFragment  implements GenerateNavigator {
 
     public static final String TAG = ReportInfoFragment.class.getSimpleName();
 
@@ -49,13 +50,13 @@ public class ReportInfoFragment extends WBFragment {
     @Inject
     FragmentStateCache fragmentStateCache;
 
-    private LastTripController mLastTripController;
-    private TripFragmentPagerAdapter mFragmentPagerAdapter;
-    private Trip mTrip;
-    private ActionBarTitleUpdatesListener mActionBarTitleUpdatesListener;
+    private LastTripController lastTripController;
+    private TripFragmentPagerAdapter fragmentPagerAdapter;
+    private Trip trip;
+    private ActionBarTitleUpdatesListener actionBarTitleUpdatesListener;
 
-    private ViewPager mViewPager;
-    private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private ViewPager viewPager;
+    private PagerSlidingTabStrip pagerSlidingTabStrip;
 
     @NonNull
     public static ReportInfoFragment newInstance() {
@@ -74,15 +75,15 @@ public class ReportInfoFragment extends WBFragment {
         Logger.debug(this, "onCreate");
         setHasOptionsMenu(true);
         if (savedInstanceState == null) {
-            mTrip = getArguments().getParcelable(Trip.PARCEL_KEY);
+            trip = getArguments().getParcelable(Trip.PARCEL_KEY);
         } else {
-            mTrip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
+            trip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
         }
-        Preconditions.checkNotNull(mTrip, "A valid trip is required");
-        mLastTripController = new LastTripController(getActivity());
-        mFragmentPagerAdapter = new TripFragmentPagerAdapter(getResources(), getChildFragmentManager(),
+        Preconditions.checkNotNull(trip, "A valid trip is required");
+        lastTripController = new LastTripController(getActivity());
+        fragmentPagerAdapter = new TripFragmentPagerAdapter(getResources(), getChildFragmentManager(),
                 configurationManager);
-        mActionBarTitleUpdatesListener = new ActionBarTitleUpdatesListener();
+        actionBarTitleUpdatesListener = new ActionBarTitleUpdatesListener();
     }
 
     @Nullable
@@ -96,13 +97,13 @@ public class ReportInfoFragment extends WBFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState == null) {
-            new ChildFragmentNavigationHandler(this).addChild(new SyncErrorFragment(), R.id.top_tooltip);
+            new ChildFragmentNavigationHandler(this).addChild(ReportTooltipFragment.newInstance(), R.id.top_tooltip);
         }
 
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
-        mPagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
-        mViewPager.setAdapter(mFragmentPagerAdapter);
-        mPagerSlidingTabStrip.setViewPager(mViewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        pagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
+        viewPager.setAdapter(fragmentPagerAdapter);
+        pagerSlidingTabStrip.setViewPager(viewPager);
     }
 
     @Override
@@ -136,13 +137,13 @@ public class ReportInfoFragment extends WBFragment {
             }
         }
         updateActionBarTitlePrice();
-        tripTableController.subscribe(mActionBarTitleUpdatesListener);
+        tripTableController.subscribe(actionBarTitleUpdatesListener);
     }
 
     @Override
     public void onPause() {
-        tripTableController.unsubscribe(mActionBarTitleUpdatesListener);
-        mLastTripController.setLastTrip(mTrip);
+        tripTableController.unsubscribe(actionBarTitleUpdatesListener);
+        lastTripController.setLastTrip(trip);
         super.onPause();
     }
 
@@ -150,7 +151,7 @@ public class ReportInfoFragment extends WBFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putParcelable(KEY_OUT_TRIP, mTrip);
+        outState.putParcelable(KEY_OUT_TRIP, trip);
     }
 
     @Override
@@ -161,7 +162,7 @@ public class ReportInfoFragment extends WBFragment {
 
     @NonNull
     public Trip getTrip() {
-        return mTrip;
+        return trip;
     }
 
     private class ActionBarTitleUpdatesListener extends StubTableEventsListener<Trip> {
@@ -169,7 +170,7 @@ public class ReportInfoFragment extends WBFragment {
         @Override
         public void onGetSuccess(@NonNull List<Trip> list) {
             if (isAdded()) {
-                if (list.contains(mTrip)) {
+                if (list.contains(trip)) {
                     updateActionBarTitlePrice();
                 }
             }
@@ -178,9 +179,9 @@ public class ReportInfoFragment extends WBFragment {
         @Override
         public void onUpdateSuccess(@NonNull Trip oldTrip, @NonNull Trip newTrip, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
             if (isAdded()) {
-                if (mTrip.equals(oldTrip)) {
-                    mTrip = newTrip;
-                    mFragmentPagerAdapter.notifyDataSetChanged();
+                if (trip.equals(oldTrip)) {
+                    trip = newTrip;
+                    fragmentPagerAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -189,8 +190,12 @@ public class ReportInfoFragment extends WBFragment {
     private void updateActionBarTitlePrice() {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(mTrip.getPrice().getCurrencyFormattedPrice() + " - " + mTrip.getName());
+            actionBar.setTitle(trip.getPrice().getCurrencyFormattedPrice() + " - " + trip.getName());
         }
     }
 
+    @Override
+    public void navigateToGenerateTab() {
+        viewPager.setCurrentItem(fragmentPagerAdapter.getGenerateTabPosition(), true);
+    }
 }

@@ -14,7 +14,7 @@ import co.smartreceipts.android.di.subcomponents.ReceiptCreateEditFragmentSubcom
 import co.smartreceipts.android.di.subcomponents.ReceiptImageFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptsListFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReportInfoFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.SyncErrorFragmentSubcomponent;
+import co.smartreceipts.android.di.subcomponents.ReportTooltipFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.TripCreateEditFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.TripFragmentSubcomponent;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
@@ -35,7 +35,7 @@ import co.smartreceipts.android.sync.widget.backups.ExportBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
-import co.smartreceipts.android.sync.widget.errors.SyncErrorFragment;
+import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 import dagger.Binds;
@@ -58,7 +58,7 @@ import dagger.multibindings.IntoMap;
                 DeleteRemoteBackupDialogFragmentSubcomponent.class,
                 AutomaticBackupsInfoDialogFragmentSubcomponent.class,
                 ImportRemoteBackupDialogFragmentSubcomponent.class,
-                SyncErrorFragmentSubcomponent.class,
+                ReportTooltipFragmentSubcomponent.class,
                 DriveRecoveryDialogFragmentSubcomponent.class,
                 ImportLocalBackupDialogFragmentSubcomponent.class,
                 ExportBackupDialogFragmentSubcomponent.class,
@@ -141,9 +141,9 @@ public abstract class SmartReceiptsActivityBindingModule {
 
     @Binds
     @IntoMap
-    @FragmentKey(SyncErrorFragment.class)
+    @FragmentKey(ReportTooltipFragment.class)
     public abstract AndroidInjector.Factory<? extends Fragment> syncErrorFragmentBuilder(
-            SyncErrorFragmentSubcomponent.Builder builder);
+            ReportTooltipFragmentSubcomponent.Builder builder);
 
     @Binds
     @IntoMap

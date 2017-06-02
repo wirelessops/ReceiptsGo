@@ -41,19 +41,19 @@ public class LoginPresenter extends BasePresenter<LoginView, LoginInteractor> {
                                 view.getEmailTextChanges(),
                                 view.getPasswordTextChanges(),
                                 (BiFunction<CharSequence, CharSequence, UserCredentialsPayload>) SmartReceiptsUserLogin::new)
-                        .flatMap(userCredentialsPayload -> view.getLoginButtonClicks().map(ignored -> userCredentialsPayload)),
+                                .flatMap(userCredentialsPayload -> view.getLoginButtonClicks().map(ignored -> userCredentialsPayload)),
 
                         Observable.combineLatest(
                                 view.getEmailTextChanges(),
                                 view.getPasswordTextChanges(),
                                 (BiFunction<CharSequence, CharSequence, UserCredentialsPayload>) SmartReceiptsUserSignUp::new)
-                        .flatMap(userCredentialsPayload -> view.getSignUpButtonClicks().map(ignored -> userCredentialsPayload)))
-                )
+                                .flatMap(userCredentialsPayload -> view.getSignUpButtonClicks().map(ignored -> userCredentialsPayload)))
+        )
                 .flatMap(interactor::loginOrSignUp)
                 .startWith(UiIndicator.idle())
                 .subscribe(uiIndicator -> {
                     view.present(uiIndicator);
-                    if (uiIndicator.getState() == UiIndicator.State.Succcess || uiIndicator.getState() == UiIndicator.State.Error) {
+                    if (uiIndicator.getState() == UiIndicator.State.Success || uiIndicator.getState() == UiIndicator.State.Error) {
                         interactor.onLoginResultsConsumed();
                     }
                 }));

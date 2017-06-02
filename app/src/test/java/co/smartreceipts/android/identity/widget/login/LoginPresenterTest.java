@@ -77,7 +77,7 @@ public class LoginPresenterTest {
 
     @Test
     public void onResumeRestoresCachedPayloadAndConsumesResultsOnSuccess() {
-        when(uiIndicator.getState()).thenReturn(UiIndicator.State.Succcess);
+        when(uiIndicator.getState()).thenReturn(UiIndicator.State.Success);
         when(interactor.getLastUserCredentialsPayload()).thenReturn(Maybe.just(userCredentialsPayload));
         presenter.subscribe();
 

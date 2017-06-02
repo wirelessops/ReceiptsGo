@@ -43,7 +43,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
-import co.smartreceipts.android.widget.Tooltip;
+import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.dialog.BetterDialogBuilder;

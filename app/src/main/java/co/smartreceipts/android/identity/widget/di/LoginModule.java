@@ -9,6 +9,6 @@ import dagger.Module;
 public abstract class LoginModule {
 
     @Binds
-    abstract LoginView provideOcrConfigurationView(LoginFragment fragment);
+    abstract LoginView provideLoginView(LoginFragment fragment);
 
 }

@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.utils.log.Logger;
-import co.smartreceipts.android.widget.Tooltip;
+import co.smartreceipts.android.widget.tooltip.Tooltip;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 

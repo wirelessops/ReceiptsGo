@@ -1,4 +1,4 @@
-package co.smartreceipts.android.widget;
+package co.smartreceipts.android.widget.tooltip;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -19,9 +19,9 @@ import co.smartreceipts.android.R;
 
 public class Tooltip extends RelativeLayout {
 
-    private Button mButtonNo, mButtonYes;
-    private TextView mMessageText;
-    private ImageView mCloseIcon, mErrorIcon;
+    private Button buttonNo, buttonYes;
+    private TextView messageText;
+    private ImageView closeIcon, errorIcon;
 
     public Tooltip(Context context) {
         super(context);
@@ -40,26 +40,26 @@ public class Tooltip extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.tooltip, this);
-        mMessageText = (TextView) findViewById(R.id.tooltip_message);
-        mButtonNo = (Button) findViewById(R.id.tooltip_no);
-        mButtonYes = (Button) findViewById(R.id.tooltip_yes);
-        mCloseIcon = (ImageView) findViewById(R.id.tooltip_close_icon);
-        mErrorIcon = (ImageView) findViewById(R.id.tooltip_error_icon);
+        messageText = (TextView) findViewById(R.id.tooltip_message);
+        buttonNo = (Button) findViewById(R.id.tooltip_no);
+        buttonYes = (Button) findViewById(R.id.tooltip_yes);
+        closeIcon = (ImageView) findViewById(R.id.tooltip_close_icon);
+        errorIcon = (ImageView) findViewById(R.id.tooltip_error_icon);
 
         setVisibility(VISIBLE);
     }
 
     public void setError(@StringRes int messageStringId, @Nullable OnClickListener closeClickListener) {
         setViewStateError();
-        mMessageText.setText(getContext().getText(messageStringId));
+        messageText.setText(getContext().getText(messageStringId));
         showCloseIcon(closeClickListener);
     }
 
     public void setErrorWithoutClose(@StringRes int messageStringId, @Nullable OnClickListener tooltipClickListener) {
         setViewStateError();
-        mCloseIcon.setVisibility(GONE);
+        closeIcon.setVisibility(GONE);
 
-        mMessageText.setText(getContext().getText(messageStringId));
+        messageText.setText(getContext().getText(messageStringId));
         setTooltipClickListener(tooltipClickListener);
     }
 
@@ -68,34 +68,34 @@ public class Tooltip extends RelativeLayout {
         setTooltipClickListener(tooltipClickListener);
         showCloseIcon(closeClickListener);
 
-        mErrorIcon.setVisibility(GONE);
-        mButtonNo.setVisibility(GONE);
-        mButtonYes.setVisibility(GONE);
+        errorIcon.setVisibility(GONE);
+        buttonNo.setVisibility(GONE);
+        buttonYes.setVisibility(GONE);
     }
 
     public void setQuestion(@StringRes int questionStringId, @Nullable OnClickListener noClickListener, @Nullable OnClickListener yesClickListener) {
         setInfoMessage(questionStringId);
 
-        mButtonNo.setVisibility(VISIBLE);
-        mButtonYes.setVisibility(VISIBLE);
+        buttonNo.setVisibility(VISIBLE);
+        buttonYes.setVisibility(VISIBLE);
 
-        mCloseIcon.setVisibility(GONE);
-        mErrorIcon.setVisibility(GONE);
+        closeIcon.setVisibility(GONE);
+        errorIcon.setVisibility(GONE);
 
-        mButtonNo.setOnClickListener(noClickListener);
-        mButtonYes.setOnClickListener(yesClickListener);
+        buttonNo.setOnClickListener(noClickListener);
+        buttonYes.setOnClickListener(yesClickListener);
     }
 
     public void setInfoMessage(@StringRes int messageStringId) {
         setInfoBackground();
-        mMessageText.setText(messageStringId);
-        mMessageText.setVisibility(VISIBLE);
+        messageText.setText(messageStringId);
+        messageText.setVisibility(VISIBLE);
     }
 
     public void setInfoMessage(@Nullable CharSequence text) {
         setInfoBackground();
-        mMessageText.setText(text);
-        mMessageText.setVisibility(VISIBLE);
+        messageText.setText(text);
+        messageText.setVisibility(VISIBLE);
     }
     
     public void setTooltipClickListener(@Nullable OnClickListener tooltipClickListener) {
@@ -103,8 +103,8 @@ public class Tooltip extends RelativeLayout {
     }
     
     public void showCloseIcon(@Nullable OnClickListener closeClickListener) {
-        mCloseIcon.setVisibility(VISIBLE);
-        mCloseIcon.setOnClickListener(closeClickListener);
+        closeIcon.setVisibility(VISIBLE);
+        closeIcon.setOnClickListener(closeClickListener);
     }
 
     private void setErrorBackground() {
@@ -118,12 +118,12 @@ public class Tooltip extends RelativeLayout {
     private void setViewStateError() {
         setErrorBackground();
 
-        mMessageText.setVisibility(VISIBLE);
-        mCloseIcon.setVisibility(VISIBLE);
-        mErrorIcon.setVisibility(VISIBLE);
+        messageText.setVisibility(VISIBLE);
+        closeIcon.setVisibility(VISIBLE);
+        errorIcon.setVisibility(VISIBLE);
 
-        mButtonNo.setVisibility(GONE);
-        mButtonYes.setVisibility(GONE);
+        buttonNo.setVisibility(GONE);
+        buttonYes.setVisibility(GONE);
     }
 
     public void hideWithAnimation() {

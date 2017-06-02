@@ -6,10 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.android.model.impl.DefaultReceiptImpl;
-
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UiIndicatorTest {
@@ -45,14 +42,14 @@ public class UiIndicatorTest {
     @Test
     public void success() throws Exception {
         final UiIndicator uiIndicator = UiIndicator.success();
-        assertEquals(UiIndicator.State.Succcess, uiIndicator.getState());
+        assertEquals(UiIndicator.State.Success, uiIndicator.getState());
         assertEquals(null, uiIndicator.getMessage().orNull());
     }
 
     @Test
     public void successWithMessage() throws Exception {
         final UiIndicator uiIndicator = UiIndicator.success("test");
-        assertEquals(UiIndicator.State.Succcess, uiIndicator.getState());
+        assertEquals(UiIndicator.State.Success, uiIndicator.getState());
         assertEquals("test", uiIndicator.getMessage().orNull());
     }
 

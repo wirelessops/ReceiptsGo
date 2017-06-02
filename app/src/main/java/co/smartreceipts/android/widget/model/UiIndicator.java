@@ -11,13 +11,13 @@ import com.hadisatrio.optional.Optional;
 public class UiIndicator implements Parcelable {
 
     public enum State {
-        Idle, Loading, Error, Succcess
+        Idle, Loading, Error, Success
     }
 
     private final State state;
     private final Optional<String> message;
 
-    public UiIndicator(@NonNull State state, @Nullable String message) {
+    private UiIndicator(@NonNull State state, @Nullable String message) {
         this.state = Preconditions.checkNotNull(state);
         this.message = Optional.ofNullable(message);
     }
@@ -44,12 +44,12 @@ public class UiIndicator implements Parcelable {
 
     @NonNull
     public static UiIndicator success() {
-        return new UiIndicator(State.Succcess, null);
+        return new UiIndicator(State.Success, null);
     }
 
     @NonNull
     public static UiIndicator success(@NonNull String message) {
-        return new UiIndicator(State.Succcess, message);
+        return new UiIndicator(State.Success, message);
     }
 
     @NonNull

@@ -21,6 +21,8 @@ import co.smartreceipts.android.persistence.database.defaults.WhiteLabelFriendly
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.rating.data.AppRatingStorage;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipPreferencesStorage;
+import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipStorage;
 import dagger.Module;
 import dagger.Provides;
 import wb.android.flex.Flex;
@@ -99,5 +101,11 @@ public class BaseAppModule {
                                                        ReceiptColumnDefinitions receiptColumnDefinitions) {
         return new ServiceManager(new SmartReceiptsHostConfiguration(mutableIdentityStore,
                 new SmartReceiptsGsonBuilder(receiptColumnDefinitions)));
+    }
+
+    @Provides
+    @ApplicationScope
+    public static GenerateInfoTooltipStorage provideGenerateInfoTooltipStorage(GenerateInfoTooltipPreferencesStorage storage) {
+        return storage;
     }
 }

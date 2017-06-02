@@ -161,7 +161,7 @@ public class LoginFragment extends Fragment implements LoginView {
         if (uiIndicator.getMessage().isPresent()) {
             Toast.makeText(getContext(), uiIndicator.getMessage().get(), Toast.LENGTH_SHORT).show();
         }
-        if (uiIndicator.getState() == UiIndicator.State.Succcess) {
+        if (uiIndicator.getState() == UiIndicator.State.Success) {
             router.navigateBack();
         }
     }
