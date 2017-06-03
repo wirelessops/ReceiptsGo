@@ -15,7 +15,7 @@ public class GenerateInfoTooltipPreferencesStorage implements GenerateInfoToolti
 
     private static final class Keys {
         /**
-         * Key to get rating preferences
+         * Key to get preferences related to the generate info tooltip
          */
         private static final String GENERATE_TOOLTIP_PREFERENCES = "Generate Tooltip Preferences";
         /**

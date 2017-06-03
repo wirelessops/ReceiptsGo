@@ -4,12 +4,14 @@ import com.hadisatrio.optional.Optional;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipStorage;
 import io.reactivex.Single;
 
+@ApplicationScope
 public class GenerateInfoTooltipManager {
 
     /*
