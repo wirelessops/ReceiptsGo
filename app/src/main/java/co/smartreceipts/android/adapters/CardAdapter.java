@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -25,11 +26,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 public class CardAdapter<T> extends BaseAdapter {
 	
@@ -60,9 +64,17 @@ public class CardAdapter<T> extends BaseAdapter {
         mContext = context;
         mData = new ArrayList<>(data);
         mBackupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
-        mCloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-        mNotSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-        mSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+            mNotSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+            mSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+        } else {
+            mCloudDisabledDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+            mNotSyncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+            mSyncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+        }
+
         final Resources resources = mContext.getResources();
         final DisplayMetrics metrics = resources.getDisplayMetrics();
         mMaxPriceWidth = (metrics.widthPixels / MAX_PRICE_WIDTH_DIVIDER); // Set to half width
