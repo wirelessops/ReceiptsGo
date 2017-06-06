@@ -145,7 +145,7 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
         final ArrayList<Column<Receipt>> columns = new ArrayList<>();
         columns.add(getColumn(ActualDefinition.CATEGORY_CODE));
         columns.add(getColumn(ActualDefinition.NAME));
-        columns.add(getColumn(ActualDefinition.PRICE_EXCHANGED));
+        columns.add(getColumn(ActualDefinition.PRICE));
         columns.add(getColumn(ActualDefinition.CURRENCY));
         columns.add(getColumn(ActualDefinition.DATE));
         return columns;
@@ -156,7 +156,7 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
         // TODO: Re-design how these are added
         final ArrayList<Column<Receipt>> columns = new ArrayList<>();
         columns.add(getColumn(ActualDefinition.NAME));
-        columns.add(getColumn(ActualDefinition.PRICE_EXCHANGED));
+        columns.add(getColumn(ActualDefinition.PRICE));
         columns.add(getColumn(ActualDefinition.DATE));
         columns.add(getColumn(ActualDefinition.CATEGORY_NAME));
         columns.add(getColumn(ActualDefinition.REIMBURSABLE));
