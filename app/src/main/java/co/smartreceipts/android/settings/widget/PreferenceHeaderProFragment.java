@@ -12,6 +12,6 @@ public class PreferenceHeaderProFragment extends
 
     @Override
     public void configurePreferences() {
-        mSettingsActivity.configureProPreferences(this);
+        mSettingsActivity.configurePlusPreferences(this);
     }
 }

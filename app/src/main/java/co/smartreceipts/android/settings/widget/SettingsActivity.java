@@ -1,6 +1,5 @@
 package co.smartreceipts.android.settings.widget;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
@@ -52,6 +51,7 @@ import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
+import wb.android.preferences.PlusCheckBoxPreference;
 import wb.android.preferences.SummaryEditTextPreference;
 
 public class SettingsActivity extends AppCompatPreferenceActivity implements OnPreferenceClickListener, UniversalPreferences, PurchaseEventsListener {
@@ -98,7 +98,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             configurePreferencesCamera(this);
             configurePreferencesLayoutCustomizations(this);
             configurePreferencesDistance(this);
-            configureProPreferences(this);
+            configurePlusPreferences(this);
             configurePreferencesHelp(this);
             configurePreferencesAbout(this);
         }
@@ -166,9 +166,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
                 }, throwable -> Logger.warn(SettingsActivity.this, "Failed to retrieve purchases for this session.", throwable)));
     }
 
-    // Called only on Honeycomb and later
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
         // Called before onCreate it seems
         isUsingHeaders = getResources().getBoolean(R.bool.isTablet);
@@ -187,8 +184,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (isFragmentHeaderShowing) { // If we're actively showing a fragment, let it handle the call
             return super.onOptionsItemSelected(item);
@@ -333,11 +328,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
 
     }
 
-    public void configureProPreferences(UniversalPreferences universal) {
+    public void configurePlusPreferences(UniversalPreferences universal) {
         final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
         final SummaryEditTextPreference pdfFooterPreference = (SummaryEditTextPreference) universal.findPreference(R.string.pref_pro_pdf_footer_key);
         pdfFooterPreference.setAppearsEnabled(hasProSubscription);
         pdfFooterPreference.setOnPreferenceClickListener(this);
+
+        final PlusCheckBoxPreference separateByCategoryPreference = (PlusCheckBoxPreference) universal.findPreference(R.string.pref_pro_separate_by_category_key);
+        separateByCategoryPreference.setAppearsEnabled(hasProSubscription);
+        separateByCategoryPreference.setOnPreferenceClickListener(this);
+
+        final PlusCheckBoxPreference categoricalSummationPreference = (PlusCheckBoxPreference) universal.findPreference(R.string.pref_pro_categorical_summation_key);
+        categoricalSummationPreference.setAppearsEnabled(hasProSubscription);
+        categoricalSummationPreference.setOnPreferenceClickListener(this);
     }
 
     public void configurePreferencesHelp(UniversalPreferences universal) {
@@ -386,19 +389,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             final Intent intent = EmailAssistant.getEmailDeveloperIntent(this, emailSubject, getDebugScreen(), files);
             startActivity(Intent.createChooser(intent, getResources().getString(R.string.send_email)));
             return true;
-        } else if (key.equals(getString(R.string.pref_pro_pdf_footer_key))) {
-            // Let's check if we should prompt the user to upgrade for this preference
-            final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
-            final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
-
-            // If we don't already have the pro subscription and it's available, let's buy it
-            if (!haveProSubscription) {
-                if (proSubscriptionIsAvailable) {
-                    purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.PdfFooterSetting);
-                } else {
-                    Toast.makeText(SettingsActivity.this, R.string.purchase_unavailable, Toast.LENGTH_SHORT).show();
-                }
-            }
+        } else if (key.equals(getString(R.string.pref_pro_pdf_footer_key)) ||
+                key.equals(getString(R.string.pref_pro_separate_by_category_key)) ||
+                key.equals(getString(R.string.pref_pro_categorical_summation_key))) {
+            tryToMakePurchaseIfNeed();
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/privacy")));
@@ -451,6 +445,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
                 "Manufacturer: " + Build.MANUFACTURER + "\n" +
                 "Model (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
                 "Two-Paned: " + isUsingHeaders;
+    }
+
+    private void tryToMakePurchaseIfNeed() {
+        // Let's check if we should prompt the user to upgrade for this preference
+        final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
+        final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
+
+        // If we don't already have the pro subscription and it's available, let's buy it
+        if (!haveProSubscription) {
+            if (proSubscriptionIsAvailable) {
+                purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.PdfFooterSetting);
+            } else {
+                Toast.makeText(SettingsActivity.this, R.string.purchase_unavailable, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

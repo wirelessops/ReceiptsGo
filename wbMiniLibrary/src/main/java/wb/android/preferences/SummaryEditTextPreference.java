@@ -51,10 +51,6 @@ public class SummaryEditTextPreference extends EditTextPreference implements Pre
 		return getText();
 	}
 
-    public boolean appearsEnabled() {
-        return mAppearsEnabled;
-    }
-
     public void setAppearsEnabled(boolean appearsEnabled) {
         mAppearsEnabled = appearsEnabled;
     }

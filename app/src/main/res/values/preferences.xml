@@ -154,6 +154,15 @@
     <!-- ================= Preference Plus ================== -->
     <string name="pref_pro_pdf_footer_key" translatable="false">PdfFooterString</string>
     <string name="pref_pro_pdf_footer_title">PDF Footer Text</string>
+    <string name="pref_pro_separate_by_category_key" translatable="false">SeparateByCategory</string>
+    <string name="pref_pro_separate_by_category_title">Separate Payments by Category</string>
+    <string name="pref_pro_separate_by_category_summaryOn">Separate Payments by Category In Reports</string>
+    <string name="pref_pro_separate_by_category_summaryOff">Don\'t separate Payments by Category In Reports</string>
+    <string name="pref_pro_categorical_summation_key">IncludeCategoricalSummation</string>
+    <string name="pref_pro_categorical_summation_title">Include Categorical Summation</string>
+    <string name="pref_pro_categorical_summation_summaryOn">Include Categorical Summation In Reports</string>
+    <string name="pref_pro_categorical_summation_summaryOff">Don\'t include Categorical Summation In Reports</string>
+
 
     <!-- ============== Preference Support ================= -->
     <string name="pref_help_send_love_key" translatable="false">SendLove</string>

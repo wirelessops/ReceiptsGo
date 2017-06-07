@@ -50,6 +50,11 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!(this.getParentFragment() instanceof GenerateNavigator)) {
+            throw new IllegalStateException("Parent fragment must implement GenerateNavigator interface");
+        }
+
     }
 
     @Nullable
@@ -115,13 +120,7 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
         tooltip.setInfo(R.string.tooltip_generate_info_message,
                 v -> {
                     tooltipClickStream.onNext(ReportTooltipUiIndicator.generateInfo());
-
-                    Fragment parentFragment = this.getParentFragment();
-                    if (parentFragment instanceof GenerateNavigator) {
-                        ((GenerateNavigator) parentFragment).navigateToGenerateTab();
-                    } else {
-                        throw new IllegalStateException("Parent fragment must implement GenerateNavigator interface");
-                    }
+                    ((GenerateNavigator) this.getParentFragment()).navigateToGenerateTab();
                 },
                 v -> closeClickStream.onNext(ReportTooltipUiIndicator.generateInfo()));
 
