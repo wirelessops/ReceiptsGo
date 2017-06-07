@@ -113,7 +113,7 @@ public class OcrManager {
                         if (recognitionResponse != null && recognitionResponse.getRecognition() != null && recognitionResponse.getRecognition().getId() != null) {
                             return Observable.just(recognitionResponse.getRecognition().getId());
                         } else {
-                            return Observable.error(new ApiValidationException("Failed to receive a valid recognition response."));
+                            return Observable.error(new ApiValidationException("Failed to receive a valid recognition upload response."));
                         }
                     })
                     .flatMap(recognitionId -> {
@@ -140,7 +140,7 @@ public class OcrManager {
                                 recognitionResponse.getRecognition().getData().getRecognitionData() != null) {
                             return Observable.just(recognitionResponse.getRecognition().getData().getRecognitionData());
                         } else {
-                            return Observable.error(new ApiValidationException("Failed to receive a valid recognition response."));
+                            return Observable.error(new ApiValidationException("Failed to receive a valid recognition complete response."));
                         }
                     })
                     .doOnNext(ignore -> {
