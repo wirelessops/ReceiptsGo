@@ -102,7 +102,10 @@ public class ReportInfoFragment extends WBFragment  implements GenerateNavigator
 
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         pagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
+
         viewPager.setAdapter(fragmentPagerAdapter);
+        viewPager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
+
         pagerSlidingTabStrip.setViewPager(viewPager);
     }
 

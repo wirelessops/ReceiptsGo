@@ -62,6 +62,7 @@
     <string name="missing_ad_suggest_removal_upsell">Tired of ads? Tap to start an ad-free trial</string>
 
     <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">Graphs</string>
     <string name="report_info_receipts">Receipts</string>
     <string name="report_info_distance">Distance</string>
     <string name="report_info_generate">Generate</string>
