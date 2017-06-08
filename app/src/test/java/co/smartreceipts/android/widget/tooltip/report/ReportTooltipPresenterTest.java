@@ -3,10 +3,12 @@ package co.smartreceipts.android.widget.tooltip.report;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
@@ -18,9 +20,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-public class ReportTooltipPresenterShould {
+public class ReportTooltipPresenterTest {
 
-    // Class under test
+    @InjectMocks
     ReportTooltipPresenter presenter;
 
     @Mock
@@ -32,13 +34,14 @@ public class ReportTooltipPresenterShould {
     @Mock
     BackupProvidersManager backupProvidersManager;
 
+    @Mock
+    Analytics analytics;
 
     private final SyncErrorType errorType = SyncErrorType.NoRemoteDiskSpace;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new ReportTooltipPresenter(tooltipView, interactor, backupProvidersManager);
 
         when(backupProvidersManager.getSyncProvider()).thenReturn(SyncProvider.GoogleDrive);
         when(tooltipView.getCloseButtonClicks()).thenReturn(Observable.never());
