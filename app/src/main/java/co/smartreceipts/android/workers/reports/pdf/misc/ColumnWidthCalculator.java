@@ -185,6 +185,21 @@ public class ColumnWidthCalculator<DataType> {
                 }
             }
 
+            // Finally, test out the footer value to see if that changes things
+            final String value = HeavyHandedReplaceIllegalCharacters.getSafeString(mColumns.get(i).getFooter(list));
+            float vWidth = PdfBoxUtils.getStringWidth(value, mFontContent);
+            float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(value, mFontContent);
+
+            if (vWidth > maxOfAllStringWidths) {
+                maxOfAllStringWidths = vWidth;
+            }
+            if (vWidth < minOfAllStringWidths) {
+                minOfAllStringWidths = vWidth;
+            }
+            if (vMaxWordWidth > maxOfMaxWordWidths) {
+                maxOfMaxWordWidths = vMaxWordWidth;
+            }
+
             mContentMaxWidth = maxOfAllStringWidths;
             mContentMinWidth = maxOfMaxWordWidths;
 
