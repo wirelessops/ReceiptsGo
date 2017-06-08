@@ -29,7 +29,7 @@
         android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:padding="@dimen/default_margin_size"
+        android:padding="@dimen/default_margin_item_separator"
         android:tint="@color/text_primary_color"
         android:visibility="gone"
         tools:visibility="gone"
