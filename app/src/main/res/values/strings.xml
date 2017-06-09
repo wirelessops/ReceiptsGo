@@ -265,6 +265,7 @@
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Edit Receipt</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Edit Receipt - %s</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Warning: This Receipt\'s Date falls outside the specified range for this Report</string>
+    <string name="manage_categories">Manage Categories</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Export your receipts?</string>
