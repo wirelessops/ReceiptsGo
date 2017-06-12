@@ -36,6 +36,11 @@ import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryCodeColumn;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryCurrencyColumn;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryNameColumn;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryPriceColumn;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryTaxColumn;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceCommentColumn;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceCurrencyColumn;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceDateColumn;
@@ -48,6 +53,8 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptDateColumn;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptNameColumn;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptPriceColumn;
 import co.smartreceipts.android.persistence.PersistenceManager;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
@@ -469,7 +476,17 @@ public class InteractivePdfBoxTest {
         distanceColumns.add(new DistanceDateColumn(6, "Date", new DefaultSyncState(), context, userPreferenceManager));
         distanceColumns.add(new DistanceCommentColumn(7, "Comment", new DefaultSyncState()));
 
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts, receiptColumns, Collections.<Distance>emptyList(), distanceColumns));
+        final List<Column<SumCategoryGroupingResult>> summationColumns = new ArrayList<>();
+        summationColumns.add(new CategoryNameColumn(1, "Category", new DefaultSyncState()));
+        summationColumns.add(new CategoryCodeColumn(2, "Category Code", new DefaultSyncState()));
+        summationColumns.add(new CategoryPriceColumn(3, "Price", new DefaultSyncState()));
+        summationColumns.add(new CategoryTaxColumn(4, "Tax", new DefaultSyncState()));
+        summationColumns.add(new CategoryCurrencyColumn(5, "Currency", new DefaultSyncState()));
+
+        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts,
+                receiptColumns, Collections.<Distance>emptyList(), distanceColumns,
+                Collections.<SumCategoryGroupingResult>emptyList(), summationColumns,
+                Collections.<CategoryGroupingResult>emptyList(), receiptColumns));
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
         OutputStream outputStream = null;
