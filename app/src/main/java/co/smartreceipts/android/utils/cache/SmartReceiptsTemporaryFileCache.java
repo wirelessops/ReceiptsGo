@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 
 import java.io.File;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -40,16 +41,16 @@ public class SmartReceiptsTemporaryFileCache {
 
     public void resetCache() {
         Logger.info(SmartReceiptsTemporaryFileCache.this, "Clearing the cached dir");
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                mTemporaryCacheFolder.mkdirs();
-                final File[] files = mTemporaryCacheFolder.listFiles();
-                if (files != null) {
-                    final StorageManager storageManager = StorageManager.getInstance(mContext);
-                    for (final File file : files) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            mTemporaryCacheFolder.mkdirs();
+            final File[] files = mTemporaryCacheFolder.listFiles();
+            if (files != null) {
+                final StorageManager storageManager1 = StorageManager.getInstance(mContext);
+                for (final File file : files) {
+                    // Note: Only delete this file is it was modified more than a day ago to buy some cache buffer time
+                    if (System.currentTimeMillis() > file.lastModified() + TimeUnit.DAYS.toMillis(1)) {
                         Logger.debug(SmartReceiptsTemporaryFileCache.this, "Recursively deleting cached file: {}", file);
-                        storageManager.deleteRecursively(file);
+                        storageManager1.deleteRecursively(file);
                     }
                 }
             }
