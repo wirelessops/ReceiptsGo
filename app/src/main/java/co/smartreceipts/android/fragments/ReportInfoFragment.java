@@ -35,7 +35,7 @@ import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
 import dagger.android.support.AndroidSupportInjection;
 
-public class ReportInfoFragment extends WBFragment  implements GenerateNavigator {
+public class ReportInfoFragment extends WBFragment implements GenerateNavigator {
 
     public static final String TAG = ReportInfoFragment.class.getSimpleName();
 
@@ -49,7 +49,7 @@ public class ReportInfoFragment extends WBFragment  implements GenerateNavigator
     NavigationHandler navigationHandler;
     @Inject
     FragmentStateCache fragmentStateCache;
-
+    
     private LastTripController lastTripController;
     private TripFragmentPagerAdapter fragmentPagerAdapter;
     private Trip trip;

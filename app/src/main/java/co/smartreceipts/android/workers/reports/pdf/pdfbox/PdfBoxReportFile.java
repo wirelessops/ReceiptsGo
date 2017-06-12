@@ -14,6 +14,7 @@ import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.pdf.PdfReportFile;
@@ -66,14 +67,17 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
     @Override
     public PdfBoxReceiptsTablePdfSection createReceiptsTableSection(
             @NonNull Trip trip, @NonNull List<Receipt> receipts, @NonNull List<Column<Receipt>> columns,
-            @NonNull List<Distance> distances, @NonNull List<Column<Distance>> distanceColumns) {
-        return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, trip, receipts, columns, distances, distanceColumns);
+            @NonNull List<Distance> distances, @NonNull List<Column<Distance>> distanceColumns,
+            @NonNull List<SumCategoryGroupingResult> categpries,
+            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns) {
+
+        return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, trip, receipts, columns, distances, distanceColumns, categpries, categoryColumns);
     }
+
 
     @NonNull
     @Override
     public PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip, @NonNull List<Receipt> receipts) {
         return new PdfBoxReceiptsImagesPdfSection(pdfBoxContext, pdDocument, trip, receipts);
     }
-
 }

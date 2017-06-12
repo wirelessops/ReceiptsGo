@@ -8,6 +8,7 @@ import co.smartreceipts.android.di.subcomponents.DeleteRemoteBackupDialogFragmen
 import co.smartreceipts.android.di.subcomponents.DriveRecoveryDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ExportBackupDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.GenerateReportFragmentSubcomponent;
+import co.smartreceipts.android.di.subcomponents.GraphsFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ImportLocalBackupDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ImportRemoteBackupDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptCreateEditFragmentSubcomponent;
@@ -20,6 +21,7 @@ import co.smartreceipts.android.di.subcomponents.TripFragmentSubcomponent;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
+import co.smartreceipts.android.graphs.GraphsFragment;
 import co.smartreceipts.android.identity.widget.di.LoginFragmentSubcomponent;
 import co.smartreceipts.android.identity.widget.login.LoginFragment;
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
@@ -35,9 +37,9 @@ import co.smartreceipts.android.sync.widget.backups.ExportBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
-import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
+import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.AndroidInjector;
@@ -63,7 +65,8 @@ import dagger.multibindings.IntoMap;
                 ImportLocalBackupDialogFragmentSubcomponent.class,
                 ExportBackupDialogFragmentSubcomponent.class,
                 LoginFragmentSubcomponent.class,
-                OcrConfigurationFragmentSubcomponent.class
+                OcrConfigurationFragmentSubcomponent.class,
+                GraphsFragmentSubcomponent.class
         }
 )
 public abstract class SmartReceiptsActivityBindingModule {
@@ -174,5 +177,11 @@ public abstract class SmartReceiptsActivityBindingModule {
     @FragmentKey(OcrConfigurationFragment.class)
     public abstract AndroidInjector.Factory<? extends Fragment> ocrInformationalFragmentBuilder(
             OcrConfigurationFragmentSubcomponent.Builder builder);
+
+    @Binds
+    @IntoMap
+    @FragmentKey(GraphsFragment.class)
+    public abstract AndroidInjector.Factory<? extends Fragment> graphsFragmentBuilder(
+            GraphsFragmentSubcomponent.Builder builder);
 
 }

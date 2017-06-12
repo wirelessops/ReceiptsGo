@@ -20,6 +20,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.comparators.ReceiptDateComparator;
 import co.smartreceipts.android.model.converters.DistanceToReceiptsConverter;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorStyle;
@@ -28,34 +29,42 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.empty.EmptyRenderer
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Alignment;
 import co.smartreceipts.android.workers.reports.pdf.renderer.grid.GridRenderer;
 import co.smartreceipts.android.workers.reports.pdf.renderer.grid.GridRowRenderer;
-import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
 import co.smartreceipts.android.workers.reports.pdf.renderer.impl.PdfTableGenerator;
+import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
 
 public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
     private static final float EPSILON = 0.0001f;
     
-    private final List<Receipt> mReceipts;
-    private final List<Column<Receipt>> mReceiptColumns;
+    private final List<Receipt> receipts;
+    private final List<Column<Receipt>> receiptColumns;
 
-    private final List<Distance> mDistances;
-    private final List<Column<Distance>> mDistanceColumns;
-    private final UserPreferenceManager mPreferences;
+    private final List<Distance> distances;
+    private final List<Column<Distance>> distanceColumns;
 
-    private PdfBoxWriter mWriter;
+    private final List<SumCategoryGroupingResult> categories;
+    private final List<Column<SumCategoryGroupingResult>> categoryColumns;
+
+    private final UserPreferenceManager preferenceManager;
+
+    private PdfBoxWriter writer;
 
     protected PdfBoxReceiptsTablePdfSection(@NonNull PdfBoxContext context,
                                             @NonNull Trip trip,
                                             @NonNull List<Receipt> receipts,
                                             @NonNull List<Column<Receipt>> receiptColumns,
                                             @NonNull List<Distance> distances,
-                                            @NonNull List<Column<Distance>> distanceColumns) {
+                                            @NonNull List<Column<Distance>> distanceColumns,
+                                            @NonNull List<SumCategoryGroupingResult> categories,
+                                            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns) {
         super(context, trip);
-        mReceipts = Preconditions.checkNotNull(receipts);
-        mDistances = Preconditions.checkNotNull(distances);
-        mReceiptColumns = Preconditions.checkNotNull(receiptColumns);
-        mPreferences = Preconditions.checkNotNull(context.getPreferences());
-        mDistanceColumns = Preconditions.checkNotNull(distanceColumns);
+        this.receipts = Preconditions.checkNotNull(receipts);
+        this.distances = Preconditions.checkNotNull(distances);
+        this.categories = Preconditions.checkNotNull(categories);
+        this.receiptColumns = Preconditions.checkNotNull(receiptColumns);
+        this.distanceColumns = Preconditions.checkNotNull(distanceColumns);
+        this.categoryColumns = Preconditions.checkNotNull(categoryColumns);
+        preferenceManager = Preconditions.checkNotNull(context.getPreferences());
     }
 
 
@@ -64,16 +73,16 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     public void writeSection(@NonNull PDDocument doc, @NonNull PdfBoxWriter writer) throws IOException {
 
         final DefaultPdfBoxPageDecorations pageDecorations = new DefaultPdfBoxPageDecorations(pdfBoxContext, trip);
-        final ReceiptsTotals totals = new ReceiptsTotals(trip, mReceipts, mDistances, mPreferences);
+        final ReceiptsTotals totals = new ReceiptsTotals(trip, receipts, distances, preferenceManager);
 
         // switch to landscape mode
-        if (mPreferences.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)) {
+        if (preferenceManager.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)) {
             pdfBoxContext.setPageSize(new PDRectangle(pdfBoxContext.getPageSize().getHeight(),
                     pdfBoxContext.getPageSize().getWidth()));
         }
 
-        mWriter = writer;
-        mWriter.newPage();
+        this.writer = writer;
+        this.writer.newPage();
 
         final float availableWidth = pdfBoxContext.getPageSize().getWidth() - 2 * pdfBoxContext.getPageMarginHorizontal();
         final float availableHeight = pdfBoxContext.getPageSize().getHeight() - 2 * pdfBoxContext.getPageMarginVertical()
@@ -82,18 +91,23 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         final GridRenderer gridRenderer = new GridRenderer(availableWidth, availableHeight);
         gridRenderer.addRows(writeHeader(trip, doc, totals));
         gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, 40)));
-        gridRenderer.addRows(writeReceiptsTable(mReceipts, doc));
+        gridRenderer.addRows(writeReceiptsTable(receipts, doc));
 
-        if (mPreferences.get(UserPreference.Distance.PrintDistanceTableInReports) && !mDistances.isEmpty()) {
+        if (preferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports) && !distances.isEmpty()) {
             gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, 40)));
-            gridRenderer.addRows(writeDistancesTable(mDistances, doc));
+            gridRenderer.addRows(writeDistancesTable(distances, doc));
+        }
+
+        if (preferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports) && !categories.isEmpty()) {
+            gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, 40)));
+            gridRenderer.addRows(writeCategoriesTable(categories, doc));
         }
 
         gridRenderer.measure();
-        gridRenderer.render(mWriter);
+        gridRenderer.render(this.writer);
 
         // reset the page size if necessary
-        if (mPreferences.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)) {
+        if (preferenceManager.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)) {
             pdfBoxContext.setPageSize(new PDRectangle(pdfBoxContext.getPageSize().getHeight(),
                     pdfBoxContext.getPageSize().getWidth()));
         }
@@ -118,8 +132,8 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
         }
 
-        if (mPreferences.get(UserPreference.Receipts.IncludeTaxField)) {
-            if (mPreferences.get(UserPreference.Receipts.UsePreTaxPrice) && data.taxPrice.getPriceAsFloat() > EPSILON) {
+        if (preferenceManager.get(UserPreference.Receipts.IncludeTaxField)) {
+            if (preferenceManager.get(UserPreference.Receipts.UsePreTaxPrice) && data.taxPrice.getPriceAsFloat() > EPSILON) {
                 headerRows.add(new GridRowRenderer(new TextRenderer(
                         pdfBoxContext.getAndroidContext(),
                         pdDocument,
@@ -136,7 +150,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
             }
         }
 
-        if (!mPreferences.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !data.reimbursablePrice.equals(data.receiptsPrice)) {
+        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !data.reimbursablePrice.equals(data.receiptsPrice)) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
                     pdDocument,
@@ -144,7 +158,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
         }
-        if (!mDistances.isEmpty()) {
+        if (!distances.isEmpty()) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
                     pdDocument,
@@ -161,10 +175,10 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
 
         String fromToPeriod = pdfBoxContext.getString(R.string.report_header_from,
-                trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), mPreferences.get(UserPreference.General.DateSeparator)))
+                trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)))
                 + " "
                 + pdfBoxContext.getString(R.string.report_header_to,
-                trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), mPreferences.get(UserPreference.General.DateSeparator)));
+                trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)));
 
         headerRows.add(new GridRowRenderer(new TextRenderer(
                 pdfBoxContext.getAndroidContext(),
@@ -174,7 +188,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
 
 
-        if (mPreferences.get(UserPreference.General.IncludeCostCenter) && !TextUtils.isEmpty(trip.getCostCenter())) {
+        if (preferenceManager.get(UserPreference.General.IncludeCostCenter) && !TextUtils.isEmpty(trip.getCostCenter())) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
                     pdDocument,
@@ -200,21 +214,29 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     private List<GridRowRenderer>  writeReceiptsTable(@NonNull List<Receipt> receipts, @NonNull PDDocument pdDocument) throws IOException {
 
         final List<Receipt> receiptsTableList = new ArrayList<>(receipts);
-        if (mPreferences.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
-            receiptsTableList.addAll(new DistanceToReceiptsConverter(pdfBoxContext.getAndroidContext(), mPreferences).convert(mDistances));
+        if (preferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
+            receiptsTableList.addAll(new DistanceToReceiptsConverter(pdfBoxContext.getAndroidContext(), preferenceManager).convert(distances));
             Collections.sort(receiptsTableList, new ReceiptDateComparator());
         }
 
-        final PdfTableGenerator<Receipt> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, mReceiptColumns,
-                pdDocument, new LegacyReceiptFilter(mPreferences), true, true);
+        final PdfTableGenerator<Receipt> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, receiptColumns,
+                pdDocument, new LegacyReceiptFilter(preferenceManager), true, true);
 
         return pdfTableGenerator.generate(receiptsTableList);
     }
 
     private List<GridRowRenderer> writeDistancesTable(@NonNull List<Distance> distances, @NonNull PDDocument pdDocument) throws IOException {
-        final PdfTableGenerator<Distance> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, mDistanceColumns,
+        final PdfTableGenerator<Distance> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, distanceColumns,
                 pdDocument, null, true, true);
         return pdfTableGenerator.generate(distances);
+    }
+
+    private List<GridRowRenderer> writeCategoriesTable(@NonNull List<SumCategoryGroupingResult> categories, @NonNull PDDocument pdDocument) throws IOException {
+
+        final PdfTableGenerator<SumCategoryGroupingResult> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, categoryColumns,
+                pdDocument, null, true, true);
+
+        return pdfTableGenerator.generate(categories);
     }
 
 

@@ -10,6 +10,7 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
+import co.smartreceipts.android.graphs.GraphsFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
 import co.smartreceipts.android.utils.FeatureFlags;
 
@@ -57,8 +58,7 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        // TODO: 08.06.2017 create new graphs fragment
-        if (position == graphsTabPosition) return ReceiptsListFragment.newListInstance();
+        if (position == graphsTabPosition) return GraphsFragment.newInstance();
         if (position == receiptsTabPosition) return ReceiptsListFragment.newListInstance();
         if (position == distanceTabPosition) return DistanceFragment.newInstance();
         if (position == generateTabPosition) return GenerateReportFragment.newInstance();

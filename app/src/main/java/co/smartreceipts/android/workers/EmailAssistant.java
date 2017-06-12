@@ -34,9 +34,12 @@ import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
+import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.IntentUtils;
@@ -276,7 +279,9 @@ public class EmailAssistant {
 
             Logger.info(this, "Generating the following report types {}.", mOptions);
             if (mOptions.contains(EmailOptions.PDF_FULL)) {
-                final Report pdfFullReport = new PdfBoxFullPdfReport(context, persistenceManager, flex);
+                final Report pdfFullReport = new PdfBoxFullPdfReport(context, mDB,
+                        persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(),
+                        flex);
                 try {
                     mFiles[EmailOptions.PDF_FULL.getIndex()] = pdfFullReport.generate(trip);
                 } catch (ReportGenerationException e) {
@@ -299,7 +304,11 @@ public class EmailAssistant {
 
                 final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
                 final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<Receipt>(csvColumns, new LegacyReceiptFilter(mPreferenceManager), true, false);
+
                 String data = csvTableGenerator.generate(receipts);
+
+
+                // Distance table
                 if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)) {
                     final List<Distance> distances = new ArrayList<>(mDB.getDistanceTable().getBlocking(trip, false));
                     if (!distances.isEmpty()) {
@@ -313,8 +322,23 @@ public class EmailAssistant {
                     }
                 }
 
+                // Categorical summation table
+                if (mPreferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)) {
+                    final List<SumCategoryGroupingResult> sumCategoryGroupingResults = new GroupingController(mDB)
+                            .getSummationByCategory(trip)
+                            .toList()
+                            .blockingGet();
+
+                    final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(flex, context)
+                            .getAllColumns();
+
+                    data += "\n\n";
+                    data += new CsvTableGenerator<>(categoryColumns, true, true).generate(sumCategoryGroupingResults);
+                }
+
                 String filename = dir.getName() + ".csv";
                 File csvFile = new File(dir, filename);
+
                 try {
                     mFiles[EmailOptions.CSV.getIndex()] = csvFile;
                     new CsvReportWriter(csvFile).write(data);
