@@ -17,7 +17,6 @@ import co.smartreceipts.android.model.impl.columns.BlankColumn;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
-import wb.android.flex.Flex;
 
 public class CategoryColumnDefinitions implements ColumnDefinitions<SumCategoryGroupingResult> {
 
@@ -42,12 +41,10 @@ public class CategoryColumnDefinitions implements ColumnDefinitions<SumCategoryG
     }
 
     private final ActualDefinition[] actualDefinitions;
-    private final Flex flex;
     private final Context context;
 
 
-    public CategoryColumnDefinitions(Flex flex, Context context) {
-        this.flex = flex;
+    public CategoryColumnDefinitions(Context context) {
         this.context = context;
         this.actualDefinitions = ActualDefinition.values();
     }
@@ -56,7 +53,7 @@ public class CategoryColumnDefinitions implements ColumnDefinitions<SumCategoryG
     public Column<SumCategoryGroupingResult> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState) {
         for (int i = 0; i < actualDefinitions.length; i++) {
             final ActualDefinition definition = actualDefinitions[i];
-            if (definitionName.equals(getColumnNameFromStringResId(definition.getStringResId()))) {
+            if (definitionName.equals(context.getString(definition.getStringResId()))) {
                 return getColumnFromClass(id, definition, definitionName, syncState);
             }
         }
@@ -69,7 +66,11 @@ public class CategoryColumnDefinitions implements ColumnDefinitions<SumCategoryG
         final ArrayList<AbstractColumnImpl<SumCategoryGroupingResult>> columns = new ArrayList<>(actualDefinitions.length);
         for (int i = 0; i < actualDefinitions.length; i++) {
             final ActualDefinition definition = actualDefinitions[i];
-            final AbstractColumnImpl<SumCategoryGroupingResult> column = getColumnFromClass(Column.UNKNOWN_ID, definition, getColumnNameFromStringResId(definition.getStringResId()), new DefaultSyncState());
+
+            final AbstractColumnImpl<SumCategoryGroupingResult> column =
+                    getColumnFromClass(Column.UNKNOWN_ID, definition,
+                            context.getString(definition.getStringResId()), new DefaultSyncState());
+
             if (column != null) {
                 columns.add(column);
             }
@@ -99,14 +100,6 @@ public class CategoryColumnDefinitions implements ColumnDefinitions<SumCategoryG
                 return new CategoryCurrencyColumn(id, definitionName, syncState);
             default:
                 throw new IllegalArgumentException("Unknown definition type: " + definition);
-        }
-    }
-
-    private String getColumnNameFromStringResId(int stringResId) {
-        if (flex != null) {
-            return flex.getString(context, stringResId);
-        } else {
-            return context.getString(stringResId);
         }
     }
 }

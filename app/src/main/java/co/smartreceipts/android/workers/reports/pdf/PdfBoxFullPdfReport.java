@@ -13,8 +13,10 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions;
+import co.smartreceipts.android.model.impl.columns.receipts.CategoryGroupingReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
@@ -44,13 +46,19 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
         final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
 
         // Categories Summation Table
-        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getFlex(), getContext())
+        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getContext())
                 .getAllColumns();
         final List<SumCategoryGroupingResult> categories = groupingController.getSummationByCategory(trip).toList().blockingGet();
 
+        // Grouping by Category Receipts Tables
+        final List<Column<Receipt>> groupingColumns = new CategoryGroupingReceiptColumnDefinitions(getContext(), getPreferences())
+                .getAllColumns();
+        final List<CategoryGroupingResult> groupingResults = groupingController.getReceiptsGroupedByCategory(trip).toList().blockingGet();
+
 
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip,
-                receipts, columns, distances, distanceColumns, categories, categoryColumns));
+                receipts, columns, distances, distanceColumns, categories, categoryColumns,
+                groupingResults, groupingColumns));
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
     }
 

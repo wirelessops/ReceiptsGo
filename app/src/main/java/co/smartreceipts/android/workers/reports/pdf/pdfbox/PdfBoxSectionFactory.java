@@ -8,6 +8,7 @@ import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 
 public interface PdfBoxSectionFactory {
@@ -20,7 +21,9 @@ public interface PdfBoxSectionFactory {
             @NonNull List<Distance> columns,
             @NonNull List<Column<Distance>> distanceColumns,
             @NonNull List<SumCategoryGroupingResult> categories,
-            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns);
+            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
+            @NonNull List<CategoryGroupingResult> groupingResults,
+            @NonNull List<Column<Receipt>> groupingColumns);
 
     @NonNull
     PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip,

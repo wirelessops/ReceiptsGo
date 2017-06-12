@@ -36,9 +36,11 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions;
+import co.smartreceipts.android.model.impl.columns.receipts.CategoryGroupingReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -329,11 +331,28 @@ public class EmailAssistant {
                             .toList()
                             .blockingGet();
 
-                    final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(flex, context)
+                    final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(context)
                             .getAllColumns();
 
                     data += "\n\n";
                     data += new CsvTableGenerator<>(categoryColumns, true, true).generate(sumCategoryGroupingResults);
+                }
+
+                // Separated tables for each category
+                if (mPreferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)) {
+                    List<CategoryGroupingResult> groupingResults = new GroupingController(mDB)
+                            .getReceiptsGroupedByCategory(trip)
+                            .toList()
+                            .blockingGet();
+
+                    final List<Column<Receipt>> groupingColumns = new CategoryGroupingReceiptColumnDefinitions(context, mPreferenceManager)
+                            .getAllColumns();
+
+                    for (CategoryGroupingResult groupingResult : groupingResults) {
+                        data += "\n\n";
+                        data += groupingResult.getCategory().getName() + "\n";
+                        data += new CsvTableGenerator<>(groupingColumns, true, true).generate(groupingResult.getReceipts());
+                    }
                 }
 
                 String filename = dir.getName() + ".csv";
@@ -525,8 +544,8 @@ public class EmailAssistant {
                     builder.setTitle(R.string.report_pdf_error_too_many_columns_title)
                             .setMessage(
                                     mPreferenceManager.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)
-                                    ? context.getString(R.string.report_pdf_error_too_many_columns_message)
-                            : context.getString(R.string.report_pdf_error_too_many_columns_message_landscape) )
+                                            ? context.getString(R.string.report_pdf_error_too_many_columns_message)
+                                            : context.getString(R.string.report_pdf_error_too_many_columns_message_landscape))
                             .setPositiveButton(R.string.report_pdf_error_go_to_settings, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) {

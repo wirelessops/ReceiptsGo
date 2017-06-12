@@ -20,6 +20,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.comparators.ReceiptDateComparator;
 import co.smartreceipts.android.model.converters.DistanceToReceiptsConverter;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -35,7 +36,10 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
 public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
     private static final float EPSILON = 0.0001f;
-    
+    private static final int EMPTY_ROW_HEIGHT_NORMAL = 40;
+    private static final int EMPTY_ROW_HEIGHT_SMALL = 10;
+
+
     private final List<Receipt> receipts;
     private final List<Column<Receipt>> receiptColumns;
 
@@ -44,6 +48,9 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
     private final List<SumCategoryGroupingResult> categories;
     private final List<Column<SumCategoryGroupingResult>> categoryColumns;
+
+    private final List<CategoryGroupingResult> groupingResults;
+    private final List<Column<Receipt>> groupingColumns;
 
     private final UserPreferenceManager preferenceManager;
 
@@ -56,17 +63,20 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                                             @NonNull List<Distance> distances,
                                             @NonNull List<Column<Distance>> distanceColumns,
                                             @NonNull List<SumCategoryGroupingResult> categories,
-                                            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns) {
+                                            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
+                                            @NonNull List<CategoryGroupingResult> groupingResults,
+                                            @NonNull List<Column<Receipt>> groupingColumns) {
         super(context, trip);
         this.receipts = Preconditions.checkNotNull(receipts);
         this.distances = Preconditions.checkNotNull(distances);
         this.categories = Preconditions.checkNotNull(categories);
+        this.groupingResults = Preconditions.checkNotNull(groupingResults);
         this.receiptColumns = Preconditions.checkNotNull(receiptColumns);
         this.distanceColumns = Preconditions.checkNotNull(distanceColumns);
         this.categoryColumns = Preconditions.checkNotNull(categoryColumns);
+        this.groupingColumns = Preconditions.checkNotNull(groupingColumns);
         preferenceManager = Preconditions.checkNotNull(context.getPreferences());
     }
-
 
 
     @Override
@@ -90,17 +100,39 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
         final GridRenderer gridRenderer = new GridRenderer(availableWidth, availableHeight);
         gridRenderer.addRows(writeHeader(trip, doc, totals));
-        gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, 40)));
+        gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
         gridRenderer.addRows(writeReceiptsTable(receipts, doc));
 
         if (preferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports) && !distances.isEmpty()) {
-            gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, 40)));
+            gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
             gridRenderer.addRows(writeDistancesTable(distances, doc));
         }
 
         if (preferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports) && !categories.isEmpty()) {
-            gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, 40)));
+            gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
             gridRenderer.addRows(writeCategoriesTable(categories, doc));
+        }
+
+        if (preferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports) && !groupingResults.isEmpty()) {
+
+            for (CategoryGroupingResult groupingResult : groupingResults) {
+                gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
+
+                GridRowRenderer groupTitleRenderer = new GridRowRenderer(new TextRenderer(
+                        pdfBoxContext.getAndroidContext(),
+                        doc,
+                        groupingResult.getCategory().getName(),
+                        pdfBoxContext.getColorManager().getColor(PdfColorStyle.Outline),
+                        pdfBoxContext.getFontManager().getFont(PdfFontStyle.TableHeader)));
+
+                groupTitleRenderer.getRenderingFormatting().addFormatting(new Alignment(Alignment.Type.Start));
+
+                GridRowRenderer paddingRenderer = new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_SMALL));
+
+                gridRenderer.addRow(groupTitleRenderer);
+                gridRenderer.addRow(paddingRenderer);
+                gridRenderer.addRows(writeSeparateCategoryTable(groupingResult.getReceipts(), doc));
+            }
         }
 
         gridRenderer.measure();
@@ -122,7 +154,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 trip.getName(),
                 pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Title))));
-        
+
         if (!data.receiptsPrice.equals(data.netPrice)) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
@@ -211,7 +243,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         return headerRows;
     }
 
-    private List<GridRowRenderer>  writeReceiptsTable(@NonNull List<Receipt> receipts, @NonNull PDDocument pdDocument) throws IOException {
+    private List<GridRowRenderer> writeReceiptsTable(@NonNull List<Receipt> receipts, @NonNull PDDocument pdDocument) throws IOException {
 
         final List<Receipt> receiptsTableList = new ArrayList<>(receipts);
         if (preferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
@@ -239,5 +271,12 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         return pdfTableGenerator.generate(categories);
     }
 
+    private List<GridRowRenderer> writeSeparateCategoryTable(@NonNull List<Receipt> receipts, @NonNull PDDocument pdDocument) throws IOException {
+
+        final PdfTableGenerator<Receipt> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, groupingColumns,
+                pdDocument, null, true, true);
+
+        return pdfTableGenerator.generate(receipts);
+    }
 
 }
