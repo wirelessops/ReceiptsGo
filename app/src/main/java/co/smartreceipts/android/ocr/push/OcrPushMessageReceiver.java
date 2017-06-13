@@ -17,7 +17,7 @@ import io.reactivex.subjects.Subject;
 
 public class OcrPushMessageReceiver implements PushMessageReceiver {
 
-    private static final int TIMEOUT_SECONDS = 13;
+    private static final int TIMEOUT_SECONDS = 15;
 
     private final Subject<Object> pushResultSubject = PublishSubject.create();
     private final Scheduler subscribeOnScheduler;
