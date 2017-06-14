@@ -398,7 +398,7 @@
     <string name="column_item_exchange_rate">Exchange Rate</string>
     <string name="column_item_pictured">Pictured</string>
     <string name="column_item_reimbursable">Reimbursable</string>
-    <string name="column_item_deprecated_expensable">Expensable</string>
+    <string name="column_item_deprecated_expensable" translatable="false">Expensable</string>
     <string name="column_item_index">Receipt Index</string>
     <string name="column_item_id">Receipt ID</string>
     <string name="column_item_payment_method">Payment Method</string>
