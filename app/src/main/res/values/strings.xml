@@ -151,7 +151,7 @@
     <string name="category_dues_subscriptions_code">ZDUE</string>
     <string name="category_meals_justified">Meals (Justified)</string>
     <string name="category_meals_justified_code">ZMEO</string>
-    <string name="category_stationery_stations">Stationery/Stations</string>
+    <string name="category_stationery_stations">Stations</string>
     <string name="category_stationery_stations_code">ZSTS</string>
     <string name="category_training_fees">Training Fees</string>
     <string name="category_training_fees_code">ZTRN</string>
