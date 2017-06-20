@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============== Preference Headers ================= -->
+    <string name="pref_general_header">Général</string>
+    <string name="pref_receipt_header">Reçus</string>
+    <string name="pref_output_header">Sortie du rapport</string>
+
+    <string name="pref_email_header">E-mail</string>
+    <string name="pref_camera_header">Caméra</string>
+
+    <string name="pref_layout_header">Personnalisations de la mise en page</string>
+    <string name="pref_distance_header">Distance</string>
+    <string name="pref_pro_header">Recettes Intelligentes Plus</string>
+    <string name="pref_help_header">Assistance</string>
+    <string name="pref_about_header">À propos</string>
+
+
+    <!-- ============== Preference General ================= -->
+
+    <string name="pref_general_trip_duration_title">Durée du voyage par défaut</string>
+
+    <string name="pref_general_default_currency_title">Devise par défaut</string>
+
+    <string name="pref_general_default_date_separator_title">Séparateur de date par défaut</string>
+
+    <string name="pref_general_track_cost_center_title">Suivre le centre de coûts</string>
+    <string name="pref_general_track_cost_center_summaryOn">Inclure le centre de coûts pour les rapports</string>
+    <string name="pref_general_track_cost_center_summaryOff">Ne pas inclure le centre de coûts pour les rapports</string>
+
+    <!-- ============== Preference Receipt ================= -->
+
+    <string name="pref_receipt_customize_categories_title">Personnaliser les catégories de reçus</string>
+    <string name="pref_receipt_customize_categories_summary">Appuyez ici pour ajouter/modifier vos catégories</string>
+
+    <string name="pref_receipt_predict_categories_title">Prédire les catégories de reçus</string>
+    <string name="pref_receipt_predict_categories_summary">Remplir automatiquement la catégorie en fonction des données antérieures</string>
+
+    <string name="pref_receipt_match_name_to_category_title">Associer le nom à une catégorie</string>
+    <string name="pref_receipt_match_name_to_category_summary">Assigner automatiquement le nom à la catégorie</string>
+
+    <string name="pref_receipt_match_comment_to_category_title">Associer le commentaire à la catégorie</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Assigner automatiquement le commentaire à la catégorie</string>
+
+    <string name="pref_receipt_reimbursable_only_title">Seulement rapporter les frais remboursables</string>
+    <string name="pref_receipt_reimbursable_only_summary">Omettre les autres reçus du fichier de sortie</string>
+
+    <string name="pref_receipt_reimbursable_default_title">Reçus remboursables par défaut</string>
+
+    <string name="pref_receipt_include_tax_field_title">Inclure un champ taxe</string>
+    <string name="pref_receipt_include_tax_field_summary">Ajoute une ligne pour les taxes</string>
+
+    <string name="pref_receipt_tax_percent_title">Pourcentage d\'impôt par défaut</string>
+
+    <string name="pref_receipt_pre_tax_title">Supposer que le prix est hors taxe</string>
+    <string name="pref_receipt_pre_tax_summary_on">Calcule les taxes à partir du prix hors taxe</string>
+    <string name="pref_receipt_pre_tax_summary_off">Calcule les taxes à partir du prix toutes taxes comprises</string>
+
+    <string name="pref_receipt_enable_autocomplete_title">Activer les suggestions de saisie automatique</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Proposer des valeurs à partir des entrées précédentes</string>
+
+    <string name="pref_receipt_minimum_receipts_price_title">Prix ​​de reçu minimum</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">Inclure tous les reçus dans le rapport</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">Seulement rapporter les prix des reçus supérieurs à %s</string>
+
+    <string name="pref_receipt_default_to_report_start_date_title">Date de début du rapport par défaut</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Définit la date des reçus pour correspondre à la date du rapport</string>
+
+    <string name="pref_receipt_show_id_title">Afficher l\'ID des reçus</string>
+    <string name="pref_receipt_show_id_summary">Affiche un champ d\'ID généré automatiquement</string>
+
+    <string name="pref_receipt_full_page_title">Supposer la page entière</string>
+    <string name="pref_receipt_full_page_summary">Marque les reçus comme page entière par défaut</string>
+
+    <string name="pref_receipt_use_payment_methods_title">Activer les modes de paiement</string>
+    <string name="pref_receipt_use_payment_methods_summary">Sélectionnez cette option pour suivre les méthodes de paiement des reçus</string>
+
+    <string name="pref_receipt_payment_methods_title">Personnaliser les modes de paiement</string>
+    <string name="pref_receipt_payment_methods_summary">Appuyez ici pour ajouter/modifier les modes de paiement</string>
+
+    <!-- ============= Preference Output ================= -->
+
+    <string name="pref_output_custom_csv_title">Personnaliser le fichier de sortie CSV</string>
+
+
+    <string name="pref_output_username_title">Identifiant d\'utilisateur</string>
+    <string name="pref_output_username_emptyValue">Utilisé comme un champ de sortie personnalisé</string>
+
+    <string name="pref_output_print_receipt_id_by_photo_title">Imprimer l\'ID par photo</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Affiche l\'ID du reçu à la place de l\'indice</string>
+
+    <string name="pref_output_print_receipt_comment_by_photo_title">Imprimer le commentaire du reçu par photo</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Affiche le commentaire du reçu au-dessus des photos PDF</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Masquer le commentaire du reçu au-dessus des photos PDF</string>
+
+    <string name="pref_output_receipts_landscape_title">Imprimer le tableau des reçus en mode paysage</string>
+    <string name="pref_output_receipts_landscape_on">Le tableau des reçus est imprimé en mode paysage</string>
+    <string name="pref_output_receipts_landscape_off">Le tableau des reçus est imprimé en mode portrait</string>
+
+    <!-- ============== Preference Email ================= -->
+
+    <string name="pref_email_default_email_to_title">E-mail par défaut au destinataire</string>
+
+    <string name="pref_email_default_email_cc_title">Destinataire CC de l\'e-mail par défaut</string>
+
+    <string name="pref_email_default_email_bcc_title">Destinataire BCC de l\'e-mail par défaut</string>
+    <string name="pref_email_default_email_emptyValue">Séparer les entrées par un point-virgule (;)</string>
+
+    <string name="pref_email_default_email_subject_title">Objet de l\'e-mail par défaut</string>
+
+    <!-- ============= Preference Camera ================= -->
+
+    <string name="pref_camera_bw_title">Convertir en niveaux de gris</string>
+    <string name="pref_camera_bw_summary">Enregistre l\'image en noir et blanc</string>
+
+    <string name="pref_camera_rotate_title">Rotation automatique des images</string>
+    <string name="pref_camera_rotate_summaryOn">Essayez de faire pivoter les images en position verticale</string>
+    <string name="pref_camera_rotate_summaryOff">Ne pas faire pivoter les images</string>
+
+    <!-- ============= Preference Layout ================= -->
+
+    <string name="pref_layout_display_date_title">Inclure la date des reçus</string>
+    <string name="pref_layout_display_date_summary">Affiche la date des reçus</string>
+
+    <string name="pref_layout_display_category_title">Inclure la catégorie des reçus</string>
+    <string name="pref_layout_display_category_summary">Affiche la catégorie des reçus</string>
+
+    <string name="pref_layout_display_photo_title">Inclure le marqueur Image/PDF</string>
+    <string name="pref_layout_display_photo_summary">Indiquer si les entrées ont une photo/un fichier PDF</string>
+
+    <!-- ============= Preference Distance ================= -->
+
+    <string name="pref_distance_include_price_in_report_title">Ajouter les frais de distance au rapport</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">Inclure les frais de distance au total du rapport</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">Exclure les frais de distance du total du rapport</string>
+
+    <string name="pref_distance_rate_title">Prix de l\'essence</string>
+    <string name="pref_distance_rate_summaryOff">Prix par miles ou kilomètre parcouru</string>
+    <string name="pref_distance_rate_summaryOn">%s par mi ou km</string>
+
+    <string name="pref_distance_print_table_title">Inclure le tableau des distances</string>
+    <string name="pref_distance_print_table_summaryOn">Les rapports PDF/CSV comprennent un tableau des distances</string>
+    <string name="pref_distance_print_table_summaryOff">Les rapports PDF/CSV ne comprennent pas de tableau des distances</string>
+
+    <string name="pref_distance_print_daily_title">Rapport sur la distance quotidienne</string>
+    <string name="pref_distance_print_daily_summaryOn">Afficher la distance en ajoutant une ligne de reçu</string>
+    <string name="pref_distance_print_daily_summaryOff">Ne pas afficher la distance sous forme de ligne de reçu</string>
+
+    <string name="pref_distance_as_price_title">Frais de distance en sous-titre</string>
+    <string name="pref_distance_as_price_summaryOn">Afficher le total des frais de distance dans le sous-titre de l\'appli</string>
+    <string name="pref_distance_as_price_summaryOff">Afficher la distance parcourue dans le sous-titre de l\'appli</string>
+
+    <!-- ================= Preference Plus ================== -->
+
+    <string name="pref_pro_pdf_footer_title">Pied de page du texte PDF</string>
+
+    <!-- ============== Preference Support ================= -->
+
+    <string name="pref_help_send_love_title">Envoyer un j\'aime</string>
+
+    <string name="pref_help_send_feedback_title">Envoyer des commentaires</string>
+
+    <string name="pref_help_support_email_title">Envoyer un e-mail pour obtenir de l\'aide</string>
+
+    <!-- =============== Preference About ================== -->
+
+    <string name="pref_about_version_title">Version</string>
+
+    <string name="pref_about_about_title">À propos</string>
+    <string name="pref_about_about_dialogMessage">Recettes Intelligentess a été créé et est maintenu par Will Baumann. L\'appli est distribuée sous Licence Publique Générale GNU</string>
+
+    <string name="pref_about_terms_title">Conditions d\'utilisation</string>
+    <string name="pref_about_terms_dialogMessage">Ce programme est un logiciel gratuit : vous pouvez le redistribuer et/ou le modifier selon les termes de la Licence Publique Générale GNU publiée par la Free Software Foundation, soit la version 3 de la licence, ou (à votre choix) toute version ultérieure.\n\nCe programme est distribué dans l’espoir qu’il sera utile, mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de COMMERCIALISATION ou DE DISPOSITION À UN USAGE PARTICULIER. Voir la Licence Publique Générale GNU pour plus d’informations.\n\nVous pouvez consulter une copie de la Licence Publique Générale GNU ici : http://www.gnu.org/licenses/.</string>
+
+    <string name="pref_about_privacy_policy_title">Politique de confidentialité</string>
+    <!-- =============== Preference Misc =================== -->
+
+</resources>

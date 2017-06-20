@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============== Preference Headers ================= -->
+    <string name="pref_general_header">General</string>
+    <string name="pref_receipt_header">Recibos</string>
+    <string name="pref_output_header">Salida del informe</string>
+
+    <string name="pref_email_header">Correo electrónico</string>
+    <string name="pref_camera_header">Cámara</string>
+
+    <string name="pref_layout_header">Personalización de diseño</string>
+    <string name="pref_distance_header">Distancia</string>
+    <string name="pref_pro_header">Recibos Inteligentes Plus</string>
+    <string name="pref_help_header">Soporte</string>
+    <string name="pref_about_header">Acerca de</string>
+
+
+    <!-- ============== Preference General ================= -->
+
+    <string name="pref_general_trip_duration_title">Distancia de viaje predeterminada</string>
+
+    <string name="pref_general_default_currency_title">Moneda predeterminada</string>
+
+    <string name="pref_general_default_date_separator_title">Separador de fecha predeterminado</string>
+
+    <string name="pref_general_track_cost_center_title">Monitorear centro de costos</string>
+    <string name="pref_general_track_cost_center_summaryOn">Incluir centro de costos en los informes</string>
+    <string name="pref_general_track_cost_center_summaryOff">No incluir centro de costos en los informes</string>
+
+    <!-- ============== Preference Receipt ================= -->
+
+    <string name="pref_receipt_customize_categories_title">Personalizar categorías de recibos</string>
+    <string name="pref_receipt_customize_categories_summary">Toca aquí para añadir/editar tus categorías</string>
+
+    <string name="pref_receipt_predict_categories_title">Predecir categorías de recibos</string>
+    <string name="pref_receipt_predict_categories_summary">Llenar automáticamente las categorías con base en los datos anteriores</string>
+
+    <string name="pref_receipt_match_name_to_category_title">Coincidir el nombre con la categoría</string>
+    <string name="pref_receipt_match_name_to_category_summary">Definir el nombre automáticamente a la categoría</string>
+
+    <string name="pref_receipt_match_comment_to_category_title">Coincidir el comentario con la categoría</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Definir el comentario automáticamente a la categoría</string>
+
+    <string name="pref_receipt_reimbursable_only_title">Solo informar lo reembolsable</string>
+    <string name="pref_receipt_reimbursable_only_summary">Omitir otros recibos en la salida</string>
+
+    <string name="pref_receipt_reimbursable_default_title">Los recibos son reembolsables de forma predeterminada</string>
+
+    <string name="pref_receipt_include_tax_field_title">Incluir campo de impuesto</string>
+    <string name="pref_receipt_include_tax_field_summary">Añade una línea para los impuestos</string>
+
+    <string name="pref_receipt_tax_percent_title">Porcentaje predeterminado de impuesto</string>
+
+    <string name="pref_receipt_pre_tax_title">Asumir que el precio no incluye impuesto</string>
+    <string name="pref_receipt_pre_tax_summary_on">Calcular los impuestos del precio antes de impuesto</string>
+    <string name="pref_receipt_pre_tax_summary_off">Calcular los impuestos del precio después de impuesto</string>
+
+    <string name="pref_receipt_enable_autocomplete_title">Habilitar sugerencias para autocompletar</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Sugerir valor de entradas anteriores</string>
+
+    <string name="pref_receipt_minimum_receipts_price_title">Precio mínimo del recibo</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">Incluir todos los recibos en el informe</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">Incluir únicamente recibos con precios de más de %s</string>
+
+    <string name="pref_receipt_default_to_report_start_date_title">Restablecer a la fecha de inicial del informe</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Define que la fecha del recibo coincida con la del informe</string>
+
+    <string name="pref_receipt_show_id_title">Mostrar el Id. de recibo</string>
+    <string name="pref_receipt_show_id_summary">Muestra el campo Id. generado automáticamente</string>
+
+    <string name="pref_receipt_full_page_title">Asumir página completa</string>
+    <string name="pref_receipt_full_page_summary">Marca los recibos como página completa de forma predeterminada</string>
+
+    <string name="pref_receipt_use_payment_methods_title">Habilitar métodos de pago</string>
+    <string name="pref_receipt_use_payment_methods_summary">Selecciona para hacer seguimiento a los métodos de pago de los recibos</string>
+
+    <string name="pref_receipt_payment_methods_title">Personalizar métodos de pago</string>
+    <string name="pref_receipt_payment_methods_summary">Toca aquí para añadir/editar métodos de pago</string>
+
+    <!-- ============= Preference Output ================= -->
+
+    <string name="pref_output_custom_csv_title">Personalizar salida CSV</string>
+
+
+    <string name="pref_output_username_title">Id. de usuario</string>
+    <string name="pref_output_username_emptyValue">Usado como campo de salida personalizado</string>
+
+    <string name="pref_output_print_receipt_id_by_photo_title">Imprimir Id. por foto</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Muestra el Id. de recibo en vez del índice</string>
+
+    <string name="pref_output_print_receipt_comment_by_photo_title">Imprimir comentario de recibo por foto</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Muestra el comentario del recibo sobre las fotos PDF</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Ocultar el comentario del recibo sobre las fotos PDF</string>
+
+    <string name="pref_output_receipts_landscape_title">Imprimir la tabla de recibos en modo horizontal</string>
+    <string name="pref_output_receipts_landscape_on">La tabla de recibos se imprime en modo horizontal</string>
+    <string name="pref_output_receipts_landscape_off">La tabla de recibos se imprime en modo vertical</string>
+
+    <!-- ============== Preference Email ================= -->
+
+    <string name="pref_email_default_email_to_title">Destinatario predeterminado del correo electrónico</string>
+
+    <string name="pref_email_default_email_cc_title">Destinatario predeterminado de la copia del correo electrónico</string>
+
+    <string name="pref_email_default_email_bcc_title">Destinatario predeterminado de la copia oculta del correo electrónico</string>
+    <string name="pref_email_default_email_emptyValue">Separar las entradas con punto y coma (;)</string>
+
+    <string name="pref_email_default_email_subject_title">Asunto predeterminado del correo electrónico</string>
+
+    <!-- ============= Preference Camera ================= -->
+
+    <string name="pref_camera_bw_title">Convertir a escala de grises</string>
+    <string name="pref_camera_bw_summary">Guarda la imagen en blanco y negro</string>
+
+    <string name="pref_camera_rotate_title">Rotar automáticamente las imágenes</string>
+    <string name="pref_camera_rotate_summaryOn">Intenta rotar las imágenes hacia arriba</string>
+    <string name="pref_camera_rotate_summaryOff">No rotar las imágenes</string>
+
+    <!-- ============= Preference Layout ================= -->
+
+    <string name="pref_layout_display_date_title">Incluir fecha del recibo</string>
+    <string name="pref_layout_display_date_summary">Muestra la fecha de la lista de ítems del recibo</string>
+
+    <string name="pref_layout_display_category_title">Incluir categoría del recibo</string>
+    <string name="pref_layout_display_category_summary">Muestra la categoría de la lista de ítems del recibo</string>
+
+    <string name="pref_layout_display_photo_title">Incluir imagen/marcador PDF</string>
+    <string name="pref_layout_display_photo_summary">Indica si las entradas tienen una foto/PDF</string>
+
+    <!-- ============= Preference Distance ================= -->
+
+    <string name="pref_distance_include_price_in_report_title">Añadir precio de la distancia al informe</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">Incluir el precio de la distancia en el total del informe</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">Excluir el precio de la distancia del total del informe</string>
+
+    <string name="pref_distance_rate_title">Tarifa del combustible</string>
+    <string name="pref_distance_rate_summaryOff">La tarifa por millas o kilómetros recorridos</string>
+    <string name="pref_distance_rate_summaryOn">%s por milla o kilómetro</string>
+
+    <string name="pref_distance_print_table_title">Incluir tabla de distancias</string>
+    <string name="pref_distance_print_table_summaryOn">Los informes en PDF/CSV incluyen la tabla de distancias</string>
+    <string name="pref_distance_print_table_summaryOff">Los informes en PDF/CSV no incluyen la tabla de distancias</string>
+
+    <string name="pref_distance_print_daily_title">Informar la distancia diaria</string>
+    <string name="pref_distance_print_daily_summaryOn">Mostrar la distancia como un ítem del recibo</string>
+    <string name="pref_distance_print_daily_summaryOff">No mostrar la distancia como un ítem del recibo</string>
+
+    <string name="pref_distance_as_price_title">Mostrar el precio en el subtítulo</string>
+    <string name="pref_distance_as_price_summaryOn">Mostrar el precio total de la distancia en el subtítulo de la app</string>
+    <string name="pref_distance_as_price_summaryOff">Mostrar la distancia recorrida en el subtítulo de la app</string>
+
+    <!-- ================= Preference Plus ================== -->
+
+    <string name="pref_pro_pdf_footer_title">Texto del pie de página PDF</string>
+
+    <!-- ============== Preference Support ================= -->
+
+    <string name="pref_help_send_love_title">Enviar amor</string>
+
+    <string name="pref_help_send_feedback_title">Enviar comentarios</string>
+
+    <string name="pref_help_support_email_title">Enviar correo electrónico para obtener asistencia</string>
+
+    <!-- =============== Preference About ================== -->
+
+    <string name="pref_about_version_title">Versión</string>
+
+    <string name="pref_about_about_title">Acerca de</string>
+    <string name="pref_about_about_dialogMessage">Recibos Inteligentes fue creada y es mantenida por Will Baumann. Está licenciada bajo la licencia pública general de Affero</string>
+
+    <string name="pref_about_terms_title">Términos de uso</string>
+    <string name="pref_about_terms_dialogMessage">Este programa es software gratuito: puedes redistribuirlo y/o modificarlo de conformidad con los términos de la licencia pública general de Affero como fue publicada por la Fundación para el Software Libre, ya sea en la versión 3 de la licencia, o a tu elección, cualquier versión posterior.\n\nEste programa se distribuye con la esperanza que sea útil, pero SIN GARANTÍA ALGUNA, ni siquiera garantía implícita de MERCANTIBILIDAD o IDONEIDAD PARA UN FIN EN PARTICULAR.  Consulta la licencia pública general de Affero para obtener más información.\n\nPuedes consultar una copia de la licencia pública general de Affero en http://www.gnu.org/licenses/.</string>
+
+    <string name="pref_about_privacy_policy_title">Política de Privacidad</string>
+
+</resources>

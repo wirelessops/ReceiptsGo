@@ -2,7 +2,7 @@
 <resources>
 
     <!-- ============== Preference Headers ================= -->
-    <string name="pref_header_key">HeaderKey</string>
+    <string name="pref_header_key" translatable="false">HeaderKey</string>
     <string name="pref_general_header">General</string>
     <string name="pref_receipt_header">Receipts</string>
     <string name="pref_output_header">Report Output</string>

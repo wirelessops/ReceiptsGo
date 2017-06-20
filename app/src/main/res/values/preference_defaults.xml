@@ -32,7 +32,7 @@
     <string name="pref_email_default_email_to_defaultValue" />
     <string name="pref_email_default_email_cc_defaultValue" />
     <string name="pref_email_default_email_bcc_defaultValue" />
-    <string name="EMAIL_DATA_SUBJECT">SmartReceipts - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
+    <string name="EMAIL_DATA_SUBJECT">Smart Receipts - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
 
     <!-- ============= Preference Camera ================= -->
     <bool name="pref_camera_bw_defaultValue">false</bool>

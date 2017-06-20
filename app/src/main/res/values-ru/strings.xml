@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <!-- =================== App Details ===================== -->
+    <string name="app_name">Smart Receipts</string>
+
+    <!-- ================ Main Menu Options ================== -->
+    <string name="menu_main_settings">Настройки</string>
+    <string name="menu_main_categories">Категории</string>
+    <string name="menu_main_csv">Настройка CSV</string>
+    <string name="menu_main_pdf">Настройка PDF</string>
+    <string name="menu_main_ocr_configuration">Автоматическое сканирование (OCR)</string>
+    <string name="menu_main_export">Резервная копия</string>
+
+    <!-- ================ General Strings ================== -->
+    <string name="add">Добавить</string>
+    <string name="column_item">Колонка %s</string>
+    <string name="copy">Копия</string>
+    <string name="daily_total">Всего в день: %s</string>
+    <string name="day">%s День</string>
+    <string name="days">%s Дней</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_item">Удалить %s?</string>
+    <string name="delete_sync_information">Любые удаленно синхронизированные данные для этого раздела также будут удалены.</string>
+    <string name="distance">Расстояние</string>
+    <string name="distance_total_item">Расстояние, всего: %s</string>
+    <string name="edit">Редактировать</string>
+    <string name="export">Экспорт</string>
+    <string name="feedback">%s - Отзыв</string>
+    <string name="image">Изображение</string>
+    <string name="import_string">Импорт</string>
+    <string name="import_string_item">Импорт %s</string>
+    <string name="item_code">Код:</string>
+    <string name="item_name">Имя:</string>
+    <string name="move">Переместить</string>
+    <string name="move_copy_item">Переместить/Копировать %s?</string>
+    <string name="next_id">Следующий ID: %d</string>
+    <string name="no">Нет</string>
+    <string name="pdf">PDF</string>
+    <string name="report">Отчет</string>
+    <string name="report_attached">1 Отчет приложен</string>
+    <string name="reports_attached">%s отчетов приложено</string>
+    <string name="save">Сохранить</string>
+    <string name="send_email">Отправить файл…</string>
+    <string name="submit">Отправить</string>
+    <string name="support">%s - Поддержка</string>
+    <string name="total">Всего</string>
+    <string name="undefined">Не определено</string>
+    <string name="update">Обновить</string>
+    <string name="yes">Да</string>
+    <string name="yes_as_pdf">Да - в виде PDF</string>
+
+    <!-- =============== Subscriptions ================ -->
+    <string name="pro_subscription">Smart Receipts Plus</string>
+
+    <!-- ================ No More Ads ================= -->
+    <string name="missing_ad_suggest_removal_upsell">Устали от рекламы? Нажмите, чтобы попробовать версию без рекламы</string>
+
+    <!-- ============= Report Navigation ============== -->
+    <string name="report_info_receipts">Чеки</string>
+    <string name="report_info_distance">Расстояние</string>
+    <string name="report_info_generate">Создать</string>
+
+    <!-- ============= Report Generation ============== -->
+    <string name="report_header_from">От: %s</string>
+    <string name="report_header_to">Кому: %s</string>
+    <string name="report_header_receipts_total">Всего чеков: %s</string>
+    <string name="report_header_receipts_total_tax">Налог, всего: %s</string>
+    <string name="report_header_receipts_total_no_tax">Квитанции, всего (без налога): %s</string>
+    <string name="report_header_receipts_total_reimbursable">Квитанции, всего (возмещаемые): %s</string>
+    <string name="report_header_distance_total">Расстояние, всего: %s</string>
+    <string name="report_header_gross_total">Всего: %s</string>
+    <string name="report_header_cost_center">Центр расходов: %s</string>
+    <string name="report_header_comment">Комментарий: %s</string>
+    <string name="report_pdf_generation_error">При создании отчета произошла ошибка</string>
+    <string name="report_pdf_error_too_many_columns_title">Слишком много колонок</string>
+    <string name="report_pdf_error_too_many_columns_message">Не хватает места, чтобы разместить все колонки в отчете. Пожалуйста, попробуйте ограничить количество колонок в настройках.</string>
+    <string name="report_pdf_error_too_many_columns_message_landscape">Не хватает места, чтобы разместить все колонки в отчете. Попробуйте ограничить количество колонок в настройках или использовать ландшафтный режим.</string>
+    <string name="report_pdf_error_go_to_settings">Перейти к настройкам</string>
+
+    <!-- ===================== ocr ======================== -->
+    <string name="ocr_informational_tooltip_configure_text">Настроить автоматическое сканирование? Нажмите здесь.</string>
+    <plurals name="ocr_informational_tooltip_limited_scans_text">
+    <item quantity="one">%d Скан остался. Нажмите здесь, чтобы добавить еще.</item>
+    <item quantity="few">%d Скана осталось. Нажмите, чтобы добавить еще.</item>
+    <item quantity="many">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
+    <item quantity="other">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
+  </plurals>
+    <string name="ocr_status_title">Выполняется сканирование (OCR):</string>
+    <string name="ocr_status_message_uploading_image">Загрузка чека...</string>
+    <string name="ocr_status_message_performing_scan">Сканирование метаданных чека...</string>
+    <string name="ocr_status_message_fetching_results">Обработка результатов...</string>
+    <string name="ocr_configuration_title">Автоматическое сканирование (OCR)</string>
+    <string name="ocr_configuration_scans_remaining">Сканов OCR осталось: %d</string>
+    <string name="ocr_configuration_my_account">%s</string>
+    <string name="ocr_configuration_beta">Все пользователи бета-версии получают 50 бесплатных сканов!</string>
+    <string name="ocr_configuration_welcome">Автоматическое сканирование (OCR):</string>
+    <string name="ocr_configuration_information">Smart Receipts интегрирована с Taggun для обеспечения сервисов автоматического сканирования (т.е. OCR), которые могут извлекать метаданные квитанций, такие как цена, налог, даты и данные продавца из ваших фото.</string>
+    <string name="ocr_configuration_information_line2">Мы используем комбинацию Google Vision и машинного обучения, чтобы быстро (часто в течение 5 секунд или меньше) обеспечить результаты, которые будут становиться все более точными с течением времени. Так как эти сервисы взимают плату за использование, мы будем взимать плату за сканирование каждой квитанции.</string>
+    <string name="ocr_is_enabled">Включить автоматическое сканирование (OCR)?</string>
+    <string name="ocr_save_scans_to_improve_results">Позвольте нам сохранять изображения, чтобы повысить точность?</string>
+    <string name="ocr_configuration_available_purchases">Доступные покупки - Нажмите, чтобы купить:</string>
+
+    <!-- ================ Categories ================== -->
+    <string name="category_name">Имя:</string>
+    <string name="category_code">Код:</string>
+    <string name="category_null">&lt;Категория&gt;</string>
+    <string name="category_null_code">NUL</string>
+    <string name="category_airfare">Стоимость авиабилета</string>
+    <string name="category_airfare_code">AIRP</string>
+    <string name="category_breakfast">Завтрак</string>
+    <string name="category_breakfast_code">BRFT</string>
+    <string name="category_dinner">Ужин</string>
+    <string name="category_dinner_code">DINN</string>
+    <string name="category_entertainment">Досуг</string>
+    <string name="category_entertainment_code">ДОС</string>
+    <string name="category_gasoline">Бензин</string>
+    <string name="category_gasoline_code">БЕНЗИН</string>
+    <string name="category_gift">Подарок</string>
+    <string name="category_gift_code">ПОДАРОК</string>
+    <string name="category_hotel">Отель</string>
+    <string name="category_hotel_code">ОТЛ</string>
+    <string name="category_laundry">Прачечная</string>
+    <string name="category_laundry_code">ЛАНЧ</string>
+    <string name="category_lunch">Обед</string>
+    <string name="category_lunch_code">ОБЕД</string>
+    <string name="category_other">Другое</string>
+    <string name="category_other_code">РАЗНОЕ</string>
+    <string name="category_parking_tolls">Парковка/Пошлины</string>
+    <string name="category_parking_tolls_code">ПАРК</string>
+    <string name="category_postage_shipping">Почта/Посылки</string>
+    <string name="category_postage_shipping_code">ПОЧТА</string>
+    <string name="category_car_rental">Прокат авто</string>
+    <string name="category_car_rental_code">ПРОКАТ</string>
+    <string name="category_taxi_bus">Такси/Автобус</string>
+    <string name="category_taxi_bus_code">ТАКСИ</string>
+    <string name="category_telephone_fax">Телефон/Факс</string>
+    <string name="category_telephone_fax_code">ТЕЛЕ</string>
+    <string name="category_tip">Чаевые</string>
+    <string name="category_tip_code">ЧАЕ</string>
+    <string name="category_train">Поезд</string>
+    <string name="category_train_code">ПОЕ</string>
+    <string name="category_books_periodicals">Книги/Журналы</string>
+    <string name="category_books_periodicals_code">КНЖ</string>
+    <string name="category_cell_phone">Мобильный телефон</string>
+    <string name="category_cell_phone_code">МОБ</string>
+    <string name="category_dues_subscriptions">Взносы/Подписки</string>
+    <string name="category_dues_subscriptions_code">ВЗН</string>
+    <string name="category_meals_justified">Питание (подтвержденные)</string>
+    <string name="category_meals_justified_code">ПИТ</string>
+    <string name="category_stationery_stations">Канцтовары</string>
+    <string name="category_stationery_stations_code">КАНЦ</string>
+    <string name="category_training_fees">Расходы на обучение</string>
+    <string name="category_training_fees_code">ОБУЧ</string>
+
+    <!-- ================ Img Menu Options =================== -->
+    <string name="menu_receiptimage_retake">Сделать снимок повторно</string>
+    <string name="menu_receiptimage_rotate_ccw">Поворот против часовой стрелки</string>
+    <string name="menu_receiptimage_rotate_cw">Поворот по часовой стрелке</string>
+
+    <!-- ===================== Email ====================== -->
+    <string name="email_body_subject_5mb_warning">Вложение имеет более 5 МБ в размере и может не быть правильно прикреплено: %s</string>
+
+    <!-- ============== Progress Messages ================= -->
+    <string name="progress_import">Импорт файлов...</string>
+
+    <!-- ============== Start Error Messages ================= -->
+    <string name="SD_ERROR">Ошибка: убедитесь, что ваша SD-карта доступна и не подключена к вашему компьютеру.</string>
+    <string name="SD_WARNING">Внимание: Ваша SD-карта отсутствует или подключена к вашему компьютеру. Некоторые изображения могут быть недоступны. Переключение на внутреннюю память...</string>
+    <string name="database_error">Ошибка: Не удалось сохранить ваш чек</string>
+    <string name="database_get_error">Ошибка: Не удалось получить данные. Попробуйте перезапустить приложение.</string>
+    <string name="IMG_OPEN_ERROR">Ошибка: Изображение в настоящее время недоступно или повреждено. Ваша SD-карта может быть недоступна или подключена к вашему компьютеру. Если это не так, нажмите кнопку меню, чтобы сделать снимок еще раз.</string>
+    <string name="IMG_SAVE_ERROR">Ошибка: Не удалось сохранить изображение должным образом</string>
+    <string name="ILLEGAL_CHAR_ERROR">Ошибка: Имя содержит недопустимый символ</string>
+    <string name="SPACE_ERROR">Ошибка: Имя не может начинаться с пробела</string>
+    <string name="CALENDAR_TAB_ERROR">Ошибка: Пожалуйста, нажмите на поле даты для установки даты</string>
+    <string name="DURATION_ERROR">Ошибка: Дата начала должна предшествовать дате окончания</string>
+    <string name="EXPORT_ERROR">Ошибка: Не удалось правильно экспортировать ваши данные.</string>
+    <string name="IMPORT_ERROR">Ошибка: Не удалось распознать файл как импортируемый</string>
+    <string name="MOVE_ERROR">Ошибка: Не удалось переместить квитанцию</string>
+    <string name="COPY_ERROR">Ошибка: Не удалось копировать квитанцию</string>
+    <string name="toast_warning_reset_exchange_rate">Внимание: изменение валюты сбросит ВСЕ курсы валют</string>
+    <string name="toast_error_trip_exists">Ошибка: отчет о расходах с этим названием уже существует</string>
+    <string name="toast_error_category_exists">Ошибка: категория с этим именем уже существует</string>
+
+    <!-- ============== Toast Messages ================= -->
+    <string name="toast_receipt_copy">Квитанция копирована успешно</string>
+    <string name="toast_receipt_move">Чек успешно перемещен</string>
+    <string name="toast_receipt_image_added">Новое изображение успешно добавлено в %s</string>
+    <string name="toast_receipt_image_replaced">Успешно заменено изображение в %s</string>
+    <string name="toast_receipt_pdf_added">Новый PDF успешно добавлен в %s</string>
+    <string name="toast_receipt_pdf_replaced">Успешно заменен PDF в %s</string>
+    <string name="toast_import_complete">Все файлы успешно импортированы. Пожалуйста, перезапустите приложение.</string>
+
+    <!-- ================== Trip Adapter ===================== -->
+    <string name="trip_adapter_list_item_to">куда</string>
+    <string name="trip_no_data">Судя по всему, в настоящее время у вас нет отчетов. Нажмите на кнопку + (плюс), чтобы начать.\n\nSmart Receipts позволяет создавать отчеты о расходах, отслеживать квитанции внутри каждого из них, и быстро создавать отчеты в форматах PDF и CSV. Быстро и просто! Кроме того, обязательно ознакомьтесь с меню, чтобы настроить категории, отчеты и другие параметры для ваших нужд.</string>
+
+    <!-- ================= Receipt Adapter =================== -->
+    <string name="receipt_no_data">Судя по всему, у вас еще нет квитанций. Попробуйте нажать кнопку + (плюс), чтобы начать...</string>
+
+    <!-- ================= Distance Adapter ================== -->
+    <string name="distance_no_data">Судя по всему, у вас еще нет отслеживаемых маршрутов. Попробуйте нажать кнопку + (плюс) вверху, чтобы начать.</string>
+    <string name="distance_insert_failed">Ошибка: Не удалось создать маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
+    <string name="distance_update_failed">Ошибка: Не удалось обновить маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
+    <string name="distance_delete_failed">Ошибка: Не удалось удалить маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
+
+    <!-- ================= Receipt Actions =================== -->
+    <string name="receipt_action_camera">Изображение</string>
+    <string name="receipt_action_text">Только текст</string>
+    <string name="receipt_action_import">Импорт</string>
+
+    <!-- ================ DIALOG (GENERAL) =================== -->
+    <string name="DIALOG_CANCEL">Отмена</string>
+
+    <!-- ================== DIALOG_EMAIL ===================== -->
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Полный отчет в формате PDF</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF отчет - без таблицы</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_CSV">Файл CSV</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">JPG c ZIP</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Пожалуйста, отметьте по крайней мере один отчет</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Этот отчет не содержит чеков</string>
+    <string name="generate_report_tooltip">Нажмите, чтобы настроить внешний вид отчета</string>
+
+    <!-- ================= DIALOG_TRIPMENU =================== -->
+    <string name="DIALOG_TRIPMENU_HINT_NAME">Имя</string>
+    <string name="DIALOG_TRIPMENU_HINT_START">Дата начала</string>
+    <string name="DIALOG_TRIPMENU_HINT_END">Дата окончания</string>
+    <string name="DIALOG_TRIPMENU_TITLE_NEW">Новый отчет о расходах</string>
+    <string name="DIALOG_TRIPMENU_TITLE_EDIT">Редактировать отчет</string>
+    <string name="DIALOG_TRIPMENU_TOAST_MISSING_FIELD">Пожалуйста, заполните все поля</string>
+
+    <!-- =============== DIALOG_TRIP_DELETE ================== -->
+    <string name="DIALOG_TRIP_DELETE_POSITIVE_BUTTON">Удалить</string>
+
+    <!-- ================= DIALOG_RECEIPTMENU =================== -->
+    <string name="DIALOG_RECEIPTMENU_HINT_NAME">Имя</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Цена (например, 150,00)</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Цена</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_TAX">Налог</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Валюта</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Курс обмена</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Курс обмена - неудачно. Повторить попытку?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_DATE">Дата</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Категория</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Комментарий</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">Центр расходов</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Возмещаемое?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">Изображение на всю страницу?</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Новый чек</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Новый чек - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Редактировать чек</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Редактировать чек - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Внимание: Дата этого чека выходит за пределы указанного диапазона для данного отчета</string>
+    <string name="manage_categories">Управление категориями</string>
+
+    <!-- ==================== dialog export / import ====================== -->
+    <string name="dialog_export_title">Экспортировать ваши чеки?</string>
+    <string name="dialog_export_text">Вы можете повторно импортировать ваши данные, нажав на файл SmartReceipts.SMR, генерируемый нажатием ниже.</string>
+    <string name="dialog_export_positive">Экспорт</string>
+    <string name="dialog_import_positive">Импорт</string>
+    <string name="dialog_import_text">Перезаписать существующие данные</string>
+    <string name="dialog_export_working">Экспорт ваших чеков...</string>
+
+    <!-- ==================== DIALOG_ABOUT ====================== -->
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Местоположение</string>
+    <string name="distance_price_field">Цена</string>
+    <string name="distance_distance_field">Расстояние</string>
+    <string name="distance_rate_field">Курс</string>
+    <string name="dialog_currency_field">Валюта</string>
+    <string name="distance_date_field">Дата</string>
+    <string name="distance_comment_field">Комментарий</string>
+
+    <!-- ===================== backup menu ======================== -->
+    <string name="backups">Резервные копии</string>
+    <string name="manual_backup_title">Ручное резервное копирование:</string>
+    <string name="manual_backup_description">Выполняйте резервное копирование данных, чтобы обезопасить ваши квитанции! Вы можете восстановить данные, импортировав файл резервной копии SmartReceipts.SMR, генерируемый нажатием кнопки \"Резервное копирование\" внизу.</string>
+    <string name="manual_backup_export">Резервное копирование</string>
+    <string name="manual_backup_import">Импорт</string>
+    <string name="auto_backup_title">Автоматическое резервное копирование [BETA]:</string>
+    <string name="auto_backup_wifi_only">Использовать только Wi-Fi</string>
+    <string name="auto_backup_warning_none">Внимание: Автоматическое резервное копирование не настроено!\nВы рискуете потерять ваши данные.</string>
+    <string name="auto_backup_warning_drive">Внимание: При автоматическом резервном копировании через мобильную сеть могут применяться стандартные тарифные расценки.</string>
+    <string name="auto_backup_configure">Нажмите, чтобы настроить</string>
+    <string name="auto_backup_source_none">Нет</string>
+    <string name="auto_backup_source_google_drive">Google Drive</string>
+    <string name="existing_backups_title">Существующие резервные копии:</string>
+    <string name="existing_remote_backup_current_device">%s (Ваша текущая резервная копия)</string>
+    <string name="remote_backups_list_item_menu_restore">Восстановить</string>
+    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
+    <string name="remote_backups_list_item_menu_download_images">Скачать в ZIP</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Скачать</string>
+
+    <string name="dialog_remote_backup_delete_title">@string/delete</string>
+    <string name="dialog_remote_backup_delete_message">Вы уверены, что хотите удалить резервную копию с устройства %s? Эта операция не может быть отменена.</string>
+    <string name="dialog_remote_backup_delete_message_this_device">Вы уверены, что хотите удалить резервную копию с этого устройства? Эта операция не сможет быть отменена. Пожалуйста, обратите внимание, что вы можете отключить автоматическое резервное копирование после того, как эта операция завершится, или все локальные данные могут быть повторно синхронизированы.</string>
+    <string name="dialog_remote_backup_delete_positive">@string/delete</string>
+    <string name="dialog_remote_backup_delete_progress">Удаление резервной копии с устройства %s...</string>
+    <string name="dialog_remote_backup_delete_toast_success">Резервная копия успешно удалена</string>
+    <string name="dialog_remote_backup_delete_toast_failure">Не удалось удалить эту резервную копию</string>
+    <string name="dialog_remote_backup_download_progress">Загрузка изображений в ZIP-файл...</string>
+
+    <string name="dialog_remote_backup_drive_restore_title">Восстановление диска</string>
+    <string name="dialog_remote_backup_drive_restore_message">Возникли проблемы при синхронизации ваших данных. Для их восстановления мы хотели бы очистить резервную копию диска и повторить синхронизацию. Если вы часто видите это сообщение, обратитесь к нам для получения дополнительной поддержки.</string>
+    <string name="dialog_remote_backup_restore_progress">Очистка резервной копии для подготовки к повторной синхронизации...</string>
+    <string name="dialog_remote_backup_restore_toast_success">Резервная копия успешно очищена. Повторная синхронизация...</string>
+    <string name="dialog_remote_backup_restore_toast_failure">Не удалось повторно синхронизировать эту резервную копию</string>
+
+    <string name="automatic_backups_info_dialog_message">Автоматическое резервное копирование не включено.</string>
+    <string name="automatic_backups_info_dialog_positive">Нажмите, чтобы настроить</string>
+
+    <string name="drive_sync_error_no_space">Нет свободного места на диске</string>
+    <string name="drive_sync_error_no_permissions">Нажмите, чтобы восстановить разрешения на доступ к диску</string>
+    <string name="drive_sync_error_lost_data">Ошибка конфигурации диска - Нажмите, чтобы исправить</string>
+
+    <!-- ==============-========== Login ========================== -->
+    <string name="login_toolbar_title">Вход / Регистрация</string>
+    <string name="login_title">Войдите в учетную запись Smart Receipts, чтобы начать использовать автоматическое сканирование (OCR)</string>
+    <string name="login_field_email_hint">Адрес эл. почты</string>
+    <string name="login_field_password_hint">Пароль</string>
+    <string name="sign_up_button_text">Регистрация</string>
+    <string name="login_button_text">Войти</string>
+    <string name="login_fields_hint_email">Пожалуйста, введите действительный адрес электронной почты:</string>
+    <string name="login_fields_hint_password">Пароли должны содержать не менее 8 символов:</string>
+    <string name="login_fields_hint_valid">Нажмите ниже, чтобы войти или зарегистрироваться:</string>
+    <string name="login_success_toast">Вход выполнен успешно</string>
+    <string name="sign_up_success_toast">Регистрация завершена успешно</string>
+    <string name="login_failure_toast">Войти в систему не удалось</string>
+    <string name="sign_up_failure_toast">Выполнить регистрацию не удалось</string>
+    <string name="login_failure_credentials_toast">Ошибка: Неправильное имя пользователя или пароль</string>
+    <string name="sign_up_failure_account_exists_toast">Ошибка: Этот адрес уже существует. Попробуйте войти в систему</string>
+
+    <!-- ==================== dialog filter ======================= -->
+    <string name="dialog_filter_positive_button">Добавить фильтр</string>
+    <string name="dialog_filter_negative_button">Удалить фильтр</string>
+
+    <!-- ==================== dialog miles ======================== -->
+    <string name="dialog_mileage_title_create">Добавить расстояние</string>
+    <string name="dialog_mileage_title_update">Обновить расстояние</string>
+    <string name="dialog_mileage_positive_create">Добавить</string>
+    <string name="dialog_mileage_positive_update">Обновить</string>
+    <string name="dialog_mileage_neutral_delete">Удалить</string>
+
+    <!-- ================= RECEIPTMENU_FIELDS =================== -->
+    <string name="RECEIPTMENU_FIELD_NAME">Имя</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">Цена</string>
+    <string name="RECEIPTMENU_FIELD_TAX">Налог</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">Валюта</string>
+    <string name="RECEIPTMENU_FIELD_DATE">Дата</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">Категория</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">Комментарий</string>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1"/>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2"/>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3"/>
+
+    <!-- ================== RECEIPTMENU_TAGS ==================== -->
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
+
+    <!-- ============== Start String Arrays ================== -->
+    <string-array name="EDIT_TRIP_ITEMS">
+    <item>Редактировать отчет</item>
+    <item>Удалить отчет</item>
+  </string-array>
+
+    <!-- ============== CSV/PDF Columns ================== -->
+    <string name="column_item_blank">Пустая колонка</string>
+    <string name="column_item_category_code">Код категории</string>
+    <string name="column_item_category_name">Название категории</string>
+    <string name="column_item_user_id">ID пользователя</string>
+    <string name="column_item_report_name">Название отчета</string>
+    <string name="column_item_report_start_date">Дата начала отчета</string>
+    <string name="column_item_report_end_date">Дата окончания отчета</string>
+    <string name="column_item_report_comment">Комментарий к отчету</string>
+    <string name="column_item_report_cost_center">Центр расходов в отчете</string>
+    <string name="column_item_image_file_name">Имя изображения</string>
+    <string name="column_item_image_path">Путь к изображению</string>
+    <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_converted_price_exchange_rate">Цена (после обмена)</string>
+    <string name="column_item_converted_tax_exchange_rate">Налог (после обмена)</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">Цена плюс налог (после обмена)</string>
+    <string name="column_item_exchange_rate">Курс обмена</string>
+    <string name="column_item_pictured">С изображениями</string>
+    <string name="column_item_reimbursable">Возмещаемые</string>
+    <string name="column_item_deprecated_expensable">Expensable</string>
+    <string name="column_item_index">Индекс чека</string>
+    <string name="column_item_id">ID чека</string>
+    <string name="column_item_payment_method">Способ оплаты</string>
+
+    <string name="receipt_dialog_action_edit">Редактировать чек</string>
+    <string name="receipt_dialog_action_view">Просмотреть чек %s</string>
+    <string name="receipt_dialog_action_camera">Сделать снимок чека</string>
+    <string name="receipt_dialog_action_delete">Удалить чек</string>
+    <string name="receipt_dialog_action_move_copy">Переместить/Копировать</string>
+    <string name="receipt_dialog_action_swap_up">Поменять местами с верхним</string>
+    <string name="receipt_dialog_action_swap_down">Поменять местами с нижним</string>
+
+    <string name="dialog_attachment_title">Добавить %s к чеку</string>
+    <string name="dialog_attachment_text">Нажмите на существующий чек, чтобы добавить этот %s к нему</string>
+    <string name="dialog_attachment_positive">ОК</string>
+    <string name="dialog_attachment_negative">Не показывать больше</string>
+    <string name="action_send_view">Просмотреть текущий чек %s</string>
+    <string name="action_send_attach">Прикрепить %s к чеку</string>
+    <string name="action_send_replace">Заменить чек %s</string>
+
+    <!-- ================== Preference Dialog ==================== -->
+    <string name="dialog_custom_csv_spinner">Тип колонки</string>
+    <string name="dialog_category_add">Добавить категорию</string>
+    <string name="dialog_category_edit">Редактировать категорию</string>
+
+    <!-- ================ Error Feedback ==================== -->
+    <string name="error_no_pdf_activity_viewer">Не удалось найти приложение для просмотра PDF</string>
+    <string name="error_no_send_intent_dialog_title">Программа для отправки не найдена</string>
+    <string name="error_no_send_intent_dialog_message">Мы не смогли найти приложение электронной почты (или эквивалент) на вашем устройстве. Вы можете найти файлы в следующем каталоге: %s</string>
+    <string name="error_no_file_intent_dialog_title">Ошибка: Не удается найти приложение для импорта на устройстве</string>
+    <string name="error_no_wifi">Ошибка: Нет подключения к Wi-Fi</string>
+
+    <!-- ================== SQL Corrpution ==================== -->
+    <string name="dialog_sql_corrupt_title">О нет!</string>
+    <string name="dialog_sql_corrupt_message">Ваша база данных была повреждена. Это часто происходит, когда вы пользуетесь программами типа \"task killer\", однако может быть вызвано различными причинами. Не волнуйтесь - мы, скорее всего, сможем восстановить большую часть ваших данных.</string>
+    <string name="dialog_sql_corrupt_positive">Обратиться за помощью к разработчику</string>
+    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Поврежденная база данных</string>
+    <string name="dialog_sql_corrupt_intent_text">Помогите - моя база данных была повреждена. Можете ли вы помочь мне восстановить ее?</string>
+    <string name="dialog_sql_corrupt_chooser">Отправить письмо...</string>
+
+    <!-- ======================= Filters ====================== -->
+    <string name="filter_name_and">И</string>
+    <string name="filter_name_not">Не</string>
+    <string name="filter_name_or">Или</string>
+    <string name="filter_name_receipt_category">Категория</string>
+    <string name="filter_name_receipt_reimbursable">Возмещается</string>
+    <string name="filter_name_receipt_max_price">Макс. цена</string>
+    <string name="filter_name_receipt_min_price">Мин. цена</string>
+    <string name="filter_name_receipt_on_or_after">На указанную дату или позже</string>
+    <string name="filter_name_receipt_on_or_before">На указанную дату или до нее</string>
+    <string name="filter_name_receipt_selected">Выбрано</string>
+    <string name="filter_name_trip_ends_on_or_after">Завершается в указанную дату или позже</string>
+    <string name="filter_name_trip_ends_on_or_before">Завершается в указанную дату или до нее</string>
+    <string name="filter_name_trip_max_price">Макс. цена</string>
+    <string name="filter_name_trip_min_price">Мин. цена</string>
+    <string name="filter_name_trip_starts_on_or_after">Начинается в указанную дату или позже</string>
+    <string name="filter_name_trip_starts_on_or_before">Начинается в указанную дату или до нее</string>
+
+    <!-- =================== Payment Methods =====+============= -->
+    <string name="payment_method">Способ оплаты</string>
+    <string name="payment_methods">Способы оплаты</string>
+    <string name="payment_method_add">Добавить способ оплаты</string>
+    <string name="payment_method_edit">Редактировать способ оплаты</string>
+    <string name="payment_method_default_cash">Наличные</string>
+    <string name="payment_method_default_check">Чек</string>
+    <string name="payment_method_default_personal_card">Персональная карта</string>
+    <string name="payment_method_default_corporate_card">Корпоративная карта</string>
+    <string name="payment_method_default_unspecified">Не указано</string>
+
+    <!-- =================== Payment Methods =================== -->
+    <string name="purchase_succeeded">Покупка успешно завершена</string>
+    <string name="purchase_unavailable">Не удалось получить информацию о покупке</string>
+    <string name="purchase_failed">Не удалось завершить покупку</string>
+
+    <!-- ================== App Rating ==================== -->
+    <string name="rating_tooltip_text">Нравится Smart Receipts?</string>
+    <string name="leave_feedback_text">Хотите оставить отзыв о программе?</string>
+    <string name="apprating_dialog_title">Нравится %s?</string>
+    <string name="apprating_dialog_message">Пожалуйста, оставьте ваш отзыв. Я - независимый разработчик, и ваши отзывы являются моим основным источником вдохновения и стимула продолжать добавлять новые функции. Благодарю!</string>
+    <string name="apprating_dialog_negative">Нет, спасибо</string>
+    <string name="apprating_dialog_neutral">Возможно, позже</string>
+    <string name="apprating_dialog_positive">Оценить сейчас!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">Используйте вкладку \"Создать\" для создания отчетов</string>
+
+
+
+
+</resources>

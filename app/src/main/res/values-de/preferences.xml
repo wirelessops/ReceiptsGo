@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============== Preference Headers ================= -->
+    <string name="pref_general_header">Allgemein</string>
+    <string name="pref_receipt_header">Belege</string>
+    <string name="pref_output_header">Report Output</string>
+
+    <string name="pref_email_header">E-Mail</string>
+    <string name="pref_camera_header">Kamera</string>
+
+    <string name="pref_layout_header">Layout-Anpassungen</string>
+    <string name="pref_distance_header">Entfernung</string>
+    <string name="pref_pro_header">Smart-Plus-Receipts</string>
+    <string name="pref_help_header">Unterstützung</string>
+    <string name="pref_about_header">Über</string>
+
+
+    <!-- ============== Preference General ================= -->
+
+    <string name="pref_general_trip_duration_title">Standard-Länge der Route</string>
+
+    <string name="pref_general_default_currency_title">Standardwährung</string>
+
+    <string name="pref_general_default_date_separator_title">Standarddatum Separator</string>
+
+    <string name="pref_general_track_cost_center_title">Track Kostenstelle</string>
+    <string name="pref_general_track_cost_center_summaryOn">Kostenstelle für Berichte einbeziehen</string>
+    <string name="pref_general_track_cost_center_summaryOff">Kostenstelle für Berichte nicht einbeziehen</string>
+
+    <!-- ============== Preference Receipt ================= -->
+
+    <string name="pref_receipt_customize_categories_title">Beleg-Kategorien anpassen</string>
+    <string name="pref_receipt_customize_categories_summary">Tippen Sie hier, um Ihre Kategorien hinzuzufügen / zu bearbeiten</string>
+
+    <string name="pref_receipt_predict_categories_title">Belegs-Kategorien voraussagen</string>
+    <string name="pref_receipt_predict_categories_summary">Auto-Fill-Kategorie, basierend auf früheren Daten</string>
+
+    <string name="pref_receipt_match_name_to_category_title">Namen an Kategorie anpassen</string>
+    <string name="pref_receipt_match_name_to_category_summary">automatisch eingestellter Namen für die Kategorie</string>
+
+    <string name="pref_receipt_match_comment_to_category_title">Kommentar an die Kategorie anpassen</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Automatische Einstellung Kommentar zur Kategorie</string>
+
+    <string name="pref_receipt_reimbursable_only_title">Nur erstattungsfähige berichten</string>
+    <string name="pref_receipt_reimbursable_only_summary">Andere Belege weglassen</string>
+
+    <string name="pref_receipt_reimbursable_default_title">Standard-Belege als erstattungsfähig</string>
+
+    <string name="pref_receipt_include_tax_field_title">Belege</string>
+    <string name="pref_receipt_include_tax_field_summary">Fügt einen Einzelposten für Steuern hinzu</string>
+
+    <string name="pref_receipt_tax_percent_title">Standardsteuersatz</string>
+
+    <string name="pref_receipt_pre_tax_title">Es sei angenommen, Preis ist Pre-Tax</string>
+    <string name="pref_receipt_pre_tax_summary_on">Berechnet Steuern aus einem Vorsteuer-Preis</string>
+    <string name="pref_receipt_pre_tax_summary_off">Berechnet Steuer aus einem Post-Steuer-Preis</string>
+
+    <string name="pref_receipt_enable_autocomplete_title">Aktivieren Sie AutoComplete Vorschläge</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Schlagen Sie Werte von den vorherigen Einträgen vor</string>
+
+    <string name="pref_receipt_minimum_receipts_price_title">Mindestbeleg-Preis</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">Legen Sie dem Bericht alle Belege bei</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">Nur Bericht Beleg-Preise über %s</string>
+
+    <string name="pref_receipt_default_to_report_start_date_title">Standard-Startdatum melden</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Stimmt das Eingangsdatum mit dem Berichtdatum überein</string>
+
+    <string name="pref_receipt_show_id_title">Beleg ID anzeigen</string>
+    <string name="pref_receipt_show_id_summary">Zeigt ein automatisch generiertes ID-Feld an</string>
+
+    <string name="pref_receipt_full_page_title">Komplette Seite annehmen</string>
+    <string name="pref_receipt_full_page_summary">Markiert die Belege standardmäßig als volle Seite</string>
+
+    <string name="pref_receipt_use_payment_methods_title">Aktivieren der Zahlungsmethoden</string>
+    <string name="pref_receipt_use_payment_methods_summary">Wählen Sie Verfolgen von Zahlungsmethoden für Belege</string>
+
+    <string name="pref_receipt_payment_methods_title">Zahlungsmethoden anpassen</string>
+    <string name="pref_receipt_payment_methods_summary">Tippen Sie hier, um Zahlungsmethoden hinzuzufügen / zu bearbeiten</string>
+
+    <!-- ============= Preference Output ================= -->
+
+    <string name="pref_output_custom_csv_title"> CSV-Ausgabe anpassen</string>
+
+
+    <string name="pref_output_username_title">Benutzeridentifikation</string>
+    <string name="pref_output_username_emptyValue">Wird als Ausgabefeld definiert</string>
+
+    <string name="pref_output_print_receipt_id_by_photo_title">ID drucken nach Foto</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Zeigt die Beleg ID statt den Index</string>
+
+    <string name="pref_output_print_receipt_comment_by_photo_title">Belegkommentar  drucken nach Foto</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Zeigt den Belegkommentar über PDF Fotos</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Den Belegkommentar über PDF Fotos ausblenden</string>
+
+    <string name="pref_output_receipts_landscape_title">Belegtabelle im Querformat drucken</string>
+    <string name="pref_output_receipts_landscape_on">Belegtabelle ist im Querformat gedruckt</string>
+    <string name="pref_output_receipts_landscape_off">Belegtabelle wird im Hochformat gedruckt</string>
+
+    <!-- ============== Preference Email ================= -->
+
+    <string name="pref_email_default_email_to_title">Standard E-Mail zum Empfänger</string>
+
+    <string name="pref_email_default_email_cc_title">Standard Email CC Empfänger</string>
+
+    <string name="pref_email_default_email_bcc_title">Standard E-Mail BCC Empfänger</string>
+    <string name="pref_email_default_email_emptyValue">Getrennte Einträge mit einem Semikolon (;)</string>
+
+    <string name="pref_email_default_email_subject_title">Standard E-Mail Betreff</string>
+
+    <!-- ============= Preference Camera ================= -->
+
+    <string name="pref_camera_bw_title">In Graustufen konvertieren</string>
+    <string name="pref_camera_bw_summary">Speichert Bild in Schwarz und Weiß</string>
+
+    <string name="pref_camera_rotate_title">Bilder automatisch drehen</string>
+    <string name="pref_camera_rotate_summaryOn">Versuchen Sie, Bilder aufrecht zu drehen</string>
+    <string name="pref_camera_rotate_summaryOff">Die Bilder nicht drehen</string>
+
+    <!-- ============= Preference Layout ================= -->
+
+    <string name="pref_layout_display_date_title">Eingangsdatum hinzufügen</string>
+    <string name="pref_layout_display_date_summary">Zeigt das Datum des Belegs-Listenelemente</string>
+
+    <string name="pref_layout_display_category_title">Beleg-Kategorie hinzufügen</string>
+    <string name="pref_layout_display_category_summary">Zeigt die Kategorie des Belegs-Listenelemente</string>
+
+    <string name="pref_layout_display_photo_title">Fügen Sie Bild / PDF Marker hinzu</string>
+    <string name="pref_layout_display_photo_summary">Geben Sie an, ob Einträge ein Foto / PDF haben</string>
+
+    <!-- ============= Preference Distance ================= -->
+
+    <string name="pref_distance_include_price_in_report_title">Einen Entfernungs-Preis hinzufügen</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">Inklusive Entfernungs-Preis Berichtgesamtpreis</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">Schließt den Entfernungs-Preis aus dem Berichtsgesamtpreis aus</string>
+
+    <string name="pref_distance_rate_title">Gaspreis</string>
+    <string name="pref_distance_rate_summaryOff">Die Rate pro zurückgelegter mi oder km</string>
+    <string name="pref_distance_rate_summaryOn">%s pro mi oder km</string>
+
+    <string name="pref_distance_print_table_title">Entfernungs-Tabelle inbegriffen</string>
+    <string name="pref_distance_print_table_summaryOn">PDF / CSV-Berichte enthalten Entfernungstabelle</string>
+    <string name="pref_distance_print_table_summaryOff">PDF / CSV-Berichte enthalten keine Entfernungstabelle</string>
+
+    <string name="pref_distance_print_daily_title">Bericht über die tägliche zurückgelegte Entfernung</string>
+    <string name="pref_distance_print_daily_summaryOn">Entfernung als Beleg-Position anzeigen</string>
+    <string name="pref_distance_print_daily_summaryOff">Entfernung nicht als Beleg-Position anzeigen</string>
+
+    <string name="pref_distance_as_price_title">Entfernungspreis im Untertitel</string>
+    <string name="pref_distance_as_price_summaryOn">Entfernungs-reis insgesamt in App Untertitel</string>
+    <string name="pref_distance_as_price_summaryOff">Zurückgelegte Entfernung in App Untertitel anzeigen</string>
+
+    <!-- ================= Preference Plus ================== -->
+
+    <string name="pref_pro_pdf_footer_title">PDF Fußzeilentext</string>
+
+    <!-- ============== Preference Support ================= -->
+
+    <string name="pref_help_send_love_title">Liebe senden</string>
+
+    <string name="pref_help_send_feedback_title">Feedback abschicken</string>
+
+    <string name="pref_help_support_email_title">E-Mail für den Support</string>
+
+    <!-- =============== Preference About ================== -->
+
+    <string name="pref_about_version_title">Version</string>
+
+    <string name="pref_about_about_title">Über</string>
+    <string name="pref_about_about_dialogMessage">Smart Receipts wurde erstellt und wird betreut von Will Baumann. Es steht unter der GNU Affero General Public License</string>
+
+    <string name="pref_about_terms_title">Nutzungsbedingungen</string>
+    <string name="pref_about_terms_dialogMessage">Dieses Programm  ist eine freie Software: Sie können es gemäß den Bedingungen GNU Affero General Public License as published by the Free Software Foundation, Version 3 der Lizenz oder (nach Ihrer Wahl) einer beliebigen späteren Version verteilen und/oder ändern.\nDieses Programm wird verteilt in der Hoffnung, dass es nützlich ist, doch OHNE JEDE GARANTIE; auch ohne jede implizierte Garantie für die MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.  Siehe die GNU Affero General Public License für mehr Einzlheiten\n\nEine Kopie der GNU Affero General Public License finden Sie unter  http://www.gnu.org/licenses/.</string>
+
+    <string name="pref_about_privacy_policy_title">Datenschutz-Bestimmungen</string>
+    <!-- =============== Preference Misc =================== -->
+
+</resources>

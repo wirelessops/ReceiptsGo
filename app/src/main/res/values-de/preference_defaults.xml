@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ================= Preference Pro ================== -->
+    <string name="pref_pro_pdf_footer_defaultValue">Bericht generiert mit Smart-Receipts für Android</string>
+
+</resources>

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <!-- =================== App Details ===================== -->
+    <string name="app_name">Recibos Inteligentes</string>
+
+    <!-- ================ Main Menu Options ================== -->
+    <string name="menu_main_settings">Ajustes</string>
+    <string name="menu_main_categories">Categorías</string>
+    <string name="menu_main_csv">Personalizar salida CSV</string>
+    <string name="menu_main_pdf">Personalizar salida PDF</string>
+    <string name="menu_main_ocr_configuration">Escaneos automáticos (OCR)</string>
+    <string name="menu_main_export">Copia de seguridad</string>
+
+    <!-- ================ General Strings ================== -->
+    <string name="add">Agregar</string>
+    <string name="column_item">Columna %s</string>
+    <string name="copy">Copiar</string>
+    <string name="daily_total">Total diario: %s</string>
+    <string name="day">%s día</string>
+    <string name="days">%s días</string>
+    <string name="delete">Eliminar</string>
+    <string name="delete_item">¿Eliminar %s?</string>
+    <string name="delete_sync_information">Todos los datos sincronizados remotamente para este ítem también serán eliminados.</string>
+    <string name="distance">Distancia</string>
+    <string name="distance_total_item">Dist. Total: %s</string>
+    <string name="edit">Editar</string>
+    <string name="export">Exportar</string>
+    <string name="feedback">%s - Comentario</string>
+    <string name="image">Imagen</string>
+    <string name="import_string">Importar</string>
+    <string name="import_string_item">Importar %s</string>
+    <string name="item_code">Código:</string>
+    <string name="item_name">Nombre:</string>
+    <string name="move">Mover</string>
+    <string name="move_copy_item">¿Mover/copiar %s?</string>
+    <string name="next_id">Siguiente ID: %d</string>
+    <string name="no">No</string>
+    <string name="pdf">PDF</string>
+    <string name="report">Informe</string>
+    <string name="report_attached">1 informe adjunto</string>
+    <string name="reports_attached">%s informes adjuntos</string>
+    <string name="save">Guardar</string>
+    <string name="send_email">Enviar archivo...</string>
+    <string name="submit">Enviar</string>
+    <string name="support">%s - Soporte</string>
+    <string name="total">Total</string>
+    <string name="undefined">Sin definir</string>
+    <string name="update">Actualizar</string>
+    <string name="yes">Sí</string>
+    <string name="yes_as_pdf">Sí: como PDF</string>
+
+    <!-- =============== Subscriptions ================ -->
+    <string name="pro_subscription">Recibos Inteligentes Plus</string>
+
+    <!-- ================ No More Ads ================= -->
+    <string name="missing_ad_suggest_removal_upsell">¿Cansado de los anuncios? Toca para comenzar una prueba gratuita sin anuncios</string>
+
+    <!-- ============= Report Navigation ============== -->
+    <string name="report_info_receipts">Recibos</string>
+    <string name="report_info_distance">Distancia</string>
+    <string name="report_info_generate">Generar</string>
+
+    <!-- ============= Report Generation ============== -->
+    <string name="report_header_from">Desde: %s</string>
+    <string name="report_header_to">Hasta: %s</string>
+    <string name="report_header_receipts_total">Total de recibos: %s</string>
+    <string name="report_header_receipts_total_tax">Total de impuesto: %s</string>
+    <string name="report_header_receipts_total_no_tax">Total de recibos (sin impuesto): %s</string>
+    <string name="report_header_receipts_total_reimbursable">Total de recibos (reembolsable): %s</string>
+    <string name="report_header_distance_total">Distancia total: %s</string>
+    <string name="report_header_gross_total">Total bruto: %s</string>
+    <string name="report_header_cost_center">Centro de costos: %s</string>
+    <string name="report_header_comment">Comentario del informe: %s</string>
+    <string name="report_pdf_generation_error">Ocurrió un error al generar el informe</string>
+    <string name="report_pdf_error_too_many_columns_title">Demasiadas columnas</string>
+    <string name="report_pdf_error_too_many_columns_message">No hay suficiente espacio para incluir todas las columnas en el informe. Por favor intenta limitar el número de columnas en Ajustes.</string>
+    <string name="report_pdf_error_too_many_columns_message_landscape">No hay suficiente espacio para incluir todas las columnas en el informe. Por favor intenta limitar el número de columnas en Ajustes o usa el modo horizontal.</string>
+    <string name="report_pdf_error_go_to_settings">Ir a Ajustes</string>
+
+    <!-- ===================== ocr ======================== -->
+    <string name="ocr_informational_tooltip_configure_text">¿Configurar escaneos automáticos? Toca aquí.</string>
+    <plurals name="ocr_informational_tooltip_limited_scans_text">
+    <item quantity="one">%d  escaneo restante. Toca para más.</item>
+    <item quantity="other">%d escaneos restantes. Toca para más.</item>
+  </plurals>
+    <string name="ocr_status_title">Realizando escaneo (OCR):</string>
+    <string name="ocr_status_message_uploading_image">Cargando recibo...</string>
+    <string name="ocr_status_message_performing_scan">Escaneando metadatos del recibo...</string>
+    <string name="ocr_status_message_fetching_results">Obteniendo resultados...</string>
+    <string name="ocr_configuration_title">Escaneos automáticos (OCR)</string>
+    <string name="ocr_configuration_scans_remaining">Escaneos OCR restantes: %d</string>
+    <string name="ocr_configuration_my_account">%s</string>
+    <string name="ocr_configuration_beta">¡Todos los usuarios beta obtienen 50 escaneos gratis!</string>
+    <string name="ocr_configuration_welcome">Escaneos automáticos (OCR):</string>
+    <string name="ocr_configuration_information">Recibos Inteligentes ha sido integrada con Taggun para proporcionar servicios de escaneo automático (es decir, OCR), que pueden extraer metadatos de los recibos, tales como precio, impuestos, fecha y nombre del comerciante de sus fotos.</string>
+    <string name="ocr_configuration_information_line2">Usamos una combinación de Google Vision y aprendizaje automático para entregar resultados rápidamente (con frecuencia en menos de 5 segundos), lo que será cada vez más preciso con el tiempo. Como estos servicios cobran por cada uso, nosotros cobramos por cada recibo escaneado a continuación.</string>
+    <string name="ocr_is_enabled">¿Habilitar escaneos automáticos (OCR)?</string>
+    <string name="ocr_save_scans_to_improve_results">¿Nos permites guardar las imágenes para mejorar la precisión?</string>
+    <string name="ocr_configuration_available_purchases">Compras disponibles. Toca para comprar:</string>
+
+    <!-- ================ Categories ================== -->
+    <string name="category_name">Nombre:</string>
+    <string name="category_code">Código:</string>
+    <string name="category_null">&lt;Categoría&gt;</string>
+    <string name="category_null_code">NULO</string>
+    <string name="category_airfare">Tarifa aérea</string>
+    <string name="category_airfare_code">AERP</string>
+    <string name="category_breakfast">Desayuno</string>
+    <string name="category_breakfast_code">DESA</string>
+    <string name="category_dinner">Cena</string>
+    <string name="category_dinner_code">CENA</string>
+    <string name="category_entertainment">Entretenimiento</string>
+    <string name="category_entertainment_code">ENTR</string>
+    <string name="category_gasoline">Gasolina</string>
+    <string name="category_gasoline_code">GASO</string>
+    <string name="category_gift">Obsequio</string>
+    <string name="category_gift_code">OBSE</string>
+    <string name="category_hotel">Hotel</string>
+    <string name="category_hotel_code">HOTE</string>
+    <string name="category_laundry">Lavandería</string>
+    <string name="category_laundry_code">LAVA</string>
+    <string name="category_lunch">Almuerzo</string>
+    <string name="category_lunch_code">ALMU</string>
+    <string name="category_other">Otros</string>
+    <string name="category_other_code">MISC</string>
+    <string name="category_parking_tolls">Estacionamiento/peajes</string>
+    <string name="category_parking_tolls_code">ESTA</string>
+    <string name="category_postage_shipping">Porte de correo/envío</string>
+    <string name="category_postage_shipping_code">CORR</string>
+    <string name="category_car_rental">Renta de automóviles</string>
+    <string name="category_car_rental_code">RAUT</string>
+    <string name="category_taxi_bus">Taxi/autobús</string>
+    <string name="category_taxi_bus_code">TAXI</string>
+    <string name="category_telephone_fax">Teléfono/fax</string>
+    <string name="category_telephone_fax_code">TELE</string>
+    <string name="category_tip">Propinas</string>
+    <string name="category_tip_code">PROP</string>
+    <string name="category_train">Tren</string>
+    <string name="category_train_code">TREN</string>
+    <string name="category_books_periodicals">Libros/periódicos</string>
+    <string name="category_books_periodicals_code">LBPD</string>
+    <string name="category_cell_phone">Celular</string>
+    <string name="category_cell_phone_code">ZCEL</string>
+    <string name="category_dues_subscriptions">Cuotas/suscripciones</string>
+    <string name="category_dues_subscriptions_code">ZCUO</string>
+    <string name="category_meals_justified">Alimentos (justificadas)</string>
+    <string name="category_meals_justified_code">ZALI</string>
+    <string name="category_stationery_stations">Tarjetas/estaciones</string>
+    <string name="category_stationery_stations_code">ZEST</string>
+    <string name="category_training_fees">Tarifas de capacitación</string>
+    <string name="category_training_fees_code">ZCAP</string>
+
+    <!-- ================ Img Menu Options =================== -->
+    <string name="menu_receiptimage_retake">Toma la foto de nuevo</string>
+    <string name="menu_receiptimage_rotate_ccw">Rotar CSR</string>
+    <string name="menu_receiptimage_rotate_cw">Rotar SR</string>
+
+    <!-- ===================== Email ====================== -->
+    <string name="email_body_subject_5mb_warning">El siguiente adjunto tiene más de 5 MB y no se puede adjuntar correctamente: %s</string>
+
+    <!-- ============== Progress Messages ================= -->
+    <string name="progress_import">Importando tus archivos...</string>
+
+    <!-- ============== Start Error Messages ================= -->
+    <string name="SD_ERROR">Error: Por favor asegúrate que tu tarjeta SD esté disponible y no esté montada en tu computador.</string>
+    <string name="SD_WARNING">Advertencia: Tu tarjeta SD no está disponible o está montada en el computador. Algunas imágenes pueden ser inaccesibles. Cambiando a almacenamiento interno...</string>
+    <string name="database_error">Error: No se pudo guardar tu recibo</string>
+    <string name="database_get_error">Error: No se pudo obtener tu información. Intenta reiniciar la app.</string>
+    <string name="IMG_OPEN_ERROR">Error: La imagen actualmente es inaccesible o está dañada. Tu tarjeta SD puede no estar disponible o estar montada en el computador. Si no lo está, haz clic en el botón menú para tomar de nuevo la foto.</string>
+    <string name="IMG_SAVE_ERROR">Error: La imagen no se pudo guardar correctamente</string>
+    <string name="ILLEGAL_CHAR_ERROR">Error: El nombre contiene un carácter ilegal</string>
+    <string name="SPACE_ERROR">Error: El nombre no puede comenzar con un espacio</string>
+    <string name="CALENDAR_TAB_ERROR">Error: Por favor toca la caja de texto de fecha para definir la fecha</string>
+    <string name="DURATION_ERROR">Error: La fecha inicial debe ser antes de la fecha final</string>
+    <string name="EXPORT_ERROR">Error: No se pudo exportar correctamente tu información.</string>
+    <string name="IMPORT_ERROR">Error: No se pudo reconocer el archivo como importable</string>
+    <string name="MOVE_ERROR">Error: No se pudo mover el recibo</string>
+    <string name="COPY_ERROR">Error: No se pudo copiar el recibo</string>
+    <string name="toast_warning_reset_exchange_rate">Advertencia: Cambiar la moneda restablecerá TODAS las tasas de cambio</string>
+    <string name="toast_error_trip_exists">Error: Ya existe un informe de gastos con ese nombre</string>
+    <string name="toast_error_category_exists">Error: Ya existe una categoría con ese nombre</string>
+
+    <!-- ============== Toast Messages ================= -->
+    <string name="toast_receipt_copy">El recibo se copió correctamente</string>
+    <string name="toast_receipt_move">El recibo se movió correctamente</string>
+    <string name="toast_receipt_image_added">Se añadió correctamente una imagen nueva a %s</string>
+    <string name="toast_receipt_image_replaced">Se reemplazó correctamente una imagen nueva de %s</string>
+    <string name="toast_receipt_pdf_added">Se añadió correctamente un PDF nuevo a %s</string>
+    <string name="toast_receipt_pdf_replaced">Se reemplazó correctamente un PDF nuevo de %s</string>
+    <string name="toast_import_complete">Se importaron correctamente todos los archivos. Por favor reinicia la app.</string>
+
+    <!-- ================== Trip Adapter ===================== -->
+    <string name="trip_adapter_list_item_to">hasta</string>
+    <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.\n\nRecibos Inteligentes te permite crear informes de gastos, controlar los recibos de cada uno y generar rápidamente informes en PDF y CSV para los totales de tus recibos. ¡Es fácil y rápido! También, asegúrate de revisar el menú para personalizar las categorías, informes y otros ajustes para que se adapten mejor a tus necesidades.</string>
+
+    <!-- ================= Receipt Adapter =================== -->
+    <string name="receipt_no_data">Parece que aún no tienes recibos. Intenta tocar el botón + (más) para comenzar...</string>
+
+    <!-- ================= Distance Adapter ================== -->
+    <string name="distance_no_data">Parece que aún no has hecho monitoreo de distancias. Intenta hacer clic en el botón + (más) arriba para comenzar.</string>
+    <string name="distance_insert_failed">Error: No se pudo crear este ítem de distancia. Asegúrate que tu teléfono no esté montado en tu computador.</string>
+    <string name="distance_update_failed">Error: No se pudo actualizar este ítem de distancia. Asegúrate que tu teléfono no esté montado en tu computador.</string>
+    <string name="distance_delete_failed">Error: No se pudo eliminar este ítem de distancia. Asegúrate que tu teléfono no esté montado en tu computador.</string>
+
+    <!-- ================= Receipt Actions =================== -->
+    <string name="receipt_action_camera">Imagen</string>
+    <string name="receipt_action_text">Solo texto</string>
+    <string name="receipt_action_import">Importar</string>
+
+    <!-- ================ DIALOG (GENERAL) =================== -->
+    <string name="DIALOG_CANCEL">Cancelar</string>
+
+    <!-- ================== DIALOG_EMAIL ===================== -->
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Informe PDF completo</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">Informe PDF - Sin tabla</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_CSV">Archivo CSV</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP: JPG estampados</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Por favor selecciona al menos un informe</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Este informe no tiene recibos</string>
+    <string name="generate_report_tooltip">Toca para configurar los diseños del informe</string>
+
+    <!-- ================= DIALOG_TRIPMENU =================== -->
+    <string name="DIALOG_TRIPMENU_HINT_NAME">Nombre</string>
+    <string name="DIALOG_TRIPMENU_HINT_START">Fecha inicial</string>
+    <string name="DIALOG_TRIPMENU_HINT_END">Fecha de final</string>
+    <string name="DIALOG_TRIPMENU_TITLE_NEW">Nuevo informe de gastos</string>
+    <string name="DIALOG_TRIPMENU_TITLE_EDIT">Editar informe</string>
+    <string name="DIALOG_TRIPMENU_TOAST_MISSING_FIELD">Por favor llena todos los campos</string>
+
+    <!-- =============== DIALOG_TRIP_DELETE ================== -->
+    <string name="DIALOG_TRIP_DELETE_POSITIVE_BUTTON">Eliminar</string>
+
+    <!-- ================= DIALOG_RECEIPTMENU =================== -->
+    <string name="DIALOG_RECEIPTMENU_HINT_NAME">Nombre</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Precio (por ejemplo, 150,00)</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Precio</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_TAX">Impuesto</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Moneda</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Tasa de cambio</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Tasa de cambio falló. ¿Reintentar?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_DATE">Fecha</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Categoría</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Comentario</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">Centro de costos</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">¿Reembolsable?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">¿Imagen de página completa?</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Nuevo recibo</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Nuevo recibo - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Editar recibo</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Editar recibo - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Advertencia: Esta fecha del recibo está por fuera del intervalo de fechas del informe</string>
+    <string name="manage_categories">Administrar categorías</string>
+
+    <!-- ==================== dialog export / import ====================== -->
+    <string name="dialog_export_title">¿Exportar los recibos?</string>
+    <string name="dialog_export_text">Puedes importar de nuevo tus datos haciendo clic en el archivo SmartReceipts.SMR, que se genera haciendo clic a continuación.</string>
+    <string name="dialog_export_positive">Exportar</string>
+    <string name="dialog_import_positive">Importar</string>
+    <string name="dialog_import_text">Sobrescribir datos existentes</string>
+    <string name="dialog_export_working">Exportando tus recibos...</string>
+
+    <!-- ==================== DIALOG_ABOUT ====================== -->
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Ubicación</string>
+    <string name="distance_price_field">Precio</string>
+    <string name="distance_distance_field">Distancia</string>
+    <string name="distance_rate_field">Tarifa</string>
+    <string name="dialog_currency_field">Moneda</string>
+    <string name="distance_date_field">Fecha</string>
+    <string name="distance_comment_field">Comentario</string>
+
+    <!-- ===================== backup menu ======================== -->
+    <string name="backups">Copias de seguridad</string>
+    <string name="manual_backup_title">Copia de seguridad manual:</string>
+    <string name="manual_backup_description">¡Haz copia de seguridad para mantener seguros tus recibos! Puedes restaurar tus datos importando el archivo de respaldo SmartReceipts.SMR, que se genera por medio del botón Copia de seguridad que encuentras a continuación.</string>
+    <string name="manual_backup_export">Copia de seguridad</string>
+    <string name="manual_backup_import">Importar</string>
+    <string name="auto_backup_title">Copias de seguridad automáticas (BETA):</string>
+    <string name="auto_backup_wifi_only">Usar solo Wi-Fi</string>
+    <string name="auto_backup_warning_none">Advertencia: ¡Las copias de seguridad automáticas no están configuradas! Estás en riesgo de perder tu información.</string>
+    <string name="auto_backup_warning_drive">Advertencia: Pueden aplicar cargos estándar por copias de seguridad automáticas realizadas por medio de la red móvil.</string>
+    <string name="auto_backup_configure">Toca para configurar</string>
+    <string name="auto_backup_source_none">Ninguno</string>
+    <string name="auto_backup_source_google_drive">Google Drive</string>
+    <string name="existing_backups_title">Copias de seguridad existentes:</string>
+    <string name="existing_remote_backup_current_device">%s (Tu copia de seguridad actual)</string>
+    <string name="remote_backups_list_item_menu_restore">Restaurar</string>
+    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
+    <string name="remote_backups_list_item_menu_download_images">Descargar a ZIP</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Depuración] Descargar</string>
+
+    <string name="dialog_remote_backup_delete_title">@string/delete</string>
+    <string name="dialog_remote_backup_delete_message">¿Estás seguro que deseas eliminar tu copia de seguridad del dispositivo %s? Esta operación no se puede deshacer.</string>
+    <string name="dialog_remote_backup_delete_message_this_device">¿Estás seguro que deseas eliminar tu copia de seguridad de este dispositivo? Esta operación no se puede deshacer. Por favor ten en cuenta que debes deshabilitar las copias de seguridad automáticas luego de terminar esta operación, o todos los datos locales pueden ser sincronizados de nuevo.</string>
+    <string name="dialog_remote_backup_delete_positive">@string/delete</string>
+    <string name="dialog_remote_backup_delete_progress">Eliminando tu copia de seguridad del dispositivo %s...</string>
+    <string name="dialog_remote_backup_delete_toast_success">Copia de seguridad eliminada correctamente</string>
+    <string name="dialog_remote_backup_delete_toast_failure">No se pudo eliminar esta copia de seguridad</string>
+    <string name="dialog_remote_backup_download_progress">Descargando imágenes a archivo ZIP...</string>
+
+    <string name="dialog_remote_backup_drive_restore_title">Restauración de Drive</string>
+    <string name="dialog_remote_backup_drive_restore_message">Estamos teniendo problemas para sincronizar tus datos. Para recuperar, nos gustaría borrar tu copia de seguridad de Drive y sincronizar de nuevo. Si ves este mensaje con frecuencia, por favor contáctanos para obtener más asistencia.</string>
+    <string name="dialog_remote_backup_restore_progress">Borrando tu copia de seguridad para preparar una resincronización...</string>
+    <string name="dialog_remote_backup_restore_toast_success">Se borró correctamente la copia de seguridad. Sincronizando de nuevo...</string>
+    <string name="dialog_remote_backup_restore_toast_failure">No se pudo sincronizar de nuevo esta copia de seguridad</string>
+
+    <string name="automatic_backups_info_dialog_message">Las copias de seguridad automáticas no están habilitadas en el momento.</string>
+    <string name="automatic_backups_info_dialog_positive">Toca para configurar</string>
+
+    <string name="drive_sync_error_no_space">No hay espacio de almacenamiento disponible en Drive</string>
+    <string name="drive_sync_error_no_permissions">Toca para restaurar los permisos de Drive</string>
+    <string name="drive_sync_error_lost_data">Error de configuración de Drive: toca para corregir</string>
+
+    <!-- ==============-========== Login ========================== -->
+    <string name="login_toolbar_title">Iniciar sesión/Registrarse</string>
+    <string name="login_title">Inicia sesión con tu cuenta de Recibos Inteligentes para comenzar a usar los escaneos automáticos (OCR)</string>
+    <string name="login_field_email_hint">Dirección de correo electrónico</string>
+    <string name="login_field_password_hint">Contraseña</string>
+    <string name="sign_up_button_text">Registrarse</string>
+    <string name="login_button_text">Iniciar sesión</string>
+    <string name="login_fields_hint_email">Por favor introduce una dirección de correo electrónico válida:</string>
+    <string name="login_fields_hint_password">La contraseña debe tener al menos 8 caracteres:</string>
+    <string name="login_fields_hint_valid">Toca abajo para iniciar sesión o registrarte:</string>
+    <string name="login_success_toast">Inicio de sesión correcto</string>
+    <string name="sign_up_success_toast">Registro correcto</string>
+    <string name="login_failure_toast">No se pudo iniciar la sesión</string>
+    <string name="sign_up_failure_toast">No se pudo registrar</string>
+    <string name="login_failure_credentials_toast">Error: Nombre de usuario o contraseña incorrecto</string>
+    <string name="sign_up_failure_account_exists_toast">Error: Este correo electrónico ya existe. Intenta iniciar sesión</string>
+
+    <!-- ==================== dialog filter ======================= -->
+    <string name="dialog_filter_positive_button">Añadir filtro</string>
+    <string name="dialog_filter_negative_button">Quitar filtro</string>
+
+    <!-- ==================== dialog miles ======================== -->
+    <string name="dialog_mileage_title_create">Añadir distancia</string>
+    <string name="dialog_mileage_title_update">Actualizar distancia</string>
+    <string name="dialog_mileage_positive_create">Agregar</string>
+    <string name="dialog_mileage_positive_update">Actualizar</string>
+    <string name="dialog_mileage_neutral_delete">Eliminar</string>
+
+    <!-- ================= RECEIPTMENU_FIELDS =================== -->
+    <string name="RECEIPTMENU_FIELD_NAME">Nombre</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">Precio</string>
+    <string name="RECEIPTMENU_FIELD_TAX">Impuesto</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">Moneda</string>
+    <string name="RECEIPTMENU_FIELD_DATE">Fecha</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">Categoría</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">Comentario</string>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1"/>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2"/>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3"/>
+
+    <!-- ================== RECEIPTMENU_TAGS ==================== -->
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
+
+    <!-- ============== Start String Arrays ================== -->
+    <string-array name="EDIT_TRIP_ITEMS">
+    <item>Editar informe</item>
+    <item>Eliminar informe</item>
+  </string-array>
+
+    <!-- ============== CSV/PDF Columns ================== -->
+    <string name="column_item_blank">Columna en blanco</string>
+    <string name="column_item_category_code">Código de la categoría</string>
+    <string name="column_item_category_name">Nombre de la categoría</string>
+    <string name="column_item_user_id">Id. de usuario</string>
+    <string name="column_item_report_name">Nombre del informe</string>
+    <string name="column_item_report_start_date">Fecha inicial del informe</string>
+    <string name="column_item_report_end_date">Fecha final del informe</string>
+    <string name="column_item_report_comment">Comentario del informe</string>
+    <string name="column_item_report_cost_center">Centro de costos del informe</string>
+    <string name="column_item_image_file_name">Nombre de la imagen</string>
+    <string name="column_item_image_path">Ruta de la imagen</string>
+    <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_converted_price_exchange_rate">Precio (al cambio)</string>
+    <string name="column_item_converted_tax_exchange_rate">Impuesto (al cambio)</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">Precio más impuesto (al cambio)</string>
+    <string name="column_item_exchange_rate">Tasa de cambio</string>
+    <string name="column_item_pictured">Fotografiado</string>
+    <string name="column_item_reimbursable">Reembolsable</string>
+    <string name="column_item_deprecated_expensable">Fungible</string>
+    <string name="column_item_index">Índice del recibo</string>
+    <string name="column_item_id">Id. del recibo</string>
+    <string name="column_item_payment_method">Método de pago</string>
+
+    <string name="receipt_dialog_action_edit">Editar recibo</string>
+    <string name="receipt_dialog_action_view">Ver recibo %s</string>
+    <string name="receipt_dialog_action_camera">Tomar imagen del recibo</string>
+    <string name="receipt_dialog_action_delete">Eliminar recibo</string>
+    <string name="receipt_dialog_action_move_copy">Mover/copiar</string>
+    <string name="receipt_dialog_action_swap_up">Intercambiar arriba</string>
+    <string name="receipt_dialog_action_swap_down">Intercambiar abajo</string>
+
+    <string name="dialog_attachment_title">Añadir %s al recibo</string>
+    <string name="dialog_attachment_text">Toca un recibo existente para añadirle este %s</string>
+    <string name="dialog_attachment_positive">Aceptar</string>
+    <string name="dialog_attachment_negative">No mostrar de nuevo</string>
+    <string name="action_send_view">Ver recibo existente %s</string>
+    <string name="action_send_attach">Adjuntar %s al recibo</string>
+    <string name="action_send_replace">Reemplazar recibo %s</string>
+
+    <!-- ================== Preference Dialog ==================== -->
+    <string name="dialog_custom_csv_spinner">Tipo de columna</string>
+    <string name="dialog_category_add">Añadir categoría</string>
+    <string name="dialog_category_edit">Editar categoría</string>
+
+    <!-- ================ Error Feedback ==================== -->
+    <string name="error_no_pdf_activity_viewer">No se pudo encontrar una aplicación para visualizar los PDF</string>
+    <string name="error_no_send_intent_dialog_title">No se encontraron apps para enviar</string>
+    <string name="error_no_send_intent_dialog_message">No pudimos encontrar una aplicación de correo electrónico (o equivalente) en tu teléfono. Puedes encontrar tus archivos en la siguiente carpeta: %s</string>
+    <string name="error_no_file_intent_dialog_title">Error: No se pudo encontrar una app para importar instalada en tu dispositivo</string>
+    <string name="error_no_wifi">Error: No estás conectado a Wi-Fi</string>
+
+    <!-- ================== SQL Corrpution ==================== -->
+    <string name="dialog_sql_corrupt_title">¡Oh, no!</string>
+    <string name="dialog_sql_corrupt_message">Tu base de datos está dañada. Esto ocurre con frecuencia si tienes una app que cierra tareas, pero puede ser ocasionado por otras cosas. No te preocupes, podremos restaurar la mayoría de tus datos.</string>
+    <string name="dialog_sql_corrupt_positive">Enviar un correo electrónico al desarrollador para obtener ayuda</string>
+    <string name="dialog_sql_corrupt_intent_subject">Recibos Inteligentes - Base de datos dañada</string>
+    <string name="dialog_sql_corrupt_intent_text">Ayuda, mi base de datos está dañada. ¿Cómo pueden ayudarme a restaurar las cosas?</string>
+    <string name="dialog_sql_corrupt_chooser">Enviar correo electrónico...</string>
+
+    <!-- ======================= Filters ====================== -->
+    <string name="filter_name_and">Y</string>
+    <string name="filter_name_not">No</string>
+    <string name="filter_name_or">O</string>
+    <string name="filter_name_receipt_category">Categoría</string>
+    <string name="filter_name_receipt_reimbursable">Es reembolsable</string>
+    <string name="filter_name_receipt_max_price">Precio máx.</string>
+    <string name="filter_name_receipt_min_price">Precio mín.</string>
+    <string name="filter_name_receipt_on_or_after">En o después de</string>
+    <string name="filter_name_receipt_on_or_before">En o antes de</string>
+    <string name="filter_name_receipt_selected">Está seleccionado</string>
+    <string name="filter_name_trip_ends_on_or_after">Termina en o después de</string>
+    <string name="filter_name_trip_ends_on_or_before">Termina en o antes de</string>
+    <string name="filter_name_trip_max_price">Precio máx.</string>
+    <string name="filter_name_trip_min_price">Precio mín.</string>
+    <string name="filter_name_trip_starts_on_or_after">Comienza en o después de</string>
+    <string name="filter_name_trip_starts_on_or_before">Comienza en o antes de</string>
+
+    <!-- =================== Payment Methods =====+============= -->
+    <string name="payment_method">Método de pago</string>
+    <string name="payment_methods">Métodos de pago</string>
+    <string name="payment_method_add">Añadir método de pago</string>
+    <string name="payment_method_edit">Editar método de pago</string>
+    <string name="payment_method_default_cash">Efectivo</string>
+    <string name="payment_method_default_check">Cheque</string>
+    <string name="payment_method_default_personal_card">Tarjeta personal</string>
+    <string name="payment_method_default_corporate_card">Tarjeta empresarial</string>
+    <string name="payment_method_default_unspecified">Sin definir</string>
+
+    <!-- =================== Payment Methods =================== -->
+    <string name="purchase_succeeded">La compra se completó correctamente</string>
+    <string name="purchase_unavailable">No se pudo recuperar la información de la compra</string>
+    <string name="purchase_failed">No se pudo completar la compra</string>
+
+    <!-- ================== App Rating ==================== -->
+    <string name="rating_tooltip_text">¿Te gusta Recibos Inteligentes?</string>
+    <string name="leave_feedback_text">¿Deseas hacernos un comentario?</string>
+    <string name="apprating_dialog_title">¿Te gusta %s?</string>
+    <string name="apprating_dialog_message">Por favor considera hacer un comentario. Como desarrollador independiente, tus comentarios son nuestra principal fuente de exposición y realmente ayudan a motivarme para continuar añadiendo características. ¡Gracias!</string>
+    <string name="apprating_dialog_negative">No, gracias</string>
+    <string name="apprating_dialog_neutral">Tal vez luego</string>
+    <string name="apprating_dialog_positive">¡Calificar ahora!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">Usa la pestaña \'Generar\' para crear tus informes</string>
+
+
+</resources>

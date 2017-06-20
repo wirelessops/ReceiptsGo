@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- preferences.xml -->
+    <!-- ============== Preference Headers ================= -->
+    <string name="pref_general_header">Общие</string>
+    <string name="pref_receipt_header">Чеки</string>
+    <string name="pref_output_header">Результат отчета</string>
+
+    <string name="pref_email_header">Email</string>
+    <string name="pref_camera_header">Камера</string>
+
+    <string name="pref_layout_header">Настройка внешнего вида</string>
+    <string name="pref_distance_header">Расстояние</string>
+    <string name="pref_pro_header">Smart Receipts Plus</string>
+    <string name="pref_help_header">Поддержка</string>
+    <string name="pref_about_header">О программе</string>
+
+
+    <!-- ============== Preference General ================= -->
+
+    <string name="pref_general_trip_duration_title">Продолжительность поездки по умолчанию</string>
+
+    <string name="pref_general_default_currency_title">Валюта по умолчанию</string>
+
+    <string name="pref_general_default_date_separator_title">Разделитель даты по умолчанию</string>
+
+    <string name="pref_general_track_cost_center_title">Центр стоимости маршрутов</string>
+    <string name="pref_general_track_cost_center_summaryOn">Включать Центр расходов в отчеты</string>
+    <string name="pref_general_track_cost_center_summaryOff">Не включать Центр расходов в отчеты</string>
+
+    <!-- ============== Preference Receipt ================= -->
+
+    <string name="pref_receipt_customize_categories_title">Настройка категорий чеков</string>
+    <string name="pref_receipt_customize_categories_summary">Нажмите здесь, чтобы добавить/редактировать категории</string>
+
+    <string name="pref_receipt_predict_categories_title">Предсказывать категории квитанций</string>
+    <string name="pref_receipt_predict_categories_summary">Автозаполнение категории на основе предыдущих данных</string>
+
+    <string name="pref_receipt_match_name_to_category_title">Брать имя из категории</string>
+    <string name="pref_receipt_match_name_to_category_summary">Автоматически задавать имя для категории</string>
+
+    <string name="pref_receipt_match_comment_to_category_title">Брать комментарий из категории</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Автоматически добавлять комментарий к категории</string>
+
+    <string name="pref_receipt_reimbursable_only_title">Только подлежащие возмещению</string>
+    <string name="pref_receipt_reimbursable_only_summary">Исключить другие квитанции из отчета</string>
+
+    <string name="pref_receipt_reimbursable_default_title">Возмещаемые чеки по умолчанию</string>
+
+    <string name="pref_receipt_include_tax_field_title">Включить поле \"Налог\"</string>
+    <string name="pref_receipt_include_tax_field_summary">Добавляет строку с информацией о налогах</string>
+
+    <string name="pref_receipt_tax_percent_title">Процент налога по умолчанию</string>
+
+    <string name="pref_receipt_pre_tax_title">Использовать цену без налогов</string>
+    <string name="pref_receipt_pre_tax_summary_on">Рассчитывает налог на основе цены без налога</string>
+    <string name="pref_receipt_pre_tax_summary_off">Рассчитывает налог на основе цены с налогом</string>
+
+    <string name="pref_receipt_enable_autocomplete_title">Включить предложения автозаполнения</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Предлагать значения из предыдущих записей</string>
+
+    <string name="pref_receipt_minimum_receipts_price_title">Минимальная цена чека</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">Включить в отчет все чеки</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">Только чеки на сумму более %s</string>
+
+    <string name="pref_receipt_default_to_report_start_date_title">Дата начала отчета по умолчанию</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Устанавливает дату квитанции в соответствии с датой отчета</string>
+
+    <string name="pref_receipt_show_id_title">Показывать ID чека</string>
+    <string name="pref_receipt_show_id_summary">Отображает автоматически сгенерированное поле \"ID\"</string>
+
+    <string name="pref_receipt_full_page_title">На всю страницу</string>
+    <string name="pref_receipt_full_page_summary">Помечает квитанции как полностраничные по умолчанию</string>
+
+    <string name="pref_receipt_use_payment_methods_title">Включить способы оплаты</string>
+    <string name="pref_receipt_use_payment_methods_summary">Извлекать методы оплаты из квитанций</string>
+
+    <string name="pref_receipt_payment_methods_title">Настройка способов оплаты</string>
+    <string name="pref_receipt_payment_methods_summary">Нажмите здесь, чтобы добавить/редактировать способы оплаты</string>
+
+    <!-- ============= Preference Output ================= -->
+
+    <string name="pref_output_custom_csv_title">Настройка выхода CSV</string>
+
+
+    <string name="pref_output_username_title">ID пользователя</string>
+    <string name="pref_output_username_emptyValue">Используется в качестве произвольного поля</string>
+
+    <string name="pref_output_print_receipt_id_by_photo_title">Печать ID по фото</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Показывает ID чека вместо индекса</string>
+
+    <string name="pref_output_print_receipt_comment_by_photo_title">Печать комментария к квитанции по фото</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Показывает комментарий над фотографиями PDF</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Скрыть комментарий над фотографиями PDF</string>
+
+    <string name="pref_output_receipts_landscape_title">Печать таблицы чеков в ландшафтном режиме</string>
+    <string name="pref_output_receipts_landscape_on">Таблица чеков печатается в ландшафтном режиме</string>
+    <string name="pref_output_receipts_landscape_off">Таблица чеков печатается в портретном режиме</string>
+
+    <!-- ============== Preference Email ================= -->
+
+    <string name="pref_email_default_email_to_title">Получатель по умолчанию</string>
+
+    <string name="pref_email_default_email_cc_title">Получатель CC по умолчанию</string>
+
+    <string name="pref_email_default_email_bcc_title">Получатель BCC по умолчанию</string>
+    <string name="pref_email_default_email_emptyValue">Отделять записи точкой с запятой (;)</string>
+
+    <string name="pref_email_default_email_subject_title">Тема письма по умолчанию</string>
+
+    <!-- ============= Preference Camera ================= -->
+
+    <string name="pref_camera_bw_title">Преобразовать в оттенки серого</string>
+    <string name="pref_camera_bw_summary">Сохраняет изображение в черно-белом формате</string>
+
+    <string name="pref_camera_rotate_title">Автоматический поворот изображений</string>
+    <string name="pref_camera_rotate_summaryOn">Пробовать поворачивать изображения вертикально</string>
+    <string name="pref_camera_rotate_summaryOff">Не поворачивать изображения</string>
+
+    <!-- ============= Preference Layout ================= -->
+
+    <string name="pref_layout_display_date_title">Включать дату квитанции</string>
+    <string name="pref_layout_display_date_summary">Показывать дату квитанции</string>
+
+    <string name="pref_layout_display_category_title">Включить категорию квитанции</string>
+    <string name="pref_layout_display_category_summary">Показывает категорию квитанции</string>
+
+    <string name="pref_layout_display_photo_title">Включить изображение/ PDF-маркер</string>
+    <string name="pref_layout_display_photo_summary">Указывать, содержат ли элементы фото/PDF</string>
+
+    <!-- ============= Preference Distance ================= -->
+
+    <string name="pref_distance_include_price_in_report_title">Добавить цену расстояния к отчету</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">Включает стоимость маршрута в отчет</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">Исключает стоимость маршрута из отчета</string>
+
+    <string name="pref_distance_rate_title">Расход топлива</string>
+    <string name="pref_distance_rate_summaryOff">Расход топлива на милю или км</string>
+    <string name="pref_distance_rate_summaryOn">%s на милю или км</string>
+
+    <string name="pref_distance_print_table_title">Включить таблицу расстояний</string>
+    <string name="pref_distance_print_table_summaryOn">Отчеты PDF/CSV включают таблицу расстояний</string>
+    <string name="pref_distance_print_table_summaryOff">Отчеты PDF/CSV не включают таблицу расстояний</string>
+
+    <string name="pref_distance_print_daily_title">Ежедневное расстояние в отчете</string>
+    <string name="pref_distance_print_daily_summaryOn">Показывать поле \"Расстояние\"</string>
+    <string name="pref_distance_print_daily_summaryOff">Не показывать поле \"Расстояние\"</string>
+
+    <string name="pref_distance_as_price_title">Цена расстояния в подзаголовке</string>
+    <string name="pref_distance_as_price_summaryOn">Показывать стоимость маршрута в подзаголовке программы</string>
+    <string name="pref_distance_as_price_summaryOff">Показывать пройденную дистанцию в подзаголовке программы</string>
+
+    <!-- ================= Preference Plus ================== -->
+
+    <string name="pref_pro_pdf_footer_title">Текст внизу PDF</string>
+
+    <!-- ============== Preference Support ================= -->
+
+    <string name="pref_help_send_love_title">Отправить Любовь</string>
+
+    <string name="pref_help_send_feedback_title">Отправить отзыв</string>
+
+    <string name="pref_help_support_email_title">E-mail для поддержки</string>
+
+    <!-- =============== Preference About ================== -->
+
+    <string name="pref_about_version_title">Версия</string>
+
+    <string name="pref_about_about_title">О программе</string>
+    <string name="pref_about_about_dialogMessage">Smart Receipts создал и поддерживает Will Baumann. Программа распространяется под лицензией GNU Affero General Public License</string>
+
+    <string name="pref_about_terms_title">Условия использования</string>
+    <string name="pref_about_terms_dialogMessage">Эта программа является свободным программным обеспечением: вы можете распространять и/или изменять его в соответствии с условиями GNU Affero General Public License, опубликованной Фондом свободного программного обеспечения, версии 3, либо (по вашему выбору) любой более поздней версии.\n\nЭта программа распространяется в надежде, что она будет полезной, однако БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, и даже без подразумеваемых гарантий КОММЕРЧЕСКОЙ ЦЕННОСТИ или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ. Смотрите GNU Affero General Public License для более подробной информации.\n\nКопия GNU Affero General Public License доступна по адресу http://www.gnu.org/licenses/.</string>
+
+    <string name="pref_about_privacy_policy_title">Политика конфиденциальности</string>
+    <!-- =============== Preference Misc =================== -->
+
+</resources>
