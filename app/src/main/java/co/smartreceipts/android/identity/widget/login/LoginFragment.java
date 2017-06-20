@@ -152,14 +152,14 @@ public class LoginFragment extends Fragment implements LoginView {
     }
 
     @Override
-    public void present(@NonNull UiIndicator uiIndicator) {
+    public void present(@NonNull UiIndicator<String> uiIndicator) {
         progress.setVisibility(uiIndicator.getState() == UiIndicator.State.Loading ? View.VISIBLE : View.GONE);
         if (uiIndicator.getState() != UiIndicator.State.Idle) {
             loginButton.setEnabled(uiIndicator.getState() != UiIndicator.State.Loading);
             signUpButton.setEnabled(uiIndicator.getState() != UiIndicator.State.Loading);
         }
-        if (uiIndicator.getMessage().isPresent()) {
-            Toast.makeText(getContext(), uiIndicator.getMessage().get(), Toast.LENGTH_SHORT).show();
+        if (uiIndicator.getData().isPresent()) {
+            Toast.makeText(getContext(), uiIndicator.getData().get(), Toast.LENGTH_SHORT).show();
         }
         if (uiIndicator.getState() == UiIndicator.State.Success) {
             router.navigateBack();

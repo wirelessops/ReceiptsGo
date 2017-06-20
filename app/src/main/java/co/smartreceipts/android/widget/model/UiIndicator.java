@@ -1,55 +1,53 @@
 package co.smartreceipts.android.widget.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
-public class UiIndicator implements Parcelable {
+public class UiIndicator<T> {
 
     public enum State {
         Idle, Loading, Error, Success
     }
 
     private final State state;
-    private final Optional<String> message;
+    private final Optional<T> data;
 
-    private UiIndicator(@NonNull State state, @Nullable String message) {
+    private UiIndicator(@NonNull State state, @Nullable T data) {
         this.state = Preconditions.checkNotNull(state);
-        this.message = Optional.ofNullable(message);
+        this.data = Optional.ofNullable(data);
     }
 
     @NonNull
-    public static UiIndicator idle() {
-        return new UiIndicator(State.Idle, null);
+    public static <T> UiIndicator<T> idle() {
+        return new UiIndicator<>(State.Idle, null);
     }
 
     @NonNull
-    public static UiIndicator loading() {
-        return new UiIndicator(State.Loading, null);
+    public static <T> UiIndicator<T> loading() {
+        return new UiIndicator<>(State.Loading, null);
     }
 
     @NonNull
-    public static UiIndicator error() {
-        return new UiIndicator(State.Error, null);
+    public static <T> UiIndicator<T> error() {
+        return new UiIndicator<>(State.Error, null);
     }
 
     @NonNull
-    public static UiIndicator error(@NonNull String message) {
-        return new UiIndicator(State.Error, message);
+    public static <T> UiIndicator<T> error(@NonNull T data) {
+        return new UiIndicator<>(State.Error, data);
     }
 
     @NonNull
-    public static UiIndicator success() {
-        return new UiIndicator(State.Success, null);
+    public static <T> UiIndicator<T> success() {
+        return new UiIndicator<>(State.Success, null);
     }
 
     @NonNull
-    public static UiIndicator success(@NonNull String message) {
-        return new UiIndicator(State.Success, message);
+    public static <T> UiIndicator<T> success(@NonNull T data) {
+        return new UiIndicator<>(State.Success, data);
     }
 
     @NonNull
@@ -58,8 +56,8 @@ public class UiIndicator implements Parcelable {
     }
 
     @NonNull
-    public Optional<String> getMessage() {
-        return message;
+    public Optional<T> getData() {
+        return data;
     }
 
     @Override
@@ -70,14 +68,14 @@ public class UiIndicator implements Parcelable {
         UiIndicator that = (UiIndicator) o;
 
         if (state != that.state) return false;
-        return message.equals(that.message);
+        return data.equals(that.data);
 
     }
 
     @Override
     public int hashCode() {
         int result = state.hashCode();
-        result = 31 * result + message.hashCode();
+        result = 31 * result + data.hashCode();
         return result;
     }
 
@@ -85,31 +83,8 @@ public class UiIndicator implements Parcelable {
     public String toString() {
         return "UiIndicator{" +
                 "state=" + state +
-                ", message='" + message + '\'' +
+                ", data='" + data + '\'' +
                 '}';
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.state.ordinal());
-        dest.writeString(this.message.orNull());
-    }
-
-    public static final Creator<UiIndicator> CREATOR = new Creator<UiIndicator>() {
-        @Override
-        public UiIndicator createFromParcel(Parcel in) {
-            return new UiIndicator(State.values()[in.readInt()], in.readString());
-        }
-
-        @Override
-        public UiIndicator[] newArray(int size) {
-            return new UiIndicator[size];
-        }
-    };
 }

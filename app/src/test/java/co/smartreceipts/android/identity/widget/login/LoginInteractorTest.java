@@ -26,6 +26,7 @@ import retrofit2.Response;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("unchecked")
 @RunWith(RobolectricTestRunner.class)
 public class LoginInteractorTest {
 
@@ -64,7 +65,7 @@ public class LoginInteractorTest {
     @Test
     public void loginSuccess() {
         when(identityManager.logInOrSignUp(loginPayload)).thenReturn(Observable.just(loginResponse));
-        final TestObserver<UiIndicator> testObserver = interactor.loginOrSignUp(loginPayload).test();
+        final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(loginPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.success(context.getString(R.string.login_success_toast)));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -73,7 +74,7 @@ public class LoginInteractorTest {
     @Test
     public void signUpSuccess() {
         when(identityManager.logInOrSignUp(signUpPayload)).thenReturn(Observable.just(loginResponse));
-        final TestObserver<UiIndicator> testObserver = interactor.loginOrSignUp(signUpPayload).test();
+        final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(signUpPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.success(context.getString(R.string.sign_up_success_toast)));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -82,7 +83,7 @@ public class LoginInteractorTest {
     @Test
     public void loginErrorGeneric() {
         when(identityManager.logInOrSignUp(loginPayload)).thenReturn(Observable.error(new Exception()));
-        final TestObserver<UiIndicator> testObserver = interactor.loginOrSignUp(loginPayload).test();
+        final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(loginPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.error(context.getString(R.string.login_failure_toast)));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -91,7 +92,7 @@ public class LoginInteractorTest {
     @Test
     public void signUpErrorGeneric() {
         when(identityManager.logInOrSignUp(signUpPayload)).thenReturn(Observable.error(new Exception()));
-        final TestObserver<UiIndicator> testObserver = interactor.loginOrSignUp(signUpPayload).test();
+        final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(signUpPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.error(context.getString(R.string.sign_up_failure_toast)));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -100,7 +101,7 @@ public class LoginInteractorTest {
     @Test
     public void loginErrorBadCredentials() {
         when(identityManager.logInOrSignUp(loginPayload)).thenReturn(Observable.error(new HttpException(Response.error(401, responseBody))));
-        final TestObserver<UiIndicator> testObserver = interactor.loginOrSignUp(loginPayload).test();
+        final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(loginPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.error(context.getString(R.string.login_failure_credentials_toast)));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -109,7 +110,7 @@ public class LoginInteractorTest {
     @Test
     public void signUpErrorExistingAccount() {
         when(identityManager.logInOrSignUp(signUpPayload)).thenReturn(Observable.error(new HttpException(Response.error(420, responseBody))));
-        final TestObserver<UiIndicator> testObserver = interactor.loginOrSignUp(signUpPayload).test();
+        final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(signUpPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.error(context.getString(R.string.sign_up_failure_account_exists_toast)));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -118,7 +119,7 @@ public class LoginInteractorTest {
     @Test
     public void requestsGetCachedUntilConsumed() {
         when(identityManager.logInOrSignUp(loginPayload)).thenReturn(Observable.just(loginResponse));
-        final TestObserver<UiIndicator> preTestObserver = interactor.loginOrSignUp(loginPayload).test();
+        final TestObserver<UiIndicator<String>> preTestObserver = interactor.loginOrSignUp(loginPayload).test();
         preTestObserver.assertValues(UiIndicator.loading(), UiIndicator.success(context.getString(R.string.login_success_toast)));
         preTestObserver.assertComplete();
         preTestObserver.assertNoErrors();
@@ -128,7 +129,7 @@ public class LoginInteractorTest {
         preMaybeTestObserver.assertComplete();
         preMaybeTestObserver.assertNoErrors();
 
-        final TestObserver<UiIndicator> postTestObserver = interactor.getLastUserCredentialsPayload().flatMapObservable(interactor::loginOrSignUp).test();
+        final TestObserver<UiIndicator<String>> postTestObserver = interactor.getLastUserCredentialsPayload().flatMapObservable(interactor::loginOrSignUp).test();
         postTestObserver.assertValues(UiIndicator.loading(), UiIndicator.success(context.getString(R.string.login_success_toast)));
         postTestObserver.assertComplete();
         postTestObserver.assertNoErrors();

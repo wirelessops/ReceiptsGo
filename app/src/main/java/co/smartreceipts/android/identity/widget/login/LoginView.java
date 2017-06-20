@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 
 public interface LoginView {
 
-    void present(@NonNull UiIndicator uiIndicator);
+    void present(@NonNull UiIndicator<String> uiIndicator);
 
     void present(@NonNull UiInputValidationIndicator uiInputValidationIndicator);
 

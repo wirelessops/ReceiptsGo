@@ -31,7 +31,7 @@ public class LoginInteractor {
     private final Context context;
     private final IdentityManager identityManager;
     private UserCredentialsPayload userCredentialsPayload;
-    private ReplaySubject<UiIndicator> uiIndicatorReplaySubject;
+    private ReplaySubject<UiIndicator<String>> uiIndicatorReplaySubject;
 
     @Inject
     public LoginInteractor(@NonNull Context context, @NonNull IdentityManager identityManager) {
@@ -47,7 +47,7 @@ public class LoginInteractor {
      * of the request
      */
     @NonNull
-    public synchronized Observable<UiIndicator> loginOrSignUp(@NonNull final UserCredentialsPayload userCredentialsPayload) {
+    public synchronized Observable<UiIndicator<String>> loginOrSignUp(@NonNull final UserCredentialsPayload userCredentialsPayload) {
         Logger.info(this, "Initiating user login (or sign up)");
 
         if (this.uiIndicatorReplaySubject == null) {
