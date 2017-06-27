@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -51,7 +52,10 @@ public class UriUtils {
 
     @NonNull
     public static String getMimeType(@NonNull Uri uri, @NonNull ContentResolver contentResolver) {
-        final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getExtension(uri, contentResolver));
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getExtension(uri, contentResolver));
+        if (TextUtils.isEmpty(mimeType)) {
+            mimeType = contentResolver.getType(uri);
+        }
         return mimeType != null ? mimeType : "";
     }
 }

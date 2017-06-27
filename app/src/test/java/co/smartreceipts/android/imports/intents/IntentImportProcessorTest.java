@@ -1,5 +1,7 @@
 package co.smartreceipts.android.imports.intents;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -19,12 +21,14 @@ import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import io.reactivex.observers.TestObserver;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(RobolectricTestRunner.class)
 public class IntentImportProcessorTest {
 
     IntentImportProcessor intentImportProcessor;
+    IntentImportProcessor mockContentIntentImportProcessor;
 
     @Mock
     Analytics analytics;
@@ -32,10 +36,21 @@ public class IntentImportProcessorTest {
     @Mock
     Intent intent;
 
+    @Mock
+    Context context;
+
+    @Mock
+    ContentResolver contentResolver;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        when(context.getApplicationContext()).thenReturn(context);
+        when(context.getContentResolver()).thenReturn(contentResolver);
+
         intentImportProcessor = new IntentImportProcessor(RuntimeEnvironment.application, analytics);
+        mockContentIntentImportProcessor = new IntentImportProcessor(context, analytics);
     }
 
     @Test
@@ -183,6 +198,31 @@ public class IntentImportProcessorTest {
                 .assertComplete()
                 .assertNoErrors();
         assertNull(intentImportProcessor.getLastResult());
+    }
+
+    @Test
+    public void processViewSmrContentIntent() {
+        final Uri uri = Uri.parse("content://tmp/123456");
+        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        final IntentImportResult result = new IntentImportResult(uri, FileType.Smr);
+        when(contentResolver.getType(uri)).thenReturn("application/octet-stream");
+
+        // Note: We use the mock context processor for this test
+        final TestObserver<IntentImportResult> testObserver1 = mockContentIntentImportProcessor.process(intent).test();
+        testObserver1.awaitTerminalEvent();
+        testObserver1.assertValue(result)
+                .assertComplete()
+                .assertNoErrors();
+        assertEquals(result, mockContentIntentImportProcessor.getLastResult());
+
+        // But confirm subsequent attempts do nothing after marking consumed
+        mockContentIntentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
+        final TestObserver<IntentImportResult> testObserver2 = mockContentIntentImportProcessor.process(intent).test();
+        testObserver2.awaitTerminalEvent();
+        testObserver2.assertNoValues()
+                .assertComplete()
+                .assertNoErrors();
+        assertNull(mockContentIntentImportProcessor.getLastResult());
     }
 
 }
