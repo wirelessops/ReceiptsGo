@@ -41,4 +41,15 @@
      
 	<!-- Holo copies copied from SDK 17 -->
 	<color name="holo_blue_light">#ff33b5e5</color>
+
+    <!--Palette for graphs-->
+    <color name="graph_1">#3b9ec2</color>
+    <color name="graph_2">#3bc2c2</color>
+    <color name="graph_3">#3b78c2</color>
+    <color name="graph_4">#3b4fc2</color>
+    <color name="graph_5">#663bc2</color>
+    <color name="graph_6">#903bc2</color>
+    <color name="graph_green">#3bc283</color>
+    <color name="graph_red">#c23b56</color>
+
 </resources>

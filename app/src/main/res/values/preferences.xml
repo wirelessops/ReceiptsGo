@@ -58,7 +58,7 @@
     <string name="pref_receipt_pre_tax_summary_off">Calculates Tax From a Post-Tax Price</string>
     <string name="pref_receipt_enable_autocomplete_key" translatable="false">EnableAutoCompleteSuggestions</string>
     <string name="pref_receipt_enable_autocomplete_title">Enable AutoComplete Suggestions</string>
-    <string name="pref_receipt_enable_autocomplete_summary">Suggest values from previous entries</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Suggest values from previous values</string>
     <string name="pref_receipt_minimum_receipts_price_key" translatable="false">MinReceiptPrice</string>
     <string name="pref_receipt_minimum_receipts_price_title">Minimum Receipt Price</string>
     <string name="pref_receipt_minimum_receipts_price_summary_all">Include all receipts in report</string>
@@ -105,7 +105,7 @@
     <string name="pref_email_default_email_cc_title">Default Email CC Recipient</string>
     <string name="pref_email_default_email_bcc_key" translatable="false">EmailBCC</string>
     <string name="pref_email_default_email_bcc_title">Default Email BCC Recipient</string>
-    <string name="pref_email_default_email_emptyValue">Separate entries with a semicolon (;)</string>
+    <string name="pref_email_default_email_emptyValue">Separate values with a semicolon (;)</string>
     <string name="pref_email_default_email_subject_key" translatable="false">EmailSubject</string>
     <string name="pref_email_default_email_subject_title">Default Email Subject</string>
 
@@ -127,7 +127,7 @@
     <string name="pref_layout_display_category_summary">Shows the category of receipt list items</string>
     <string name="pref_layout_display_photo_key" translatable="false">LayoutIncludeReceiptPicture</string>
     <string name="pref_layout_display_photo_title">Include Picture/PDF Marker</string>
-    <string name="pref_layout_display_photo_summary">Indicate if entries have a photo/PDF</string>
+    <string name="pref_layout_display_photo_summary">Indicate if values have a photo/PDF</string>
 
     <!-- ============= Preference Distance ================= -->
     <string name="pref_distance_include_price_in_report_key" translatable="false">MileageTotalInReport</string>

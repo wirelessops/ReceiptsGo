@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/Widget.SmartReceipts.TextView.NoData"
+        android:id="@+id/empty_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/graphs_no_data"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:id="@+id/graphs_linear_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_size"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dates_line_chart_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/graphs_expenditure_by_dates_title"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/dates_line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/graph_height_default"
+                android:layout_marginBottom="@dimen/default_margin_size"
+                android:layout_marginTop="@dimen/default_margin_size"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/categories_pie_chart_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/graphs_expenditure_by_categories_title"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/categories_pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/graph_height_default"
+                android:layout_marginBottom="@dimen/default_margin_size"
+                android:layout_marginTop="@dimen/default_margin_size"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/reimbursable_horizontal_bar_chart_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/graphs_expenditure_by_reimbursable"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/reimbursable_horizontal_bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/graph_height_small"
+                android:layout_marginBottom="@dimen/default_margin_size"
+                android:layout_marginTop="@dimen/default_margin_size"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/payment_methods_bar_chart_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/graphs_expenditure_by_payment_methods"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/payment_methods_bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/graph_height_small"
+                android:layout_marginBottom="@dimen/default_margin_size"
+                android:layout_marginTop="@dimen/default_margin_size"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

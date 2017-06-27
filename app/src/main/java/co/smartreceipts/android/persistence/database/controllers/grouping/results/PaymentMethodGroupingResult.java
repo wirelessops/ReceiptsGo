@@ -1,17 +1,15 @@
 package co.smartreceipts.android.persistence.database.controllers.grouping.results;
 
 import co.smartreceipts.android.model.PaymentMethod;
+import co.smartreceipts.android.model.Price;
 
 public class PaymentMethodGroupingResult {
 
     private final PaymentMethod paymentMethod;
 
-    /**
-     * Price in trip's currency
-     */
-    private final float price;
+    private final Price price;
 
-    public PaymentMethodGroupingResult(PaymentMethod paymentMethod, float price) {
+    public PaymentMethodGroupingResult(PaymentMethod paymentMethod, Price price) {
         this.paymentMethod = paymentMethod;
         this.price = price;
     }
@@ -20,7 +18,7 @@ public class PaymentMethodGroupingResult {
         return paymentMethod;
     }
 
-    public float getPrice() {
+    public Price getPrice() {
         return price;
     }
 }

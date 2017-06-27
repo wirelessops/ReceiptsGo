@@ -500,4 +500,14 @@
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Use the \'Generate\' tab to create your reports</string>
 
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">Add your first receipts to see graphs.</string>
+    <string name="graphs_expenditure_by_dates_title">Daily expenses</string>
+    <string name="graphs_expenditure_by_categories_title">Expenditure by categories</string>
+    <string name="graphs_expenditure_by_reimbursable">Reimbursable vs Non-reimbursable</string>
+    <string name="graphs_expenditure_by_payment_methods">Expenditure by payment methods</string>
+    <string name="graphs_label_reimbursable">Reimbursable</string>
+    <string name="graphs_label_non_reimbursable">Non-reimbursable</string>
+    <string name="graphs_label_others">Others</string>
+
 </resources>
