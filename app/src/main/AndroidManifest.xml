@@ -73,11 +73,12 @@
                       tools:ignore="GoogleAppIndexingUrlError"/>
             </intent-filter>
 
-            <!-- Filter to open with file browser -->
+            <!-- A fallback one for zip mime types -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="file" android:mimeType="*/*" android:pathPattern=".*\\.smr" android:host="*" />
+                <data android:mimeType="application/zip" android:pathPattern=".*\\.smr" android:host="*"
+                      tools:ignore="GoogleAppIndexingUrlError"/>
             </intent-filter>
 
         </activity>
