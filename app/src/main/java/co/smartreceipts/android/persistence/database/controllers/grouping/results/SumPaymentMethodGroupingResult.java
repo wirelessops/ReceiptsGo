@@ -3,13 +3,13 @@ package co.smartreceipts.android.persistence.database.controllers.grouping.resul
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
 
-public class PaymentMethodGroupingResult {
+public class SumPaymentMethodGroupingResult {
 
     private final PaymentMethod paymentMethod;
 
     private final Price price;
 
-    public PaymentMethodGroupingResult(PaymentMethod paymentMethod, Price price) {
+    public SumPaymentMethodGroupingResult(PaymentMethod paymentMethod, Price price) {
         this.paymentMethod = paymentMethod;
         this.price = price;
     }

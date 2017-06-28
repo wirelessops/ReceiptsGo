@@ -20,8 +20,8 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
-import co.smartreceipts.android.persistence.database.controllers.grouping.results.PaymentMethodGroupingResult;
-import co.smartreceipts.android.persistence.database.controllers.grouping.results.ReimbursementGroupingResult;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumPaymentMethodGroupingResult;
+import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumReimbursementGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumDateResult;
 import io.reactivex.Observable;
@@ -74,7 +74,7 @@ public class GroupingController {
                 });
     }
 
-    public Observable<PaymentMethodGroupingResult> getSummationByPaymentMethod(Trip trip) {
+    public Observable<SumPaymentMethodGroupingResult> getSummationByPaymentMethod(Trip trip) {
         return getReceiptsStream(trip)
                 .filter(receipt -> receipt.getPaymentMethod() != null) // thus, we ignore receipts without defined payment method
                 .groupBy(Receipt::getPaymentMethod)
@@ -82,19 +82,19 @@ public class GroupingController {
                         .toList()
                         .map(receipts -> {
                             Price price = getReceiptsPriceSum(receipts, trip.getTripCurrency());
-                            return new PaymentMethodGroupingResult(paymentMethodReceiptGroupedObservable.getKey(), price);
+                            return new SumPaymentMethodGroupingResult(paymentMethodReceiptGroupedObservable.getKey(), price);
                         })
                         .toObservable());
     }
 
-    public Observable<ReimbursementGroupingResult> getSummationByReimbursment(Trip trip) {
+    public Observable<SumReimbursementGroupingResult> getSummationByReimbursment(Trip trip) {
         return getReceiptsStream(trip)
                 .groupBy(Receipt::isReimbursable)
                 .flatMap(booleanReceiptGroupedObservable -> booleanReceiptGroupedObservable
                         .toList()
                         .map(receipts -> {
                             Price price = getReceiptsPriceSum(receipts, trip.getTripCurrency());
-                            return new ReimbursementGroupingResult(booleanReceiptGroupedObservable.getKey(), price);
+                            return new SumReimbursementGroupingResult(booleanReceiptGroupedObservable.getKey(), price);
                         })
                         .toObservable())
                 .sorted((o1, o2) -> Boolean.compare(o1.isReimbursable(), o2.isReimbursable())); // non-reimbursable must be the first

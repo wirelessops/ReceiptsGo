@@ -36,9 +36,9 @@ public class GraphsPresenter extends BasePresenter<GraphsView, GraphsInteractor>
     @Override
     public void subscribe() {
 
-        // TODO: 21.06.2017 we have some problem with payment methods.
-        // when this option is disabled - receipt heve no pm
-        // if we turn it on - old receipts slill have no pm (until we edit it - unspecified pm)
+        // TODO: 21.06.2017 we have some nuance with payment methods.
+        // when this option is disabled - receipt has no payment method
+        // if we turn it on - old receipts still has no payment method (until we edit it - unspecified pm)
 
         compositeDisposable.add(interactor.getSummationByCategories(trip)
                 .subscribe(view::present));

@@ -7,24 +7,16 @@ import java.util.Calendar;
 
 public class DayAxisValueFormatter implements IAxisValueFormatter
 {
-//    private final ILineDataSet dataSet;
     private final String defaultSeparator;
 
-    public DayAxisValueFormatter(/*ILineDataSet dataSet, */String dafaultSeparator) {
-        //this.dataSet = dataSet;
+    public DayAxisValueFormatter(String dafaultSeparator) {
         this.defaultSeparator = dafaultSeparator;
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
 
-//        if (value >= dataSet.getXMin() + dataSet.getEntryCount()) {
-//            Logger.debug(this, "possible IndexOutOfBoundsException");
-//            return "";
-//        }
-
-//        int days = (int) dataSet.getEntryForXValue(value, 0).getX(); //getEntryXPos(float value).getData();
-
+        // Hack for sometimes appearing IndexOutOfBoundsException from MPAndroidCharts lib
         try {
             int days = (int) value;
 

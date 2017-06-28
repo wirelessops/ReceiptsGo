@@ -2,13 +2,13 @@ package co.smartreceipts.android.persistence.database.controllers.grouping.resul
 
 import co.smartreceipts.android.model.Price;
 
-public class ReimbursementGroupingResult {
+public class SumReimbursementGroupingResult {
 
     private final boolean isReimbursable;
 
     private final Price price;
 
-    public ReimbursementGroupingResult(boolean isReimbursable, Price price) {
+    public SumReimbursementGroupingResult(boolean isReimbursable, Price price) {
         this.isReimbursable = isReimbursable;
         this.price = price;
     }

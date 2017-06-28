@@ -2,9 +2,11 @@ package co.smartreceipts.android.graphs;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -55,37 +58,31 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
     private static final int[] GRAPHS_PALETTE = {
             R.color.graph_1, R.color.graph_2, R.color.graph_3, R.color.graph_4,
-            R.color.graph_5, R.color.graph_6, R.color.graph_red, R.color.graph_green
+            R.color.graph_5, R.color.graph_6, R.color.graph_7
     };
 
-    public static final float VALUE_TEXT_SIZE = 12f;
-    public static final float LEGEND_TEXT_SIZE = 12f;
-    public static final int ANIMATION_DURATION = 2000;
+    private static final float TITLE_TEXT_SIZE = 14f;
+    private static final float VALUE_TEXT_SIZE = 12f;
+    private static final float LEGEND_TEXT_SIZE = 12f;
+    private static final int ANIMATION_DURATION = 2000;
+    private static final float EXTRA_TOP_OFFSET_NORMAL = 25f;
+    private static final float EXTRA_TOP_OFFSET_SMALL = 10f;
 
-    // TODO: 25.06.2017 проверить, можно ли по-умному всё-таки вставить заголовок графика
 
     @BindView(R.id.empty_text)
     TextView emptyText;
 
     @BindView(R.id.dates_line_chart)
     LineChart datesLineChart;
-    @BindView(R.id.dates_line_chart_title)
-    TextView datesLineChartTitle;
 
     @BindView(R.id.categories_pie_chart)
     PieChart categoriesPieChart;
-    @BindView(R.id.categories_pie_chart_title)
-    TextView categoriesPieChartTitle;
 
     @BindView(R.id.reimbursable_horizontal_bar_chart)
     HorizontalBarChart reimbursableBarChart;
-    @BindView(R.id.reimbursable_horizontal_bar_chart_title)
-    TextView reimbursableBarChartTitle;
 
     @BindView(R.id.payment_methods_bar_chart)
     BarChart paymentMethodsBarChart;
-    @BindView(R.id.payment_methods_bar_chart_title)
-    TextView paymentMethodsBarChartTitle;
 
     @Inject
     GraphsPresenter presenter;
@@ -132,10 +129,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     @Override
     public void onResume() {
         super.onResume();
-
         presenter.subscribe(getTrip());
-
-//        animateGraphs();
     }
 
     @Override
@@ -161,24 +155,20 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
         switch (uiIndicator.getGraphType()) {
             case SummationByDate:
-                datesLineChart.setVisibility(View.VISIBLE);
-                datesLineChartTitle.setVisibility(View.VISIBLE);
                 showSummationByDate(uiIndicator.getEntries());
+                datesLineChart.setVisibility(View.VISIBLE);
                 break;
             case SummationByCategory:
-                categoriesPieChart.setVisibility(View.VISIBLE);
-                categoriesPieChartTitle.setVisibility(View.VISIBLE);
                 showSummationByCategory(uiIndicator.getEntries());
+                categoriesPieChart.setVisibility(View.VISIBLE);
                 break;
             case SummationByReimbursment:
-                reimbursableBarChart.setVisibility(View.VISIBLE);
-                reimbursableBarChartTitle.setVisibility(View.VISIBLE);
                 showSummationByReimbursment(uiIndicator.getEntries());
+                reimbursableBarChart.setVisibility(View.VISIBLE);
                 break;
             case SummationByPaymentMethod:
-                paymentMethodsBarChart.setVisibility(View.VISIBLE);
-                paymentMethodsBarChartTitle.setVisibility((View.VISIBLE));
                 showPaymentMethodsBarChart(uiIndicator.getEntries());
+                paymentMethodsBarChart.setVisibility(View.VISIBLE);
                 break;
             default:
                 throw new IllegalStateException("Unknown graph type!");
@@ -186,6 +176,8 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     }
 
     private void showSummationByDate(List<? extends BaseEntry> entries) {
+        datesLineChart.post(() -> setDescription(datesLineChart, R.string.graphs_expenditure_by_dates_title));
+
         ArrayList<Entry> lineEntries = new ArrayList<>();
 
         for (BaseEntry entry : entries) {
@@ -194,29 +186,29 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         }
 
         LineDataSet dataSet = new LineDataSet(lineEntries, "");
-//        dataSet.setColors(GRAPHS_PALETTE, getContext());
-        dataSet.setColor(getResources().getColor(GRAPHS_PALETTE[2]));
+        dataSet.setColor(ContextCompat.getColor(getContext(), GRAPHS_PALETTE[2]));
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(VALUE_TEXT_SIZE);
-//        dataSet.setValueFormatter(valueFormatter);
+        dataSet.setValueFormatter(new DefaultValueFormatter(0));
         dataSet.setMode(LineDataSet.Mode.LINEAR);
         dataSet.setLineWidth(3f);
 
         datesLineChart.setData(new LineData(dataSet));
-        datesLineChart.invalidate();
 
-        // no animation because of strange lib's IndexOutOfBoundsException
-//        datesLineChart.animateX(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
+        // animate without any Easing because of strange MPAndroidChart's bug with IndexOutOfBoundsException
+        datesLineChart.animateX(ANIMATION_DURATION);
     }
 
     private void showSummationByCategory(List<? extends BaseEntry> entries) {
+        categoriesPieChart.post(() -> setDescription(categoriesPieChart, R.string.graphs_expenditure_by_categories_title));
+
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
 
         for (BaseEntry graphEntry : entries) {
             pieEntries.add(new PieEntry(graphEntry.getY(), ((LabeledGraphEntry) graphEntry).getLabel()));
         }
 
-        PieDataSet dataSet = new PieDataSet(pieEntries, "Label");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
         dataSet.setColors(GRAPHS_PALETTE, getContext());
         dataSet.setSliceSpace(2f);
         dataSet.setValueTextColor(Color.WHITE);
@@ -224,12 +216,13 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         dataSet.setValueFormatter(valueFormatter);
 
         categoriesPieChart.setData(new PieData(dataSet));
-        categoriesPieChart.invalidate();
 
         categoriesPieChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
     }
 
     private void showSummationByReimbursment(List<? extends BaseEntry> entries) {
+        reimbursableBarChart.post(() -> setDescription(reimbursableBarChart, R.string.graphs_expenditure_by_reimbursable_title));
+
         String[] labels = new String[2];
         float[] values = new float[2];
 
@@ -241,24 +234,23 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         barEntries.add(new BarEntry(0, values));
 
-
         BarDataSet dataSet = new BarDataSet(barEntries, "");
         dataSet.setDrawIcons(false);
         dataSet.setValueTextSize(VALUE_TEXT_SIZE);
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        dataSet.setColors(new int[]{R.color.graph_red, R.color.graph_green}, getContext());
-//        dataSet.setColors(GRAPHS_PALETTE, getContext());
+        dataSet.setColors(new int[]{R.color.graph_7, R.color.graph_2}, getContext());
         dataSet.setStackLabels(labels);
         dataSet.setValueFormatter(valueFormatter);
 
         reimbursableBarChart.setData(new BarData(dataSet));
-        reimbursableBarChart.invalidate();
 
         reimbursableBarChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
     }
 
     private void showPaymentMethodsBarChart(List<? extends BaseEntry> entries) {
+        paymentMethodsBarChart.post(() -> setDescription(paymentMethodsBarChart, R.string.graphs_expenditure_by_payment_methods_title));
+
         List<IBarDataSet> sets = new ArrayList<>();
 
         for (int i = 0; i < entries.size(); i++) {
@@ -267,31 +259,28 @@ public class GraphsFragment extends WBFragment implements GraphsView {
             BarDataSet verticalSet = new BarDataSet(Collections.singletonList(new BarEntry(i, graphEntry.getY())), graphEntry.getLabel());
             verticalSet.setValueTextColor(Color.WHITE);
             verticalSet.setValueTextSize(VALUE_TEXT_SIZE);
-            verticalSet.setColor(getResources().getColor(GRAPHS_PALETTE[i]));
+            verticalSet.setColor(ContextCompat.getColor(getContext(), GRAPHS_PALETTE[i]));
             verticalSet.setValueFormatter(valueFormatter);
 
             sets.add(verticalSet);
         }
 
         paymentMethodsBarChart.setData(new BarData(sets));
-        paymentMethodsBarChart.invalidate();
 
         paymentMethodsBarChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
     }
 
     private void initDatesLineChart() {
-
-//        setChartNotClickable(datesLineChart);
-
         datesLineChart.setDrawGridBackground(false);
         datesLineChart.getLegend().setEnabled(false);
-        datesLineChart.getDescription().setEnabled(false);
 
         XAxis xAxis = datesLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.WHITE);
-
         xAxis.setValueFormatter(new DayAxisValueFormatter(preferenceManager.get(UserPreference.General.DateSeparator)));
+
+        datesLineChart.setClickable(false);
+        datesLineChart.setExtraTopOffset(EXTRA_TOP_OFFSET_NORMAL);
     }
 
     private void initCategoriesPieChart() {
@@ -300,58 +289,63 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         categoriesPieChart.setHoleColor(Color.TRANSPARENT);
         categoriesPieChart.setEntryLabelTextSize(VALUE_TEXT_SIZE);
 
+        categoriesPieChart.setHoleRadius(35f);
+        categoriesPieChart.setTransparentCircleRadius(40f);
+
         categoriesPieChart.getLegend().setEnabled(false);
+
+        categoriesPieChart.setExtraTopOffset(EXTRA_TOP_OFFSET_SMALL);
     }
 
     private void initReimbursableBarChart() {
+        reimbursableBarChart.setTouchEnabled(false);
 
         reimbursableBarChart.setDrawGridBackground(false);
         reimbursableBarChart.setDrawValueAboveBar(false);
-
-        setChartNotClickable(reimbursableBarChart);
-
-        reimbursableBarChart.getDescription().setEnabled(false);
 
         reimbursableBarChart.getXAxis().setEnabled(false);
         reimbursableBarChart.getAxisRight().setEnabled(false);
         reimbursableBarChart.getAxisLeft().setEnabled(false);
 
-//        reimbursableBarChart.setFitBars(true);
+        setDefaultLegend(reimbursableBarChart);
 
-        Legend legend = reimbursableBarChart.getLegend();
-        legend.setTextColor(Color.WHITE);
-        legend.setTextSize(LEGEND_TEXT_SIZE);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        reimbursableBarChart.setExtraTopOffset(EXTRA_TOP_OFFSET_NORMAL);
     }
 
     private void initPaymentMethodsBarChart() {
+        paymentMethodsBarChart.setTouchEnabled(false);
 
-        setChartNotClickable(paymentMethodsBarChart);
-
-        paymentMethodsBarChart.getDescription().setEnabled(false);
         paymentMethodsBarChart.setFitBars(true);
 
         paymentMethodsBarChart.getXAxis().setEnabled(false);
         paymentMethodsBarChart.getAxisRight().setEnabled(false);
         paymentMethodsBarChart.getAxisLeft().setEnabled(false);
 
-        Legend legend = paymentMethodsBarChart.getLegend();
-        legend.setWordWrapEnabled(true);
-        legend.setTextColor(Color.WHITE);
-        legend.setTextSize(LEGEND_TEXT_SIZE);
-        legend.setDrawInside(false);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        setDefaultLegend(paymentMethodsBarChart);
+
+        paymentMethodsBarChart.setExtraTopOffset(EXTRA_TOP_OFFSET_NORMAL);
     }
 
     private Trip getTrip() {
         return ((ReportInfoFragment) getParentFragment()).getTrip();
     }
 
-    private void setChartNotClickable(Chart chart) {
-        chart.setClickable(false);
-        chart.setTouchEnabled(false);
+    private void setDefaultLegend(Chart chart) {
+        Legend legend = chart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setTextColor(Color.WHITE);
+        legend.setTextSize(LEGEND_TEXT_SIZE);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+    }
+
+    private void setDescription(Chart chart, int stringId) {
+        Description description = chart.getDescription();
+        description.setText(getResources().getString(stringId));
+        description.setTextColor(Color.WHITE);
+        description.setTextAlign(Paint.Align.CENTER);
+        description.setPosition(chart.getWidth() / 2, VALUE_TEXT_SIZE * 2.5f);
+        description.setTextSize(TITLE_TEXT_SIZE);
     }
 
 }
