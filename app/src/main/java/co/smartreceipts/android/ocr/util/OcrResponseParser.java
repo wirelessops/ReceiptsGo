@@ -25,7 +25,7 @@ public class OcrResponseParser {
      * instead of 11-May-2017, then we have to move the calendar forward 5 years). As a result, we define this
      * minimum confidence threshold level to ensure we only process the date when this level is met
      */
-    private static final double MINIMUM_DATE_CONFIDENCE = 0.5;
+    private static final double MINIMUM_DATE_CONFIDENCE = 0.4;
 
     private final OcrResponse ocrResponse;
 
