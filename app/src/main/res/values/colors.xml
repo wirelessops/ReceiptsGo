@@ -44,11 +44,11 @@
 
     <!--Palette for graphs-->
     <color name="graph_1">#3b9ec2</color>
-    <color name="graph_2">#3bc2c2</color>
+    <color name="graph_2">#31a1a1</color>
     <color name="graph_3">#3b78c2</color>
     <color name="graph_4">#223ac9</color>
     <color name="graph_5">#663bc2</color>
     <color name="graph_6">#903bc2</color>
-    <color name="graph_7">#4d3d6c</color>
+    <color name="graph_7">#604c86</color>
 
 </resources>

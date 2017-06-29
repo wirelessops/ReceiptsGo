@@ -4,21 +4,14 @@ import co.smartreceipts.android.model.Price;
 
 public class SumDateResult {
 
-//    private final Date date;
     private final int day;
 
     private final Price price;
 
-    public SumDateResult(/*Date date*/int day, Price price) {
-//        this.date = date;
+    public SumDateResult(int day, Price price) {
         this.day = day;
         this.price = price;
     }
-//
-//    public Date getDate() {
-//        return date;
-//    }
-
 
     public int getDay() {
         return day;

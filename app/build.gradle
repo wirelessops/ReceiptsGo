@@ -87,8 +87,6 @@ android {
             exclude group: 'com.google.android', module: 'android'
         }
 
-        compile "com.andkulikov:transitionseverywhere:$TRANSITIONS_EVERYWHERE_VERSION"
-
         compile "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
 
         compile "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"

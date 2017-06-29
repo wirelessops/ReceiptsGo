@@ -74,7 +74,7 @@ public class GroupingController {
                 });
     }
 
-    public Observable<SumPaymentMethodGroupingResult> getSummationByPaymentMethod(Trip trip) {
+    private Observable<SumPaymentMethodGroupingResult> getSummationByPaymentMethod(Trip trip) {
         return getReceiptsStream(trip)
                 .filter(receipt -> receipt.getPaymentMethod() != null) // thus, we ignore receipts without defined payment method
                 .groupBy(Receipt::getPaymentMethod)
@@ -87,7 +87,7 @@ public class GroupingController {
                         .toObservable());
     }
 
-    public Observable<SumReimbursementGroupingResult> getSummationByReimbursment(Trip trip) {
+    private Observable<SumReimbursementGroupingResult> getSummationByReimbursment(Trip trip) {
         return getReceiptsStream(trip)
                 .groupBy(Receipt::isReimbursable)
                 .flatMap(booleanReceiptGroupedObservable -> booleanReceiptGroupedObservable

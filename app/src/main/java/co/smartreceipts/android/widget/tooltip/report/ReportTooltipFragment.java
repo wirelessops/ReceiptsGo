@@ -54,7 +54,6 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
         if (!(this.getParentFragment() instanceof GenerateNavigator)) {
             throw new IllegalStateException("Parent fragment must implement GenerateNavigator interface");
         }
-
     }
 
     @Nullable

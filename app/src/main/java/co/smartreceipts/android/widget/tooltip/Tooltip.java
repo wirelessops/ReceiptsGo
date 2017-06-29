@@ -3,17 +3,15 @@ package co.smartreceipts.android.widget.tooltip;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.AutoTransition;
+import android.support.transition.TransitionManager;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.transitionseverywhere.Slide;
-import com.transitionseverywhere.TransitionManager;
 
 import co.smartreceipts.android.R;
 
@@ -97,11 +95,11 @@ public class Tooltip extends RelativeLayout {
         messageText.setText(text);
         messageText.setVisibility(VISIBLE);
     }
-    
+
     public void setTooltipClickListener(@Nullable OnClickListener tooltipClickListener) {
         setOnClickListener(tooltipClickListener);
     }
-    
+
     public void showCloseIcon(@Nullable OnClickListener closeClickListener) {
         closeIcon.setVisibility(VISIBLE);
         closeIcon.setOnClickListener(closeClickListener);
@@ -127,12 +125,12 @@ public class Tooltip extends RelativeLayout {
     }
 
     public void hideWithAnimation() {
-        TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new Slide(Gravity.TOP));
+        TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new AutoTransition());
         setVisibility(GONE);
     }
 
     public void showWithAnimation() {
-        TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new Slide(Gravity.TOP));
+        TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new AutoTransition());
         setVisibility(VISIBLE);
     }
 }
