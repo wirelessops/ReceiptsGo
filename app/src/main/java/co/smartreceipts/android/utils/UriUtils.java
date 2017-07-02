@@ -10,6 +10,8 @@ import android.webkit.MimeTypeMap;
 
 import java.io.File;
 
+import wb.android.storage.StorageManager;
+
 public class UriUtils {
 
     private UriUtils() {
@@ -36,7 +38,19 @@ public class UriUtils {
                 return extension;
             }
         } else { // scheme is file://
-            return MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+            final String extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+            if (!TextUtils.isEmpty(extension)) {
+                return extension;
+            } else {
+                // Sometimes there are issues with special characters (eg '!') for MimeType processing
+                final int extensionIndex = uri.toString().lastIndexOf('.');
+                if (extensionIndex < 0) {
+                    return "";
+                }
+                else {
+                    return uri.toString().substring(extensionIndex + 1);
+                }
+            }
         }
     }
 
