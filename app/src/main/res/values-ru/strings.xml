@@ -57,7 +57,7 @@
 
     <!-- ============= Report Navigation ============== -->
     <string name="report_info_receipts">Чеки</string>
-    <string name="report_info_distance">Расстояние</string>
+    <string name="report_info_distance">Маршруты</string>
     <string name="report_info_generate">Создать</string>
 
     <!-- ============= Report Generation ============== -->
@@ -86,9 +86,9 @@
     <item quantity="other">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
   </plurals>
     <string name="ocr_status_title">Выполняется сканирование (OCR):</string>
-    <string name="ocr_status_message_uploading_image">Загрузка чека...</string>
-    <string name="ocr_status_message_performing_scan">Сканирование метаданных чека...</string>
-    <string name="ocr_status_message_fetching_results">Обработка результатов...</string>
+    <string name="ocr_status_message_uploading_image">Загрузка чека…</string>
+    <string name="ocr_status_message_performing_scan">Сканирование метаданных чека…</string>
+    <string name="ocr_status_message_fetching_results">Обработка результатов…</string>
     <string name="ocr_configuration_title">Автоматическое сканирование (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Сканов OCR осталось: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
@@ -120,7 +120,7 @@
     <string name="category_hotel">Отель</string>
     <string name="category_hotel_code">ОТЛ</string>
     <string name="category_laundry">Прачечная</string>
-    <string name="category_laundry_code">ЛАНЧ</string>
+    <string name="category_laundry_code">СТИРКА</string>
     <string name="category_lunch">Обед</string>
     <string name="category_lunch_code">ОБЕД</string>
     <string name="category_other">Другое</string>
@@ -158,14 +158,14 @@
     <string name="menu_receiptimage_rotate_cw">Поворот по часовой стрелке</string>
 
     <!-- ===================== Email ====================== -->
-    <string name="email_body_subject_5mb_warning">Вложение имеет более 5 МБ в размере и может не быть правильно прикреплено: %s</string>
+    <string name="email_body_subject_5mb_warning">Вложение имеет размер более 5 МБ и может быть не правильно прикреплено: %s</string>
 
     <!-- ============== Progress Messages ================= -->
-    <string name="progress_import">Импорт файлов...</string>
+    <string name="progress_import">Импорт файлов…</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Ошибка: убедитесь, что ваша SD-карта доступна и не подключена к вашему компьютеру.</string>
-    <string name="SD_WARNING">Внимание: Ваша SD-карта отсутствует или подключена к вашему компьютеру. Некоторые изображения могут быть недоступны. Переключение на внутреннюю память...</string>
+    <string name="SD_WARNING">Внимание: Ваша SD-карта отсутствует или подключена к вашему компьютеру. Некоторые изображения могут быть недоступны. Переключение на внутреннюю память…</string>
     <string name="database_error">Ошибка: Не удалось сохранить ваш чек</string>
     <string name="database_get_error">Ошибка: Не удалось получить данные. Попробуйте перезапустить приложение.</string>
     <string name="IMG_OPEN_ERROR">Ошибка: Изображение в настоящее время недоступно или повреждено. Ваша SD-карта может быть недоступна или подключена к вашему компьютеру. Если это не так, нажмите кнопку меню, чтобы сделать снимок еще раз.</string>
@@ -183,7 +183,7 @@
     <string name="toast_error_category_exists">Ошибка: категория с этим именем уже существует</string>
 
     <!-- ============== Toast Messages ================= -->
-    <string name="toast_receipt_copy">Квитанция копирована успешно</string>
+    <string name="toast_receipt_copy">Квитанция успешно cкопирована</string>
     <string name="toast_receipt_move">Чек успешно перемещен</string>
     <string name="toast_receipt_image_added">Новое изображение успешно добавлено в %s</string>
     <string name="toast_receipt_image_replaced">Успешно заменено изображение в %s</string>
@@ -192,14 +192,14 @@
     <string name="toast_import_complete">Все файлы успешно импортированы. Пожалуйста, перезапустите приложение.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">куда</string>
+    <string name="trip_adapter_list_item_to">\u0020до\u0020</string>
     <string name="trip_no_data">Судя по всему, в настоящее время у вас нет отчетов. Нажмите на кнопку + (плюс), чтобы начать.\n\nSmart Receipts позволяет создавать отчеты о расходах, отслеживать квитанции внутри каждого из них, и быстро создавать отчеты в форматах PDF и CSV. Быстро и просто! Кроме того, обязательно ознакомьтесь с меню, чтобы настроить категории, отчеты и другие параметры для ваших нужд.</string>
 
     <!-- ================= Receipt Adapter =================== -->
-    <string name="receipt_no_data">Судя по всему, у вас еще нет квитанций. Попробуйте нажать кнопку + (плюс), чтобы начать...</string>
+    <string name="receipt_no_data">Судя по всему, у вас еще нет квитанций. Попробуйте нажать кнопку + (плюс), чтобы начать…</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Судя по всему, у вас еще нет отслеживаемых маршрутов. Попробуйте нажать кнопку + (плюс) вверху, чтобы начать.</string>
+    <string name="distance_no_data">Судя по всему, у вас еще нет отслеживаемых маршрутов. Попробуйте нажать кнопку + (плюс), чтобы начать.</string>
     <string name="distance_insert_failed">Ошибка: Не удалось создать маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
     <string name="distance_update_failed">Ошибка: Не удалось обновить маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
     <string name="distance_delete_failed">Ошибка: Не удалось удалить маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
@@ -216,7 +216,7 @@
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Полный отчет в формате PDF</string>
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF отчет - без таблицы</string>
     <string name="DIALOG_EMAIL_CHECKBOX_CSV">Файл CSV</string>
-    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">JPG c ZIP</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP с JPG</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Пожалуйста, отметьте по крайней мере один отчет</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Этот отчет не содержит чеков</string>
     <string name="generate_report_tooltip">Нажмите, чтобы настроить внешний вид отчета</string>
@@ -259,7 +259,7 @@
     <string name="dialog_export_positive">Экспорт</string>
     <string name="dialog_import_positive">Импорт</string>
     <string name="dialog_import_text">Перезаписать существующие данные</string>
-    <string name="dialog_export_working">Экспорт ваших чеков...</string>
+    <string name="dialog_export_working">Экспорт ваших чеков…</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
@@ -296,18 +296,18 @@
     <string name="dialog_remote_backup_delete_message">Вы уверены, что хотите удалить резервную копию с устройства %s? Эта операция не может быть отменена.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Вы уверены, что хотите удалить резервную копию с этого устройства? Эта операция не сможет быть отменена. Пожалуйста, обратите внимание, что вы можете отключить автоматическое резервное копирование после того, как эта операция завершится, или все локальные данные могут быть повторно синхронизированы.</string>
     <string name="dialog_remote_backup_delete_positive">@string/delete</string>
-    <string name="dialog_remote_backup_delete_progress">Удаление резервной копии с устройства %s...</string>
+    <string name="dialog_remote_backup_delete_progress">Удаление резервной копии с устройства %s…</string>
     <string name="dialog_remote_backup_delete_toast_success">Резервная копия успешно удалена</string>
     <string name="dialog_remote_backup_delete_toast_failure">Не удалось удалить эту резервную копию</string>
-    <string name="dialog_remote_backup_download_progress">Загрузка изображений в ZIP-файл...</string>
+    <string name="dialog_remote_backup_download_progress">Загрузка изображений в ZIP-файл…</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Восстановление диска</string>
     <string name="dialog_remote_backup_drive_restore_message">Возникли проблемы при синхронизации ваших данных. Для их восстановления мы хотели бы очистить резервную копию диска и повторить синхронизацию. Если вы часто видите это сообщение, обратитесь к нам для получения дополнительной поддержки.</string>
-    <string name="dialog_remote_backup_restore_progress">Очистка резервной копии для подготовки к повторной синхронизации...</string>
-    <string name="dialog_remote_backup_restore_toast_success">Резервная копия успешно очищена. Повторная синхронизация...</string>
+    <string name="dialog_remote_backup_restore_progress">Очистка резервной копии для подготовки к повторной синхронизации…</string>
+    <string name="dialog_remote_backup_restore_toast_success">Резервная копия успешно очищена. Повторная синхронизация…</string>
     <string name="dialog_remote_backup_restore_toast_failure">Не удалось повторно синхронизировать эту резервную копию</string>
 
-    <string name="automatic_backups_info_dialog_message">Автоматическое резервное копирование не включено.</string>
+    <string name="automatic_backups_info_dialog_message">Автоматическое резервное копирование сейчас выключено.</string>
     <string name="automatic_backups_info_dialog_positive">Нажмите, чтобы настроить</string>
 
     <string name="drive_sync_error_no_space">Нет свободного места на диске</string>
@@ -322,7 +322,7 @@
     <string name="sign_up_button_text">Регистрация</string>
     <string name="login_button_text">Войти</string>
     <string name="login_fields_hint_email">Пожалуйста, введите действительный адрес электронной почты:</string>
-    <string name="login_fields_hint_password">Пароли должны содержать не менее 8 символов:</string>
+    <string name="login_fields_hint_password">Пароль должен содержать не менее 8 символов:</string>
     <string name="login_fields_hint_valid">Нажмите ниже, чтобы войти или зарегистрироваться:</string>
     <string name="login_success_toast">Вход выполнен успешно</string>
     <string name="sign_up_success_toast">Регистрация завершена успешно</string>
@@ -336,8 +336,8 @@
     <string name="dialog_filter_negative_button">Удалить фильтр</string>
 
     <!-- ==================== dialog miles ======================== -->
-    <string name="dialog_mileage_title_create">Добавить расстояние</string>
-    <string name="dialog_mileage_title_update">Обновить расстояние</string>
+    <string name="dialog_mileage_title_create">Добавить маршрут</string>
+    <string name="dialog_mileage_title_update">Обновить маршрут</string>
     <string name="dialog_mileage_positive_create">Добавить</string>
     <string name="dialog_mileage_positive_update">Обновить</string>
     <string name="dialog_mileage_neutral_delete">Удалить</string>
@@ -422,7 +422,7 @@
     <string name="dialog_sql_corrupt_positive">Обратиться за помощью к разработчику</string>
     <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Поврежденная база данных</string>
     <string name="dialog_sql_corrupt_intent_text">Помогите - моя база данных была повреждена. Можете ли вы помочь мне восстановить ее?</string>
-    <string name="dialog_sql_corrupt_chooser">Отправить письмо...</string>
+    <string name="dialog_sql_corrupt_chooser">Отправить письмо…</string>
 
     <!-- ======================= Filters ====================== -->
     <string name="filter_name_and">И</string>
@@ -433,14 +433,14 @@
     <string name="filter_name_receipt_max_price">Макс. цена</string>
     <string name="filter_name_receipt_min_price">Мин. цена</string>
     <string name="filter_name_receipt_on_or_after">На указанную дату или позже</string>
-    <string name="filter_name_receipt_on_or_before">На указанную дату или до нее</string>
+    <string name="filter_name_receipt_on_or_before">На указанную дату или раньше</string>
     <string name="filter_name_receipt_selected">Выбрано</string>
     <string name="filter_name_trip_ends_on_or_after">Завершается в указанную дату или позже</string>
-    <string name="filter_name_trip_ends_on_or_before">Завершается в указанную дату или до нее</string>
+    <string name="filter_name_trip_ends_on_or_before">Завершается в указанную дату или раньше</string>
     <string name="filter_name_trip_max_price">Макс. цена</string>
     <string name="filter_name_trip_min_price">Мин. цена</string>
     <string name="filter_name_trip_starts_on_or_after">Начинается в указанную дату или позже</string>
-    <string name="filter_name_trip_starts_on_or_before">Начинается в указанную дату или до нее</string>
+    <string name="filter_name_trip_starts_on_or_before">Начинается в указанную дату или раньше</string>
 
     <!-- =================== Payment Methods =====+============= -->
     <string name="payment_method">Способ оплаты</string>
