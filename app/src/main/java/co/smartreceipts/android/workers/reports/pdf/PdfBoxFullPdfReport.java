@@ -31,7 +31,7 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
                                UserPreferenceManager preferences,
                                StorageManager storageManager, Flex flex) {
         super(context, db, preferences, storageManager, flex);
-        this.groupingController = new GroupingController(db, context);
+        this.groupingController = new GroupingController(db, context, preferences);
     }
 
     @Override

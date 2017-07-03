@@ -24,6 +24,8 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumReimbursementGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumDateResult;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -33,16 +35,19 @@ public class GroupingController {
 
     private final DatabaseHelper databaseHelper;
     private final Context context;
+    private final UserPreferenceManager preferenceManager;
 
     @Inject
-    public GroupingController(DatabaseHelper databaseHelper, Context context) {
+    public GroupingController(DatabaseHelper databaseHelper, Context context, UserPreferenceManager preferenceManager) {
         this.databaseHelper = databaseHelper;
         this.context = context;
+        this.preferenceManager = preferenceManager;
     }
 
     public Observable<CategoryGroupingResult> getReceiptsGroupedByCategory(Trip trip) {
 
         return getReceiptsStream(trip)
+                .filter(receipt -> !preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) || receipt.isReimbursable())
                 .groupBy(Receipt::getCategory)
                 .flatMap(categoryReceiptGroupedObservable -> categoryReceiptGroupedObservable
                         .toList()
@@ -76,6 +81,7 @@ public class GroupingController {
 
     private Observable<SumPaymentMethodGroupingResult> getSummationByPaymentMethod(Trip trip) {
         return getReceiptsStream(trip)
+                .filter(receipt -> !preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) || receipt.isReimbursable())
                 .filter(receipt -> receipt.getPaymentMethod() != null) // thus, we ignore receipts without defined payment method
                 .groupBy(Receipt::getPaymentMethod)
                 .flatMap(paymentMethodReceiptGroupedObservable -> paymentMethodReceiptGroupedObservable
@@ -102,6 +108,7 @@ public class GroupingController {
 
     public Single<List<Entry>> getSummationByDateAsGraphEntries(Trip trip) {
         return getReceiptsStream(trip)
+                .filter(receipt -> !preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) || receipt.isReimbursable())
                 .groupBy(receipt -> {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(receipt.getDate());

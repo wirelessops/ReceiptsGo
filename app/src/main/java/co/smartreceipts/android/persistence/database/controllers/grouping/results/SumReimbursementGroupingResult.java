@@ -1,5 +1,9 @@
 package co.smartreceipts.android.persistence.database.controllers.grouping.results;
 
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
 import co.smartreceipts.android.model.Price;
 
 public class SumReimbursementGroupingResult {
@@ -8,15 +12,16 @@ public class SumReimbursementGroupingResult {
 
     private final Price price;
 
-    public SumReimbursementGroupingResult(boolean isReimbursable, Price price) {
+    public SumReimbursementGroupingResult(boolean isReimbursable, @NonNull Price price) {
         this.isReimbursable = isReimbursable;
-        this.price = price;
+        this.price = Preconditions.checkNotNull(price);
     }
 
     public boolean isReimbursable() {
         return isReimbursable;
     }
 
+    @NonNull
     public Price getPrice() {
         return price;
     }

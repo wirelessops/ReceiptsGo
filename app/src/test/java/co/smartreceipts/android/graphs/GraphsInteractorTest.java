@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-public class GraphsInteractorShould {
+public class GraphsInteractorTest {
 
     private static final String LABEL_1 = "label 1";
     private static final String LABEL_2 = "label 2";
