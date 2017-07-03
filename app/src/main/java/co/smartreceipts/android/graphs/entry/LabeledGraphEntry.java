@@ -35,6 +35,11 @@ public class LabeledGraphEntry extends BaseEntry implements Comparable<LabeledGr
     }
 
     @Override
+    public int hashCode() {
+        return getData().hashCode();
+    }
+
+    @Override
     public int compareTo(@NonNull LabeledGraphEntry entry) {
         return -Float.compare(getY(), entry.getY());
     }

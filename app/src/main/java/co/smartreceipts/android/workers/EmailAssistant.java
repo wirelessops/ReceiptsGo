@@ -326,7 +326,7 @@ public class EmailAssistant {
 
                 // Categorical summation table
                 if (mPreferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)) {
-                    final List<SumCategoryGroupingResult> sumCategoryGroupingResults = new GroupingController(mDB, context)
+                    final List<SumCategoryGroupingResult> sumCategoryGroupingResults = new GroupingController(mDB, context, mPreferenceManager)
                             .getSummationByCategory(trip)
                             .toList()
                             .blockingGet();
@@ -340,7 +340,7 @@ public class EmailAssistant {
 
                 // Separated tables for each category
                 if (mPreferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)) {
-                    List<CategoryGroupingResult> groupingResults = new GroupingController(mDB, context)
+                    List<CategoryGroupingResult> groupingResults = new GroupingController(mDB, context, mPreferenceManager)
                             .getReceiptsGroupedByCategory(trip)
                             .toList()
                             .blockingGet();

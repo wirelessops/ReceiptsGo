@@ -215,6 +215,12 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         dataSet.setValueTextSize(VALUE_TEXT_SIZE);
         dataSet.setValueFormatter(valueFormatter);
 
+        dataSet.setValueLinePart1OffsetPercentage(70.f);
+        dataSet.setValueLineColor(Color.WHITE);
+        dataSet.setValueLinePart1Length(0.2f);
+        dataSet.setValueLinePart2Length(0.4f);
+        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+
         categoriesPieChart.setData(new PieData(dataSet));
 
         categoriesPieChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
