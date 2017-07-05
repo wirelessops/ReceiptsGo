@@ -384,7 +384,6 @@
     <string name="column_item_exchange_rate">Курс обмена</string>
     <string name="column_item_pictured">С изображениями</string>
     <string name="column_item_reimbursable">Возмещаемые</string>
-    <string name="column_item_deprecated_expensable">Expensable</string>
     <string name="column_item_index">Индекс чека</string>
     <string name="column_item_id">ID чека</string>
     <string name="column_item_payment_method">Способ оплаты</string>

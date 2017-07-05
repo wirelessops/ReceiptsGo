@@ -382,7 +382,6 @@
     <string name="column_item_exchange_rate">Wechselkurs</string>
     <string name="column_item_pictured">abgebildet</string>
     <string name="column_item_reimbursable">rückzahlbar</string>
-    <string name="column_item_deprecated_expensable">Expensable</string>
     <string name="column_item_index">Beleg-Index</string>
     <string name="column_item_id">Beleg ID</string>
     <string name="column_item_payment_method">Zahlungsmethode</string>
