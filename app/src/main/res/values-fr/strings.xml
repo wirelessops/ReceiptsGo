@@ -382,7 +382,6 @@
     <string name="column_item_exchange_rate">Taux de change</string>
     <string name="column_item_pictured">Sur la photo</string>
     <string name="column_item_reimbursable">Remboursable</string>
-    <string name="column_item_deprecated_expensable">Superflu</string>
     <string name="column_item_index">Indice du reçu</string>
     <string name="column_item_id">ID du reçu</string>
     <string name="column_item_payment_method">Mode de paiement</string>

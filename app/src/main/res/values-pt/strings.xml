@@ -382,7 +382,6 @@
     <string name="column_item_exchange_rate">Taxa de câmbio</string>
     <string name="column_item_pictured">Incluso na imagem</string>
     <string name="column_item_reimbursable">Reembolsável</string>
-    <string name="column_item_deprecated_expensable">Dispensável</string>
     <string name="column_item_index">Índice do recibo</string>
     <string name="column_item_id">ID do recibo</string>
     <string name="column_item_payment_method">Forma de pagamento</string>
