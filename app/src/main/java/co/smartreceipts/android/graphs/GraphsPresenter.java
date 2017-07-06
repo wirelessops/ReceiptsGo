@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.widget.viper.BasePresenter;
@@ -15,16 +14,16 @@ import co.smartreceipts.android.widget.viper.BasePresenter;
 public class GraphsPresenter extends BasePresenter<GraphsView, GraphsInteractor> {
 
     private final UserPreferenceManager preferenceManager;
-    private final DatabaseHelper databaseHelper;
+    private final DatabaseAssistant databaseAssistant;
     private Trip trip;
 
     @Inject
     public GraphsPresenter(GraphsView view, GraphsInteractor interactor, UserPreferenceManager preferences,
-                           DatabaseHelper databaseHelper) {
+                           DatabaseAssistant databaseAssistant) {
         super(view, interactor);
 
         this.preferenceManager = preferences;
-        this.databaseHelper = databaseHelper;
+        this.databaseAssistant = databaseAssistant;
     }
 
     public void subscribe(Trip trip) {
@@ -36,9 +35,9 @@ public class GraphsPresenter extends BasePresenter<GraphsView, GraphsInteractor>
     @Override
     public void subscribe() {
 
-        // TODO: 21.06.2017 we have some nuance with payment methods.
-        // when this option is disabled - receipt has no payment method
-        // if we turn it on - old receipts still has no payment method (until we edit it - unspecified pm)
+        if (trip == null) {
+            throw new IllegalStateException("Use subscribe(trip) method to subscribe");
+        }
 
         compositeDisposable.add(interactor.getSummationByCategories(trip)
                 .subscribe(view::present));
@@ -51,9 +50,8 @@ public class GraphsPresenter extends BasePresenter<GraphsView, GraphsInteractor>
                     .subscribe(view::present));
         }
 
-        compositeDisposable.add(databaseHelper.getReceiptsTable()
-                .get(trip)
-                .subscribe(receipts -> view.showEmptyText(receipts.isEmpty())));
+        compositeDisposable.add(databaseAssistant.isReceiptsTableEmpty(trip)
+                .subscribe(view::showEmptyText));
 
         compositeDisposable.add(interactor.getSummationByDate(trip)
                 .subscribe(view::present));
