@@ -50,8 +50,6 @@ import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.settings.catalog.UserPreference;
 import dagger.android.support.AndroidSupportInjection;
 
 public class GraphsFragment extends WBFragment implements GraphsView {
@@ -86,9 +84,6 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
     @Inject
     GraphsPresenter presenter;
-
-    @Inject
-    UserPreferenceManager preferenceManager;
 
     private Unbinder unbinder;
     private final IValueFormatter valueFormatter = new DefaultValueFormatter(1);
@@ -189,7 +184,12 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         dataSet.setColor(ContextCompat.getColor(getContext(), GRAPHS_PALETTE[2]));
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(VALUE_TEXT_SIZE);
-        dataSet.setValueFormatter(new DefaultValueFormatter(0));
+        dataSet.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> {
+            if (value > 0) {
+                return String.valueOf((int) value);
+            }
+            return "";
+        });
         dataSet.setMode(LineDataSet.Mode.LINEAR);
         dataSet.setLineWidth(3f);
 
@@ -283,7 +283,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         XAxis xAxis = datesLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.WHITE);
-        xAxis.setValueFormatter(new DayAxisValueFormatter(preferenceManager.get(UserPreference.General.DateSeparator)));
+        xAxis.setValueFormatter(new DayAxisValueFormatter());
 
         datesLineChart.setClickable(false);
         datesLineChart.setExtraTopOffset(EXTRA_TOP_OFFSET_NORMAL);
