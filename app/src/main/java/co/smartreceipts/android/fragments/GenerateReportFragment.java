@@ -23,6 +23,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import co.smartreceipts.android.workers.EmailAssistant;
@@ -41,6 +42,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     NavigationHandler navigationHandler;
     @Inject
     GenerateInfoTooltipManager generateInfoTooltipManager;
+    @Inject
+    PurchaseWallet purchaseWallet;
 
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
@@ -155,7 +158,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
             options.add(EmailAssistant.EmailOptions.ZIP_IMAGES_STAMPED);
         }
 
-        final EmailAssistant emailAssistant = new EmailAssistant(navigationHandler, getActivity(), flex, persistenceManager, trip);
+        final EmailAssistant emailAssistant = new EmailAssistant(navigationHandler, getActivity(),
+                flex, persistenceManager, trip, purchaseWallet);
         emailAssistant.emailTrip(options);
     }
 }

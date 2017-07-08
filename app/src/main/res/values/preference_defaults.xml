@@ -52,8 +52,9 @@
 
     <!-- ================= Preference Pro ================== -->
     <string name="pref_pro_pdf_footer_defaultValue">Report Generated using Smart Receipts for Android</string>
-    <bool name="pref_pro_separate_by_category_defaultValue">false</bool>
-    <bool name="pref_pro_categorical_summation_defaultValue">false</bool>
+    <bool name="pref_pro_separate_by_category_defaultValue">true</bool>
+    <bool name="pref_pro_categorical_summation_defaultValue">true</bool>
+    <bool name="pref_pro_omit_default_table_defaultValue">true</bool>
 
     <!-- =============== Preference Misc =================== -->
     <bool name="pref_no_category_auto_backup_wifi_only_defaultValue">true</bool>

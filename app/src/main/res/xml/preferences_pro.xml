@@ -20,5 +20,9 @@
             android:summaryOff="@string/pref_pro_categorical_summation_summaryOff"
             android:summaryOn="@string/pref_pro_categorical_summation_summaryOn"
             android:title="@string/pref_pro_categorical_summation_title" />
+        <wb.android.preferences.PlusCheckBoxPreference
+            android:defaultValue="@bool/pref_pro_omit_default_table_defaultValue"
+            android:key="@string/pref_pro_omit_default_table_key"
+            android:title="@string/pref_pro_omit_default_table_title" />
     </PreferenceCategory>
 </PreferenceScreen>

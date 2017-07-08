@@ -76,6 +76,7 @@ public final class UserPreference<T> {
         public static final UserPreference<String> PdfFooterString = new UserPreference<>(String.class, R.string.pref_pro_pdf_footer_key, R.string.pref_pro_pdf_footer_defaultValue);
         public static final UserPreference<Boolean> SeparateByCategoryInReports = new UserPreference<>(Boolean.class, R.string.pref_pro_separate_by_category_key, R.bool.pref_pro_separate_by_category_defaultValue);
         public static final UserPreference<Boolean> CategoricalSummationInReports = new UserPreference<>(Boolean.class, R.string.pref_pro_categorical_summation_key, R.bool.pref_pro_categorical_summation_defaultValue);
+        public static final UserPreference<Boolean> OmitDefaultTableInReports = new UserPreference<>(Boolean.class, R.string.pref_pro_omit_default_table_key, R.bool.pref_pro_omit_default_table_defaultValue);
     }
 
     public static final class Misc {

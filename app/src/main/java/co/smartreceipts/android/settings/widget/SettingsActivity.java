@@ -341,6 +341,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         final PlusCheckBoxPreference categoricalSummationPreference = (PlusCheckBoxPreference) universal.findPreference(R.string.pref_pro_categorical_summation_key);
         categoricalSummationPreference.setAppearsEnabled(hasProSubscription);
         categoricalSummationPreference.setOnPreferenceClickListener(this);
+
+        final PlusCheckBoxPreference omitDefaultTablePreference = (PlusCheckBoxPreference) universal.findPreference(R.string.pref_pro_omit_default_table_key);
+        omitDefaultTablePreference.setAppearsEnabled(hasProSubscription);
+        omitDefaultTablePreference.setOnPreferenceClickListener(this);
     }
 
     public void configurePreferencesHelp(UniversalPreferences universal) {
@@ -391,7 +395,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             return true;
         } else if (key.equals(getString(R.string.pref_pro_pdf_footer_key)) ||
                 key.equals(getString(R.string.pref_pro_separate_by_category_key)) ||
-                key.equals(getString(R.string.pref_pro_categorical_summation_key))) {
+                key.equals(getString(R.string.pref_pro_categorical_summation_key)) ||
+                key.equals(getString(R.string.pref_pro_omit_default_table_key))) {
             tryToMakePurchaseIfNeed();
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {

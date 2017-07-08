@@ -10,6 +10,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 
 public interface PdfBoxSectionFactory {
 
@@ -22,7 +23,8 @@ public interface PdfBoxSectionFactory {
             @NonNull List<Column<Distance>> distanceColumns,
             @NonNull List<SumCategoryGroupingResult> categories,
             @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-            @NonNull List<CategoryGroupingResult> groupingResults);
+            @NonNull List<CategoryGroupingResult> groupingResults,
+            @NonNull PurchaseWallet purchaseWallet);
 
     @NonNull
     PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip,
