@@ -486,7 +486,7 @@ public class InteractivePdfBoxTest {
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts,
                 receiptColumns, Collections.<Distance>emptyList(), distanceColumns,
                 Collections.<SumCategoryGroupingResult>emptyList(), summationColumns,
-                Collections.<CategoryGroupingResult>emptyList(), receiptColumns));
+                Collections.<CategoryGroupingResult>emptyList()));
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
         OutputStream outputStream = null;

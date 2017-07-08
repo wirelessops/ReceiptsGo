@@ -36,7 +36,6 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions;
-import co.smartreceipts.android.model.impl.columns.receipts.CategoryGroupingReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
@@ -345,13 +344,10 @@ public class EmailAssistant {
                             .toList()
                             .blockingGet();
 
-                    final List<Column<Receipt>> groupingColumns = new CategoryGroupingReceiptColumnDefinitions(context, mPreferenceManager)
-                            .getAllColumns();
-
                     for (CategoryGroupingResult groupingResult : groupingResults) {
                         data += "\n\n";
                         data += groupingResult.getCategory().getName() + "\n";
-                        data += new CsvTableGenerator<>(groupingColumns, true, true).generate(groupingResult.getReceipts());
+                        data += new CsvTableGenerator<>(csvColumns, true, true).generate(groupingResult.getReceipts());
                     }
                 }
 
