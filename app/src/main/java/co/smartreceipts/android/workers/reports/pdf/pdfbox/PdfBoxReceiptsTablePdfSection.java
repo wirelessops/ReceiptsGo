@@ -22,6 +22,8 @@ import co.smartreceipts.android.model.comparators.ReceiptDateComparator;
 import co.smartreceipts.android.model.converters.DistanceToReceiptsConverter;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
+import co.smartreceipts.android.purchases.model.InAppPurchase;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorStyle;
@@ -52,6 +54,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     private final List<CategoryGroupingResult> groupingResults;
 
     private final UserPreferenceManager preferenceManager;
+    private final PurchaseWallet purchaseWallet;
 
     private PdfBoxWriter writer;
 
@@ -63,7 +66,8 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                                             @NonNull List<Column<Distance>> distanceColumns,
                                             @NonNull List<SumCategoryGroupingResult> categories,
                                             @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-                                            @NonNull List<CategoryGroupingResult> groupingResults) {
+                                            @NonNull List<CategoryGroupingResult> groupingResults,
+                                            @NonNull PurchaseWallet purchaseWallet) {
         super(context, trip);
         this.receipts = Preconditions.checkNotNull(receipts);
         this.distances = Preconditions.checkNotNull(distances);
@@ -73,6 +77,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         this.distanceColumns = Preconditions.checkNotNull(distanceColumns);
         this.categoryColumns = Preconditions.checkNotNull(categoryColumns);
         preferenceManager = Preconditions.checkNotNull(context.getPreferences());
+        this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
     }
 
 
@@ -97,20 +102,30 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
         final GridRenderer gridRenderer = new GridRenderer(availableWidth, availableHeight);
         gridRenderer.addRows(writeHeader(trip, doc, totals));
-        gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
-        gridRenderer.addRows(writeReceiptsTable(receipts, doc));
+
+        if (!receipts.isEmpty() &&
+                (!purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) ||
+                        (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) &&
+                                !preferenceManager.get(UserPreference.PlusSubscription.OmitDefaultTableInReports)))) {
+            gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
+            gridRenderer.addRows(writeReceiptsTable(receipts, doc));
+        }
 
         if (preferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports) && !distances.isEmpty()) {
             gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
             gridRenderer.addRows(writeDistancesTable(distances, doc));
         }
 
-        if (preferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports) && !categories.isEmpty()) {
+        if (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) &&
+                preferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)
+                && !categories.isEmpty()) {
             gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
             gridRenderer.addRows(writeCategoriesTable(categories, doc));
         }
 
-        if (preferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports) && !groupingResults.isEmpty()) {
+        if (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) &&
+                preferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)
+                && !groupingResults.isEmpty()) {
 
             for (CategoryGroupingResult groupingResult : groupingResults) {
                 gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));

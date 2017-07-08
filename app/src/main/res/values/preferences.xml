@@ -162,6 +162,8 @@
     <string name="pref_pro_categorical_summation_title">Include Categorical Summation</string>
     <string name="pref_pro_categorical_summation_summaryOn">PDF/CSV reports include table with summation by category</string>
     <string name="pref_pro_categorical_summation_summaryOff">PDF/CSV reports don\'t include table with summation by category</string>
+    <string name="pref_pro_omit_default_table_key" translatable="false">OmitDefaultPDFTable</string>
+    <string name="pref_pro_omit_default_table_title">Omit Default PDF Table</string>
 
 
     <!-- ============== Preference Support ================= -->

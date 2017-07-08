@@ -41,6 +41,7 @@ import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.IntentUtils;
@@ -83,6 +84,7 @@ public class EmailAssistant {
     private final Flex flex;
     private final PersistenceManager persistenceManager;
     private final Trip trip;
+    private final PurchaseWallet purchaseWallet;
 
     public static final Intent getEmailDeveloperIntent() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -117,12 +119,14 @@ public class EmailAssistant {
         return intent;
     }
 
-    public EmailAssistant(NavigationHandler navigationHandler, Context context, Flex flex, PersistenceManager persistenceManager, Trip trip) {
+    public EmailAssistant(NavigationHandler navigationHandler, Context context, Flex flex,
+                          PersistenceManager persistenceManager, Trip trip, PurchaseWallet purchaseWallet) {
         this.navigationHandler = navigationHandler;
         this.context = context;
         this.flex = flex;
         this.persistenceManager = persistenceManager;
         this.trip = trip;
+        this.purchaseWallet = purchaseWallet;
     }
 
     public void emailTrip(@NonNull EnumSet<EmailOptions> options) {
@@ -282,7 +286,7 @@ public class EmailAssistant {
             if (mOptions.contains(EmailOptions.PDF_FULL)) {
                 final Report pdfFullReport = new PdfBoxFullPdfReport(context, mDB,
                         persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(),
-                        flex);
+                        flex, purchaseWallet);
                 try {
                     mFiles[EmailOptions.PDF_FULL.getIndex()] = pdfFullReport.generate(trip);
                 } catch (ReportGenerationException e) {

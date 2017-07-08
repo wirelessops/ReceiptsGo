@@ -16,6 +16,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.pdf.PdfReportFile;
@@ -71,11 +72,12 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
             @NonNull List<Distance> distances, @NonNull List<Column<Distance>> distanceColumns,
             @NonNull List<SumCategoryGroupingResult> categpries,
             @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-            @NonNull List<CategoryGroupingResult> groupingResults) {
+            @NonNull List<CategoryGroupingResult> groupingResults,
+            @NonNull PurchaseWallet purchaseWallet) {
 
         return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, trip, receipts, columns,
                 distances, distanceColumns, categpries, categoryColumns,
-                groupingResults);
+                groupingResults, purchaseWallet);
     }
 
 

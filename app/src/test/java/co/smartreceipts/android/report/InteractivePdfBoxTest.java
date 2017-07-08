@@ -55,6 +55,8 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptPriceColumn;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
+import co.smartreceipts.android.purchases.model.InAppPurchase;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
@@ -93,6 +95,9 @@ public class InteractivePdfBoxTest {
     @Mock
     UserPreferenceManager userPreferenceManager;
 
+    @Mock
+    PurchaseWallet purchaseWallet;
+
     /**
      * Base method, to be overridden by subclasses. The subclass must annotate the method
      * with the JUnit <code>@Before</code> annotation, and initialize the mocks.
@@ -119,6 +124,7 @@ public class InteractivePdfBoxTest {
         when(userPreferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)).thenReturn(false);
         when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString)).thenReturn("Report generated using Smart Receipts for Android");
+        when(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true);
 
         FallbackTextRenderer.setHeightMeasureSpec(View.MeasureSpec.makeMeasureSpec(25, View.MeasureSpec.EXACTLY));
     }
@@ -486,7 +492,7 @@ public class InteractivePdfBoxTest {
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts,
                 receiptColumns, Collections.<Distance>emptyList(), distanceColumns,
                 Collections.<SumCategoryGroupingResult>emptyList(), summationColumns,
-                Collections.<CategoryGroupingResult>emptyList()));
+                Collections.<CategoryGroupingResult>emptyList(), purchaseWallet));
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
         OutputStream outputStream = null;

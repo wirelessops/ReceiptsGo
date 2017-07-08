@@ -17,6 +17,7 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import wb.android.flex.Flex;
@@ -25,12 +26,15 @@ import wb.android.storage.StorageManager;
 public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
 
     private final GroupingController groupingController;
+    private final PurchaseWallet purchaseWallet;
 
     public PdfBoxFullPdfReport(Context context, DatabaseHelper db,
                                UserPreferenceManager preferences,
-                               StorageManager storageManager, Flex flex) {
+                               StorageManager storageManager, Flex flex, PurchaseWallet purchaseWallet) {
         super(context, db, preferences, storageManager, flex);
         this.groupingController = new GroupingController(db, context, preferences);
+        this.purchaseWallet = purchaseWallet;
+
     }
 
     @Override
@@ -55,7 +59,7 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
 
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip,
                 receipts, columns, distances, distanceColumns, categories, categoryColumns,
-                groupingResults));
+                groupingResults, purchaseWallet));
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
     }
 
