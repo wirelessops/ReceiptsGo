@@ -346,12 +346,14 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     }
 
     private void setDescription(Chart chart, int stringId) {
-        Description description = chart.getDescription();
-        description.setText(getResources().getString(stringId));
-        description.setTextColor(Color.WHITE);
-        description.setTextAlign(Paint.Align.CENTER);
-        description.setPosition(chart.getWidth() / 2, VALUE_TEXT_SIZE * 2.5f);
-        description.setTextSize(TITLE_TEXT_SIZE);
+        if (chart != null) {
+            Description description = chart.getDescription();
+            description.setText(getResources().getString(stringId));
+            description.setTextColor(Color.WHITE);
+            description.setTextAlign(Paint.Align.CENTER);
+            description.setPosition(chart.getWidth() / 2, VALUE_TEXT_SIZE * 2.5f);
+            description.setTextSize(TITLE_TEXT_SIZE);
+        }
     }
 
 }
