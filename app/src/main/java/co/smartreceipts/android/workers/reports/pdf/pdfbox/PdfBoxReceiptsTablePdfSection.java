@@ -50,7 +50,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     private final List<Column<SumCategoryGroupingResult>> categoryColumns;
 
     private final List<CategoryGroupingResult> groupingResults;
-    private final List<Column<Receipt>> groupingColumns;
 
     private final UserPreferenceManager preferenceManager;
 
@@ -64,8 +63,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                                             @NonNull List<Column<Distance>> distanceColumns,
                                             @NonNull List<SumCategoryGroupingResult> categories,
                                             @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-                                            @NonNull List<CategoryGroupingResult> groupingResults,
-                                            @NonNull List<Column<Receipt>> groupingColumns) {
+                                            @NonNull List<CategoryGroupingResult> groupingResults) {
         super(context, trip);
         this.receipts = Preconditions.checkNotNull(receipts);
         this.distances = Preconditions.checkNotNull(distances);
@@ -74,7 +72,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         this.receiptColumns = Preconditions.checkNotNull(receiptColumns);
         this.distanceColumns = Preconditions.checkNotNull(distanceColumns);
         this.categoryColumns = Preconditions.checkNotNull(categoryColumns);
-        this.groupingColumns = Preconditions.checkNotNull(groupingColumns);
         preferenceManager = Preconditions.checkNotNull(context.getPreferences());
     }
 
@@ -273,7 +270,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
     private List<GridRowRenderer> writeSeparateCategoryTable(@NonNull List<Receipt> receipts, @NonNull PDDocument pdDocument) throws IOException {
 
-        final PdfTableGenerator<Receipt> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, groupingColumns,
+        final PdfTableGenerator<Receipt> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext, receiptColumns,
                 pdDocument, null, true, true);
 
         return pdfTableGenerator.generate(receipts);

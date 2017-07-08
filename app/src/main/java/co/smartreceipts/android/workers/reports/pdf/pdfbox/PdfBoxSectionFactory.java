@@ -22,8 +22,7 @@ public interface PdfBoxSectionFactory {
             @NonNull List<Column<Distance>> distanceColumns,
             @NonNull List<SumCategoryGroupingResult> categories,
             @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-            @NonNull List<CategoryGroupingResult> groupingResults,
-            @NonNull List<Column<Receipt>> groupingColumns);
+            @NonNull List<CategoryGroupingResult> groupingResults);
 
     @NonNull
     PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip,

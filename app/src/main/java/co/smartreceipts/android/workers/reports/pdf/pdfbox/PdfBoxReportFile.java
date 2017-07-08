@@ -71,12 +71,11 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
             @NonNull List<Distance> distances, @NonNull List<Column<Distance>> distanceColumns,
             @NonNull List<SumCategoryGroupingResult> categpries,
             @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-            @NonNull List<CategoryGroupingResult> groupingResults,
-            @NonNull List<Column<Receipt>> groupingColumns) {
+            @NonNull List<CategoryGroupingResult> groupingResults) {
 
         return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, trip, receipts, columns,
                 distances, distanceColumns, categpries, categoryColumns,
-                groupingResults, groupingColumns);
+                groupingResults);
     }
 
 
