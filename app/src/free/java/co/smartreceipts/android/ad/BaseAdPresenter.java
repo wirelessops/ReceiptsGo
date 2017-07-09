@@ -10,7 +10,7 @@ import com.google.android.gms.ads.AdListener;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
-import co.smartreceipts.android.ad.widget.BannerAdView;
+import co.smartreceipts.android.ad.admob.widget.BannerAdView;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.persistence.SharedPreferenceDefinitions;

@@ -1,4 +1,4 @@
-package co.smartreceipts.android.ad.widget;
+package co.smartreceipts.android.ad.admob.widget;
 
 import android.app.Activity;
 import android.content.Context;

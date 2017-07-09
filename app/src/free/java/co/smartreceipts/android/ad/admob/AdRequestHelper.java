@@ -1,4 +1,4 @@
-package co.smartreceipts.android.ad;
+package co.smartreceipts.android.ad.admob;
 
 import com.google.android.gms.ads.AdRequest;
 
