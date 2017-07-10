@@ -81,7 +81,7 @@
     <!-- ============= Preference Output ================= -->
 
     <string name="pref_output_custom_csv_title">Personalizar salida CSV</string>
-
+    <string name="pref_output_custom_pdf_title">Personalizar salida PDF</string>
 
     <string name="pref_output_username_title">Id. de usuario</string>
     <string name="pref_output_username_emptyValue">Usado como campo de salida personalizado</string>
@@ -153,6 +153,13 @@
     <!-- ================= Preference Plus ================== -->
 
     <string name="pref_pro_pdf_footer_title">Texto del pie de página PDF</string>
+    <string name="pref_pro_separate_by_category_title">Pagos separados por categoría</string>
+    <string name="pref_pro_separate_by_category_summaryOn">Los informes PDF/CSV incluyen tablas separadas para diferentes categorías</string>
+    <string name="pref_pro_separate_by_category_summaryOff">Los informes PDF/CSV no incluyen tablas separadas para diferentes categorías</string>
+    <string name="pref_pro_categorical_summation_title">Incluir Sumatoria Categórica</string>
+    <string name="pref_pro_categorical_summation_summaryOn">Los informes PDF/CSV incluyen una tabla con suma por categoría</string>
+    <string name="pref_pro_categorical_summation_summaryOff">Los informes PDF/CSV no incluyen la tabla con suma por categoría</string>
+    <string name="pref_pro_omit_default_table_title">Omitir tabla PDF predeterminada</string>
 
     <!-- ============== Preference Support ================= -->
 

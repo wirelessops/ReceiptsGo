@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="app_name">Smart Receipts</string>
+    <string name="app_name">Смарт Чеки</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Настройки</string>
@@ -50,23 +51,24 @@
     <string name="yes_as_pdf">Да - в виде PDF</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Smart Receipts Plus</string>
+    <string name="pro_subscription">Смарт Чеки Плюс</string>
 
     <!-- ================ No More Ads ================= -->
     <string name="missing_ad_suggest_removal_upsell">Устали от рекламы? Нажмите, чтобы попробовать версию без рекламы</string>
 
     <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">Графики</string>
     <string name="report_info_receipts">Чеки</string>
-    <string name="report_info_distance">Маршруты</string>
+    <string name="report_info_distance">Расстояния</string>
     <string name="report_info_generate">Создать</string>
 
     <!-- ============= Report Generation ============== -->
     <string name="report_header_from">От: %s</string>
-    <string name="report_header_to">Кому: %s</string>
-    <string name="report_header_receipts_total">Всего чеков: %s</string>
+    <string name="report_header_to">До: %s</string>
+    <string name="report_header_receipts_total">Всего по чекам: %s</string>
     <string name="report_header_receipts_total_tax">Налог, всего: %s</string>
-    <string name="report_header_receipts_total_no_tax">Квитанции, всего (без налога): %s</string>
-    <string name="report_header_receipts_total_reimbursable">Квитанции, всего (возмещаемые): %s</string>
+    <string name="report_header_receipts_total_no_tax">Всего по чекам (без налога): %s</string>
+    <string name="report_header_receipts_total_reimbursable">Всего по чекам (возмещаемые): %s</string>
     <string name="report_header_distance_total">Расстояние, всего: %s</string>
     <string name="report_header_gross_total">Всего: %s</string>
     <string name="report_header_cost_center">Центр расходов: %s</string>
@@ -80,11 +82,11 @@
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">Настроить автоматическое сканирование? Нажмите здесь.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
-    <item quantity="one">%d Скан остался. Нажмите здесь, чтобы добавить еще.</item>
-    <item quantity="few">%d Скана осталось. Нажмите, чтобы добавить еще.</item>
-    <item quantity="many">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
-    <item quantity="other">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
-  </plurals>
+        <item quantity="one">%d Скан остался. Нажмите здесь, чтобы добавить еще.</item>
+        <item quantity="few">%d Скана осталось. Нажмите, чтобы добавить еще.</item>
+        <item quantity="many">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
+        <item quantity="other">%d Сканов осталось. Нажмите, чтобы добавить еще.</item>
+    </plurals>
     <string name="ocr_status_title">Выполняется сканирование (OCR):</string>
     <string name="ocr_status_message_uploading_image">Загрузка чека…</string>
     <string name="ocr_status_message_performing_scan">Сканирование метаданных чека…</string>
@@ -94,8 +96,8 @@
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_beta">Все пользователи бета-версии получают 50 бесплатных сканов!</string>
     <string name="ocr_configuration_welcome">Автоматическое сканирование (OCR):</string>
-    <string name="ocr_configuration_information">Smart Receipts интегрирована с Taggun для обеспечения сервисов автоматического сканирования (т.е. OCR), которые могут извлекать метаданные квитанций, такие как цена, налог, даты и данные продавца из ваших фото.</string>
-    <string name="ocr_configuration_information_line2">Мы используем комбинацию Google Vision и машинного обучения, чтобы быстро (часто в течение 5 секунд или меньше) обеспечить результаты, которые будут становиться все более точными с течением времени. Так как эти сервисы взимают плату за использование, мы будем взимать плату за сканирование каждой квитанции.</string>
+    <string name="ocr_configuration_information">Смарт Чеки интегрированы с Taggun для обеспечения сервисов автоматического сканирования (т.е. OCR), которые могут извлекать метаданные квитанций, такие как цена, налог, даты и данные продавца из ваших фото.</string>
+    <string name="ocr_configuration_information_line2">Мы используем комбинацию Google Vision и машинного обучения, чтобы быстро (зачастую в течение 5 секунд или меньше) обеспечить результаты, которые будут становиться все более точными с течением времени. Так как эти сервисы взимают плату за использование, мы будем взимать плату за сканирование каждой квитанции.</string>
     <string name="ocr_is_enabled">Включить автоматическое сканирование (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Позвольте нам сохранять изображения, чтобы повысить точность?</string>
     <string name="ocr_configuration_available_purchases">Доступные покупки - Нажмите, чтобы купить:</string>
@@ -106,11 +108,11 @@
     <string name="category_null">&lt;Категория&gt;</string>
     <string name="category_null_code">NUL</string>
     <string name="category_airfare">Стоимость авиабилета</string>
-    <string name="category_airfare_code">AIRP</string>
+    <string name="category_airfare_code">АВИА</string>
     <string name="category_breakfast">Завтрак</string>
-    <string name="category_breakfast_code">BRFT</string>
+    <string name="category_breakfast_code">ЗВТРК</string>
     <string name="category_dinner">Ужин</string>
-    <string name="category_dinner_code">DINN</string>
+    <string name="category_dinner_code">УЖН</string>
     <string name="category_entertainment">Досуг</string>
     <string name="category_entertainment_code">ДОС</string>
     <string name="category_gasoline">Бензин</string>
@@ -138,7 +140,7 @@
     <string name="category_tip">Чаевые</string>
     <string name="category_tip_code">ЧАЕ</string>
     <string name="category_train">Поезд</string>
-    <string name="category_train_code">ПОЕ</string>
+    <string name="category_train_code">ЖД</string>
     <string name="category_books_periodicals">Книги/Журналы</string>
     <string name="category_books_periodicals_code">КНЖ</string>
     <string name="category_cell_phone">Мобильный телефон</string>
@@ -176,14 +178,14 @@
     <string name="DURATION_ERROR">Ошибка: Дата начала должна предшествовать дате окончания</string>
     <string name="EXPORT_ERROR">Ошибка: Не удалось правильно экспортировать ваши данные.</string>
     <string name="IMPORT_ERROR">Ошибка: Не удалось распознать файл как импортируемый</string>
-    <string name="MOVE_ERROR">Ошибка: Не удалось переместить квитанцию</string>
-    <string name="COPY_ERROR">Ошибка: Не удалось копировать квитанцию</string>
+    <string name="MOVE_ERROR">Ошибка: Не удалось переместить чек</string>
+    <string name="COPY_ERROR">Ошибка: Не удалось копировать чек</string>
     <string name="toast_warning_reset_exchange_rate">Внимание: изменение валюты сбросит ВСЕ курсы валют</string>
     <string name="toast_error_trip_exists">Ошибка: отчет о расходах с этим названием уже существует</string>
     <string name="toast_error_category_exists">Ошибка: категория с этим именем уже существует</string>
 
     <!-- ============== Toast Messages ================= -->
-    <string name="toast_receipt_copy">Квитанция успешно cкопирована</string>
+    <string name="toast_receipt_copy">Чек успешно cкопирован</string>
     <string name="toast_receipt_move">Чек успешно перемещен</string>
     <string name="toast_receipt_image_added">Новое изображение успешно добавлено в %s</string>
     <string name="toast_receipt_image_replaced">Успешно заменено изображение в %s</string>
@@ -193,16 +195,16 @@
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">\u0020до\u0020</string>
-    <string name="trip_no_data">Судя по всему, в настоящее время у вас нет отчетов. Нажмите на кнопку + (плюс), чтобы начать.\n\nSmart Receipts позволяет создавать отчеты о расходах, отслеживать квитанции внутри каждого из них, и быстро создавать отчеты в форматах PDF и CSV. Быстро и просто! Кроме того, обязательно ознакомьтесь с меню, чтобы настроить категории, отчеты и другие параметры для ваших нужд.</string>
+    <string name="trip_no_data">Судя по всему, в настоящее время у вас нет отчетов. Нажмите на кнопку + (плюс), чтобы начать.\n\nСмарт Чеки позволяют создавать отчеты о расходах, отслеживать чеки внутри каждого из них, и быстро создавать отчеты в форматах PDF и CSV. Быстро и просто! Кроме того, обязательно ознакомьтесь с меню, чтобы настроить категории, отчеты и другие параметры для ваших нужд.</string>
 
     <!-- ================= Receipt Adapter =================== -->
-    <string name="receipt_no_data">Судя по всему, у вас еще нет квитанций. Попробуйте нажать кнопку + (плюс), чтобы начать…</string>
+    <string name="receipt_no_data">Судя по всему, у вас еще нет чеков. Попробуйте нажать кнопку + (плюс), чтобы начать…</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Судя по всему, у вас еще нет отслеживаемых маршрутов. Попробуйте нажать кнопку + (плюс), чтобы начать.</string>
-    <string name="distance_insert_failed">Ошибка: Не удалось создать маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
-    <string name="distance_update_failed">Ошибка: Не удалось обновить маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
-    <string name="distance_delete_failed">Ошибка: Не удалось удалить маршрут. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
+    <string name="distance_no_data">Судя по всему, у вас еще нет отслеживаемых расстояний. Попробуйте нажать кнопку + (плюс), чтобы начать.</string>
+    <string name="distance_insert_failed">Ошибка: Не удалось добавить расстояние. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
+    <string name="distance_update_failed">Ошибка: Не удалось обновить расстояние. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
+    <string name="distance_delete_failed">Ошибка: Не удалось удалить расстояние. Пожалуйста, убедитесь, что ваш телефон не подключен к вашему компьютеру.</string>
 
     <!-- ================= Receipt Actions =================== -->
     <string name="receipt_action_camera">Изображение</string>
@@ -217,7 +219,7 @@
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF отчет - без таблицы</string>
     <string name="DIALOG_EMAIL_CHECKBOX_CSV">Файл CSV</string>
     <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP с JPG</string>
-    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Пожалуйста, отметьте по крайней мере один отчет</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Пожалуйста, выберите по крайней мере один отчет</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Этот отчет не содержит чеков</string>
     <string name="generate_report_tooltip">Нажмите, чтобы настроить внешний вид отчета</string>
 
@@ -239,12 +241,12 @@
     <string name="DIALOG_RECEIPTMENU_HINT_TAX">Налог</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Валюта</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Курс обмена</string>
-    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Курс обмена - неудачно. Повторить попытку?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Обмен не удался. Повторить попытку?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_DATE">Дата</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Категория</string>
     <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Комментарий</string>
     <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">Центр расходов</string>
-    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Возмещаемое?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Возмещаемый?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">Изображение на всю страницу?</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Новый чек</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Новый чек - %s</string>
@@ -275,7 +277,7 @@
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Резервные копии</string>
     <string name="manual_backup_title">Ручное резервное копирование:</string>
-    <string name="manual_backup_description">Выполняйте резервное копирование данных, чтобы обезопасить ваши квитанции! Вы можете восстановить данные, импортировав файл резервной копии SmartReceipts.SMR, генерируемый нажатием кнопки \"Резервное копирование\" внизу.</string>
+    <string name="manual_backup_description">Выполняйте резервное копирование данных, чтобы обезопасить ваши чеки! Вы можете восстановить данные, импортировав файл резервной копии SmartReceipts.SMR, генерируемый нажатием кнопки \"Резервное копирование\" внизу.</string>
     <string name="manual_backup_export">Резервное копирование</string>
     <string name="manual_backup_import">Импорт</string>
     <string name="auto_backup_title">Автоматическое резервное копирование [BETA]:</string>
@@ -316,7 +318,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Вход / Регистрация</string>
-    <string name="login_title">Войдите в учетную запись Smart Receipts, чтобы начать использовать автоматическое сканирование (OCR)</string>
+    <string name="login_title">Войдите в учетную запись Смарт Чеков, чтобы начать использовать автоматическое сканирование (OCR)</string>
     <string name="login_field_email_hint">Адрес эл. почты</string>
     <string name="login_field_password_hint">Пароль</string>
     <string name="sign_up_button_text">Регистрация</string>
@@ -336,8 +338,8 @@
     <string name="dialog_filter_negative_button">Удалить фильтр</string>
 
     <!-- ==================== dialog miles ======================== -->
-    <string name="dialog_mileage_title_create">Добавить маршрут</string>
-    <string name="dialog_mileage_title_update">Обновить маршрут</string>
+    <string name="dialog_mileage_title_create">Добавить Расстояние</string>
+    <string name="dialog_mileage_title_update">Обновить Расстояние</string>
     <string name="dialog_mileage_positive_create">Добавить</string>
     <string name="dialog_mileage_positive_update">Обновить</string>
     <string name="dialog_mileage_neutral_delete">Удалить</string>
@@ -350,9 +352,9 @@
     <string name="RECEIPTMENU_FIELD_DATE">Дата</string>
     <string name="RECEIPTMENU_FIELD_CATEGORY">Категория</string>
     <string name="RECEIPTMENU_FIELD_COMMENT">Комментарий</string>
-    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1"/>
-    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2"/>
-    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3"/>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
 
     <!-- ================== RECEIPTMENU_TAGS ==================== -->
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
@@ -361,9 +363,9 @@
 
     <!-- ============== Start String Arrays ================== -->
     <string-array name="EDIT_TRIP_ITEMS">
-    <item>Редактировать отчет</item>
-    <item>Удалить отчет</item>
-  </string-array>
+        <item>Редактировать отчет</item>
+        <item>Удалить отчет</item>
+    </string-array>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Пустая колонка</string>
@@ -420,7 +422,7 @@
     <string name="dialog_sql_corrupt_title">О нет!</string>
     <string name="dialog_sql_corrupt_message">Ваша база данных была повреждена. Это часто происходит, когда вы пользуетесь программами типа \"task killer\", однако может быть вызвано различными причинами. Не волнуйтесь - мы, скорее всего, сможем восстановить большую часть ваших данных.</string>
     <string name="dialog_sql_corrupt_positive">Обратиться за помощью к разработчику</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Поврежденная база данных</string>
+    <string name="dialog_sql_corrupt_intent_subject">Смарт Чеки - Поврежденная база данных</string>
     <string name="dialog_sql_corrupt_intent_text">Помогите - моя база данных была повреждена. Можете ли вы помочь мне восстановить ее?</string>
     <string name="dialog_sql_corrupt_chooser">Отправить письмо…</string>
 
@@ -459,7 +461,7 @@
     <string name="purchase_failed">Не удалось завершить покупку</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Нравится Smart Receipts?</string>
+    <string name="rating_tooltip_text">Нравятся Смарт Чеки?</string>
     <string name="leave_feedback_text">Хотите оставить отзыв о программе?</string>
     <string name="apprating_dialog_title">Нравится %s?</string>
     <string name="apprating_dialog_message">Пожалуйста, оставьте ваш отзыв. Я - независимый разработчик, и ваши отзывы являются моим основным источником вдохновения и стимула продолжать добавлять новые функции. Благодарю!</string>
@@ -470,7 +472,14 @@
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Используйте вкладку \"Создать\" для создания отчетов</string>
 
-
-
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">Добавьте свой первый чек чтобы увидеть графики.</string>
+    <string name="graphs_expenditure_by_dates_title">Ежедневные расходы</string>
+    <string name="graphs_expenditure_by_categories_title">Расходы по категориям</string>
+    <string name="graphs_expenditure_by_reimbursable_title">Возмещаемые и невозмещаемые</string>
+    <string name="graphs_expenditure_by_payment_methods_title">Расходы по методу оплаты</string>
+    <string name="graphs_label_reimbursable">Возмещаемые</string>
+    <string name="graphs_label_non_reimbursable">Невозмещаемые</string>
+    <string name="graphs_label_others">Другие</string>
 
 </resources>

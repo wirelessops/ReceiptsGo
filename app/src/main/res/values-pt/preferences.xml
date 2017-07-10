@@ -81,7 +81,7 @@
     <!-- ============= Preference Output ================= -->
 
     <string name="pref_output_custom_csv_title">Personalizar saída CSV</string>
-
+    <string name="pref_output_custom_pdf_title">Personalizar saída PDF</string>
 
     <string name="pref_output_username_title">ID de usuário</string>
     <string name="pref_output_username_emptyValue">Utilizado como campo de saída personalizado</string>
@@ -153,6 +153,13 @@
     <!-- ================= Preference Plus ================== -->
 
     <string name="pref_pro_pdf_footer_title">Texto do rodapé do PDF</string>
+    <string name="pref_pro_separate_by_category_title">Divida pagamentos por Categoria</string>
+    <string name="pref_pro_separate_by_category_summaryOn">PDF/CSV relatórios incluem mesas separadas para diferentes categorias</string>
+    <string name="pref_pro_separate_by_category_summaryOff">PDF/CSV relata don\'t incluem mesas separadas para diferentes categorias</string>
+    <string name="pref_pro_categorical_summation_title">Incluir Categorical Somatório</string>
+    <string name="pref_pro_categorical_summation_summaryOn">PDF/CSV relatórios incluem mesa com somatório por categoria</string>
+    <string name="pref_pro_categorical_summation_summaryOff">PDF/CSV relata don\'t incluem mesa com somatório por categoria</string>
+    <string name="pref_pro_omit_default_table_title">Omitir Tabela PDF padrão</string>
 
     <!-- ============== Preference Support ================= -->
 

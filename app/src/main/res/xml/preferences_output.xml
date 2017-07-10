@@ -9,7 +9,7 @@
 			android:title="@string/pref_output_custom_csv_title" />
 		<Preference 
 		    android:key="@string/pref_output_custom_pdf_key" 
-			android:title="@string/pref_output_custom_pdf_key" />
+			android:title="@string/pref_output_custom_pdf_title" />
 		<CheckBoxPreference
 			android:key="@string/pref_output_receipts_landscape_key"
 			android:title="@string/pref_output_receipts_landscape_title"

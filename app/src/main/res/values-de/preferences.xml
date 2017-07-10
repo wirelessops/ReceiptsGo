@@ -81,7 +81,7 @@
     <!-- ============= Preference Output ================= -->
 
     <string name="pref_output_custom_csv_title"> CSV-Ausgabe anpassen</string>
-
+    <string name="pref_output_custom_pdf_title">PDF-Ausgabe anpassen</string>
 
     <string name="pref_output_username_title">Benutzeridentifikation</string>
     <string name="pref_output_username_emptyValue">Wird als Ausgabefeld definiert</string>
@@ -153,6 +153,13 @@
     <!-- ================= Preference Plus ================== -->
 
     <string name="pref_pro_pdf_footer_title">PDF Fußzeilentext</string>
+    <string name="pref_pro_separate_by_category_title">Getrennte Zahlungen nach Kategorie</string>
+    <string name="pref_pro_separate_by_category_summaryOn">PDF / CSV-Berichte enthalten separate Tabellen für verschiedene Kategorien</string>
+    <string name="pref_pro_separate_by_category_summaryOff">PDF / CSV-Berichte enthalten keine separaten Tabellen für verschiedene Kategorien</string>
+    <string name="pref_pro_categorical_summation_title">Kategorische Summation einschließen</string>
+    <string name="pref_pro_categorical_summation_summaryOn">PDF / CSV-Berichte enthalten Tabelle mit Summierung nach Kategorie</string>
+    <string name="pref_pro_categorical_summation_summaryOff">PDF / CSV-Berichte enthalten keine Tabelle mit Summierung nach Kategorie</string>
+    <string name="pref_pro_omit_default_table_title">Pflegen Sie die Standard-PDF-Tabelle</string>
 
     <!-- ============== Preference Support ================= -->
 

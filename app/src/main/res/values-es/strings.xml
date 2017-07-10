@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
 
     <!-- =================== App Details ===================== -->
     <string name="app_name">Recibos Inteligentes</string>
@@ -56,6 +57,7 @@
     <string name="missing_ad_suggest_removal_upsell">¿Cansado de los anuncios? Toca para comenzar una prueba gratuita sin anuncios</string>
 
     <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">Gráficos</string>
     <string name="report_info_receipts">Recibos</string>
     <string name="report_info_distance">Distancia</string>
     <string name="report_info_generate">Generar</string>
@@ -80,9 +82,9 @@
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">¿Configurar escaneos automáticos? Toca aquí.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
-    <item quantity="one">%d  escaneo restante. Toca para más.</item>
-    <item quantity="other">%d escaneos restantes. Toca para más.</item>
-  </plurals>
+        <item quantity="one">%d  escaneo restante. Toca para más.</item>
+        <item quantity="other">%d escaneos restantes. Toca para más.</item>
+    </plurals>
     <string name="ocr_status_title">Realizando escaneo (OCR):</string>
     <string name="ocr_status_message_uploading_image">Cargando recibo...</string>
     <string name="ocr_status_message_performing_scan">Escaneando metadatos del recibo...</string>
@@ -348,9 +350,9 @@
     <string name="RECEIPTMENU_FIELD_DATE">Fecha</string>
     <string name="RECEIPTMENU_FIELD_CATEGORY">Categoría</string>
     <string name="RECEIPTMENU_FIELD_COMMENT">Comentario</string>
-    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1"/>
-    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2"/>
-    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3"/>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
 
     <!-- ================== RECEIPTMENU_TAGS ==================== -->
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
@@ -359,9 +361,9 @@
 
     <!-- ============== Start String Arrays ================== -->
     <string-array name="EDIT_TRIP_ITEMS">
-    <item>Editar informe</item>
-    <item>Eliminar informe</item>
-  </string-array>
+        <item>Editar informe</item>
+        <item>Eliminar informe</item>
+    </string-array>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Columna en blanco</string>
@@ -467,6 +469,16 @@
 
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Usa la pestaña \'Generar\' para crear tus informes</string>
+
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">Agregue sus primeros recibos para ver los gráficos.</string>
+    <string name="graphs_expenditure_by_dates_title">Gastos diarios</string>
+    <string name="graphs_expenditure_by_categories_title">Gastos por categorías</string>
+    <string name="graphs_expenditure_by_reimbursable_title">Reembolsable vs No reembolsable</string>
+    <string name="graphs_expenditure_by_payment_methods_title">Gastos por métodos de pago</string>
+    <string name="graphs_label_reimbursable">Reembolsable</string>
+    <string name="graphs_label_non_reimbursable">No reembolsable</string>
+    <string name="graphs_label_others">Otros</string>
 
 
 </resources>
