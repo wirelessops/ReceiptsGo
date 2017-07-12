@@ -15,7 +15,7 @@
     <!-- ================ General Strings ================== -->
     <string name="add">Добавить</string>
     <string name="column_item">Колонка %s</string>
-    <string name="copy">Копия</string>
+    <string name="copy">Копировать</string>
     <string name="daily_total">Всего в день: %s</string>
     <string name="day">%s День</string>
     <string name="days">%s Дней</string>
@@ -96,7 +96,7 @@
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_beta">Все пользователи бета-версии получают 50 бесплатных сканов!</string>
     <string name="ocr_configuration_welcome">Автоматическое сканирование (OCR):</string>
-    <string name="ocr_configuration_information">Смарт Чеки интегрированы с Taggun для обеспечения сервисов автоматического сканирования (т.е. OCR), которые могут извлекать метаданные квитанций, такие как цена, налог, даты и данные продавца из ваших фото.</string>
+    <string name="ocr_configuration_information">Смарт Чеки интегрированы с Taggun для обеспечения сервисов автоматического сканирования (т.е. OCR), которые могут извлекать метаданные чеков, такие как цена, налог, даты и данные продавца из ваших фото.</string>
     <string name="ocr_configuration_information_line2">Мы используем комбинацию Google Vision и машинного обучения, чтобы быстро (зачастую в течение 5 секунд или меньше) обеспечить результаты, которые будут становиться все более точными с течением времени. Так как эти сервисы взимают плату за использование, мы будем взимать плату за сканирование каждой квитанции.</string>
     <string name="ocr_is_enabled">Включить автоматическое сканирование (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Позвольте нам сохранять изображения, чтобы повысить точность?</string>
@@ -329,7 +329,7 @@
     <string name="login_success_toast">Вход выполнен успешно</string>
     <string name="sign_up_success_toast">Регистрация завершена успешно</string>
     <string name="login_failure_toast">Войти в систему не удалось</string>
-    <string name="sign_up_failure_toast">Выполнить регистрацию не удалось</string>
+    <string name="sign_up_failure_toast">Не удалось зарегистрироваться</string>
     <string name="login_failure_credentials_toast">Ошибка: Неправильное имя пользователя или пароль</string>
     <string name="sign_up_failure_account_exists_toast">Ошибка: Этот адрес уже существует. Попробуйте войти в систему</string>
 
@@ -464,7 +464,7 @@
     <string name="rating_tooltip_text">Нравятся Смарт Чеки?</string>
     <string name="leave_feedback_text">Хотите оставить отзыв о программе?</string>
     <string name="apprating_dialog_title">Нравится %s?</string>
-    <string name="apprating_dialog_message">Пожалуйста, оставьте ваш отзыв. Я - независимый разработчик, и ваши отзывы являются моим основным источником вдохновения и стимула продолжать добавлять новые функции. Благодарю!</string>
+    <string name="apprating_dialog_message">Пожалуйста, оставьте ваш отзыв. Я - независимый разработчик, и ваши отзывы являются моим основным источником вдохновения и стимулом продолжать добавлять новые функции. Благодарю!</string>
     <string name="apprating_dialog_negative">Нет, спасибо</string>
     <string name="apprating_dialog_neutral">Возможно, позже</string>
     <string name="apprating_dialog_positive">Оценить сейчас!</string>

@@ -12,7 +12,7 @@
 
     <string name="pref_layout_header">Настройка внешнего вида</string>
     <string name="pref_distance_header">Расстояние</string>
-    <string name="pref_pro_header">Smart Receipts Plus</string>
+    <string name="pref_pro_header">Смарт Чеки Плюс</string>
     <string name="pref_help_header">Поддержка</string>
     <string name="pref_about_header">О программе</string>
 
@@ -34,14 +34,14 @@
     <string name="pref_receipt_customize_categories_title">Настройка категорий чеков</string>
     <string name="pref_receipt_customize_categories_summary">Нажмите здесь, чтобы добавить/редактировать категории</string>
 
-    <string name="pref_receipt_predict_categories_title">Предсказывать категории квитанций</string>
+    <string name="pref_receipt_predict_categories_title">Предсказывать категории чеков</string>
     <string name="pref_receipt_predict_categories_summary">Автозаполнение категории на основе предыдущих данных</string>
 
     <string name="pref_receipt_match_name_to_category_title">Брать имя из категории</string>
-    <string name="pref_receipt_match_name_to_category_summary">Автоматически задавать имя для категории</string>
+    <string name="pref_receipt_match_name_to_category_summary">Автоматически заполнять имя категории</string>
 
     <string name="pref_receipt_match_comment_to_category_title">Брать комментарий из категории</string>
-    <string name="pref_receipt_match_comment_to_category_summary">Автоматически добавлять комментарий к категории</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Автоматически брать комментарий из категории</string>
 
     <string name="pref_receipt_reimbursable_only_title">Только подлежащие возмещению</string>
     <string name="pref_receipt_reimbursable_only_summary">Исключить другие чеки из отчета</string>
@@ -57,7 +57,7 @@
     <string name="pref_receipt_pre_tax_summary_on">Рассчитывает налог на основе цены без налога</string>
     <string name="pref_receipt_pre_tax_summary_off">Рассчитывает налог на основе цены с налогом</string>
 
-    <string name="pref_receipt_enable_autocomplete_title">Включить предложения автозаполнения</string>
+    <string name="pref_receipt_enable_autocomplete_title">Включить автозаполнение</string>
     <string name="pref_receipt_enable_autocomplete_summary">Предлагать значения из предыдущих записей</string>
 
     <string name="pref_receipt_minimum_receipts_price_title">Минимальная цена чека</string>
@@ -65,7 +65,7 @@
     <string name="pref_receipt_minimum_receipts_price_summary_partial">Только чеки на сумму более %s</string>
 
     <string name="pref_receipt_default_to_report_start_date_title">Дата начала отчета по умолчанию</string>
-    <string name="pref_receipt_default_to_report_start_date_summary">Устанавливает дату квитанции в соответствии с датой отчета</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Устанавливает дату чека в соответствии с датой отчета</string>
 
     <string name="pref_receipt_show_id_title">Показывать ID чека</string>
     <string name="pref_receipt_show_id_summary">Отображает автоматически сгенерированное поле \"ID\"</string>
@@ -91,8 +91,8 @@
     <string name="pref_output_print_receipt_id_by_photo_summary">Показывает ID чека вместо индекса</string>
 
     <string name="pref_output_print_receipt_comment_by_photo_title">Печать комментария к чеку по фото</string>
-    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Показывает комментарий над фотографиями PDF</string>
-    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Скрыть комментарий над фотографиями PDF</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Показывает комментарий над фотографиями в PDF</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Скрыть комментарий над фотографиями в PDF</string>
 
     <string name="pref_output_receipts_landscape_title">Печать таблицы чеков в ландшафтном режиме</string>
     <string name="pref_output_receipts_landscape_on">Таблица чеков печатается в ландшафтном режиме</string>
@@ -120,13 +120,13 @@
 
     <!-- ============= Preference Layout ================= -->
 
-    <string name="pref_layout_display_date_title">Включать дату квитанции</string>
-    <string name="pref_layout_display_date_summary">Показывать дату квитанции</string>
+    <string name="pref_layout_display_date_title">Включать дату чека</string>
+    <string name="pref_layout_display_date_summary">Показывать дату чека</string>
 
-    <string name="pref_layout_display_category_title">Включить категорию квитанции</string>
-    <string name="pref_layout_display_category_summary">Показывает категорию квитанции</string>
+    <string name="pref_layout_display_category_title">Включать категорию чека</string>
+    <string name="pref_layout_display_category_summary">Показывать категорию чека</string>
 
-    <string name="pref_layout_display_photo_title">Включить изображение/ PDF-маркер</string>
+    <string name="pref_layout_display_photo_title">Включать изображение/ PDF-маркер</string>
     <string name="pref_layout_display_photo_summary">Указывать, содержат ли элементы фото/PDF</string>
 
     <!-- ============= Preference Distance ================= -->
@@ -148,19 +148,19 @@
     <string name="pref_distance_print_daily_summaryOff">Не показывать поле \"Расстояние\"</string>
 
     <string name="pref_distance_as_price_title">Цена расстояния в подзаголовке</string>
-    <string name="pref_distance_as_price_summaryOn">Показывать стоимость маршрута в подзаголовке программы</string>
-    <string name="pref_distance_as_price_summaryOff">Показывать пройденную дистанцию в подзаголовке программы</string>
+    <string name="pref_distance_as_price_summaryOn">Показывать стоимость маршрута в подзаголовке приложения</string>
+    <string name="pref_distance_as_price_summaryOff">Показывать пройденную дистанцию в подзаголовке приложения</string>
 
     <!-- ================= Preference Plus ================== -->
 
     <string name="pref_pro_pdf_footer_title">Текст внизу PDF</string>
     <string name="pref_pro_separate_by_category_title">Разделить платежи по категориям</string>
     <string name="pref_pro_separate_by_category_summaryOn">В PDF/CSV отчеты будут включены отдельные таблицы для разных категорий</string>
-    <string name="pref_pro_separate_by_category_summaryOff">В PDF/CSV будет включена одна таблица для всех категорий</string>
+    <string name="pref_pro_separate_by_category_summaryOff">В PDF/CSV отчеты не будут включены отдельные таблицы для разных категорий</string>
     <string name="pref_pro_categorical_summation_title">Включить суммирование по категориям</string>
     <string name="pref_pro_categorical_summation_summaryOn">В PDF/CSV отчёты будет включена таблица с расходами по категориям</string>
     <string name="pref_pro_categorical_summation_summaryOff">В PDF/CSV отчёты не будет включена таблица с расходами по категориям</string>
-    <string name="pref_pro_omit_default_table_title">Не добавлять общую PDF таблицу</string>
+    <string name="pref_pro_omit_default_table_title">Исключить общую PDF таблицу</string>
 
     <!-- ============== Preference Support ================= -->
 

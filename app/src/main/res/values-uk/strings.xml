@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <!-- =================== App Details ===================== -->
+    <string name="app_name">Смарт Чеки</string>
+
+    <!-- ================ Main Menu Options ================== -->
+    <string name="menu_main_settings">Налаштування</string>
+    <string name="menu_main_categories">Категорії</string>
+    <string name="menu_main_csv">Налаштування CSV</string>
+    <string name="menu_main_pdf">Налаштування PDF</string>
+    <string name="menu_main_ocr_configuration">Автоматичне сканування (OCR)</string>
+    <string name="menu_main_export">Резервна копія</string>
+
+    <!-- ================ General Strings ================== -->
+    <string name="add">Додати</string>
+    <string name="column_item">Колонка %s</string>
+    <string name="copy">Копіювати</string>
+    <string name="daily_total">Загалом у день: %s</string>
+    <string name="day">%s День</string>
+    <string name="days">%s Дні</string>
+    <string name="delete">Видалити</string>
+    <string name="delete_item">Видалити %s?</string>
+    <string name="delete_sync_information">Будь-які дистанційно синхронізовані дані для цього розділу також будуть видалені.</string>
+    <string name="distance">Відстань</string>
+    <string name="distance_total_item">Відстань, загалом: %s</string>
+    <string name="edit">Редагувати</string>
+    <string name="export">Експорт</string>
+    <string name="feedback">%s - Відгук</string>
+    <string name="image">Зображення</string>
+    <string name="import_string">Імпорт</string>
+    <string name="import_string_item">Імпорт %s</string>
+    <string name="item_code">Код:</string>
+    <string name="item_name">Ім\'я:</string>
+    <string name="move">Перемістити</string>
+    <string name="move_copy_item">Перемістити/Копіювати %s?</string>
+    <string name="next_id">Наступний ID: %d</string>
+    <string name="no">Ні</string>
+    <string name="pdf">PDF</string>
+    <string name="report">Звіт</string>
+    <string name="report_attached">1 Звіт прикладений</string>
+    <string name="reports_attached">%s звітів прикладено</string>
+    <string name="save">Зберегти</string>
+    <string name="send_email">Відправити файл…</string>
+    <string name="submit">Відправити</string>
+    <string name="support">%s - Підтримка</string>
+    <string name="total">Загалом:</string>
+    <string name="undefined">Не визначено</string>
+    <string name="update">Оновити</string>
+    <string name="yes">Так</string>
+    <string name="yes_as_pdf">Так - у вигляді PDF</string>
+
+    <!-- =============== Subscriptions ================ -->
+    <string name="pro_subscription">Смарт Чеки Плюс</string>
+
+    <!-- ================ No More Ads ================= -->
+    <string name="missing_ad_suggest_removal_upsell">Втомились від реклами? Натисніть, щоб спробувати версію без реклами</string>
+
+    <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">Графіки</string>
+    <string name="report_info_receipts">Чеки</string>
+    <string name="report_info_distance">Відстані</string>
+    <string name="report_info_generate">Створити</string>
+
+    <!-- ============= Report Generation ============== -->
+    <string name="report_header_from">Від: %s</string>
+    <string name="report_header_to">До: %s</string>
+    <string name="report_header_receipts_total">Загалом за чеками: %s</string>
+    <string name="report_header_receipts_total_tax">Податок, загалом: %s</string>
+    <string name="report_header_receipts_total_no_tax">Загалом за чеками (без податку): %s</string>
+    <string name="report_header_receipts_total_reimbursable">Загалом за чеками (що відшкодовуються): %s</string>
+    <string name="report_header_distance_total">Відстань, загалом: %s</string>
+    <string name="report_header_gross_total">Загалом: %s</string>
+    <string name="report_header_cost_center">Центр витрат: %s</string>
+    <string name="report_header_comment">Коментар: %s</string>
+    <string name="report_pdf_generation_error">При створенні звіту сталася помилка</string>
+    <string name="report_pdf_error_too_many_columns_title">Занадто багато колонок</string>
+    <string name="report_pdf_error_too_many_columns_message">Бракує місця, щоб розмістити всі колонки в звіті. Будь ласка, спробуйте обмежити кількість колонок в налаштуваннях.</string>
+    <string name="report_pdf_error_too_many_columns_message_landscape">Бракує місця, щоб розмістити всі колонки в звіті. Будь ласка, спробуйте обмежити кількість колонок в налаштуваннях або використовувати ландшафтний режим.</string>
+    <string name="report_pdf_error_go_to_settings">Перейти до налаштувань</string>
+
+    <!-- ===================== ocr ======================== -->
+    <string name="ocr_informational_tooltip_configure_text">Налаштувати автоматичне сканування? Натисніть тут.</string>
+    <plurals name="ocr_informational_tooltip_limited_scans_text">
+        <item quantity="one">%d Скан залишився. Натисніть тут, щоб додати ще.</item>
+        <item quantity="few">%d Скана залишилось. Натисніть тут, щоб додати ще.</item>
+        <item quantity="many">%d Сканів залишилось. Натисніть тут, щоб додати ще.</item>
+        <item quantity="other">%d Сканів залишилось. Натисніть тут, щоб додати ще.</item>
+    </plurals>
+    <string name="ocr_status_title">Проводиться сканування (OCR):</string>
+    <string name="ocr_status_message_uploading_image">Завантаження чека…</string>
+    <string name="ocr_status_message_performing_scan">Сканування метаданих чека…</string>
+    <string name="ocr_status_message_fetching_results">Обробка результатів…</string>
+    <string name="ocr_configuration_title">Автоматичне сканування (OCR)</string>
+    <string name="ocr_configuration_scans_remaining">Сканів OCR залишилось: %d</string>
+    <string name="ocr_configuration_my_account">%s</string>
+    <string name="ocr_configuration_beta">Всі користувачі бета-версії отримують 50 безкоштовних сканів!</string>
+    <string name="ocr_configuration_welcome">Автоматичне сканування (OCR):</string>
+    <string name="ocr_configuration_information">Смарт Чеки інтегровані з Taggun для забезпечення сервісів автоматичного сканування (тобто OCR), які можуть витягувати метадані чеків, такі як ціна, податок, дати і дані продавця з ваших фото.</string>
+    <string name="ocr_configuration_information_line2">Ми використовуємо комбінацію Google Vision і машинного навчання, щоб швидко (часто протягом 5 секунд або менше) забезпечити результати, які будуть ставати все більш точними з плином часу. Так як ці сервіси стягують плату за використання, ми будемо стягувати плату за сканування кожної квитанції.</string>
+    <string name="ocr_is_enabled">Увімкнути автоматичне сканування (OCR)?</string>
+    <string name="ocr_save_scans_to_improve_results">Дозвольте нам зберігати зображення, щоб підвищити точність?</string>
+    <string name="ocr_configuration_available_purchases">Доступні покупки - Натисніть, щоб купити:</string>
+
+    <!-- ================ Categories ================== -->
+    <string name="category_name">Ім\'я:</string>
+    <string name="category_code">Код:</string>
+    <string name="category_null">&lt;Категорія&gt;</string>
+    <string name="category_null_code">NUL</string>
+    <string name="category_airfare">Вартість авіаквитка</string>
+    <string name="category_airfare_code">АВІА</string>
+    <string name="category_breakfast">Сніданок</string>
+    <string name="category_breakfast_code">СНДНК</string>
+    <string name="category_dinner">Вечеря</string>
+    <string name="category_dinner_code">ВЧР</string>
+    <string name="category_entertainment">Дозвілля</string>
+    <string name="category_entertainment_code">ДОЗ</string>
+    <string name="category_gasoline">Бензин</string>
+    <string name="category_gasoline_code">БЕНЗИН</string>
+    <string name="category_gift">Подарунок</string>
+    <string name="category_gift_code">ПОДАРУНОК</string>
+    <string name="category_hotel">Готель</string>
+    <string name="category_hotel_code">ГОТЛ</string>
+    <string name="category_laundry">Пральня</string>
+    <string name="category_laundry_code">ПРАННЯ</string>
+    <string name="category_lunch">Обід</string>
+    <string name="category_lunch_code">ОБІД</string>
+    <string name="category_other">Інше</string>
+    <string name="category_other_code">РІЗНЕ</string>
+    <string name="category_parking_tolls">Парковка/Збори</string>
+    <string name="category_parking_tolls_code">ПАРК</string>
+    <string name="category_postage_shipping">Пошта/Посилки</string>
+    <string name="category_postage_shipping_code">ПОШТА</string>
+    <string name="category_car_rental">Прокат авто</string>
+    <string name="category_car_rental_code">ПРОКАТ</string>
+    <string name="category_taxi_bus">Таксі/Автобус</string>
+    <string name="category_taxi_bus_code">ТАКСІ</string>
+    <string name="category_telephone_fax">Телефон/Факс</string>
+    <string name="category_telephone_fax_code">ТЕЛЕ</string>
+    <string name="category_tip">Чайові</string>
+    <string name="category_tip_code">ЧАЙВ</string>
+    <string name="category_train">Потяг</string>
+    <string name="category_train_code">ЗД</string>
+    <string name="category_books_periodicals">Книги/Журнали</string>
+    <string name="category_books_periodicals_code">КНЖ</string>
+    <string name="category_cell_phone">Мобільний телефон</string>
+    <string name="category_cell_phone_code">МОБ</string>
+    <string name="category_dues_subscriptions">Внески/Підписки</string>
+    <string name="category_dues_subscriptions_code">ВНК</string>
+    <string name="category_meals_justified">Харчування (підтверджені)</string>
+    <string name="category_meals_justified_code">ХАРЧ</string>
+    <string name="category_stationery_stations">Канцтовари</string>
+    <string name="category_stationery_stations_code">КАНЦ</string>
+    <string name="category_training_fees">Витрати на навчання</string>
+    <string name="category_training_fees_code">НАВЧ</string>
+
+    <!-- ================ Img Menu Options =================== -->
+    <string name="menu_receiptimage_retake">Зробити знімок повторно</string>
+    <string name="menu_receiptimage_rotate_ccw">Повернути проти годинникової стрілки</string>
+    <string name="menu_receiptimage_rotate_cw">Поворот за годинниковою стрілкою</string>
+
+    <!-- ===================== Email ====================== -->
+    <string name="email_body_subject_5mb_warning">Файл має розмір більше 5 МБ і може бути не правильно прикріплений: %s</string>
+
+    <!-- ============== Progress Messages ================= -->
+    <string name="progress_import">Імпорт файлів…</string>
+
+    <!-- ============== Start Error Messages ================= -->
+    <string name="SD_ERROR">Помилка: переконайтеся, що ваша SD-карта доступна і не підключена до вашого комп\'ютера.</string>
+    <string name="SD_WARNING">Увага: Ваша SD-карта відсутня або підключена до вашого комп\'ютера. Деякі зображення можуть бути недоступні. Переключення на внутрішню пам\'ять…</string>
+    <string name="database_error">Помилка: Не вдається зберегти ваш чек</string>
+    <string name="database_get_error">Помилка: Не вдалося завантажити дані. Спробуйте перезапустити додаток.</string>
+    <string name="IMG_OPEN_ERROR">Помилка: Зображення на даний час недоступно або пошкоджено. Ваша SD-карта може бути недоступна або підключена до вашого комп\'ютера. Якщо це не так, натисніть кнопку меню, щоб зробити знімок ще раз.</string>
+    <string name="IMG_SAVE_ERROR">Помилка: Не вдалося зберегти зображення належним чином</string>
+    <string name="ILLEGAL_CHAR_ERROR">Помилка: Ім\'я містить неприпустимий символ</string>
+    <string name="SPACE_ERROR">Помилка: Ім\'я не може починатися з пробілу</string>
+    <string name="CALENDAR_TAB_ERROR">Помилка: Будь ласка, натисніть на поле дати для установки дати</string>
+    <string name="DURATION_ERROR">Помилка: Дата початку має передувати даті закінчення</string>
+    <string name="EXPORT_ERROR">Помилка: Не вдалося правильно експортувати ваші дані.</string>
+    <string name="IMPORT_ERROR">Помилка: Не вдалося розпізнати файл як імпортуємий</string>
+    <string name="MOVE_ERROR">Помилка: Не вдається перемістити чек</string>
+    <string name="COPY_ERROR">Помилка: Не вдається скопіювати чек</string>
+    <string name="toast_warning_reset_exchange_rate">Увага: зміна валюти скине ВСЕ курси валют</string>
+    <string name="toast_error_trip_exists">Помилка: звіт про витрати з цією назвою вже існує</string>
+    <string name="toast_error_category_exists">Помилка: категорія з такою назвою вже існує</string>
+
+    <!-- ============== Toast Messages ================= -->
+    <string name="toast_receipt_copy">Чек вдало скопійовано</string>
+    <string name="toast_receipt_move">Чек вдало переміщено</string>
+    <string name="toast_receipt_image_added">Нове зображення вдало додано до %s</string>
+    <string name="toast_receipt_image_replaced">Вдало замінено зображення в %s</string>
+    <string name="toast_receipt_pdf_added">Новий PDF вдало доданий в %s</string>
+    <string name="toast_receipt_pdf_replaced">Вдало замінений PDF в %s</string>
+    <string name="toast_import_complete">Всі файли вдало імпортовані. Будь ласка, перезапустіть додаток.</string>
+
+    <!-- ================== Trip Adapter ===================== -->
+    <string name="trip_adapter_list_item_to">\u0020до\u0020</string>
+    <string name="trip_no_data">Судячи з усього, в даний час у вас немає звітів. Натисніть на кнопку + (плюс), щоб почати.\n\nСмарт Чеки дозволяють створювати звіти про витрати, відстежувати чеки всередині кожного з них, і швидко створювати звіти в форматах PDF і CSV. Швидко та просто! Крім того, обов\'язково ознайомтесь з меню, щоб налаштувати категорії, звіти та інші параметри для ваших потреб.</string>
+
+    <!-- ================= Receipt Adapter =================== -->
+    <string name="receipt_no_data">Судячи з усього, у вас ще немає чеків. Спробуйте натиснути кнопку + (плюс), щоб почати…</string>
+
+    <!-- ================= Distance Adapter ================== -->
+    <string name="distance_no_data">Судячи з усього, у вас ще немає відстежуваних відстаней. Спробуйте натиснути кнопку + (плюс), щоб почати.</string>
+    <string name="distance_insert_failed">Помилка: Не вдається додати відстань. Будь ласка, переконайтеся, що ваш телефон не підключений до вашого комп\'ютера.</string>
+    <string name="distance_update_failed">Помилка: Не вдається оновити відстань. Будь ласка, переконайтеся, що ваш телефон не підключений до вашого комп\'ютера.</string>
+    <string name="distance_delete_failed">Помилка: Не вдається видалити відстань. Будь ласка, переконайтеся, що ваш телефон не підключений до вашого комп\'ютера.</string>
+
+    <!-- ================= Receipt Actions =================== -->
+    <string name="receipt_action_camera">Зображення</string>
+    <string name="receipt_action_text">Тільки текст</string>
+    <string name="receipt_action_import">Імпорт</string>
+
+    <!-- ================ DIALOG (GENERAL) =================== -->
+    <string name="DIALOG_CANCEL">Відміна</string>
+
+    <!-- ================== DIALOG_EMAIL ===================== -->
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Повний звіт у форматі PDF</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF звіт - без таблиці</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_CSV">Файл CSV</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP з JPG</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Будь ласка, виберіть принаймні один звіт</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Цей звіт не містить чеків</string>
+    <string name="generate_report_tooltip">Натисніть, щоб налаштувати зовнішній вигляд звіту</string>
+
+    <!-- ================= DIALOG_TRIPMENU =================== -->
+    <string name="DIALOG_TRIPMENU_HINT_NAME">Ім\'я</string>
+    <string name="DIALOG_TRIPMENU_HINT_START">Дата початку</string>
+    <string name="DIALOG_TRIPMENU_HINT_END">Дата закінчення</string>
+    <string name="DIALOG_TRIPMENU_TITLE_NEW">Новий звіт про витрати</string>
+    <string name="DIALOG_TRIPMENU_TITLE_EDIT">Редагувати звіт</string>
+    <string name="DIALOG_TRIPMENU_TOAST_MISSING_FIELD">Будь ласка, заповніть усі поля</string>
+
+    <!-- =============== DIALOG_TRIP_DELETE ================== -->
+    <string name="DIALOG_TRIP_DELETE_POSITIVE_BUTTON">Видалити</string>
+
+    <!-- ================= DIALOG_RECEIPTMENU =================== -->
+    <string name="DIALOG_RECEIPTMENU_HINT_NAME">Ім\'я</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Вартість (наприклад, 150,00)</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Вартість</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_TAX">Податок</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Валюта</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Курс обміну</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Обмін не вдався. Повторити спробу?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_DATE">Дата</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Категорія</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Коментар</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">Центр витрат</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Відшкодовується?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">Зображення на всю сторінку?</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Новий чек</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Новий чек - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Редагувати чек</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Редагувати чек - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Увага: Дата цього чека виходить за межі вказаного діапазону для даного звіту</string>
+    <string name="manage_categories">Управління категоріями</string>
+
+    <!-- ==================== dialog export / import ====================== -->
+    <string name="dialog_export_title">Експортувати ваші чеки?</string>
+    <string name="dialog_export_text">Ви можете повторно імпортувати ваші дані, натиснувши на файл SmartReceipts.SMR, що генерується натисканням нижче.</string>
+    <string name="dialog_export_positive">Експорт</string>
+    <string name="dialog_import_positive">Імпорт</string>
+    <string name="dialog_import_text">Перезаписати існуючі дані</string>
+    <string name="dialog_export_working">Експорт ваших чеків…</string>
+
+    <!-- ==================== DIALOG_ABOUT ====================== -->
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Місцезнаходження</string>
+    <string name="distance_price_field">Вартість</string>
+    <string name="distance_distance_field">Відстань</string>
+    <string name="distance_rate_field">Курс</string>
+    <string name="dialog_currency_field">Валюта</string>
+    <string name="distance_date_field">Дата</string>
+    <string name="distance_comment_field">Коментар</string>
+
+    <!-- ===================== backup menu ======================== -->
+    <string name="backups">Резервні копії</string>
+    <string name="manual_backup_title">Ручне резервне копіювання:</string>
+    <string name="manual_backup_description">Виконуйте резервне копіювання даних, щоб захистити ваші чеки! Ви можете відновити дані, імпортувавши файл резервної копії SmartReceipts.SMR, що генерується натисканням кнопки \"Резервне копіювання\" внизу.</string>
+    <string name="manual_backup_export">Резервне копіювання</string>
+    <string name="manual_backup_import">Імпорт</string>
+    <string name="auto_backup_title">Автоматичне резервне копіювання [BETA]:</string>
+    <string name="auto_backup_wifi_only">Використовувати тільки Wi-Fi</string>
+    <string name="auto_backup_warning_none">Увага: Автоматичне резервне копіювання не налаштоване! \nВи ризикуєте втратити ваші дані.</string>
+    <string name="auto_backup_warning_drive">Увага: При автоматичному резервному копіюванні через мобільну мережу можуть застосовуватися стандартні тарифні розцінки.</string>
+    <string name="auto_backup_configure">Натисніть, щоб налаштувати</string>
+    <string name="auto_backup_source_none">Ні</string>
+    <string name="auto_backup_source_google_drive">Google Drive</string>
+    <string name="existing_backups_title">Існуючі резервні копії:</string>
+    <string name="existing_remote_backup_current_device">%s (Ваша поточна резервна копія)</string>
+    <string name="remote_backups_list_item_menu_restore">Відновити</string>
+    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
+    <string name="remote_backups_list_item_menu_download_images">Скачати в ZIP</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Скачати</string>
+
+    <string name="dialog_remote_backup_delete_title">@string/delete</string>
+    <string name="dialog_remote_backup_delete_message">Ви впевнені, що хочете видалити резервну копію з пристрою %s? Ця операція не може бути скасована.</string>
+    <string name="dialog_remote_backup_delete_message_this_device">Ви впевнені, що хочете видалити резервну копію з цього пристрою? Ця операція не зможе бути скасована. Будь ласка, зверніть увагу, що ви можете відключити автоматичне резервне копіювання після того, як ця операція завершиться, або всі локальні дані можуть бути повторно синхронізовані.</string>
+    <string name="dialog_remote_backup_delete_positive">@string/delete</string>
+    <string name="dialog_remote_backup_delete_progress">Видалення резервної копії з пристрою %s…</string>
+    <string name="dialog_remote_backup_delete_toast_success">Резервна копія вдало видалена</string>
+    <string name="dialog_remote_backup_delete_toast_failure">Не вдалося видалити цю резервну копію</string>
+    <string name="dialog_remote_backup_download_progress">Завантаження зображень в ZIP-файл…</string>
+
+    <string name="dialog_remote_backup_drive_restore_title">Відновлення диску</string>
+    <string name="dialog_remote_backup_drive_restore_message">Виникли проблеми при синхронізації ваших даних. Для їх відновлення ми хотіли б очистити резервну копію диску та повторити синхронізацію. Якщо ви часто бачите це повідомлення, зверніться до нас для отримання додаткової підтримки.</string>
+    <string name="dialog_remote_backup_restore_progress">Очищення резервної копії для підготовки до повторної синхронізації…</string>
+    <string name="dialog_remote_backup_restore_toast_success">Резервна копія вдало очищена. Повторна синхронізація…</string>
+    <string name="dialog_remote_backup_restore_toast_failure">Не вдалося повторно синхронізувати цю резервну копію</string>
+
+    <string name="automatic_backups_info_dialog_message">Автоматичне резервне копіювання зараз вимкнено.</string>
+    <string name="automatic_backups_info_dialog_positive">Натисніть, щоб налаштувати</string>
+
+    <string name="drive_sync_error_no_space">Немає вільного місця на диску</string>
+    <string name="drive_sync_error_no_permissions">Натисніть, щоб відновити дозвіл на доступ до диска</string>
+    <string name="drive_sync_error_lost_data">Помилка конфігурації диска - Натисніть, щоб виправити</string>
+
+    <!-- ==============-========== Login ========================== -->
+    <string name="login_toolbar_title">Вхід / Реєстрація</string>
+    <string name="login_title">Увійдіть в обліковий запис Смарт Чеків, щоб почати використовувати автоматичне сканування (OCR)</string>
+    <string name="login_field_email_hint">Адреса ел. пошти</string>
+    <string name="login_field_password_hint">Пароль</string>
+    <string name="sign_up_button_text">Реєстрація</string>
+    <string name="login_button_text">Увійти</string>
+    <string name="login_fields_hint_email">Будь ласка, введіть дійсну адресу електронної пошти:</string>
+    <string name="login_fields_hint_password">Пароль повинен містити не менше 8 символів:</string>
+    <string name="login_fields_hint_valid">Натисніть нижче, щоб увійти або зареєструватися:</string>
+    <string name="login_success_toast">Вхід виконано вдало</string>
+    <string name="sign_up_success_toast">Реєстрація завершена вдало</string>
+    <string name="login_failure_toast">Увійти до системи не вдалося</string>
+    <string name="sign_up_failure_toast">Зареєструватися не вдалося</string>
+    <string name="login_failure_credentials_toast">Помилка: Неправильне ім\'я користувача або пароль</string>
+    <string name="sign_up_failure_account_exists_toast">Помилка: Ця електронна адреса вже існує. Спробуйте увійти до системи</string>
+
+    <!-- ==================== dialog filter ======================= -->
+    <string name="dialog_filter_positive_button">Додати фільтр</string>
+    <string name="dialog_filter_negative_button">Видалити фільтр</string>
+
+    <!-- ==================== dialog miles ======================== -->
+    <string name="dialog_mileage_title_create">Додати Відстань</string>
+    <string name="dialog_mileage_title_update">Оновити Відстань</string>
+    <string name="dialog_mileage_positive_create">Додати</string>
+    <string name="dialog_mileage_positive_update">Оновити</string>
+    <string name="dialog_mileage_neutral_delete">Видалити</string>
+
+    <!-- ================= RECEIPTMENU_FIELDS =================== -->
+    <string name="RECEIPTMENU_FIELD_NAME">Ім\я</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">Вартість</string>
+    <string name="RECEIPTMENU_FIELD_TAX">Податок</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">Валюта</string>
+    <string name="RECEIPTMENU_FIELD_DATE">Дата</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">Категорія</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">Коментар</string>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
+
+    <!-- ================== RECEIPTMENU_TAGS ==================== -->
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
+
+    <!-- ============== Start String Arrays ================== -->
+    <string-array name="EDIT_TRIP_ITEMS">
+        <item>Редагувати звіт</item>
+        <item>Видалити звіт</item>
+    </string-array>
+
+    <!-- ============== CSV/PDF Columns ================== -->
+    <string name="column_item_blank">Порожня колонка</string>
+    <string name="column_item_category_code">Код категорії</string>
+    <string name="column_item_category_name">Назва категорії</string>
+    <string name="column_item_user_id">ID користувача</string>
+    <string name="column_item_report_name">Назва звіту</string>
+    <string name="column_item_report_start_date">Дата початку звіту</string>
+    <string name="column_item_report_end_date">Дата закінчення звіту</string>
+    <string name="column_item_report_comment">Коментар до звіту</string>
+    <string name="column_item_report_cost_center">Центр витрат у звіті</string>
+    <string name="column_item_image_file_name">Ім\'я зображення</string>
+    <string name="column_item_image_path">Шлях до зображення</string>
+    <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_converted_price_exchange_rate">Вартість (після обміну)</string>
+    <string name="column_item_converted_tax_exchange_rate">Податок (після обміну)</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">Вартість плюс податок (після обміну)</string>
+    <string name="column_item_exchange_rate">Курс обміну</string>
+    <string name="column_item_pictured">З зображеннями</string>
+    <string name="column_item_reimbursable">Що відшкодовуються</string>
+    <string name="column_item_index">Індекс чека</string>
+    <string name="column_item_id">ID чека</string>
+    <string name="column_item_payment_method">Спосіб оплати</string>
+
+    <string name="receipt_dialog_action_edit">Редагувати чек</string>
+    <string name="receipt_dialog_action_view">Переглянути чек %s</string>
+    <string name="receipt_dialog_action_camera">Зробити знімок чека</string>
+    <string name="receipt_dialog_action_delete">Видалити чек</string>
+    <string name="receipt_dialog_action_move_copy">Перемістити/Копіювати</string>
+    <string name="receipt_dialog_action_swap_up">Поміняти місцями з верхнім</string>
+    <string name="receipt_dialog_action_swap_down">Поміняти місцями з нижнім</string>
+
+    <string name="dialog_attachment_title">Додати %s до чеку</string>
+    <string name="dialog_attachment_text">Натисніть на існуючий чек, щоб додати цей %s до нього</string>
+    <string name="dialog_attachment_positive">ОК</string>
+    <string name="dialog_attachment_negative">Більше не показувати це</string>
+    <string name="action_send_view">Переглянути поточний чек %s</string>
+    <string name="action_send_attach">Прикріпити %s до чеку</string>
+    <string name="action_send_replace">Замінити чек %s</string>
+
+    <!-- ================== Preference Dialog ==================== -->
+    <string name="dialog_custom_csv_spinner">Тип колонки</string>
+    <string name="dialog_category_add">Додати категорію</string>
+    <string name="dialog_category_edit">Редагувати категорію</string>
+
+    <!-- ================ Error Feedback ==================== -->
+    <string name="error_no_pdf_activity_viewer">Не вдалося знайти додаток для перегляду PDF</string>
+    <string name="error_no_send_intent_dialog_title">Програма для відправки не знайдена</string>
+    <string name="error_no_send_intent_dialog_message">Ми не змогли знайти додаток електронної пошти (або еквівалент) на вашому пристрої. Ви можете знайти файли в наступному каталозі: %s</string>
+    <string name="error_no_file_intent_dialog_title">Помилка: Не вдається знайти додаток для імпорту на пристрої</string>
+    <string name="error_no_wifi">Помилка: Немає підключення до Wi-Fi</string>
+
+    <!-- ================== SQL Corrpution ==================== -->
+    <string name="dialog_sql_corrupt_title">О ні!</string>
+    <string name="dialog_sql_corrupt_message">Ваша база даних була пошкоджена. Це часто відбувається, коли ви користуєтеся програмами типу \"task killer\", однак може бути викликано різними причинами. Не хвилюйтеся - ми, швидше за все, зможемо відновити більшу частину ваших даних.</string>
+    <string name="dialog_sql_corrupt_positive">Звернутися за допомогою до розробника</string>
+    <string name="dialog_sql_corrupt_intent_subject">Смарт Чеки - Пошкоджена база даних</string>
+    <string name="dialog_sql_corrupt_intent_text">Допоможіть - моя база даних була пошкоджена. Чи можете ви допомогти мені відновити її?</string>
+    <string name="dialog_sql_corrupt_chooser">Відправити лист…</string>
+
+    <!-- ======================= Filters ====================== -->
+    <string name="filter_name_and">І</string>
+    <string name="filter_name_not">Не</string>
+    <string name="filter_name_or">Або</string>
+    <string name="filter_name_receipt_category">Категорія</string>
+    <string name="filter_name_receipt_reimbursable">Відшкодовується</string>
+    <string name="filter_name_receipt_max_price">Макс. вартість</string>
+    <string name="filter_name_receipt_min_price">Мін. вартість</string>
+    <string name="filter_name_receipt_on_or_after">На зазначену дату або пізніше</string>
+    <string name="filter_name_receipt_on_or_before">На зазначену дату або раніше</string>
+    <string name="filter_name_receipt_selected">Обрано</string>
+    <string name="filter_name_trip_ends_on_or_after">Завершується в зазначену дату або пізніше</string>
+    <string name="filter_name_trip_ends_on_or_before">Завершується в зазначену дату або раніше</string>
+    <string name="filter_name_trip_max_price">Макс. вартість</string>
+    <string name="filter_name_trip_min_price">Мін. вартість</string>
+    <string name="filter_name_trip_starts_on_or_after">Починається в зазначену дату або пізніше</string>
+    <string name="filter_name_trip_starts_on_or_before">Починається в зазначену дату або раніше</string>
+
+    <!-- =================== Payment Methods =====+============= -->
+    <string name="payment_method">Спосіб оплати</string>
+    <string name="payment_methods">Способи оплати</string>
+    <string name="payment_method_add">Додати спосіб оплати</string>
+    <string name="payment_method_edit">Редагувати спосіб оплати</string>
+    <string name="payment_method_default_cash">Готівка</string>
+    <string name="payment_method_default_check">Чек</string>
+    <string name="payment_method_default_personal_card">Персональна карта</string>
+    <string name="payment_method_default_corporate_card">Корпоративна карта</string>
+    <string name="payment_method_default_unspecified">Не вказано</string>
+
+    <!-- =================== Payment Methods =================== -->
+    <string name="purchase_succeeded">Покупка вдало завершена</string>
+    <string name="purchase_unavailable">Не вдалося отримати інформацію про покупку</string>
+    <string name="purchase_failed">Не вдалося завершити покупку</string>
+
+    <!-- ================== App Rating ==================== -->
+    <string name="rating_tooltip_text">Подобаються Смарт Чеки?</string>
+    <string name="leave_feedback_text">Бажаєте залишити відгук про програму?</string>
+    <string name="apprating_dialog_title">Подобається %s?</string>
+    <string name="apprating_dialog_message">Будь ласка, залиште ваш відгук. Я - незалежний розробник, і ваші відгуки є моїм основним джерелом натхнення та стимулом продовжувати додавати нові функції. Дякую!</string>
+    <string name="apprating_dialog_negative">Ні дякую</string>
+    <string name="apprating_dialog_neutral">Можливо пізніше</string>
+    <string name="apprating_dialog_positive">Оцінити зараз!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">Використовуйте вкладку \"Створити\" для створення звітів</string>
+
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">Додайте свій перший чек щоб побачити графіки.</string>
+    <string name="graphs_expenditure_by_dates_title">Щоденні витрати</string>
+    <string name="graphs_expenditure_by_categories_title">Витрати за категоріями</string>
+    <string name="graphs_expenditure_by_reimbursable_title">Що відшкодовуються та не відшкодовуються</string>
+    <string name="graphs_expenditure_by_payment_methods_title">Витрати за методами оплати</string>
+    <string name="graphs_label_reimbursable">Відшкодовуються</string>
+    <string name="graphs_label_non_reimbursable">Не відшкодовуються</string>
+    <string name="graphs_label_others">Інші</string>
+
+</resources>
+

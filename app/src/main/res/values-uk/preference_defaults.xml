@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="EMAIL_DATA_SUBJECT">Смарт Чеки - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
+
+    <!-- ================= Preference Pro ================== -->
+    <string name="pref_pro_pdf_footer_defaultValue">Звіт згенерований за допомогою додатку Смарт Чеки для Android</string>
+
+</resources>

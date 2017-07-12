@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- preferences.xml -->
+    <!-- ============== Preference Headers ================= -->
+    <string name="pref_general_header">Загальні</string>
+    <string name="pref_receipt_header">Чеки</string>
+    <string name="pref_output_header">Результат звітів</string>
+
+    <string name="pref_email_header">Email</string>
+    <string name="pref_camera_header">Камера</string>
+
+    <string name="pref_layout_header">Налаштування зовнішнього вигляду</string>
+    <string name="pref_distance_header">Відстань</string>
+    <string name="pref_pro_header">Смарт Чеки Плюс</string>
+    <string name="pref_help_header">Підтримка</string>
+    <string name="pref_about_header">Про програму</string>
+
+
+    <!-- ============== Preference General ================= -->
+
+    <string name="pref_general_trip_duration_title">Тривалість поїздки за замовчуванням</string>
+
+    <string name="pref_general_default_currency_title">Валюта за замовчуванням</string>
+
+    <string name="pref_general_default_date_separator_title">Роздільник дати за замовчуванням</string>
+
+    <string name="pref_general_track_cost_center_title">Центр вартості маршрутів</string>
+    <string name="pref_general_track_cost_center_summaryOn">Включати Центр вартості до звітів</string>
+    <string name="pref_general_track_cost_center_summaryOff">Не включати Центр вартості до звітів</string>
+
+    <!-- ============== Preference Receipt ================= -->
+
+    <string name="pref_receipt_customize_categories_title">Налаштування категорій чеків</string>
+    <string name="pref_receipt_customize_categories_summary">Натисніть тут, щоб додати/редагувати категорії</string>
+
+    <string name="pref_receipt_predict_categories_title">Передбачати категорії чеків</string>
+    <string name="pref_receipt_predict_categories_summary">Автозаповнення категорії на основі попередніх даних</string>
+
+    <string name="pref_receipt_match_name_to_category_title">Брати ім\'я з категорії</string>
+    <string name="pref_receipt_match_name_to_category_summary">Автоматично заповнювати ім\'я категорії</string>
+
+    <string name="pref_receipt_match_comment_to_category_title">Брати коментар із категорії</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Автоматически брати коментар із категорії</string>
+
+    <string name="pref_receipt_reimbursable_only_title">Тільки належні до відшкодування</string>
+    <string name="pref_receipt_reimbursable_only_summary">Виключити інші чеки зі звіту</string>
+
+    <string name="pref_receipt_reimbursable_default_title">Належні до відшкодування чеки за замовчуванням</string>
+
+    <string name="pref_receipt_include_tax_field_title">Включити поле \"Податок\"</string>
+    <string name="pref_receipt_include_tax_field_summary">Додає строку з інформацією про податки</string>
+
+    <string name="pref_receipt_tax_percent_title">Процент податку за замовчуванням</string>
+
+    <string name="pref_receipt_pre_tax_title">Використовувати вартість без податків</string>
+    <string name="pref_receipt_pre_tax_summary_on">Розраховує податок на базі вартості без податку</string>
+    <string name="pref_receipt_pre_tax_summary_off">Розраховує податок на базі вартості з податком</string>
+
+    <string name="pref_receipt_enable_autocomplete_title">Включити автозаповнення</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Пропонувати значення з попередніх записів</string>
+
+    <string name="pref_receipt_minimum_receipts_price_title">Мінімальна ціна чека</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">Включити до звіту всі чеки</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">Тільки чеки вартістю більше ніж %s</string>
+
+    <string name="pref_receipt_default_to_report_start_date_title">Дата початку звіту за замовчуванням</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Встановлює дату чека відповідно до дати звіту</string>
+
+    <string name="pref_receipt_show_id_title">Показувати ID чека</string>
+    <string name="pref_receipt_show_id_summary">Відображає автоматично згенероване поле \"ID\"</string>
+
+    <string name="pref_receipt_full_page_title">На всю сторінку</string>
+    <string name="pref_receipt_full_page_summary">Позначає чеки як повносторінкові за замовчуванням</string>
+
+    <string name="pref_receipt_use_payment_methods_title">Включити способи сплати</string>
+    <string name="pref_receipt_use_payment_methods_summary">Витягувати методи сплати з чеків</string>
+
+    <string name="pref_receipt_payment_methods_title">Налаштування способів сплати</string>
+    <string name="pref_receipt_payment_methods_summary">Натисніть тут, щоб додати/редагувати способи сплати</string>
+
+    <!-- ============= Preference Output ================= -->
+
+    <string name="pref_output_custom_csv_title">Налаштування таблиць для CSV</string>
+    <string name="pref_output_custom_pdf_title">Налаштування таблиць для PDF</string>
+
+    <string name="pref_output_username_title">ID користувача</string>
+    <string name="pref_output_username_emptyValue">Використовується в якості довільного поля</string>
+
+    <string name="pref_output_print_receipt_id_by_photo_title">Друк ID по фото</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Показує ID чека замість індексу</string>
+
+    <string name="pref_output_print_receipt_comment_by_photo_title">Друк коментаря до чеку по фото</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Показувати коментар над фотографіями в PDF</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Приховати коментар над фотографіями в PDF</string>
+
+    <string name="pref_output_receipts_landscape_title">Друк таблиці чеків в ландшафтному режимі</string>
+    <string name="pref_output_receipts_landscape_on">Таблиця чеків друкується в ландшафтному режимі</string>
+    <string name="pref_output_receipts_landscape_off">Таблиця чеків друкується в портретному режимі</string>
+
+    <!-- ============== Preference Email ================= -->
+
+    <string name="pref_email_default_email_to_title">Одержувач за замовчуванням</string>
+
+    <string name="pref_email_default_email_cc_title">Одержувач CC за замовчуванням</string>
+
+    <string name="pref_email_default_email_bcc_title">Одержувач BCC за замовчуванням</string>
+    <string name="pref_email_default_email_emptyValue">Відокремлювати записи крапкою з комою (;)</string>
+
+    <string name="pref_email_default_email_subject_title">Тема листа за замовчуванням</string>
+
+    <!-- ============= Preference Camera ================= -->
+
+    <string name="pref_camera_bw_title">Конвертувати в відтінки сірого</string>
+    <string name="pref_camera_bw_summary">Зберігає зображення в чорно-білому форматі</string>
+
+    <string name="pref_camera_rotate_title">Автоматичний поворот зображень</string>
+    <string name="pref_camera_rotate_summaryOn">Намагатися повертати зображення вертикально</string>
+    <string name="pref_camera_rotate_summaryOff">Не повертати зображення</string>
+
+    <!-- ============= Preference Layout ================= -->
+
+    <string name="pref_layout_display_date_title">Включати дату чека</string>
+    <string name="pref_layout_display_date_summary">Показувати дату чека</string>
+
+    <string name="pref_layout_display_category_title">Включати категорію чека</string>
+    <string name="pref_layout_display_category_summary">Показувати категорію чека</string>
+
+    <string name="pref_layout_display_photo_title">Включати зображення/PDF-маркер</string>
+    <string name="pref_layout_display_photo_summary">Вказувати, чи містять елементи фото/PDF</string>
+
+    <!-- ============= Preference Distance ================= -->
+
+    <string name="pref_distance_include_price_in_report_title">Додати вартість відстані до звіту</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">Включає вартість відстані до звіту</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">Виключає вартість відстані зі звіту</string>
+
+    <string name="pref_distance_rate_title">Витрати палива</string>
+    <string name="pref_distance_rate_summaryOff">Витрата палива на милю або км</string>
+    <string name="pref_distance_rate_summaryOn">%s на милю або км</string>
+
+    <string name="pref_distance_print_table_title">Включити таблицю відстаней</string>
+    <string name="pref_distance_print_table_summaryOn">Звіти PDF/CSV включають таблицю відстаней</string>
+    <string name="pref_distance_print_table_summaryOff">Звіти PDF/CSV не включають таблицю відстаней</string>
+
+    <string name="pref_distance_print_daily_title">Щоденна відстань в звіті</string>
+    <string name="pref_distance_print_daily_summaryOn">Показувати поле \"Відстань\"</string>
+    <string name="pref_distance_print_daily_summaryOff">Не показувати поле \"Відстань\"</string>
+
+    <string name="pref_distance_as_price_title">Ціна відстані в підзаголовку</string>
+    <string name="pref_distance_as_price_summaryOn">Показувати вартість відстані в підзаголовку додатку</string>
+    <string name="pref_distance_as_price_summaryOff">Показувати пройдену дистанцію в підзаголовку додатку</string>
+
+    <!-- ================= Preference Plus ================== -->
+
+    <string name="pref_pro_pdf_footer_title">Текст знизу PDF</string>
+    <string name="pref_pro_separate_by_category_title">Розділити платежі за категоріями</string>
+    <string name="pref_pro_separate_by_category_summaryOn">У PDF/CSV звіти будуть включені окремі таблиці для різних категорій</string>
+    <string name="pref_pro_separate_by_category_summaryOff">У PDF/CSV звіти не будуть включені окремі таблиці для різних категорій</string>
+    <string name="pref_pro_categorical_summation_title">Включити підсумовування за категоріями</string>
+    <string name="pref_pro_categorical_summation_summaryOn">У PDF/CSV звіти буде включена таблиця з витратами по категоріям</string>
+    <string name="pref_pro_categorical_summation_summaryOff">У PDF/CSV звіти не буде включена таблиця з витратами по категоріям</string>
+    <string name="pref_pro_omit_default_table_title">Виключити загальну PDF таблицю</string>
+
+    <!-- ============== Preference Support ================= -->
+
+    <string name="pref_help_send_love_title">Відправити Лайк</string>
+
+    <string name="pref_help_send_feedback_title">Відправити відгук</string>
+
+    <string name="pref_help_support_email_title">E-mail для підтримки</string>
+
+    <!-- =============== Preference About ================== -->
+
+    <string name="pref_about_version_title">Версія</string>
+
+    <string name="pref_about_about_title">Про програму</string>
+    <string name="pref_about_about_dialogMessage">Смарт Чеки створив і підтримує Will Baumann. Програма поширюється під ліцензією GNU Affero General Public License</string>
+
+    <string name="pref_about_terms_title">Умови використання</string>
+    <string name="pref_about_terms_dialogMessage">Ця програма є вільним програмним забезпеченням: ви можете розповсюджувати та / або змінювати її відповідно до умов GNU Affero General Public License, виданої Фондом вільного програмного забезпечення, версії 3, або (за вашим вибором) будь-якої наступної версії.\n\nЦя програма розповсюджується з надією, що вона буде корисною, однак БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ, і навіть без гарантій КОМЕРЦІЙНОЇ ЦІННОСТІ чи ПРИДАТНОСТІ ДЛЯ КОНКРЕТНИХ ЦІЛЕЙ. Дивіться GNU Affero General Public License для більш докладної інформації.\n\nКопія GNU Affero General Public License доступна за адресою http://www.gnu.org/licenses/.</string>
+
+    <string name="pref_about_privacy_policy_title">Політика конфіденційності</string>
+    <!-- =============== Preference Misc =================== -->
+
+</resources>
+
