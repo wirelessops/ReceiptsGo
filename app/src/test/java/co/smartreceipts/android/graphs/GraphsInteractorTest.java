@@ -78,14 +78,17 @@ public class GraphsInteractorTest {
 
         when(groupingController.getSummationByCategoryAsGraphEntries(trip)).thenReturn(Single.just(entries));
 
-        List<LabeledGraphEntry> sortedEntries = new ArrayList<>(entries);
-        Collections.sort(sortedEntries);
-
         interactor.getSummationByCategories(trip)
                 .test()
                 .assertNoErrors()
                 .assertComplete()
-                .assertResult(GraphUiIndicator.summationByCategory(sortedEntries));
+                .assertValue(graphUiIndicator -> {
+                    if (graphUiIndicator.getGraphType() == GraphUiIndicator.GraphType.SummationByCategory) {
+                        List<? extends BaseEntry> graphUiIndicatorEntries = graphUiIndicator.getEntries();
+                        return graphUiIndicatorEntries.containsAll(entries) && graphUiIndicatorEntries.size() == entries.size();
+                    }
+                    return false;
+                });
     }
 
     @Test
@@ -112,7 +115,13 @@ public class GraphsInteractorTest {
                 .test()
                 .assertNoErrors()
                 .assertComplete()
-                .assertResult(GraphUiIndicator.summationByCategory(expectedEntries));
+                .assertValue(graphUiIndicator -> {
+                    if (graphUiIndicator.getGraphType() == GraphUiIndicator.GraphType.SummationByCategory) {
+                        List<? extends BaseEntry> graphUiIndicatorEntries = graphUiIndicator.getEntries();
+                        return graphUiIndicatorEntries.containsAll(expectedEntries) && graphUiIndicatorEntries.size() == expectedEntries.size();
+                    }
+                    return false;
+                });
     }
 
     @Test
