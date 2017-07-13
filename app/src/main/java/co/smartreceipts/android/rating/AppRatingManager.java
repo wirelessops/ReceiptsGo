@@ -1,7 +1,5 @@
 package co.smartreceipts.android.rating;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.ApplicationScope;
@@ -27,19 +25,28 @@ public class AppRatingManager {
     }
 
     public Single<Boolean> checkIfNeedToAskRating() {
+
+        // FOR TESTING
+
         return appRatingStorage.readAppRatingData()
-                .map(appRatingModel -> {
-                    if (appRatingModel.canShow() && !appRatingModel.isCrashOccurred()) {
-                        // Check if we've reached a rating event
-                        final long daysToMillis = TimeUnit.DAYS.toMillis(1);
-                        if (appRatingModel.getLaunchCount() >= LAUNCHES_UNTIL_PROMPT + appRatingModel.getAdditionalLaunchThreshold() &&
-                                (System.currentTimeMillis() - appRatingModel.getInstallTime()) / daysToMillis >= DAYS_UNTIL_PROMPT) {
-                            return true;
-                        }
-                    }
-                    return false;
-                })
+                .map(appRatingModel -> true)
                 .subscribeOn(Schedulers.io());
+
+//        FOR REAL LIFE
+
+//        return appRatingStorage.readAppRatingData()
+//                .map(appRatingModel -> {
+//                    if (appRatingModel.canShow() && !appRatingModel.isCrashOccurred()) {
+//                        // Check if we've reached a rating event
+//                        final long daysToMillis = TimeUnit.DAYS.toMillis(1);
+//                        if (appRatingModel.getLaunchCount() >= LAUNCHES_UNTIL_PROMPT + appRatingModel.getAdditionalLaunchThreshold() &&
+//                                (System.currentTimeMillis() - appRatingModel.getInstallTime()) / daysToMillis >= DAYS_UNTIL_PROMPT) {
+//                            return true;
+//                        }
+//                    }
+//                    return false;
+//                })
+//                .subscribeOn(Schedulers.io());
     }
 
     public void dontShowRatingPromptAgain() {

@@ -127,8 +127,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         if (toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         }
-
-        presenter.checkRating();
     }
 
     @Override
@@ -142,6 +140,8 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         if (actionBar != null) {
             getSupportActionBar().setSubtitle(null);
         }
+
+        presenter.subscribe();
     }
 
     @Override
@@ -149,6 +149,8 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         Logger.debug(this, "onPause");
 
         tripTableController.unsubscribe(this);
+
+        presenter.unsubscribe();
         super.onPause();
     }
 
@@ -341,22 +343,17 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     public void showRatingTooltip() {
-        tooltip.setQuestion(R.string.rating_tooltip_text, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                analytics.record(Events.Ratings.UserDeclinedRatingPrompt);
-                navigationHandler.showDialog(new FeedbackDialogFragment());
-                tooltip.hideWithAnimation();
-                presenter.dontShowRatingPrompt();
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                analytics.record(Events.Ratings.UserAcceptedRatingPrompt);
-                navigationHandler.showDialog(new RatingDialogFragment());
-                tooltip.hideWithAnimation();
-                presenter.dontShowRatingPrompt();
-            }
+        Logger.debug(this, "showRatingTooltip");
+        tooltip.setQuestion(R.string.rating_tooltip_text, view -> {
+            analytics.record(Events.Ratings.UserDeclinedRatingPrompt);
+            navigationHandler.showDialog(new FeedbackDialogFragment());
+            tooltip.hideWithAnimation();
+            presenter.dontShowRatingPrompt();
+        }, view -> {
+            analytics.record(Events.Ratings.UserAcceptedRatingPrompt);
+            navigationHandler.showDialog(new RatingDialogFragment());
+            tooltip.hideWithAnimation();
+            presenter.dontShowRatingPrompt();
         });
 
         tooltip.showWithAnimation();
