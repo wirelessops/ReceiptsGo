@@ -36,19 +36,18 @@ public class GenericFileImportProcessorTest {
     ContentResolver contentResolver;
 
     @Mock
-    Uri uri;
-
-    @Mock
     File file;
 
     @Mock
     InputStream inputStream;
 
+    Uri uri;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        when(uri.getScheme()).thenReturn(ContentResolver.SCHEME_CONTENT);
+        uri = Uri.parse("content://some.pdf");
         when(contentResolver.getType(uri)).thenReturn("application/pdf");
         when(storageManner.getFile(any(File.class), anyString())).thenReturn(file);
 

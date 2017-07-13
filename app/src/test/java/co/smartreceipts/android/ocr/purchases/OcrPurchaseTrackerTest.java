@@ -210,7 +210,7 @@ public class OcrPurchaseTrackerTest {
         when(identityManager.isLoggedInStream()).thenReturn(Observable.just(false));
 
         // Test
-        ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.SmartReceiptsPlus, PurchaseSource.Unknown);
+        ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
         verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));
@@ -223,7 +223,7 @@ public class OcrPurchaseTrackerTest {
         // Configure
 
         // Test
-        ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.SmartReceiptsPlus, PurchaseSource.Unknown);
+        ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.TestConsumablePurchase, PurchaseSource.Unknown);
 
         // Verify
         verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));

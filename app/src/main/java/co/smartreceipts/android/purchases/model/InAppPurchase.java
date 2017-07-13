@@ -2,25 +2,48 @@ package co.smartreceipts.android.purchases.model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public enum InAppPurchase {
 
-    SmartReceiptsPlus(Subscription.class, "pro_sku_3", PurchaseFamily.SmartReceiptsPlus),
+    // Note: Smart Receipts Plus users also get some free OCR scans
+    SmartReceiptsPlus(Subscription.class, "pro_sku_3", new HashSet<>(Arrays.asList(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr))),
     OcrScans10(ConsumablePurchase.class, "ocr_purchase_10", PurchaseFamily.Ocr),
-    OcrScans50(ConsumablePurchase.class, "ocr_purchase_1", PurchaseFamily.Ocr);
+    OcrScans50(ConsumablePurchase.class, "ocr_purchase_1", PurchaseFamily.Ocr),
+
+    /**
+     * A test only {@link ConsumablePurchase} for testing without a particular {@link PurchaseFamily}
+     */
+    @VisibleForTesting
+    TestConsumablePurchase(ConsumablePurchase.class, "test_consumable_purchase", Collections.emptySet()),
+
+    /**
+     * A test only {@link Subscription} for testing without a particular {@link PurchaseFamily}
+     */
+    @VisibleForTesting
+    TestSubscription(Subscription.class, "test_subscription", Collections.emptySet());
 
     private final Class<? extends ManagedProduct> type;
     private final String sku;
-    private final PurchaseFamily purchaseFamily;
+    private final Set<PurchaseFamily> purchaseFamilies;
 
-    InAppPurchase(@NonNull Class<? extends ManagedProduct> type, @NonNull String sku, @NonNull PurchaseFamily purchaseFamily) {
+    InAppPurchase(@NonNull Class<? extends ManagedProduct> type, @NonNull String sku, PurchaseFamily purchaseFamily) {
+        this(type, sku, Collections.singleton(purchaseFamily));
+    }
+
+    InAppPurchase(@NonNull Class<? extends ManagedProduct> type, @NonNull String sku, @NonNull Set<PurchaseFamily> purchaseFamilies) {
         this.type = Preconditions.checkNotNull(type);
         this.sku = Preconditions.checkNotNull(sku);
-        this.purchaseFamily = Preconditions.checkNotNull(purchaseFamily);
+        this.purchaseFamilies = Preconditions.checkNotNull(purchaseFamilies);
     }
 
     /**
@@ -40,11 +63,11 @@ public enum InAppPurchase {
     }
 
     /**
-     * @return the {@link PurchaseFamily} for this purchase type
+     * @return the {@link Set} of all {@link PurchaseFamily} that are supported for this purchase type
      */
     @NonNull
-    public PurchaseFamily getPurchaseFamily() {
-        return purchaseFamily;
+    public Set<PurchaseFamily> getPurchaseFamilies() {
+        return purchaseFamilies;
     }
 
     /**
@@ -73,7 +96,7 @@ public enum InAppPurchase {
     public static ArrayList<String> getConsumablePurchaseSkus() {
         final ArrayList<String> skus = new ArrayList<>(values().length);
         for (final InAppPurchase inAppPurchase : values()) {
-            if (ConsumablePurchase.class.equals(inAppPurchase.getType())) {
+            if (ConsumablePurchase.class.equals(inAppPurchase.getType()) && inAppPurchase != TestConsumablePurchase) {
                 skus.add(inAppPurchase.getSku());
             }
         }
@@ -84,7 +107,7 @@ public enum InAppPurchase {
     public static ArrayList<String> getSubscriptionSkus() {
         final ArrayList<String> skus = new ArrayList<>(values().length);
         for (final InAppPurchase inAppPurchase : values()) {
-            if (Subscription.class.equals(inAppPurchase.getType())) {
+            if (Subscription.class.equals(inAppPurchase.getType())  && inAppPurchase != TestSubscription) {
                 skus.add(inAppPurchase.getSku());
 
             }

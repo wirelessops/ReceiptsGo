@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,6 +95,42 @@ public class OcrConfigurationInteractorTest {
 
         testObserver.awaitTerminalEvent();
         testObserver.assertValue(Arrays.asList(availablePurchase2, availablePurchase));
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void getAvailableOcrPurchasesIgnoresSubscriptions() {
+        when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
+        when(availablePurchase2.getInAppPurchase()).thenReturn(InAppPurchase.SmartReceiptsPlus);
+        when(availablePurchase.getPriceAmountMicros()).thenReturn(500000L);
+        when(availablePurchase2.getPriceAmountMicros()).thenReturn(100000L);
+
+        final Set<AvailablePurchase> purchaseSet = new HashSet<>(Arrays.asList(availablePurchase, availablePurchase2));
+        when(purchaseManager.getAllAvailablePurchases()).thenReturn(Observable.just(purchaseSet));
+
+        TestObserver<List<AvailablePurchase>> testObserver = interactor.getAvailableOcrPurchases().test();
+
+        testObserver.awaitTerminalEvent();
+        testObserver.assertValue(Collections.singletonList(availablePurchase));
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void getAvailableOcrPurchasesIgnoresNonOcrOnes() {
+        when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
+        when(availablePurchase2.getInAppPurchase()).thenReturn(InAppPurchase.TestConsumablePurchase);
+        when(availablePurchase.getPriceAmountMicros()).thenReturn(500000L);
+        when(availablePurchase2.getPriceAmountMicros()).thenReturn(100000L);
+
+        final Set<AvailablePurchase> purchaseSet = new HashSet<>(Arrays.asList(availablePurchase, availablePurchase2));
+        when(purchaseManager.getAllAvailablePurchases()).thenReturn(Observable.just(purchaseSet));
+
+        TestObserver<List<AvailablePurchase>> testObserver = interactor.getAvailableOcrPurchases().test();
+
+        testObserver.awaitTerminalEvent();
+        testObserver.assertValue(Collections.singletonList(availablePurchase));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }

@@ -20,6 +20,7 @@ import co.smartreceipts.android.identity.store.EmailAddress;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
+import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -64,7 +65,7 @@ public class OcrConfigurationInteractor {
     public Single<List<AvailablePurchase>> getAvailableOcrPurchases() {
         return purchaseManager.getAllAvailablePurchases()
                 .flatMapIterable(availablePurchases -> availablePurchases)
-                .filter(availablePurchase -> availablePurchase.getInAppPurchase() != null && PurchaseFamily.Ocr.equals(availablePurchase.getInAppPurchase().getPurchaseFamily()))
+                .filter(availablePurchase -> availablePurchase.getInAppPurchase() != null && availablePurchase.getInAppPurchase().getType() == ConsumablePurchase.class && availablePurchase.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr))
                 .toSortedList((purchase1, purchase2) -> new BigDecimal(purchase1.getPriceAmountMicros()).compareTo(new BigDecimal(purchase2.getPriceAmountMicros())))
                 .observeOn(AndroidSchedulers.mainThread());
     }

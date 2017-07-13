@@ -124,6 +124,10 @@ public class InteractivePdfBoxTest {
         when(userPreferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)).thenReturn(false);
         when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString)).thenReturn("Report generated using Smart Receipts for Android");
+        when(userPreferenceManager.get(UserPreference.PlusSubscription.OmitDefaultTableInReports)).thenReturn(false);
+        when(userPreferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)).thenReturn(false);
+        when(userPreferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)).thenReturn(false);
+
         when(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true);
 
         FallbackTextRenderer.setHeightMeasureSpec(View.MeasureSpec.makeMeasureSpec(25, View.MeasureSpec.EXACTLY));
@@ -134,7 +138,7 @@ public class InteractivePdfBoxTest {
     public void tearDown() {
         FallbackTextRenderer.resetHeightMeasureSpec();
         if (outputFile.exists()) {
-           outputFile.delete();
+            outputFile.delete();
         }
     }
 
@@ -516,80 +520,6 @@ public class InteractivePdfBoxTest {
             IOUtils.closeQuietly(outputStream);
         }
     }
-
-    /*
-    @Test
-    private void create() throws Exception {
-
-        Trip trip = TripUtils.newDefaultTrip();
-
-        List<Receipt> receipts = new ArrayList<>();
-        ReceiptBuilderFactory factory = ReceiptUtils.newDefaultReceiptBuilderFactory(context);
-
-
-        for (int i = 0; i < NUM_RECEIPTS; i++) {
-            File file = null;
-            if (i < NUM_IMAGES) {
-                file = testResourceReader.openFile("pdf/" + String.valueOf(i + 1) + ".jpg");
-            } else if (i < NUM_IMAGES + NUM_PDF) {
-                file = testResourceReader.openFile("pdf/" + String.valueOf(i - NUM_IMAGES + 1) + ".pdf");
-            }
-
-
-            factory.setIsFullPage(i == 1);
-            factory.setIsReimbursable(i % 2 == 0);
-            Receipt receipt = createReceipt(
-                    factory,
-                    i + 1,
-                    trip,
-                    getReceiptTitle(i),
-                    "Comment " + (i + 1),
-                    file);
-
-            receipts.add(receipt);
-        }
-
-
-        PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(context, userPreferenceManager);
-        ArrayList<Column<Receipt>> columns = new ArrayList<>();
-        columns.add(new ReceiptNameColumn(1, "Name", new DefaultSyncState()));
-        columns.add(new ReceiptPriceColumn(2, "Price", new DefaultSyncState()));
-        columns.add(new ReceiptDateColumn(3, "Date", new DefaultSyncState(), context, userPreferenceManager));
-        columns.add(new ReceiptCategoryNameColumn(4, "Category name", new DefaultSyncState()));
-        columns.add(new ReceiptIsReimbursableColumn(5, "Reimbursable", new DefaultSyncState(), context));
-        columns.add(new ReceiptIsPicturedColumn(6, "Pictured", new DefaultSyncState(), context));
-
-        List<Distance> distances = new ArrayList<>();
-        DistanceBuilderFactory distanceFactory = new DistanceBuilderFactory();
-        for (int i = 0; i < NUM_DISTANCES; i++) {
-            distanceFactory.setTrip(trip);
-            distanceFactory.setRate(20);
-            distanceFactory.setDistance(10);
-            distanceFactory.setCurrency(PriceCurrency.getInstance("USD"));
-            distanceFactory.setLocation(i==0 ? "Loc 1" : "Location Location Location " + String.valueOf(i + 1));
-            distances.add(distanceFactory.build());
-        }
-
-        final List<Column<Distance>> distanceColumns = new ArrayList<>();
-        distanceColumns.add(new DistanceLocationColumn(1, "Location", new DefaultSyncState(), context));
-        distanceColumns.add(new DistancePriceColumn(2, "Price", new DefaultSyncState(), false));
-        distanceColumns.add(new DistanceDistanceColumn(3, "Distance", new DefaultSyncState()));
-        distanceColumns.add(new DistanceCurrencyColumn(4, "Currency", new DefaultSyncState()));
-        distanceColumns.add(new DistanceRateColumn(5, "Rate", new DefaultSyncState()));
-        distanceColumns.add(new DistanceDateColumn(6, "Date", new DefaultSyncState(), context, userPreferenceManager));
-        distanceColumns.add(new DistanceCommentColumn(7, "Comment", new DefaultSyncState()));
-
-
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts, columns, distances, distanceColumns));
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
-
-        OutputStream os = new FileOutputStream(new File(OUTPUT_FILE));
-
-        pdfBoxReportFile.writeFile(os, trip);
-
-        os.close();
-    }
-    */
 
     private static void verifyImageCount(@NonNull PDDocument pdDocument, int expectedImageCount) throws Exception {
         int actualImageCount = 0;

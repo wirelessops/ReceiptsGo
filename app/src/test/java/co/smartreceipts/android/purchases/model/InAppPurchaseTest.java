@@ -6,6 +6,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -18,17 +19,17 @@ public class InAppPurchaseTest {
         assertEquals(InAppPurchase.SmartReceiptsPlus.getSku(), "pro_sku_3");
         assertEquals(InAppPurchase.SmartReceiptsPlus.getType(), Subscription.class);
         assertEquals(InAppPurchase.SmartReceiptsPlus.getProductType(), "subs");
-        assertEquals(InAppPurchase.SmartReceiptsPlus.getPurchaseFamily(), PurchaseFamily.SmartReceiptsPlus);
+        assertEquals(InAppPurchase.SmartReceiptsPlus.getPurchaseFamilies(), new HashSet<>(Arrays.asList(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr)));
 
         assertEquals(InAppPurchase.OcrScans50.getSku(), "ocr_purchase_1");
         assertEquals(InAppPurchase.OcrScans50.getType(), ConsumablePurchase.class);
         assertEquals(InAppPurchase.OcrScans50.getProductType(), "inapp");
-        assertEquals(InAppPurchase.OcrScans50.getPurchaseFamily(), PurchaseFamily.Ocr);
+        assertEquals(InAppPurchase.OcrScans50.getPurchaseFamilies(), Collections.singleton(PurchaseFamily.Ocr));
 
         assertEquals(InAppPurchase.OcrScans10.getSku(), "ocr_purchase_10");
         assertEquals(InAppPurchase.OcrScans10.getType(), ConsumablePurchase.class);
         assertEquals(InAppPurchase.OcrScans10.getProductType(), "inapp");
-        assertEquals(InAppPurchase.OcrScans10.getPurchaseFamily(), PurchaseFamily.Ocr);
+        assertEquals(InAppPurchase.OcrScans10.getPurchaseFamilies(), Collections.singleton(PurchaseFamily.Ocr));
     }
 
     @Test

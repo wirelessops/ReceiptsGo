@@ -74,7 +74,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
                 .flatMap(integer -> purchaseManager.getAllOwnedPurchases())
                 .flatMap(managedProducts -> {
                      for (final ManagedProduct managedProduct : managedProducts) {
-                            if (PurchaseFamily.Ocr.equals(managedProduct.getInAppPurchase().getPurchaseFamily())) {
+                        if (managedProduct.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
                             if (managedProduct instanceof ConsumablePurchase) {
                                 return uploadOcrPurchase((ConsumablePurchase) managedProduct);
                             }
@@ -88,7 +88,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
 
     @Override
     public void onPurchaseSuccess(@NonNull InAppPurchase inAppPurchase, @NonNull PurchaseSource purchaseSource) {
-        if (PurchaseFamily.Ocr.equals(inAppPurchase.getPurchaseFamily())) {
+        if (inAppPurchase.getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
             final ManagedProduct managedProduct = purchaseWallet.getManagedProduct(inAppPurchase);
             if (managedProduct instanceof ConsumablePurchase) {
                 final ConsumablePurchase consumablePurchase = (ConsumablePurchase) managedProduct;
@@ -147,7 +147,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
 
     @NonNull
     private Observable<Object> uploadOcrPurchase(@NonNull final ConsumablePurchase consumablePurchase) {
-        if (consumablePurchase.getInAppPurchase().getPurchaseFamily() != PurchaseFamily.Ocr) {
+        if (!consumablePurchase.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
             throw new IllegalArgumentException("Unsupported purchase type: " + consumablePurchase.getInAppPurchase());
         }
         Logger.info(this, "Uploading purchase: {}", consumablePurchase.getInAppPurchase());
