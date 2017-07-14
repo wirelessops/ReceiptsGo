@@ -14,6 +14,7 @@ import com.google.android.gms.ads.NativeExpressAdView;
 
 import butterknife.ButterKnife;
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.utils.log.Logger;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -25,7 +26,7 @@ public class NativeAdView implements BannerAdView {
     private Button upsellButton;
 
     @Override
-    public BannerAdView init(Activity activity) {
+    public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics) {
         final ViewGroup container = ButterKnife.findById(activity, R.id.adView_container);
         upsellButton = ButterKnife.findById(activity, R.id.adView_upsell);
 

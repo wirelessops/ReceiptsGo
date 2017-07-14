@@ -22,7 +22,7 @@ public class AbcMouseAdPresenter extends BaseAdPresenter {
     }
 
     @Override
-    public BannerAdView initAdView(@NonNull Activity activity) {
-        return new AbcMouseAdView().init(activity);
+    public BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics) {
+        return new AbcMouseAdView().init(activity, analytics);
     }
 }

@@ -22,7 +22,7 @@ public class ClassicBannerAdPresenter extends BaseAdPresenter {
     }
 
     @Override
-    public BannerAdView initAdView(@NonNull Activity activity) {
-        return new ClassicAdView().init(activity);
+    public BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics) {
+        return new ClassicAdView().init(activity, analytics);
     }
 }

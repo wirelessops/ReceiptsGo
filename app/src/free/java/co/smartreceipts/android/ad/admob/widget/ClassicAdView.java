@@ -2,6 +2,7 @@ package co.smartreceipts.android.ad.admob.widget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.utils.log.Logger;
 
 import static co.smartreceipts.android.ad.admob.AdRequestHelper.getAdRequest;
@@ -21,7 +23,7 @@ public class ClassicAdView implements BannerAdView {
     private Button upsellButton;
 
     @Override
-    public BannerAdView init(Activity activity) {
+    public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics) {
         final ViewGroup container = (ViewGroup) activity.findViewById(R.id.adView_container);
         upsellButton = (Button) activity.findViewById(R.id.adView_upsell);
 

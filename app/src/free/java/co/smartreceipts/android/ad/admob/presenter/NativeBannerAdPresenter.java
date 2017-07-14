@@ -22,7 +22,7 @@ public class NativeBannerAdPresenter extends BaseAdPresenter {
     }
 
     @Override
-    public BannerAdView initAdView(@NonNull Activity activity) {
-        return new NativeAdView().init(activity);
+    public BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics) {
+        return new NativeAdView().init(activity, analytics);
     }
 }

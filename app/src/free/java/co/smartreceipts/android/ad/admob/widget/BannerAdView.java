@@ -2,17 +2,20 @@ package co.smartreceipts.android.ad.admob.widget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View.OnClickListener;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import co.smartreceipts.android.analytics.Analytics;
+
 public interface BannerAdView {
 
     int LOADING_DELAY = 50;
 
-    BannerAdView init(Activity activity);
+    BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics);
 
     void resume();
 

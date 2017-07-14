@@ -12,6 +12,9 @@ import java.util.Random;
 
 import co.smartreceipts.android.ad.admob.widget.BannerAdView;
 import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.android.analytics.events.DataPoint;
+import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
+import co.smartreceipts.android.analytics.events.Event;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.persistence.SharedPreferenceDefinitions;
 import co.smartreceipts.android.purchases.PurchaseManager;
@@ -44,7 +47,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
 
     @Override
     public void onActivityCreated(@NonNull Activity activity) {
-        BannerAdView adView = initAdView(activity);
+        BannerAdView adView = initAdView(activity, analytics);
 
         adViewReference = new WeakReference<>(adView);
 
@@ -68,6 +71,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
                         }
                     });
                     adView.loadAdDelayed();
+                    analytics.record(new DefaultDataPointEvent(Events.Ads.AdShown).addDataPoint(new DataPoint("ad", adView.getClass().getSimpleName())));
                 }
 
                 adView.setUpsellClickListener(view -> {
@@ -117,7 +121,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
         }
     }
 
-    public abstract BannerAdView initAdView(@NonNull Activity activity);
+    public abstract BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics);
 
     private boolean shouldShowAds(@NonNull Context activityContext) {
         final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
