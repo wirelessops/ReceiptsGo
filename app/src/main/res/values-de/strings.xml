@@ -161,7 +161,8 @@
     <string name="email_body_subject_5mb_warning">Der folgende Anhang hat mehr als 5 MB groß und kann nicht richtig beigefügt werden: %s</string>
 
     <!-- ============== Progress Messages ================= -->
-    <string name="progress_import">Importieren Ihrer Dateien ...</string>
+    <string name="progress_import">Importieren Ihrer Dateien…</string>
+    <string name="progress_building_reports">Gebäudeberichte…</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Fehler: Bitte stellen Sie sicher, dass die SD-Karte verfügbar ist und nicht an den Computer montiert.</string>

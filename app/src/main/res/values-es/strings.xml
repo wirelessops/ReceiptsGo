@@ -161,7 +161,8 @@
     <string name="email_body_subject_5mb_warning">El siguiente adjunto tiene más de 5 MB y no se puede adjuntar correctamente: %s</string>
 
     <!-- ============== Progress Messages ================= -->
-    <string name="progress_import">Importando tus archivos...</string>
+    <string name="progress_import">Importando tus archivos…</string>
+    <string name="progress_building_reports">Creación de informes…</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Error: Por favor asegúrate que tu tarjeta SD esté disponible y no esté montada en tu computador.</string>

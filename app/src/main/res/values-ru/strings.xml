@@ -164,6 +164,7 @@
 
     <!-- ============== Progress Messages ================= -->
     <string name="progress_import">Импорт файлов…</string>
+    <string name="progress_building_reports">Построение отчётов…</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Ошибка: убедитесь, что ваша SD-карта доступна и не подключена к вашему компьютеру.</string>

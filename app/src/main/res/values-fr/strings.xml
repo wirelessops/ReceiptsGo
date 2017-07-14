@@ -161,7 +161,8 @@
     <string name="email_body_subject_5mb_warning">La pièce jointe ci-dessous fait plus de 5 Mo et ne peut pas être jointe correctement : %s</string>
 
     <!-- ============== Progress Messages ================= -->
-    <string name="progress_import">Importation de vos fichiers...</string>
+    <string name="progress_import">Importation de vos fichiers…</string>
+    <string name="progress_building_reports">Construire des rapports…</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Erreur : Veuillez vérifier que votre carte SD est disponible et non montée sur votre ordinateur.</string>

@@ -34,6 +34,8 @@ import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.comparators.ReceiptDateComparator;
+import co.smartreceipts.android.model.converters.DistanceToReceiptsConverter;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -131,7 +133,7 @@ public class EmailAssistant {
 
     public void emailTrip(@NonNull EnumSet<EmailOptions> options) {
         Logger.info(this, "Creating reports...");
-        ProgressDialog progress = ProgressDialog.show(context, "", "Building Reports...", true, false);
+        ProgressDialog progress = ProgressDialog.show(context, "", context.getString(R.string.progress_building_reports), true, false);
         EmailAttachmentWriter attachmentWriter = new EmailAttachmentWriter(persistenceManager, progress, options);
         attachmentWriter.execute(trip);
     }
@@ -310,12 +312,21 @@ public class EmailAssistant {
                 final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
                 final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<Receipt>(csvColumns, new LegacyReceiptFilter(mPreferenceManager), true, false);
 
-                String data = csvTableGenerator.generate(receipts);
+                String data;
 
+                final List<Distance> distances = new ArrayList<>(mDB.getDistanceTable().getBlocking(trip, false));
+                final List<Receipt> receiptsTableList = new ArrayList<>(receipts);
+
+                // Receipts table
+                if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
+                    receiptsTableList.addAll(new DistanceToReceiptsConverter(context, mPreferenceManager).convert(distances));
+                    Collections.sort(receiptsTableList, new ReceiptDateComparator());
+                }
+
+                data = csvTableGenerator.generate(receiptsTableList);
 
                 // Distance table
                 if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)) {
-                    final List<Distance> distances = new ArrayList<>(mDB.getDistanceTable().getBlocking(trip, false));
                     if (!distances.isEmpty()) {
                         Collections.reverse(distances); // Reverse the list, so we print the most recent one first
 

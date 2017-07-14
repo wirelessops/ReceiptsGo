@@ -167,6 +167,7 @@
 
     <!-- ============== Progress Messages ================= -->
     <string name="progress_import">Importing your files&#8230;</string>
+    <string name="progress_building_reports">Building Reports…</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Error: Please make sure that your SD Card is available and not mounted to your computer.</string>
