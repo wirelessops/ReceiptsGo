@@ -7,9 +7,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 
+import co.smartreceipts.android.apis.SmartReceiptsApiErrorResponse;
+import co.smartreceipts.android.apis.SmartReceiptsApiException;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.apis.me.MeResponse;
@@ -18,9 +21,11 @@ import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.apis.MobileAppPurchasesService;
 import co.smartreceipts.android.purchases.apis.PurchaseRequest;
 import co.smartreceipts.android.purchases.apis.PurchaseResponse;
+import co.smartreceipts.android.purchases.consumption.DefaultInAppPurchaseConsumer;
 import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
+import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import io.reactivex.Completable;
@@ -28,6 +33,8 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -61,10 +68,13 @@ public class OcrPurchaseTrackerTest {
     PurchaseWallet purchaseWallet;
 
     @Mock
+    DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer;
+
+    @Mock
     LocalOcrScansTracker localOcrScansTracker;
 
     @Mock
-    ConsumablePurchase consumablePurchase;
+    ManagedProduct managedProduct;
 
     @Mock
     MobileAppPurchasesService mobileAppPurchasesService;
@@ -78,19 +88,23 @@ public class OcrPurchaseTrackerTest {
     @Mock
     User user;
 
+    @Mock
+    ResponseBody retrofitResponseBody;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(consumablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
-        when(consumablePurchase.getInAppDataSignature()).thenReturn("");
-        when(consumablePurchase.getPurchaseData()).thenReturn("");
-        when(purchaseWallet.getManagedProduct(InAppPurchase.OcrScans50)).thenReturn(consumablePurchase);
+        when(managedProduct.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
+        when(managedProduct.getInAppDataSignature()).thenReturn("");
+        when(managedProduct.getPurchaseData()).thenReturn("");
+        when(defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)).thenReturn(false);
+        when(purchaseWallet.getManagedProduct(InAppPurchase.OcrScans50)).thenReturn(managedProduct);
         when(serviceManager.getService(MobileAppPurchasesService.class)).thenReturn(mobileAppPurchasesService);
         when(identityManager.isLoggedInStream()).thenReturn(Observable.just(true));
         when(identityManager.getMe()).thenReturn(Observable.just(meResponse));
         when(meResponse.getUser()).thenReturn(user);
         when(user.getRecognitionsAvailable()).thenReturn(REMAINING_SCANS);
-        ocrPurchaseTracker = new OcrPurchaseTracker(identityManager, serviceManager, purchaseManager, purchaseWallet, localOcrScansTracker, Schedulers.trampoline());
+        ocrPurchaseTracker = new OcrPurchaseTracker(identityManager, serviceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, localOcrScansTracker, Schedulers.trampoline());
     }
 
     @Test
@@ -119,15 +133,48 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
-        verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+        verifyZeroInteractions(serviceManager);
+    }
+
+    @Test
+    public void initializeWithoutPurchases() {
+        // Configure
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.emptySet()));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+        verifyZeroInteractions(serviceManager);
+    }
+
+    @Test
+    public void initializeWithAnAlreadyConsumedPurchase() {
+        // Configure
+        when(defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)).thenReturn(true);
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
         verifyZeroInteractions(serviceManager);
     }
 
     @Test
     public void initializeUploadFails() {
         // Configure
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton((ManagedProduct) consumablePurchase)));
-        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.<PurchaseResponse>error(new Exception("test")));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
 
         // Test
         ocrPurchaseTracker.initialize();
@@ -135,13 +182,103 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
-        verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+    }
+
+    @SuppressWarnings("ThrowableInstanceNeverThrown")
+    @Test
+    public void initializeUploadFailsWith422CodeAndNullSmartReceiptsApiException() {
+        // Configure
+        final SmartReceiptsApiErrorResponse errorResponse = null;
+        final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+    }
+
+    @SuppressWarnings("ThrowableInstanceNeverThrown")
+    @Test
+    public void initializeUploadFailsWith422CodeAndSmartReceiptsApiExceptionWithNullList() {
+        // Configure
+        final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(null);
+        final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+    }
+
+    @SuppressWarnings("ThrowableInstanceNeverThrown")
+    @Test
+    public void initializeUploadFailsWith422CodeAndSmartReceiptsApiExceptionWithListOfUnknownErrors() {
+        // Configure
+        final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(Arrays.asList("error1", "error2", "error3"));
+        final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+    }
+
+    @SuppressWarnings("ThrowableInstanceNeverThrown")
+    @Test
+    public void initializeUploadFailsWith400CodeAndSmartReceiptsApiExceptionWithDuplicatePurchaseError() {
+        // Configure
+        final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(Arrays.asList("error1", "Purchase has already been taken", "error3"));
+        final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(400, retrofitResponseBody), new Exception("test"), errorResponse);
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
+    }
+
+    @SuppressWarnings("ThrowableInstanceNeverThrown")
+    @Test
+    public void initializeUploadFailsWith422CodeAndSmartReceiptsApiExceptionWithDuplicatePurchaseErrorButThenConsumesThisPurchaseLocally() {
+        // Configure
+        final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(Arrays.asList("error1", "Purchase has already been taken", "error3"));
+        final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
+
+        // Test
+        ocrPurchaseTracker.initialize();
+
+        // Verify
+        verify(purchaseManager).addEventListener(ocrPurchaseTracker);
+        verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
     }
 
     @Test
     public void initializeSucceeds() {
         // Configure
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton((ManagedProduct) consumablePurchase)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -150,14 +287,14 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
     }
 
     @Test
     public void initializeFailsToFetchMe() {
         // Configure
-        when(identityManager.getMe()).thenReturn(Observable.<MeResponse>error(new Exception("test")));
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton((ManagedProduct) consumablePurchase)));
+        when(identityManager.getMe()).thenReturn(Observable.error(new Exception("test")));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -166,14 +303,14 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker, never()).setRemainingScans(anyInt());
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
     }
 
     @Test
     public void initializeReturnsInvalidMeResponse() {
         // Configure
         when(meResponse.getUser()).thenReturn(null);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton((ManagedProduct) consumablePurchase)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -182,7 +319,7 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker, never()).setRemainingScans(anyInt());
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
     }
 
     @Test
@@ -191,7 +328,7 @@ public class OcrPurchaseTrackerTest {
         final PublishSubject<Boolean> loggedInStream = PublishSubject.create();
         loggedInStream.onNext(false);
         when(identityManager.isLoggedInStream()).thenReturn(loggedInStream);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton((ManagedProduct) consumablePurchase)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -201,7 +338,7 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
     }
 
     @Test
@@ -213,7 +350,7 @@ public class OcrPurchaseTrackerTest {
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
         verifyZeroInteractions(serviceManager);
     }
@@ -226,7 +363,7 @@ public class OcrPurchaseTrackerTest {
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.TestConsumablePurchase, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
         verifyZeroInteractions(serviceManager);
     }
@@ -234,72 +371,72 @@ public class OcrPurchaseTrackerTest {
     @Test
     public void onPurchaseSuccessUploadFails() {
         // Configure
-        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.<PurchaseResponse>error(new Exception("test")));
+        when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
 
         // Test
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager, never()).consumePurchase(any(ConsumablePurchase.class));
+        verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
     }
 
     @Test
     public void onPurchaseSuccessSucceedsButConsumeFails() {
         // Configure
-        when(purchaseManager.consumePurchase(consumablePurchase)).thenReturn(Completable.error(new Exception("test")));
+        when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.error(new Exception("test")));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
     }
 
     @Test
     public void onPurchaseSuccessSucceeds() {
         // Configure
-        when(purchaseManager.consumePurchase(consumablePurchase)).thenReturn(Completable.complete());
+        when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.complete());
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
     }
 
     @Test
     public void onPurchaseSuccessSucceedsForOtherPurchaseType() {
         // Configure
-        when(consumablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans10);
-        when(purchaseWallet.getManagedProduct(InAppPurchase.OcrScans10)).thenReturn(consumablePurchase);
-        when(purchaseManager.consumePurchase(consumablePurchase)).thenReturn(Completable.complete());
+        when(managedProduct.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans10);
+        when(purchaseWallet.getManagedProduct(InAppPurchase.OcrScans10)).thenReturn(managedProduct);
+        when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.complete());
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans10, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
     }
 
     @Test
     public void onPurchaseSuccessSucceedsButFailsToFetchMe() {
         // Configure
-        when(identityManager.getMe()).thenReturn(Observable.<MeResponse>error(new Exception("test")));
-        when(purchaseManager.consumePurchase(consumablePurchase)).thenReturn(Completable.complete());
+        when(identityManager.getMe()).thenReturn(Observable.error(new Exception("test")));
+        when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.complete());
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
         verify(localOcrScansTracker, never()).setRemainingScans(anyInt());
     }
 
@@ -307,14 +444,14 @@ public class OcrPurchaseTrackerTest {
     public void onPurchaseSuccessSucceedsButReturnsInvalidMeResponse() {
         // Configure
         when(meResponse.getUser()).thenReturn(null);
-        when(purchaseManager.consumePurchase(consumablePurchase)).thenReturn(Completable.complete());
+        when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.complete());
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
         ocrPurchaseTracker.onPurchaseSuccess(InAppPurchase.OcrScans50, PurchaseSource.Unknown);
 
         // Verify
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
         verify(localOcrScansTracker, never()).setRemainingScans(anyInt());
     }
 
@@ -324,7 +461,7 @@ public class OcrPurchaseTrackerTest {
         final PublishSubject<Boolean> loggedInStream = PublishSubject.create();
         loggedInStream.onNext(false);
         when(identityManager.isLoggedInStream()).thenReturn(loggedInStream);
-        when(purchaseManager.consumePurchase(consumablePurchase)).thenReturn(Completable.complete());
+        when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.complete());
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -332,7 +469,7 @@ public class OcrPurchaseTrackerTest {
         loggedInStream.onNext(true);
 
         // Verify
-        verify(purchaseManager).consumePurchase(consumablePurchase);
+        verify(defaultInAppPurchaseConsumer).consumePurchase(managedProduct, PurchaseFamily.Ocr);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
     }
 

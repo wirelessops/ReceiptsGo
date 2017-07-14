@@ -2,6 +2,7 @@ package co.smartreceipts.android.apis;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -30,6 +31,13 @@ public class SmartReceiptsApiException extends Exception {
             }
         }
 
+        this.response = response;
+        this.errorResponse = errorResponse;
+    }
+
+    @VisibleForTesting
+    public SmartReceiptsApiException(@NonNull Response response, @NonNull Exception exception, @Nullable SmartReceiptsApiErrorResponse errorResponse) {
+        super(exception);
         this.response = response;
         this.errorResponse = errorResponse;
     }

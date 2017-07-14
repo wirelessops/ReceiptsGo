@@ -9,9 +9,9 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.HttpException;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 
@@ -59,7 +59,7 @@ public class SmartReceiptsApisRxJavaCallAdapterFactory extends CallAdapter.Facto
             if (throwable instanceof HttpException) {
                 final HttpException httpException = (HttpException) throwable;
                 final Response response = httpException.response();
-                if (response != null && response.errorBody() != null && response.errorBody().contentLength() > 0) {
+                if (response != null && response.errorBody() != null) {
                     // Only bother mapping if we saw an error response with actual content
                     return new SmartReceiptsApiException(response, httpException, retrofit);
                 } else {

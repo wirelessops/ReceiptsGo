@@ -8,9 +8,13 @@ import com.google.common.base.Preconditions;
 
 import org.reactivestreams.Subscriber;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.smartreceipts.android.apis.ApiValidationException;
+import co.smartreceipts.android.apis.SmartReceiptsApiException;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
@@ -18,15 +22,19 @@ import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.apis.MobileAppPurchasesService;
 import co.smartreceipts.android.purchases.apis.PurchaseRequest;
+import co.smartreceipts.android.purchases.consumption.DefaultInAppPurchaseConsumer;
 import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
+import co.smartreceipts.android.purchases.model.Subscription;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Scheduler;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -39,23 +47,33 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     private final ServiceManager serviceManager;
     private final PurchaseManager purchaseManager;
     private final PurchaseWallet purchaseWallet;
+    private final DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer;
     private final LocalOcrScansTracker localOcrScansTracker;
     private final Scheduler subscribeOnScheduler;
 
     @Inject
-    public OcrPurchaseTracker(Context context, IdentityManager identityManager, ServiceManager serviceManager,
-                              PurchaseManager purchaseManager, PurchaseWallet purchaseWallet) {
-        this(identityManager, serviceManager, purchaseManager, purchaseWallet, new LocalOcrScansTracker(context), Schedulers.io());
+    public OcrPurchaseTracker(@NonNull Context context,
+                              @NonNull IdentityManager identityManager,
+                              @NonNull ServiceManager serviceManager,
+                              @NonNull PurchaseManager purchaseManager,
+                              @NonNull PurchaseWallet purchaseWallet,
+                              @NonNull DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer) {
+        this(identityManager, serviceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, new LocalOcrScansTracker(context), Schedulers.io());
     }
 
     @VisibleForTesting
-    OcrPurchaseTracker(@NonNull IdentityManager identityManager, @NonNull ServiceManager serviceManager,
-                       @NonNull PurchaseManager purchaseManager, @NonNull PurchaseWallet purchaseWallet,
-                       @NonNull LocalOcrScansTracker localOcrScansTracker, @NonNull Scheduler subscribeOnScheduler) {
+    OcrPurchaseTracker(@NonNull IdentityManager identityManager,
+                       @NonNull ServiceManager serviceManager,
+                       @NonNull PurchaseManager purchaseManager,
+                       @NonNull PurchaseWallet purchaseWallet,
+                       @NonNull DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer,
+                       @NonNull LocalOcrScansTracker localOcrScansTracker,
+                       @NonNull Scheduler subscribeOnScheduler) {
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.serviceManager = Preconditions.checkNotNull(serviceManager);
         this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
         this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
+        this.defaultInAppPurchaseConsumer = Preconditions.checkNotNull(defaultInAppPurchaseConsumer);
         this.localOcrScansTracker = Preconditions.checkNotNull(localOcrScansTracker);
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
     }
@@ -75,8 +93,11 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
                 .flatMap(managedProducts -> {
                      for (final ManagedProduct managedProduct : managedProducts) {
                         if (managedProduct.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
-                            if (managedProduct instanceof ConsumablePurchase) {
-                                return uploadOcrPurchase((ConsumablePurchase) managedProduct);
+                            Logger.debug(OcrPurchaseTracker.this, "Found available OCR purchase: {}", managedProduct.getInAppPurchase());
+                            if (!defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)) {
+                                return uploadOcrPurchase(managedProduct);
+                            } else {
+                                Logger.debug(OcrPurchaseTracker.this, "But {} was already consumed...", managedProduct.getInAppPurchase());
                             }
                         }
                     }
@@ -90,15 +111,14 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     public void onPurchaseSuccess(@NonNull InAppPurchase inAppPurchase, @NonNull PurchaseSource purchaseSource) {
         if (inAppPurchase.getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
             final ManagedProduct managedProduct = purchaseWallet.getManagedProduct(inAppPurchase);
-            if (managedProduct instanceof ConsumablePurchase) {
-                final ConsumablePurchase consumablePurchase = (ConsumablePurchase) managedProduct;
+            if (managedProduct != null) {
                 this.identityManager.isLoggedInStream()
                         .subscribeOn(subscribeOnScheduler)
                         .filter(isLoggedIn -> isLoggedIn)
-                        .flatMap(aBoolean -> uploadOcrPurchase(consumablePurchase))
+                        .flatMap(aBoolean -> uploadOcrPurchase(managedProduct))
                         .subscribe(o -> { /*onNext*/ },
-                                throwable -> Logger.error(OcrPurchaseTracker.this, "Failed to upload purchase of " + consumablePurchase.getInAppPurchase(), throwable),
-                                () -> Logger.info(OcrPurchaseTracker.this, "Successfully uploaded and consumed purchase of {}.", consumablePurchase.getInAppPurchase())
+                                throwable -> Logger.error(OcrPurchaseTracker.this, "Failed to upload purchase of " + managedProduct.getInAppPurchase(), throwable),
+                                () -> Logger.info(OcrPurchaseTracker.this, "Successfully uploaded and consumed purchase of {}.", managedProduct.getInAppPurchase())
                         );
             }
         }
@@ -146,18 +166,37 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     }
 
     @NonNull
-    private Observable<Object> uploadOcrPurchase(@NonNull final ConsumablePurchase consumablePurchase) {
-        if (!consumablePurchase.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
-            throw new IllegalArgumentException("Unsupported purchase type: " + consumablePurchase.getInAppPurchase());
+    private Observable<Object> uploadOcrPurchase(@NonNull final ManagedProduct managedProduct) {
+        if (!managedProduct.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
+            throw new IllegalArgumentException("Unsupported purchase type: " + managedProduct.getInAppPurchase());
         }
-        Logger.info(this, "Uploading purchase: {}", consumablePurchase.getInAppPurchase());
 
-        return serviceManager.getService(MobileAppPurchasesService.class).addPurchase(new PurchaseRequest(consumablePurchase, GOAL))
+        Logger.info(this, "Uploading consumable purchase: {}", managedProduct.getInAppPurchase());
+        return serviceManager.getService(MobileAppPurchasesService.class).addPurchase(new PurchaseRequest(managedProduct, GOAL))
                 .flatMap(purchaseResponse -> {
                     Logger.debug(OcrPurchaseTracker.this, "Received purchase response of {}", purchaseResponse);
-                    return purchaseManager.consumePurchase(consumablePurchase).andThen(Observable.just(new Object()));
+                    return defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)
+                            .andThen(Observable.just(new Object()));
+                })
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof SmartReceiptsApiException) {
+                        final SmartReceiptsApiException smartReceiptsApiException = (SmartReceiptsApiException) throwable;
+                        final List<String> errors;
+                        if (smartReceiptsApiException.getErrorResponse() != null && smartReceiptsApiException.getErrorResponse().getErrors() != null) {
+                            errors = smartReceiptsApiException.getErrorResponse().getErrors();
+                        } else {
+                            errors = Collections.emptyList();
+                        }
+                        if (smartReceiptsApiException.getResponse().code() == 422 && errors.contains("Purchase has already been taken")) {
+                            Logger.warn(OcrPurchaseTracker.this, "Found repeat purchase. Consuming it now");
+                            return defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)
+                                    .andThen(Observable.just(new Object()));
+                        }
+                    }
+                    return Observable.error(throwable);
                 })
                 .flatMap(o -> fetchAndPersistAvailableRecognitions());
+
     }
 
     @NonNull
