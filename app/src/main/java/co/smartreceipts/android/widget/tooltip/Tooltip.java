@@ -125,12 +125,16 @@ public class Tooltip extends RelativeLayout {
     }
 
     public void hideWithAnimation() {
-        TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new AutoTransition());
-        setVisibility(GONE);
+        if (getVisibility() != GONE) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new AutoTransition());
+            setVisibility(GONE);
+        }
     }
 
     public void showWithAnimation() {
-        TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new AutoTransition());
-        setVisibility(VISIBLE);
+        if (getVisibility() != VISIBLE) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getParent(), new AutoTransition());
+            setVisibility(VISIBLE);
+        }
     }
 }
