@@ -130,6 +130,13 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Logger.debug(this, "onStart");
+        presenter.subscribe(); // Note: Keep this tied to onStart due to Android 7.x TransitionLibrary bugs
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Logger.debug(this, "onResume");
@@ -140,18 +147,20 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         if (actionBar != null) {
             getSupportActionBar().setSubtitle(null);
         }
-
-        presenter.subscribe();
     }
 
     @Override
     public void onPause() {
         Logger.debug(this, "onPause");
-
         tripTableController.unsubscribe(this);
-
-        presenter.unsubscribe();
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Logger.debug(this, "onStop");
+        presenter.unsubscribe();
+        super.onStop();
     }
 
     @Override

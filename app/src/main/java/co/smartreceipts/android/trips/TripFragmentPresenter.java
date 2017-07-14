@@ -26,19 +26,18 @@ public class TripFragmentPresenter {
     public TripFragmentPresenter() {
     }
 
-    public void unsubscribe() {
-        compositeDisposable.clear();
-    }
-
     public void subscribe() {
         compositeDisposable.add(appRatingManager.checkIfNeedToAskRating()
-                .delay(3, TimeUnit.SECONDS) // <-- this magic line resolves StackOverflow error
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ratingPrompt -> {
                     if (ratingPrompt) {
                         fragment.showRatingTooltip();
                     }
                 }));
+    }
+
+    public void unsubscribe() {
+        compositeDisposable.clear();
     }
 
     public void dontShowRatingPrompt() {
