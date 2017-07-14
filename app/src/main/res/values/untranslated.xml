@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="attachment_error">Unable to attach this file.</string>
+    <string name="ocr_configuration_information_line3">To try OCR, all new users get 2 free scans!</string>
 </resources>
