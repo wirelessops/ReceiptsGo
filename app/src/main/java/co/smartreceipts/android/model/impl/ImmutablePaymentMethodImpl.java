@@ -17,9 +17,7 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  * @author Will Baumann
  */
 public final class ImmutablePaymentMethodImpl implements PaymentMethod {
-
-    // TODO: 15.07.2017 maybe would be good to delete 'Unspecified' payment method
-    // TODO: 16.07.2017 check tests
+    
     public static final PaymentMethod NONE = new PaymentMethodBuilderFactory().setMethod(Resources.getSystem().getString(android.R.string.untitled)).build();
 
     private final int mId;
