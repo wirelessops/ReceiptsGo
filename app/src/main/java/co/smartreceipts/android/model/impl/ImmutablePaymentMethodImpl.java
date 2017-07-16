@@ -1,11 +1,13 @@
 package co.smartreceipts.android.model.impl;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.model.PaymentMethod;
+import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -15,6 +17,10 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  * @author Will Baumann
  */
 public final class ImmutablePaymentMethodImpl implements PaymentMethod {
+
+    // TODO: 15.07.2017 maybe would be good to delete 'Unspecified' payment method
+    // TODO: 16.07.2017 check tests
+    public static final PaymentMethod NONE = new PaymentMethodBuilderFactory().setMethod(Resources.getSystem().getString(android.R.string.untitled)).build();
 
     private final int mId;
     private final String mMethod;

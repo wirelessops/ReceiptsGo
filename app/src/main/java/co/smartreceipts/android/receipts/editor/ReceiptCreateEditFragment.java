@@ -28,15 +28,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -58,7 +53,7 @@ import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
-import co.smartreceipts.android.model.utils.ModelUtils;
+import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.util.OcrResponseParser;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
@@ -467,18 +462,19 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             @Override
             public void onGetSuccess(@NonNull List<PaymentMethod> list) {
                 if (isAdded()) {
-                    paymentMethodsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, list);
+                    List<PaymentMethod> paymentMethods = new ArrayList<>(list);
+                    paymentMethods.add(0, ImmutablePaymentMethodImpl.NONE);
+
+                    paymentMethodsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, paymentMethods);
                     paymentMethodsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
                     if (presenter.isUsePaymentMethods()) {
                         paymentMethodsContainer.setVisibility(View.VISIBLE);
                         if (getReceipt() != null) {
                             final PaymentMethod oldPaymentMethod = getReceipt().getPaymentMethod();
-                            if (oldPaymentMethod != null) {
-                                final int paymentIdx = paymentMethodsAdapter.getPosition(oldPaymentMethod);
-                                if (paymentIdx > 0) {
-                                    paymentMethodsSpinner.setSelection(paymentIdx);
-                                }
+                            final int paymentIdx = paymentMethodsAdapter.getPosition(oldPaymentMethod);
+                            if (paymentIdx > 0) {
+                                paymentMethodsSpinner.setSelection(paymentIdx);
                             }
                         }
                     }

@@ -52,7 +52,7 @@ public final class DefaultReceiptImpl implements Receipt {
     private File mFile;
     private long mFileLastModifiedTime;
 
-    public DefaultReceiptImpl(int id, int index, @NonNull Trip trip, @Nullable File file, @Nullable PaymentMethod paymentMethod, @NonNull String name,
+    public DefaultReceiptImpl(int id, int index, @NonNull Trip trip, @Nullable File file, @NonNull PaymentMethod paymentMethod, @NonNull String name,
                               @NonNull Category category, @NonNull String comment, @NonNull Price price, @NonNull Price tax, @NonNull Date date,
                               @NonNull TimeZone timeZone, boolean isReimbursable, boolean isFullPage, boolean isSelected,
                               @NonNull Source source, @Nullable String extraEditText1, @Nullable String extraEditText2, @Nullable String extraEditText3) {
@@ -60,7 +60,7 @@ public final class DefaultReceiptImpl implements Receipt {
 
     }
 
-    public DefaultReceiptImpl(int id, int index, @NonNull Trip trip, @Nullable File file, @Nullable PaymentMethod paymentMethod, @NonNull String name,
+    public DefaultReceiptImpl(int id, int index, @NonNull Trip trip, @Nullable File file, @NonNull PaymentMethod paymentMethod, @NonNull String name,
                               @NonNull Category category, @NonNull String comment, @NonNull Price price, @NonNull Price tax, @NonNull Date date,
                               @NonNull TimeZone timeZone, boolean isReimbursable, boolean isFullPage, boolean isSelected,
                               @NonNull Source source, @Nullable String extraEditText1, @Nullable String extraEditText2, @Nullable String extraEditText3,
@@ -76,12 +76,12 @@ public final class DefaultReceiptImpl implements Receipt {
         mDate = Preconditions.checkNotNull(date);
         mTimeZone = Preconditions.checkNotNull(timeZone);
         mSyncState = Preconditions.checkNotNull(syncState);
+        mPaymentMethod = Preconditions.checkNotNull(paymentMethod);
 
         mId = id;
         mIndex = index;
         mFile = file;
         mFileLastModifiedTime = file != null ? file.lastModified() : -1;
-        mPaymentMethod = paymentMethod;
         mIsReimbursable = isReimbursable;
         mIsFullPage = isFullPage;
         mExtraEditText1 = extraEditText1;
@@ -126,7 +126,7 @@ public final class DefaultReceiptImpl implements Receipt {
         return mTrip;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public PaymentMethod getPaymentMethod() {
         return mPaymentMethod;
@@ -393,8 +393,7 @@ public final class DefaultReceiptImpl implements Receipt {
         if (mIsReimbursable != that.mIsReimbursable) return false;
         if (mIsFullPage != that.mIsFullPage) return false;
         if (!mTrip.equals(that.mTrip)) return false;
-        if (mPaymentMethod != null ? !mPaymentMethod.equals(that.mPaymentMethod) : that.mPaymentMethod != null)
-            return false;
+        if (!mPaymentMethod.equals(that.mPaymentMethod)) return false;
         if (!mName.equals(that.mName)) return false;
         if (!mComment.equals(that.mComment)) return false;
         if (!mCategory.equals(that.mCategory)) return false;
@@ -417,7 +416,7 @@ public final class DefaultReceiptImpl implements Receipt {
     public int hashCode() {
         int result = mId;
         result = 31 * result + mTrip.hashCode();
-        result = 31 * result + (mPaymentMethod != null ? mPaymentMethod.hashCode() : 0);
+        result = 31 * result + mPaymentMethod.hashCode();
         result = 31 * result + mName.hashCode();
         result = 31 * result + mComment.hashCode();
         result = 31 * result + mCategory.hashCode();

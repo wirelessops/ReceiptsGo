@@ -32,13 +32,11 @@ public interface Receipt extends Parcelable, Priceable, Comparable<Receipt>, Syn
     Trip getTrip();
 
     /**
-     * Gets the payment method associated with this receipt item. This may be {@code null}
-     * if there is no associated payment method.
+     * Gets the payment method associated with this receipt item.
      *
-     * @return the {@link co.smartreceipts.android.model.PaymentMethod} associated with this receipt item or {@code null} if
-     * there is none.
+     * @return the {@link co.smartreceipts.android.model.PaymentMethod} associated with this receipt item.
      */
-    @Nullable
+    @NonNull
     PaymentMethod getPaymentMethod();
 
     /**

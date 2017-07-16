@@ -18,6 +18,7 @@ import co.smartreceipts.android.model.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
+import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumPaymentMethodGroupingResult;
@@ -82,7 +83,7 @@ public class GroupingController {
     private Observable<SumPaymentMethodGroupingResult> getSummationByPaymentMethod(Trip trip) {
         return getReceiptsStream(trip)
                 .filter(receipt -> !preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) || receipt.isReimbursable())
-                .filter(receipt -> receipt.getPaymentMethod() != null) // thus, we ignore receipts without defined payment method
+                .filter(receipt -> !receipt.getPaymentMethod().equals(ImmutablePaymentMethodImpl.NONE)) // thus, we ignore receipts without defined payment method
                 .groupBy(Receipt::getPaymentMethod)
                 .flatMap(paymentMethodReceiptGroupedObservable -> paymentMethodReceiptGroupedObservable
                         .toList()
