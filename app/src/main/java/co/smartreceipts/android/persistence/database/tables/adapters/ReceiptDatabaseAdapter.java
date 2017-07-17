@@ -98,7 +98,8 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final String exchangeRateString = cursor.getString(exchangeRateIndex);
         final long date = cursor.getLong(dateIndex);
         final String timezone = (timeZoneIndex > 0) ? cursor.getString(timeZoneIndex) : null;
-        final String comment = cursor.getString(commentIndex);
+        final String possiblyNullComment = cursor.getString(commentIndex);
+        final String comment = possiblyNullComment != null ? possiblyNullComment : "";
         final boolean reimbursable = cursor.getInt(reimbursableIndex) > 0;
         final String currency = cursor.getString(currencyIndex);
         final boolean fullpage = !(cursor.getInt(fullpageIndex) > 0);
