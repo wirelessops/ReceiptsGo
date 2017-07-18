@@ -134,6 +134,8 @@ public final class Events {
         public static final Event AdShown = new DefaultEvent(Category.Ads, "AdShown");
         public static final Event AbcAdShown = new DefaultEvent(Category.Ads, "AbcAdShown");
         public static final Event AbcAdClicked = new DefaultEvent(Category.Ads, "AbcAdClicked");
+        public static final Event MarketsAdShown = new DefaultEvent(Category.Ads, "MarketsAdShown");
+        public static final Event MarketsAdClicked = new DefaultEvent(Category.Ads, "MarketsAdClicked");
     }
 
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/abc_mouse_ad_height"
+    android:layout_height="@dimen/custom_ad_height"
     android:foreground="@drawable/default_ripple_light"
     android:clickable="true"
     android:focusable="true" >
 
     <ImageView
-        android:id="@+id/abc_mouse_image"
+        android:id="@+id/custom_ad_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
