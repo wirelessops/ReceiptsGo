@@ -87,7 +87,6 @@ public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
     @Override
     public void insertPaymentMethodDefaults(@NonNull final PaymentMethodsTable paymentMethodsTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_unspecified)).build(), databaseOperationMetadata);
         paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_corporate_card)).build(), databaseOperationMetadata);
         paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_personal_card)).build(), databaseOperationMetadata);
         paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_check)).build(), databaseOperationMetadata);

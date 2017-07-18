@@ -452,7 +452,6 @@
     <string name="payment_method_default_check">Chèque</string>
     <string name="payment_method_default_personal_card">Carte personnelle</string>
     <string name="payment_method_default_corporate_card">Carte d\'entreprise</string>
-    <string name="payment_method_default_unspecified">Non spécifié</string>
 
     <!-- =================== Payment Methods =================== -->
     <string name="purchase_succeeded">Achat réussi</string>

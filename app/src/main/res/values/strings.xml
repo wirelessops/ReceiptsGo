@@ -482,7 +482,6 @@
     <string name="payment_method_default_check">Check</string>
     <string name="payment_method_default_personal_card">Personal Card</string>
     <string name="payment_method_default_corporate_card">Corporate Card</string>
-    <string name="payment_method_default_unspecified">Unspecified</string>
 
     <!-- =================== Payment Methods =================== -->
     <string name="purchase_succeeded">Successfully completed the purchase</string>

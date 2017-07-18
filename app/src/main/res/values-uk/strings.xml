@@ -454,7 +454,6 @@
     <string name="payment_method_default_check">Чек</string>
     <string name="payment_method_default_personal_card">Персональна карта</string>
     <string name="payment_method_default_corporate_card">Корпоративна карта</string>
-    <string name="payment_method_default_unspecified">Не вказано</string>
 
     <!-- =================== Payment Methods =================== -->
     <string name="purchase_succeeded">Покупка вдало завершена</string>
