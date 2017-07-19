@@ -38,6 +38,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
+import co.smartreceipts.android.adapters.FooterButtonArrayAdapter;
 import co.smartreceipts.android.adapters.TaxAutoCompleteAdapter;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
@@ -75,6 +76,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
+
+import static java.util.Collections.emptyList;
 
 public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener {
 
@@ -138,7 +141,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private AutoCompleteAdapter receiptsNameAutoCompleteAdapter, receiptsCommentAutoCompleteAdapter;
     private ArrayAdapter<CharSequence> currenciesAdapter;
     private List<Category> categoriesList;
-    private ArrayAdapter<Category> categoriesAdpater;
+    private FooterButtonArrayAdapter<Category> categoriesAdapter;
     private ArrayAdapter<PaymentMethod> paymentMethodsAdapter;
 
     public static ReceiptCreateEditFragment newInstance() {
@@ -160,8 +163,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         exchangeRateServiceManager = new ExchangeRateServiceManager(getFragmentManager());
         currenciesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
                 database.getCurrenciesList());
-        categoriesList = Collections.emptyList();
-        categoriesAdpater = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, Collections.<Category>emptyList());
+        categoriesList = emptyList();
+        categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), Collections.<Category>emptyList(),
+                R.string.manage_categories, null);
         paymentMethodsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, Collections.<PaymentMethod>emptyList());
         setHasOptionsMenu(true);
     }
@@ -416,9 +420,13 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             public void onGetSuccess(@NonNull List<Category> list) {
                 if (isAdded()) {
                     categoriesList = list;
-                    categoriesAdpater = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, list);
-                    categoriesAdpater.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    categoriesSpinner.setAdapter(categoriesAdpater);
+                    categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), list,
+                            R.string.manage_categories, v -> {
+                        // TODO: 20.07.2017 go to categories manager
+                        Toast.makeText(getContext(), "Manage categories", Toast.LENGTH_SHORT).show();
+                        analytics.record(Events.Informational.ManageCategories);
+                    });
+                    categoriesSpinner.setAdapter(categoriesAdapter);
 
                     if (getReceipt() == null) { // new receipt
                         if (presenter.isMatchReceiptCommentToCategory() || presenter.isMatchReceiptNameToCategory()) {
@@ -438,22 +446,22 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                                     nameToIndex = getString(R.string.category_dinner);
                                 }
                                 if (nameToIndex != null) {
-                                    for (int i = 0; i < categoriesAdpater.getCount(); i++) {
-                                        if (nameToIndex.equals(categoriesAdpater.getItem(i).getName())) {
+                                    for (int i = 0; i < categoriesAdapter.getCount(); i++) {
+                                        if (nameToIndex.equals(categoriesAdapter.getItem(i).getName())) {
                                             categoriesSpinner.setSelection(i);
                                             break; // Exit loop now
                                         }
                                     }
                                 }
                             } else {
-                                int idx = categoriesAdpater.getPosition(receiptInputCache.getCachedCategory());
+                                int idx = categoriesAdapter.getPosition(receiptInputCache.getCachedCategory());
                                 if (idx > 0) {
                                     categoriesSpinner.setSelection(idx);
                                 }
                             }
                         }
                     } else {
-                        categoriesSpinner.setSelection(categoriesAdpater.getPosition(getReceipt().getCategory()));
+                        categoriesSpinner.setSelection(categoriesAdapter.getPosition(getReceipt().getCategory()));
                     }
                 }
             }
@@ -720,7 +728,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         if (presenter.checkReceipt(dateBox.date)) {
 
             final String name = TextUtils.isEmpty(nameBox.getText().toString()) ? "" : nameBox.getText().toString();
-            final Category category = categoriesAdpater.getItem(categoriesSpinner.getSelectedItemPosition());
+            final Category category = categoriesAdapter.getItem(categoriesSpinner.getSelectedItemPosition());
             final String currency = currencySpinner.getSelectedItem().toString();
             final String price = priceBox.getText().toString();
             final String tax = taxBox.getText().toString();
@@ -760,10 +768,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (presenter.isMatchReceiptNameToCategory()) {
-                nameBox.setText(categoriesAdpater.getItem(position).getName());
+                nameBox.setText(categoriesAdapter.getItem(position).getName());
             }
             if (presenter.isMatchReceiptCommentToCategory()) {
-                commentBox.setText(categoriesAdpater.getItem(position).getName());
+                commentBox.setText(categoriesAdapter.getItem(position).getName());
             }
         }
 
