@@ -280,7 +280,7 @@
     <string name="backups">Резервные копии</string>
     <string name="manual_backup_title">Ручное резервное копирование:</string>
     <string name="manual_backup_description">Выполняйте резервное копирование данных, чтобы обезопасить ваши чеки! Вы можете восстановить данные, импортировав файл резервной копии SmartReceipts.SMR, генерируемый нажатием кнопки \"Резервное копирование\" внизу.</string>
-    <string name="manual_backup_export">Резервное копирование</string>
+    <string name="manual_backup_export">Бэкап</string>
     <string name="manual_backup_import">Импорт</string>
     <string name="auto_backup_title">Автоматическое резервное копирование [BETA]:</string>
     <string name="auto_backup_wifi_only">Использовать только Wi-Fi</string>
