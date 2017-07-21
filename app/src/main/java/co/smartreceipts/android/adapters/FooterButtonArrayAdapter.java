@@ -51,7 +51,7 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
             Button button = new Button(getContext());
             button.setText(buttonTextResId);
             button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.card_background));
-            UiUtils.setTextAppearance(button, getContext(), R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
+            UiUtils.setTextAppearance(button, R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
 
             button.setOnClickListener(listener);
 
