@@ -8,7 +8,7 @@ import co.smartreceipts.android.R;
 
 public class SettingsViewerActivity extends AppCompatActivity {
 	
-	static final String KEY_FLAG = "KeyFlag";
+	public static final String KEY_FLAG = "KeyFlag";
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {

@@ -13,7 +13,6 @@ public class Utils {
 
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	public static void enableStrictMode() {
-		if (ApiHelper.hasGingerbread()) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 		        .detectAll()
 		        .penaltyLog()
@@ -22,7 +21,6 @@ public class Utils {
 		        .detectAll()
 		        .penaltyLog()
 		        .build());
-		}
 	}
 	
 	public static boolean DEBUG = false; 
@@ -82,31 +80,7 @@ public class Utils {
 	}
 
 	public static class ApiHelper {
-	
-	    public static boolean hasFroyo() {
-	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
-	    }
-	
-	    public static boolean hasGingerbread() {
-	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
-	    }
-	
-	    public static boolean hasHoneycomb() {
-	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-	    }
-	
-	    public static boolean hasHoneycombMR1() {
-	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
-	    }
-	    
-	    public static boolean hasICS() {
-	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
-	    }
-	
-	    public static boolean hasJellyBean() {
-	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-	    }
-	    
+
 	    public static boolean hasKitKat() {
 	        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 	    }
@@ -114,11 +88,11 @@ public class Utils {
 		public static boolean hasLollipop() {
 			return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 		}
-	    
-	    public static boolean supportsPreferenceHeaders() {
-	    	return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-	    }
-	    
+
+		public static boolean hasMarshmallow() {
+			return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+		}
+
 	    public static int getIntFieldIfExists(Class<?> klass, String fieldName, Class<?> obj, int defaultVal) {
 	        try {
 	            Field f = klass.getDeclaredField(fieldName);

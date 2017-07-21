@@ -28,6 +28,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
+import co.smartreceipts.android.settings.widget.SettingsViewerActivity;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.utils.log.Logger;
 
@@ -175,6 +176,24 @@ public class NavigationHandler<T extends FragmentActivity> {
                 intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, R.string.pref_output_header_key);
             }
 
+            activity.startActivity(intent);
+        }
+    }
+
+    public void navigateToCategoriesEditor() {
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, SettingsViewerActivity.class);
+            intent.putExtra(SettingsViewerActivity.KEY_FLAG, activity.getString(R.string.pref_receipt_customize_categories_key));
+            activity.startActivity(intent);
+        }
+    }
+
+    public void navigateToPaymentMethodsEditor() {
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, SettingsViewerActivity.class);
+            intent.putExtra(SettingsViewerActivity.KEY_FLAG, activity.getString(R.string.pref_receipt_payment_methods_key));
             activity.startActivity(intent);
         }
     }

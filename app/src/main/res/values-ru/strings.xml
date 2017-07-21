@@ -255,6 +255,7 @@
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Редактировать чек - %s</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Внимание: Дата этого чека выходит за пределы указанного диапазона для данного отчета</string>
     <string name="manage_categories">Управление категориями</string>
+    <string name="manage_payment_methods">Управление методами оплаты</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Экспортировать ваши чеки?</string>

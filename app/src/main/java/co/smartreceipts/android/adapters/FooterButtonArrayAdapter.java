@@ -13,11 +13,14 @@ import android.widget.Button;
 import java.util.List;
 
 import co.smartreceipts.android.R;
+import wb.android.util.UiUtils;
 
 
 public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
 
+    @StringRes
     private final int buttonTextResId;
+
     private final View.OnClickListener listener;
 
     public FooterButtonArrayAdapter(@NonNull Context context, @NonNull List<T> objects,
@@ -44,11 +47,11 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         if (position == getCount() - 1) {
-            //create view for footer button
+            //create view for the footer button
             Button button = new Button(getContext());
             button.setText(buttonTextResId);
             button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.card_background));
-            button.setTextAppearance(getContext(), R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
+            UiUtils.setTextAppearance(button, getContext(), R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
 
             button.setOnClickListener(listener);
 
@@ -57,5 +60,10 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
             //create view for standard spinner item
             return super.getDropDownView(position, null, parent);
         }
+    }
+
+    public void  update(List<T> items) {
+        super.clear();
+        super.addAll(items);
     }
 }

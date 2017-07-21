@@ -253,6 +253,7 @@
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Editar recibo - %s</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Advertencia: Esta fecha del recibo está por fuera del intervalo de fechas del informe</string>
     <string name="manage_categories">Administrar categorías</string>
+    <string name="manage_payment_methods">Administrar los métodos de pago</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">¿Exportar los recibos?</string>

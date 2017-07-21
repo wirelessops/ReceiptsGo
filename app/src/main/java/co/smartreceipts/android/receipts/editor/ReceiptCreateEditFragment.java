@@ -30,7 +30,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -142,7 +141,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private ArrayAdapter<CharSequence> currenciesAdapter;
     private List<Category> categoriesList;
     private FooterButtonArrayAdapter<Category> categoriesAdapter;
-    private ArrayAdapter<PaymentMethod> paymentMethodsAdapter;
+    private FooterButtonArrayAdapter<PaymentMethod> paymentMethodsAdapter;
 
     public static ReceiptCreateEditFragment newInstance() {
         return new ReceiptCreateEditFragment();
@@ -164,9 +163,16 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         currenciesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
                 database.getCurrenciesList());
         categoriesList = emptyList();
-        categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), Collections.<Category>emptyList(),
-                R.string.manage_categories, null);
-        paymentMethodsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, Collections.<PaymentMethod>emptyList());
+        categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), new ArrayList<Category>(),
+                R.string.manage_categories, v -> {
+            analytics.record(Events.Informational.ManageCategories);
+            navigationHandler.navigateToCategoriesEditor();
+        });
+        paymentMethodsAdapter = new FooterButtonArrayAdapter<>(getActivity(), new ArrayList<PaymentMethod>(),
+                R.string.manage_payment_methods, v -> {
+            analytics.record(Events.Informational.ManagePaymentMethods);
+            navigationHandler.navigateToPaymentMethodsEditor();
+        });
         setHasOptionsMenu(true);
     }
 
@@ -420,12 +426,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             public void onGetSuccess(@NonNull List<Category> list) {
                 if (isAdded()) {
                     categoriesList = list;
-                    categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), list,
-                            R.string.manage_categories, v -> {
-                        // TODO: 20.07.2017 go to categories manager
-                        Toast.makeText(getContext(), "Manage categories", Toast.LENGTH_SHORT).show();
-                        analytics.record(Events.Informational.ManageCategories);
-                    });
+                    categoriesAdapter.update(list);
                     categoriesSpinner.setAdapter(categoriesAdapter);
 
                     if (getReceipt() == null) { // new receipt
@@ -473,8 +474,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     List<PaymentMethod> paymentMethods = new ArrayList<>(list);
                     paymentMethods.add(0, ImmutablePaymentMethodImpl.NONE);
 
-                    paymentMethodsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, paymentMethods);
-                    paymentMethodsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    paymentMethodsAdapter.update(paymentMethods);
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
                     if (presenter.isUsePaymentMethods()) {
                         paymentMethodsContainer.setVisibility(View.VISIBLE);

@@ -253,6 +253,7 @@
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Beleg bearbeiten - %s</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Warnung: dieses Belegsdatum liegt außerhalb des angegebenen Bereichs für diesen Bericht</string>
     <string name="manage_categories">Kategorien verwalten</string>
+    <string name="manage_payment_methods">Zahlungsmethoden verwalten</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Exportieren Sie Ihre Belege?</string>

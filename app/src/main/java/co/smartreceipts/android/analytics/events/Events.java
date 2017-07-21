@@ -81,6 +81,7 @@ public final class Events {
         public static final Event ConfigureReport = new DefaultEvent(Category.Informational, "ConfigureReport");
         public static final Event ClickedGenerateReportTip = new DefaultEvent(Category.Informational, "ClickedGenerateReportTip");
         public static final Event ManageCategories = new DefaultEvent(Category.Informational, "ClickedManageCategories");
+        public static final Event ManagePaymentMethods = new DefaultEvent(Category.Informational, "ClickedManagePaymentMethods");
     }
 
     public static final class Sync {
