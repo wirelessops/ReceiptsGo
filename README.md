@@ -40,7 +40,7 @@ The free and plus versions versions are identical, except the plus version offer
 - [X] Fully customizable report output
 - [X] Automatic backup support via Google Drive
 - [X] OCR support for receipt scans
-- [ ] Graphical breakdowns of spending per category
+- [X] Graphical breakdowns of spending per category
 - [ ] Cross-organization setting standardization
 
 ## Install 
