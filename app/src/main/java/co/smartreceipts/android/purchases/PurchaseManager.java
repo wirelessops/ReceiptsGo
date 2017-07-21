@@ -102,7 +102,7 @@ public class PurchaseManager {
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
         this.observeOnScheduler = Preconditions.checkNotNull(observeOnScheduler);
 
-        this.rxInAppBillingServiceConnection = new RxInAppBillingServiceConnection(context);
+        this.rxInAppBillingServiceConnection = new RxInAppBillingServiceConnection(context, subscribeOnScheduler);
         this.listeners = new CopyOnWriteArrayList<>();
         this.sessionDeveloperPayload = HARDCODED_DEVELOPER_PAYLOAD;
     }

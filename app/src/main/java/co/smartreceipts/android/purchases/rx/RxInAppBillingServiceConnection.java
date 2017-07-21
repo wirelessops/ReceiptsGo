@@ -14,17 +14,21 @@ import com.hadisatrio.optional.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 
 
 public class RxInAppBillingServiceConnection implements ServiceConnection {
 
     private final Context context;
+    private final Scheduler subscribeOnScheduler;
     private final AtomicBoolean isBound = new AtomicBoolean(false);
     private final BehaviorSubject<Optional<IInAppBillingService>> inAppBillingServiceSubject = BehaviorSubject.create();
 
-    public RxInAppBillingServiceConnection(@NonNull Context context) {
+    public RxInAppBillingServiceConnection(@NonNull Context context, @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
+        this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
     }
 
     @Override
@@ -48,6 +52,7 @@ public class RxInAppBillingServiceConnection implements ServiceConnection {
         return inAppBillingServiceSubject
                 .take(1)
                 .filter(Optional::isPresent)
-                .map(Optional::get);
+                .map(Optional::get)
+                .subscribeOn(subscribeOnScheduler);
     }
 }
