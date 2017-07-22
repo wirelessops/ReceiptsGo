@@ -48,7 +48,7 @@ public class DefaultAdProvider implements Provider<AdPresenter> {
 
     @Override
     public AdPresenter get() {
-        if (true) {
+        if (regionChecker.isInWesternEurope() && shouldShowMarketsAd()) {
             return marketsComAdPresenterProvider.get();
         } else if (shouldShowAbcMouseAd()) {
             return abcMouseAdPresenterProvider.get();
