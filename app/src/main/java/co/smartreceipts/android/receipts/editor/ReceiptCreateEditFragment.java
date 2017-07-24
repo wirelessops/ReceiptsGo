@@ -448,7 +448,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                                 }
                                 if (nameToIndex != null) {
                                     for (int i = 0; i < categoriesAdapter.getCount(); i++) {
-                                        if (nameToIndex.equals(categoriesAdapter.getItem(i).getName())) {
+                                        final Category category = categoriesAdapter.getItem(i);
+                                        if (category != null && nameToIndex.equals(category.getName())) {
                                             categoriesSpinner.setSelection(i);
                                             break; // Exit loop now
                                         }
