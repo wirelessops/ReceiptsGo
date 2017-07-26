@@ -279,7 +279,7 @@
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Резервні копії</string>
     <string name="manual_backup_title">Ручне резервне копіювання:</string>
-    <string name="manual_backup_description">Виконуйте резервне копіювання даних, щоб захистити ваші чеки! Ви можете відновити дані, імпортувавши файл резервної копії SmartReceipts.SMR, що генерується натисканням кнопки \"Резервне копіювання\" внизу.</string>
+    <string name="manual_backup_description">Виконуйте резервне копіювання даних, щоб захистити ваші чеки! Ви можете відновити дані, імпортувавши файл резервної копії SmartReceipts.SMR, що генерується натисканням кнопки \"Бекап\" нижче.</string>
     <string name="manual_backup_export">Бекап</string>
     <string name="manual_backup_import">Імпорт</string>
     <string name="auto_backup_title">Автоматичне резервне копіювання [BETA]:</string>

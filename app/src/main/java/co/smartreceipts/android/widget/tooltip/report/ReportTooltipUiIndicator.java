@@ -11,7 +11,7 @@ import co.smartreceipts.android.sync.errors.SyncErrorType;
 public class ReportTooltipUiIndicator {
 
     public enum State {
-        SyncError, GenerateInfo, None
+        SyncError, GenerateInfo, BackupReminder, None
     }
 
     private final State state;
@@ -30,6 +30,11 @@ public class ReportTooltipUiIndicator {
     @NonNull
     public static ReportTooltipUiIndicator generateInfo() {
         return new ReportTooltipUiIndicator(State.GenerateInfo, null);
+    }
+
+    @NonNull
+    public static ReportTooltipUiIndicator backupReminder() {
+        return new ReportTooltipUiIndicator(State.BackupReminder, null);
     }
 
     @NonNull
