@@ -28,6 +28,12 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("../keystore/debug.keystore")
+        }
+    }
+
     lintOptions {
         abortOnError false
         disable 'InvalidPackage', 'MissingTranslation'
