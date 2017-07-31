@@ -470,6 +470,8 @@
 
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Verwenden Sie den ‚Generate‘ Registerkarte um Berichte zu erstellen</string>
+    <string name="tooltip_no_backups_info_message">Erinnerung: Sichern Sie regelmäßig Ihre Daten</string>
+    <string name="tooltip_backup_info_message">%d Tage seit dein letztem Backup</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Fügen Sie Ihre ersten Quittungen hinzu, um Graphen zu sehen.</string>
@@ -480,6 +482,5 @@
     <string name="graphs_label_reimbursable">Erstattungsfähig</string>
     <string name="graphs_label_non_reimbursable">Nicht rückzahlbar</string>
     <string name="graphs_label_others">Andere</string>
-
 
 </resources>

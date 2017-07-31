@@ -472,6 +472,8 @@
 
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Використовуйте вкладку \"Створити\" для створення звітів</string>
+    <string name="tooltip_no_backups_info_message">Нагадування: періодично створюйте резервні копії ваших даних</string>
+    <string name="tooltip_backup_info_message">%d днів з моменту останньої резервної копії</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Додайте свій перший чек щоб побачити графіки.</string>

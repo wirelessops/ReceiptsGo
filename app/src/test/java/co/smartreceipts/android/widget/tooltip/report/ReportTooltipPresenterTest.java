@@ -22,6 +22,8 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class ReportTooltipPresenterTest {
 
+    private static final int DAYS = 15;
+
     @InjectMocks
     ReportTooltipPresenter presenter;
 
@@ -96,5 +98,29 @@ public class ReportTooltipPresenterTest {
         verify(tooltipView).present(ReportTooltipUiIndicator.syncError(errorType));
         verify(tooltipView).present(ReportTooltipUiIndicator.none());
         verify(interactor, never()).handleClickOnErrorTooltip(errorType);
+    }
+
+    @Test
+    public void passBackupTooltipClicks() {
+        when(interactor.checkTooltipCauses()).thenReturn(Observable.just(ReportTooltipUiIndicator.backupReminder(DAYS)));
+        when(tooltipView.getTooltipsClicks()).thenReturn(Observable.just(ReportTooltipUiIndicator.backupReminder(DAYS)));
+
+        presenter.subscribe();
+
+        verify(tooltipView).present(ReportTooltipUiIndicator.backupReminder(DAYS));
+        verify(tooltipView).present(ReportTooltipUiIndicator.none());
+        verify(interactor).backupReminderTooltipClosed();
+    }
+
+    @Test
+    public void passBackupTooltipCloseClicks() {
+        when(interactor.checkTooltipCauses()).thenReturn(Observable.just(ReportTooltipUiIndicator.backupReminder(DAYS)));
+        when(tooltipView.getCloseButtonClicks()).thenReturn(Observable.just(ReportTooltipUiIndicator.backupReminder(DAYS)));
+
+        presenter.subscribe();
+
+        verify(tooltipView).present(ReportTooltipUiIndicator.backupReminder(DAYS));
+        verify(tooltipView).present(ReportTooltipUiIndicator.none());
+        verify(interactor).backupReminderTooltipClosed();
     }
 }

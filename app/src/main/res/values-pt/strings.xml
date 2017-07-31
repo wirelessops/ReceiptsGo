@@ -470,6 +470,8 @@
 
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Use a aba \'Gerar\' para criar seus relatórios</string>
+    <string name="tooltip_no_backups_info_message">Lembrete: faça backup periodicamente de seus dados</string>
+    <string name="tooltip_backup_info_message">%d dias desde o último backup</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Adicione seus primeiros recibos para ver gráficos.</string>

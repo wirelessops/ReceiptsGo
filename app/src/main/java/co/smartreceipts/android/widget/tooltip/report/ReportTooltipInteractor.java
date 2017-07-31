@@ -19,7 +19,9 @@ import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.widget.tooltip.report.backup.BackupReminderTooltipManager;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,19 +34,40 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
     private final BackupProvidersManager backupProvidersManager;
     private final Analytics analytics;
     private final GenerateInfoTooltipManager generateInfoTooltipManager;
+    private final BackupReminderTooltipManager backupReminderTooltipManager;
 
     @Inject
     public ReportTooltipInteractor(T activity, NavigationHandler navigationHandler,
                                    BackupProvidersManager backupProvidersManager,
-                                   Analytics analytics, GenerateInfoTooltipManager infoTooltipManager) {
+                                   Analytics analytics, GenerateInfoTooltipManager infoTooltipManager,
+                                   BackupReminderTooltipManager backupReminderTooltipManager) {
         this.fragmentActivity = activity;
         this.navigationHandler = navigationHandler;
         this.backupProvidersManager = backupProvidersManager;
         this.analytics = analytics;
         this.generateInfoTooltipManager = infoTooltipManager;
+        this.backupReminderTooltipManager = backupReminderTooltipManager;
     }
 
     public Observable<ReportTooltipUiIndicator> checkTooltipCauses() {
+
+        Observable<ReportTooltipUiIndicator> infoIndicatorObservable = Observable.concat(
+                needToShowGenerateInfo()
+                        .flatMapObservable(needToShow -> needToShow ? Observable.just(ReportTooltipUiIndicator.generateInfo())
+                                : Observable.just(ReportTooltipUiIndicator.none())),
+                needToShowBackupReminder()
+                        .flatMapObservable(days -> Observable.just(ReportTooltipUiIndicator.backupReminder(days))))
+                .toList()
+                .flatMapObservable(
+                        reportTooltipUiIndicators -> {
+                            for (ReportTooltipUiIndicator reportTooltipUiIndicator : reportTooltipUiIndicators) {
+                                // this makes priority for backup reminder stream
+                                if (reportTooltipUiIndicator.getState() == ReportTooltipUiIndicator.State.BackupReminder) {
+                                    return Observable.just(reportTooltipUiIndicator);
+                                }
+                            }
+                            return Observable.just(reportTooltipUiIndicators.get(0));
+                        });
 
         return Observable.combineLatest(
                 getErrorStream()
@@ -55,12 +78,10 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
                         })
                         .flatMap(syncErrorType -> Observable.just(ReportTooltipUiIndicator.syncError(syncErrorType)))
                         .startWith(ReportTooltipUiIndicator.none()),
-                needToShowGenerateInfo()
-                        .map(needToShow -> needToShow ? ReportTooltipUiIndicator.generateInfo() : ReportTooltipUiIndicator.none())
-                        .toObservable(),
-                (errorUiIndicator, generateInfoUiIndicator) -> {
+                infoIndicatorObservable,
+                (errorUiIndicator, infoUiIndicator) -> {
                     if (errorUiIndicator.equals(ReportTooltipUiIndicator.none())) { // this makes some kind of priority for errors stream
-                        return generateInfoUiIndicator;
+                        return infoUiIndicator;
                     } else {
                         return errorUiIndicator;
                     }
@@ -75,6 +96,10 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
 
     private Single<Boolean> needToShowGenerateInfo() {
         return generateInfoTooltipManager.needToShowGenerateTooltip();
+    }
+
+    private Maybe<Integer> needToShowBackupReminder() {
+        return backupReminderTooltipManager.needToShowBackupReminder();
     }
 
     public void handleClickOnErrorTooltip(@NonNull SyncErrorType syncErrorType) {
@@ -103,6 +128,10 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
 
     public void generateInfoTooltipClosed() {
         generateInfoTooltipManager.tooltipWasDismissed();
+    }
+
+    public void backupReminderTooltipClosed() {
+        backupReminderTooltipManager.tooltipWasDismissed();
     }
 
 }

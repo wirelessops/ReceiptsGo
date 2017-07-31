@@ -17,6 +17,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.sync.manual.ManualBackupAndRestoreTaskCache;
+import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -28,6 +29,8 @@ public class ExportBackupWorkerProgressDialogFragment extends DialogFragment {
     PersistenceManager persistenceManager;
     @Inject
     Analytics analytics;
+    @Inject
+    BackupReminderTooltipStorage backupReminderTooltipStorage;
 
     private ManualBackupAndRestoreTaskCache manualBackupAndRestoreTaskCache;
     private Disposable disposable;
@@ -70,6 +73,7 @@ public class ExportBackupWorkerProgressDialogFragment extends DialogFragment {
                         sentIntent.setType("application/octet-stream");
                         sentIntent.putExtra(Intent.EXTRA_STREAM, uri);
                         getActivity().startActivity(Intent.createChooser(sentIntent, getString(R.string.export)));
+                        backupReminderTooltipStorage.setLastManualBackupDate();
                     } else {
                         Toast.makeText(getContext(), getString(R.string.EXPORT_ERROR), Toast.LENGTH_LONG).show();
                     }

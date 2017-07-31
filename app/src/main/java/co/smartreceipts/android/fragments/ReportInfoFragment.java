@@ -32,10 +32,11 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
+import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
 import dagger.android.support.AndroidSupportInjection;
 
-public class ReportInfoFragment extends WBFragment implements GenerateNavigator {
+public class ReportInfoFragment extends WBFragment implements GenerateNavigator, BackupNavigator {
 
     public static final String TAG = ReportInfoFragment.class.getSimpleName();
 
@@ -200,5 +201,10 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator 
     @Override
     public void navigateToGenerateTab() {
         viewPager.setCurrentItem(fragmentPagerAdapter.getGenerateTabPosition(), true);
+    }
+
+    @Override
+    public void navigateToBackup() {
+        navigationHandler.navigateToBackupMenu();
     }
 }

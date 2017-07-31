@@ -15,12 +15,14 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.widget.tooltip.TooltipView;
+import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 import static android.view.View.GONE;
+import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.BackupReminder;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.GenerateInfo;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.None;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.SyncError;
@@ -54,6 +56,10 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
         if (!(this.getParentFragment() instanceof GenerateNavigator)) {
             throw new IllegalStateException("Parent fragment must implement GenerateNavigator interface");
         }
+
+        if (!(this.getParentFragment() instanceof BackupNavigator)) {
+            throw new IllegalStateException("Parent fragment must implement BackupNavigator interface");
+        }
     }
 
     @Nullable
@@ -82,6 +88,8 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
             presentError(uiIndicator.getErrorType().get());
         } else if (uiIndicator.getState() == GenerateInfo) {
             presentGenerateInfo();
+        } else if (uiIndicator.getState() == BackupReminder) {
+            presentBackupReminder(uiIndicator.getDaysSinceBackup().get());
         } else if (uiIndicator.getState() == None) {
             tooltip.hideWithAnimation();
         }
@@ -122,6 +130,18 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
                     ((GenerateNavigator) this.getParentFragment()).navigateToGenerateTab();
                 },
                 v -> closeClickStream.onNext(ReportTooltipUiIndicator.generateInfo()));
+
+        tooltip.showWithAnimation();
+    }
+
+    private void presentBackupReminder(int days) {
+        tooltip.setInfoWithIcon( days > 0 ? R.string.tooltip_backup_info_message : R.string.tooltip_no_backups_info_message,
+                v -> {
+                    tooltipClickStream.onNext(ReportTooltipUiIndicator.backupReminder(days));
+                    ((BackupNavigator) this.getParentFragment()).navigateToBackup();
+                },
+                v -> closeClickStream.onNext(ReportTooltipUiIndicator.backupReminder(days)),
+                days);
 
         tooltip.showWithAnimation();
     }

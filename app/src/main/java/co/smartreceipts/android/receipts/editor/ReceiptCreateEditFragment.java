@@ -67,6 +67,7 @@ import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
+import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -100,7 +101,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     NavigationHandler navigationHandler;
     @Inject
     FragmentStateCache fragmentStateCache;
-
+    @Inject
+    BackupReminderTooltipStorage backupReminderTooltipStorage;
 
     @Inject
     ReceiptCreateEditFragmentPresenter presenter;
@@ -750,6 +752,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
             analytics.record(getReceipt() == null ? Events.Receipts.PersistNewReceipt : Events.Receipts.PersistUpdateReceipt);
             dateManager.setDateEditTextListenerDialogHolder(null);
+
+            backupReminderTooltipStorage.setOneMoreNewReceipt();
 
 
             navigationHandler.navigateToReportInfoFragment(getParentTrip());

@@ -8,11 +8,12 @@ import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.widget.tooltip.TooltipManager;
 import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipStorage;
 import io.reactivex.Single;
 
 @ApplicationScope
-public class GenerateInfoTooltipManager {
+public class GenerateInfoTooltipManager implements TooltipManager{
 
     /*
     Generate info tooltip should be shown under the following conditions:
@@ -62,6 +63,7 @@ public class GenerateInfoTooltipManager {
         Logger.debug(this, "Report was generated");
     }
 
+    @Override
     public void tooltipWasDismissed() {
         preferencesStorage.tooltipWasDismissed();
         Logger.debug(this, "Generate info tooltip was dismissed");

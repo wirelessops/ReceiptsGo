@@ -50,5 +50,9 @@
     <!--Graphs height-->
     <dimen name="graph_height_default">300dp</dimen>
     <dimen name="graph_height_small">130dp</dimen>
+    
+    <!--Tooltip-->
+    <dimen name="default_tooltip_horizontal_padding">8dp</dimen>
+    <dimen name="default_tooltip_vertical_padding">16dp</dimen>
 
 </resources>

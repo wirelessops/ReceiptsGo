@@ -21,6 +21,8 @@ import co.smartreceipts.android.persistence.database.defaults.WhiteLabelFriendly
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.rating.data.AppRatingStorage;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderPreferencesStorage;
+import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipPreferencesStorage;
 import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipStorage;
 import dagger.Module;
@@ -106,6 +108,12 @@ public class BaseAppModule {
     @Provides
     @ApplicationScope
     public static GenerateInfoTooltipStorage provideGenerateInfoTooltipStorage(GenerateInfoTooltipPreferencesStorage storage) {
+        return storage;
+    }
+
+    @Provides
+    @ApplicationScope
+    public static BackupReminderTooltipStorage provideBackupReminderTooltipStorage (BackupReminderPreferencesStorage storage) {
         return storage;
     }
 }

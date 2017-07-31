@@ -10,6 +10,7 @@ import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.imports.intents.di.IntentImportInformationModule;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipInteractor;
+import co.smartreceipts.android.widget.tooltip.report.backup.BackupReminderTooltipManager;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import dagger.Module;
 import dagger.Provides;
@@ -44,9 +45,10 @@ public interface SmartReceiptsActivitySubcomponent extends AndroidInjector<Smart
                                                                NavigationHandler navigationHandler,
                                                                BackupProvidersManager backupProvidersManager,
                                                                Analytics analytics,
-                                                               GenerateInfoTooltipManager tooltipManager) {
+                                                               GenerateInfoTooltipManager generateInfoTooltipManager,
+                                                               BackupReminderTooltipManager backupReminderTooltipManager) {
             return new ReportTooltipInteractor<>(activity, navigationHandler, backupProvidersManager,
-                    analytics, tooltipManager);
+                    analytics, generateInfoTooltipManager, backupReminderTooltipManager);
         }
     }
 }

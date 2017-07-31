@@ -46,6 +46,8 @@ public class ReportTooltipPresenter extends BasePresenter<TooltipView, ReportToo
                     Logger.info(ReportTooltipPresenter.this, "User clicked on {} tooltip", uiIndicator);
                     if (uiIndicator.getState() == ReportTooltipUiIndicator.State.GenerateInfo) {
                         analytics.record(Events.Informational.ClickedGenerateReportTip);
+                    } else if (uiIndicator.getState() == ReportTooltipUiIndicator.State.BackupReminder) {
+                        analytics.record(Events.Informational.ClickedBackupReminderTip);
                     }
                 })
                 .subscribe(uiIndicator -> {
@@ -55,6 +57,8 @@ public class ReportTooltipPresenter extends BasePresenter<TooltipView, ReportToo
                     } else if (uiIndicator.getState() == ReportTooltipUiIndicator.State.GenerateInfo) {
                         // Note: The actual click logic is in the view (probably need to clean up dagger for this to be cleaner)
                         interactor.generateInfoTooltipClosed();
+                    } else if (uiIndicator.getState() == ReportTooltipUiIndicator.State.BackupReminder) {
+                        interactor.backupReminderTooltipClosed();
                     }
                 }));
 
@@ -63,6 +67,8 @@ public class ReportTooltipPresenter extends BasePresenter<TooltipView, ReportToo
                     view.present(ReportTooltipUiIndicator.none());
                     if (uiIndicator.getState() == ReportTooltipUiIndicator.State.GenerateInfo) {
                         interactor.generateInfoTooltipClosed();
+                    } else if (uiIndicator.getState() == ReportTooltipUiIndicator.State.BackupReminder) {
+                        interactor.backupReminderTooltipClosed();
                     }
                 }));
     }

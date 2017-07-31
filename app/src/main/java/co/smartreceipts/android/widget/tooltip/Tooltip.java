@@ -61,6 +61,17 @@ public class Tooltip extends RelativeLayout {
         setTooltipClickListener(tooltipClickListener);
     }
 
+    public void setInfoWithIcon(@StringRes int infoStringId, @Nullable OnClickListener tooltipClickListener,
+                        @Nullable OnClickListener closeClickListener, Object... formatArgs) {
+        setInfoMessage(getContext().getString(infoStringId, formatArgs));
+        setTooltipClickListener(tooltipClickListener);
+        showCloseIcon(closeClickListener);
+
+        errorIcon.setVisibility(VISIBLE);
+        buttonNo.setVisibility(GONE);
+        buttonYes.setVisibility(GONE);
+    }
+
     public void setInfo(@StringRes int infoStringId, @Nullable OnClickListener tooltipClickListener, @Nullable OnClickListener closeClickListener) {
         setInfoMessage(infoStringId);
         setTooltipClickListener(tooltipClickListener);

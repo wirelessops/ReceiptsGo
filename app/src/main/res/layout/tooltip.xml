@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:parentTag="RelativeLayout"
-    tools:background="@color/smart_receipts_purple_light">
+    tools:background="@color/smart_receipts_purple_light"
+    tools:parentTag="RelativeLayout">
 
 
     <ImageView
@@ -14,12 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:padding="@dimen/default_margin_item_separator"
+        android:paddingStart="@dimen/default_tooltip_horizontal_padding"
         android:tint="@color/text_primary_color"
         android:visibility="gone"
-        tools:visibility="gone"
         app:srcCompat="@drawable/ic_error_outline_24dp"
-        />
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/tooltip_close_icon"
@@ -29,12 +28,11 @@
         android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:padding="@dimen/default_margin_item_separator"
+        android:paddingEnd="@dimen/default_tooltip_horizontal_padding"
         android:tint="@color/text_primary_color"
         android:visibility="gone"
-        tools:visibility="gone"
         app:srcCompat="@drawable/ic_clear_24dp"
-        />
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/tooltip_no"
@@ -45,21 +43,19 @@
         android:layout_toStartOf="@+id/tooltip_yes"
         android:text="@string/no"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="gone" />
 
     <Button
         android:id="@+id/tooltip_yes"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/tooltip_close_icon"
-        android:layout_alignParentEnd="true"
         android:text="@string/yes"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/tooltip_message"
@@ -70,10 +66,12 @@
         android:layout_toEndOf="@id/tooltip_error_icon"
         android:layout_toStartOf="@id/tooltip_no"
         android:ellipsize="end"
-        android:padding="@dimen/default_margin_size"
-        tools:text="Like Smart Receipts?"
+        android:paddingTop="@dimen/default_tooltip_vertical_padding"
+        android:paddingBottom="@dimen/default_tooltip_vertical_padding"
+        android:paddingStart="@dimen/default_tooltip_horizontal_padding"
+        android:paddingEnd="@dimen/default_tooltip_horizontal_padding"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:text="Like Smart Receipts?"
+        tools:visibility="visible" />
 
 </RelativeLayout>

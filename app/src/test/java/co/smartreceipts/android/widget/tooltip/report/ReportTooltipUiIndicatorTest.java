@@ -9,6 +9,8 @@ import static junit.framework.Assert.assertEquals;
 
 public class ReportTooltipUiIndicatorTest {
 
+    private static final int DAYS = 5;
+
     @Test
     public void error() {
         final ReportTooltipUiIndicator indicator = ReportTooltipUiIndicator.syncError(SyncErrorType.NoRemoteDiskSpace);
@@ -25,5 +27,14 @@ public class ReportTooltipUiIndicatorTest {
         assertEquals(ReportTooltipUiIndicator.generateInfo(), indicator);
         assertEquals(State.GenerateInfo, indicator.getState());
         assertEquals(null, indicator.getErrorType().orNull());
+    }
+
+    @Test
+    public void backupReminder() {
+        final ReportTooltipUiIndicator indicator = ReportTooltipUiIndicator.backupReminder(DAYS);
+
+        assertEquals(ReportTooltipUiIndicator.backupReminder(DAYS), indicator);
+        assertEquals(State.BackupReminder, indicator.getState());
+        assertEquals(DAYS, (int)indicator.getDaysSinceBackup().get());
     }
 }

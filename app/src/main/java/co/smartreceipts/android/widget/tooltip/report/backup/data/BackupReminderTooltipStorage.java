@@ -4,7 +4,15 @@ import java.sql.Date;
 
 public interface BackupReminderTooltipStorage {
 
-    boolean isAutomaticBackupsEnabled();
+    void setLastManualBackupDate();
 
-    Date getLastBackupDate();
+    Date getLastManualBackupDate();
+
+    void setOneMoreNewReceipt();
+
+    int getReceiptsCountWithoutBackup();
+
+    void prolongReminder();
+
+    int getProlongationsCount();
 }
