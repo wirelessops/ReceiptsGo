@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="original_column_RECEIPTMENU_FIELD_NAME_en_us_name" translatable="false">Name</string>
+    <string name="original_column_RECEIPTMENU_FIELD_PRICE_en_us_name" translatable="false">Price</string>
+    <string name="original_column_RECEIPTMENU_FIELD_TAX_en_us_name" translatable="false">Tax</string>
+    <string name="original_column_RECEIPTMENU_FIELD_CURRENCY_en_us_name" translatable="false">Currency</string>
+    <string name="original_column_RECEIPTMENU_FIELD_DATE_en_us_name" translatable="false">Date</string>
+    <string name="original_column_RECEIPTMENU_FIELD_CATEGORY_en_us_name" translatable="false">Category</string>
+    <string name="original_column_RECEIPTMENU_FIELD_COMMENT_en_us_name" translatable="false">Comment</string>
+
+    <string name="original_column_item_blank_en_us_name" translatable="false">Blank Column</string>
+    <string name="original_column_item_category_code_en_us_name" translatable="false">Category Code</string>
+    <string name="original_column_item_category_name_en_us_name" translatable="false">Category Name</string>
+    <string name="original_column_item_user_id_en_us_name" translatable="false">User ID</string>
+    <string name="original_column_item_report_name_en_us_name" translatable="false">Report Name</string>
+    <string name="original_column_item_report_start_date_en_us_name" translatable="false">Report Start Date</string>
+    <string name="original_column_item_report_end_date_en_us_name" translatable="false">Report End Date</string>
+    <string name="original_column_item_report_comment_en_us_name" translatable="false">Report Comment</string>
+    <string name="original_column_item_report_cost_center_en_us_name" translatable="false">Report Cost Center</string>
+    <string name="original_column_item_image_file_name_en_us_name" translatable="false">Image Name</string>
+    <string name="original_column_item_image_path_en_us_name" translatable="false">Image Path</string>
+    <!-- **Please note that for _en_us_namef translatable="false" lex purposes, some of these use the legacy names above** -->
+    <string name="original_column_item_converted_price_exchange_rate_en_us_name" translatable="false">Price (Exchanged)</string>
+    <string name="original_column_item_converted_tax_exchange_rate_en_us_name" translatable="false">Tax (Exchanged)</string>
+    <string name="original_column_item_converted_price_plus_tax_exchange_rate_en_us_name" translatable="false">Price Plus Tax (Exchanged)</string>
+    <string name="original_column_item_exchange_rate_en_us_name" translatable="false">Exchange Rate</string>
+    <string name="original_column_item_pictured_en_us_name" translatable="false">Pictured</string>
+    <string name="original_column_item_reimbursable_en_us_name" translatable="false">Reimbursable</string>
+    <string name="original_column_item_deprecated_expensable_en_us_name" translatable="false">Expensable</string>
+    <string name="original_column_item_index_en_us_name" translatable="false">Receipt Index</string>
+    <string name="original_column_item_id_en_us_name" translatable="false">Receipt ID</string>
+    <string name="original_column_item_payment_method_en_us_name" translatable="false">Payment Method</string>
+
+</resources>

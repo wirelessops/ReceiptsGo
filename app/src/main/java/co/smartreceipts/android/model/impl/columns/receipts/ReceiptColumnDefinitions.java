@@ -32,41 +32,42 @@ import wb.android.flex.Flex;
 public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt> {
 
     private enum ActualDefinition {
-        BLANK(R.string.column_item_blank),
-        CATEGORY_CODE(R.string.column_item_category_code),
-        CATEGORY_NAME(R.string.column_item_category_name),
-        USER_ID(R.string.column_item_user_id),
-        REPORT_NAME(R.string.column_item_report_name),
-        REPORT_START_DATE(R.string.column_item_report_start_date),
-        REPORT_END_DATE(R.string.column_item_report_end_date),
-        REPORT_COMMENT(R.string.column_item_report_comment),
-        REPORT_COST_CENTER(R.string.column_item_report_cost_center),
-        IMAGE_FILE_NAME(R.string.column_item_image_file_name),
-        IMAGE_PATH(R.string.column_item_image_path),
-        COMMENT(R.string.RECEIPTMENU_FIELD_COMMENT),
-        CURRENCY(R.string.RECEIPTMENU_FIELD_CURRENCY),
-        DATE(R.string.RECEIPTMENU_FIELD_DATE),
-        NAME(R.string.RECEIPTMENU_FIELD_NAME),
-        PRICE(R.string.RECEIPTMENU_FIELD_PRICE),
-        PRICE_EXCHANGED(R.string.column_item_converted_price_exchange_rate),
-        TAX(R.string.RECEIPTMENU_FIELD_TAX),
-        TAX_EXCHANGED(R.string.column_item_converted_tax_exchange_rate),
-        PRICE_PLUS_TAX_EXCHANGED(R.string.column_item_converted_price_plus_tax_exchange_rate),
-        EXCHANGE_RATE(R.string.column_item_exchange_rate),
-        PICTURED(R.string.column_item_pictured),
-        REIMBURSABLE(R.string.column_item_reimbursable, R.string.column_item_deprecated_expensable),
-        INDEX(R.string.column_item_index),
-        ID(R.string.column_item_id),
+        BLANK(R.string.column_item_blank, R.string.original_column_item_blank_en_us_name),
+        CATEGORY_CODE(R.string.column_item_category_code, R.string.original_column_item_category_code_en_us_name),
+        CATEGORY_NAME(R.string.column_item_category_name, R.string.original_column_item_category_name_en_us_name),
+        USER_ID(R.string.column_item_user_id, R.string.original_column_item_user_id_en_us_name),
+        REPORT_NAME(R.string.column_item_report_name, R.string.original_column_item_report_name_en_us_name),
+        REPORT_START_DATE(R.string.column_item_report_start_date, R.string.original_column_item_report_start_date_en_us_name),
+        REPORT_END_DATE(R.string.column_item_report_end_date, R.string.original_column_item_report_end_date_en_us_name),
+        REPORT_COMMENT(R.string.column_item_report_comment, R.string.original_column_item_report_comment_en_us_name),
+        REPORT_COST_CENTER(R.string.column_item_report_cost_center, R.string.original_column_item_report_cost_center_en_us_name),
+        IMAGE_FILE_NAME(R.string.column_item_image_file_name, R.string.original_column_item_image_file_name_en_us_name),
+        IMAGE_PATH(R.string.column_item_image_path, R.string.original_column_item_image_path_en_us_name),
+        COMMENT(R.string.RECEIPTMENU_FIELD_COMMENT, R.string.original_column_RECEIPTMENU_FIELD_COMMENT_en_us_name),
+        CURRENCY(R.string.RECEIPTMENU_FIELD_CURRENCY, R.string.original_column_RECEIPTMENU_FIELD_CURRENCY_en_us_name),
+        DATE(R.string.RECEIPTMENU_FIELD_DATE, R.string.original_column_RECEIPTMENU_FIELD_DATE_en_us_name),
+        NAME(R.string.RECEIPTMENU_FIELD_NAME, R.string.original_column_RECEIPTMENU_FIELD_NAME_en_us_name),
+        PRICE(R.string.RECEIPTMENU_FIELD_PRICE, R.string.original_column_RECEIPTMENU_FIELD_PRICE_en_us_name),
+        PRICE_EXCHANGED(R.string.column_item_converted_price_exchange_rate, R.string.original_column_item_converted_price_exchange_rate_en_us_name),
+        TAX(R.string.RECEIPTMENU_FIELD_TAX, R.string.original_column_RECEIPTMENU_FIELD_TAX_en_us_name),
+        TAX_EXCHANGED(R.string.column_item_converted_tax_exchange_rate, R.string.original_column_item_converted_tax_exchange_rate_en_us_name),
+        PRICE_PLUS_TAX_EXCHANGED(R.string.column_item_converted_price_plus_tax_exchange_rate, R.string.original_column_item_converted_price_plus_tax_exchange_rate_en_us_name),
+        EXCHANGE_RATE(R.string.column_item_exchange_rate, R.string.original_column_item_exchange_rate_en_us_name),
+        PICTURED(R.string.column_item_pictured, R.string.original_column_item_pictured_en_us_name),
+        REIMBURSABLE(R.string.column_item_reimbursable, R.string.original_column_item_reimbursable_en_us_name, R.string.column_item_deprecated_expensable),
+        INDEX(R.string.column_item_index, R.string.original_column_item_index_en_us_name),
+        ID(R.string.column_item_id, R.string.original_column_item_id_en_us_name),
         PAYMENT_METHOD(R.string.column_item_payment_method),
         EXTRA_EDITTEXT_1(R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1),
         EXTRA_EDITTEXT_2(R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2),
         EXTRA_EDITTEXT_3(R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3);
 
-        private final int mStringResId;
-        private final int mLegacyStringResId;
+        private final int stringResId;
+        private final List<Integer> legacyStringResIds;
 
         ActualDefinition(@StringRes int stringResId) {
-            this(stringResId, -1);
+            this.stringResId = stringResId;
+            this.legacyStringResIds = Collections.emptyList();
         }
 
         /**
@@ -77,18 +78,35 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
          * @param legacyStringResId the legacy id
          */
         ActualDefinition(@StringRes int stringResId, @StringRes int legacyStringResId) {
-            mStringResId = stringResId;
-            mLegacyStringResId = legacyStringResId;
+            this.stringResId = stringResId;
+            this.legacyStringResIds = Collections.singletonList(legacyStringResId);
+        }
+
+        /**
+         * Allows us to specify a legacy item that we've updated our name from, since columns are keyed off the name itself (so what happens
+         * if we change the column name... probably not the best design here but we'll revisit later)
+         *
+         * @param stringResId the current id
+         * @param legacyStringResIds the list of legacy id
+         */
+        ActualDefinition(@StringRes int stringResId, @StringRes int... legacyStringResIds) {
+            this.stringResId = stringResId;
+            this.legacyStringResIds = new ArrayList<>();
+            if (legacyStringResIds != null) {
+                for (final int legacyStringResId : legacyStringResIds) {
+                    this.legacyStringResIds.add(legacyStringResId);
+                }
+            }
+
         }
 
         @StringRes
         public final int getStringResId() {
-            return mStringResId;
+            return stringResId;
         }
 
-        @StringRes
-        public final int getLegacyStringResId() {
-            return mLegacyStringResId;
+        public final List<Integer> getLegacyStringResIds() {
+            return legacyStringResIds;
         }
 
     }
@@ -111,9 +129,14 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
             final ActualDefinition definition = mActualDefinitions[i];
             if (definitionName.equals(getColumnNameFromStringResId(definition.getStringResId()))) {
                 return getColumnFromClass(id, definition, definitionName, syncState);
-            } else if (definition.getLegacyStringResId() >= 0 && definitionName.equals(getColumnNameFromStringResId(definition.getLegacyStringResId()))) {
-                final String newDefinitionName = getColumnNameFromStringResId(definition.getStringResId());
-                return getColumnFromClass(id, definition, newDefinitionName, syncState);
+            } else if (!definition.getLegacyStringResIds().isEmpty()) {
+                final List<Integer> legacyStringResIds = definition.getLegacyStringResIds();
+                for (final Integer legacyStringResId : legacyStringResIds) {
+                    if (legacyStringResId >= 0 && definitionName.equals(getColumnNameFromStringResId(legacyStringResId))) {
+                        final String newDefinitionName = getColumnNameFromStringResId(definition.getStringResId());
+                        return getColumnFromClass(id, definition, newDefinitionName, syncState);
+                    }
+                }
             }
         }
         return null;
@@ -130,8 +153,8 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
                 columns.add(column);
             }
         }
-        Collections.sort(columns, new ColumnNameComparator<AbstractColumnImpl<Receipt>>());
-        return new ArrayList<Column<Receipt>>(columns);
+        Collections.sort(columns, new ColumnNameComparator<>());
+        return new ArrayList<>(columns);
     }
 
     @NonNull
