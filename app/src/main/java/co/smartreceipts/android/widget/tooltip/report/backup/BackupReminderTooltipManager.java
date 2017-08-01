@@ -35,7 +35,7 @@ public class BackupReminderTooltipManager implements TooltipManager {
         int daysLimit = DAYS_WITHOUT_BACKUP_LIMIT + DAYS_WITHOUT_BACKUP_LIMIT * prolongationsCount;
 
         if (backupProvidersManager.getSyncProvider() == SyncProvider.None && // disabled auto backups
-                backupReminderTooltipStorage.getReceiptsCountWithoutBackup() > receiptsLimit) { // and user has a lot of new receipts since last backup
+                backupReminderTooltipStorage.getReceiptsCountWithoutBackup() >= receiptsLimit) { // and user has a lot of new receipts since last backup
 
             long lastManualBackupTime = backupReminderTooltipStorage.getLastManualBackupDate().getTime();
 
@@ -43,7 +43,7 @@ public class BackupReminderTooltipManager implements TooltipManager {
                 return Maybe.just(NO_PREVIOUS_BACKUPS_DAY);
             } else {
                 int daysSinceLastManualBackup = (int) TimeUnit.MILLISECONDS.toDays(Math.abs(lastManualBackupTime - System.currentTimeMillis()));
-                return daysSinceLastManualBackup > daysLimit ? Maybe.just(daysSinceLastManualBackup) : Maybe.empty();
+                return daysSinceLastManualBackup >= daysLimit ? Maybe.just(daysSinceLastManualBackup) : Maybe.empty();
             }
         } else {
             return Maybe.empty();
