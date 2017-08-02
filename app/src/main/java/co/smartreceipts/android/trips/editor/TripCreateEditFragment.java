@@ -35,7 +35,6 @@ import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
@@ -48,8 +47,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     DateManager dateManager;
     @Inject
     NavigationHandler navigationHandler;
-    @Inject
-    FragmentStateCache fragmentStateCache;
 
     @Inject
     TripCreateEditFragmentPresenter presenter;
@@ -155,12 +152,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         SoftKeyboardManager.hideKeyboard(focusedView);
 
         super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        fragmentStateCache.onDestroy(this);
-        super.onDestroy();
     }
 
     private void initViews(View rootView) {

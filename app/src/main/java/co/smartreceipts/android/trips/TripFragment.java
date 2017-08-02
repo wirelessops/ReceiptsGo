@@ -41,7 +41,6 @@ import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
@@ -64,8 +63,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     BackupProvidersManager backupProvidersManager;
     @Inject
     UserPreferenceManager preferenceManager;
-    @Inject
-    FragmentStateCache fragmentStateCache;
     @Inject
     NavigationHandler navigationHandler;
 
@@ -168,12 +165,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
         outState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
-    }
-
-    @Override
-    public void onDestroy() {
-        fragmentStateCache.onDestroy(this);
-        super.onDestroy();
     }
 
     public final void tripMenu(final Trip trip) {

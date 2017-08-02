@@ -29,7 +29,6 @@ import co.smartreceipts.android.persistence.LastTripController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
@@ -48,8 +47,6 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     TripTableController tripTableController;
     @Inject
     NavigationHandler navigationHandler;
-    @Inject
-    FragmentStateCache fragmentStateCache;
     
     private LastTripController lastTripController;
     private TripFragmentPagerAdapter fragmentPagerAdapter;
@@ -156,12 +153,6 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
         outState.putParcelable(KEY_OUT_TRIP, trip);
-    }
-
-    @Override
-    public void onDestroy() {
-        fragmentStateCache.onDestroy(this);
-        super.onDestroy();
     }
 
     @NonNull

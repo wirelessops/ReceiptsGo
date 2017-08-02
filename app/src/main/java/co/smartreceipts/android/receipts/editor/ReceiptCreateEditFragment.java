@@ -63,7 +63,6 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
@@ -99,8 +98,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     PaymentMethodsTableController paymentMethodsTableController;
     @Inject
     NavigationHandler navigationHandler;
-    @Inject
-    FragmentStateCache fragmentStateCache;
     @Inject
     BackupReminderTooltipStorage backupReminderTooltipStorage;
 
@@ -667,7 +664,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onDestroy() {
         categoriesTableController.unsubscribe(categoryTableEventsListener);
         paymentMethodsTableController.unsubscribe(paymentMethodTableEventsListener);
-        fragmentStateCache.onDestroy(this);
         super.onDestroy();
     }
 

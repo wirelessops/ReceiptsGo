@@ -43,7 +43,6 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTab
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.utils.cache.FragmentStateCache;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
@@ -70,8 +69,6 @@ public class ReceiptImageFragment extends WBFragment {
     OcrManager ocrManager;
     @Inject
     NavigationHandler navigationHandler;
-    @Inject
-    FragmentStateCache fragmentStateCache;
     @Inject
     ActivityFileResultImporter activityFileResultImporter;
 
@@ -226,12 +223,6 @@ public class ReceiptImageFragment extends WBFragment {
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        fragmentStateCache.onDestroy(this);
-        super.onDestroy();
     }
 
     private void loadImage() {
