@@ -11,6 +11,7 @@ import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
@@ -22,8 +23,10 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -315,18 +318,18 @@ public class PurchaseManager {
         Logger.info(PurchaseManager.this, "Consuming the purchase of {}", consumablePurchase.getInAppPurchase());
 
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMapCompletable(inAppBillingService -> Completable.create(emitter -> {
+                .flatMapCompletable(inAppBillingService -> Completable.fromAction(() -> {
                     try {
                         final int responseCode = inAppBillingService.consumePurchase(API_VERSION, context.getPackageName(), consumablePurchase.getPurchaseToken());
                         if (BILLING_RESPONSE_CODE_OK == responseCode) {
                             Logger.info(PurchaseManager.this, "Successfully consumed the purchase of {}", consumablePurchase.getInAppPurchase());
-                            emitter.onComplete();
                         } else {
                             Logger.warn(PurchaseManager.this, "Received an unexpected response code, {}, for the consumption of this product.", responseCode);
-                            emitter.onError(new Exception("Received an unexpected response code for the consumption of this product."));
+                            throw new Exception("Received an unexpected response code for the consumption of this product.");
                         }
                     } catch (RemoteException e) {
-                        emitter.onError(e);
+                        Logger.error(PurchaseManager.this, "Failed to consume this purchase", e);
+                        throw e;
                     }
                 }));
     }
@@ -334,20 +337,20 @@ public class PurchaseManager {
     @VisibleForTesting
     Observable<PendingIntent> getPurchaseIntent(@NonNull final InAppPurchase inAppPurchase, @NonNull final PurchaseSource purchaseSource) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMap(inAppBillingService -> Observable.create(emitter -> {
+                .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
                     try {
                         final Bundle buyIntentBundle = inAppBillingService.getBuyIntent(API_VERSION, context.getPackageName(), inAppPurchase.getSku(), inAppPurchase.getProductType(), sessionDeveloperPayload);
                         final PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
                         if (buyIntentBundle.getInt("RESPONSE_CODE") == BILLING_RESPONSE_CODE_OK && pendingIntent != null) {
                             mPurchaseSource = purchaseSource;
-                            emitter.onNext(pendingIntent);
-                            emitter.onComplete();
+                            return pendingIntent;
                         } else {
                             Logger.warn(PurchaseManager.this, "Received an unexpected response code, {}, for the buy intent.", buyIntentBundle.getInt("RESPONSE_CODE"));
-                            emitter.onError(new Exception("Received an unexpected response code for the buy intent."));
+                            throw new RemoteException("Received an unexpected response code for the buy intent.");
                         }
                     } catch (RemoteException e) {
-                        emitter.onError(e);
+                        Logger.error(PurchaseManager.this, "Failed to get purchase intent", e);
+                        throw e;
                     }
                 }));
     }
@@ -379,7 +382,7 @@ public class PurchaseManager {
     @NonNull
     private Observable<Set<ManagedProduct>> getOwnedManagedProductType(@NonNull final String googleProductType) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMap(inAppBillingService -> Observable.create(emitter -> {
+                .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
                     try {
                         final Bundle ownedItems = inAppBillingService.getPurchases(API_VERSION, context.getPackageName(), googleProductType, null);
                         if (ownedItems.getInt("RESPONSE_CODE") == BILLING_RESPONSE_CODE_OK) {
@@ -387,32 +390,33 @@ public class PurchaseManager {
                             final ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
                             final ArrayList<String> signatureList = ownedItems.getStringArrayList("INAPP_DATA_SIGNATURE_LIST");
                             final Set<ManagedProduct> purchasedProducts = new HashSet<ManagedProduct>();
-                            for (int i = 0; i < purchaseDataList.size(); ++i) {
-                                final String purchaseDataString = purchaseDataList.get(i);
-                                final JSONObject purchaseData = new JSONObject(purchaseDataString);
-                                final String inAppDataSignature = signatureList.get(i);
-                                final String purchaseToken = purchaseData.getString("purchaseToken");
+                            if (purchaseDataList != null && signatureList != null && ownedSkus != null) {
+                                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                                    final String purchaseDataString = purchaseDataList.get(i);
+                                    final JSONObject purchaseData = new JSONObject(purchaseDataString);
+                                    final String inAppDataSignature = signatureList.get(i);
+                                    final String purchaseToken = purchaseData.getString("purchaseToken");
 
-                                final String sku = ownedSkus.get(i);
-                                final InAppPurchase inAppPurchase = InAppPurchase.from(sku);
-                                final int purchaseState = purchaseData.has("purchaseState") ? purchaseData.getInt("purchaseState") : PURCHASE_STATE_PURCHASED;
+                                    final String sku = ownedSkus.get(i);
+                                    final InAppPurchase inAppPurchase = InAppPurchase.from(sku);
+                                    final int purchaseState = purchaseData.has("purchaseState") ? purchaseData.getInt("purchaseState") : PURCHASE_STATE_PURCHASED;
 
-                                if (inAppPurchase != null && purchaseState == PURCHASE_STATE_PURCHASED) {
-                                    purchasedProducts.add(new ManagedProductFactory(inAppPurchase, purchaseDataString, inAppDataSignature).get());
-                                } else {
-                                    Logger.warn(PurchaseManager.this, "Failed to process {} in purchase state {}.", sku, purchaseState);
+                                    if (inAppPurchase != null && purchaseState == PURCHASE_STATE_PURCHASED) {
+                                        purchasedProducts.add(new ManagedProductFactory(inAppPurchase, purchaseDataString, inAppDataSignature).get());
+                                    } else {
+                                        Logger.warn(PurchaseManager.this, "Failed to process {} in purchase state {}.", sku, purchaseState);
+                                    }
                                 }
                             }
 
-                            emitter.onNext(purchasedProducts);
-                            emitter.onComplete();
+                            return purchasedProducts;
                         } else {
                             Logger.error(PurchaseManager.this, "Failed to retrieve " + googleProductType + " due to response code error");
-                            emitter.onError(new Exception("Failed to retrieve " + googleProductType + " due to response code error"));
+                            throw new RemoteException("Failed to retrieve " + googleProductType + " due to response code error");
                         }
                     } catch (RemoteException | JSONException e) {
                         Logger.error(PurchaseManager.this, "Failed to retrieve the user's owned InAppPurchases", e);
-                        emitter.onError(e);
+                        throw e;
                     }
                 }));
     }
@@ -420,7 +424,7 @@ public class PurchaseManager {
     @NonNull
     private Observable<Set<AvailablePurchase>> getAvailablePurchases(@NonNull final ArrayList<String> skus, @NonNull final String googleProductType) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMap(inAppBillingService -> Observable.create(emitter -> {
+                .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
                     try {
                         // Next, let's figure out what is available for purchase
                         final Set<AvailablePurchase> availablePurchases = new HashSet<>();
@@ -430,30 +434,35 @@ public class PurchaseManager {
                         final Bundle skuDetails = inAppBillingService.getSkuDetails(3, context.getPackageName(), googleProductType, subscriptionsQueryBundle);
                         if (skuDetails.getInt("RESPONSE_CODE") == BILLING_RESPONSE_CODE_OK) {
                             final ArrayList<String> responseList = skuDetails.getStringArrayList("DETAILS_LIST");
-                            for (final String response : responseList) {
-                                            final AvailablePurchase availablePurchase = gson.fromJson(response, AvailablePurchase.class);
-                                            final InAppPurchase inAppPurchase = availablePurchase.getInAppPurchase();
-                                            if (inAppPurchase != null && !PurchaseManager.this.purchaseWallet.hasActivePurchase(inAppPurchase)) {
-                                                availablePurchases.add(availablePurchase);
-                                            } else {
-                                                Logger.warn(PurchaseManager.this, "Unknown or already owned sku returned from the available purchases query: {}.", availablePurchase.getInAppPurchase());
-                                            }
+                            if (responseList != null) {
+                                for (final String response : responseList) {
+                                    final AvailablePurchase availablePurchase = gson.fromJson(response, AvailablePurchase.class);
+                                    final InAppPurchase inAppPurchase = availablePurchase.getInAppPurchase();
+                                    if (inAppPurchase != null && !PurchaseManager.this.purchaseWallet.hasActivePurchase(inAppPurchase)) {
+                                        availablePurchases.add(availablePurchase);
+                                    } else {
+                                        Logger.warn(PurchaseManager.this, "Unknown or already owned sku returned from the available purchases query: {}.", availablePurchase.getInAppPurchase());
+                                    }
+                                }
                             }
-                            emitter.onNext(availablePurchases);
-                            emitter.onComplete();
+                            return availablePurchases;
                         } else {
                             Logger.error(PurchaseManager.this, "Failed to get available skus for purchase");
-                            if (!emitter.isDisposed()) {
-                                emitter.onError(new Exception("Failed to get available skus for purchase"));
-                            }
+                            throw new RemoteException("Failed to get available skus for purchase");
                         }
                     } catch (RemoteException e) {
                         Logger.error(PurchaseManager.this, "Failed to get available skus for purchase", e);
-                        if (!emitter.isDisposed()) {
-                            emitter.onError(e);
-                        }
+                        throw e;
                     }
-                }));
+                }))
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof RemoteException) {
+                        Logger.debug(PurchaseManager.this, "Manually handling this RemoteException as a known error type to avoid an UndeliverableException", throwable);
+                        return Observable.just(Collections.emptySet());
+                    } else {
+                        return Observable.error(throwable);
+                    }
+                });
     }
 
 }

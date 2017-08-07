@@ -427,7 +427,7 @@ public class PurchaseManagerTest {
     }
 
     @Test
-    public void getAvailableSubscriptionsThrowsRemoteException() throws Exception {
+    public void getAvailableSubscriptionsThrowsRemoteExceptionAndReturnsAnEmptySet() throws Exception {
         // Configure
         final Bundle getSkuDetailsResponse = new Bundle();
         getSkuDetailsResponse.putInt("RESPONSE_CODE", RESULT_ERROR);
@@ -436,9 +436,9 @@ public class PurchaseManagerTest {
         // Test
         purchaseManager.getAvailableSubscriptions().test()
                 // Verify
-                .assertNoValues()
-                .assertNotComplete()
-                .assertError(RemoteException.class);
+                .assertValue(Collections.emptySet())
+                .assertComplete()
+                .assertNoErrors();
         verifyZeroInteractions(purchaseWallet);
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getSubscriptionSkus());
     }
@@ -452,11 +452,10 @@ public class PurchaseManagerTest {
 
         // Test
         purchaseManager.getAvailableSubscriptions().test()
-
                 // Verify
-                .assertNoValues()
-                .assertNotComplete()
-                .assertError(Exception.class);
+                .assertValue(Collections.emptySet())
+                .assertComplete()
+                .assertNoErrors();
         verifyZeroInteractions(purchaseWallet);
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getSubscriptionSkus());
     }
@@ -507,22 +506,21 @@ public class PurchaseManagerTest {
     public void getAvailableConsumablePurchasesThrowsRemoteException() throws Exception {
         // Configure
         final Bundle getSkuDetailsResponse = new Bundle();
-        getSkuDetailsResponse.putInt("RESPONSE_CODE", RESULT_ERROR);
+        getSkuDetailsResponse.putInt("RESPONSE_CODE", RESULT_OK);
         when(inAppBillingService.getSkuDetails(eq(3), eq(packageName), eq("inapp"), bundleCaptor.capture())).thenThrow(new RemoteException());
 
         // Test
         purchaseManager.getAvailableConsumablePurchases().test()
-
                 // Verify
-                .assertNoValues()
-                .assertNotComplete()
-                .assertError(RemoteException.class);
+                .assertValue(Collections.emptySet())
+                .assertComplete()
+                .assertNoErrors();
         verifyZeroInteractions(purchaseWallet);
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getConsumablePurchaseSkus());
     }
 
     @Test
-    public void getAvailableConsumablePurchasesResponseError() throws Exception {
+    public void getAvailableConsumablePurchasesResponseIsInvalidResponseCode() throws Exception {
         // Configure
         final Bundle getSkuDetailsResponse = new Bundle();
         getSkuDetailsResponse.putInt("RESPONSE_CODE", RESULT_ERROR);
@@ -530,11 +528,10 @@ public class PurchaseManagerTest {
 
         // Test
         purchaseManager.getAvailableConsumablePurchases().test()
-
                 // Verify
-                .assertNoValues()
-                .assertNotComplete()
-                .assertError(Exception.class);
+                .assertValue(Collections.emptySet())
+                .assertComplete()
+                .assertNoErrors();
         verifyZeroInteractions(purchaseWallet);
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getConsumablePurchaseSkus());
     }
