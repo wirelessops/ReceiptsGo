@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.aws.cognito.CognitoManager;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
@@ -78,6 +79,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
     @Inject
     AppRatingPreferencesStorage appRatingPreferencesStorage;
 
+    @Inject
+    Analytics analytics;
+
     private AppComponent appComponent;
 
     @Override
@@ -126,7 +130,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
     private void init() {
 
         // To handle RxJava exceptions
-        RxJavaPlugins.setErrorHandler(new DefaultRxErrorHandler());
+        RxJavaPlugins.setErrorHandler(new DefaultRxErrorHandler(analytics));
 
         pushManager.initialize();
         purchaseManager.initialize(this);

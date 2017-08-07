@@ -1,5 +1,10 @@
 package co.smartreceipts.android.utils.rx;
 
+import com.google.common.base.Preconditions;
+
+import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.exceptions.UndeliverableException;
@@ -15,8 +20,15 @@ import io.reactivex.functions.Consumer;
  */
 public class DefaultRxErrorHandler implements Consumer<Throwable> {
 
+    private final Analytics analytics;
+
+    public DefaultRxErrorHandler(@NonNull Analytics analytics) {
+        this.analytics = Preconditions.checkNotNull(analytics);
+    }
+
     @Override
     public void accept(@NonNull Throwable throwable) throws Exception {
+        analytics.record(new ErrorEvent(throwable));
         if (throwable instanceof UndeliverableException) {
             final UndeliverableException undeliverableException = (UndeliverableException) throwable;
             final Throwable cause = undeliverableException.getCause();
