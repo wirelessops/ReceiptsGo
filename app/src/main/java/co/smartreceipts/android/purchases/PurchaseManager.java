@@ -454,15 +454,7 @@ public class PurchaseManager {
                         Logger.error(PurchaseManager.this, "Failed to get available skus for purchase", e);
                         throw e;
                     }
-                }))
-                .onErrorResumeNext(throwable -> {
-                    if (throwable instanceof RemoteException) {
-                        Logger.debug(PurchaseManager.this, "Manually handling this RemoteException as a known error type to avoid an UndeliverableException", throwable);
-                        return Observable.just(Collections.emptySet());
-                    } else {
-                        return Observable.error(throwable);
-                    }
-                });
+                }));
     }
 
 }
