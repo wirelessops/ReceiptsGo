@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
@@ -30,11 +31,16 @@ import co.smartreceipts.android.settings.versions.VersionUpgradedListener;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.utils.rx.DefaultRxErrorHandler;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 import wb.android.storage.SDCardStateException;
 import wb.android.storage.StorageManager;
 
@@ -118,6 +124,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
     }
 
     private void init() {
+
+        // To handle RxJava exceptions
+        RxJavaPlugins.setErrorHandler(new DefaultRxErrorHandler());
 
         pushManager.initialize();
         purchaseManager.initialize(this);
