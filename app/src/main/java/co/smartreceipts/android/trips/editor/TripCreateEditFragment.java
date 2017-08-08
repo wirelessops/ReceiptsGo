@@ -111,7 +111,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            navigationHandler.navigateToHomeTripsFragment();
+            navigationHandler.navigateBack();
             return true;
         }
         if (item.getItemId() == R.id.action_save) {

@@ -572,7 +572,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            navigationHandler.navigateToReportInfoFragment(getParentTrip());
+            navigationHandler.navigateBack();
             presenter.deleteReceiptFileIfUnused();
             return true;
         }
@@ -751,8 +751,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
             backupReminderTooltipStorage.setOneMoreNewReceipt();
 
-
-            navigationHandler.navigateToReportInfoFragment(getParentTrip());
+            navigationHandler.navigateBack();
         }
     }
 

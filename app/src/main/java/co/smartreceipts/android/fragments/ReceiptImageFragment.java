@@ -218,7 +218,7 @@ public class ReceiptImageFragment extends WBFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            navigationHandler.navigateToReportInfoFragment(receipt.getTrip());
+            navigationHandler.navigateBack();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
