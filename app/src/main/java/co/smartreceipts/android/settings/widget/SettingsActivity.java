@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -449,6 +450,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
                 "Device: " + Build.DEVICE + "\n" +
                 "Manufacturer: " + Build.MANUFACTURER + "\n" +
                 "Model (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
+                "Locale: " + Locale.getDefault().toString() + "\n" +
                 "Two-Paned: " + isUsingHeaders;
     }
 
