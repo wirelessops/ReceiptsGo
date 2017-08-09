@@ -173,6 +173,7 @@
     <string name="database_get_error">Ошибка: Не удалось получить данные. Попробуйте перезапустить приложение.</string>
     <string name="IMG_OPEN_ERROR">Ошибка: Изображение в настоящее время недоступно или повреждено. Ваша SD-карта может быть недоступна или подключена к вашему компьютеру. Если это не так, нажмите кнопку меню, чтобы сделать снимок еще раз.</string>
     <string name="IMG_SAVE_ERROR">Ошибка: Не удалось сохранить изображение должным образом</string>
+    <string name="FILE_SAVE_ERROR">Ошибка: Не удалось сохранить файл должным образом</string>
     <string name="ILLEGAL_CHAR_ERROR">Ошибка: Имя содержит недопустимый символ</string>
     <string name="SPACE_ERROR">Ошибка: Имя не может начинаться с пробела</string>
     <string name="CALENDAR_TAB_ERROR">Ошибка: Пожалуйста, нажмите на поле даты для установки даты</string>
@@ -193,6 +194,7 @@
     <string name="toast_receipt_pdf_added">Новый PDF успешно добавлен в %s</string>
     <string name="toast_receipt_pdf_replaced">Успешно заменен PDF в %s</string>
     <string name="toast_import_complete">Все файлы успешно импортированы. Пожалуйста, перезапустите приложение.</string>
+    <string name="toast_no_storage_permissions">Невозможно импортировать файл без разрешения на чтение</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">\u0020до\u0020</string>

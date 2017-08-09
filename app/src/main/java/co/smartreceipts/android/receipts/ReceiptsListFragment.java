@@ -1,5 +1,6 @@
 package co.smartreceipts.android.receipts;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -38,14 +39,15 @@ import co.smartreceipts.android.imports.ActivityFileResultImporter;
 import co.smartreceipts.android.imports.AttachmentSendFileImporter;
 import co.smartreceipts.android.imports.CameraInteractionController;
 import co.smartreceipts.android.imports.RequestCodes;
+import co.smartreceipts.android.imports.intents.IntentImportProcessor;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
-import co.smartreceipts.android.imports.intents.IntentImportProcessor;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterPresenter;
+import co.smartreceipts.android.permissions.PermissionsDelegate;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.ReceiptTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
@@ -88,6 +90,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     NavigationHandler navigationHandler;
     @Inject
     ActivityFileResultImporter activityFileResultImporter;
+
+    @Inject
+    PermissionsDelegate permissionsDelegate;
 
     @Inject
     IntentImportProcessor intentImportProcessor;
@@ -213,7 +218,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             break;
                     }
                 }, throwable -> {
-                    Toast.makeText(getActivity(), getFlexString(R.string.IMG_SAVE_ERROR), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                     highlightedReceipt = null;
                     updatingDataProgress.setVisibility(View.GONE);
                     activityFileResultImporter.dispose();
@@ -299,8 +304,21 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void importReceipt() {
-        final ImportPhotoPdfDialogFragment fragment = new ImportPhotoPdfDialogFragment();
-        fragment.show(getChildFragmentManager(), ImportPhotoPdfDialogFragment.TAG);
+        permissionsDelegate.checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(() -> {
+                            try {
+                                final ImportPhotoPdfDialogFragment fragment = new ImportPhotoPdfDialogFragment();
+                                fragment.show(getChildFragmentManager(), ImportPhotoPdfDialogFragment.TAG);
+                            } catch (IllegalStateException ex) { // This exception is always thrown if saveInstanceState was already been called.
+                                // hack to not force the user to open import dialog manually again after he gave us needed permission
+                                floatingActionMenu.post(() -> {
+                                    floatingActionMenu.open(true);
+                                    final ImportPhotoPdfDialogFragment fragment = new ImportPhotoPdfDialogFragment();
+                                    fragment.show(getChildFragmentManager(), ImportPhotoPdfDialogFragment.TAG);
+                                });
+                            }
+                        },
+                        throwable -> Toast.makeText(getContext(), getString(R.string.toast_no_storage_permissions), Toast.LENGTH_SHORT).show());
     }
 
     public final boolean showReceiptMenu(final Receipt receipt) {
@@ -417,12 +435,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             public void onClick(DialogInterface dialog, int id) {
                 receiptTableController.delete(receipt, new DatabaseOperationMetadata());
             }
-        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        }).show();
+        }).setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel()).show();
     }
 
     @Override

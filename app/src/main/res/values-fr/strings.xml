@@ -171,6 +171,7 @@
     <string name="database_get_error">Erreur : Échec de la récupération de vos données. Essayez de relancer l\'appli.</string>
     <string name="IMG_OPEN_ERROR">Erreur : L’image est actuellement inaccessible ou corrompue. Votre carte SD peut être indisponible ou montée sur votre ordinateur. Si ce n’est pas le cas, cliquez sur le bouton du menu pour reprendre la photo.</string>
     <string name="IMG_SAVE_ERROR">Erreur : L’image n’a pas été enregistrée correctement</string>
+    <string name="FILE_SAVE_ERROR">Erreur: Le fichier n’a pas pu être enregistré correctement.</string>
     <string name="ILLEGAL_CHAR_ERROR">Erreur : Le nom contient un caractère illégal</string>
     <string name="SPACE_ERROR">Erreur : Le nom ne peut pas commencer par un espace</string>
     <string name="CALENDAR_TAB_ERROR">Erreur : Veuillez toucher la zone de texte de la date pour définir la date</string>
@@ -191,6 +192,7 @@
     <string name="toast_receipt_pdf_added">Vous avez joint un nouveau PDF à %s</string>
     <string name="toast_receipt_pdf_replaced">Vous avez remplacé un nouveau PDF pour %s</string>
     <string name="toast_import_complete">Importation réussie de tous les fichiers. Veuillez relancer l\'appli.</string>
+    <string name="toast_no_storage_permissions">Impossible d\'importer des fichiers sans autorisation de stockage</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to"> à</string>

@@ -16,7 +16,7 @@ import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.permissions.ActivityPermissionsRequester;
 import co.smartreceipts.android.permissions.PermissionRequester;
 import co.smartreceipts.android.permissions.PermissionStatusChecker;
-import co.smartreceipts.android.permissions.PermissionsNotGrantedException;
+import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;

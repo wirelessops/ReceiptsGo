@@ -171,6 +171,7 @@
     <string name="database_get_error">Error: No se pudo obtener tu información. Intenta reiniciar la app.</string>
     <string name="IMG_OPEN_ERROR">Error: La imagen actualmente es inaccesible o está dañada. Tu tarjeta SD puede no estar disponible o estar montada en el computador. Si no lo está, haz clic en el botón menú para tomar de nuevo la foto.</string>
     <string name="IMG_SAVE_ERROR">Error: La imagen no se pudo guardar correctamente</string>
+    <string name="FILE_SAVE_ERROR">Error: El archivo no se pudo guardar correctamente.</string>
     <string name="ILLEGAL_CHAR_ERROR">Error: El nombre contiene un carácter ilegal</string>
     <string name="SPACE_ERROR">Error: El nombre no puede comenzar con un espacio</string>
     <string name="CALENDAR_TAB_ERROR">Error: Por favor toca la caja de texto de fecha para definir la fecha</string>
@@ -191,6 +192,7 @@
     <string name="toast_receipt_pdf_added">Se añadió correctamente un PDF nuevo a %s</string>
     <string name="toast_receipt_pdf_replaced">Se reemplazó correctamente un PDF nuevo de %s</string>
     <string name="toast_import_complete">Se importaron correctamente todos los archivos. Por favor reinicia la app.</string>
+    <string name="toast_no_storage_permissions">No se puede importar archivos sin permisos de almacenamiento</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">hasta</string>

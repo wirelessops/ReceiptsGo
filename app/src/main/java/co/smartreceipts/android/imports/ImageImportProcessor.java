@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import co.smartreceipts.android.imports.exceptions.InvalidImageException;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -65,6 +66,12 @@ public class ImageImportProcessor implements FileImportProcessor {
                     final BitmapFactory.Options smallerOpts = new BitmapFactory.Options();
                     smallerOpts.inSampleSize = scale;
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, smallerOpts);
+
+                    // Checking if this file is actual image
+                    if (smallerOpts.outHeight <= 0 && smallerOpts.outWidth <= 0) {
+                        emitter.onError(new InvalidImageException("Looks like selected file is not an image"));
+                        return;
+                    }
 
                     // Perform image processing
                     if (mPreferences.get(UserPreference.Camera.SaveImagesInGrayScale)) {
@@ -118,7 +125,6 @@ public class ImageImportProcessor implements FileImportProcessor {
             } finally {
                 StorageManager.closeQuietly(inputStream);
             }
-
         });
     }
 

@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -12,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import co.smartreceipts.android.imports.exceptions.InvalidPdfException;
+import co.smartreceipts.android.imports.utils.PdfValidator;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
@@ -23,15 +26,19 @@ public class GenericFileImportProcessor implements FileImportProcessor {
     private final Trip trip;
     private final StorageManager storageManner;
     private final ContentResolver contentResolver;
+    private final PdfValidator pdfValidator;
 
     public GenericFileImportProcessor(@NonNull Trip trip, @NonNull StorageManager storageManager, @NonNull Context context) {
-        this(trip, storageManager, context.getContentResolver());
+        this(trip, storageManager, context.getContentResolver(), new PdfValidator(context));
     }
 
-    public GenericFileImportProcessor(@NonNull Trip trip, @NonNull StorageManager storageManager, @NonNull ContentResolver contentResolver) {
+    @VisibleForTesting
+    GenericFileImportProcessor(@NonNull Trip trip, @NonNull StorageManager storageManager,
+                               @NonNull ContentResolver contentResolver, @NonNull PdfValidator pdfValidator) {
         this.trip = Preconditions.checkNotNull(trip);
         this.storageManner = Preconditions.checkNotNull(storageManager);
         this.contentResolver = Preconditions.checkNotNull(contentResolver);
+        this.pdfValidator = Preconditions.checkNotNull(pdfValidator);
     }
 
     @NonNull
@@ -43,9 +50,14 @@ public class GenericFileImportProcessor implements FileImportProcessor {
             try {
                 inputStream = contentResolver.openInputStream(uri);
                 final File destination = storageManner.getFile(trip.getDirectory(), System.currentTimeMillis() + "." + UriUtils.getExtension(uri, contentResolver));
+
                 if (storageManner.copy(inputStream, destination, true)) {
-                    emitter.onSuccess(destination);
-                    Logger.info(GenericFileImportProcessor.this, "Successfully copied Uri to the Smart Receipts directory");
+                    if (!pdfValidator.isPdfValid(destination)) {
+                        emitter.onError(new InvalidPdfException("Selected PDF looks like non valid"));
+                    } else {
+                        emitter.onSuccess(destination);
+                        Logger.info(GenericFileImportProcessor.this, "Successfully copied Uri to the Smart Receipts directory");
+                    }
                 } else {
                     emitter.onError(new FileNotFoundException());
                 }

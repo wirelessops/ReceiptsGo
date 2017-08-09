@@ -171,6 +171,7 @@
     <string name="database_get_error">Fehler: Fehler beim Holen  Ihrer Daten. Versuchen Sie die App. neu zu starten.</string>
     <string name="IMG_OPEN_ERROR">Fehler: Das Bild ist derzeit nicht zugänglich oder beschädigt. SD-Karte ist nicht verfügbar oder am Computer montiert. Wenn nicht, klicken Sie auf die Menü-Taste, um das Foto wieder zu holen.</string>
     <string name="IMG_SAVE_ERROR">Fehler: Das Bild konnte nicht richtig gespeichert werden</string>
+    <string name="FILE_SAVE_ERROR">Fehler: Die Datei konnte nicht korrekt gespeichert werden</string>
     <string name="ILLEGAL_CHAR_ERROR">Fehler: Der Name enthält ein unzulässiges Zeichen</string>
     <string name="SPACE_ERROR">Fehler: Der Name kann nicht mit einem Leerzeichen beginnen,</string>
     <string name="CALENDAR_TAB_ERROR">Fehler: Bitte Tippen Sie auf die Datum TextBox, um das Datum einzustellen</string>
@@ -191,6 +192,7 @@
     <string name="toast_receipt_pdf_added">Neue PDF erfolgreich auf %s hinzugefügt</string>
     <string name="toast_receipt_pdf_replaced">Eine neue PDF für %s wurde erfolgreich ersetzt</string>
     <string name="toast_import_complete">Alle Dateien wurden erfolgreich importiert. Bitte starten Sie die App. erneut</string>
+    <string name="toast_no_storage_permissions">Kann keine Datei ohne Speicherberechtigungen importieren</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to"> nach</string>

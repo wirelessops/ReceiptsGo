@@ -176,6 +176,7 @@
     <string name="database_get_error">Error: Failed to fetch your data. Try re-launching the app.</string>
     <string name="IMG_OPEN_ERROR">Error: The image is currently inaccessible or corrupted. Your SD Card may be unavailable or mounted to your computer. If not, click the menu button to retake the photo.</string>
     <string name="IMG_SAVE_ERROR">Error: The Image Failed to Save Properly</string>
+    <string name="FILE_SAVE_ERROR">Error: The File Failed to Save Properly</string>
     <string name="ILLEGAL_CHAR_ERROR">Error: The name contains an illegal character</string>
     <string name="SPACE_ERROR">Error: The name cannot begin with a space</string>
     <string name="CALENDAR_TAB_ERROR">Error: Please Touch the Date TextBox to set the Date</string>
@@ -195,7 +196,7 @@
     <string name="toast_receipt_image_replaced">Successfully replaced a new image for %s</string>
     <string name="toast_receipt_pdf_added">Successfully added a new PDF to %s</string>
     <string name="toast_receipt_pdf_replaced">Successfully replaced a new PDF for %s</string>
-    <string name="toast_no_storage_permissions">Cannot import this file without storage permissions</string>
+    <string name="toast_no_storage_permissions">Cannot import file without storage permissions</string>
     <string name="toast_import_complete">Successfully imported all files. Please re-launch the app.</string>
 
     <!-- ================== Trip Adapter ===================== -->

@@ -1,6 +1,7 @@
 package co.smartreceipts.android.imports;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 
 import org.junit.Before;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import co.smartreceipts.android.imports.exceptions.InvalidPdfException;
+import co.smartreceipts.android.imports.utils.PdfValidator;
 import co.smartreceipts.android.model.Trip;
 import wb.android.storage.StorageManager;
 
@@ -41,6 +44,12 @@ public class GenericFileImportProcessorTest {
     @Mock
     InputStream inputStream;
 
+    @Mock
+    Context context;
+
+    @Mock
+    PdfValidator pdfValidator;
+
     Uri uri;
 
     @Before
@@ -50,8 +59,9 @@ public class GenericFileImportProcessorTest {
         uri = Uri.parse("content://some.pdf");
         when(contentResolver.getType(uri)).thenReturn("application/pdf");
         when(storageManner.getFile(any(File.class), anyString())).thenReturn(file);
+        when(pdfValidator.isPdfValid(any(File.class))).thenReturn(true);
 
-        importProcessor = new GenericFileImportProcessor(trip, storageManner, contentResolver);
+        importProcessor = new GenericFileImportProcessor(trip, storageManner, contentResolver, pdfValidator);
     }
 
     @Test
@@ -89,4 +99,17 @@ public class GenericFileImportProcessorTest {
                 .assertNoErrors();
     }
 
+    @Test
+    public void processFailsWithCorruptedPdf() throws Exception {
+        when(contentResolver.openInputStream(uri)).thenReturn(inputStream);
+        when(storageManner.copy(inputStream, file, true)).thenReturn(true);
+        when(pdfValidator.isPdfValid(any(File.class))).thenReturn(false);
+
+        importProcessor.process(uri)
+                .test()
+                .assertNoValues()
+                .assertNotComplete()
+                .assertError(InvalidPdfException.class);
+
+    }
 }

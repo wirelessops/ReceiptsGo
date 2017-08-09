@@ -1,4 +1,4 @@
-package co.smartreceipts.android.permissions;
+package co.smartreceipts.android.permissions.exceptions;
 
 import android.support.annotation.NonNull;
 

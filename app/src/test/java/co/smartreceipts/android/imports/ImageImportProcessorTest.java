@@ -27,8 +27,6 @@ import co.smartreceipts.android.TestResourceReader;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import io.reactivex.Single;
-import io.reactivex.observers.TestObserver;
 import wb.android.storage.StorageManager;
 
 import static junit.framework.Assert.assertEquals;
@@ -58,89 +56,86 @@ public class ImageImportProcessorTest {
     private static final String SAMPLE_JPG_WITH_EXIF = "sample_with_exif_to_rotate.jpg";
 
     // Class under test
-    ImageImportProcessor mImportProcessor;
+    ImageImportProcessor importProcessor;
 
-    Context mContext;
+    Context context;
 
-    TestObserver<File> mTestObserver;
-
-    File mDestination;
+    File destination;
 
     @Mock
-    Trip mTrip;
+    Trip trip;
 
     @Mock
-    StorageManager mStorageManner;
+    StorageManager storageManager;
 
     @Mock
-    UserPreferenceManager mPreferences;
+    UserPreferenceManager preferences;
 
     @Mock
-    ContentResolver mContentResolver;
+    ContentResolver contentResolver;
 
     @Captor
-    ArgumentCaptor<Bitmap> mBitmapCaptor;
+    ArgumentCaptor<Bitmap> bitmapCaptor;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mContext = RuntimeEnvironment.application;
-        mTestObserver = new TestObserver<>();
-        mDestination = new File(mContext.getCacheDir(), "test.jpg");
+        context = RuntimeEnvironment.application;
+        destination = new File(context.getCacheDir(), "test.jpg");
 
-        when(mTrip.getDirectory()).thenReturn(mContext.getCacheDir());
-        when(mStorageManner.getFile(any(File.class), anyString())).thenReturn(mDestination);
-        when(mPreferences.get(UserPreference.Camera.SaveImagesInGrayScale)).thenReturn(false);
+        when(trip.getDirectory()).thenReturn(context.getCacheDir());
+        when(storageManager.getFile(any(File.class), anyString())).thenReturn(destination);
+        when(preferences.get(UserPreference.Camera.SaveImagesInGrayScale)).thenReturn(false);
 
-        mImportProcessor = new ImageImportProcessor(mTrip, mStorageManner, mPreferences, mContext, mContentResolver);
+        importProcessor = new ImageImportProcessor(trip, storageManager, preferences, context, contentResolver);
     }
 
     @Test
     public void importUriWithNullStream() throws Exception {
         final Uri uri = mock(Uri.class);
-        when(mContentResolver.openInputStream(uri)).thenReturn(null);
+        when(contentResolver.openInputStream(uri)).thenReturn(null);
 
-        final Single<File> resultSingle = mImportProcessor.process(uri);
-        resultSingle.subscribe(mTestObserver);
-        mTestObserver.assertError(FileNotFoundException.class);
+        importProcessor.process(uri)
+                .test()
+                .assertError(FileNotFoundException.class);
     }
 
     @Test
     public void importUriThrowsFileNotFoundException() throws Exception {
         final Uri uri = mock(Uri.class);
-        when(mContentResolver.openInputStream(uri)).thenThrow(new FileNotFoundException("test"));
+        when(contentResolver.openInputStream(uri)).thenThrow(new FileNotFoundException("test"));
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertError(FileNotFoundException.class);
+        importProcessor.process(uri)
+                .test()
+                .assertError(FileNotFoundException.class);
     }
 
     @Test
     public void importUriWhenSaveFails() throws Exception {
-        final Uri uri = Uri.fromFile(mDestination);
+        final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG);
-        when(mPreferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(mStorageManner.writeBitmap(any(Uri.class), mBitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(false);
+        when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(false);
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertError(IOException.class);
+        importProcessor.process(uri)
+                .test()
+                .assertError(IOException.class);
     }
 
     @Test
     public void importUriWithoutAlterations() throws Exception {
-        final Uri uri = Uri.fromFile(mDestination);
+        final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG);
-        when(mPreferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(mStorageManner.writeBitmap(any(Uri.class), mBitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertValue(mDestination);
-        mTestObserver.assertComplete();
+        importProcessor.process(uri)
+                .test()
+                .assertValue(destination)
+                .assertComplete();
 
-        final Bitmap bitmap = mBitmapCaptor.getValue();
+        final Bitmap bitmap = bitmapCaptor.getValue();
         assertNotNull(bitmap);
         assertEquals(550, bitmap.getWidth());
         assertEquals(400, bitmap.getHeight());
@@ -148,17 +143,17 @@ public class ImageImportProcessorTest {
 
     @Test
     public void importExifUriWithoutAlterations() throws Exception {
-        final Uri uri = Uri.fromFile(mDestination);
+        final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG_WITH_EXIF);
-        when(mPreferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(mStorageManner.writeBitmap(any(Uri.class), mBitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertValue(mDestination);
-        mTestObserver.assertComplete();
+        importProcessor.process(uri)
+                .test()
+                .assertValue(destination)
+                .assertComplete();
 
-        final Bitmap bitmap = mBitmapCaptor.getValue();
+        final Bitmap bitmap = bitmapCaptor.getValue();
         assertNotNull(bitmap);
 
         // Confirm that it's sideways
@@ -168,18 +163,18 @@ public class ImageImportProcessorTest {
 
     @Test
     public void importUriScalesDownSizes() throws Exception {
-        final Uri uri = Uri.fromFile(mDestination);
+        final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG_BIG);
-        when(mPreferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(mStorageManner.writeBitmap(any(Uri.class), mBitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertValue(mDestination);
-        mTestObserver.assertComplete();
+        importProcessor.process(uri)
+                .test()
+                .assertValue(destination)
+                .assertComplete();
 
         // Note: we only scale down til one dimension is < 1024
-        final Bitmap bitmap = mBitmapCaptor.getValue();
+        final Bitmap bitmap = bitmapCaptor.getValue();
         assertNotNull(bitmap);
         assertEquals(1100, bitmap.getWidth());
         assertEquals(800, bitmap.getHeight());
@@ -187,17 +182,17 @@ public class ImageImportProcessorTest {
 
     @Test
     public void importUriWithRotateOn() throws Exception {
-        final Uri uri = Uri.fromFile(mDestination);
+        final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG);
-        when(mPreferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(true);
-        when(mStorageManner.writeBitmap(any(Uri.class), mBitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertValue(mDestination);
-        mTestObserver.assertComplete();
+        importProcessor.process(uri)
+                .test()
+                .assertValue(destination)
+                .assertComplete();
 
-        final Bitmap bitmap = mBitmapCaptor.getValue();
+        final Bitmap bitmap = bitmapCaptor.getValue();
         assertNotNull(bitmap);
         assertEquals(550, bitmap.getWidth());
         assertEquals(400, bitmap.getHeight());
@@ -205,17 +200,17 @@ public class ImageImportProcessorTest {
 
     @Test
     public void importExifUriWithRotateOn() throws Exception {
-        final Uri uri = Uri.fromFile(mDestination);
+        final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG_WITH_EXIF);
-        when(mPreferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(true);
-        when(mStorageManner.writeBitmap(any(Uri.class), mBitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
 
-        final Single<File> resultObservable = mImportProcessor.process(uri);
-        resultObservable.subscribe(mTestObserver);
-        mTestObserver.assertValue(mDestination);
-        mTestObserver.assertComplete();
+        importProcessor.process(uri)
+                .test()
+                .assertValue(destination)
+                .assertComplete();
 
-        final Bitmap bitmap = mBitmapCaptor.getValue();
+        final Bitmap bitmap = bitmapCaptor.getValue();
         assertNotNull(bitmap);
 
         // TODO: Use direct getWidth/getHeight test once Robolectric 3.2 is available
@@ -230,7 +225,10 @@ public class ImageImportProcessorTest {
     }
 
     private void configureUriForStream(@NonNull Uri uri, @NonNull String imageFile) throws Exception {
-        when(mContentResolver.openInputStream(uri)).thenReturn(new TestResourceReader().openStream(imageFile), new TestResourceReader().openStream(imageFile), new TestResourceReader().openStream(imageFile));
+        when(contentResolver.openInputStream(uri))
+                .thenReturn(new TestResourceReader().openStream(imageFile),
+                        new TestResourceReader().openStream(imageFile),
+                        new TestResourceReader().openStream(imageFile));
     }
 
 }

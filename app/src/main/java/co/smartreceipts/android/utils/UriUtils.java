@@ -10,8 +10,6 @@ import android.webkit.MimeTypeMap;
 
 import java.io.File;
 
-import wb.android.storage.StorageManager;
-
 public class UriUtils {
 
     private UriUtils() {
