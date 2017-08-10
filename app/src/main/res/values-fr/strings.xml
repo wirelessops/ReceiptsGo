@@ -2,7 +2,7 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="app_name">Recettes Intelligentes</string>
+    <string name="app_name">Smart Receipts</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Paramètres</string>
@@ -51,7 +51,7 @@
     <string name="yes_as_pdf">Oui - sous PDF</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Recettes Intelligentes Plus</string>
+    <string name="pro_subscription">Smart Receipts Plus</string>
 
     <!-- ================ No More Ads ================= -->
     <string name="missing_ad_suggest_removal_upsell">Marre des pubs ? Cliquez pour commencer un essai sans pub</string>
@@ -94,7 +94,7 @@
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_beta">Tous les utilisateurs bêta obtiennent 50 scans gratuits !</string>
     <string name="ocr_configuration_welcome">Scans automatiques (OCR) :</string>
-    <string name="ocr_configuration_information">Recettes Intelligentes s’est intégré à Taggun pour fournir des services de scans automatiques (OCR) qui peuvent extraire des métadonnées des reçus comme le prix, les taxes, la date et le nom du commerçant à partir de vos photos.</string>
+    <string name="ocr_configuration_information">Smart Receipts s’est intégré à Taggun pour fournir des services de scans automatiques (OCR) qui peuvent extraire des métadonnées des reçus comme le prix, les taxes, la date et le nom du commerçant à partir de vos photos.</string>
     <string name="ocr_configuration_information_line2">Nous utilisons une combinaison de Google Vision et de Machine Learning pour fournir rapidement des résultats (souvent en 5 secondes ou moins) qui deviendront de plus en plus précis au fil du temps. Puisque ces services ont un coût par utilisation, nous facturerons pour chaque scan de reçu ci-dessous.</string>
     <string name="ocr_is_enabled">Activer les scans automatiques (OCR) ?</string>
     <string name="ocr_save_scans_to_improve_results">Nous autoriser à enregistrer des images pour améliorer la précision ?</string>
@@ -194,7 +194,7 @@
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to"> à</string>
-    <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.\n\nRecettes Intelligentes vous permet de créer des notes de frais, de suivre les reçus dans chacune d’elle et de créer rapidement des rapports PDF et CSV pour la totalité de vos reçus. C’est rapide et facile ! Assurez-vous également de consulter le menu pour personnaliser les catégories, les rapports et d’autres paramètres pour qu’ils répondent mieux à vos besoins.</string>
+    <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.\n\nSmart Receipts vous permet de créer des notes de frais, de suivre les reçus dans chacune d’elle et de créer rapidement des rapports PDF et CSV pour la totalité de vos reçus. C’est rapide et facile ! Assurez-vous également de consulter le menu pour personnaliser les catégories, les rapports et d’autres paramètres pour qu’ils répondent mieux à vos besoins.</string>
 
     <!-- ================= Receipt Adapter =================== -->
     <string name="receipt_no_data">Il semblerait que vous n\'ayez encore aucun reçu. Appuyez sur le bouton + (plus) pour commencer...</string>
@@ -318,7 +318,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Se connecter/S\'inscrire</string>
-    <string name="login_title">Connectez-vous à votre compte Recettes Intelligentes pour commencer à utiliser les scans automatiques (OCR)</string>
+    <string name="login_title">Connectez-vous à votre compte Smart Receipts pour commencer à utiliser les scans automatiques (OCR)</string>
     <string name="login_field_email_hint">Adresse e-mail</string>
     <string name="login_field_password_hint">Mot de passe</string>
     <string name="sign_up_button_text">S\'inscrire</string>
@@ -422,7 +422,7 @@
     <string name="dialog_sql_corrupt_title">Oh non !</string>
     <string name="dialog_sql_corrupt_message">Votre base de données a été corrompue. Cela se produit souvent si vous avez une application d’interruption de tâches, mais cela peut être causé par un certain nombre de choses. Ne vous inquiétez pas, nous devrions être en mesure de restaurer la plupart de vos données.</string>
     <string name="dialog_sql_corrupt_positive">Envoyer un e-mail au développeur pour demander de l\'aide</string>
-    <string name="dialog_sql_corrupt_intent_subject">Recettes Intelligentes - Base de données corrompue</string>
+    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Base de données corrompue</string>
     <string name="dialog_sql_corrupt_intent_text">Aide - ma base de données a été corrompue. Comment pouvez-vous m\'aider à la restaurer ?</string>
     <string name="dialog_sql_corrupt_chooser">Envoyer un message...</string>
 
@@ -460,7 +460,7 @@
     <string name="purchase_failed">Impossible de terminer l\'achat</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Vous aimez Recettes Intelligentes ?</string>
+    <string name="rating_tooltip_text">Vous aimez Smart Receipts ?</string>
     <string name="leave_feedback_text">Voulez-vous nous laisser des commentaires ?</string>
     <string name="apprating_dialog_title">Vous aimez %s ?</string>
     <string name="apprating_dialog_message">Veuillez envisager de laisser votre avis. En tant que développeur indépendant, vos commentaires sont ma principale source d’exposition et ils aident vraiment à m’encourager à continuer et à ajouter de nouvelles fonctionnalités. Merci !</string>

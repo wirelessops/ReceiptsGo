@@ -2,7 +2,7 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="app_name">Recibos Inteligentes</string>
+    <string name="app_name">Smart Receipts</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Ajustes</string>
@@ -51,7 +51,7 @@
     <string name="yes_as_pdf">Sí: como PDF</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Recibos Inteligentes Plus</string>
+    <string name="pro_subscription">Smart Receipts Plus</string>
 
     <!-- ================ No More Ads ================= -->
     <string name="missing_ad_suggest_removal_upsell">¿Cansado de los anuncios? Toca para comenzar una prueba gratuita sin anuncios</string>
@@ -94,7 +94,7 @@
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_beta">¡Todos los usuarios beta obtienen 50 escaneos gratis!</string>
     <string name="ocr_configuration_welcome">Escaneos automáticos (OCR):</string>
-    <string name="ocr_configuration_information">Recibos Inteligentes ha sido integrada con Taggun para proporcionar servicios de escaneo automático (es decir, OCR), que pueden extraer metadatos de los recibos, tales como precio, impuestos, fecha y nombre del comerciante de sus fotos.</string>
+    <string name="ocr_configuration_information">Smart Receipts ha sido integrada con Taggun para proporcionar servicios de escaneo automático (es decir, OCR), que pueden extraer metadatos de los recibos, tales como precio, impuestos, fecha y nombre del comerciante de sus fotos.</string>
     <string name="ocr_configuration_information_line2">Usamos una combinación de Google Vision y aprendizaje automático para entregar resultados rápidamente (con frecuencia en menos de 5 segundos), lo que será cada vez más preciso con el tiempo. Como estos servicios cobran por cada uso, nosotros cobramos por cada recibo escaneado a continuación.</string>
     <string name="ocr_is_enabled">¿Habilitar escaneos automáticos (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">¿Nos permites guardar las imágenes para mejorar la precisión?</string>
@@ -194,7 +194,7 @@
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">hasta</string>
-    <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.\n\nRecibos Inteligentes te permite crear informes de gastos, controlar los recibos de cada uno y generar rápidamente informes en PDF y CSV para los totales de tus recibos. ¡Es fácil y rápido! También, asegúrate de revisar el menú para personalizar las categorías, informes y otros ajustes para que se adapten mejor a tus necesidades.</string>
+    <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.\n\nSmart Receipts te permite crear informes de gastos, controlar los recibos de cada uno y generar rápidamente informes en PDF y CSV para los totales de tus recibos. ¡Es fácil y rápido! También, asegúrate de revisar el menú para personalizar las categorías, informes y otros ajustes para que se adapten mejor a tus necesidades.</string>
 
     <!-- ================= Receipt Adapter =================== -->
     <string name="receipt_no_data">Parece que aún no tienes recibos. Intenta tocar el botón + (más) para comenzar...</string>
@@ -318,7 +318,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Iniciar sesión/Registrarse</string>
-    <string name="login_title">Inicia sesión con tu cuenta de Recibos Inteligentes para comenzar a usar los escaneos automáticos (OCR)</string>
+    <string name="login_title">Inicia sesión con tu cuenta de Smart Receipts para comenzar a usar los escaneos automáticos (OCR)</string>
     <string name="login_field_email_hint">Dirección de correo electrónico</string>
     <string name="login_field_password_hint">Contraseña</string>
     <string name="sign_up_button_text">Registrarse</string>
@@ -422,7 +422,7 @@
     <string name="dialog_sql_corrupt_title">¡Oh, no!</string>
     <string name="dialog_sql_corrupt_message">Tu base de datos está dañada. Esto ocurre con frecuencia si tienes una app que cierra tareas, pero puede ser ocasionado por otras cosas. No te preocupes, podremos restaurar la mayoría de tus datos.</string>
     <string name="dialog_sql_corrupt_positive">Enviar un correo electrónico al desarrollador para obtener ayuda</string>
-    <string name="dialog_sql_corrupt_intent_subject">Recibos Inteligentes - Base de datos dañada</string>
+    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Base de datos dañada</string>
     <string name="dialog_sql_corrupt_intent_text">Ayuda, mi base de datos está dañada. ¿Cómo pueden ayudarme a restaurar las cosas?</string>
     <string name="dialog_sql_corrupt_chooser">Enviar correo electrónico...</string>
 
@@ -460,7 +460,7 @@
     <string name="purchase_failed">No se pudo completar la compra</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">¿Te gusta Recibos Inteligentes?</string>
+    <string name="rating_tooltip_text">¿Te gusta Smart Receipts?</string>
     <string name="leave_feedback_text">¿Deseas hacernos un comentario?</string>
     <string name="apprating_dialog_title">¿Te gusta %s?</string>
     <string name="apprating_dialog_message">Por favor considera hacer un comentario. Como desarrollador independiente, tus comentarios son nuestra principal fuente de exposición y realmente ayudan a motivarme para continuar añadiendo características. ¡Gracias!</string>
