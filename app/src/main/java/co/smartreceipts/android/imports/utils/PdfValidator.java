@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.IOException;
 
+import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PdfPDImageXFactory;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PdfPDImageXFactoryFactory;
 
@@ -29,7 +30,7 @@ public class PdfValidator {
             // document has at least one page == it's valid
             return factory.nextPage();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(this, "Invalid PDF File", e);
             return false;
         }  finally {
             IOUtils.closeQuietly(factory);
