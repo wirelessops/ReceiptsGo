@@ -1,5 +1,6 @@
 package co.smartreceipts.android.imports;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -21,6 +22,8 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.impl.DefaultTripImpl;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
+import co.smartreceipts.android.permissions.PermissionsDelegate;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
@@ -28,6 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,15 +65,23 @@ public class ActivityFileResultImporterTest {
     @Mock
     Trip trip;
 
+    @Mock
+    PermissionsDelegate permissionsDelegate;
+
+    @Mock
+    Uri uri;
+
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         when(factory.get(anyInt(), any(DefaultTripImpl.class))).thenReturn(processor);
         when(ocrManager.scan(any(File.class))).thenReturn(Observable.just(ocrResponse));
+        when(permissionsDelegate.checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)).thenReturn(Completable.complete());
+        when(uri.getScheme()).thenReturn(ContentResolver.SCHEME_CONTENT);
 
         fileResultImporter = new ActivityFileResultImporter(analytics,
-                ocrManager, factory, Schedulers.trampoline(), Schedulers.trampoline());
+                ocrManager, factory, permissionsDelegate, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test
@@ -143,7 +155,6 @@ public class ActivityFileResultImporterTest {
 
     @Test
     public void onActivityResultWithProcessingFailure() {
-        final Uri uri = Uri.EMPTY;
         when(intent.getData()).thenReturn(uri);
         when(processor.process(uri)).thenReturn(Single.<File>error(new Exception("Test")));
 
@@ -158,7 +169,6 @@ public class ActivityFileResultImporterTest {
 
     @Test
     public void onActivityResultWithProcessingFailureWithIndependentOrdering() {
-        final Uri uri = Uri.EMPTY;
         when(intent.getData()).thenReturn(uri);
         when(processor.process(uri)).thenReturn(Single.<File>error(new Exception("Test")));
 
@@ -173,7 +183,6 @@ public class ActivityFileResultImporterTest {
 
     @Test
     public void onActivityResultWithValidIntent() {
-        final Uri uri = Uri.EMPTY;
         final File file = new File("");
         final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
         final int responseCode = Activity.RESULT_OK;
@@ -190,7 +199,6 @@ public class ActivityFileResultImporterTest {
 
     @Test
     public void onActivityResultWithValidIntentWithIndependentOrdering() {
-        final Uri uri = Uri.EMPTY;
         final File file = new File("");
         final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
         final int responseCode = Activity.RESULT_OK;
@@ -207,7 +215,6 @@ public class ActivityFileResultImporterTest {
 
     @Test
     public void onActivityResultWithValidSaveLocation() {
-        final Uri uri = Uri.EMPTY;
         final File file = new File("");
         final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
         final int responseCode = Activity.RESULT_OK;
@@ -223,7 +230,7 @@ public class ActivityFileResultImporterTest {
 
     @Test
     public void onActivityResultWithValidSaveLocationWithIndependentOrdering() {
-        final Uri uri = Uri.EMPTY;
+//        final Uri uri = Uri.EMPTY;
         final File file = new File("");
         final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
         final int responseCode = Activity.RESULT_OK;
@@ -235,6 +242,36 @@ public class ActivityFileResultImporterTest {
                 .assertValue(new ActivityFileResultImporterResponse(file, ocrResponse, requestCode, responseCode))
                 .assertComplete()
                 .assertNoErrors();
+    }
+
+    @Test
+    public void checkPermissionIfFile() {
+        final File file = new File("");
+        final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
+        final int responseCode = Activity.RESULT_OK;
+        when(intent.getData()).thenReturn(uri);
+        when(processor.process(uri)).thenReturn(Single.just(file));
+        when(uri.getScheme()).thenReturn(ContentResolver.SCHEME_FILE);
+
+        fileResultImporter.getResultStream().test();
+        fileResultImporter.onActivityResult(requestCode, responseCode, intent, null, trip);
+
+        verify(permissionsDelegate).checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    @Test
+    public void dontCheckPermissionIfContent() {
+        final File file = new File("");
+        final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
+        final int responseCode = Activity.RESULT_OK;
+        when(intent.getData()).thenReturn(uri);
+        when(processor.process(uri)).thenReturn(Single.just(file));
+        when(uri.getScheme()).thenReturn(ContentResolver.SCHEME_CONTENT);
+
+        fileResultImporter.getResultStream().test();
+        fileResultImporter.onActivityResult(requestCode, responseCode, intent, null, trip);
+
+        verify(permissionsDelegate, never()).checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
 }

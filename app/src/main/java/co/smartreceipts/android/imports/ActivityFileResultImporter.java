@@ -1,6 +1,8 @@
 package co.smartreceipts.android.imports;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -15,13 +17,15 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.OcrManager;
+import co.smartreceipts.android.permissions.PermissionsDelegate;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -29,12 +33,13 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.ReplaySubject;
 import io.reactivex.subjects.Subject;
 
-@ApplicationScope
+@ActivityScope
 public class ActivityFileResultImporter {
 
     private final Analytics analytics;
     private final OcrManager ocrManager;
     private final FileImportProcessorFactory factory;
+    private final PermissionsDelegate permissionsDelegate;
 
     private final Scheduler subscribeOnScheduler;
     private final Scheduler observeOnScheduler;
@@ -43,17 +48,20 @@ public class ActivityFileResultImporter {
     private Disposable localDisposable;
 
     @Inject
-    ActivityFileResultImporter(Analytics analytics, OcrManager ocrManager, FileImportProcessorFactory factory) {
-        this(analytics, ocrManager, factory, Schedulers.io(), AndroidSchedulers.mainThread());
+    ActivityFileResultImporter(Analytics analytics, OcrManager ocrManager, FileImportProcessorFactory factory,
+                               PermissionsDelegate permissionsDelegate) {
+        this(analytics, ocrManager, factory, permissionsDelegate, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @VisibleForTesting
     ActivityFileResultImporter(@NonNull Analytics analytics, @NonNull OcrManager ocrManager,
                                @NonNull FileImportProcessorFactory factory,
+                               @NonNull PermissionsDelegate permissionsDelegate,
                                @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
         this.analytics = Preconditions.checkNotNull(analytics);
         this.ocrManager = Preconditions.checkNotNull(ocrManager);
         this.factory = Preconditions.checkNotNull(factory);
+        this.permissionsDelegate = Preconditions.checkNotNull(permissionsDelegate);
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
         this.observeOnScheduler = Preconditions.checkNotNull(observeOnScheduler);
     }
@@ -70,6 +78,16 @@ public class ActivityFileResultImporter {
         }
         localDisposable = getSaveLocation(requestCode, resultCode, data, proposedImageSaveLocation)
                 .subscribeOn(subscribeOnScheduler)
+                .observeOn(observeOnScheduler) // go to the main thread because we probably will ask permission
+                .flatMapSingleElement(uri -> {
+                    if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+                        return Single.just(uri);
+                    } else { // we need to check read external storage permission
+                        return permissionsDelegate.checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .toSingleDefault(uri);
+                    }
+                })
+                .observeOn(subscribeOnScheduler) // come back from the main thread
                 .flatMapSingleElement(uri -> factory.get(requestCode, trip).process(uri))
                 .flatMapObservable(file -> ocrManager.scan(file)
                         .map(ocrResponse -> new ActivityFileResultImporterResponse(file, ocrResponse, requestCode, resultCode)))

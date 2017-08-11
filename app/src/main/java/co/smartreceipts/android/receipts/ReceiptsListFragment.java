@@ -1,6 +1,5 @@
 package co.smartreceipts.android.receipts;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -304,21 +303,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void importReceipt() {
-        permissionsDelegate.checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .subscribe(() -> {
-                            try {
-                                final ImportPhotoPdfDialogFragment fragment = new ImportPhotoPdfDialogFragment();
-                                fragment.show(getChildFragmentManager(), ImportPhotoPdfDialogFragment.TAG);
-                            } catch (IllegalStateException ex) { // This exception is always thrown if saveInstanceState was already been called.
-                                // hack to not force the user to open import dialog manually again after he gave us needed permission
-                                floatingActionMenu.post(() -> {
-                                    floatingActionMenu.open(true);
-                                    final ImportPhotoPdfDialogFragment fragment = new ImportPhotoPdfDialogFragment();
-                                    fragment.show(getChildFragmentManager(), ImportPhotoPdfDialogFragment.TAG);
-                                });
-                            }
-                        },
-                        throwable -> Toast.makeText(getContext(), getString(R.string.toast_no_storage_permissions), Toast.LENGTH_SHORT).show());
+        final ImportPhotoPdfDialogFragment fragment = new ImportPhotoPdfDialogFragment();
+        fragment.show(getChildFragmentManager(), ImportPhotoPdfDialogFragment.TAG);
     }
 
     public final boolean showReceiptMenu(final Receipt receipt) {
