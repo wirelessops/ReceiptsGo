@@ -236,7 +236,7 @@ class DriveDataStreams {
 
             @Override
             public void onFailure(@NonNull Status status) {
-                Logger.error(DriveDataStreams.this, "Failed to fetch file with status: {}", status);
+                Logger.error(DriveDataStreams.this, "Failed to fetch {} with status: {}", identifier, status);
                 emitter.onError(new IOException(status.getStatusMessage()));
             }
         }));

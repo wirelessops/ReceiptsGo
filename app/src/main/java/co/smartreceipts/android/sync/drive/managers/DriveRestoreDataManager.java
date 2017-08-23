@@ -144,6 +144,8 @@ public class DriveRestoreDataManager {
                     Logger.debug(DriveRestoreDataManager.this, "Downloading file for partial receipt: {}", partialReceipt.driveId);
                     return downloadFileForReceipt(partialReceipt, downloadLocation);
                 })
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 
@@ -213,13 +215,16 @@ public class DriveRestoreDataManager {
         });
     }
 
-    private Single<File> downloadFileForReceipt(@NonNull final PartialReceipt partialReceipt, @NonNull final File inDirectory) {
+    private Single<Optional<File>> downloadFileForReceipt(@NonNull final PartialReceipt partialReceipt, @NonNull final File inDirectory) {
         return mDriveStreamsManager.getDriveId(partialReceipt.driveId)
                 .flatMap(driveId -> Single.just(driveId.asDriveFile()))
                 .flatMap(driveFile -> {
                     final File receiptFile = new File(new File(inDirectory, partialReceipt.parentTripName), partialReceipt.fileName);
                     return mDriveStreamsManager.download(driveFile, receiptFile);
-                });
+                })
+                .map(Optional::of)
+                .doOnError(throwable -> Logger.error(DriveRestoreDataManager.this, "Failed to download {} in {} with id {}.", partialReceipt.fileName, partialReceipt.parentTripName, partialReceipt.driveId))
+                .onErrorReturn(throwable -> Optional.absent());
     }
 
     /**
