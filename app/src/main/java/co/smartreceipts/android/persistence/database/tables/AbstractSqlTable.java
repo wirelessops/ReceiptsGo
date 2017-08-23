@@ -128,7 +128,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     @NonNull
     @Override
-    public final Single<ModelType> findByPrimaryKey(@NonNull final PrimaryKeyType primaryKeyType) {
+    public Single<ModelType> findByPrimaryKey(@NonNull final PrimaryKeyType primaryKeyType) {
         return Single.fromCallable(() -> AbstractSqlTable.this.findByPrimaryKeyBlocking(primaryKeyType))
                 .map(modelTypeOptional -> {
                     if (modelTypeOptional.isPresent()) {

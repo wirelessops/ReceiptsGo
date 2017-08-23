@@ -34,8 +34,10 @@ import io.reactivex.schedulers.Schedulers;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -44,288 +46,382 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class DriveReceiptsManagerTest {
 
+    private static final int RECEIPT_1_PRIMARY_KEY = 1;
+    private static final int RECEIPT_2_PRIMARY_KEY = 2;
+
     // Class under testing
-    DriveReceiptsManager mDriveReceiptsManager;
+    DriveReceiptsManager driveReceiptsManager;
 
     @Mock
-    TableController<Receipt> mReceiptTableController;
+    TableController<Receipt> receiptTableController;
 
     @Mock
-    ReceiptsTable mReceiptsTable;
+    ReceiptsTable receiptsTable;
 
     @Mock
-    DriveStreamsManager mDriveTaskManager;
+    DriveStreamsManager driveStreamsManager;
 
     @Mock
-    DriveDatabaseManager mDriveDatabaseManager;
+    DriveDatabaseManager driveDatabaseManager;
 
     @Mock
-    NetworkManager mNetworkManager;
+    NetworkManager networkManager;
 
     @Mock
-    Analytics mAnalytics;
+    Analytics analytics;
 
     @Mock
-    DriveStreamMappings mDriveStreamMappings;
+    DriveStreamMappings driveStreamMappings;
 
     @Mock
-    ReceiptBuilderFactoryFactory mReceiptBuilderFactoryFactory;
+    ReceiptBuilderFactoryFactory receiptBuilderFactoryFactory;
 
     @Mock
-    ReceiptBuilderFactory mReceiptBuilderFactory1, mReceiptBuilderFactory2;
+    ReceiptBuilderFactory receiptBuilderFactory1, receiptBuilderFactory2;
 
     @Mock
-    Receipt mReceipt1, mReceipt2;
+    Receipt receipt1, receipt2;
 
     @Mock
-    SyncState mSyncState1, mSyncState2, mNewSyncState1, mNewSyncState2;
+    SyncState syncState1, syncState2, newSyncState1, newSyncState2;
 
     @Mock
-    File mFile;
+    File file;
 
     @Captor
-    ArgumentCaptor<Receipt> mReceiptCaptor;
+    ArgumentCaptor<Receipt> receiptCaptor;
 
     @Captor
-    ArgumentCaptor<Receipt> mUpdatedReceiptCaptor;
+    ArgumentCaptor<Receipt> updatedReceiptCaptor;
 
     @Captor
-    ArgumentCaptor<DatabaseOperationMetadata> mOperationMetadataCaptor;
+    ArgumentCaptor<DatabaseOperationMetadata> operationMetadataCaptor;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        when(mReceipt1.getSyncState()).thenReturn(mSyncState1);
-        when(mReceipt2.getSyncState()).thenReturn(mSyncState2);
+        when(receipt1.getSyncState()).thenReturn(syncState1);
+        when(receipt2.getSyncState()).thenReturn(syncState2);
 
-        when(mReceiptBuilderFactory1.build()).thenReturn(mReceipt1);
-        when(mReceiptBuilderFactory2.build()).thenReturn(mReceipt2);
+        when(receiptBuilderFactory1.build()).thenReturn(receipt1);
+        when(receiptBuilderFactory2.build()).thenReturn(receipt2);
         doAnswer(new Answer<ReceiptBuilderFactory>() {
             @Override
             public ReceiptBuilderFactory answer(InvocationOnMock invocation) throws Throwable {
-                return mReceiptBuilderFactory1;
+                return receiptBuilderFactory1;
             }
-        }).when(mReceiptBuilderFactoryFactory).build(mReceipt1);
+        }).when(receiptBuilderFactoryFactory).build(receipt1);
         doAnswer(new Answer<ReceiptBuilderFactory>() {
             @Override
             public ReceiptBuilderFactory answer(InvocationOnMock invocation) throws Throwable {
-                return mReceiptBuilderFactory2;
+                return receiptBuilderFactory2;
             }
-        }).when(mReceiptBuilderFactoryFactory).build(mReceipt2);
+        }).when(receiptBuilderFactoryFactory).build(receipt2);
         doAnswer(new Answer<ReceiptBuilderFactory>() {
             @Override
             public ReceiptBuilderFactory answer(InvocationOnMock invocation) throws Throwable {
-                when(mReceipt1.getSyncState()).thenReturn((SyncState)invocation.getArguments()[0]);
-                return mReceiptBuilderFactory1;
+                when(receipt1.getSyncState()).thenReturn((SyncState)invocation.getArguments()[0]);
+                return receiptBuilderFactory1;
             }
-        }).when(mReceiptBuilderFactory1).setSyncState(any(SyncState.class));
+        }).when(receiptBuilderFactory1).setSyncState(any(SyncState.class));
         doAnswer(new Answer<ReceiptBuilderFactory>() {
             @Override
             public ReceiptBuilderFactory answer(InvocationOnMock invocation) throws Throwable {
-                when(mReceipt2.getSyncState()).thenReturn((SyncState)invocation.getArguments()[0]);
-                return mReceiptBuilderFactory2;
+                when(receipt2.getSyncState()).thenReturn((SyncState)invocation.getArguments()[0]);
+                return receiptBuilderFactory2;
             }
-        }).when(mReceiptBuilderFactory2).setSyncState(any(SyncState.class));
+        }).when(receiptBuilderFactory2).setSyncState(any(SyncState.class));
 
-        when(mNetworkManager.isNetworkAvailable()).thenReturn(true);
+        when(networkManager.isNetworkAvailable()).thenReturn(true);
+        when(receipt1.getId()).thenReturn(RECEIPT_1_PRIMARY_KEY);
+        when(receipt2.getId()).thenReturn(RECEIPT_2_PRIMARY_KEY);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(receipt1));
+        when(receiptsTable.findByPrimaryKey(RECEIPT_2_PRIMARY_KEY)).thenReturn(Single.just(receipt2));
 
-        mDriveReceiptsManager = new DriveReceiptsManager(mReceiptTableController, mReceiptsTable, mDriveTaskManager,
-                mDriveDatabaseManager, mNetworkManager, mAnalytics, mDriveStreamMappings, mReceiptBuilderFactoryFactory, Schedulers.trampoline(), Schedulers.trampoline());
+        driveReceiptsManager = new DriveReceiptsManager(receiptTableController, receiptsTable, driveStreamsManager,
+                driveDatabaseManager, networkManager, analytics, driveStreamMappings, receiptBuilderFactoryFactory, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test
     public void handleDelete() {
-        when(mDriveTaskManager.deleteDriveFile(mSyncState1, true)).thenReturn(Single.just(mNewSyncState1));
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
+        when(driveStreamsManager.deleteDriveFile(syncState1, true)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
 
-        mDriveReceiptsManager.handleDelete(mReceipt1);
+        driveReceiptsManager.handleDelete(receipt1);
 
-        verify(mReceiptTableController).delete(mReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
-        assertEquals(mReceipt1, mReceiptCaptor.getValue());
-        assertEquals(mNewSyncState1, mReceiptCaptor.getValue().getSyncState());
-        assertEquals(OperationFamilyType.Sync, mOperationMetadataCaptor.getValue().getOperationFamilyType());
+        verify(receiptTableController).delete(receiptCaptor.capture(), operationMetadataCaptor.capture());
+        assertEquals(receipt1, receiptCaptor.getValue());
+        assertEquals(newSyncState1, receiptCaptor.getValue().getSyncState());
+        assertEquals(OperationFamilyType.Sync, operationMetadataCaptor.getValue().getOperationFamilyType());
+    }
+
+    @Test
+    public void handleDeleteForStaleReceipt() {
+        when(driveStreamsManager.deleteDriveFile(syncState1, true)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(mock(Receipt.class)));
+
+        driveReceiptsManager.handleDelete(receipt1);
+
+        verify(receiptTableController, never()).delete(receiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test
     public void handleDeleteWithoutNetwork() {
-        when(mDriveTaskManager.deleteDriveFile(mSyncState1, true)).thenReturn(Single.just(mNewSyncState1));
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
-        when(mNetworkManager.isNetworkAvailable()).thenReturn(false);
+        when(driveStreamsManager.deleteDriveFile(syncState1, true)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
+        when(networkManager.isNetworkAvailable()).thenReturn(false);
 
-        mDriveReceiptsManager.handleDelete(mReceipt1);
+        driveReceiptsManager.handleDelete(receipt1);
 
-        verify(mReceiptTableController, never()).delete(mReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
+        verify(receiptTableController, never()).delete(receiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void handleDeleteForIllegalSyncState() {
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(true);
-        mDriveReceiptsManager.handleDelete(mReceipt1);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(true);
+        driveReceiptsManager.handleDelete(receipt1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void handleDeleteForIllegalMarkedForDeletionState() {
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        mDriveReceiptsManager.handleDelete(mReceipt1);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        driveReceiptsManager.handleDelete(receipt1);
     }
 
     @Test
     public void handleInsertOrUpdateWithoutNetwork() {
-        when(mDriveTaskManager.uploadFileToDrive(mSyncState1, mFile)).thenReturn(Single.just(mNewSyncState1));
-        when(mSyncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mReceipt1.getFile()).thenReturn(mFile);
-        when(mFile.exists()).thenReturn(true);
-        when(mNetworkManager.isNetworkAvailable()).thenReturn(false);
+        when(driveStreamsManager.uploadFileToDrive(syncState1, file)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(true);
+        when(networkManager.isNetworkAvailable()).thenReturn(false);
 
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
 
-        verify(mReceiptTableController, never()).update(mReceiptCaptor.capture(), mUpdatedReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
+        verify(receiptTableController, never()).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test
     public void handleInsertOrUpdateForNewFile() {
-        when(mDriveTaskManager.uploadFileToDrive(mSyncState1, mFile)).thenReturn(Single.just(mNewSyncState1));
-        when(mSyncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mReceipt1.getFile()).thenReturn(mFile);
-        when(mFile.exists()).thenReturn(true);
+        when(driveStreamsManager.uploadFileToDrive(syncState1, file)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(true);
 
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
 
-        verify(mReceiptTableController).update(mReceiptCaptor.capture(), mUpdatedReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
-        assertNotNull(mReceiptCaptor.getValue());
-        assertEquals(mReceipt1, mUpdatedReceiptCaptor.getValue());
-        assertEquals(mNewSyncState1, mUpdatedReceiptCaptor.getValue().getSyncState());
-        assertEquals(OperationFamilyType.Sync, mOperationMetadataCaptor.getValue().getOperationFamilyType());
+        verify(receiptTableController).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
+        assertNotNull(receiptCaptor.getValue());
+        assertEquals(receipt1, updatedReceiptCaptor.getValue());
+        assertEquals(newSyncState1, updatedReceiptCaptor.getValue().getSyncState());
+        assertEquals(OperationFamilyType.Sync, operationMetadataCaptor.getValue().getOperationFamilyType());
+    }
+
+    @Test
+    public void handleInsertOrUpdateForNewFileButStaleReceipt() {
+        when(driveStreamsManager.uploadFileToDrive(syncState1, file)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(true);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(mock(Receipt.class)));
+
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
+
+        verify(receiptTableController, never()).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test
     public void handleInsertOrUpdateForNonExistingNewFile() {
-        when(mDriveStreamMappings.postInsertSyncState(mSyncState1, null)).thenReturn(mNewSyncState1);
-        when(mSyncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mReceipt1.getFile()).thenReturn(mFile);
-        when(mFile.exists()).thenReturn(false);
+        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(false);
 
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
 
-        verify(mReceiptTableController).update(mReceiptCaptor.capture(), mUpdatedReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
-        assertNotNull(mReceiptCaptor.getValue());
-        assertEquals(mReceipt1, mUpdatedReceiptCaptor.getValue());
-        assertEquals(mNewSyncState1, mUpdatedReceiptCaptor.getValue().getSyncState());
-        assertEquals(OperationFamilyType.Sync, mOperationMetadataCaptor.getValue().getOperationFamilyType());
+        verify(receiptTableController).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
+        assertNotNull(receiptCaptor.getValue());
+        assertEquals(receipt1, updatedReceiptCaptor.getValue());
+        assertEquals(newSyncState1, updatedReceiptCaptor.getValue().getSyncState());
+        assertEquals(OperationFamilyType.Sync, operationMetadataCaptor.getValue().getOperationFamilyType());
+    }
+
+    @Test
+    public void handleInsertOrUpdateForNonExistingNewFileButStaleReceipt() {
+        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(false);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(mock(Receipt.class)));
+
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
+
+        verify(receiptTableController, never()).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test
     public void handleInsertWithoutFile() {
-        when(mDriveStreamMappings.postInsertSyncState(mSyncState1, null)).thenReturn(mNewSyncState1);
-        when(mSyncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mReceipt1.getFile()).thenReturn(null);
+        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(null);
 
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
 
-        verify(mReceiptTableController).update(mReceiptCaptor.capture(), mUpdatedReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
-        assertNotNull(mReceiptCaptor.getValue());
-        assertEquals(mReceipt1, mUpdatedReceiptCaptor.getValue());
-        assertEquals(mNewSyncState1, mUpdatedReceiptCaptor.getValue().getSyncState());
-        assertEquals(OperationFamilyType.Sync, mOperationMetadataCaptor.getValue().getOperationFamilyType());
+        verify(receiptTableController).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
+        assertNotNull(receiptCaptor.getValue());
+        assertEquals(receipt1, updatedReceiptCaptor.getValue());
+        assertEquals(newSyncState1, updatedReceiptCaptor.getValue().getSyncState());
+        assertEquals(OperationFamilyType.Sync, operationMetadataCaptor.getValue().getOperationFamilyType());
+    }
+
+    @Test
+    public void handleInsertWithoutFileButStaleReceipt() {
+        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(null);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(mock(Receipt.class)));
+
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
+
+        verify(receiptTableController, never()).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test
     public void handleUpdateWithNewFile() {
         final Identifier identifier = new Identifier("id");
-        when(mDriveTaskManager.updateDriveFile(mSyncState1, mFile)).thenReturn(Single.just(mNewSyncState1));
-        when(mSyncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mReceipt1.getFile()).thenReturn(mFile);
-        when(mFile.exists()).thenReturn(true);
+        when(driveStreamsManager.updateDriveFile(syncState1, file)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(true);
 
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
 
-        verify(mReceiptTableController).update(mReceiptCaptor.capture(), mUpdatedReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
-        assertNotNull(mReceiptCaptor.getValue());
-        assertEquals(mReceipt1, mUpdatedReceiptCaptor.getValue());
-        assertEquals(mNewSyncState1, mUpdatedReceiptCaptor.getValue().getSyncState());
-        assertEquals(OperationFamilyType.Sync, mOperationMetadataCaptor.getValue().getOperationFamilyType());
+        verify(receiptTableController).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
+        assertNotNull(receiptCaptor.getValue());
+        assertEquals(receipt1, updatedReceiptCaptor.getValue());
+        assertEquals(newSyncState1, updatedReceiptCaptor.getValue().getSyncState());
+        assertEquals(OperationFamilyType.Sync, operationMetadataCaptor.getValue().getOperationFamilyType());
+    }
+
+    @Test
+    public void handleUpdateWithNewFileButStaleReceipt() {
+        final Identifier identifier = new Identifier("id");
+        when(driveStreamsManager.updateDriveFile(syncState1, file)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(file);
+        when(file.exists()).thenReturn(true);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(mock(Receipt.class)));
+
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
+
+        verify(receiptTableController, never()).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test
     public void handleUpdateToDeleteExistingFile() {
         final Identifier identifier = new Identifier("id");
-        when(mDriveTaskManager.deleteDriveFile(mSyncState1, false)).thenReturn(Single.just(mNewSyncState1));
-        when(mSyncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mReceipt1.getFile()).thenReturn(null);
+        when(driveStreamsManager.deleteDriveFile(syncState1, false)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(null);
 
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
 
-        verify(mReceiptTableController).update(mReceiptCaptor.capture(), mUpdatedReceiptCaptor.capture(), mOperationMetadataCaptor.capture());
-        assertNotNull(mReceiptCaptor.getValue());
-        assertEquals(mReceipt1, mUpdatedReceiptCaptor.getValue());
-        assertEquals(mNewSyncState1, mUpdatedReceiptCaptor.getValue().getSyncState());
-        assertEquals(OperationFamilyType.Sync, mOperationMetadataCaptor.getValue().getOperationFamilyType());
+        verify(receiptTableController).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
+        assertNotNull(receiptCaptor.getValue());
+        assertEquals(receipt1, updatedReceiptCaptor.getValue());
+        assertEquals(newSyncState1, updatedReceiptCaptor.getValue().getSyncState());
+        assertEquals(OperationFamilyType.Sync, operationMetadataCaptor.getValue().getOperationFamilyType());
+    }
+
+    @Test
+    public void handleUpdateToDeleteExistingFileButStaleReceipt() {
+        final Identifier identifier = new Identifier("id");
+        when(driveStreamsManager.deleteDriveFile(syncState1, false)).thenReturn(Single.just(newSyncState1));
+        when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(receipt1.getFile()).thenReturn(null);
+        when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(mock(Receipt.class)));
+
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
+
+        verify(receiptTableController, never()).update(receiptCaptor.capture(), updatedReceiptCaptor.capture(), operationMetadataCaptor.capture());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void handleInsertOrUpdateForIllegalSyncState() {
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(true);
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(true);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void handleInsertOrUpdateForIllegalMarkedForDeletionState() {
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
-        mDriveReceiptsManager.handleInsertOrUpdate(mReceipt1);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
+        driveReceiptsManager.handleInsertOrUpdate(receipt1);
     }
 
     @Test
     public void initialize() {
-        final DriveReceiptsManager spiedManager = spy(mDriveReceiptsManager);
+        final DriveReceiptsManager spiedManager = spy(driveReceiptsManager);
         doNothing().when(spiedManager).handleInsertOrUpdateInternal(any(Receipt.class));
         doNothing().when(spiedManager).handleDeleteInternal(any(Receipt.class));
 
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState2.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
-        when(mReceiptsTable.getUnsynced(SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(mReceipt1, mReceipt2)));
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState2.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
+        when(receiptsTable.getUnsynced(SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
 
         spiedManager.initialize();
 
-        verify(spiedManager).handleInsertOrUpdateInternal(mReceipt1);
-        verify(spiedManager).handleDeleteInternal(mReceipt2);
-        verify(mDriveDatabaseManager).syncDatabase();
+        verify(spiedManager).handleInsertOrUpdateInternal(receipt1);
+        verify(spiedManager).handleDeleteInternal(receipt2);
+        verify(driveDatabaseManager).syncDatabase();
     }
 
     @Test
     public void initializeWithoutNetwork() {
-        final DriveReceiptsManager spiedManager = spy(mDriveReceiptsManager);
+        final DriveReceiptsManager spiedManager = spy(driveReceiptsManager);
         doNothing().when(spiedManager).handleInsertOrUpdateInternal(any(Receipt.class));
         doNothing().when(spiedManager).handleDeleteInternal(any(Receipt.class));
 
-        when(mSyncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState2.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
-        when(mSyncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
-        when(mReceiptsTable.getUnsynced(SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(mReceipt1, mReceipt2)));
-        when(mNetworkManager.isNetworkAvailable()).thenReturn(false);
+        when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState2.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
+        when(syncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
+        when(receiptsTable.getUnsynced(SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
+        when(networkManager.isNetworkAvailable()).thenReturn(false);
 
         spiedManager.initialize();
 
-        verify(spiedManager, never()).handleInsertOrUpdateInternal(mReceipt1);
-        verify(spiedManager, never()).handleDeleteInternal(mReceipt2);
-        verify(mDriveDatabaseManager, never()).syncDatabase();
+        verify(spiedManager, never()).handleInsertOrUpdateInternal(receipt1);
+        verify(spiedManager, never()).handleDeleteInternal(receipt2);
+        verify(driveDatabaseManager, never()).syncDatabase();
     }
 
 }

@@ -162,12 +162,20 @@ public class DriveReceiptsManager {
         Preconditions.checkArgument(receipt.getSyncState().isMarkedForDeletion(SyncProvider.GoogleDrive), "Cannot delete a receipt that isn't marked for deletion");
 
         if (mNetworkManager.isNetworkAvailable()) {
-            mDriveTaskManager.deleteDriveFile(receipt.getSyncState(), true)
+            mReceiptsTable.findByPrimaryKey(receipt.getId())
+                    .flatMap(queriedReceipt -> {
+                        if (receipt.equals(queriedReceipt) && receipt.getIndex() == queriedReceipt.getIndex()) {
+                            return mDriveTaskManager.deleteDriveFile(receipt.getSyncState(), true);
+                        } else {
+                            Logger.warn(this, "Receipt {} appears to no longer match the requested one for deletion. Ignoring...", receipt.getId());
+                            return Single.error(new Exception("Queued receipt for syncing is stale. Ignoring"));
+                        }
+                    })
                     .flatMapObservable(syncState -> Observable.just(mReceiptBuilderFactoryFactory.build(receipt).setSyncState(syncState).build()))
                     .observeOn(mObserveOnScheduler)
                     .subscribeOn(mSubscribeOnScheduler)
                     .subscribe(newReceipt -> {
-                        Logger.info(DriveReceiptsManager.this, "Attempting to fully delete receipt " + newReceipt.getId() + " that is marked for deletion");
+                        Logger.info(DriveReceiptsManager.this, "Attempting to fully delete receipt {} that is marked for deletion", receipt.getId());
                         mReceiptTableController.delete(newReceipt, new DatabaseOperationMetadata(OperationFamilyType.Sync));
                     }, throwable -> {
                         mAnalytics.record(new ErrorEvent(DriveReceiptsManager.this, throwable));
@@ -183,23 +191,31 @@ public class DriveReceiptsManager {
         final SyncState oldSyncState = receipt.getSyncState();
         final File receiptFile = receipt.getFile();
 
-        if (oldSyncState.getSyncId(SyncProvider.GoogleDrive) == null) {
-            if (receiptFile != null && receiptFile.exists()) {
-                Logger.info(this, "Found receipt " + receipt.getId() + " with a non-uploaded file. Uploading");
-                return mDriveTaskManager.uploadFileToDrive(oldSyncState, receiptFile);
-            } else {
-                Logger.info(this, "Found receipt " + receipt.getId() + " without a file. Marking as synced for Drive");
-                return Single.just(mDriveStreamMappings.postInsertSyncState(oldSyncState, null));
-            }
-        } else {
-            if (receiptFile != null) {
-                Logger.info(this, "Found receipt " + receipt.getId() + " with a new file. Updating");
-                return mDriveTaskManager.updateDriveFile(oldSyncState, receiptFile);
-            } else {
-                Logger.info(this, "Found receipt " + receipt.getId() + " with a stale file reference. Removing");
-                return mDriveTaskManager.deleteDriveFile(oldSyncState, false);
-            }
-        }
+        return mReceiptsTable.findByPrimaryKey(receipt.getId())
+                .flatMap(queriedReceipt -> {
+                    if (receipt.equals(queriedReceipt) && receipt.getIndex() == queriedReceipt.getIndex()) {
+                        if (oldSyncState.getSyncId(SyncProvider.GoogleDrive) == null) {
+                            if (receiptFile != null && receiptFile.exists()) {
+                                Logger.info(this, "Found receipt {} with a non-uploaded file. Uploading", receipt.getId());
+                                return mDriveTaskManager.uploadFileToDrive(oldSyncState, receiptFile);
+                            } else {
+                                Logger.info(this, "Found receipt {} without a file. Marking as synced for Drive", receipt.getId());
+                                return Single.just(mDriveStreamMappings.postInsertSyncState(oldSyncState, null));
+                            }
+                        } else {
+                            if (receiptFile != null) {
+                                Logger.info(this, "Found receipt {} with a new file. Updating", receipt.getId());
+                                return mDriveTaskManager.updateDriveFile(oldSyncState, receiptFile);
+                            } else {
+                                Logger.info(this, "Found receipt {} with a stale file reference. Removing", receipt.getId());
+                                return mDriveTaskManager.deleteDriveFile(oldSyncState, false);
+                            }
+                        }
+                    } else {
+                        Logger.warn(this, "Receipt {} appears to no longer match the requested one for upload. Ignoring...", receipt.getId());
+                        return Single.error(new Exception("Queued receipt for syncing is stale. Ignoring"));
+                    }
+                });
     }
 
 }
