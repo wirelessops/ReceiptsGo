@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import java.util.List;
 import java.util.Map;
@@ -218,11 +219,8 @@ public class ReceiptTableController extends TripForeignKeyAbstractTableControlle
     private Single<Boolean> swapReceiptsSingle(final List<? extends Map.Entry<Receipt, Receipt>> entries) {
         return Observable.fromIterable(entries)
                 .flatMap(entry -> update(entry.getKey(), entry.getValue(), new DatabaseOperationMetadata()))
-                .filter(receipt -> receipt != null)
+                .filter(Optional::isPresent)
                 .toList()
-                .flatMap(updatedReceipts -> Single.just(entries.size() == updatedReceipts.size()))
-                .delay(100, TimeUnit.MILLISECONDS);
-        // TODO: Refactor this to actually fix the timing issue w/o the delay
-        // TODO: A real solution should use proper sorting indices instead of relying in the dates (hence why I'm allowing this hack)
+                .flatMap(updatedReceipts -> Single.just(entries.size() == updatedReceipts.size()));
     }
 }
