@@ -33,11 +33,13 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.imports.ActivityFileResultImporter;
 import co.smartreceipts.android.imports.CameraInteractionController;
+import co.smartreceipts.android.imports.importer.ActivityFileResultImporter;
+import co.smartreceipts.android.imports.locator.ActivityFileResultLocator;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.ocr.OcrManager;
+import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
@@ -69,9 +71,11 @@ public class ReceiptImageFragment extends WBFragment {
     OcrManager ocrManager;
     @Inject
     NavigationHandler navigationHandler;
+
+    @Inject
+    ActivityFileResultLocator activityFileResultLocator;
     @Inject
     ActivityFileResultImporter activityFileResultImporter;
-
 
     private PinchToZoomImageView imageView;
     private LinearLayout footer;
@@ -106,6 +110,10 @@ public class ReceiptImageFragment extends WBFragment {
         isRotateOngoing = false;
         imageUpdatedListener = new ImageUpdatedListener();
         setHasOptionsMenu(true);
+
+        setRetainInstance(true);
+
+        subscribe();
     }
 
     @Override
@@ -119,26 +127,17 @@ public class ReceiptImageFragment extends WBFragment {
         final LinearLayout retakePhoto = (LinearLayout) rootView.findViewById(R.id.retake_photo);
         final LinearLayout rotateCW = (LinearLayout) rootView.findViewById(R.id.rotate_cw);
 
-        rotateCCW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                analytics.record(Events.Receipts.ReceiptImageViewRotateCcw);
-                rotate(ExifInterface.ORIENTATION_ROTATE_270);
-            }
+        rotateCCW.setOnClickListener(view -> {
+            analytics.record(Events.Receipts.ReceiptImageViewRotateCcw);
+            rotate(ExifInterface.ORIENTATION_ROTATE_270);
         });
-        retakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                analytics.record(Events.Receipts.ReceiptImageViewRetakePhoto);
-                imageUri = new CameraInteractionController(ReceiptImageFragment.this).retakePhoto(receipt);
-            }
+        retakePhoto.setOnClickListener(view -> {
+            analytics.record(Events.Receipts.ReceiptImageViewRetakePhoto);
+            imageUri = new CameraInteractionController(ReceiptImageFragment.this).retakePhoto(receipt);
         });
-        rotateCW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                analytics.record(Events.Receipts.ReceiptImageViewRotateCw);
-                rotate(ExifInterface.ORIENTATION_ROTATE_90);
-            }
+        rotateCW.setOnClickListener(view -> {
+            analytics.record(Events.Receipts.ReceiptImageViewRotateCw);
+            rotate(ExifInterface.ORIENTATION_ROTATE_90);
         });
         return rootView;
     }
@@ -170,13 +169,48 @@ public class ReceiptImageFragment extends WBFragment {
         final Uri cachedImageSaveLocation = imageUri;
         imageUri = null;
 
-        activityFileResultImporter.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation, receipt.getTrip());
+        activityFileResultLocator.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
+    }
+
+    private void subscribe() {
+        compositeDisposable = new CompositeDisposable();
+
+        compositeDisposable.add(activityFileResultLocator.getUriStream()
+                // uri always has SCHEME_CONTENT -> we don't need to check permissions
+                .subscribe(locatorResponse -> {
+                    if (!locatorResponse.getThrowable().isPresent()) {
+                        activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
+                                locatorResponse.getResultCode(), locatorResponse.getUri(), receipt.getTrip());
+                    } else {
+                        Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
+                        progress.setVisibility(View.GONE);
+                    }
+                }));
+
+        compositeDisposable.add(activityFileResultImporter.getResultStream()
+                .subscribe(response -> {
+                    Logger.info(ReceiptImageFragment.this, "Handled the import of {}", response);
+                    if (!response.getThrowable().isPresent()) {
+                        final Receipt retakeReceipt = new ReceiptBuilderFactory(receipt).setFile(response.getFile()).build();
+                        receiptTableController.update(receipt, retakeReceipt, new DatabaseOperationMetadata());
+                    } else {
+                        Toast.makeText(getActivity(), getFlexString(R.string.IMG_SAVE_ERROR), Toast.LENGTH_SHORT).show();
+                        progress.setVisibility(View.GONE);
+                    }
+                }));
+    }
+
+    private void dispose() {
+        activityFileResultImporter.dispose();
+        activityFileResultLocator.dispose();
+
+        compositeDisposable.dispose();
+        compositeDisposable = null;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        compositeDisposable = new CompositeDisposable();
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -185,26 +219,19 @@ public class ReceiptImageFragment extends WBFragment {
             actionBar.setTitle(receipt.getName());
         }
         receiptTableController.subscribe(imageUpdatedListener);
-        compositeDisposable.add(activityFileResultImporter.getResultStream()
-                .subscribe(response -> {
-                    final Receipt retakeReceipt = new ReceiptBuilderFactory(receipt).setFile(response.getFile()).build();
-                    receiptTableController.update(receipt, retakeReceipt, new DatabaseOperationMetadata());
-                }, throwable -> {
-                    Toast.makeText(getActivity(), getFlexString(R.string.IMG_SAVE_ERROR), Toast.LENGTH_SHORT).show();
-                    progress.setVisibility(View.GONE);
-                    activityFileResultImporter.dispose();
-                }, () -> {
-                    progress.setVisibility(View.GONE);
-                    activityFileResultImporter.dispose();
-                }));
+
     }
 
     @Override
     public void onPause() {
-        compositeDisposable.dispose();
-        compositeDisposable = null;
         receiptTableController.unsubscribe(imageUpdatedListener);
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        dispose();
+        super.onDestroy();
     }
 
     @Override
