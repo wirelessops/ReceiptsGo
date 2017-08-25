@@ -429,10 +429,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     categoriesSpinner.setAdapter(categoriesAdapter);
 
                     if (getReceipt() == null) { // new receipt
-                        if (presenter.isMatchReceiptCommentToCategory() || presenter.isMatchReceiptNameToCategory()) {
-                            categoriesSpinner.setOnItemSelectedListener(new SpinnerSelectionListener());
-                        }
-
                         if (presenter.isPredictCategories()) { // Predict Breakfast, Lunch, Dinner by the hour
                             if (receiptInputCache.getCachedCategory() == null) {
                                 final Time now = new Time();
@@ -463,6 +459,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                         }
                     } else {
                         categoriesSpinner.setSelection(categoriesAdapter.getPosition(getReceipt().getCategory()));
+                    }
+
+                    if (presenter.isMatchReceiptCommentToCategory() || presenter.isMatchReceiptNameToCategory()) {
+                        categoriesSpinner.setOnItemSelectedListener(new SpinnerSelectionListener());
                     }
                 }
             }
