@@ -297,12 +297,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         dateBox.setOnClickListener(dateManager.getDateEditTextListener());
 
         // Lastly, preset adapters for "new" receipts
-        if (getReceipt() == null) {
-            if (presenter.isIncludeTaxField()) {
-                taxBox.setAdapter(new TaxAutoCompleteAdapter(getActivity(), priceBox, taxBox,
-                        presenter.isUsePreTaxPrice(),
-                        presenter.getDefaultTaxPercentage()));
-            }
+        if (presenter.isIncludeTaxField()) {
+            taxBox.setAdapter(new TaxAutoCompleteAdapter(getActivity(), priceBox, taxBox,
+                    presenter.isUsePreTaxPrice(),
+                    presenter.getDefaultTaxPercentage(), getReceipt() == null));
         }
     }
 

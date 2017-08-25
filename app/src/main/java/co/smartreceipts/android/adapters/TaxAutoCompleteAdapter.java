@@ -31,6 +31,7 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 	private final WeakReference<AutoCompleteTextView> mTaxBox;
 
 	private final boolean usePreTaxPrice;
+    private final boolean isNewReceipt;
 	
 	/**
 	 * The internal {@link java.util.List} that the {@link ArrayAdapter} uses to track entries caused
@@ -39,7 +40,7 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 	private final Vector<TaxItem> mData;
 	
 	public TaxAutoCompleteAdapter(Context context, TextView priceBox, AutoCompleteTextView taxBox,
-								  boolean usePreTaxPrice, float defaultValue) {
+								  boolean usePreTaxPrice, float defaultValue, boolean isNewReceipt) {
 		super(context, android.R.layout.two_line_list_item);
 		mInflater = LayoutInflater.from(context);
 		mData = new Vector<>();
@@ -50,6 +51,7 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 		priceBox.addTextChangedListener(this);
 		taxBox.setOnFocusChangeListener(this);
 		this.usePreTaxPrice = usePreTaxPrice;
+        this.isNewReceipt = isNewReceipt;
 	}
 	
 	@Override
@@ -127,15 +129,21 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 			}
 			TextView taxBox = mTaxBox.get();
 			if (this.hasDefaultValue() && taxBox != null) {
-				mDefaultValue.setPrice(text.toString());
-				taxBox.setText(mDefaultValue.toString());
+                if (isNewReceipt || !usePreTaxPrice) {
+                    // If we're editing a receipt in post tax mode, let's have the updates
+                    mDefaultValue.setPrice(text.toString());
+                    taxBox.setText(mDefaultValue.toString());
+                }
 			}
 		}
 		else {
 			TextView taxBox = mTaxBox.get();
 			if (this.hasDefaultValue() && taxBox != null) {
-				mDefaultValue.setPrice("0");
-				taxBox.setText(mDefaultValue.toString());
+                if (isNewReceipt || !usePreTaxPrice) {
+                    // If we're editing a receipt in post tax mode, let's have the updates
+                    mDefaultValue.setPrice("0");
+                    taxBox.setText(mDefaultValue.toString());
+                }
 			}
 			mData.clear();
 		}
