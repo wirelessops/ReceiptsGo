@@ -24,7 +24,10 @@ import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrde
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 
 /**
  * Abstracts out the core CRUD database operations in order to ensure that each of our core table instances
@@ -123,7 +126,22 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     @NonNull
     public synchronized Single<List<ModelType>> getUnsynced(@NonNull final SyncProvider syncProvider) {
-        return Single.fromCallable(() -> getUnsyncedBlocking(syncProvider));
+        Preconditions.checkArgument(syncProvider == SyncProvider.GoogleDrive, "Google Drive is the only supported provider at the moment");
+
+        return get()
+                .flatMap(getResults -> {
+                    final List<ModelType> unsyncedGetResults = new ArrayList<>(getResults.size());
+                    for (final ModelType model : getResults) {
+                        if (model instanceof Syncable) {
+                            final Syncable syncable = (Syncable) model;
+                            if (!syncable.getSyncState().isSynced(syncProvider)) {
+                                unsyncedGetResults.add(model);
+                            }
+                        }
+                    }
+                    return Single.just(unsyncedGetResults);
+                });
+
     }
 
     @NonNull
@@ -207,30 +225,8 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
         }
     }
 
-    @NonNull
-    public synchronized List<ModelType> getUnsyncedBlocking(@NonNull SyncProvider syncProvider) {
-        Preconditions.checkArgument(syncProvider == SyncProvider.GoogleDrive, "Google Drive is the only supported provider at the moment");
-
-        final ArrayList<ModelType> results = new ArrayList<>();
-        Cursor cursor = null;
-        try {
-            cursor = getReadableDatabase().query(getTableName(), null, COLUMN_DRIVE_IS_SYNCED + " = ?", new String[]{Integer.toString(0)}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    results.add(mDatabaseAdapter.read(cursor));
-                }
-                while (cursor.moveToNext());
-            }
-            return results;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
     private Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
-        // TODO: Consider using a Map/Cache/"SELECT" here to improve performance. The #get() call belong is overkill for a single item
+        // TODO: Consider using a Map/Cache/"SELECT" here to improve performance. The #get() call below is overkill for a single item
         final List<ModelType> entries = new ArrayList<>(getBlocking());
         final int size = entries.size();
         for (int i = 0; i < size; i++) {

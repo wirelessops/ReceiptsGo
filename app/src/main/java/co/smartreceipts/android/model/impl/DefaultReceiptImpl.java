@@ -394,6 +394,7 @@ public final class DefaultReceiptImpl implements Receipt {
         if (mIsFullPage != that.mIsFullPage) return false;
         if (!mTrip.equals(that.mTrip)) return false;
         if (!mPaymentMethod.equals(that.mPaymentMethod)) return false;
+        if (mIndex != that.mIndex) return false;
         if (!mName.equals(that.mName)) return false;
         if (!mComment.equals(that.mComment)) return false;
         if (!mCategory.equals(that.mCategory)) return false;
@@ -417,6 +418,7 @@ public final class DefaultReceiptImpl implements Receipt {
         int result = mId;
         result = 31 * result + mTrip.hashCode();
         result = 31 * result + mPaymentMethod.hashCode();
+        result = 31 * result + mIndex;
         result = 31 * result + mName.hashCode();
         result = 31 * result + mComment.hashCode();
         result = 31 * result + mCategory.hashCode();

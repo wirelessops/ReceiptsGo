@@ -19,6 +19,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -64,12 +65,15 @@ public class ReceiptsTableTest {
     private static final double PRICE_1 = 12.55d;
     private static final String NAME_1 = "Name1";
     private static final String TRIP_1 = "Trip";
+    public static final Date DATE_1 = new Date(1200000000000L);
     private static final double PRICE_2 = 140d;
     private static final String NAME_2 = "Name2";
     private static final String TRIP_2 = "Trip2";
+    public static final Date DATE_2 = new Date(1300000000000L);
     private static final double PRICE_3 = 12.123;
     private static final String NAME_3 = "Name3";
     private static final String TRIP_3 = "Trip3";
+    public static final Date DATE_3 = new Date(1400000000000L);
 
     private static final String CURRENCY_CODE = "USD";
 
@@ -160,15 +164,15 @@ public class ReceiptsTableTest {
         mBuilder = new ReceiptBuilderFactory();
         mBuilder.setCategory(mCategory)
                 .setFile(null)
-                .setDate(new Date(System.currentTimeMillis()))
+                .setDate(System.currentTimeMillis())
                 .setTimeZone(TimeZone.getDefault())
                 .setComment("")
                 .setIsReimbursable(true)
                 .setCurrency(CURRENCY_CODE)
                 .setIsFullPage(false)
                 .setPaymentMethod(mPaymentMethod);
-        mReceipt1 = mReceiptsTable.insert(mBuilder.setName(NAME_1).setPrice(PRICE_1).setTrip(mTrip1).build(), new DatabaseOperationMetadata()).blockingGet();
-        mReceipt2 = mReceiptsTable.insert(mBuilder.setName(NAME_2).setPrice(PRICE_2).setTrip(mTrip2).build(), new DatabaseOperationMetadata()).blockingGet();
+        mReceipt1 = mReceiptsTable.insert(mBuilder.setName(NAME_1).setPrice(PRICE_1).setTrip(mTrip1).setDate(DATE_1).setIndex(1).build(), new DatabaseOperationMetadata()).blockingGet();
+        mReceipt2 = mReceiptsTable.insert(mBuilder.setName(NAME_2).setPrice(PRICE_2).setTrip(mTrip2).setDate(DATE_2).setIndex(2).build(), new DatabaseOperationMetadata()).blockingGet();
     }
 
     @After
@@ -416,20 +420,20 @@ public class ReceiptsTableTest {
     @Test
     public void get() {
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Arrays.asList(mReceipt1, mReceipt2));
+        assertEquals(receipts, Arrays.asList(mReceipt2, mReceipt1)); // Note: The receipt with the more recent date (ie 2) appears first
     }
 
     @Test
     public void getForTrip() {
         // Note: We're adding this one to trip 1
-        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip1).build(), new DatabaseOperationMetadata()).blockingGet();
+        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip1).setDate(DATE_3).setIndex(2).build(), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(receipt);
 
         final List<Receipt> list1 = mReceiptsTable.get(mTrip1).blockingGet();
         final List<Receipt> list2 = mReceiptsTable.get(mTrip2).blockingGet();
         final List<Receipt> list3 = mReceiptsTable.get(mTrip3).blockingGet();
-        assertEquals(list1, Arrays.asList(mReceipt1, receipt));
-        assertEquals(list2, Collections.singletonList(mReceipt2));
+        assertEquals(list1, Arrays.asList(receipt, mReceipt1)); // Note: The receipt with the more recent date appears first
+        assertEquals(list2, Collections.singletonList(new ReceiptBuilderFactory(mReceipt2).setIndex(1).build()));
         assertEquals(list3, Collections.<Receipt>emptyList());
     }
 
@@ -439,20 +443,20 @@ public class ReceiptsTableTest {
                 new SyncStatusMap(Collections.singletonMap(SyncProvider.GoogleDrive, true)),
                 new MarkedForDeletionMap(Collections.singletonMap(SyncProvider.GoogleDrive, false)),
                 new Date(System.currentTimeMillis()));
-        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip1).setSyncState(syncStateForSyncedReceipt).build(), new DatabaseOperationMetadata(OperationFamilyType.Sync)).blockingGet();
+        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip1).setDate(DATE_3).setIndex(3).setSyncState(syncStateForSyncedReceipt).build(), new DatabaseOperationMetadata(OperationFamilyType.Sync)).blockingGet();
         assertNotNull(receipt);
 
         final List<Receipt> list1 = mReceiptsTable.getUnsynced(SyncProvider.GoogleDrive).blockingGet();
-        assertEquals(list1, Arrays.asList(mReceipt1, mReceipt2));
+        assertEquals(list1, Arrays.asList(mReceipt2, mReceipt1));
     }
 
     @Test
     public void insert() {
-        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).build(), new DatabaseOperationMetadata()).blockingGet();
+        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).setDate(DATE_3).setIndex(3).build(), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(receipt);
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Arrays.asList(mReceipt1, mReceipt2, receipt));
+        assertEquals(receipts, Arrays.asList(receipt, mReceipt2, mReceipt1)); // Note: The receipt with the more recent date appears first
     }
 
     @Test
@@ -472,12 +476,22 @@ public class ReceiptsTableTest {
 
     @Test
     public void update() {
-        final Receipt updatedReceipt = mReceiptsTable.update(mReceipt1, mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).build(), new DatabaseOperationMetadata()).blockingGet();
+        final Receipt updatedReceipt = mReceiptsTable.update(mReceipt1, mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).setDate(DATE_3).setIndex(2).build(), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(updatedReceipt);
         assertFalse(mReceipt1.equals(updatedReceipt));
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Arrays.asList(updatedReceipt, mReceipt2));
+        assertEquals(receipts, Arrays.asList(updatedReceipt, new ReceiptBuilderFactory(mReceipt2).setIndex(1).build())); // Note: The receipt with the more recent date appears first
+    }
+
+    @Test
+    public void updateWithOlderDate() {
+        final Receipt updatedReceipt = mReceiptsTable.update(mReceipt1, mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).setDate(DATE_1).setIndex(1).build(), new DatabaseOperationMetadata()).blockingGet();
+        assertNotNull(updatedReceipt);
+        assertFalse(mReceipt1.equals(updatedReceipt));
+
+        final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
+        assertEquals(receipts, Arrays.asList(mReceipt2, updatedReceipt)); // Note: The receipt with the more recent date appears first
     }
 
     @Test
@@ -485,7 +499,7 @@ public class ReceiptsTableTest {
         assertEquals(mReceipt1, mReceiptsTable.delete(mReceipt1, new DatabaseOperationMetadata()).blockingGet());
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Collections.singletonList(mReceipt2));
+        assertEquals(receipts, Collections.singletonList(new ReceiptBuilderFactory(mReceipt2).setIndex(1).build()));
 
         final List<Receipt> tripReceipts = mReceiptsTable.get(mTrip1).blockingGet();
         assertEquals(tripReceipts, Collections.<Receipt>emptyList());
@@ -500,7 +514,7 @@ public class ReceiptsTableTest {
         assertEquals(mReceipt1, mReceiptsTable.delete(mReceipt1, new DatabaseOperationMetadata()).blockingGet());
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Collections.singletonList(mReceipt2));
+        assertEquals(receipts, Collections.singletonList(new ReceiptBuilderFactory(mReceipt2).setIndex(1).build()));
 
         final List<Receipt> tripReceipts = mReceiptsTable.get(mTrip1).blockingGet();
         assertEquals(tripReceipts, Collections.<Receipt>emptyList());
@@ -518,7 +532,7 @@ public class ReceiptsTableTest {
         assertEquals(receipt, mReceiptsTable.delete(receipt, new DatabaseOperationMetadata()).blockingGet());
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Arrays.asList(mReceipt1, mReceipt2));
+        assertEquals(receipts, Arrays.asList(mReceipt2, mReceipt1));
 
         final List<Receipt> trip1Receipts = mReceiptsTable.get(mTrip1).blockingGet();
         assertEquals(trip1Receipts, Collections.singletonList(mReceipt1));
@@ -543,7 +557,7 @@ public class ReceiptsTableTest {
         assertEquals(receipt, mReceiptsTable.delete(receipt, new DatabaseOperationMetadata()).blockingGet());
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
-        assertEquals(receipts, Arrays.asList(mReceipt1, mReceipt2));
+        assertEquals(receipts, Arrays.asList(mReceipt2, mReceipt1));
 
         final List<Receipt> trip1Receipts = mReceiptsTable.get(mTrip1).blockingGet();
         assertEquals(trip1Receipts, Collections.singletonList(mReceipt1));

@@ -213,12 +213,41 @@ public class DefaultReceiptImplTest {
     }
 
     @Test
-    public void equals() {
+    public void testHashCode() {
+        Assert.assertEquals(mReceipt.hashCode(), mReceipt.hashCode());
+        Assert.assertEquals(mReceipt.hashCode(), new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode());
+        assertThat(mReceipt.hashCode(), not(equalTo(new Object())));
+        assertThat(mReceipt.hashCode(), not(equalTo(mock(Receipt.class))));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(-1, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX + 1, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mock(Trip.class), mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mock(File.class), mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mock(PaymentMethod.class), NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, "bad", mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mock(Category.class), COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, "bad", mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mock(Price.class), mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mock(Price.class), DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, new Date(System.currentTimeMillis()), TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, !REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, !FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, "bad", EXTRA2, EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, "bad", EXTRA3, mSyncState).hashCode())));
+        assertThat(mReceipt.hashCode(), not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, "bad", mSyncState).hashCode())));
+
+        // Special equals cases (we don't check on the sources don't count, and selected doesn't count):
+        Assert.assertEquals(mReceipt.hashCode(), new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Parcel, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode());
+        Assert.assertEquals(mReceipt.hashCode(), new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, !IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState).hashCode());
+    }
+    
+    @Test
+    public void testEquals() {
         Assert.assertEquals(mReceipt, mReceipt);
         Assert.assertEquals(mReceipt, new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState));
         assertThat(mReceipt, not(equalTo(new Object())));
         assertThat(mReceipt, not(equalTo(mock(Receipt.class))));
         assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(-1, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState))));
+        assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(ID, INDEX + 1, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState))));
         assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(ID, INDEX, mock(Trip.class), mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState))));
         assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mock(File.class), mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState))));
         assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mock(PaymentMethod.class), NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState))));
@@ -234,10 +263,9 @@ public class DefaultReceiptImplTest {
         assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, "bad", EXTRA3, mSyncState))));
         assertThat(mReceipt, not(equalTo(new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, "bad", mSyncState))));
 
-        // Special equals cases (we don't check on the Index field, sources don't count, and selected doesn't count):
-        Assert.assertEquals(mReceipt, new DefaultReceiptImpl(ID, INDEX + 1, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState));
-        Assert.assertEquals(mReceipt, new DefaultReceiptImpl(ID, INDEX + 1, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Parcel, EXTRA1, EXTRA2, EXTRA3, mSyncState));
-        Assert.assertEquals(mReceipt, new DefaultReceiptImpl(ID, INDEX + 1, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, !IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState));
+        // Special equals cases (we don't check on the sources don't count, and selected doesn't count):
+        Assert.assertEquals(mReceipt, new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, IS_SELECTED, Source.Parcel, EXTRA1, EXTRA2, EXTRA3, mSyncState));
+        Assert.assertEquals(mReceipt, new DefaultReceiptImpl(ID, INDEX, mTrip, mFile, mPaymentMethod, NAME, mCategory, COMMENT, mPrice, mTax, DATE, TIMEZONE, REIMBURSABLE, FULL_PAGE, !IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, mSyncState));
     }
 
     @Test
