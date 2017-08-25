@@ -223,8 +223,7 @@ public class DriveRestoreDataManager {
                     return mDriveStreamsManager.download(driveFile, receiptFile);
                 })
                 .map(Optional::of)
-                .doOnError(throwable -> Logger.error(DriveRestoreDataManager.this, "Failed to download {} in {} with id {}.", partialReceipt.fileName, partialReceipt.parentTripName, partialReceipt.driveId))
-                .onErrorReturn(throwable -> Optional.absent());
+                .doOnError(throwable -> Logger.error(DriveRestoreDataManager.this, "Failed to download {} in {} with id {}.", partialReceipt.fileName, partialReceipt.parentTripName, partialReceipt.driveId));
     }
 
     /**
