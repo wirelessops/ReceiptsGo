@@ -24,6 +24,7 @@ import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrde
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -302,16 +303,33 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
         if (updateSuccess) {
             final ModelType updatedItem;
+            final PrimaryKey<ModelType, PrimaryKeyType> primaryKey;
             if (Integer.class.equals(mPrimaryKey.getPrimaryKeyClass())) {
                 // If it's an auto-increment key, ensure we're re-using the same id as the old key
-                final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) mPrimaryKey, (Integer) mPrimaryKey.getPrimaryKeyValue(oldModelType));
-                updatedItem = mDatabaseAdapter.build(newModelType, autoIncrementPrimaryKey, databaseOperationMetadata);
+                primaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) mPrimaryKey, (Integer) mPrimaryKey.getPrimaryKeyValue(oldModelType));
+                updatedItem = mDatabaseAdapter.build(newModelType, primaryKey, databaseOperationMetadata);
             } else {
                 // Otherwise, we'll use whatever the user defined...
+                primaryKey = mPrimaryKey;
                 updatedItem = mDatabaseAdapter.build(newModelType, mPrimaryKey, databaseOperationMetadata);
             }
             if (mCachedResults != null) {
-                mCachedResults.remove(oldModelType);
+                boolean wasCachedResultRemoved = mCachedResults.remove(oldModelType);
+                if (!wasCachedResultRemoved) {
+                    final PrimaryKeyType primaryKeyValue = primaryKey.getPrimaryKeyValue(newModelType);
+                    Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
+                    for (final ModelType cachedResult : mCachedResults) {
+                        if (primaryKeyValue.equals(primaryKey.getPrimaryKeyValue(cachedResult))) {
+                            wasCachedResultRemoved = mCachedResults.remove(cachedResult);
+                            if (wasCachedResultRemoved) {
+                                break;
+                            }
+                        }
+                    }
+                    if (!wasCachedResultRemoved) {
+                        Logger.debug(this, "Primary key {} was never found in our cache.", primaryKeyValue);
+                    }
+                }
                 if (newModelType instanceof Syncable) {
                     final Syncable syncable = (Syncable) newModelType;
                     if (!syncable.getSyncState().isMarkedForDeletion(SyncProvider.GoogleDrive)) {
