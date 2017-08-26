@@ -126,26 +126,6 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     }
 
     @NonNull
-    public synchronized Single<List<ModelType>> getUnsynced(@NonNull final SyncProvider syncProvider) {
-        Preconditions.checkArgument(syncProvider == SyncProvider.GoogleDrive, "Google Drive is the only supported provider at the moment");
-
-        return get()
-                .flatMap(getResults -> {
-                    final List<ModelType> unsyncedGetResults = new ArrayList<>(getResults.size());
-                    for (final ModelType model : getResults) {
-                        if (model instanceof Syncable) {
-                            final Syncable syncable = (Syncable) model;
-                            if (!syncable.getSyncState().isSynced(syncProvider)) {
-                                unsyncedGetResults.add(model);
-                            }
-                        }
-                    }
-                    return Single.just(unsyncedGetResults);
-                });
-
-    }
-
-    @NonNull
     @Override
     public Single<ModelType> findByPrimaryKey(@NonNull final PrimaryKeyType primaryKeyType) {
         return Single.fromCallable(() -> AbstractSqlTable.this.findByPrimaryKeyBlocking(primaryKeyType))

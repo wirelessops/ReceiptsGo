@@ -16,6 +16,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
+import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamMappings;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -32,6 +33,7 @@ public class DriveReceiptsManager {
 
     private final TableController<Receipt> mReceiptTableController;
     private final ReceiptsTable mReceiptsTable;
+    private final TripsTable mTripsTable;
     private final DriveStreamsManager mDriveTaskManager;
     private final DriveDatabaseManager mDriveDatabaseManager;
     private final NetworkManager mNetworkManager;
@@ -43,18 +45,26 @@ public class DriveReceiptsManager {
     private final AtomicBoolean mIsEnabled = new AtomicBoolean(true);
     private final AtomicBoolean mIsIntializing = new AtomicBoolean(false);
 
-    public DriveReceiptsManager(@NonNull TableController<Receipt> receiptsTableController, @NonNull ReceiptsTable receiptsTable,
-                                @NonNull DriveStreamsManager driveTaskManager, @NonNull DriveDatabaseManager driveDatabaseManager,
-                                @NonNull NetworkManager networkManager, @NonNull Analytics analytics) {
-        this(receiptsTableController, receiptsTable, driveTaskManager, driveDatabaseManager, networkManager, analytics, new DriveStreamMappings(), new ReceiptBuilderFactoryFactory(), Schedulers.io(), Schedulers.io());
+    public DriveReceiptsManager(@NonNull TableController<Receipt> receiptsTableController, @NonNull TripsTable tripsTable,
+                                @NonNull ReceiptsTable receiptsTable, @NonNull DriveStreamsManager driveTaskManager,
+                                @NonNull DriveDatabaseManager driveDatabaseManager, @NonNull NetworkManager networkManager,
+                                @NonNull Analytics analytics) {
+        this(receiptsTableController, tripsTable, receiptsTable, driveTaskManager, driveDatabaseManager, networkManager, analytics, new DriveStreamMappings(), new ReceiptBuilderFactoryFactory(), Schedulers.io(), Schedulers.io());
     }
 
-    public DriveReceiptsManager(@NonNull TableController<Receipt> receiptsTableController, @NonNull ReceiptsTable receiptsTable,
-                                @NonNull DriveStreamsManager driveTaskManager, @NonNull DriveDatabaseManager driveDatabaseManager,
-                                @NonNull NetworkManager networkManager, @NonNull Analytics analytics, @NonNull DriveStreamMappings driveStreamMappings,
-                                @NonNull ReceiptBuilderFactoryFactory receiptBuilderFactoryFactory, @NonNull Scheduler observeOnScheduler,
+    public DriveReceiptsManager(@NonNull TableController<Receipt> receiptsTableController,
+                                @NonNull TripsTable tripsTable,
+                                @NonNull ReceiptsTable receiptsTable,
+                                @NonNull DriveStreamsManager driveTaskManager,
+                                @NonNull DriveDatabaseManager driveDatabaseManager,
+                                @NonNull NetworkManager networkManager,
+                                @NonNull Analytics analytics,
+                                @NonNull DriveStreamMappings driveStreamMappings,
+                                @NonNull ReceiptBuilderFactoryFactory receiptBuilderFactoryFactory,
+                                @NonNull Scheduler observeOnScheduler,
                                 @NonNull Scheduler subscribeOnScheduler) {
         mReceiptTableController = Preconditions.checkNotNull(receiptsTableController);
+        mTripsTable = Preconditions.checkNotNull(tripsTable);
         mReceiptsTable = Preconditions.checkNotNull(receiptsTable);
         mDriveTaskManager = Preconditions.checkNotNull(driveTaskManager);
         mDriveDatabaseManager = Preconditions.checkNotNull(driveDatabaseManager);
@@ -71,8 +81,10 @@ public class DriveReceiptsManager {
             if (mNetworkManager.isNetworkAvailable()) {
                 if (!mIsIntializing.getAndSet(true)) {
                     Logger.info(this, "Performing initialization of drive receipts");
-                    mReceiptsTable.getUnsynced(SyncProvider.GoogleDrive)
+                    mTripsTable.get()
                             .flatMapObservable(Observable::fromIterable)
+                            .flatMapSingle(trip -> mReceiptsTable.getUnsynced(trip, SyncProvider.GoogleDrive))
+                            .flatMap(Observable::fromIterable)
                             .subscribeOn(mSubscribeOnScheduler)
                             .observeOn(mObserveOnScheduler)
                             .subscribe(receipt -> {

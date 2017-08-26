@@ -88,7 +88,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
 
         final DriveDatabaseManager driveDatabaseManager = new DriveDatabaseManager(context,
                 mDriveTaskManager, mGoogleDriveSyncMetadata, mNetworkManager, analytics);
-        mDriveReceiptsManager = new DriveReceiptsManager(receiptTableController, databaseHelper.getReceiptsTable(),
+        mDriveReceiptsManager = new DriveReceiptsManager(receiptTableController, databaseHelper.getTripsTable(), databaseHelper.getReceiptsTable(),
                 mDriveTaskManager, driveDatabaseManager, mNetworkManager, analytics);
         mDriveRestoreDataManager = new DriveRestoreDataManager(context, mDriveTaskManager, databaseHelper, driveDatabaseManager);
 
