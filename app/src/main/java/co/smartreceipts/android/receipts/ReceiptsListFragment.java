@@ -476,30 +476,32 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onUpdateSuccess(@NonNull Receipt oldReceipt, @NonNull Receipt newReceipt, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        if (isAdded() && databaseOperationMetadata.getOperationFamilyType() != OperationFamilyType.Sync) {
-            if (newReceipt.getFile() != null && newReceipt.getFileLastModifiedTime() != oldReceipt.getFileLastModifiedTime()) {
-                final int stringId;
-                if (oldReceipt.getFile() != null) {
-                    if (newReceipt.hasImage()) {
-                        stringId = R.string.toast_receipt_image_replaced;
+        if (isAdded()) {
+            if (databaseOperationMetadata.getOperationFamilyType() != OperationFamilyType.Sync) {
+                if (newReceipt.getFile() != null && newReceipt.getFileLastModifiedTime() != oldReceipt.getFileLastModifiedTime()) {
+                    final int stringId;
+                    if (oldReceipt.getFile() != null) {
+                        if (newReceipt.hasImage()) {
+                            stringId = R.string.toast_receipt_image_replaced;
+                        } else {
+                            stringId = R.string.toast_receipt_pdf_replaced;
+                        }
                     } else {
-                        stringId = R.string.toast_receipt_pdf_replaced;
+                        if (newReceipt.hasImage()) {
+                            stringId = R.string.toast_receipt_image_added;
+                        } else {
+                            stringId = R.string.toast_receipt_pdf_added;
+                        }
                     }
-                } else {
-                    if (newReceipt.hasImage()) {
-                        stringId = R.string.toast_receipt_image_added;
-                    } else {
-                        stringId = R.string.toast_receipt_pdf_added;
+                    Toast.makeText(getActivity(), getString(stringId, newReceipt.getName()), Toast.LENGTH_SHORT).show();
+                    final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
+                    if (intentImportResult != null) {
+                        intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
+                        getActivity().finish();
                     }
-                }
-                Toast.makeText(getActivity(), getString(stringId, newReceipt.getName()), Toast.LENGTH_SHORT).show();
-                final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
-                if (intentImportResult != null) {
-                    intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
-                    getActivity().finish();
                 }
             }
-
+            // But still refresh for sync operations
             receiptTableController.get(trip);
         }
     }
