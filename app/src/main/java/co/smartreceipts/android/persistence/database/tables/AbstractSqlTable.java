@@ -121,7 +121,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     }
 
     @NonNull
-    public final Single<List<ModelType>> get() {
+    public Single<List<ModelType>> get() {
         return Single.fromCallable(this::getBlocking);
     }
 
@@ -206,19 +206,6 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
         }
     }
 
-    private Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
-        // TODO: Consider using a Map/Cache/"SELECT" here to improve performance. The #get() call below is overkill for a single item
-        final List<ModelType> entries = new ArrayList<>(getBlocking());
-        final int size = entries.size();
-        for (int i = 0; i < size; i++) {
-            final ModelType modelType = entries.get(i);
-            if (mPrimaryKey.getPrimaryKeyValue(modelType).equals(primaryKeyType)) {
-                return Optional.of(modelType);
-            }
-        }
-        return Optional.absent();
-    }
-
     @SuppressWarnings("unchecked")
     public synchronized Optional<ModelType> insertBlocking(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         final ContentValues values = mDatabaseAdapter.write(modelType, databaseOperationMetadata);
@@ -283,23 +270,22 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
         if (updateSuccess) {
             final ModelType updatedItem;
-            final PrimaryKey<ModelType, PrimaryKeyType> primaryKey;
             if (Integer.class.equals(mPrimaryKey.getPrimaryKeyClass())) {
                 // If it's an auto-increment key, ensure we're re-using the same id as the old key
-                primaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) mPrimaryKey, (Integer) mPrimaryKey.getPrimaryKeyValue(oldModelType));
-                updatedItem = mDatabaseAdapter.build(newModelType, primaryKey, databaseOperationMetadata);
+                final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) mPrimaryKey, (Integer) mPrimaryKey.getPrimaryKeyValue(oldModelType));
+                updatedItem = mDatabaseAdapter.build(newModelType, autoIncrementPrimaryKey, databaseOperationMetadata);
             } else {
                 // Otherwise, we'll use whatever the user defined...
-                primaryKey = mPrimaryKey;
                 updatedItem = mDatabaseAdapter.build(newModelType, mPrimaryKey, databaseOperationMetadata);
             }
             if (mCachedResults != null) {
                 boolean wasCachedResultRemoved = mCachedResults.remove(oldModelType);
                 if (!wasCachedResultRemoved) {
-                    final PrimaryKeyType primaryKeyValue = primaryKey.getPrimaryKeyValue(newModelType);
+                    // If our cache is wrong, let's use the actual primary key to see if we can find it
+                    final PrimaryKeyType primaryKeyValue = mPrimaryKey.getPrimaryKeyValue(newModelType);
                     Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
                     for (final ModelType cachedResult : mCachedResults) {
-                        if (primaryKeyValue.equals(primaryKey.getPrimaryKeyValue(cachedResult))) {
+                        if (primaryKeyValue.equals(mPrimaryKey.getPrimaryKeyValue(cachedResult))) {
                             wasCachedResultRemoved = mCachedResults.remove(cachedResult);
                             if (wasCachedResultRemoved) {
                                 break;
@@ -307,7 +293,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
                         }
                     }
                     if (!wasCachedResultRemoved) {
-                        Logger.debug(this, "Primary key {} was never found in our cache.", primaryKeyValue);
+                        Logger.warn(this, "Primary key {} was never found in our cache.", primaryKeyValue);
                     }
                 }
                 if (newModelType instanceof Syncable) {
@@ -357,6 +343,28 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
         }
 
         return true;
+    }
+
+    @NonNull
+    public synchronized Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
+        if (mCachedResults != null) {
+            for (final ModelType cachedResult : mCachedResults) {
+                if (mPrimaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                    return Optional.of(cachedResult);
+                }
+            }
+            return Optional.absent();
+        } else {
+            final List<ModelType> entries = new ArrayList<>(getBlocking());
+            final int size = entries.size();
+            for (int i = 0; i < size; i++) {
+                final ModelType modelType = entries.get(i);
+                if (mPrimaryKey.getPrimaryKeyValue(modelType).equals(primaryKeyType)) {
+                    return Optional.of(modelType);
+                }
+            }
+            return Optional.absent();
+        }
     }
 
     @Override

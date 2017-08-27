@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -82,7 +83,7 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
     public synchronized Single<List<ModelType>> getUnsynced(@NonNull final Trip trip, @NonNull final SyncProvider syncProvider) {
         Preconditions.checkArgument(syncProvider == SyncProvider.GoogleDrive, "Google Drive is the only supported provider at the moment");
 
-        return get()
+        return get(trip)
                 .flatMap(getResults -> {
                     final List<ModelType> unsyncedGetResults = new ArrayList<>(getResults.size());
                     for (final ModelType model : getResults) {
@@ -176,8 +177,26 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
             final Trip oldTrip = getTripFor(oldModelType);
             if (mPerTripCache.containsKey(oldTrip)) {
                 final List<ModelType> perTripResults = mPerTripCache.get(oldTrip);
-                perTripResults.remove(oldModelType);
-                Logger.debug(this, "Found this item in our cache. Removing it");
+                boolean wasCachedResultRemoved = perTripResults.remove(oldModelType);
+                if (!wasCachedResultRemoved) {
+                    // If our cache is wrong, let's use the actual primary key to see if we can find it
+                    final PrimaryKeyType primaryKeyValue = mPrimaryKey.getPrimaryKeyValue(newModelType);
+                    Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
+                    for (final ModelType cachedResult : perTripResults) {
+                        if (primaryKeyValue.equals(mPrimaryKey.getPrimaryKeyValue(cachedResult))) {
+                            wasCachedResultRemoved = perTripResults.remove(cachedResult);
+                            if (wasCachedResultRemoved) {
+                                break;
+                            }
+                        }
+                    }
+                    if (!wasCachedResultRemoved) {
+                        Logger.warn(this, "Primary key {} was never found in our cache.", primaryKeyValue);
+                    }
+                } else {
+                    Logger.debug(this, "Found this item in our cache during update. Removing it");
+                }
+
             }
 
             boolean isMarkedForDeletion = false;
@@ -234,6 +253,37 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
             mPerTripCache.clear();
         }
         return success;
+    }
+
+    @NonNull
+    public synchronized Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
+        for (final Map.Entry<Trip, List<ModelType>> tripListEntry : mPerTripCache.entrySet()) {
+            for (final ModelType cachedResult : tripListEntry.getValue()) {
+                if (mPrimaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                    return Optional.of(cachedResult);
+                }
+            }
+        }
+
+        Cursor cursor = null;
+        try {
+            cursor = getReadableDatabase().query(getTableName(), null, mPrimaryKey.getPrimaryKeyColumn() + " = ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{primaryKeyType.toString(), Integer.toString(0)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final ModelType foundModel = mDatabaseAdapter.read(cursor);
+                final List<ModelType> cachedResultsList = getBlocking(getTripFor(foundModel), true); // Note: We do this b/c of issues with the receipt index field
+                for (final ModelType cachedResult : cachedResultsList) {
+                    if (mPrimaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                        return Optional.of(cachedResult);
+                    }
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return Optional.absent();
     }
 
     @Override

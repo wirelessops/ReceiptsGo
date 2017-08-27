@@ -446,7 +446,7 @@ public class ReceiptsTableTest {
         final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip1).setDate(DATE_3).setIndex(3).setSyncState(syncStateForSyncedReceipt).build(), new DatabaseOperationMetadata(OperationFamilyType.Sync)).blockingGet();
         assertNotNull(receipt);
 
-        final List<Receipt> list1 = mReceiptsTable.getUnsynced(SyncProvider.GoogleDrive).blockingGet();
+        final List<Receipt> list1 = mReceiptsTable.getUnsynced(mTrip1, SyncProvider.GoogleDrive).blockingGet();
         assertEquals(list1, Arrays.asList(mReceipt2, mReceipt1));
     }
 
@@ -461,6 +461,16 @@ public class ReceiptsTableTest {
 
     @Test
     public void findByPrimaryKey() {
+        mReceiptsTable.findByPrimaryKey(mReceipt1.getId())
+                .test()
+                .assertNoErrors()
+                .assertResult(mReceipt1);
+    }
+
+    @Test
+    public void findByPrimaryKeyAfterCaching() {
+        final List<Receipt> list1 = mReceiptsTable.get(mTrip1).blockingGet();
+        assertEquals(list1, Collections.singletonList(mReceipt1));
         mReceiptsTable.findByPrimaryKey(mReceipt1.getId())
                 .test()
                 .assertNoErrors()

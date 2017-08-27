@@ -13,15 +13,18 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactoryFactory;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
+import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamMappings;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -56,6 +59,9 @@ public class DriveReceiptsManagerTest {
     TableController<Receipt> receiptTableController;
 
     @Mock
+    TripsTable tripsTable;
+
+    @Mock
     ReceiptsTable receiptsTable;
 
     @Mock
@@ -78,6 +84,9 @@ public class DriveReceiptsManagerTest {
 
     @Mock
     ReceiptBuilderFactory receiptBuilderFactory1, receiptBuilderFactory2;
+
+    @Mock
+    Trip trip;
 
     @Mock
     Receipt receipt1, receipt2;
@@ -134,12 +143,15 @@ public class DriveReceiptsManagerTest {
         }).when(receiptBuilderFactory2).setSyncState(any(SyncState.class));
 
         when(networkManager.isNetworkAvailable()).thenReturn(true);
+        when(receipt1.getTrip()).thenReturn(trip);
+        when(receipt2.getTrip()).thenReturn(trip);
         when(receipt1.getId()).thenReturn(RECEIPT_1_PRIMARY_KEY);
         when(receipt2.getId()).thenReturn(RECEIPT_2_PRIMARY_KEY);
+        when(tripsTable.get()).thenReturn(Single.just(Collections.singletonList(trip)));
         when(receiptsTable.findByPrimaryKey(RECEIPT_1_PRIMARY_KEY)).thenReturn(Single.just(receipt1));
         when(receiptsTable.findByPrimaryKey(RECEIPT_2_PRIMARY_KEY)).thenReturn(Single.just(receipt2));
 
-        driveReceiptsManager = new DriveReceiptsManager(receiptTableController, receiptsTable, driveStreamsManager,
+        driveReceiptsManager = new DriveReceiptsManager(receiptTableController, tripsTable, receiptsTable, driveStreamsManager,
                 driveDatabaseManager, networkManager, analytics, driveStreamMappings, receiptBuilderFactoryFactory, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
@@ -395,7 +407,7 @@ public class DriveReceiptsManagerTest {
         when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState2.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
-        when(receiptsTable.getUnsynced(SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
+        when(receiptsTable.getUnsynced(trip, SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
 
         spiedManager.initialize();
 
@@ -414,7 +426,7 @@ public class DriveReceiptsManagerTest {
         when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState2.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
-        when(receiptsTable.getUnsynced(SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
+        when(receiptsTable.getUnsynced(trip, SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
         when(networkManager.isNetworkAvailable()).thenReturn(false);
 
         spiedManager.initialize();

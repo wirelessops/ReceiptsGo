@@ -2,6 +2,7 @@ package co.smartreceipts.android.sync.drive.managers;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
 import com.google.common.base.Preconditions;
 
@@ -205,7 +206,7 @@ public class DriveReceiptsManager {
 
         return mReceiptsTable.findByPrimaryKey(receipt.getId())
                 .flatMap(queriedReceipt -> {
-                    if (receipt.equals(queriedReceipt) && receipt.getIndex() == queriedReceipt.getIndex()) {
+                    if (receipt.equals(queriedReceipt)) {
                         if (oldSyncState.getSyncId(SyncProvider.GoogleDrive) == null) {
                             if (receiptFile != null && receiptFile.exists()) {
                                 Logger.info(this, "Found receipt {} with a non-uploaded file. Uploading", receipt.getId());

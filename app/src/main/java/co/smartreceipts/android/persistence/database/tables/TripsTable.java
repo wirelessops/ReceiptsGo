@@ -18,7 +18,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import wb.android.storage.StorageManager;
 
-public final class TripsTable extends AbstractSqlTable<Trip, String> {
+public class TripsTable extends AbstractSqlTable<Trip, String> {
 
     public static final String TABLE_NAME = "trips";
     public static final String COLUMN_NAME = "name";
