@@ -39,7 +39,6 @@ import co.smartreceipts.android.imports.locator.ActivityFileResultLocator;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.ocr.OcrManager;
-import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
@@ -110,10 +109,6 @@ public class ReceiptImageFragment extends WBFragment {
         isRotateOngoing = false;
         imageUpdatedListener = new ImageUpdatedListener();
         setHasOptionsMenu(true);
-
-        setRetainInstance(true);
-
-        subscribe();
     }
 
     @Override
@@ -179,33 +174,28 @@ public class ReceiptImageFragment extends WBFragment {
                 // uri always has SCHEME_CONTENT -> we don't need to check permissions
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
+                        progress.setVisibility(View.VISIBLE);
                         activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
                                 locatorResponse.getResultCode(), locatorResponse.getUri(), receipt.getTrip());
                     } else {
                         Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         progress.setVisibility(View.GONE);
+                        activityFileResultLocator.fakeDispose();
                     }
                 }));
 
         compositeDisposable.add(activityFileResultImporter.getResultStream()
                 .subscribe(response -> {
-                    Logger.info(ReceiptImageFragment.this, "Handled the import of {}", response);
                     if (!response.getThrowable().isPresent()) {
                         final Receipt retakeReceipt = new ReceiptBuilderFactory(receipt).setFile(response.getFile()).build();
                         receiptTableController.update(receipt, retakeReceipt, new DatabaseOperationMetadata());
                     } else {
                         Toast.makeText(getActivity(), getFlexString(R.string.IMG_SAVE_ERROR), Toast.LENGTH_SHORT).show();
-                        progress.setVisibility(View.GONE);
                     }
+                    progress.setVisibility(View.GONE);
+                    activityFileResultLocator.fakeDispose();
+                    activityFileResultImporter.fakeDispose();
                 }));
-    }
-
-    private void dispose() {
-        activityFileResultImporter.dispose();
-        activityFileResultLocator.dispose();
-
-        compositeDisposable.dispose();
-        compositeDisposable = null;
     }
 
     @Override
@@ -220,18 +210,17 @@ public class ReceiptImageFragment extends WBFragment {
         }
         receiptTableController.subscribe(imageUpdatedListener);
 
+        subscribe();
+
     }
 
     @Override
     public void onPause() {
         receiptTableController.unsubscribe(imageUpdatedListener);
-        super.onPause();
-    }
 
-    @Override
-    public void onDestroy() {
-        dispose();
-        super.onDestroy();
+        compositeDisposable.clear();
+
+        super.onPause();
     }
 
     @Override

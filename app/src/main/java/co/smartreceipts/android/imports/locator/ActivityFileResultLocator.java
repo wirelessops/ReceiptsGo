@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
+import com.hadisatrio.optional.Optional;
+
 import java.io.FileNotFoundException;
 
 import javax.inject.Inject;
@@ -19,14 +21,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
 @ApplicationScope
 public class ActivityFileResultLocator {
 
     private Disposable localDisposable;
-    private Subject<ActivityFileResultLocatorResponse> uriImportSubject = PublishSubject.create();
+    private Subject<Optional<ActivityFileResultLocatorResponse>> uriImportSubject = BehaviorSubject.create();
 
     private final Scheduler subscribeOnScheduler;
     private final Scheduler observeOnScheduler;
@@ -60,12 +62,12 @@ public class ActivityFileResultLocator {
                 .subscribeWith(new DisposableObserver<Uri>() {
                     @Override
                     public void onNext(Uri uri) {
-                        uriImportSubject.onNext(ActivityFileResultLocatorResponse.LocatorResponse(uri, requestCode, resultCode));
+                        uriImportSubject.onNext(Optional.of(ActivityFileResultLocatorResponse.LocatorResponse(uri, requestCode, resultCode)));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        uriImportSubject.onNext(ActivityFileResultLocatorResponse.LocatorError(e));
+                        uriImportSubject.onNext(Optional.of(ActivityFileResultLocatorResponse.LocatorError(e)));
                     }
 
                     @Override
@@ -76,18 +78,13 @@ public class ActivityFileResultLocator {
     }
 
     public Observable<ActivityFileResultLocatorResponse> getUriStream() {
-        return uriImportSubject;
+        return uriImportSubject
+                .filter(Optional::isPresent)
+                .map(Optional::get);
     }
 
-    public void dispose() {
-        if (localDisposable != null) {
-            localDisposable.dispose();
-            localDisposable = null;
-        }
-
-        if (uriImportSubject != null) {
-            uriImportSubject = PublishSubject.create();
-        }
+    public void fakeDispose() {
+        uriImportSubject.onNext(Optional.absent());
     }
 
 

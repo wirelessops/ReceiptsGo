@@ -137,8 +137,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
         }
 
-        setRetainInstance(true);
-
+        // we need to subscribe here because of possible permission dialog showing
         subscribe();
     }
 
@@ -219,17 +218,19 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         compositeDisposable = new CompositeDisposable();
 
         compositeDisposable.add(activityFileResultLocator.getUriStream()
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMapSingle(response -> {
                     if (response.getUri().getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
                         return Single.just(response);
                     } else { // we need to check read external storage permission
-                            return permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)
-                                    .toSingleDefault(response)
-                                    .onErrorReturn(ActivityFileResultLocatorResponse::LocatorError);
+                        return permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)
+                                .toSingleDefault(response)
+                                .onErrorReturn(ActivityFileResultLocatorResponse::LocatorError);
                     }
                 })
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
+                        updatingDataProgress.setVisibility(View.VISIBLE);
                         activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
                                 locatorResponse.getResultCode(), locatorResponse.getUri(), trip);
                     } else {
@@ -240,6 +241,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         }
                         highlightedReceipt = null;
                         updatingDataProgress.setVisibility(View.GONE);
+                        activityFileResultLocator.fakeDispose();
                     }
                 }));
 
@@ -262,18 +264,12 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         }
                     } else {
                         Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
-                        highlightedReceipt = null;
-                        updatingDataProgress.setVisibility(View.GONE);
                     }
+                    highlightedReceipt = null;
+                    if (updatingDataProgress != null) updatingDataProgress.setVisibility(View.GONE);
+                    activityFileResultLocator.fakeDispose();
+                    activityFileResultImporter.fakeDispose();
                 }));
-    }
-
-    private void dispose() {
-        activityFileResultImporter.dispose();
-        activityFileResultLocator.dispose();
-
-        compositeDisposable.dispose();
-        compositeDisposable = null;
     }
 
     @Override
@@ -297,7 +293,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onDestroy() {
-        dispose();
+        compositeDisposable.clear();
         super.onDestroy();
     }
 

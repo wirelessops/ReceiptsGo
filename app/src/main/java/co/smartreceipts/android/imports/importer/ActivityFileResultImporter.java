@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import javax.inject.Inject;
 
@@ -21,7 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
 @ApplicationScope
@@ -34,7 +35,7 @@ public class ActivityFileResultImporter {
     private final Scheduler subscribeOnScheduler;
     private final Scheduler observeOnScheduler;
 
-    private Subject<ActivityFileResultImporterResponse> importSubject = PublishSubject.create();
+    private Subject<Optional<ActivityFileResultImporterResponse>> importSubject = BehaviorSubject.create();
     private Disposable localDisposable;
 
     @Inject
@@ -75,12 +76,12 @@ public class ActivityFileResultImporter {
                 .subscribeWith(new DisposableObserver<ActivityFileResultImporterResponse>() {
                     @Override
                     public void onNext(ActivityFileResultImporterResponse activityFileResultImporterResponse) {
-                        importSubject.onNext(activityFileResultImporterResponse);
+                        importSubject.onNext(Optional.of(activityFileResultImporterResponse));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        importSubject.onNext(ActivityFileResultImporterResponse.importerError(e));
+                        importSubject.onNext(Optional.of(ActivityFileResultImporterResponse.importerError(e)));
                     }
 
                     @Override
@@ -91,16 +92,14 @@ public class ActivityFileResultImporter {
     }
 
     public Observable<ActivityFileResultImporterResponse> getResultStream() {
-        return importSubject;
+        return importSubject
+                .filter(Optional::isPresent)
+                .map(Optional::get);
     }
 
-    public void dispose() {
-        if (localDisposable != null) {
-            localDisposable.dispose();
-            localDisposable = null;
-        }
-        if (importSubject != null) {
-            importSubject = PublishSubject.create();
-        }
+    public void fakeDispose() {
+        importSubject.onNext(Optional.absent());
     }
+
+
 }
