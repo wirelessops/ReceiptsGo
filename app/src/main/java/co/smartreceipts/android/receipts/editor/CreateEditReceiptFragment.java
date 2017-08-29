@@ -522,7 +522,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
             public void onGetSuccess(@NonNull List<PaymentMethod> list) {
                 if (isAdded()) {
                     List<PaymentMethod> paymentMethods = new ArrayList<>(list);
-                    paymentMethods.add(0, ImmutablePaymentMethodImpl.NONE);
+                    paymentMethods.add(ImmutablePaymentMethodImpl.NONE);
 
                     paymentMethodsAdapter.update(paymentMethods);
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
