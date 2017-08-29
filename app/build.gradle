@@ -103,6 +103,10 @@ android {
 
         compile "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
 
+        compile ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar"){
+            transitive=true
+        }
+
         compile "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
         compile "com.amazonaws:aws-android-sdk-s3:$AWS_SDK_VERSION"
 

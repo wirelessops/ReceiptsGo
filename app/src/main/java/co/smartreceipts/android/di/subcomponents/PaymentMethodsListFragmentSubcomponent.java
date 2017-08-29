@@ -1,7 +1,7 @@
 package co.smartreceipts.android.di.subcomponents;
 
 import co.smartreceipts.android.di.scopes.FragmentScope;
-import co.smartreceipts.android.settings.widget.PaymentMethodsListFragment;
+import co.smartreceipts.android.settings.widget.editors.PaymentMethodsListFragment;
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 

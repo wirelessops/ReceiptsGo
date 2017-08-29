@@ -78,7 +78,6 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
 public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView,
@@ -371,7 +370,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     public final boolean showReceiptMenu(final Receipt receipt) {
         highlightedReceipt = receipt;
-        final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(receipt.getName()).setCancelable(true).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {

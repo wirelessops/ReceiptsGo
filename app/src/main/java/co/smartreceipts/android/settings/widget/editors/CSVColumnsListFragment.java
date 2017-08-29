@@ -1,4 +1,4 @@
-package co.smartreceipts.android.settings.widget;
+package co.smartreceipts.android.settings.widget.editors;
 
 import android.content.Context;
 import android.support.v7.app.ActionBar;
@@ -7,27 +7,26 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
+import co.smartreceipts.android.persistence.database.controllers.impl.CSVTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.ColumnTableController;
-import co.smartreceipts.android.persistence.database.controllers.impl.PDFTableController;
 import dagger.android.support.AndroidSupportInjection;
 
-public class PDFColumnsListFragment extends ColumnsListFragment {
+public class CSVColumnsListFragment extends ColumnsListFragment {
 
-    public static String TAG = "PDFColumnsListFragment";
-
+	public static String TAG = "CSVColumnsListFragment";
 
     @Inject
     ReceiptColumnDefinitions receiptColumnDefinitions;
     @Inject
-    PDFTableController pdfTableController;
+    CSVTableController csvTableController;
 
-    public static ColumnsListFragment newInstance() {
-        return new PDFColumnsListFragment();
-    }
+	public static ColumnsListFragment newInstance() {
+		return new CSVColumnsListFragment();
+	}
 
     @Override
     protected ColumnTableController getColumnTableController() {
-        return pdfTableController;
+        return csvTableController;
     }
 
     @Override
@@ -42,12 +41,12 @@ public class PDFColumnsListFragment extends ColumnsListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+	public void onResume() {
+		super.onResume();
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            getSupportActionBar().setTitle(R.string.menu_main_pdf);
+            actionBar.setTitle(R.string.menu_main_csv);
         }
-    }
+	}
 
 }

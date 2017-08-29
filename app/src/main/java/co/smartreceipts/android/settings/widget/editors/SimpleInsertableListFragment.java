@@ -1,4 +1,4 @@
-package co.smartreceipts.android.settings.widget;
+package co.smartreceipts.android.settings.widget.editors;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package co.smartreceipts.android.settings.widget;
+package co.smartreceipts.android.settings.widget.editors;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -36,7 +36,6 @@ import co.smartreceipts.android.persistence.database.controllers.TableEventsList
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import dagger.android.support.AndroidSupportInjection;
-import wb.android.dialog.BetterDialogBuilder;
 
 public class CategoriesListFragment extends WBFragment implements View.OnClickListener, TableEventsListener<Category> {
 
@@ -144,7 +143,7 @@ public class CategoriesListFragment extends WBFragment implements View.OnClickLi
 	}
 
 	private void addCategory() {
-		final BetterDialogBuilder innerBuilder = new BetterDialogBuilder(getActivity());
+		final AlertDialog.Builder innerBuilder = new AlertDialog.Builder(getActivity());
 		final LinearLayout layout = new LinearLayout(getActivity());
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.BOTTOM);
@@ -183,7 +182,7 @@ public class CategoriesListFragment extends WBFragment implements View.OnClickLi
 		final String oldName = editCategory.getName();
 		final String oldCode = editCategory.getCode();
 
-		final BetterDialogBuilder innerBuilder = new BetterDialogBuilder(getActivity());
+		final AlertDialog.Builder innerBuilder = new AlertDialog.Builder(getActivity());
 		final LinearLayout layout = new LinearLayout(getActivity());
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.BOTTOM);
