@@ -41,7 +41,7 @@
     <string name="report_attached">1 informe adjunto</string>
     <string name="reports_attached">%s informes adjuntos</string>
     <string name="save">Guardar</string>
-    <string name="send_email">Enviar archivo...</string>
+    <string name="send_email">Enviar archivo…</string>
     <string name="submit">Enviar</string>
     <string name="support">%s - Soporte</string>
     <string name="total">Total</string>
@@ -86,9 +86,9 @@
         <item quantity="other">%d escaneos restantes. Toca para más.</item>
     </plurals>
     <string name="ocr_status_title">Realizando escaneo (OCR):</string>
-    <string name="ocr_status_message_uploading_image">Cargando recibo...</string>
-    <string name="ocr_status_message_performing_scan">Escaneando metadatos del recibo...</string>
-    <string name="ocr_status_message_fetching_results">Obteniendo resultados...</string>
+    <string name="ocr_status_message_uploading_image">Cargando recibo…</string>
+    <string name="ocr_status_message_performing_scan">Escaneando metadatos del recibo…</string>
+    <string name="ocr_status_message_fetching_results">Obteniendo resultados…</string>
     <string name="ocr_configuration_title">Escaneos automáticos (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Escaneos OCR restantes: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
@@ -166,7 +166,7 @@
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Error: Por favor asegúrate que tu tarjeta SD esté disponible y no esté montada en tu computador.</string>
-    <string name="SD_WARNING">Advertencia: Tu tarjeta SD no está disponible o está montada en el computador. Algunas imágenes pueden ser inaccesibles. Cambiando a almacenamiento interno...</string>
+    <string name="SD_WARNING">Advertencia: Tu tarjeta SD no está disponible o está montada en el computador. Algunas imágenes pueden ser inaccesibles. Cambiando a almacenamiento interno…</string>
     <string name="database_error">Error: No se pudo guardar tu recibo</string>
     <string name="database_get_error">Error: No se pudo obtener tu información. Intenta reiniciar la app.</string>
     <string name="IMG_OPEN_ERROR">Error: La imagen actualmente es inaccesible o está dañada. Tu tarjeta SD puede no estar disponible o estar montada en el computador. Si no lo está, haz clic en el botón menú para tomar de nuevo la foto.</string>
@@ -199,7 +199,7 @@
     <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.\n\nSmart Receipts te permite crear informes de gastos, controlar los recibos de cada uno y generar rápidamente informes en PDF y CSV para los totales de tus recibos. ¡Es fácil y rápido! También, asegúrate de revisar el menú para personalizar las categorías, informes y otros ajustes para que se adapten mejor a tus necesidades.</string>
 
     <!-- ================= Receipt Adapter =================== -->
-    <string name="receipt_no_data">Parece que aún no tienes recibos. Intenta tocar el botón + (más) para comenzar...</string>
+    <string name="receipt_no_data">Parece que aún no tienes recibos. Intenta tocar el botón + (más) para comenzar…</string>
 
     <!-- ================= Distance Adapter ================== -->
     <string name="distance_no_data">Parece que aún no has hecho monitoreo de distancias. Intenta hacer clic en el botón + (más) arriba para comenzar.</string>
@@ -263,7 +263,7 @@
     <string name="dialog_export_positive">Exportar</string>
     <string name="dialog_import_positive">Importar</string>
     <string name="dialog_import_text">Sobrescribir datos existentes</string>
-    <string name="dialog_export_working">Exportando tus recibos...</string>
+    <string name="dialog_export_working">Exportando tus recibos…</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
@@ -300,15 +300,15 @@
     <string name="dialog_remote_backup_delete_message">¿Estás seguro que deseas eliminar tu copia de seguridad del dispositivo %s? Esta operación no se puede deshacer.</string>
     <string name="dialog_remote_backup_delete_message_this_device">¿Estás seguro que deseas eliminar tu copia de seguridad de este dispositivo? Esta operación no se puede deshacer. Por favor ten en cuenta que debes deshabilitar las copias de seguridad automáticas luego de terminar esta operación, o todos los datos locales pueden ser sincronizados de nuevo.</string>
     <string name="dialog_remote_backup_delete_positive">@string/delete</string>
-    <string name="dialog_remote_backup_delete_progress">Eliminando tu copia de seguridad del dispositivo %s...</string>
+    <string name="dialog_remote_backup_delete_progress">Eliminando tu copia de seguridad del dispositivo %s…</string>
     <string name="dialog_remote_backup_delete_toast_success">Copia de seguridad eliminada correctamente</string>
     <string name="dialog_remote_backup_delete_toast_failure">No se pudo eliminar esta copia de seguridad</string>
-    <string name="dialog_remote_backup_download_progress">Descargando imágenes a archivo ZIP...</string>
+    <string name="dialog_remote_backup_download_progress">Descargando imágenes a archivo ZIP…</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Restauración de Drive</string>
     <string name="dialog_remote_backup_drive_restore_message">Estamos teniendo problemas para sincronizar tus datos. Para recuperar, nos gustaría borrar tu copia de seguridad de Drive y sincronizar de nuevo. Si ves este mensaje con frecuencia, por favor contáctanos para obtener más asistencia.</string>
-    <string name="dialog_remote_backup_restore_progress">Borrando tu copia de seguridad para preparar una resincronización...</string>
-    <string name="dialog_remote_backup_restore_toast_success">Se borró correctamente la copia de seguridad. Sincronizando de nuevo...</string>
+    <string name="dialog_remote_backup_restore_progress">Borrando tu copia de seguridad para preparar una resincronización…</string>
+    <string name="dialog_remote_backup_restore_toast_success">Se borró correctamente la copia de seguridad. Sincronizando de nuevo…</string>
     <string name="dialog_remote_backup_restore_toast_failure">No se pudo sincronizar de nuevo esta copia de seguridad</string>
 
     <string name="automatic_backups_info_dialog_message">Las copias de seguridad automáticas no están habilitadas en el momento.</string>
@@ -426,7 +426,7 @@
     <string name="dialog_sql_corrupt_positive">Enviar un correo electrónico al desarrollador para obtener ayuda</string>
     <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Base de datos dañada</string>
     <string name="dialog_sql_corrupt_intent_text">Ayuda, mi base de datos está dañada. ¿Cómo pueden ayudarme a restaurar las cosas?</string>
-    <string name="dialog_sql_corrupt_chooser">Enviar correo electrónico...</string>
+    <string name="dialog_sql_corrupt_chooser">Enviar correo electrónico…</string>
 
     <!-- ======================= Filters ====================== -->
     <string name="filter_name_and">Y</string>

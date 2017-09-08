@@ -86,9 +86,9 @@
         <item quantity="other">%d scans restants. Appuyez pour en ajouter.</item>
     </plurals>
     <string name="ocr_status_title">Scan en cours (OCR) :</string>
-    <string name="ocr_status_message_uploading_image">Importation du reçu...</string>
-    <string name="ocr_status_message_performing_scan">Recherche des métadonnées du reçu...</string>
-    <string name="ocr_status_message_fetching_results">Récupération des résultats...</string>
+    <string name="ocr_status_message_uploading_image">Importation du reçu…</string>
+    <string name="ocr_status_message_performing_scan">Recherche des métadonnées du reçu…</string>
+    <string name="ocr_status_message_fetching_results">Récupération des résultats…</string>
     <string name="ocr_configuration_title">Scans automatiques (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Scans OCR restants : %d</string>
     <string name="ocr_configuration_my_account">%s</string>
@@ -166,7 +166,7 @@
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Erreur : Veuillez vérifier que votre carte SD est disponible et non montée sur votre ordinateur.</string>
-    <string name="SD_WARNING">Attention : votre carte SD n’est pas disponible ou est montée sur votre ordinateur. Certaines images peuvent être inaccessibles. Mise en mémoire interne...</string>
+    <string name="SD_WARNING"><![CDATA[Attention : votre carte SD n’est pas disponible ou est montée sur votre ordinateur. Certaines images peuvent être inaccessibles. Mise en mémoire interne…]]></string>
     <string name="database_error">Erreur : Échec de l\'enregistrement de votre reçu</string>
     <string name="database_get_error">Erreur : Échec de la récupération de vos données. Essayez de relancer l\'appli.</string>
     <string name="IMG_OPEN_ERROR">Erreur : L’image est actuellement inaccessible ou corrompue. Votre carte SD peut être indisponible ou montée sur votre ordinateur. Si ce n’est pas le cas, cliquez sur le bouton du menu pour reprendre la photo.</string>
@@ -199,7 +199,7 @@
     <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.\n\nSmart Receipts vous permet de créer des notes de frais, de suivre les reçus dans chacune d’elle et de créer rapidement des rapports PDF et CSV pour la totalité de vos reçus. C’est rapide et facile ! Assurez-vous également de consulter le menu pour personnaliser les catégories, les rapports et d’autres paramètres pour qu’ils répondent mieux à vos besoins.</string>
 
     <!-- ================= Receipt Adapter =================== -->
-    <string name="receipt_no_data">Il semblerait que vous n\'ayez encore aucun reçu. Appuyez sur le bouton + (plus) pour commencer...</string>
+    <string name="receipt_no_data">Il semblerait que vous n\'ayez encore aucun reçu. Appuyez sur le bouton + (plus) pour commencer…</string>
 
     <!-- ================= Distance Adapter ================== -->
     <string name="distance_no_data">Il semblerait que vous n\'ayez encore aucune distance parcourue. Cliquez sur le bouton + (plus) en haut pour commencer.</string>
@@ -263,7 +263,7 @@
     <string name="dialog_export_positive">Exporter</string>
     <string name="dialog_import_positive">Importer</string>
     <string name="dialog_import_text">Remplacer les données existantes</string>
-    <string name="dialog_export_working">Exportation de vos reçus...</string>
+    <string name="dialog_export_working">Exportation de vos reçus…</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
@@ -300,15 +300,15 @@
     <string name="dialog_remote_backup_delete_message">Êtes-vous sûr de vouloir supprimer votre sauvegarde de l’appareil %s ? Cette opération est irréversible.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Êtes-vous sûr de vouloir supprimer votre sauvegarde de cet appareil ? Cette opération est irréversible. Veuillez noter que vous pouvez désactiver les sauvegardes automatiques après cette opération ou toutes les données locales peuvent être resynchronisées.</string>
     <string name="dialog_remote_backup_delete_positive">@string/delete</string>
-    <string name="dialog_remote_backup_delete_progress">Suppression de votre sauvegarde de l\'appareil %s...</string>
+    <string name="dialog_remote_backup_delete_progress">Suppression de votre sauvegarde de l\'appareil %s…</string>
     <string name="dialog_remote_backup_delete_toast_success">Sauvegarde supprimée avec succès</string>
     <string name="dialog_remote_backup_delete_toast_failure">Impossible de supprimer cette sauvegarde</string>
-    <string name="dialog_remote_backup_download_progress">Téléchargement d\'images vers le fichier ZIP...</string>
+    <string name="dialog_remote_backup_download_progress">Téléchargement d\'images vers le fichier ZIP…</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Restauration avec Google Drive</string>
     <string name="dialog_remote_backup_drive_restore_message">Nous rencontrons des difficultés pour synchroniser vos données. Pour les récupérer, nous aimerions effacer votre sauvegarde Drive et resynchroniser vos données. Si vous voyez ce message souvent, veuillez nous contacter pour une assistance supplémentaire.</string>
-    <string name="dialog_remote_backup_restore_progress">Effacement de votre sauvegarde pour préparer la resynchronisation...</string>
-    <string name="dialog_remote_backup_restore_toast_success">Sauvegarde effacée avec succès. Resynchronisation...</string>
+    <string name="dialog_remote_backup_restore_progress">Effacement de votre sauvegarde pour préparer la resynchronisation…</string>
+    <string name="dialog_remote_backup_restore_toast_success">Sauvegarde effacée avec succès. Resynchronisation…</string>
     <string name="dialog_remote_backup_restore_toast_failure">Impossible de resynchroniser cette sauvegarde</string>
 
     <string name="automatic_backups_info_dialog_message">Les sauvegardes automatiques ne sont pas activées.</string>
@@ -426,7 +426,7 @@
     <string name="dialog_sql_corrupt_positive">Envoyer un e-mail au développeur pour demander de l\'aide</string>
     <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Base de données corrompue</string>
     <string name="dialog_sql_corrupt_intent_text">Aide - ma base de données a été corrompue. Comment pouvez-vous m\'aider à la restaurer ?</string>
-    <string name="dialog_sql_corrupt_chooser">Envoyer un message...</string>
+    <string name="dialog_sql_corrupt_chooser">Envoyer un message…</string>
 
     <!-- ======================= Filters ====================== -->
     <string name="filter_name_and">Et</string>

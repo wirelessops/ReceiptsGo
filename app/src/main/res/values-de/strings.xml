@@ -86,9 +86,9 @@
         <item quantity="other">%d Rest scannen. Tippen Sie auf mehr.</item>
     </plurals>
     <string name="ocr_status_title">Scan durchführen (OCR):</string>
-    <string name="ocr_status_message_uploading_image">Beleg hochladen...</string>
-    <string name="ocr_status_message_performing_scan">Beleg scannen \nMetadaten ...</string>
-    <string name="ocr_status_message_fetching_results">Ergebnisse holen...</string>
+    <string name="ocr_status_message_uploading_image">Beleg hochladen…</string>
+    <string name="ocr_status_message_performing_scan">Beleg scannen \nMetadaten …</string>
+    <string name="ocr_status_message_fetching_results">Ergebnisse holen…</string>
     <string name="ocr_configuration_title">Automatische Scans (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Restliche OCR Scans: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
@@ -166,7 +166,7 @@
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Fehler: Bitte stellen Sie sicher, dass die SD-Karte verfügbar ist und nicht an den Computer montiert.</string>
-    <string name="SD_WARNING">Warnung: Ihre SD-Karte ist nicht verfügbar oder auf Ihrem Computer angebracht. Einige Bilder könnten nicht zugreifbar sein. Das Umschalten auf internen Speicher ...</string>
+    <string name="SD_WARNING">Warnung: Ihre SD-Karte ist nicht verfügbar oder auf Ihrem Computer angebracht. Einige Bilder könnten nicht zugreifbar sein. Das Umschalten auf internen Speicher …</string>
     <string name="database_error">Fehler: Fehler beim Speichern der Quittung</string>
     <string name="database_get_error">Fehler: Fehler beim Holen  Ihrer Daten. Versuchen Sie die App. neu zu starten.</string>
     <string name="IMG_OPEN_ERROR">Fehler: Das Bild ist derzeit nicht zugänglich oder beschädigt. SD-Karte ist nicht verfügbar oder am Computer montiert. Wenn nicht, klicken Sie auf die Menü-Taste, um das Foto wieder zu holen.</string>
@@ -199,7 +199,7 @@
     <string name="trip_no_data">Sie scheinen zur Zeit  keine definierten Berichte haben. Versuchen Sie auf die + Taste (plus) zu klicken, um zu beginnen.\n\nSmart Receipts lässt Sie Kostenberichte, Track Belege erstellen und sehr schnell PDF &amp; CSV-Berichte für Ihre Belegsummen generieren. Es ist schnell und einfach! Überprüfen Sie undedingt das Menü, um die Kategorien, Berichte und anderen Einstellungen bestens an Ihre Bedürfnisse anzupassen.</string>
 
     <!-- ================= Receipt Adapter =================== -->
-    <string name="receipt_no_data">Sie scheinen noch keine Belege zu haben. Versuchen Sie, die + (plus) Taste zu drücken, um loszulegen ...</string>
+    <string name="receipt_no_data">Sie scheinen noch keine Belege zu haben. Versuchen Sie, die + (plus) Taste zu drücken, um loszulegen …</string>
 
     <!-- ================= Distance Adapter ================== -->
     <string name="distance_no_data">Sie scheinen noch keine Entfernung aufgespürt zu haben. Versuchen Sie, die + (Plus) Taste oben zu drücken, um loszulegen.</string>
@@ -263,7 +263,7 @@
     <string name="dialog_export_positive">Exportieren</string>
     <string name="dialog_import_positive">Importieren</string>
     <string name="dialog_import_text">Überschreiben Sie den Datenbestand</string>
-    <string name="dialog_export_working">Export Ihrer Belege ...</string>
+    <string name="dialog_export_working">Export Ihrer Belege …</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
@@ -300,15 +300,15 @@
     <string name="dialog_remote_backup_delete_message">Sind Sie sicher, dass Sie Ihre Sicherungskopie vom %s Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Sind Sie sicher, dass Sie Ihren Backup auf diesem Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte beachten Sie, dass Sie die automatische Sicherungen ausschalten möchte, um nach dieser Vorgang abgeschlossen ist oder alle lokalen Daten neu synchronisiert werden können.</string>
     <string name="dialog_remote_backup_delete_positive">@string/delete</string>
-    <string name="dialog_remote_backup_delete_progress">Löschen Sie Ihren Backup vom %s Gerät ...</string>
+    <string name="dialog_remote_backup_delete_progress">Löschen Sie Ihren Backup vom %s Gerät …</string>
     <string name="dialog_remote_backup_delete_toast_success">Backup erfolgreich gelöscht</string>
     <string name="dialog_remote_backup_delete_toast_failure">Löschen dieses Backups ist nicht erfolgt</string>
-    <string name="dialog_remote_backup_download_progress">Herunterladen von Bildern auf ZIP-Datei ...</string>
+    <string name="dialog_remote_backup_download_progress">Herunterladen von Bildern auf ZIP-Datei …</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Laufwerk Wiederherstellung</string>
     <string name="dialog_remote_backup_drive_restore_message">Wir haben Probleme mit dem Synchronisieren Ihrer Daten. Zum Wiederherstellen  möchten wir Ihr Backup-Laufwerk löschen und erneut synchronisieren. Wenn Sie diese Meldung häufig zu sehen bekommen, kontaktieren Sie uns für weitere Unterstützung.</string>
-    <string name="dialog_remote_backup_restore_progress">Leeren des Backup zur Vorbereitung einer erneuten Synchronisierung...</string>
-    <string name="dialog_remote_backup_restore_toast_success">Backup erfolgreich gelöscht. Re-Synchronisierung ...</string>
+    <string name="dialog_remote_backup_restore_progress">Leeren des Backup zur Vorbereitung einer erneuten Synchronisierung…</string>
+    <string name="dialog_remote_backup_restore_toast_success">Backup erfolgreich gelöscht. Re-Synchronisierung …</string>
     <string name="dialog_remote_backup_restore_toast_failure">Resynchroniserung des Backups ist fehlgeschlagen</string>
 
     <string name="automatic_backups_info_dialog_message">Automatische Backups sind derzeit nicht aktiviert.</string>

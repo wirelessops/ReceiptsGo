@@ -86,9 +86,9 @@
         <item quantity="other">%d varreduras restantes. Toque para ver mais</item>
     </plurals>
     <string name="ocr_status_title">Realizando varredura (OCR):</string>
-    <string name="ocr_status_message_uploading_image">Enviando recibo...</string>
-    <string name="ocr_status_message_performing_scan">Realizando varredura de metadados de recibos...</string>
-    <string name="ocr_status_message_fetching_results">Obtendo resultados...</string>
+    <string name="ocr_status_message_uploading_image">Enviando recibo…</string>
+    <string name="ocr_status_message_performing_scan">Realizando varredura de metadados de recibos…</string>
+    <string name="ocr_status_message_fetching_results">Obtendo resultados…</string>
     <string name="ocr_configuration_title">Varreduras automáticas (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Varreduras OCR restantes: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
@@ -166,7 +166,7 @@
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Erro: Certifique-se de que seu cartão SD esteja disponível e não esteja instalado em seu computador</string>
-    <string name="SD_WARNING">Aviso: Seu cartão SD não está disponível ou está instalado em seu computador. Algumas imagens podem estar inacessíveis. Alternando para armazenamento interno...</string>
+    <string name="SD_WARNING">Aviso: Seu cartão SD não está disponível ou está instalado em seu computador. Algumas imagens podem estar inacessíveis. Alternando para armazenamento interno…</string>
     <string name="database_error">Erro: Falha ao salvar recibo</string>
     <string name="database_get_error">Erro: Falha ao obter dados. Tente reinicializar o app.</string>
     <string name="IMG_OPEN_ERROR">Erro: A imagem está inacessível ou corrompida. Seu cartão SD pode estar indisponível ou instalado em seu computador. Se esse não for o caso, clique no botão do menu para tirar a foto novamente</string>
@@ -263,7 +263,7 @@
     <string name="dialog_export_positive">Exportar</string>
     <string name="dialog_import_positive">Importar</string>
     <string name="dialog_import_text">Substituir dados existentes</string>
-    <string name="dialog_export_working">Exportando seus recibos...</string>
+    <string name="dialog_export_working">Exportando seus recibos…</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
@@ -300,15 +300,15 @@
     <string name="dialog_remote_backup_delete_message">Tem certeza de que deseja excluir o backup do dispositivo %s? Essa operação não pode ser desfeita.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Tem certeza de que deseja excluir o backup deste dispositivo? Essa operação não pode ser desfeita. É possível desabilitar o backup automático depois que a operação for concluída, ou todos os dados locais serão sincronizados novamente.</string>
     <string name="dialog_remote_backup_delete_positive">@string/delete</string>
-    <string name="dialog_remote_backup_delete_progress">Excluindo seu backup do dispositivo %s...</string>
+    <string name="dialog_remote_backup_delete_progress">Excluindo seu backup do dispositivo %s…</string>
     <string name="dialog_remote_backup_delete_toast_success">Backup excluído com êxito</string>
     <string name="dialog_remote_backup_delete_toast_failure">Falha ao excluir esse backup</string>
-    <string name="dialog_remote_backup_download_progress">Baixando imagens para o arquivo ZIP...</string>
+    <string name="dialog_remote_backup_download_progress">Baixando imagens para o arquivo ZIP…</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Restauração de drive</string>
     <string name="dialog_remote_backup_drive_restore_message">Ocorreram problemas ao sincronizar seus dados. Para recuperá-los, vamos limpar o backup do Drive e ressincronizá-lo. Se essa mensagem estiver aparecendo com frequência, contate-nos para receber suporte adicional.</string>
-    <string name="dialog_remote_backup_restore_progress">Limpando o backup e preparando para a ressincronização...</string>
-    <string name="dialog_remote_backup_restore_toast_success">Backup limpo com êxito. Ressincronizando...</string>
+    <string name="dialog_remote_backup_restore_progress">Limpando o backup e preparando para a ressincronização…</string>
+    <string name="dialog_remote_backup_restore_toast_success">Backup limpo com êxito. Ressincronizando…</string>
     <string name="dialog_remote_backup_restore_toast_failure">Falha ao ressincronizar este backup</string>
 
     <string name="automatic_backups_info_dialog_message">Os backups automáticos estão desabilitados</string>
@@ -426,7 +426,7 @@
     <string name="dialog_sql_corrupt_positive">Enviar um e-mail para o desenvolvedor para obter ajdua</string>
     <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - banco de dados corrompido</string>
     <string name="dialog_sql_corrupt_intent_text">Me ajude - meu banco de dados foi corrompido. Como você pode me ajudar a recuperar minhas informações?</string>
-    <string name="dialog_sql_corrupt_chooser">Enviar e-mail...</string>
+    <string name="dialog_sql_corrupt_chooser">Enviar e-mail…</string>
 
     <!-- ======================= Filters ====================== -->
     <string name="filter_name_and">E</string>
