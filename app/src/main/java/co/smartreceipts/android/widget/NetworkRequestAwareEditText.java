@@ -107,10 +107,8 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
         if (!mUserRetryActionEnabled) {
             drawableEnd = null;
         }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        else {
             drawableEnd = getCompoundDrawablesRelative()[2];
-        } else {
-            drawableEnd = getCompoundDrawables()[2];
         }
 
         if (drawableEnd != null) {
@@ -157,11 +155,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
 
         mState = state;
         final Drawable[] drawables;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            drawables = getCompoundDrawablesRelative();
-        } else {
-            drawables = getCompoundDrawables();
-        }
+        drawables = getCompoundDrawablesRelative();
 
         final Drawable drawableStart = drawables[0];
         final Drawable drawableTop = drawables[1];
@@ -195,11 +189,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
             setHint(mOriginalHint);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, drawableTop, drawableEnd, drawableBottom);
-        } else {
-            setCompoundDrawablesWithIntrinsicBounds(drawableStart, drawableTop, drawableEnd, drawableBottom);
-        }
+        setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, drawableTop, drawableEnd, drawableBottom);
 
         if (drawableEnd instanceof Animatable) {
             ((Animatable)drawableEnd).start();
