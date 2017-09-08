@@ -69,11 +69,6 @@ public class NavigationHandler<T extends FragmentActivity> {
         }
     }
 
-    public void navigateToReportInfoFragmentWithoutBackStack(@NonNull Trip trip) {
-        fragmentManager.popBackStackImmediate();
-        navigateToReportInfoFragment(trip);
-    }
-
     public void navigateToCreateNewReceiptFragment(@NonNull Trip trip, @Nullable File file, @Nullable OcrResponse ocrResponse) {
         if (isDualPane) {
             replaceFragmentWithAnimation(fragmentProvider.newCreateReceiptFragment(trip, file, ocrResponse), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);

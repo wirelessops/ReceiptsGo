@@ -96,6 +96,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         } else {
             navigateToLastTrip = savedInstanceState.getBoolean(OUT_NAV_TO_LAST_TRIP);
         }
+        tripTableController.subscribe(this);
     }
 
     @Override
@@ -137,7 +138,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onResume() {
         super.onResume();
         Logger.debug(this, "onResume");
-        tripTableController.subscribe(this);
         tripTableController.get();
         getActivity().setTitle(getFlexString(R.string.sr_app_name));
         final ActionBar actionBar = getSupportActionBar();
@@ -147,17 +147,16 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void onPause() {
-        Logger.debug(this, "onPause");
-        tripTableController.unsubscribe(this);
-        super.onPause();
-    }
-
-    @Override
     public void onStop() {
         Logger.debug(this, "onStop");
         presenter.unsubscribe();
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        tripTableController.unsubscribe(this);
+        super.onDestroy();
     }
 
     @Override

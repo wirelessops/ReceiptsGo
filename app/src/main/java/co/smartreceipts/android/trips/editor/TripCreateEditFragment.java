@@ -275,10 +275,8 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         final String costCenter = costCenterBox.getText().toString();
 
         if (presenter.checkTrip(name, startDateText, startDateBox.date, endDateText, endDateBox.date)) {
-            Trip updatedTrip = presenter.saveTrip(name, startDateBox.date, endDateBox.date,
-                    currencyCode, comment, costCenter);
-            // open created/edited trip info
-            navigationHandler.navigateToReportInfoFragmentWithoutBackStack(updatedTrip);
+            presenter.saveTrip(name, startDateBox.date, endDateBox.date, currencyCode, comment, costCenter);
+            navigationHandler.navigateBack();
         }
     }
 
