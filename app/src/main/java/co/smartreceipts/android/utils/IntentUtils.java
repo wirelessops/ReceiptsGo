@@ -39,9 +39,6 @@ public class IntentUtils {
 
         final Intent sentIntent = new Intent(Intent.ACTION_VIEW);
         final Uri uri = Uri.fromFile(file);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            grantReadPermissionsToUri(context, sentIntent, uri);
-        }
 
         final String mimeType = UriUtils.getMimeType(uri, context.getContentResolver());
         if (!TextUtils.isEmpty(mimeType)) {
@@ -85,10 +82,6 @@ public class IntentUtils {
         final String authority = String.format(Locale.US, AUTHORITY_FORMAT, context.getPackageName());
         final Uri uri = getUriFromFile(context, authority, file);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            grantReadPermissionsToUri(context, sentIntent, uri);
-        }
-
         final String mimeType = UriUtils.getMimeType(uri, context.getContentResolver());
         if (!TextUtils.isEmpty(mimeType)) {
             sentIntent.setType(mimeType);
@@ -115,9 +108,6 @@ public class IntentUtils {
             final ArrayList<Uri> uris = new ArrayList<>();
             for (final File file : files) {
                 final Uri uri = getUriFromFile(context, authority, file);
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    grantReadPermissionsToUri(context, sentIntent, uri);
-                }
                 uris.add(uri);
             }
 
@@ -135,9 +125,6 @@ public class IntentUtils {
         final String authority = String.format(Locale.US, AUTHORITY_FORMAT, context.getPackageName());
         final Uri uri = getUriFromFile(context, authority, file);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            grantReadWritePermissionsToUri(context, intent, uri);
-        }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         return intent;
     }
