@@ -1,5 +1,6 @@
 package co.smartreceipts.android.utils;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -124,6 +125,9 @@ public class IntentUtils {
         final String authority = String.format(Locale.US, AUTHORITY_FORMAT, context.getPackageName());
         final Uri uri = getUriFromFile(context, authority, file);
 
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setClipData(ClipData.newRawUri(null, uri));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         return intent;
     }
