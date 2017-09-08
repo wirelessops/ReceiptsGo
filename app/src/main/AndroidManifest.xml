@@ -44,6 +44,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Filter for deep linking into the app -->
+            <intent-filter android:label="@string/sr_app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://www.smartreceipts.co/download” -->
+                <data android:scheme="https"
+                      android:host="www.smartreceipts.co"
+                      android:pathPrefix="/download" />
+                <!-- Accepts URIs that begin with "https://smartreceipts.co/download” -->
+                <data android:scheme="https"
+                      android:host="smartreceipts.co"
+                      android:pathPrefix="/download" />
+                <!-- Accepts URIs that begin with "https://www.smartreceipts.co/launch” -->
+                <data android:scheme="https"
+                      android:host="www.smartreceipts.co"
+                      android:pathPrefix="/launch" />
+                <!-- Accepts URIs that begin with "https://smartreceipts.co/launch” -->
+                <data android:scheme="https"
+                      android:host="smartreceipts.co"
+                      android:pathPrefix="/launch" />
+            </intent-filter>
+
             <!-- Filter to handle action send activities -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
