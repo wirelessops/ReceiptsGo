@@ -37,7 +37,7 @@ public class Tooltip extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.tooltip, this);
+        inflate(getContext(), R.layout.app_tooltip, this);
         messageText = (TextView) findViewById(R.id.tooltip_message);
         buttonNo = (Button) findViewById(R.id.tooltip_no);
         buttonYes = (Button) findViewById(R.id.tooltip_yes);
