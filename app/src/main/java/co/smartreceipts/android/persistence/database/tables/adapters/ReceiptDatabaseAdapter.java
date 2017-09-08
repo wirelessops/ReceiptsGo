@@ -25,7 +25,6 @@ import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
-import io.reactivex.functions.Function;
 import wb.android.storage.StorageManager;
 
 /**

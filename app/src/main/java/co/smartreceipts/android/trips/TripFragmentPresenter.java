@@ -1,7 +1,5 @@
 package co.smartreceipts.android.trips;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.FragmentScope;

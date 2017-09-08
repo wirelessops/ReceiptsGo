@@ -53,7 +53,7 @@ public class FallbackTextRenderer extends Renderer {
 
     private final Context context;
     private final PDDocument pdDocument;
-    private final String string;;
+    private final String string;
     private final Handler uiThreadRunner = new Handler(Looper.getMainLooper());
 
     public FallbackTextRenderer(@NonNull Context context, @NonNull PDDocument pdDocument, @NonNull String string) {

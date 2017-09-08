@@ -23,18 +23,14 @@ import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.apis.MobileAppPurchasesService;
 import co.smartreceipts.android.purchases.apis.PurchaseRequest;
 import co.smartreceipts.android.purchases.consumption.DefaultInAppPurchaseConsumer;
-import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
-import co.smartreceipts.android.purchases.model.Subscription;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 

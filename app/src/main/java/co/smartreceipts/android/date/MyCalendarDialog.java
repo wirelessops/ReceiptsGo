@@ -11,7 +11,7 @@ public class MyCalendarDialog extends CalendarDialog {
 
 	
 	public interface Listener {
-		public void onDateSet(Date date);
+		void onDateSet(Date date);
 	}
 	
 	private final Context mContext;

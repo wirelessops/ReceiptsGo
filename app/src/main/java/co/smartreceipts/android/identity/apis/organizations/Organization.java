@@ -24,7 +24,6 @@ public class Organization implements Serializable {
         return name;
     }
 
-    @Nullable
     public long getCreatedAt() {
         return createdAt;
     }

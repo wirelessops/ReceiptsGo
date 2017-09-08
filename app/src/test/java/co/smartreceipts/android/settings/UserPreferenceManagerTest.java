@@ -1,11 +1,8 @@
 package co.smartreceipts.android.settings;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
-
-import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory;
 
 import org.junit.After;
 import org.junit.Before;

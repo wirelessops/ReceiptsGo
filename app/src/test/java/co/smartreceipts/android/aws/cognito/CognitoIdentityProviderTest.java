@@ -122,7 +122,7 @@ public class CognitoIdentityProviderTest {
 
     @Test
     public void prefetchInvalidTokenWillNullToken() {
-        final Cognito preCognito = new Cognito(null, IDENTITY_ID, EXPIRES_AT);;
+        final Cognito preCognito = new Cognito(null, IDENTITY_ID, EXPIRES_AT);
         when(localCognitoTokenStore.getCognitoToken()).thenReturn(preCognito);
         when(identityManager.getMe()).thenReturn(Observable.just(meResponse));
         when(user.getCognitoToken()).thenReturn(TOKEN);
@@ -141,7 +141,7 @@ public class CognitoIdentityProviderTest {
 
     @Test
     public void prefetchInvalidTokenWillNullIdentityId() {
-        final Cognito preCognito = new Cognito(TOKEN, null, EXPIRES_AT);;
+        final Cognito preCognito = new Cognito(TOKEN, null, EXPIRES_AT);
         when(localCognitoTokenStore.getCognitoToken()).thenReturn(preCognito);
         when(identityManager.getMe()).thenReturn(Observable.just(meResponse));
         when(user.getCognitoToken()).thenReturn(TOKEN);
@@ -160,7 +160,7 @@ public class CognitoIdentityProviderTest {
 
     @Test
     public void prefetchValidToken() {
-        final Cognito preCognito = new Cognito(TOKEN, IDENTITY_ID, EXPIRES_AT);;
+        final Cognito preCognito = new Cognito(TOKEN, IDENTITY_ID, EXPIRES_AT);
         when(localCognitoTokenStore.getCognitoToken()).thenReturn(preCognito);
 
         final TestObserver<Optional<Cognito>> testObserver = cognitoIdentityProvider.prefetchCognitoTokenIfNeeded().test();

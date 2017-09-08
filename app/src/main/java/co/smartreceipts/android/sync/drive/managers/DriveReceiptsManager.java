@@ -2,7 +2,6 @@ package co.smartreceipts.android.sync.drive.managers;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import com.google.common.base.Preconditions;
 

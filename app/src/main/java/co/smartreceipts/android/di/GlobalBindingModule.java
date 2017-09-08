@@ -5,6 +5,7 @@ import android.app.Service;
 import android.support.v4.app.Fragment;
 
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
+import co.smartreceipts.android.activities.di.SmartReceiptsActivitySubcomponent;
 import co.smartreceipts.android.di.subcomponents.CSVColumnsListFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.CategoriesListFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.DeleteRemoteBackupProgressDialogFragmentSubcomponent;
@@ -22,7 +23,6 @@ import co.smartreceipts.android.di.subcomponents.RatingDialogFragmentSubcomponen
 import co.smartreceipts.android.di.subcomponents.ReceiptMoveCopyDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.SelectAutomaticBackupProviderDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.SettingsActivitySubcomponent;
-import co.smartreceipts.android.di.subcomponents.SmartReceiptsActivitySubcomponent;
 import co.smartreceipts.android.fragments.DistanceDialogFragment;
 import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
@@ -38,8 +38,6 @@ import co.smartreceipts.android.settings.widget.PaymentMethodsListFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.sync.drive.services.DriveCompletionEventService;
 import co.smartreceipts.android.sync.drive.services.di.DriveCompletionEventServiceSubcomponent;
-import co.smartreceipts.android.sync.widget.backups.BackupsFragment;
-import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.DownloadRemoteBackupImagesProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ExportBackupWorkerProgressDialogFragment;

@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 import com.google.common.base.Preconditions;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;

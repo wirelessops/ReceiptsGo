@@ -1,6 +1,7 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -79,8 +80,9 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 		public TextView bottom;
 	}
 	
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	@NonNull
+    @Override
+	public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 		TextView priceBox = mPriceBox.get();
 		if (priceBox == null || TextUtils.isEmpty(priceBox.getText())) {
 			return null;

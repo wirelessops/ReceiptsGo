@@ -10,7 +10,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.AppCompatDrawableManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +25,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-
-import static android.os.Build.VERSION.SDK_INT;
 
 public class CardAdapter<T> extends BaseAdapter {
 	

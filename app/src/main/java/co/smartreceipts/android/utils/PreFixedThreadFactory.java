@@ -44,7 +44,7 @@ public class PreFixedThreadFactory implements ThreadFactory {
 
 
     @Override
-    public Thread newThread(Runnable runnable) {
+    public Thread newThread(@NonNull Runnable runnable) {
         final Thread thread = new Thread(group, runnable, namePrefix + threadNumber.getAndIncrement(), 0);
         if (thread.isDaemon()) {
             thread.setDaemon(false);

@@ -42,7 +42,6 @@ public class AvailablePurchase  {
         return price;
     }
 
-    @Nullable
     public long getPriceAmountMicros() {
         return price_amount_micros;
     }

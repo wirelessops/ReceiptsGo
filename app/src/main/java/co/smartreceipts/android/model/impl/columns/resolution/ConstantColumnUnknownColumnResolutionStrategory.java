@@ -13,6 +13,7 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  */
 public final class ConstantColumnUnknownColumnResolutionStrategory<T> implements UnknownColumnResolutionStrategory<T> {
 
+    @NonNull
     @Override
     public Column<T> resolve(int id, @NonNull String columnName) {
         return new ConstantColumn<>(id, columnName, new DefaultSyncState());

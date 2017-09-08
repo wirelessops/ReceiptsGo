@@ -9,13 +9,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.util.Collections;
-import java.util.HashMap;
 
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.PriceCurrency;
-import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.utils.TestUtils;

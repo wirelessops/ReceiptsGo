@@ -25,10 +25,7 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.log.Logger;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.functions.Function;
 
 /**
  * Abstracts out the core CRUD database operations in order to ensure that each of our core table instances

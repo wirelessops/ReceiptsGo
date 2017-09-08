@@ -19,7 +19,6 @@ import org.robolectric.RuntimeEnvironment;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -447,7 +446,7 @@ public class ReceiptsTableTest {
         assertNotNull(receipt);
 
         final List<Receipt> list1 = mReceiptsTable.getUnsynced(mTrip1, SyncProvider.GoogleDrive).blockingGet();
-        assertEquals(list1, Arrays.asList(mReceipt2, mReceipt1));
+        assertEquals(list1, Collections.singletonList(mReceipt1));
     }
 
     @Test

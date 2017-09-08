@@ -9,23 +9,16 @@ import android.support.annotation.VisibleForTesting;
 import com.google.common.base.Preconditions;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.purchases.PurchaseManager;
-import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
-import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.model.Subscription;
 import io.reactivex.Completable;
-import io.reactivex.functions.Action;
 
 class SubscriptionInAppPurchaseConsumer implements InAppPurchaseConsumer<Subscription> {
 

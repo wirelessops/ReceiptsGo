@@ -28,6 +28,7 @@ public class SmartReceiptsApiException extends Exception {
                 final Converter<ResponseBody, SmartReceiptsApiErrorResponse> converter = retrofit.responseBodyConverter(SmartReceiptsApiErrorResponse.class, new Annotation[0]);
                 errorResponse = converter.convert(response.errorBody());
             } catch (IOException e) {
+                // Intentional no-op
             }
         }
 

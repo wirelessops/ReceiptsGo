@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,8 @@ import co.smartreceipts.android.model.Receipt;
 
 public class FilterDialogFragment extends DialogFragment implements OnClickListener {
 
-	@Override
+	@NonNull
+    @Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final LayoutInflater inflater = LayoutInflater.from(getActivity());
 		

@@ -23,6 +23,7 @@ public class ReportTooltipPresenter extends BasePresenter<TooltipView, ReportToo
     private final BackupProvidersManager backupProvidersManager;
     private final Analytics analytics;
 
+    @SuppressWarnings("unchecked")
     @Inject
     public ReportTooltipPresenter(@NonNull TooltipView view, @NonNull ReportTooltipInteractor interactor,
                                   @NonNull BackupProvidersManager backupProvidersManager,

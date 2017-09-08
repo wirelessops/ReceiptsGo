@@ -23,7 +23,7 @@ public interface Filter<T> {
 	 * @param t - the object of type {@link T} to check
 	 * @return {@link true} if it should be accepted, {@link false} otherwise
 	 */
-	public boolean accept(T t);
+    boolean accept(T t);
 
     /**
      *
@@ -31,25 +31,25 @@ public interface Filter<T> {
      * reconstruct filters if persistence is desired.
      * @throws JSONException if invalid parameters were presentFirstTimeInformation
      */
-	public JSONObject getJsonRepresentation() throws JSONException;
+    JSONObject getJsonRepresentation() throws JSONException;
 
 
 	/**
 	 * @return a complete {@link List} of {@link Filter} objects that are considered as children to this {@link Filter}
 	 *         or {@code null} if it does not contain any children
 	 */
-	public List<Filter<T>> getChildren();
+    List<Filter<T>> getChildren();
 
 
 	/**
 	 * @return an Android {@link string} resource for this filter's display name
 	 */
-	public int getNameResource();
+    int getNameResource();
 
 
 	/**
 	 * @return the {@link FilterType} of this particular filter
 	 */
-	public FilterType getType();
+    FilterType getType();
 
 }

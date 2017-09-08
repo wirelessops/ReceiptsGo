@@ -39,7 +39,6 @@ public class RecognitionResponse {
             return data;
         }
 
-        @Nullable
         public long getCreatedAt() {
             return created_at;
         }

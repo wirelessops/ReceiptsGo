@@ -114,7 +114,7 @@ public class DeleteRemoteBackupProgressDialogFragment extends DialogFragment {
                         }
 
                         // Note: this is kind of hacky but should work
-                        remoteBackupsDataCache.clearGetBackupsResults();;
+                        remoteBackupsDataCache.clearGetBackupsResults();
                         final Fragment uncastedBackupsFragment = getFragmentManager().findFragmentByTag(BackupsFragment.class.getName());
                         if (uncastedBackupsFragment instanceof BackupsFragment) {
                             // If we're active, kick off a refresh directly in the fragment

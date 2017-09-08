@@ -14,7 +14,6 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
-import co.smartreceipts.android.analytics.events.Event;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;

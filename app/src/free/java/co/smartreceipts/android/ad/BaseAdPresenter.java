@@ -14,7 +14,6 @@ import co.smartreceipts.android.ad.admob.widget.BannerAdView;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.android.analytics.events.Event;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.persistence.SharedPreferenceDefinitions;
 import co.smartreceipts.android.purchases.PurchaseManager;

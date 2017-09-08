@@ -15,6 +15,6 @@ import android.preference.Preference;
  */
 public interface UniversalPreferences {
 
-	public Preference findPreference(CharSequence charSequence);
-	public Preference findPreference(int stringId);
+	Preference findPreference(CharSequence charSequence);
+	Preference findPreference(int stringId);
 }

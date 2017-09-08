@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;

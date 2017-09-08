@@ -1,4 +1,4 @@
-package co.smartreceipts.android.di.subcomponents;
+package co.smartreceipts.android.activities.di;
 
 import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;

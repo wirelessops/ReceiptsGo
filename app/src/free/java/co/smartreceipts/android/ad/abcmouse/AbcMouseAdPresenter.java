@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.ad.BaseAdPresenter;
 import co.smartreceipts.android.ad.admob.widget.BannerAdView;
-import co.smartreceipts.android.ad.admob.widget.ClassicAdView;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.purchases.PurchaseManager;

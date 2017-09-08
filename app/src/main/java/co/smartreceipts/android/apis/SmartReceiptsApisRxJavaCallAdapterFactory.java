@@ -27,6 +27,7 @@ public class SmartReceiptsApisRxJavaCallAdapterFactory extends CallAdapter.Facto
         return new SmartReceiptsApisRxJavaCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(scheduler));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
         return new RxCallAdapterWrapper(retrofit, original.get(returnType, annotations, retrofit));
@@ -46,11 +47,10 @@ public class SmartReceiptsApisRxJavaCallAdapterFactory extends CallAdapter.Facto
             return wrapped.responseType();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public Observable<?> adapt(Call<R> call) {
-            return ((Observable) wrapped.adapt(call)).onErrorResumeNext((Object throwable) -> {
-                        return Observable.error(asPossiblyMappedException((Throwable) throwable));
-                    }
+            return ((Observable) wrapped.adapt(call)).onErrorResumeNext((Object throwable) -> Observable.error(asPossiblyMappedException((Throwable) throwable))
             );
         }
 

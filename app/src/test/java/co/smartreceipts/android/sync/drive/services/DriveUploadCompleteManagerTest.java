@@ -14,10 +14,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Arrays;
 
 import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;

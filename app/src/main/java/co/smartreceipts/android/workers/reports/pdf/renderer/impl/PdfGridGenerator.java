@@ -23,7 +23,6 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.Renderer;
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Padding;
 import co.smartreceipts.android.workers.reports.pdf.renderer.grid.GridRowRenderer;
 import co.smartreceipts.android.workers.reports.pdf.renderer.grid.PdfGridRenderer;
-import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.LollipopPdfPDImageXFactory;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PDImageXRenderer;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PdfPDImageXFactory;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PdfPDImageXFactoryFactory;

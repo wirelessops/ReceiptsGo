@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;

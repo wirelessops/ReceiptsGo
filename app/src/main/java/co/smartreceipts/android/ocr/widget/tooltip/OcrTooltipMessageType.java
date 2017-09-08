@@ -15,5 +15,5 @@ public enum OcrTooltipMessageType {
     /**
      * Ocr is not currently configured
      */
-    NotConfigured;
+    NotConfigured
 }

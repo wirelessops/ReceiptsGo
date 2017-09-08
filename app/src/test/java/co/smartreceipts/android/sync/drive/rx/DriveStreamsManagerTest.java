@@ -7,12 +7,10 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.hadisatrio.optional.Optional;
-import com.shockwave.pdfium.PdfDocument;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -20,11 +18,8 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicReference;
 
 import co.smartreceipts.android.sync.drive.error.DriveThrowableToSyncErrorTranslator;
-import co.smartreceipts.android.sync.errors.CriticalSyncError;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.Identifier;
@@ -34,7 +29,6 @@ import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subjects.Subject;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

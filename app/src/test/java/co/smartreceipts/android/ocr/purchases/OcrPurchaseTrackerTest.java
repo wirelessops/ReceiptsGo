@@ -22,7 +22,6 @@ import co.smartreceipts.android.purchases.apis.MobileAppPurchasesService;
 import co.smartreceipts.android.purchases.apis.PurchaseRequest;
 import co.smartreceipts.android.purchases.apis.PurchaseResponse;
 import co.smartreceipts.android.purchases.consumption.DefaultInAppPurchaseConsumer;
-import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
