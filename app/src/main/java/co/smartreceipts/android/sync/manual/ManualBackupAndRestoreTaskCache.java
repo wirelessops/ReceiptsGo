@@ -33,7 +33,7 @@ public class ManualBackupAndRestoreTaskCache {
     @NonNull
     public synchronized ManualBackupTask getManualBackupTask() {
         if (mHeadlessFragment.manualBackupTask == null) {
-            mHeadlessFragment.manualBackupTask = new ManualBackupTask(mPersistenceManager);
+            mHeadlessFragment.manualBackupTask = new ManualBackupTask(mContext, mPersistenceManager);
         }
         return mHeadlessFragment.manualBackupTask;
     }

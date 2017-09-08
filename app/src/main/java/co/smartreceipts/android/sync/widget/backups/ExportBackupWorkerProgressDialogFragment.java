@@ -17,6 +17,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.sync.manual.ManualBackupAndRestoreTaskCache;
+import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -67,16 +68,10 @@ public class ExportBackupWorkerProgressDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         disposable = manualBackupAndRestoreTaskCache.getManualBackupTask().backupData().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(uri -> {
-                    if (uri != null) {
-                        final Intent sentIntent = new Intent(Intent.ACTION_SEND);
-                        sentIntent.setType("application/octet-stream");
-                        sentIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                        getActivity().startActivity(Intent.createChooser(sentIntent, getString(R.string.export)));
-                        backupReminderTooltipStorage.setLastManualBackupDate();
-                    } else {
-                        Toast.makeText(getContext(), getString(R.string.EXPORT_ERROR), Toast.LENGTH_LONG).show();
-                    }
+                .subscribe(file -> {
+                    final Intent sentIntent = IntentUtils.getSendIntent(getContext(), file);
+                    getActivity().startActivity(Intent.createChooser(sentIntent, getString(R.string.export)));
+                    backupReminderTooltipStorage.setLastManualBackupDate();
                 }, throwable -> {
                     analytics.record(new ErrorEvent(ExportBackupWorkerProgressDialogFragment.this, throwable));
                     Toast.makeText(getContext(), getString(R.string.EXPORT_ERROR), Toast.LENGTH_LONG).show();
