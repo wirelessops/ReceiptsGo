@@ -321,7 +321,7 @@
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Einloggen / Anmelden</string>
     <string name="login_title">Anmelden mit Ihrem Smart Receipts Konto, um automatische Scans mit (OCR) zu starten</string>
-    <string name="login_field_email_hint">E-Mail-Addresse</string>
+    <string name="login_field_email_hint">E-Mail-Adresse</string>
     <string name="login_field_password_hint">Passwort</string>
     <string name="sign_up_button_text">Anmelden</string>
     <string name="login_button_text">Einloggen</string>
