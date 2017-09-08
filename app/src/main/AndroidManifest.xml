@@ -116,7 +116,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize" >
         </activity>
 
-        <service android:name=".sync.drive.services.DriveCompletionEventService" android:exported="false" >
+        <!-- DriveEventService (and subclasses) must be exported -->
+        <service android:name=".sync.drive.services.DriveCompletionEventService" android:exported="true"
+                 tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.android.gms.drive.events.HANDLE_EVENT"/>
             </intent-filter>
