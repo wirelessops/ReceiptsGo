@@ -403,7 +403,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 try {
                     Logger.debug(this, "Merging Trips");
                     Logger.debug(this, "Merging Trips");
-                    c = importDB.query(TripsTable.TABLE_NAME, null, null, null, null, null, TripsTable.COLUMN_TO + " DESC");
+                    c = importDB.query(TripsTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, TripsTable.COLUMN_TO + " DESC");
                     if (c != null && c.moveToFirst()) {
                         final int nameIndex = c.getColumnIndex(TripsTable.COLUMN_NAME);
                         final int fromIndex = c.getColumnIndex(TripsTable.COLUMN_FROM);
@@ -470,10 +470,9 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
                 // Merge Receipts
                 Logger.debug(this, "Merging Receipts");
-                Logger.debug(this, "Merging Receipts");
                 try {
                     final String queryCount = "SELECT COUNT(*), " + ReceiptsTable.COLUMN_ID + " FROM " + ReceiptsTable.TABLE_NAME + " WHERE " + ReceiptsTable.COLUMN_PATH + "=? AND " + ReceiptsTable.COLUMN_NAME + "=? AND " + ReceiptsTable.COLUMN_DATE + "=?";
-                    c = importDB.query(ReceiptsTable.TABLE_NAME, null, null, null, null, null, null);
+                    c = importDB.query(ReceiptsTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
                     if (c != null && c.moveToFirst()) {
                         final int pathIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PATH);
                         final int nameIndex = c.getColumnIndex(ReceiptsTable.COLUMN_NAME);
@@ -593,7 +592,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 // enough outlying data) => Always overwirte
                 Logger.debug(this, "Merging Categories");
                 try {
-                    c = importDB.query(CategoriesTable.TABLE_NAME, null, null, null, null, null, null);
+                    c = importDB.query(CategoriesTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
                     if (c != null && c.moveToFirst()) {
                         currDB.delete(CategoriesTable.TABLE_NAME, null, null); // DELETE FROM Categories
                         final int nameIndex = c.getColumnIndex(CategoriesTable.COLUMN_NAME);
@@ -626,7 +625,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 // enough outlying data) => Always overwirte
                 Logger.debug(this, "Merging CSV");
                 try {
-                    c = importDB.query(CSVTable.TABLE_NAME, null, null, null, null, null, null);
+                    c = importDB.query(CSVTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
                     if (c != null && c.moveToFirst()) {
                         currDB.delete(CSVTable.TABLE_NAME, null, null); // DELETE * FROM CSVTable
                         final int idxIndex = c.getColumnIndex(CSVTable.COLUMN_ID);
@@ -656,7 +655,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 // enough outlying data) => Always overwirte
                 Logger.debug(this, "Merging PDF");
                 try {
-                    c = importDB.query(PDFTable.TABLE_NAME, null, null, null, null, null, null);
+                    c = importDB.query(PDFTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
                     if (c != null && c.moveToFirst()) {
                         currDB.delete(PDFTable.TABLE_NAME, null, null); // DELETE * FROM PDFTable
                         final int idxIndex = c.getColumnIndex(PDFTable.COLUMN_ID);
@@ -686,7 +685,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 // enough outlying data) => Always overwirte
                 Logger.debug(this, "Merging Payment Methods");
                 try {
-                    c = importDB.query(PaymentMethodsTable.TABLE_NAME, null, null, null, null, null, null);
+                    c = importDB.query(PaymentMethodsTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
                     if (c != null && c.moveToFirst()) {
                         currDB.delete(PaymentMethodsTable.TABLE_NAME, null, null); // DELETE * FROM PaymentMethodsTable
                         final int idxIndex = c.getColumnIndex(PaymentMethodsTable.COLUMN_ID);
@@ -713,7 +712,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
                 Logger.debug(this, "Merging Distance");
                 try {
-                    c = importDB.query(DistanceTable.TABLE_NAME, null, null, null, null, null, null);
+                    c = importDB.query(DistanceTable.TABLE_NAME, null, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
                     if (c != null && c.moveToFirst()) {
                         final String distanceCountQuery = "SELECT COUNT(*), " + DistanceTable.COLUMN_ID + " FROM " + DistanceTable.TABLE_NAME + " WHERE " + DistanceTable.COLUMN_PARENT + "=? AND " + DistanceTable.COLUMN_LOCATION + "=? AND " + DistanceTable.COLUMN_DATE + "=?";
                         final int parentTripIndex = c.getColumnIndex(DistanceTable.COLUMN_PARENT);
