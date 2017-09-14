@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.common.base.Preconditions;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,80 +22,91 @@ import co.smartreceipts.android.model.utils.ModelUtils;
 /**
  * Defines an immutable implementation of the {@link co.smartreceipts.android.model.Price} interface
  * for a collection of other price objects.
- * <p/>
- * TODO: Eventually normally for a single currency. Very hacky now
- *
- * @author williambaumann
  */
+@Deprecated
 public final class ImmutableLegacyNetPriceImpl extends AbstractPriceImpl {
 
-    private final List<Price> mPrices;
-    private final Map<PriceCurrency, BigDecimal> mCurrencyToPriceMap;
-    private final BigDecimal mPossiblyIncorrectTotalPrice;
-    private final PriceCurrency mCurrency;
-    private final ExchangeRate mExchangeRate;
+    private final PriceCurrency currency;
+    private final BigDecimal possiblyIncorrectTotalPrice;
+    private final ExchangeRate exchangeRate;
+    private final Map<PriceCurrency, BigDecimal> currencyToPriceMap;
 
     public ImmutableLegacyNetPriceImpl(@NonNull List<Price> prices) {
-        mPrices = Collections.unmodifiableList(prices);
-        mCurrencyToPriceMap = new HashMap<>();
+        this.currencyToPriceMap = new HashMap<>();
         BigDecimal possiblyIncorrectTotalPrice = new BigDecimal(0);
         PriceCurrency currency = null;
         for (final Price price : prices) {
             possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice.add(price.getPrice());
-            final BigDecimal priceToAdd = mCurrencyToPriceMap.containsKey(price.getCurrency()) ? mCurrencyToPriceMap.get(price.getCurrency()).add(price.getPrice()) : price.getPrice();
-            mCurrencyToPriceMap.put(price.getCurrency(), priceToAdd);
+            final BigDecimal priceToAdd = currencyToPriceMap.containsKey(price.getCurrency()) ? currencyToPriceMap.get(price.getCurrency()).add(price.getPrice()) : price.getPrice();
+            currencyToPriceMap.put(price.getCurrency(), priceToAdd);
             if (currency == null) {
                 currency = price.getCurrency();
             } else if (!currency.equals(price.getCurrency())) {
                 currency = PriceCurrency.MIXED_CURRENCY; // Mark as fixed if multiple
             }
         }
-        mCurrency = currency;
-        mPossiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice;
+        this.currency = currency;
+        this.possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice;
         final ExchangeRateBuilderFactory builder = new ExchangeRateBuilderFactory();
-        if (mCurrency != null) {
-            builder.setBaseCurrency(mCurrency);
+        if (this.currency != null) {
+            builder.setBaseCurrency(this.currency);
         }
-        mExchangeRate = builder.build();
+        this.exchangeRate = builder.build();
     }
 
+    @SuppressWarnings("unchecked")
     private ImmutableLegacyNetPriceImpl(@NonNull Parcel in) {
-        this(restorePricesFromParcel(in));
+        this(PriceCurrency.getInstance(in.readString()),
+                (BigDecimal) in.readSerializable(),
+                (ExchangeRate) in.readSerializable(),
+                restoreCurrencyToPriceMapFromParcel(in));
     }
 
-    private static List<Price> restorePricesFromParcel(Parcel in) {
+    private ImmutableLegacyNetPriceImpl(@NonNull PriceCurrency currency,
+                                        @NonNull BigDecimal possiblyIncorrectTotalPrice,
+                                        @NonNull ExchangeRate exchangeRate,
+                                        @NonNull Map<PriceCurrency, BigDecimal> currencyToPriceMap) {
+        this.currency = Preconditions.checkNotNull(currency);
+        this.possiblyIncorrectTotalPrice = Preconditions.checkNotNull(possiblyIncorrectTotalPrice);
+        this.exchangeRate = Preconditions.checkNotNull(exchangeRate);
+        this.currencyToPriceMap = Preconditions.checkNotNull(currencyToPriceMap);
+    }
+
+    @NonNull
+    private static Map<PriceCurrency, BigDecimal> restoreCurrencyToPriceMapFromParcel(@NonNull Parcel in) {
+        final Map<PriceCurrency, BigDecimal> currencyToPriceMap = new HashMap<>();
         final int size = in.readInt();
-        final List<Price> prices = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            final Price price = in.readParcelable(Price.class.getClassLoader());
-            prices.add(price);
+        for(int i = 0; i < size; i++){
+            final PriceCurrency currency = PriceCurrency.getInstance(in.readString());
+            final BigDecimal price = (BigDecimal) in.readSerializable();
+            currencyToPriceMap.put(currency, price);
         }
-        return prices;
+        return currencyToPriceMap;
     }
 
     @Override
     public float getPriceAsFloat() {
-        return mPossiblyIncorrectTotalPrice.floatValue();
+        return possiblyIncorrectTotalPrice.floatValue();
     }
 
     @NonNull
     @Override
     public BigDecimal getPrice() {
-        return mPossiblyIncorrectTotalPrice;
+        return possiblyIncorrectTotalPrice;
     }
 
     @NonNull
     @Override
     public String getDecimalFormattedPrice() {
-        return ModelUtils.getDecimalFormattedValue(mPossiblyIncorrectTotalPrice);
+        return ModelUtils.getDecimalFormattedValue(possiblyIncorrectTotalPrice);
     }
 
     @NonNull
     @Override
     public String getCurrencyFormattedPrice() {
         final List<String> currencyStrings = new ArrayList<>();
-        for (PriceCurrency currency : mCurrencyToPriceMap.keySet()) {
-            currencyStrings.add(ModelUtils.getCurrencyFormattedValue(mCurrencyToPriceMap.get(currency), currency));
+        for (PriceCurrency currency : currencyToPriceMap.keySet()) {
+            currencyStrings.add(ModelUtils.getCurrencyFormattedValue(currencyToPriceMap.get(currency), currency));
         }
         return TextUtils.join("; ", currencyStrings);
     }
@@ -102,8 +115,8 @@ public final class ImmutableLegacyNetPriceImpl extends AbstractPriceImpl {
     @Override
     public String getCurrencyCodeFormattedPrice() {
         final List<String> currencyStrings = new ArrayList<>();
-        for (PriceCurrency currency : mCurrencyToPriceMap.keySet()) {
-            currencyStrings.add(ModelUtils.getCurrencyCodeFormattedValue(mCurrencyToPriceMap.get(currency), currency));
+        for (PriceCurrency currency : currencyToPriceMap.keySet()) {
+            currencyStrings.add(ModelUtils.getCurrencyCodeFormattedValue(currencyToPriceMap.get(currency), currency));
         }
         return TextUtils.join("; ", currencyStrings);
     }
@@ -111,19 +124,19 @@ public final class ImmutableLegacyNetPriceImpl extends AbstractPriceImpl {
     @NonNull
     @Override
     public PriceCurrency getCurrency() {
-        return mCurrency;
+        return currency;
     }
 
     @NonNull
     @Override
     public String getCurrencyCode() {
-        return mCurrency.getCurrencyCode();
+        return currency.getCurrencyCode();
     }
 
     @NonNull
     @Override
     public ExchangeRate getExchangeRate() {
-        return mExchangeRate;
+        return exchangeRate;
     }
 
     @Override
@@ -138,9 +151,15 @@ public final class ImmutableLegacyNetPriceImpl extends AbstractPriceImpl {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mPrices.size());
-        for (Price price : mPrices) {
-            dest.writeParcelable(price, 0);
+        dest.writeString(currency.getCurrencyCode());
+        dest.writeSerializable(possiblyIncorrectTotalPrice);
+        dest.writeSerializable(exchangeRate);
+
+        // Finally, write the map
+        dest.writeInt(currencyToPriceMap.size());
+        for(final Map.Entry<PriceCurrency, BigDecimal> entry : currencyToPriceMap.entrySet()){
+            dest.writeString(entry.getKey().getCurrencyCode());
+            dest.writeSerializable(entry.getValue());
         }
     }
 

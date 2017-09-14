@@ -88,6 +88,12 @@ public class ImmutablePriceImplTest {
     }
 
     @Test
+    public void testToString() {
+        assertEquals("$1.25", price.toString());
+        assertEquals("$1.251", priceWith3DigitsOfPrecision.toString());
+    }
+
+    @Test
     public void parcel() throws Exception {
         final Parcel parcel = Parcel.obtain();
         price.writeToParcel(parcel, 0);
