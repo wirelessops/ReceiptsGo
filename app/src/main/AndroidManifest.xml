@@ -10,14 +10,15 @@
 
     <application
         tools:replace="android:icon,android:label,android:theme"
-        android:icon="@drawable/icon" 
         android:label="@string/sr_app_name"
+        android:icon="@mipmap/ic_launcher"
         android:theme="@style/Theme.SmartReceipts"
         android:hardwareAccelerated="true"
         android:largeHeap="true"
-        android:logo="@drawable/logo"
         android:name=".SmartReceiptsApplication"
-        android:allowBackup="false">
+        android:appCategory="productivity"
+        android:allowBackup="false"
+        tools:ignore="UnusedAttribute">
 
         <!--
             Please note that we explicitly disable allowBackup for auto-backup above:
