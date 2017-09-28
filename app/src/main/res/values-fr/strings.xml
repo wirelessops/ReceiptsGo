@@ -80,7 +80,7 @@
     <string name="report_pdf_error_go_to_settings">Aller aux paramètres</string>
 
     <!-- ===================== ocr ======================== -->
-    <string name="ocr_informational_tooltip_configure_text">Configurer les scans automatiques ? Appuyez ici.</string>
+    <string name="ocr_informational_tooltip_configure_text">(Optionnel) Configurer les scans automatiques ? Appuyez ici.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">%d scan restant. Appuyez pour en ajouter.</item>
         <item quantity="other">%d scans restants. Appuyez pour en ajouter.</item>
@@ -99,6 +99,7 @@
     <string name="ocr_is_enabled">Activer les scans automatiques (OCR) ?</string>
     <string name="ocr_save_scans_to_improve_results">Nous autoriser à enregistrer des images pour améliorer la précision ?</string>
     <string name="ocr_configuration_available_purchases">Achats disponibles - Appuyez pour acheter :</string>
+    <string name="ocr_configuration_information_line3">Pour essayer OCR, tous les nouveaux utilisateurs obtiennent 2 scans gratuits! N'oubliez pas que l'OCR est une fonction facultative et peut être désactivé à tout moment.</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_name">Nom :</string>
@@ -193,6 +194,7 @@
     <string name="toast_receipt_pdf_replaced">Vous avez remplacé un nouveau PDF pour %s</string>
     <string name="toast_import_complete">Importation réussie de tous les fichiers. Veuillez relancer l\'appli.</string>
     <string name="toast_no_storage_permissions">Impossible d\'importer des fichiers sans autorisation de stockage</string>
+    <string name="attachment_error">Impossible de joindre ce fichier.</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to"> à</string>

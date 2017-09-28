@@ -80,7 +80,7 @@
     <string name="report_pdf_error_go_to_settings">Zu den Einstellungen gehen</string>
 
     <!-- ===================== ocr ======================== -->
-    <string name="ocr_informational_tooltip_configure_text">Automatische  Scans konfigurieren  ? Hier klicken.</string>
+    <string name="ocr_informational_tooltip_configure_text">(Optional) Automatische Scans konfigurieren ? Hier klicken.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">%d den Rest scannen. Tippen Sie auf mehr.</item>
         <item quantity="other">%d Rest scannen. Tippen Sie auf mehr.</item>
@@ -99,6 +99,7 @@
     <string name="ocr_is_enabled">Aktivieren der automatischen Scans (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Erlauben Sie uns Bilder zu speichern, um die  Genauigkeit zu verbessern?</string>
     <string name="ocr_configuration_available_purchases">Verfügbare Käufe - Tippen Sie, um zu kaufen:</string>
+    <string name="ocr_configuration_information_line3">Um OCR zu versuchen, erhalten alle neuen Benutzer 2 kostenlose Scans! Bitte beachten Sie, dass OCR eine optionale Funktion ist und jederzeit deaktiviert werden kann.</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_name">Name:</string>
@@ -193,6 +194,7 @@
     <string name="toast_receipt_pdf_replaced">Eine neue PDF für %s wurde erfolgreich ersetzt</string>
     <string name="toast_import_complete">Alle Dateien wurden erfolgreich importiert. Bitte starten Sie die App. erneut</string>
     <string name="toast_no_storage_permissions">Kann keine Datei ohne Speicherberechtigungen importieren</string>
+    <string name="attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to"> nach</string>

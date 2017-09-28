@@ -80,7 +80,7 @@
     <string name="report_pdf_error_go_to_settings">Перейти до налаштувань</string>
 
     <!-- ===================== ocr ======================== -->
-    <string name="ocr_informational_tooltip_configure_text">Налаштувати автоматичне сканування? Натисніть тут.</string>
+    <string name="ocr_informational_tooltip_configure_text">(Необов\'язково) Налаштувати автоматичне сканування? Натисніть тут.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">%d Скан залишився. Натисніть тут, щоб додати ще.</item>
         <item quantity="few">%d Скана залишилось. Натисніть тут, щоб додати ще.</item>
@@ -101,6 +101,7 @@
     <string name="ocr_is_enabled">Увімкнути автоматичне сканування (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Дозвольте нам зберігати зображення, щоб підвищити точність?</string>
     <string name="ocr_configuration_available_purchases">Доступні покупки - Натисніть, щоб купити:</string>
+    <string name="ocr_configuration_information_line3">Щоб спробувати OCR, всі нові користувачі отримають 2 безкоштовних сканування! Будь ласка, пам'ятайте, що OCR є додатковою функцією, і її можна будь-коли вимкнути.</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_name">Ім\'я:</string>
@@ -195,6 +196,7 @@
     <string name="toast_receipt_pdf_replaced">Вдало замінений PDF в %s</string>
     <string name="toast_import_complete">Всі файли вдало імпортовані. Будь ласка, перезапустіть додаток.</string>
     <string name="toast_no_storage_permissions">Неможливо імпортувати файл без дозволу на читання</string>
+    <string name="attachment_error">Не вдається прикріпити цей файл.</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">\u0020до\u0020</string>

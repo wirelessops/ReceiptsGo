@@ -80,7 +80,7 @@
     <string name="report_pdf_error_go_to_settings">Acesse as Configurações</string>
 
     <!-- ===================== ocr ======================== -->
-    <string name="ocr_informational_tooltip_configure_text">Deseja configurar as varreduras automáticas? Clique aqui</string>
+    <string name="ocr_informational_tooltip_configure_text">(Opcional) Deseja configurar as varreduras automáticas? Clique aqui</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">%d varredura restante. Toque para ver mais</item>
         <item quantity="other">%d varreduras restantes. Toque para ver mais</item>
@@ -99,6 +99,7 @@
     <string name="ocr_is_enabled">Deseja habilitar as Varreduras automáticas (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Deseja permitir que o app armazene imagens para aumentar a precisão?</string>
     <string name="ocr_configuration_available_purchases">Compras disponíveis - Toque para comprar:</string>
+    <string name="ocr_configuration_information_line3">Para tentar o OCR, todos os novos usuários recebem 2 varreduras gratuitas! Lembre-se de que o OCR é um recurso opcional e pode ser desativado a qualquer momento.</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_name">Nome:</string>
@@ -193,6 +194,7 @@
     <string name="toast_receipt_pdf_replaced">Novo PDF substituído por %s com êxito</string>
     <string name="toast_import_complete">Arquivos importados com êxito. Reinicialize o app.</string>
     <string name="toast_no_storage_permissions">Não é possível importar arquivos sem permissões de armazenamento</string>
+    <string name="attachment_error">Não é possível anexar este arquivo.</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">para</string>

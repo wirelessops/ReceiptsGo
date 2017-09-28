@@ -85,7 +85,7 @@
     <string name="report_pdf_error_go_to_settings">Go to settings</string>
 
     <!-- ===================== ocr ======================== -->
-    <string name="ocr_informational_tooltip_configure_text">Configure Automatic Scans? Tap here.</string>
+    <string name="ocr_informational_tooltip_configure_text">[Optional] Configure Automatic Scans? Tap here.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">%d Scan Remaining. Tap for more.</item>
         <item quantity="other">%d Scans Remaining. Tap for more.</item>
@@ -97,7 +97,6 @@
     <string name="ocr_configuration_title">Automatic Scans (OCR)</string>
     <string name="ocr_configuration_scans_remaining">OCR Scans Remaining: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
-    <string name="ocr_configuration_beta">All beta users get 50 free scans!</string>
     <string name="ocr_configuration_welcome">Automatic Scans (OCR):</string>
     <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
     <string name="ocr_configuration_information_line2">We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</string>
@@ -198,6 +197,7 @@
     <string name="toast_receipt_pdf_replaced">Successfully replaced a new PDF for %s</string>
     <string name="toast_no_storage_permissions">Cannot import file without storage permissions</string>
     <string name="toast_import_complete">Successfully imported all files. Please re-launch the app.</string>
+    <string name="attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">\u0020to\u0020</string>
