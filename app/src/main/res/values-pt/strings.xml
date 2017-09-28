@@ -92,7 +92,6 @@
     <string name="ocr_configuration_title">Varreduras automáticas (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Varreduras OCR restantes: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
-    <string name="ocr_configuration_beta">Todos os usuários beta receberão 50 varreduras gratuitas!</string>
     <string name="ocr_configuration_welcome">Varreduras automáticas (OCR):</string>
     <string name="ocr_configuration_information">O Smart Receipts fez a integração com o Taggun para fornecer um serviço de varreduras automáticas (como OCR), que podem extrair metadados de recibos como preços, impostos, data e nome dos fornecedores, das suas fotos.</string>
     <string name="ocr_configuration_information_line2">Utilizamos uma combinação de Google Vision e Machine Learning para gerar resultados rapidamente (normalmente em 5 segundos ou menos), que ficarão cada vez mais precisos. Como esses serviços têm um preço por utilização, cobraremos por digitalização.</string>

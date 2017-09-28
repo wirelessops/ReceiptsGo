@@ -92,7 +92,6 @@
     <string name="ocr_configuration_title">Automatische Scans (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Restliche OCR Scans: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
-    <string name="ocr_configuration_beta">Alle Beta-Benutzer erhalten 50 kostenlose Scans!</string>
     <string name="ocr_configuration_welcome">Automatische Scans (OCR):</string>
     <string name="ocr_configuration_information">Smart Receipts ist mit Taggun integriert um automatisches Scannen zu ermöglichen (z.B. OCR), die Beleg-Metadaten wie Preis, Steuern, Datum und Händlernamen aus Ihren Fotos extrahieren können.</string>
     <string name="ocr_configuration_information_line2">Wir verwenden eine Kombination von Google Vision and Machine Learning um schnell (oft in 5 Sekunden oder weniger) Ergenisse zu liefern, die mit der Zeit immer genauer werden. Da diese Dienste eine pro-Nutzungsgebühr haben, werden wir jeden untenstehenden Belegscan  verrechnen.</string>

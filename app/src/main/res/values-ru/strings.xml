@@ -94,7 +94,6 @@
     <string name="ocr_configuration_title">Автоматическое сканирование (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Сканов OCR осталось: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
-    <string name="ocr_configuration_beta">Все пользователи бета-версии получают 50 бесплатных сканов!</string>
     <string name="ocr_configuration_welcome">Автоматическое сканирование (OCR):</string>
     <string name="ocr_configuration_information">Смарт Чеки интегрированы с Taggun для обеспечения сервисов автоматического сканирования (т.е. OCR), которые могут извлекать метаданные чеков, такие как цена, налог, даты и данные продавца из ваших фото.</string>
     <string name="ocr_configuration_information_line2">Мы используем комбинацию Google Vision и машинного обучения, чтобы быстро (зачастую в течение 5 секунд или меньше) обеспечить результаты, которые будут становиться все более точными с течением времени. Так как эти сервисы взимают плату за использование, мы будем взимать плату за сканирование каждой квитанции.</string>
