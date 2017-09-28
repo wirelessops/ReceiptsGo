@@ -19,12 +19,16 @@ android {
         javaMaxHeapSize "2048M"
     }
 
+    flavorDimensions "versionType"
+
     productFlavors {
         free {
             applicationId "wb.receipts"
+            dimension "versionType"
         }
         plusFlavor {
-            applicationId 'wb.receiptspro'
+            applicationId "wb.receiptspro"
+            dimension "versionType"
         }
     }
 
