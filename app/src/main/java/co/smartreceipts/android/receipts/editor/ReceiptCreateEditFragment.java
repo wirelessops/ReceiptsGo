@@ -208,7 +208,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         this.taxBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_TAX);
         this.currencySpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_CURRENCY);
         this.exchangeRateBox = (NetworkRequestAwareEditText) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_EXCHANGE_RATE);
-        exchangeRateContainer = (ViewGroup) flex.getSubView(getActivity(), rootView, R.id.exchange_rate_container);
+        this.exchangeRateContainer = (ViewGroup) flex.getSubView(getActivity(), rootView, R.id.exchange_rate_container);
         this.dateBox = (DateEditText) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_DATE);
         this.commentBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_COMMENT);
         this.categoriesSpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_CATEGORY);

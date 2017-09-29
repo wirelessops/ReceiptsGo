@@ -39,7 +39,7 @@
                 <ImageView style="@style/Widget.SmartReceipts.GuideImage"
                     android:src="@drawable/ic_money" />
                 <EditText android:id="@+id/DIALOG_RECEIPTMENU_PRICE"
-                    android:inputType="number|numberSigned|numberDecimal"
+                    android:inputType="numberDecimal|numberSigned"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -47,7 +47,7 @@
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                     android:layout_weight=".45" />
                 <AutoCompleteTextView android:id="@+id/DIALOG_RECEIPTMENU_TAX"
-                    android:inputType="number|numberSigned|numberDecimal"
+                    android:inputType="numberDecimal|numberSigned"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:hint="@string/DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE"
-                    android:inputType="number|numberSigned|numberDecimal"
+                    android:inputType="numberDecimal|numberSigned"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
             </LinearLayout>
             <LinearLayout
