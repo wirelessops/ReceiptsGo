@@ -17,6 +17,7 @@
 
     <!-- ================ General Strings ================== -->
     <string name="add">Add</string>
+    <string name="reorder">Reorder</string>
     <string name="column_item">Column %s</string>
     <string name="copy">Copy</string>
     <string name="daily_total">Daily Total: %s</string>

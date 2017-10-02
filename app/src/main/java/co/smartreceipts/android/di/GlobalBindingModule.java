@@ -32,9 +32,9 @@ import co.smartreceipts.android.ocr.widget.di.OcrConfigurationFragmentSubcompone
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.settings.widget.editors.CSVColumnsListFragment;
-import co.smartreceipts.android.settings.widget.editors.CategoriesListFragment;
+import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
 import co.smartreceipts.android.settings.widget.editors.PDFColumnsListFragment;
-import co.smartreceipts.android.settings.widget.editors.PaymentMethodsListFragment;
+import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.sync.drive.services.DriveCompletionEventService;
 import co.smartreceipts.android.sync.drive.services.di.DriveCompletionEventServiceSubcomponent;

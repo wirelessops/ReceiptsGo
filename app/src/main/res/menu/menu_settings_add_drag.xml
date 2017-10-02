@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_settings_add"
+        android:icon="@drawable/ic_add_24dp"
+        android:title="@string/add"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/menu_settings_drag"
+        android:icon="@drawable/ic_swap_vert_24dp"
+        android:title="@string/reorder"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/menu_settings_save_order"
+        android:icon="@drawable/ic_done_24dp"
+        android:title="@string/save"
+        app:showAsAction="always|withText"
+        android:visible="false" />
+</menu>
