@@ -38,6 +38,7 @@ public class PdfFontManager {
 
         fontMap.put(PdfFontStyle.Title, new PdfFontSpec(boldFont, titleSize));
         fontMap.put(PdfFontStyle.Default, new PdfFontSpec(defaultFont, defaultSize));
+        fontMap.put(PdfFontStyle.DefaultBold, new PdfFontSpec(boldFont, defaultSize));
         fontMap.put(PdfFontStyle.TableHeader, new PdfFontSpec(boldFont, defaultSize));
         fontMap.put(PdfFontStyle.Small, new PdfFontSpec(defaultFont, smallSize));
         fontMap.put(PdfFontStyle.Footer, new PdfFontSpec(italicFont, smallSize));

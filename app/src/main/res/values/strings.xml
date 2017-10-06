@@ -72,10 +72,11 @@
     <string name="report_header_to">To: %s</string>
     <string name="report_header_receipts_total">Receipts Total: %s</string>
     <string name="report_header_receipts_total_tax">Tax Total: %s</string>
-    <string name="report_header_receipts_total_no_tax">Receipts Total (Sans Tax): %s</string>
-    <string name="report_header_receipts_total_reimbursable">Receipts Total (Reimbursable): %s</string>
+    <string name="report_header_receipts_total_no_tax">Receipts Total (Without Tax): %s</string>
+    <string name="report_header_receipts_total_with_tax">Receipts Total (With Tax): %s</string>
     <string name="report_header_distance_total">Distance Total: %s</string>
-    <string name="report_header_gross_total">Gross Total: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Grand Total (Reimbursable): %s</string>
+    <string name="report_header_grand_total">Grand Total: %s</string>
     <string name="report_header_cost_center">Cost Center: %s</string>
     <string name="report_header_comment">Report Comment: %s</string>
     <string name="report_pdf_generation_error">There was an error generating the report</string>

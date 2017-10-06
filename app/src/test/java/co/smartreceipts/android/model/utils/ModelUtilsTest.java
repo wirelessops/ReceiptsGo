@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.utils.TestLocaleToggler;
 
 import static org.junit.Assert.*;
@@ -50,6 +51,15 @@ public class ModelUtilsTest {
     public void getCurrencyCodeFormattedValue() {
         assertEquals("USD2.54", ModelUtils.getCurrencyCodeFormattedValue(new BigDecimal(2.54), PriceCurrency.getInstance("USD")));
         assertEquals("2.54", ModelUtils.getCurrencyCodeFormattedValue(new BigDecimal(2.54), null));
+    }
+
+    @Test
+    public void isPriceZero() {
+        assertTrue(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(0).setCurrency("USD").build()));
+        assertFalse(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(0.1).setCurrency("USD").build()));
+        assertFalse(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(-0.1).setCurrency("USD").build()));
+        assertFalse(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(Float.MAX_VALUE).setCurrency("USD").build()));
+        assertFalse(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(-Float.MAX_VALUE).setCurrency("USD").build()));
     }
 
 }

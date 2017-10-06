@@ -68,9 +68,10 @@
     <string name="report_header_receipts_total">Total de recibos: %s</string>
     <string name="report_header_receipts_total_tax">Total de impostos: %s</string>
     <string name="report_header_receipts_total_no_tax">Total de recibos (sem impostos): %s</string>
-    <string name="report_header_receipts_total_reimbursable">Total de recibos (reembolsáveis): %s</string>
+    <string name="report_header_receipts_total_with_tax">Total de recibos (com impostos): %s</string>
     <string name="report_header_distance_total">Distância Total: %s</string>
-    <string name="report_header_gross_total">Total bruto: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Total (reembolsáveis): %s</string>
+    <string name="report_header_grand_total">Total: %s</string>
     <string name="report_header_cost_center">Centro de custos: %s</string>
     <string name="report_header_comment">Comentários em relatórios: %s</string>
     <string name="report_pdf_generation_error">Ocorreu um erro ao gerar o relatório</string>

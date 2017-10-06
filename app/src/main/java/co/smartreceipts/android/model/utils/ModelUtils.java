@@ -24,6 +24,7 @@ import co.smartreceipts.android.model.PriceCurrency;
 public class ModelUtils {
 
     private static final Map<Integer, DecimalFormat> sDecimalFormatCache = new ConcurrentHashMap<>();
+    private static final float EPSILON = 0.0001f;
 
     private ModelUtils() {
         throw new RuntimeException("This class uses static calls only. It cannot be instantiated");
@@ -180,6 +181,16 @@ public class ModelUtils {
         } catch (NumberFormatException e) {
             return defaultValue;
         }
+    }
+
+    /**
+     * Checks if a given price has a zero value
+     *
+     * @param price the {@link Price} to test
+     * @return {@code true} if the price is equal to 0. {@code false} otherwise
+     */
+    public static boolean isPriceZero(@NonNull Price price) {
+        return price.getPriceAsFloat() < EPSILON && price.getPriceAsFloat() > -1 * EPSILON;
     }
 
     @VisibleForTesting

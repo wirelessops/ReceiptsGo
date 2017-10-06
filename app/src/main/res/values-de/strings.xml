@@ -68,9 +68,10 @@
     <string name="report_header_receipts_total">Belege Total: %s</string>
     <string name="report_header_receipts_total_tax">MwSt: %s</string>
     <string name="report_header_receipts_total_no_tax">Einnahmen Total (Sans Tax): %s</string>
-    <string name="report_header_receipts_total_reimbursable">Einnahmen Total (Erstattungsfähige): %s</string>
+    <string name="report_header_receipts_total_with_tax">Einnahmen Total (Mit Tax): %s</string>
     <string name="report_header_distance_total">Die Entfernung Total: %s</string>
-    <string name="report_header_gross_total">Brutto Total: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Gesamtsumme (Erstattungsfähige): %s</string>
+    <string name="report_header_grand_total">Gesamtsumme: %s</string>
     <string name="report_header_cost_center">Kostenstelle: %s</string>
     <string name="report_header_comment">Kommentar melden: %s</string>
     <string name="report_pdf_generation_error">Es gab einen Fehler, bei der Erstellung des Berichts</string>

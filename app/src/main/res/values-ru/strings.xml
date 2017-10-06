@@ -68,9 +68,10 @@
     <string name="report_header_receipts_total">Всего по чекам: %s</string>
     <string name="report_header_receipts_total_tax">Налог, всего: %s</string>
     <string name="report_header_receipts_total_no_tax">Всего по чекам (без налога): %s</string>
-    <string name="report_header_receipts_total_reimbursable">Всего по чекам (возмещаемые): %s</string>
+    <string name="report_header_receipts_total_with_tax">Всего по чекам (с налогом): %s</string>
     <string name="report_header_distance_total">Расстояние, всего: %s</string>
-    <string name="report_header_gross_total">Всего: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Всего (возмещаемые): %s</string>
+    <string name="report_header_grand_total">Всего: %s</string>
     <string name="report_header_cost_center">Центр расходов: %s</string>
     <string name="report_header_comment">Комментарий: %s</string>
     <string name="report_pdf_generation_error">При создании отчета произошла ошибка</string>

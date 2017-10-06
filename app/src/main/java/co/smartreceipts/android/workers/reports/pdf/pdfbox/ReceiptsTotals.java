@@ -18,17 +18,18 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 
 /**
- * Encapsulates the calculations and data of receipts totals.
- * Independent of the pdf library implementation.
+ * Encapsulates the summations for the various receipt totals that we can present to the end user via
+ * the PDF reports. It is expected that this implementation will properly handle the pre-tax vs
+ * post-tax calculations as well.
  */
 public class ReceiptsTotals {
 
-    public final Price netPrice;
-    public final Price receiptsPrice;
-    public final Price reimbursablePrice;
-    public final Price noTaxPrice;
-    public final Price taxPrice;
-    public final Price distancePrice;
+    private final Price receiptsWithOutTaxPrice;
+    private final Price taxPrice;
+    private final Price receiptsWithTaxPrice;
+    private final Price distancePrice;
+    private final Price reimbursableGrandTotalPrice;
+    private final Price grandTotalPrice;
 
     public ReceiptsTotals(@NonNull Trip trip, @NonNull List<Receipt> receipts, @NonNull List<Distance> distances, @NonNull UserPreferenceManager preferences) {
         Preconditions.checkNotNull(trip);
@@ -36,29 +37,37 @@ public class ReceiptsTotals {
         Preconditions.checkNotNull(distances);
         Preconditions.checkNotNull(preferences);
 
-        final ArrayList<Price> netTotal = new ArrayList<>(receipts.size());
-        final ArrayList<Price> receiptTotal = new ArrayList<>(receipts.size());
-        final ArrayList<Price> reimbursableTotal = new ArrayList<>(receipts.size());
-        final ArrayList<Price> noTaxesTotal = new ArrayList<>(receipts.size() * 2);
-        final ArrayList<Price> taxesTotal = new ArrayList<>(receipts.size() * 2);
-        final ArrayList<Price> distanceTotal = new ArrayList<>(distances.size());
+        final ArrayList<Price> receiptsWithOutTaxTotal = new ArrayList<>();
+        final ArrayList<Price> taxesTotal = new ArrayList<>();
+        final ArrayList<Price> receiptsWithTaxTotal = new ArrayList<>();
+        final ArrayList<Price> distanceTotal = new ArrayList<>();
+        final ArrayList<Price> reimbursableGrandTotal = new ArrayList<>();
+        final ArrayList<Price> grandTotal = new ArrayList<>();
 
         // Sum up our receipt totals for various conditions
         final int len = receipts.size();
         for (int i = 0; i < len; i++) {
             final Receipt receipt = receipts.get(i);
             if (!preferences.get(UserPreference.Receipts.OnlyIncludeReimbursable) || receipt.isReimbursable()) {
-                netTotal.add(receipt.getPrice());
-                receiptTotal.add(receipt.getPrice());
-                // Treat taxes as negative prices for the sake of this conversion
-                noTaxesTotal.add(receipt.getPrice());
-                noTaxesTotal.add(new PriceBuilderFactory().setCurrency(receipt.getTax().getCurrency()).setPrice(receipt.getTax().getPrice().multiply(new BigDecimal(-1))).build());
+                grandTotal.add(receipt.getPrice());
                 taxesTotal.add(receipt.getTax());
+                receiptsWithOutTaxTotal.add(receipt.getPrice());
+                receiptsWithTaxTotal.add(receipt.getPrice());
                 if (preferences.get(UserPreference.Receipts.UsePreTaxPrice)) {
-                    netTotal.add(receipt.getTax());
+                    // Add the taxes to these two, since we're in pre tax mode (ie the price doesn't include the tax)
+                    grandTotal.add(receipt.getTax());
+                    receiptsWithTaxTotal.add(receipt.getTax());
+                } else {
+                    // In post-tax mode, we'll add the tax as a negative value (ie subsctract it)
+                    receiptsWithOutTaxTotal.add(new PriceBuilderFactory().setCurrency(receipt.getTax().getCurrency()).setPrice(receipt.getTax().getPrice().multiply(new BigDecimal(-1))).build());
                 }
+
+                // Add reimbursable totals
                 if (receipt.isReimbursable()) {
-                    reimbursableTotal.add(receipt.getPrice());
+                    reimbursableGrandTotal.add(receipt.getPrice());
+                    if (preferences.get(UserPreference.Receipts.UsePreTaxPrice)) {
+                        reimbursableGrandTotal.add(receipt.getTax());
+                    }
                 }
             }
         }
@@ -66,19 +75,65 @@ public class ReceiptsTotals {
         // Sum up our distance totals
         for (int i = 0; i < distances.size(); i++) {
             final Distance distance = distances.get(i);
-            netTotal.add(distance.getPrice());
             distanceTotal.add(distance.getPrice());
+            grandTotal.add(distance.getPrice());
+            reimbursableGrandTotal.add(distance.getPrice());
         }
 
-
         final PriceCurrency tripCurrency = trip.getTripCurrency();
-        netPrice = new PriceBuilderFactory().setPrices(netTotal, tripCurrency).build();
-        receiptsPrice = new PriceBuilderFactory().setPrices(receiptTotal, tripCurrency).build();
-        reimbursablePrice = new PriceBuilderFactory().setPrices(reimbursableTotal, tripCurrency).build();
-        noTaxPrice = new PriceBuilderFactory().setPrices(noTaxesTotal, tripCurrency).build();
+        grandTotalPrice = new PriceBuilderFactory().setPrices(grandTotal, tripCurrency).build();
+        receiptsWithTaxPrice = new PriceBuilderFactory().setPrices(receiptsWithTaxTotal, tripCurrency).build();
+        reimbursableGrandTotalPrice = new PriceBuilderFactory().setPrices(reimbursableGrandTotal, tripCurrency).build();
+        receiptsWithOutTaxPrice = new PriceBuilderFactory().setPrices(receiptsWithOutTaxTotal, tripCurrency).build();
         taxPrice = new PriceBuilderFactory().setPrices(taxesTotal, tripCurrency).build();
         distancePrice = new PriceBuilderFactory().setPrices(distanceTotal, tripCurrency).build();
+    }
 
+    /**
+     * @return the total {@link Price} of all of our receipts, excluding the tax value
+     */
+    @NonNull
+    public Price getReceiptsWithOutTaxPrice() {
+        return receiptsWithOutTaxPrice;
+    }
 
+    /**
+     * @return the total tax {@link Price} of all of our receipts
+     */
+    @NonNull
+    public Price getTaxPrice() {
+        return taxPrice;
+    }
+
+    /**
+     * @return the total {@link Price} of all of our receipts, include the tax value
+     */
+    @NonNull
+    public Price getReceiptsWithTaxPrice() {
+        return receiptsWithTaxPrice;
+    }
+
+    /**
+     * @return the total {@link Price} of all of our distances
+     */
+    @NonNull
+    public Price getDistancePrice() {
+        return distancePrice;
+    }
+
+    /**
+     * @return the grand total {@link Price} of all of our receipts (including taxes) and distances
+     */
+    @NonNull
+    public Price getGrandTotalPrice() {
+        return grandTotalPrice;
+    }
+
+    /**
+     * @return the reimbursable total {@link Price} of all of our receipts (including taxes) and distances
+     */
+    @NonNull
+    public Price getReimbursableGrandTotalPrice() {
+        return reimbursableGrandTotalPrice;
     }
 }

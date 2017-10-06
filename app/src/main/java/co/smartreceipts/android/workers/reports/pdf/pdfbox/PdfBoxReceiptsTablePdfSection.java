@@ -20,6 +20,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.comparators.ReceiptDateComparator;
 import co.smartreceipts.android.model.converters.DistanceToReceiptsConverter;
+import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
@@ -37,7 +38,6 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
 
 public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
-    private static final float EPSILON = 0.0001f;
     private static final int EMPTY_ROW_HEIGHT_NORMAL = 40;
     private static final int EMPTY_ROW_HEIGHT_SMALL = 10;
 
@@ -159,6 +159,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
     private List<GridRowRenderer> writeHeader(@NonNull Trip trip, @NonNull PDDocument pdDocument, @NonNull ReceiptsTotals data) throws IOException {
 
+        // Print the report name as the title field
         final List<GridRowRenderer> headerRows = new ArrayList<>();
         headerRows.add(new GridRowRenderer(new TextRenderer(
                 pdfBoxContext.getAndroidContext(),
@@ -167,63 +168,10 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Title))));
 
-        if (!data.receiptsPrice.equals(data.netPrice)) {
-            headerRows.add(new GridRowRenderer(new TextRenderer(
-                    pdfBoxContext.getAndroidContext(),
-                    pdDocument,
-                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total, data.receiptsPrice.getCurrencyFormattedPrice()),
-                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-        }
-
-        if (preferenceManager.get(UserPreference.Receipts.IncludeTaxField)) {
-            if (preferenceManager.get(UserPreference.Receipts.UsePreTaxPrice) && data.taxPrice.getPriceAsFloat() > EPSILON) {
-                headerRows.add(new GridRowRenderer(new TextRenderer(
-                        pdfBoxContext.getAndroidContext(),
-                        pdDocument,
-                        pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_tax, data.taxPrice.getCurrencyFormattedPrice()),
-                        pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                        pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-            } else if (!data.noTaxPrice.equals(data.receiptsPrice) && data.noTaxPrice.getPriceAsFloat() > EPSILON) {
-                headerRows.add(new GridRowRenderer(new TextRenderer(
-                        pdfBoxContext.getAndroidContext(),
-                        pdDocument,
-                        pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_no_tax, data.noTaxPrice.getCurrencyFormattedPrice()),
-                        pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                        pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-            }
-        }
-
-        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !data.reimbursablePrice.equals(data.receiptsPrice)) {
-            headerRows.add(new GridRowRenderer(new TextRenderer(
-                    pdfBoxContext.getAndroidContext(),
-                    pdDocument,
-                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_reimbursable, data.reimbursablePrice.getCurrencyFormattedPrice()),
-                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-        }
-        if (!distances.isEmpty()) {
-            headerRows.add(new GridRowRenderer(new TextRenderer(
-                    pdfBoxContext.getAndroidContext(),
-                    pdDocument,
-                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_distance_total, data.distancePrice.getCurrencyFormattedPrice()),
-                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-        }
-
-        headerRows.add(new GridRowRenderer(new TextRenderer(
-                pdfBoxContext.getAndroidContext(),
-                pdDocument,
-                pdfBoxContext.getAndroidContext().getString(R.string.report_header_gross_total, data.netPrice.getCurrencyFormattedPrice()),
-                pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-
-        String fromToPeriod = pdfBoxContext.getString(R.string.report_header_from,
-                trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)))
+        // Print the From: StartDate To: EndDate
+        final String fromToPeriod = pdfBoxContext.getString(R.string.report_header_from, trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)))
                 + " "
-                + pdfBoxContext.getString(R.string.report_header_to,
-                trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)));
-
+                + pdfBoxContext.getString(R.string.report_header_to, trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)));
         headerRows.add(new GridRowRenderer(new TextRenderer(
                 pdfBoxContext.getAndroidContext(),
                 pdDocument,
@@ -231,7 +179,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
 
-
+        // Print the cost center (if present)
         if (preferenceManager.get(UserPreference.General.IncludeCostCenter) && !TextUtils.isEmpty(trip.getCostCenter())) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
@@ -240,6 +188,8 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
         }
+
+        // Print the report comment (if present)
         if (!TextUtils.isEmpty(trip.getComment())) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
@@ -248,6 +198,74 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
         }
+
+
+        // Prints the receipts total if we have distances AND (the IncludeTaxField setting is false OR the value of taxes is 0)
+        if (!distances.isEmpty() && (ModelUtils.isPriceZero(data.getTaxPrice()) || !preferenceManager.get(UserPreference.Receipts.IncludeTaxField))) {
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total, data.getReceiptsWithTaxPrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
+        }
+
+        // Print the various tax totals if the IncludeTaxField is true and we have taxes
+        if (preferenceManager.get(UserPreference.Receipts.IncludeTaxField) && !ModelUtils.isPriceZero(data.getTaxPrice())) {
+
+            // Print receipts WITHOUT taxes
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_no_tax, data.getReceiptsWithOutTaxPrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
+
+            // Print taxes
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_tax, data.getTaxPrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
+
+            // Print receipts WITH taxes
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_with_tax, data.getReceiptsWithTaxPrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
+        }
+
+        // Print out the distances (if any)
+        if (!distances.isEmpty()) {
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_distance_total, data.getDistancePrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
+        }
+
+        // Print the grand total
+        headerRows.add(new GridRowRenderer(new TextRenderer(
+                pdfBoxContext.getAndroidContext(),
+                pdDocument,
+                pdfBoxContext.getAndroidContext().getString(R.string.report_header_grand_total, data.getGrandTotalPrice().getCurrencyFormattedPrice()),
+                pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                pdfBoxContext.getFontManager().getFont(PdfFontStyle.DefaultBold))));
+
+        // Print the grand total (reimbursable)
+        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !data.getGrandTotalPrice().equals(data.getReimbursableGrandTotalPrice())) {
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getAndroidContext().getString(R.string.report_header_receipts_total_reimbursable, data.getReimbursableGrandTotalPrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.DefaultBold))));
+        }
+
 
         for (final GridRowRenderer headerRow : headerRows) {
             headerRow.getRenderingFormatting().addFormatting(new Alignment(Alignment.Type.Start));
