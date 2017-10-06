@@ -19,12 +19,12 @@ import co.smartreceipts.android.utils.log.Logger;
 
 public class CameraInteractionController {
 
-    private final Context mContext;
-    private final WeakReference<Fragment> mFragmentReference;
+    private final Context context;
+    private final WeakReference<Fragment> fragmentReference;
 
     public CameraInteractionController(@NonNull Fragment fragment) {
-        mContext = Preconditions.checkNotNull(fragment.getContext()).getApplicationContext();
-        mFragmentReference = new WeakReference<>(Preconditions.checkNotNull(fragment));
+        context = Preconditions.checkNotNull(fragment.getContext()).getApplicationContext();
+        fragmentReference = new WeakReference<>(Preconditions.checkNotNull(fragment));
     }
 
     /**
@@ -34,7 +34,7 @@ public class CameraInteractionController {
      */
     @NonNull
     public Uri takePhoto() {
-        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(mContext).getFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST);
+        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(context).getFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST);
     }
 
     /**
@@ -44,7 +44,7 @@ public class CameraInteractionController {
      */
     @NonNull
     public Uri addPhoto() {
-        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(mContext).getFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST);
+        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(context).getFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST);
     }
 
     /**
@@ -61,7 +61,7 @@ public class CameraInteractionController {
 
     @NonNull
     private Uri startPhotoIntent(@NonNull File saveLocation, int nativeCameraRequestCode) {
-        final Fragment fragment = mFragmentReference.get();
+        final Fragment fragment = fragmentReference.get();
         if (fragment == null || !fragment.isResumed()) {
             Logger.warn(this, "Returning empty URI as save location");
             return Uri.EMPTY;
