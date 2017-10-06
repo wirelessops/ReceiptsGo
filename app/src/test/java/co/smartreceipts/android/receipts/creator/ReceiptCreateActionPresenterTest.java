@@ -1,7 +1,5 @@
 package co.smartreceipts.android.receipts.creator;
 
-import android.support.annotation.NonNull;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +12,8 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import io.reactivex.subjects.PublishSubject;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -33,10 +29,8 @@ public class ReceiptCreateActionPresenterTest {
     @Mock
     Analytics analytics;
     
-    PublishSubject<Object> createNewReceiptMenuButtonClicks = PublishSubject.create();
-    
-    PublishSubject<Object> dismissCreateNewReceiptMenuButtonClicks = PublishSubject.create();
-    
+    PublishSubject<Boolean> createNewReceiptMenuButtonToggles = PublishSubject.create();
+
     PublishSubject<Object> createNewReceiptFromCameraButtonClicks = PublishSubject.create();
     
     PublishSubject<Object> createNewReceiptFromImportedFileButtonClicks = PublishSubject.create();
@@ -46,8 +40,7 @@ public class ReceiptCreateActionPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(view.getCreateNewReceiptMenuButtonClicks()).thenReturn(createNewReceiptMenuButtonClicks);
-        when(view.getDismissCreateNewReceiptMenuButtonClicks()).thenReturn(dismissCreateNewReceiptMenuButtonClicks);
+        when(view.getCreateNewReceiptMenuButtonToggles()).thenReturn(createNewReceiptMenuButtonToggles);
         when(view.getCreateNewReceiptFromCameraButtonClicks()).thenReturn(createNewReceiptFromCameraButtonClicks);
         when(view.getCreateNewReceiptFromImportedFileButtonClicks()).thenReturn(createNewReceiptFromImportedFileButtonClicks);
         when(view.getCreateNewReceiptFromPlainTextButtonClicks()).thenReturn(createNewReceiptFromPlainTextButtonClicks);
@@ -56,13 +49,13 @@ public class ReceiptCreateActionPresenterTest {
 
     @Test
     public void createNewReceiptMenuButtonClicksDisplaysReceiptCreationMenuOptions() {
-        createNewReceiptMenuButtonClicks.onNext(new Object());
+        createNewReceiptMenuButtonToggles.onNext(true);
         verify(view).displayReceiptCreationMenuOptions();
     }
 
     @Test
     public void dismissCreateNewReceiptMenuButtonClicksHideseceiptCreationMenuOptions() {
-        dismissCreateNewReceiptMenuButtonClicks.onNext(new Object());
+        createNewReceiptMenuButtonToggles.onNext(false);
         verify(view).hideReceiptCreationMenuOptions();
     }
 
@@ -91,10 +84,10 @@ public class ReceiptCreateActionPresenterTest {
     public void allClicksAreIgnoredAfterUnsubscribe() {
         presenter.unsubscribe();
 
-        createNewReceiptMenuButtonClicks.onNext(new Object());
+        createNewReceiptMenuButtonToggles.onNext(true);
         verify(view, never()).displayReceiptCreationMenuOptions();
 
-        dismissCreateNewReceiptMenuButtonClicks.onNext(new Object());
+        createNewReceiptMenuButtonToggles.onNext(false);
         verify(view, never()).hideReceiptCreationMenuOptions();
 
         createNewReceiptFromCameraButtonClicks.onNext(new Object());

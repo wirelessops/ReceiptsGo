@@ -13,7 +13,7 @@ import co.smartreceipts.android.di.subcomponents.ImportLocalBackupDialogFragment
 import co.smartreceipts.android.di.subcomponents.ImportRemoteBackupDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptCreateEditFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptImageFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ReceiptsListFragmentSubcomponent;
+import co.smartreceipts.android.receipts.di.ReceiptsListFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReportInfoFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReportTooltipFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.TripCreateEditFragmentSubcomponent;

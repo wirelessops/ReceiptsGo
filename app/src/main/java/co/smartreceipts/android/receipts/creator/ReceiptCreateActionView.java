@@ -42,20 +42,14 @@ public interface ReceiptCreateActionView {
     void createNewReceiptViaFileImport();
 
     /**
-     * @return an {@link Observable} that will emit an {@link Object} whenever a user clicks a
-     * button, indicating that he/she would like to see a list of available actions from which he/she
-     * can create a new receipt
+     * @return an {@link Observable} that will emit an {@link Boolean} whenever a user clicks a
+     * button, indicating that he/she is toggling the visibility of the list of available actions
+     * from which he/she can create a new receipt. If the value is {@code true}, it indicates that
+     * the menu was toggled open. A value of {@code false} will indicate that it was closed. Please
+     * note that any subscription will also emit the current value (ie open vs closed)
      */
     @NonNull
-    Observable<Object> getCreateNewReceiptMenuButtonClicks();
-
-    /**
-     * @return an {@link Observable} that will emit an {@link Object} whenever a user clicks a
-     * button, indicating that he/she would like to dismiss a list of available receipt creation
-     * actions
-     */
-    @NonNull
-    Observable<Object> getDismissCreateNewReceiptMenuButtonClicks();
+    Observable<Boolean> getCreateNewReceiptMenuButtonToggles();
 
     /**
      * @return an {@link Observable} that will emit an {@link Object} whenever a user clicks a

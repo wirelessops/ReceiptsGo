@@ -31,11 +31,14 @@ public class ReceiptCreateActionPresenter extends BasePresenter<ReceiptCreateAct
 
     @Override
     public void subscribe() {
-        compositeDisposable.add(view.getCreateNewReceiptMenuButtonClicks()
-                .subscribe(ignored -> view.displayReceiptCreationMenuOptions()));
-
-        compositeDisposable.add(view.getDismissCreateNewReceiptMenuButtonClicks()
-                .subscribe(ignored -> view.hideReceiptCreationMenuOptions()));
+        compositeDisposable.add(view.getCreateNewReceiptMenuButtonToggles()
+                .subscribe(isOpen -> {
+                    if (isOpen) {
+                        view.displayReceiptCreationMenuOptions();
+                    } else {
+                        view.hideReceiptCreationMenuOptions();
+                    }
+                }));
 
         compositeDisposable.add(view.getCreateNewReceiptFromCameraButtonClicks()
                 .doOnNext(ignored -> analytics.record(Events.Receipts.AddPictureReceipt))
