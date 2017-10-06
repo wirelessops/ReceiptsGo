@@ -19,7 +19,7 @@ import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
-import co.smartreceipts.android.widget.viper.BasePresenter;
+import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -29,7 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * which survives longer that onResume -> onPause.
  */
 @ActivityScope
-public class IntentImportInformationPresenter extends BasePresenter<IntentImportInformationView, IntentImportInformationInteractor> {
+public class IntentImportInformationPresenter extends BaseViperPresenter<IntentImportInformationView, IntentImportInformationInteractor> {
 
     private final IntentImportProvider intentImportProvider;
     private final PersistenceManager persistenceManager;

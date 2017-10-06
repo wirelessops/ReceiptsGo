@@ -8,10 +8,10 @@ import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.widget.viper.BasePresenter;
+import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 
 @FragmentScope
-public class GraphsPresenter extends BasePresenter<GraphsView, GraphsInteractor> {
+public class GraphsPresenter extends BaseViperPresenter<GraphsView, GraphsInteractor> {
 
     private final UserPreferenceManager preferenceManager;
     private final DatabaseAssistant databaseAssistant;

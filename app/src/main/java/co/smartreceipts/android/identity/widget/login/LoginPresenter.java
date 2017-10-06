@@ -14,12 +14,12 @@ import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserSignUp;
 import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.widget.model.UiIndicator;
-import co.smartreceipts.android.widget.viper.BasePresenter;
+import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 import io.reactivex.Observable;
 import io.reactivex.functions.BiFunction;
 
 @FragmentScope
-public class LoginPresenter extends BasePresenter<LoginView, LoginInteractor> {
+public class LoginPresenter extends BaseViperPresenter<LoginView, LoginInteractor> {
 
     private static final int MINIMUM_EMAIL_LENGTH = 6;
     private static final int MINIMUM_PASSWORD_LENGTH = 8;

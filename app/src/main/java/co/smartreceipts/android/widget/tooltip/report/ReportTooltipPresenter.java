@@ -15,10 +15,10 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.TooltipView;
-import co.smartreceipts.android.widget.viper.BasePresenter;
+import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 
 @FragmentScope
-public class ReportTooltipPresenter extends BasePresenter<TooltipView, ReportTooltipInteractor<? extends FragmentActivity>> implements BackupProviderChangeListener {
+public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, ReportTooltipInteractor<? extends FragmentActivity>> implements BackupProviderChangeListener {
 
     private final BackupProvidersManager backupProvidersManager;
     private final Analytics analytics;

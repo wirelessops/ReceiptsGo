@@ -4,10 +4,10 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.utils.log.Logger;
-import co.smartreceipts.android.widget.viper.BasePresenter;
+import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 
 @FragmentScope
-public class OcrConfigurationPresenter extends BasePresenter<OcrConfigurationView, OcrConfigurationInteractor> {
+public class OcrConfigurationPresenter extends BaseViperPresenter<OcrConfigurationView, OcrConfigurationInteractor> {
 
     @Inject
     public OcrConfigurationPresenter(OcrConfigurationView view, OcrConfigurationInteractor interactor) {

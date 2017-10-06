@@ -1,4 +1,4 @@
-package co.smartreceipts.android.widget.viper;
+package co.smartreceipts.android.widget.mvp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +11,10 @@ import android.support.v4.app.Fragment;
  * this to a {@link Fragment} or {@link android.app.Activity} scope (as opposed to the application
  * one)
  * </p>
+ *
+ * @param <ViewType> the View interface, which will be used to interact with the UI
  */
-public interface Presenter<ViewType, InteractorType> {
+public interface Presenter<ViewType> {
 
     /**
      * Informs the presenter that we should subscribe to begin listening to various event streams
