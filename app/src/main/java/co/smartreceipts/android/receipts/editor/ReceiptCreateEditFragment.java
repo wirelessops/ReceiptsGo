@@ -263,6 +263,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
         // Set-up tax layers
         if (presenter.isIncludeTaxField()) {
+            taxBox.setAdapter(new TaxAutoCompleteAdapter(getActivity(), priceBox, taxBox,
+                    presenter.isUsePreTaxPrice(),
+                    presenter.getDefaultTaxPercentage(), getReceipt() == null));
             priceBox.setHint(getFlexString(R.string.DIALOG_RECEIPTMENU_HINT_PRICE_SHORT));
             taxBox.setVisibility(View.VISIBLE);
         }
@@ -295,13 +298,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         // Outline date defaults
         dateBox.setFocusableInTouchMode(false);
         dateBox.setOnClickListener(dateManager.getDateEditTextListener());
-
-        // Lastly, preset adapters for "new" receipts
-        if (presenter.isIncludeTaxField()) {
-            taxBox.setAdapter(new TaxAutoCompleteAdapter(getActivity(), priceBox, taxBox,
-                    presenter.isUsePreTaxPrice(),
-                    presenter.getDefaultTaxPercentage(), getReceipt() == null));
-        }
     }
 
     @Override
