@@ -2,7 +2,7 @@ package co.smartreceipts.android.utils;
 
 public enum FeatureFlags implements Feature {
 
-    Ocr(true), OrganizationSyncing(false), CompatPdfRendering(true), UseNativeAds(false), Graphs(true);
+    Ocr(true), OrganizationSyncing(false), CompatPdfRendering(true), Graphs(true);
 
     private final boolean isEnabled;
 

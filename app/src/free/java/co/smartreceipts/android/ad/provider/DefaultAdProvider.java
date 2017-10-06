@@ -11,11 +11,9 @@ import javax.inject.Provider;
 
 import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.android.ad.admob.presenter.ClassicBannerAdPresenter;
-import co.smartreceipts.android.ad.admob.presenter.NativeBannerAdPresenter;
 import co.smartreceipts.android.ad.markets.MarketsComAdPresenter;
 import co.smartreceipts.android.ad.region.RegionChecker;
 import co.smartreceipts.android.di.scopes.ActivityScope;
-import co.smartreceipts.android.utils.FeatureFlags;
 
 @ActivityScope
 public class DefaultAdProvider implements Provider<AdPresenter> {
@@ -25,7 +23,6 @@ public class DefaultAdProvider implements Provider<AdPresenter> {
 
     private final RegionChecker regionChecker;
     private final Provider<ClassicBannerAdPresenter> classicBannerAdPresenterProvider;
-    private final Provider<NativeBannerAdPresenter> nativeBannerAdPresenterProvider;
     private final Provider<MarketsComAdPresenter> marketsComAdPresenterProvider;
 
     private final Random random = new Random();
@@ -33,11 +30,9 @@ public class DefaultAdProvider implements Provider<AdPresenter> {
     @Inject
     public DefaultAdProvider(@NonNull RegionChecker regionChecker,
                              @NonNull Provider<ClassicBannerAdPresenter> classicBannerAdPresenterProvider,
-                             @NonNull Provider<NativeBannerAdPresenter> nativeBannerAdPresenterProvider,
                              @NonNull Provider<MarketsComAdPresenter> marketsComAdPresenterProvider) {
         this.regionChecker = Preconditions.checkNotNull(regionChecker);
         this.classicBannerAdPresenterProvider = Preconditions.checkNotNull(classicBannerAdPresenterProvider);
-        this.nativeBannerAdPresenterProvider = Preconditions.checkNotNull(nativeBannerAdPresenterProvider);
         this.marketsComAdPresenterProvider = Preconditions.checkNotNull(marketsComAdPresenterProvider);
     }
 
@@ -46,7 +41,7 @@ public class DefaultAdProvider implements Provider<AdPresenter> {
         if (regionChecker.isInWesternEurope() && shouldShowMarketsAd()) {
             return marketsComAdPresenterProvider.get();
         } else {
-            return FeatureFlags.UseNativeAds.isEnabled() ? nativeBannerAdPresenterProvider.get() : classicBannerAdPresenterProvider.get();
+            return classicBannerAdPresenterProvider.get();
         }
     }
 
