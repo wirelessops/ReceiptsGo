@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Preconditions;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,22 +24,19 @@ import co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable;
 
 public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
 
-    @Inject Context mContext;
-    @Inject ReceiptColumnDefinitions mReceiptColumnDefinitions;
+    private final Context context;
+    private final ReceiptColumnDefinitions receiptColumnDefinitions;
 
     @Inject
-    public TableDefaultCustomizerImpl() {
+    public TableDefaultCustomizerImpl(@NonNull Context context, @NonNull ReceiptColumnDefinitions receiptColumnDefinitions) {
+        this.context = Preconditions.checkNotNull(context.getApplicationContext());
+        this.receiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
     }
-
-//    public TableDefaultCustomizerImpl(@NonNull Context context, @NonNull ReceiptColumnDefinitions receiptColumnDefinitions) {
-//        mContext = Preconditions.checkNotNull(context.getApplicationContext());
-//        mReceiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
-//    }
 
     @Override
     public void insertCSVDefaults(@NonNull final CSVTable csvTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        final List<Column<Receipt>> columns = mReceiptColumnDefinitions.getCsvDefaults();
+        final List<Column<Receipt>> columns = receiptColumnDefinitions.getCsvDefaults();
         final int size = columns.size();
         for (int i = 0; i < size; i++) {
             csvTable.insertBlocking(columns.get(i), databaseOperationMetadata);
@@ -47,7 +46,7 @@ public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
     @Override
     public void insertPDFDefaults(@NonNull final PDFTable pdfTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        final List<Column<Receipt>> columns = mReceiptColumnDefinitions.getPdfDefaults();
+        final List<Column<Receipt>> columns = receiptColumnDefinitions.getPdfDefaults();
         final int size = columns.size();
         for (int i = 0; i < size; i++) {
             pdfTable.insertBlocking(columns.get(i), databaseOperationMetadata);
@@ -57,7 +56,7 @@ public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
     @Override
     public void insertCategoryDefaults(@NonNull final CategoriesTable categoriesTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        final Resources resources = mContext.getResources();
+        final Resources resources = context.getResources();
         categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_null), resources.getString(R.string.category_null_code)), databaseOperationMetadata);
         categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_airfare), resources.getString(R.string.category_airfare_code)), databaseOperationMetadata);
         categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_breakfast), resources.getString(R.string.category_breakfast_code)), databaseOperationMetadata);
@@ -87,9 +86,9 @@ public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
     @Override
     public void insertPaymentMethodDefaults(@NonNull final PaymentMethodsTable paymentMethodsTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_corporate_card)).build(), databaseOperationMetadata);
-        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_personal_card)).build(), databaseOperationMetadata);
-        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_check)).build(), databaseOperationMetadata);
-        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(mContext.getString(R.string.payment_method_default_cash)).build(), databaseOperationMetadata);
+        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.payment_method_default_corporate_card)).build(), databaseOperationMetadata);
+        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.payment_method_default_personal_card)).build(), databaseOperationMetadata);
+        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.payment_method_default_check)).build(), databaseOperationMetadata);
+        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.payment_method_default_cash)).build(), databaseOperationMetadata);
     }
 }
