@@ -164,7 +164,6 @@ public class OcrManager {
 
     @NonNull
     public Observable<OcrProcessingStatus> getOcrProcessingStatus() {
-        return ocrProcessingStatusSubject
-                .subscribeOn(Schedulers.computation());
+        return ocrProcessingStatusSubject.subscribeOn(Schedulers.computation());
     }
 }

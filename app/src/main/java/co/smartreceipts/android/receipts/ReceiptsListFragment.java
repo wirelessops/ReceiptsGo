@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.common.base.Preconditions;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tapadoo.alerter.Alert;
+import com.tapadoo.alerter.Alerter;
 
 import java.util.List;
 
@@ -54,6 +56,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterPresenter;
+import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterView;
 import co.smartreceipts.android.permissions.PermissionsDelegate;
 import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -67,6 +70,7 @@ import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.rxbinding2.RxFloatingActionMenu;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
@@ -77,7 +81,8 @@ import io.reactivex.schedulers.Schedulers;
 import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
-public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView {
+public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView,
+        OcrStatusAlerterView {
 
     public static final String READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
 
@@ -127,6 +132,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Inject
     ReceiptCreateActionPresenter receiptCreateActionPresenter;
 
+    @Inject
+    OcrStatusAlerterPresenter ocrStatusAlerterPresenter;
+
     @BindView(R.id.progress)
     ProgressBar loadingProgress;
 
@@ -151,6 +159,10 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @BindView(R.id.fab_active_mask)
     View floatingActionMenuActiveMaskView;
 
+    // Non Butter Knife Views
+    private Alerter alerter;
+    private Alert alert;
+
     private Unbinder unbinder;
 
     private ReceiptCardAdapter adapter;
@@ -159,7 +171,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private CompositeDisposable compositeDisposable;
 
-    private OcrStatusAlerterPresenter ocrStatusAlerterPresenter;
     private ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
 
     @Override
@@ -183,6 +194,14 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Create our OCR drop-down alerter
+        this.alerter = Alerter.create(getActivity())
+                .setTitle(R.string.ocr_status_title)
+                .setBackgroundColor(R.color.smart_receipts_colorAccent)
+                .setIcon(R.drawable.ic_receipt_white_24dp);
+
+        // And inflate the root view
         return inflater.inflate(R.layout.receipt_fragment_layout, container, false);
     }
 
@@ -202,7 +221,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
         setListAdapter(adapter); // Set this here to ensure this has been laid out already
-        ocrStatusAlerterPresenter = new OcrStatusAlerterPresenter(getActivity(), ocrManager);
     }
 
     @Override
@@ -212,7 +230,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         receiptTableController.subscribe(this);
         receiptTableController.get(trip);
 
-        ocrStatusAlerterPresenter.onResume();
+        ocrStatusAlerterPresenter.subscribe();
         receiptCreateActionPresenter.subscribe();
     }
 
@@ -286,7 +304,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onPause() {
         receiptCreateActionPresenter.unsubscribe();
-        ocrStatusAlerterPresenter.onPause();
+        ocrStatusAlerterPresenter.unsubscribe();
         floatingActionMenu.close(false);
         receiptTableController.unsubscribe(this);
         tripTableController.unsubscribe(actionBarSubtitleUpdatesListener);
@@ -330,7 +348,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onDestroyView() {
         Logger.debug(this, "onDestroyView");
-        ocrStatusAlerterPresenter.onDestroyView();
+        this.alert = null;
+        this.alerter = null;
         this.unbinder.unbind();
         super.onDestroyView();
     }
@@ -659,6 +678,22 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public Observable<Object> getCreateNewReceiptFromPlainTextButtonClicks() {
         return RxView.clicks(receiptActionTextButton);
+    }
+
+    @Override
+    public void displayOcrStatus(@NonNull UiIndicator<String> ocrStatusIndicator) {
+        if (ocrStatusIndicator.getState() == UiIndicator.State.Loading) {
+            if (alert == null) {
+                alerter.setText(ocrStatusIndicator.getData().get());
+                alert = alerter.show();
+                alert.setEnableInfiniteDuration(true);
+            } else {
+                alert.setText(ocrStatusIndicator.getData().get());
+            }
+        } else if (alert != null) {
+            alert.hide();
+            alert = null;
+        }
     }
 
     private class ActionBarSubtitleUpdatesListener extends StubTableEventsListener<Trip> {

@@ -31,6 +31,11 @@ public class UiIndicator<T> {
     }
 
     @NonNull
+    public static <T> UiIndicator<T> loading(@NonNull T data) {
+        return new UiIndicator<>(State.Loading, data);
+    }
+
+    @NonNull
     public static <T> UiIndicator<T> error() {
         return new UiIndicator<>(State.Error, null);
     }

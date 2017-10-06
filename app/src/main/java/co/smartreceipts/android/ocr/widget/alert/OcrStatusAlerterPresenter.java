@@ -1,87 +1,56 @@
 package co.smartreceipts.android.ocr.widget.alert;
 
-import android.app.Activity;
-import android.os.Build;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 
 import com.google.common.base.Preconditions;
-import com.tapadoo.alerter.Alert;
-import com.tapadoo.alerter.Alerter;
+
+import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.utils.log.Logger;
-import co.smartreceipts.android.widget.OldPresenter;
+import co.smartreceipts.android.widget.model.UiIndicator;
+import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 
+@FragmentScope
+public class OcrStatusAlerterPresenter extends BasePresenter<OcrStatusAlerterView> {
 
-public class OcrStatusAlerterPresenter implements OldPresenter {
-
+    private final Context context;
     private final OcrManager ocrManager;
-    private Alerter alerter;
-    private Alert alert;
 
-    private CompositeDisposable compositeDisposable;
-
-    public OcrStatusAlerterPresenter(@NonNull Activity activity, @NonNull OcrManager ocrManager) {
+    @Inject
+    public OcrStatusAlerterPresenter(@NonNull OcrStatusAlerterView view, @NonNull Context context, @NonNull OcrManager ocrManager) {
+        super(view);
+        this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.ocrManager = Preconditions.checkNotNull(ocrManager);
-        this.alerter = Alerter.create(activity)
-                .setTitle(R.string.ocr_status_title)
-                .setBackgroundColor(R.color.smart_receipts_colorAccent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.alerter.setIcon(R.drawable.ic_receipt_white_24dp);
-        }
     }
 
     @Override
-    public void onResume() {
-        compositeDisposable = new CompositeDisposable();
+    public void subscribe() {
         compositeDisposable.add(ocrManager.getOcrProcessingStatus()
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnDispose(() -> {
-                    if (alert != null) {
-                        alert.hide();
+                .doOnNext(ocrProcessingStatus -> Logger.debug(OcrStatusAlerterPresenter.this, "Displaying OCR Status: {}", ocrProcessingStatus))
+                .map(ocrProcessingStatus -> {
+                    if (ocrProcessingStatus == OcrProcessingStatus.UploadingImage) {
+                        return UiIndicator.loading(context.getString(R.string.ocr_status_message_uploading_image));
+                    } else if (ocrProcessingStatus == OcrProcessingStatus.PerformingScan) {
+                        return UiIndicator.loading(context.getString(R.string.ocr_status_message_performing_scan));
+                    } else if (ocrProcessingStatus == OcrProcessingStatus.RetrievingResults) {
+                        return UiIndicator.loading(context.getString(R.string.ocr_status_message_fetching_results));
+                    } else {
+                        return UiIndicator.<String>idle();
                     }
                 })
-                .subscribe(ocrProcessingStatus -> {
-                    Logger.debug(OcrStatusAlerterPresenter.this, "Displaying OCR Status: {}", ocrProcessingStatus);
-                    if (ocrProcessingStatus == OcrProcessingStatus.UploadingImage) {
-                        setTextAndShow(R.string.ocr_status_message_uploading_image);
-                    } else if (ocrProcessingStatus == OcrProcessingStatus.PerformingScan) {
-                        setTextAndShow(R.string.ocr_status_message_performing_scan);
-                    } else if (ocrProcessingStatus == OcrProcessingStatus.RetrievingResults) {
-                        setTextAndShow(R.string.ocr_status_message_fetching_results);
-                    } else {
-                        if (alert != null) {
-                            alert.hide();
-                        }
-                    }
-                }));
+                .startWith(UiIndicator.idle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(view::displayOcrStatus));
     }
 
     @Override
-    public void onPause() {
-        if (compositeDisposable != null) {
-            compositeDisposable.dispose();
-            compositeDisposable = null;
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        alert = null;
-        alerter = null;
-    }
-
-    private void setTextAndShow(@StringRes int stringResId) {
-        if (alert == null) {
-            alerter.setText(stringResId);
-            alert = alerter.show();
-            alert.setEnableInfiniteDuration(true);
-        } else {
-            alert.setText(stringResId);
-        }
+    public void unsubscribe() {
+        view.displayOcrStatus(UiIndicator.idle()); // Hide our alert on disposal
+        super.unsubscribe();
     }
 }
