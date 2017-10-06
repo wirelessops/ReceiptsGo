@@ -46,7 +46,7 @@ public class OcrResponseParser {
     }
 
     /**
-     * @return the value of {@link OcrResponse#getTotalAmount()} ()} as a price {@link String} or {@code null} if it was not found
+     * @return the value of {@link OcrResponse#getTotalAmount()} as a price {@link String} or {@code null} if it was not found
      */
     @Nullable
     public String getTotalAmount() {
@@ -58,7 +58,7 @@ public class OcrResponseParser {
     }
 
     /**
-     * @return the value of {@link OcrResponse#getTaxAmount()} ()} ()} as a price {@link String} or {@code null} if it was not found
+     * @return the value of {@link OcrResponse#getTaxAmount()} as a price {@link String} or {@code null} if it was not found
      */
     @Nullable
     public String getTaxAmount() {
@@ -70,7 +70,7 @@ public class OcrResponseParser {
     }
 
     /**
-     * @return the value of {@link OcrResponse#getDate()} ()} ()} as a price {@link Date} or {@code null} if it was not found (or invalid)
+     * @return the value of {@link OcrResponse#getDate()} as a price {@link Date} or {@code null} if it was not found (or invalid)
      */
     @Nullable
     public Date getDate() {

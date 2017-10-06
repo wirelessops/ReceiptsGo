@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
+import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.util.OcrResponseParser;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
@@ -352,12 +354,22 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     if (ocrResponseParser.getMerchant() != null) {
                         nameBox.setText(ocrResponseParser.getMerchant());
                     }
-                    if (ocrResponseParser.getTotalAmount() != null) {
+
+                    if (presenter.isIncludeTaxField() && ocrResponseParser.getTaxAmount() != null) {
+                        taxBox.setText(ocrResponseParser.getTaxAmount());
+                        if (ocrResponseParser.getTotalAmount() != null) {
+                            if (presenter.isUsePreTaxPrice()) {
+                                // If we're in pre-tax mode, let's calculate the price as (total - tax = pre-tax-price)
+                                final BigDecimal preTaxPrice = ModelUtils.tryParse(ocrResponseParser.getTotalAmount()).subtract(ModelUtils.tryParse(ocrResponseParser.getTaxAmount()));
+                                taxBox.setText(ModelUtils.getDecimalFormattedValue(preTaxPrice));
+                            } else {
+                                priceBox.setText(ocrResponseParser.getTotalAmount());
+                            }
+                        }
+                    } else if (ocrResponseParser.getTotalAmount() != null) {
                         priceBox.setText(ocrResponseParser.getTotalAmount());
                     }
-                    if (ocrResponseParser.getTaxAmount() != null) {
-                        taxBox.setText(ocrResponseParser.getTaxAmount());
-                    }
+
                     if (ocrResponseParser.getDate() != null) {
                         dateBox.date = ocrResponseParser.getDate();
                         dateBox.setText(DateFormat.getDateFormat(getActivity()).format(dateBox.date));
