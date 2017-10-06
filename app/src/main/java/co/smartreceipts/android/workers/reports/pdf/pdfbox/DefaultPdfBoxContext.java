@@ -7,27 +7,35 @@ import android.support.annotation.StringRes;
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorManager;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontManager;
 
 public class DefaultPdfBoxContext implements PdfBoxContext {
 
-    private final Context mContext;
+    private final Context context;
     private final PdfFontManager fontManager;
     private final PdfColorManager colorManager;
-    private final UserPreferenceManager mPreferences;
+    private final UserPreferenceManager preferences;
 
-    private PDRectangle mPageSize = PDRectangle.A4;
+    private PDRectangle pageSize;
 
     public DefaultPdfBoxContext(@NonNull Context context,
                                 @NonNull PdfFontManager fontManager,
                                 @NonNull PdfColorManager colorManager,
                                 @NonNull UserPreferenceManager preferences) {
-        mContext = context;
+        this.context = Preconditions.checkNotNull(context);
         this.fontManager = Preconditions.checkNotNull(fontManager);
         this.colorManager = Preconditions.checkNotNull(colorManager);
-        mPreferences = preferences;
+        this.preferences = Preconditions.checkNotNull(preferences);
+
+        if (preferences.get(UserPreference.ReportOutput.DefaultPdfPageSize).equals(context.getString(R.string.pref_output_pdf_page_size_letter_entryValue))) {
+            pageSize = PDRectangle.LETTER;
+        } else {
+            pageSize = PDRectangle.A4;
+        }
     }
 
     @Override
@@ -48,30 +56,30 @@ public class DefaultPdfBoxContext implements PdfBoxContext {
     @NonNull
     @Override
     public String getString(@StringRes int resId, Object... args) {
-        return mContext.getString(resId, args);
+        return context.getString(resId, args);
     }
 
     @Override
     public void setPageSize(@NonNull PDRectangle rectangle) {
-        mPageSize = Preconditions.checkNotNull(rectangle);
+        pageSize = Preconditions.checkNotNull(rectangle);
     }
 
     @NonNull
     @Override
     public Context getAndroidContext() {
-        return mContext;
+        return context;
     }
 
     @NonNull
     @Override
     public PDRectangle getPageSize() {
-        return mPageSize;
+        return pageSize;
     }
 
     @NonNull
     @Override
     public UserPreferenceManager getPreferences() {
-        return mPreferences;
+        return preferences;
     }
 
     @NonNull

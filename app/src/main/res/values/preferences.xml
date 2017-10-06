@@ -98,6 +98,17 @@
     <string name="pref_output_receipts_landscape_title">Print receipts table in landscape mode</string>
     <string name="pref_output_receipts_landscape_on">Receipts table is printed in landscape mode</string>
     <string name="pref_output_receipts_landscape_off">Receipts table is printed in portrait mode</string>
+    <string name="pref_output_pdf_page_size_key" translatable="false">PdfPageSize</string>
+    <string name="pref_output_pdf_page_size_a4_entryValue" translatable="false">A4</string>
+    <string name="pref_output_pdf_page_size_letter_entryValue" translatable="false">Letter</string>
+    <string-array name="pref_output_pdf_page_size_value_entryValues">
+        <item>@string/pref_output_pdf_page_size_a4_entryValue</item>
+        <item>@string/pref_output_pdf_page_size_letter_entryValue</item>
+    </string-array>
+    <string-array name="pref_output_pdf_page_size_value_entries">
+        <item>@string/pref_output_pdf_page_size_a4_entry</item>
+        <item>@string/pref_output_pdf_page_size_letter_entry</item>
+    </string-array>
 
     <!-- ============== Preference Email ================= -->
     <string name="pref_email_default_email_to_key" translatable="false">EmailTo</string>

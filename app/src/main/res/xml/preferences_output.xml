@@ -16,6 +16,12 @@
 			android:summaryOn="@string/pref_output_receipts_landscape_on"
 			android:summaryOff="@string/pref_output_receipts_landscape_off"
 			android:defaultValue="@bool/pref_output_receipts_landscape_defaultValue" />
+		<wb.android.preferences.SummaryListPreference
+			android:key="@string/pref_output_pdf_page_size_key"
+			android:title="@string/pref_output_pdf_page_size_title"
+			android:entries="@array/pref_output_pdf_page_size_value_entries"
+			android:entryValues="@array/pref_output_pdf_page_size_value_entryValues"
+			android:defaultValue="@string/pref_output_pdf_page_size_defaultValue" />
 	   <wb.android.preferences.EmptyValueSummaryEditTextPreference
 	       android:key="@string/pref_output_username_key"
 	       android:title="@string/pref_output_username_title"

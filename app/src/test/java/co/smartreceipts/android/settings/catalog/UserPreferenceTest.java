@@ -44,6 +44,7 @@ public class UserPreferenceTest {
         Assert.assertTrue(userPreferences.contains(UserPreference.ReportOutput.PrintUserIdByPdfPhoto));
         Assert.assertTrue(userPreferences.contains(UserPreference.ReportOutput.PrintReceiptCommentByPdfPhoto));
         Assert.assertTrue(userPreferences.contains(UserPreference.ReportOutput.PrintReceiptsTableInLandscape));
+        Assert.assertTrue(userPreferences.contains(UserPreference.ReportOutput.DefaultPdfPageSize));
         Assert.assertTrue(userPreferences.contains(UserPreference.Email.ToAddresses));
         Assert.assertTrue(userPreferences.contains(UserPreference.Email.CcAddresses));
         Assert.assertTrue(userPreferences.contains(UserPreference.Email.BccAddresses));
@@ -159,6 +160,10 @@ public class UserPreferenceTest {
         Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getType(), Boolean.class);
         Assert.assertEquals(name(UserPreference.ReportOutput.PrintReceiptsTableInLandscape), "ReceiptsTableLandscape");
         Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getDefaultValue(), R.bool.pref_output_receipts_landscape_defaultValue);
+
+        Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getType(), String.class);
+        Assert.assertEquals(name(UserPreference.ReportOutput.PrintReceiptsTableInLandscape), "PdfPageSize");
+        Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getDefaultValue(), R.string.pref_output_pdf_page_size_defaultValue);
     }
 
     @Test
