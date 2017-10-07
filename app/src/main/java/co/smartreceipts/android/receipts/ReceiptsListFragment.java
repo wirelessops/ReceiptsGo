@@ -68,6 +68,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
+import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
@@ -444,7 +445,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             }
                         } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
                             analytics.record(Events.Receipts.ReceiptMenuDelete);
-                            ReceiptsListFragment.this.deleteReceipt(receipt);
+                            final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
+                            navigationHandler.showDialog(deleteReceiptDialogFragment);
                         } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
                             analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
                             ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
@@ -470,16 +472,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private void showPDF(@NonNull Receipt receipt) {
         navigationHandler.navigateToViewReceiptPdf(receipt);
-    }
-
-    public final void deleteReceipt(final Receipt receipt) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.delete_item, receipt.getName())).setMessage(R.string.delete_sync_information).setCancelable(true).setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                receiptTableController.delete(receipt, new DatabaseOperationMetadata());
-            }
-        }).setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel()).show();
     }
 
     @Override

@@ -13,6 +13,8 @@ import co.smartreceipts.android.di.subcomponents.ImportLocalBackupDialogFragment
 import co.smartreceipts.android.di.subcomponents.ImportRemoteBackupDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptCreateEditFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptImageFragmentSubcomponent;
+import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
+import co.smartreceipts.android.receipts.di.DeleteReceiptDialogFragmentSubcomponent;
 import co.smartreceipts.android.receipts.di.ReceiptsListFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReportInfoFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReportTooltipFragmentSubcomponent;
@@ -53,6 +55,7 @@ import dagger.multibindings.IntoMap;
                 ReceiptCreateEditFragmentSubcomponent.class,
                 ReceiptImageFragmentSubcomponent.class,
                 ReceiptsListFragmentSubcomponent.class,
+                DeleteReceiptDialogFragmentSubcomponent.class,
                 GenerateReportFragmentSubcomponent.class,
                 BackupsFragmentSubcomponent.class,
                 ReportInfoFragmentSubcomponent.class,
@@ -99,6 +102,12 @@ public abstract class SmartReceiptsActivityBindingModule {
     @FragmentKey(ReceiptsListFragment.class)
     public abstract AndroidInjector.Factory<? extends Fragment> receiptsListFragmentSubcomponentBuilder(
             ReceiptsListFragmentSubcomponent.Builder builder);
+
+    @Binds
+    @IntoMap
+    @FragmentKey(DeleteReceiptDialogFragment.class)
+    public abstract AndroidInjector.Factory<? extends Fragment> deleteReceiptDialogFragmentSubcomponentBuilder(
+            DeleteReceiptDialogFragmentSubcomponent.Builder builder);
 
     @Binds
     @IntoMap
