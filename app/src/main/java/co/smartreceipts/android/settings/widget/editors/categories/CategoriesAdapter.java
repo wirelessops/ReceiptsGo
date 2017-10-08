@@ -12,7 +12,8 @@ public class CategoriesAdapter extends EditableCardsAdapter<Category> {
 
     @Override
     public void onBindViewHolder(EditableCardsViewHolder holder, int position) {
-       Category category = items.get(position);
+        super.onBindViewHolder(holder, position);
+        Category category = items.get(position);
 
         holder.title.setText(category.getName());
         holder.summary.setText(category.getCode());
@@ -23,7 +24,6 @@ public class CategoriesAdapter extends EditableCardsAdapter<Category> {
 
     @Override
     public long getItemId(int position) {
-        // TODO: 30.09.2017 deal with IDs
-        return position;
+        return items.get(position).getId();
     }
 }

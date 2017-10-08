@@ -133,6 +133,19 @@ public class CategoriesTableTest {
     }
 
     @Test
+    public void onUpgradeFromV15() {
+        final int oldVersion = 15;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mCategoriesTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertCategoryDefaults(mCategoriesTable);
+
+        List<String> allValues = mSqlCaptor.getAllValues();
+    }
+
+    @Test
     public void onUpgradeAlreadyOccurred() {
         final int oldVersion = DatabaseHelper.DATABASE_VERSION;
         final int newVersion = DatabaseHelper.DATABASE_VERSION;

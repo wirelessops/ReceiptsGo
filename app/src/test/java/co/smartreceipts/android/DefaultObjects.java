@@ -14,9 +14,9 @@ import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.impl.DefaultTripImpl;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.model.impl.ImmutablePriceImpl;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -60,7 +60,7 @@ public class DefaultObjects {
 
     @NonNull
     public static Category newDefaultCategory() {
-        return new ImmutableCategoryImpl("name", "code");
+        return new CategoryBuilderFactory().setName("name").setCode("code").build();
     }
 
     @NonNull

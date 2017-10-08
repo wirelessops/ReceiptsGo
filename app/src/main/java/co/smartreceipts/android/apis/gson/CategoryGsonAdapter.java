@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 import co.smartreceipts.android.model.Category;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 
 public class CategoryGsonAdapter implements GsonAdapter<Category> {
 
@@ -20,6 +20,6 @@ public class CategoryGsonAdapter implements GsonAdapter<Category> {
         final JsonObject jsonObject = json.getAsJsonObject();
         final String name = jsonObject.get(NAME).getAsString();
         final String code = jsonObject.get(CODE).getAsString();
-        return new ImmutableCategoryImpl(name, code);
+        return new CategoryBuilderFactory().setName(name).setCode(code).build();
     }
 }

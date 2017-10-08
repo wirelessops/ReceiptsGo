@@ -8,23 +8,23 @@ import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
 /**
  * Defines the primary key for the {@link co.smartreceipts.android.persistence.database.tables.CategoriesTable}
  */
-public final class CategoryPrimaryKey implements PrimaryKey<Category, String> {
+public final class CategoryPrimaryKey implements PrimaryKey<Category, Integer> {
 
     @Override
     @NonNull
     public String getPrimaryKeyColumn() {
-        return CategoriesTable.COLUMN_NAME;
+        return CategoriesTable.COLUMN_ID;
     }
 
     @Override
     @NonNull
-    public Class<String> getPrimaryKeyClass() {
-        return String.class;
+    public Class<Integer> getPrimaryKeyClass() {
+        return Integer.class;
     }
 
     @Override
     @NonNull
-    public String getPrimaryKeyValue(@NonNull Category category) {
-        return category.getName();
+    public Integer getPrimaryKeyValue(@NonNull Category category) {
+        return category.getId();
     }
 }

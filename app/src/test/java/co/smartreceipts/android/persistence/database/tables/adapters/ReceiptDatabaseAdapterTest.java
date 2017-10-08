@@ -23,9 +23,9 @@ import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -50,8 +50,9 @@ public class ReceiptDatabaseAdapterTest {
     private static final String PATH = "Image.jpg";
     private static final String NAME = "Name";
     private static final String PARENT = "Trip";
+    private static final int CATEGORY_ID = 15;
     private static final String CATEGORY_NAME = "Category";
-    private static final Category CATEGORY = new ImmutableCategoryImpl(CATEGORY_NAME, "code");
+    private static final Category CATEGORY = new CategoryBuilderFactory().setId(CATEGORY_ID).setName(CATEGORY_NAME).setCode("code").build(); //new ImmutableCategoryImpl(CATEGORY_NAME, "code");
     private static final double PRICE = 12.55d;
     private static final double TAX = 2.50d;
     private static final String CURRENCY_CODE = "USD";
@@ -82,7 +83,7 @@ public class ReceiptDatabaseAdapterTest {
     Table<PaymentMethod, Integer> mPaymentMethodsTable;
 
     @Mock
-    Table<Category, String> mCategoriesTable;
+    Table<Category, Integer> mCategoriesTable;
 
     @Mock
     StorageManager mStorageManager;
@@ -207,7 +208,7 @@ public class ReceiptDatabaseAdapterTest {
 
         when(mTripsTable.findByPrimaryKey(PARENT)).thenReturn(Single.just(mTrip));
         when(mPaymentMethodsTable.findByPrimaryKey(PAYMENT_METHOD_ID)).thenReturn(Single.just(PAYMENT_METHOD));
-        when(mCategoriesTable.findByPrimaryKey(CATEGORY_NAME)).thenReturn(Single.just(CATEGORY));
+        when(mCategoriesTable.findByPrimaryKey(CATEGORY_ID)).thenReturn(Single.just(CATEGORY));
 
         when(mPrimaryKey.getPrimaryKeyValue(mReceipt)).thenReturn(PRIMARY_KEY_ID);
         when(mStorageManager.getFile(new File(PARENT), PATH)).thenReturn(new File(PATH));
@@ -301,7 +302,7 @@ public class ReceiptDatabaseAdapterTest {
 
     @Test
     public void readForUnmappedCategory() throws Exception {
-        when(mCategoriesTable.findByPrimaryKey(CATEGORY_NAME)).thenReturn(Single.error(new Exception()));
+        when(mCategoriesTable.findByPrimaryKey(CATEGORY_ID)).thenReturn(Single.error(new Exception()));
 
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
@@ -310,7 +311,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setPrice(PRICE)
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
-                .setCategory(new ImmutableCategoryImpl(CATEGORY_NAME, CATEGORY_NAME))
+                .setCategory(new CategoryBuilderFactory().setId(CATEGORY_ID).setName(CATEGORY_NAME).setCode(CATEGORY_NAME).build())
                 .setFile(new File(PATH))
                 .setDate(DATE)
                 .setTimeZone(TIMEZONE)

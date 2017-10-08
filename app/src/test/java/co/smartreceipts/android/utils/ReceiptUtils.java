@@ -12,15 +12,15 @@ import java.util.TimeZone;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 
 public class ReceiptUtils {
 
     public static class Constants {
         public static final int ID = 0;
         public static final int INDEX = 4;
-        public static final Category CATEGORY = new ImmutableCategoryImpl("Lunch", "LNCH");
+        public static final Category CATEGORY = new CategoryBuilderFactory().setName("Lunch").setCode("LNCH").build();
         public static final String COMMENT = "";
         public static final String CURRENCY_CODE = "USD";
         public static final PriceCurrency CURRENCY = PriceCurrency.getInstance(CURRENCY_CODE);

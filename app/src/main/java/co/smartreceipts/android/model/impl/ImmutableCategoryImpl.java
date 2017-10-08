@@ -11,24 +11,32 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
 public class ImmutableCategoryImpl implements Category {
 
+    private final int mId;
     private final String mName;
     private final String mCode;
     private final SyncState mSyncState;
 
-    public ImmutableCategoryImpl(@NonNull String name, @NonNull String code) {
-        this(name, code, new DefaultSyncState());
+    public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code) {
+        this(id, name, code, new DefaultSyncState());
     }
 
-    public ImmutableCategoryImpl(@NonNull String name, @NonNull String code, @NonNull SyncState syncState) {
+    public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code, @NonNull SyncState syncState) {
+        this.mId = id;
         mName = Preconditions.checkNotNull(name);
         mCode = Preconditions.checkNotNull(code);
         mSyncState = Preconditions.checkNotNull(syncState);
     }
 
     private ImmutableCategoryImpl(final Parcel in) {
+        mId = in.readInt();
         mName = in.readString();
         mCode = in.readString();
         mSyncState = in.readParcelable(getClass().getClassLoader());
+    }
+
+    @Override
+    public int getId() {
+        return mId;
     }
 
     @NonNull
@@ -52,17 +60,20 @@ public class ImmutableCategoryImpl implements Category {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ImmutableCategoryImpl)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ImmutableCategoryImpl that = (ImmutableCategoryImpl) o;
 
+        if (mId != that.mId) return false;
         if (!mName.equals(that.mName)) return false;
-        return (mCode.equals(that.mCode));
+        return mCode.equals(that.mCode);
+
     }
 
     @Override
     public int hashCode() {
-        int result = mName.hashCode();
+        int result = mId;
+        result = 31 * result + mName.hashCode();
         result = 31 * result + mCode.hashCode();
         return result;
     }
@@ -79,6 +90,7 @@ public class ImmutableCategoryImpl implements Category {
 
     @Override
     public void writeToParcel(final Parcel out, final int flags) {
+        out.writeInt(mId);
         out.writeString(mName);
         out.writeString(mCode);
         out.writeParcelable(mSyncState, flags);
@@ -98,9 +110,9 @@ public class ImmutableCategoryImpl implements Category {
 
     };
 
-
-    @Override
-    public int compareTo(@NonNull Category category) {
-        return mName.compareTo(category.getName());
-    }
+//
+//    @Override
+//    public int compareTo(@NonNull Category category) {
+//        return mName.compareTo(category.getName());
+//    }
 }

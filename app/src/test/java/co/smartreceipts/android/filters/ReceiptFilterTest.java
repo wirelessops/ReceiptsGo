@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.utils.ReceiptUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -46,7 +47,8 @@ public class ReceiptFilterTest {
     @Test
     public void receiptCategoryFilterTest() throws JSONException {
         final Receipt receipt1 = ReceiptUtils.newDefaultReceiptBuilderFactory(context).build();
-        final Receipt receipt2 = ReceiptUtils.newDefaultReceiptBuilderFactory(context).setCategory("BAD Category").build();
+        final Receipt receipt2 = ReceiptUtils.newDefaultReceiptBuilderFactory(context)
+                .setCategory(new CategoryBuilderFactory().setName("BAD Category").build()).build();
         final ReceiptCategoryFilter filter = new ReceiptCategoryFilter(ReceiptUtils.Constants.CATEGORY.getName());
         assertTrue(filter.accept(receipt1));
         assertFalse(filter.accept(receipt2));
@@ -149,8 +151,10 @@ public class ReceiptFilterTest {
     public void receiptOrFilterTest() throws JSONException {
         final String category2 = "cat2";
         final Receipt receipt1 = ReceiptUtils.newDefaultReceiptBuilderFactory(context).build();
-        final Receipt receipt2 = ReceiptUtils.newDefaultReceiptBuilderFactory(context).setCategory(category2).build();
-        final Receipt receipt3 = ReceiptUtils.newDefaultReceiptBuilderFactory(context).setCategory("BAD Category").build();
+        final Receipt receipt2 = ReceiptUtils.newDefaultReceiptBuilderFactory(context)
+                .setCategory(new CategoryBuilderFactory().setName(category2).build()).build();
+        final Receipt receipt3 = ReceiptUtils.newDefaultReceiptBuilderFactory(context)
+                .setCategory(new CategoryBuilderFactory().setName("BAD Category").build()).build();
         final ReceiptCategoryFilter filter1 = new ReceiptCategoryFilter(ReceiptUtils.Constants.CATEGORY.getName());
         final ReceiptCategoryFilter filter2 = new ReceiptCategoryFilter(category2);
         final ReceiptOrFilter orFilter = new ReceiptOrFilter();

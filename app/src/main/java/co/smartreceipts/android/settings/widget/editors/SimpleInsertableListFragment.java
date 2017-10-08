@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
@@ -112,6 +113,8 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
         super.onResume();
         getTableController().subscribe(this);
         getTableController().get();
+        // TODO: 06.10.2017 show snackBar or at least toast? with a tip about long press if isOnDragMode = true
+        Toast.makeText(getContext(), "", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -157,8 +160,8 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
         recyclerViewDragDropManager = new RecyclerViewDragDropManager();
 
         // Start dragging after long press
-//        recyclerViewDragDropManager.setInitiateOnLongPress(true);
-//        recyclerViewDragDropManager.setInitiateOnMove(false);
+        recyclerViewDragDropManager.setInitiateOnLongPress(true);
+        recyclerViewDragDropManager.setInitiateOnMove(false);
         recyclerViewDragDropManager.setDraggingItemRotation(-5);
 
         recyclerView.setAdapter(recyclerViewDragDropManager.createWrappedAdapter(adapter));
@@ -170,7 +173,6 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
     @Override
     public void onGetSuccess(@NonNull List<T> list) {
         adapter.update(list);
-
         setDragAndDrop();
     }
 

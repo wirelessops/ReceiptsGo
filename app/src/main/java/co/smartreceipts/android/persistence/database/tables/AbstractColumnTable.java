@@ -71,6 +71,9 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
         if (oldVersion <= 14) {
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
         }
+        if (oldVersion <= 15) {
+            // TODO: 02.10.2017 add 'custom_order_id' column
+        }
     }
 
     /**

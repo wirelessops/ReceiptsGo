@@ -19,7 +19,6 @@ import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.impl.DefaultReceiptImpl;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
@@ -107,13 +106,6 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
 
     public ReceiptBuilderFactory setName(@NonNull String name) {
         _name = name;
-        return this;
-    }
-
-    @Deprecated
-    public ReceiptBuilderFactory setCategory(@NonNull String category) {
-        // TODO: Delete me
-        _category = new ImmutableCategoryImpl(category, "");
         return this;
     }
 

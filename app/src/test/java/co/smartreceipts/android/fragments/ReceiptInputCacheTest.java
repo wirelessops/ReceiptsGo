@@ -12,7 +12,7 @@ import org.robolectric.android.controller.ActivityController;
 import java.sql.Date;
 
 import co.smartreceipts.android.model.Category;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -44,7 +44,7 @@ public class ReceiptInputCacheTest {
 
     @Test
     public void getCachedCategory() {
-        final Category category = new ImmutableCategoryImpl("abc", "def");
+        final Category category = new CategoryBuilderFactory().setName("abc").setCode("def").build();
         final ReceiptInputCache preConfigurationChangeCache = new ReceiptInputCache(mActivityController.get().getSupportFragmentManager());
         preConfigurationChangeCache.setCachedCategory(category);
 

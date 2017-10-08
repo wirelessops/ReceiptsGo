@@ -16,12 +16,12 @@ import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class ImmutableCategoryImplTest {
 
+    private static final int ID = 3;
     private static final String NAME = "name";
     private static final String CODE = "code";
 
@@ -33,7 +33,7 @@ public class ImmutableCategoryImplTest {
     @Before
     public void setUp() throws Exception {
         mSyncState = DefaultObjects.newDefaultSyncState();
-        mImmutableCategory = new ImmutableCategoryImpl(NAME, CODE, mSyncState);
+        mImmutableCategory = new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState);
     }
 
     @Test
@@ -52,20 +52,14 @@ public class ImmutableCategoryImplTest {
     }
 
     @Test
-    public void compareTo() {
-        assertTrue(mImmutableCategory.compareTo(mImmutableCategory) == 0);
-        assertTrue(mImmutableCategory.compareTo(new ImmutableCategoryImpl("aaa", "")) > 0);
-        assertTrue(mImmutableCategory.compareTo(new ImmutableCategoryImpl("zzz", "")) < 0);
-    }
-
-    @Test
     public void equals() {
         assertEquals(mImmutableCategory, mImmutableCategory);
-        assertEquals(mImmutableCategory, new ImmutableCategoryImpl(NAME, CODE, mSyncState));
+        assertEquals(mImmutableCategory, new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState));
         assertThat(mImmutableCategory, not(equalTo(new Object())));
         assertThat(mImmutableCategory, not(equalTo(mock(Category.class))));
-        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl("wrong", CODE, mSyncState))));
-        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(NAME, "wrong", mSyncState))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(0, NAME, CODE, mSyncState))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, "wrong", CODE, mSyncState))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, NAME, "wrong", mSyncState))));
     }
 
     @Test

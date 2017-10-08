@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class CategoryDatabaseAdapterTest {
 
     private static final String NAME = "name_123";
-    private static final String PRIMARY_KEY_NAME = "name_456";
+    private static final int PRIMARY_KEY_INT = 15;
     private static final String CODE = "code_123";
 
     // Class under test
@@ -39,7 +39,7 @@ public class CategoryDatabaseAdapterTest {
     Category mCategory;
 
     @Mock
-    PrimaryKey<Category, String> mPrimaryKey;
+    PrimaryKey<Category, Integer> mPrimaryKey;
 
     @Mock
     SyncStateAdapter mSyncStateAdapter;
@@ -62,7 +62,7 @@ public class CategoryDatabaseAdapterTest {
         when(mCategory.getCode()).thenReturn(CODE);
         when(mCategory.getSyncState()).thenReturn(mSyncState);
 
-        when(mPrimaryKey.getPrimaryKeyValue(mCategory)).thenReturn(PRIMARY_KEY_NAME);
+        when(mPrimaryKey.getPrimaryKeyValue(mCategory)).thenReturn(PRIMARY_KEY_INT);
 
         when(mSyncStateAdapter.read(mCursor)).thenReturn(mSyncState);
         when(mSyncStateAdapter.get(any(SyncState.class), any(DatabaseOperationMetadata.class))).thenReturn(mGetSyncState);
@@ -104,7 +104,7 @@ public class CategoryDatabaseAdapterTest {
 
     @Test
     public void build() throws Exception {
-        final Category category = new CategoryBuilderFactory().setName(PRIMARY_KEY_NAME).setCode(CODE).setSyncState(mGetSyncState).build();
+        final Category category = new CategoryBuilderFactory().setId(PRIMARY_KEY_INT).setName(NAME).setCode(CODE).setSyncState(mGetSyncState).build();
         assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
         assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
     }

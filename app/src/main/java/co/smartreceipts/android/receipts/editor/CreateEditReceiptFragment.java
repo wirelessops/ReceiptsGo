@@ -663,7 +663,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     }
 
     @Override
-    public void onReceiptRowAutoCompleteQueryResult(String name, String price, String category) {
+    public void onReceiptRowAutoCompleteQueryResult(String name, String price, @Nullable Integer categoryId) {
         if (isAdded()) {
             if (nameBox != null && name != null) {
                 nameBox.setText(name);
@@ -672,9 +672,10 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
             if (priceBox != null && price != null && priceBox.getText().length() == 0) {
                 priceBox.setText(price);
             }
-            if (categoriesSpinner != null && category != null) {
+
+            if (categoriesSpinner != null && categoryId != null) {
                 for (int i = 0; i < categoriesList.size(); i++) {
-                    if (category.equals(categoriesList.get(i).getName())) {
+                    if (categoryId == categoriesList.get(i).getId()) {
                         categoriesSpinner.setSelection(categoriesList.indexOf(categoriesList.get(i)));
                         break;
                     }

@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
     // Database Info
     public static final String DATABASE_NAME = "receipts.db";
-    public static final int DATABASE_VERSION = 15;
+    public static final int DATABASE_VERSION = 16;
 
     @Deprecated
     public static final String NO_DATA = "null"; // TODO: Just set to null
@@ -98,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
     public interface ReceiptAutoCompleteListener {
 
-        void onReceiptRowAutoCompleteQueryResult(@Nullable String name, @Nullable String price, @Nullable String category);
+        void onReceiptRowAutoCompleteQueryResult(@Nullable String name, @Nullable String price, @Nullable Integer categoryId);
     }
 
     public DatabaseHelper(@NonNull Context context, @NonNull StorageManager storageManager,
@@ -482,7 +482,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                         final int pathIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PATH);
                         final int nameIndex = c.getColumnIndex(ReceiptsTable.COLUMN_NAME);
                         final int parentIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PARENT);
-                        final int categoryIndex = c.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY);
+                        final int categoryIdIndex = c.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY_ID);
                         final int priceIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PRICE);
                         final int dateIndex = c.getColumnIndex(ReceiptsTable.COLUMN_DATE);
                         final int commentIndex = c.getColumnIndex(ReceiptsTable.COLUMN_COMMENT);
@@ -512,19 +512,19 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                                     File f = new File(newPath);
                                     newPath = f.getName();
                                 }
-                                final String name = getString(c, nameIndex, "");
-                                final String oldParent = getString(c, parentIndex, "");
-                                String newParent = oldParent != null ? oldParent : "";
-                                if (newParent.contains("wb.receipts")) { // Backwards compatibility stuff
-                                    if (packageName.equalsIgnoreCase("wb.receipts")) {
-                                        newParent = oldParent.replace("wb.receiptspro/", "wb.receipts/");
-                                    } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
-                                        newParent = oldParent.replace("wb.receipts/", "wb.receiptspro/");
+                            final String name = getString(c, nameIndex, "");
+                            final String oldParent = getString(c, parentIndex, "");
+                            String newParent = oldParent != null ? oldParent : "";
+                            if (newParent.contains("wb.receipts")) { // Backwards compatibility stuff
+                                if (packageName.equalsIgnoreCase("wb.receipts")) {
+                                    newParent = oldParent.replace("wb.receiptspro/", "wb.receipts/");
+                                } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
+                                    newParent = oldParent.replace("wb.receipts/", "wb.receiptspro/");
                                     }
                                     File f = new File(newParent);
                                     newParent = f.getName();
                                 }
-                                final String category = getString(c, categoryIndex, "");
+                            final int categoryId = getInt(c, categoryIdIndex, 0);
                                 final BigDecimal price = getDecimal(c, priceIndex);
                                 final long date = getLong(c, dateIndex, 0L);
                                 final String comment = getString(c, commentIndex, "");
@@ -547,7 +547,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                                         values.put(ReceiptsTable.COLUMN_PATH, newPath);
                                         values.put(ReceiptsTable.COLUMN_NAME, name);
                                         values.put(ReceiptsTable.COLUMN_PARENT, newParent);
-                                        values.put(ReceiptsTable.COLUMN_CATEGORY, category);
+                                    values.put(ReceiptsTable.COLUMN_CATEGORY_ID, categoryId);
                                         values.put(ReceiptsTable.COLUMN_PRICE, price.doubleValue());
                                         values.put(ReceiptsTable.COLUMN_DATE, date);
                                         values.put(ReceiptsTable.COLUMN_COMMENT, comment);
@@ -942,7 +942,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         SQLiteDatabase db = null;
         final String name = text.toString();
         if (tag == TAG_RECEIPTS_NAME) {
-            String category = null, price = null, tmp = null;
+            Integer categoryId = null;
+            String price = null;
             // If we're not predicting, return
             if (!mPreferences.get(UserPreference.Receipts.PredictCategories)) {
                 // price = null;
@@ -951,18 +952,19 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 synchronized (mDatabaseLock) {
                     try {
                         db = this.getReadableDatabase();
-                        c = db.query(ReceiptsTable.TABLE_NAME, new String[]{ReceiptsTable.COLUMN_CATEGORY, ReceiptsTable.COLUMN_PRICE}, ReceiptsTable.COLUMN_NAME + "= ?", new String[]{name}, null, null, ReceiptsTable.COLUMN_DATE + " DESC", "2");
+                        c = db.query(ReceiptsTable.TABLE_NAME,
+                                new String[]{ReceiptsTable.COLUMN_CATEGORY_ID, ReceiptsTable.COLUMN_PRICE},
+                                ReceiptsTable.COLUMN_NAME + "= ?",
+                                new String[]{name}, null, null, ReceiptsTable.COLUMN_DATE + " DESC", "2");
                         if (c != null && c.getCount() == 2) {
                             if (c.moveToFirst()) {
-                                category = c.getString(0);
+                                categoryId = c.getInt(0);
                                 price = c.getString(1);
                                 if (c.moveToNext()) {
-                                    tmp = c.getString(0);
-                                    if (!category.equalsIgnoreCase(tmp)) {
-                                        category = null;
+                                    if (!categoryId.equals(c.getInt(0))) {
+                                        categoryId = null;
                                     }
-                                    tmp = c.getString(1);
-                                    if (!price.equalsIgnoreCase(tmp)) {
+                                    if (!price.equalsIgnoreCase(c.getString(1))) {
                                         price = null;
                                     }
                                 }
@@ -976,7 +978,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 }
             }
             if (mReceiptAutoCompleteListener != null) {
-                mReceiptAutoCompleteListener.onReceiptRowAutoCompleteQueryResult(name, price, category);
+                mReceiptAutoCompleteListener.onReceiptRowAutoCompleteQueryResult(name, price, categoryId);
             }
         }
     }

@@ -15,9 +15,9 @@ import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -34,17 +34,17 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
 
     private final Table<Trip, String> mTripsTable;
     private final Table<PaymentMethod, Integer> mPaymentMethodTable;
-    private final Table<Category, String> mCategoriesTable;
+    private final Table<Category, Integer> mCategoriesTable;
     private final StorageManager mStorageManager;
     private final SyncStateAdapter mSyncStateAdapter;
 
     public ReceiptDatabaseAdapter(@NonNull Table<Trip, String> tripsTable, @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
-                                  @NonNull Table<Category, String> categoriesTable, @NonNull StorageManager storageManager) {
+                                  @NonNull Table<Category, Integer> categoriesTable, @NonNull StorageManager storageManager) {
         this(tripsTable, paymentMethodTable, categoriesTable, storageManager, new SyncStateAdapter());
     }
 
     public ReceiptDatabaseAdapter(@NonNull Table<Trip, String> tripsTable, @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
-                                  @NonNull Table<Category, String> categoriesTable, @NonNull StorageManager storageManager,
+                                  @NonNull Table<Category, Integer> categoriesTable, @NonNull StorageManager storageManager,
                                   @NonNull SyncStateAdapter syncStateAdapter) {
         mTripsTable = Preconditions.checkNotNull(tripsTable);
         mPaymentMethodTable = Preconditions.checkNotNull(paymentMethodTable);
@@ -69,7 +69,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final int idIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_ID);
         final int pathIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_PATH);
         final int nameIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_NAME);
-        final int categoryIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY);
+        final int categoryIdIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY_ID);
         final int priceIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_PRICE);
         final int taxIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_TAX);
         final int exchangeRateIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXCHANGE_RATE);
@@ -88,7 +88,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final String path = cursor.getString(pathIndex);
         final String name = cursor.getString(nameIndex);
 
-        final String category = cursor.getString(categoryIndex);
+        final int categoryId = cursor.getInt(categoryIdIndex);
         final double priceDouble = cursor.getDouble(priceIndex);
         final double taxDouble = cursor.getDouble(taxIndex);
         final double exchangeRateDouble = cursor.getDouble(exchangeRateIndex);
@@ -113,7 +113,9 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final SyncState syncState = mSyncStateAdapter.read(cursor);
 
         // TODO: How to use JOINs w/o blocking
-        final Category categoryImpl = mCategoriesTable.findByPrimaryKey(category).onErrorReturn(ignored -> new ImmutableCategoryImpl(category, category)).blockingGet();
+        final Category categoryImpl = mCategoriesTable.findByPrimaryKey(categoryId)
+                .onErrorReturn(ignored -> new CategoryBuilderFactory().build())
+                .blockingGet();
         final Optional<PaymentMethod> paymentMethodOptional =
                 mPaymentMethodTable.findByPrimaryKey(paymentMethodId)
                         .map(Optional::of)
@@ -179,7 +181,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         // Add core data
         values.put(ReceiptsTable.COLUMN_PARENT, receipt.getTrip().getName());
         values.put(ReceiptsTable.COLUMN_NAME, receipt.getName().trim());
-        values.put(ReceiptsTable.COLUMN_CATEGORY, receipt.getCategory().getName());
+        values.put(ReceiptsTable.COLUMN_CATEGORY_ID, receipt.getCategory().getId());
         values.put(ReceiptsTable.COLUMN_DATE, receipt.getDate().getTime());
         values.put(ReceiptsTable.COLUMN_TIMEZONE, receipt.getTimeZone().getID());
         values.put(ReceiptsTable.COLUMN_COMMENT, receipt.getComment());

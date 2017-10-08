@@ -16,17 +16,31 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  */
 public class CategoryBuilderFactory implements BuilderFactory<Category> {
 
-    private String mName;
-    private String mCode;
-    private SyncState mSyncState;
+    private int id;
+    private String name;
+    private String code;
+    private SyncState syncState;
 
     /**
      * Default constructor for this class
      */
     public CategoryBuilderFactory() {
-        mName = "";
-        mCode = "";
-        mSyncState = new DefaultSyncState();
+        id = MISSING_ID;
+        name = "";
+        code = "";
+        syncState = new DefaultSyncState();
+    }
+
+
+    /**
+     * Defines the primary key id for this object
+     *
+     * @param id - the id
+     * @return this {@link CategoryBuilderFactory} for method chaining
+     */
+    public CategoryBuilderFactory setId(int id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -36,7 +50,7 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      * @return this {@link CategoryBuilderFactory} for method chaining
      */
     public CategoryBuilderFactory setName(@NonNull String name) {
-        mName = Preconditions.checkNotNull(name);
+        this.name = Preconditions.checkNotNull(name);
         return this;
     }
 
@@ -47,12 +61,12 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      * @return this {@link CategoryBuilderFactory} for method chaining
      */
     public CategoryBuilderFactory setCode(@NonNull String code) {
-        mCode = Preconditions.checkNotNull(code);
+        this.code = Preconditions.checkNotNull(code);
         return this;
     }
 
     public CategoryBuilderFactory setSyncState(@NonNull SyncState syncState) {
-        mSyncState = Preconditions.checkNotNull(syncState);
+        this.syncState = Preconditions.checkNotNull(syncState);
         return this;
     }
 
@@ -61,6 +75,6 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      */
     @NonNull
     public Category build() {
-        return new ImmutableCategoryImpl(mName, mCode, mSyncState);
+        return new ImmutableCategoryImpl(id, name, code, syncState);
     }
 }

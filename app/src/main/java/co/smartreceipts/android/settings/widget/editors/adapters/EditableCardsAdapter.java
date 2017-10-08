@@ -15,7 +15,6 @@ import java.util.List;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
-import co.smartreceipts.android.utils.log.Logger;
 
 
 public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<EditableCardsAdapter.EditableCardsViewHolder>
@@ -31,7 +30,7 @@ public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<Edita
         this(listener, new ArrayList<T>());
     }
 
-    public EditableCardsAdapter(EditableItemListener<T> listener, List<T> items) {
+    private EditableCardsAdapter(EditableItemListener<T> listener, List<T> items) {
         this.listener = listener;
         this.items = items;
 
@@ -63,15 +62,11 @@ public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<Edita
 
     @Override
     public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
-        Logger.debug(this, "drag onCheckCanDrop " + isOnDragMode);
-
         return true;
     }
 
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
-        Logger.debug(this, "drag onMoveItem " + isOnDragMode);
-
         if (fromPosition == toPosition) {
             return;
         }
@@ -93,8 +88,6 @@ public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<Edita
 
     @Override
     public boolean onCheckCanStartDrag(EditableCardsViewHolder holder, int position, int x, int y) {
-
-        Logger.debug(this, "drag onCheckCanStartDrag " + isOnDragMode);
         return isOnDragMode;
     }
 

@@ -13,8 +13,8 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.CSVTable;
@@ -24,13 +24,11 @@ import co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable;
 
 public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
 
-    private final Context context;
-    private final ReceiptColumnDefinitions receiptColumnDefinitions;
+    @Inject Context context;
+    @Inject ReceiptColumnDefinitions receiptColumnDefinitions;
 
     @Inject
-    public TableDefaultCustomizerImpl(@NonNull Context context, @NonNull ReceiptColumnDefinitions receiptColumnDefinitions) {
-        this.context = Preconditions.checkNotNull(context.getApplicationContext());
-        this.receiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
+    public TableDefaultCustomizerImpl() {
     }
 
     @Override
@@ -56,31 +54,55 @@ public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
     @Override
     public void insertCategoryDefaults(@NonNull final CategoriesTable categoriesTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        final Resources resources = context.getResources();
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_null), resources.getString(R.string.category_null_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_airfare), resources.getString(R.string.category_airfare_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_breakfast), resources.getString(R.string.category_breakfast_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_dinner), resources.getString(R.string.category_dinner_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_entertainment), resources.getString(R.string.category_entertainment_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_gasoline), resources.getString(R.string.category_gasoline_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_gift), resources.getString(R.string.category_gift_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_hotel), resources.getString(R.string.category_hotel_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_laundry), resources.getString(R.string.category_laundry_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_lunch), resources.getString(R.string.category_lunch_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_other), resources.getString(R.string.category_other_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_parking_tolls), resources.getString(R.string.category_parking_tolls_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_postage_shipping), resources.getString(R.string.category_postage_shipping_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_car_rental), resources.getString(R.string.category_car_rental_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_taxi_bus), resources.getString(R.string.category_taxi_bus_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_telephone_fax), resources.getString(R.string.category_telephone_fax_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_tip), resources.getString(R.string.category_tip_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_train), resources.getString(R.string.category_train_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_books_periodicals), resources.getString(R.string.category_books_periodicals_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_cell_phone), resources.getString(R.string.category_cell_phone_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_dues_subscriptions), resources.getString(R.string.category_dues_subscriptions_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_meals_justified), resources.getString(R.string.category_meals_justified_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_stationery_stations), resources.getString(R.string.category_stationery_stations_code)), databaseOperationMetadata);
-        categoriesTable.insertBlocking(new ImmutableCategoryImpl(resources.getString(R.string.category_training_fees), resources.getString(R.string.category_training_fees_code)), databaseOperationMetadata);
+        final Resources resources = mContext.getResources();
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_null))
+                .setCode(resources.getString(R.string.category_null_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_airfare))
+                .setCode(resources.getString(R.string.category_airfare_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_breakfast))
+                .setCode(resources.getString(R.string.category_breakfast_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_dinner))
+                .setCode(resources.getString(R.string.category_dinner_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_entertainment))
+                .setCode(resources.getString(R.string.category_entertainment_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_gasoline))
+                .setCode(resources.getString(R.string.category_gasoline_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_gift))
+                .setCode(resources.getString(R.string.category_gift_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_hotel))
+                .setCode(resources.getString(R.string.category_hotel_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_laundry))
+                .setCode(resources.getString(R.string.category_laundry_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_lunch))
+                .setCode(resources.getString(R.string.category_lunch_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_other))
+                .setCode(resources.getString(R.string.category_other_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_parking_tolls))
+                .setCode(resources.getString(R.string.category_parking_tolls_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_postage_shipping))
+                .setCode(resources.getString(R.string.category_postage_shipping_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_car_rental))
+                .setCode(resources.getString(R.string.category_car_rental_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_taxi_bus))
+                .setCode(resources.getString(R.string.category_taxi_bus_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_telephone_fax))
+                .setCode(resources.getString(R.string.category_telephone_fax_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_tip))
+                .setCode(resources.getString(R.string.category_tip_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_train))
+                .setCode(resources.getString(R.string.category_train_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_books_periodicals))
+                .setCode(resources.getString(R.string.category_books_periodicals_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_cell_phone))
+                .setCode(resources.getString(R.string.category_cell_phone_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_dues_subscriptions))
+                .setCode(resources.getString(R.string.category_dues_subscriptions_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_meals_justified))
+                .setCode(resources.getString(R.string.category_meals_justified_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_stationery_stations))
+                .setCode(resources.getString(R.string.category_stationery_stations_code)).build(), databaseOperationMetadata);
+        categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_training_fees))
+                .setCode(resources.getString(R.string.category_training_fees_code)).build(), databaseOperationMetadata);
     }
 
     @Override

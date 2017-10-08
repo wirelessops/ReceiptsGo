@@ -12,6 +12,7 @@ import java.util.Map;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -105,7 +106,7 @@ public class DistanceToReceiptsConverter implements ModelConverter<Distance, Rec
         factory.setImage(null);
         factory.setIsReimbursable(true);
         factory.setTimeZone(distance0.getTimeZone());
-        factory.setCategory(mContext.getString(R.string.distance));
+        factory.setCategory(new CategoryBuilderFactory().setName(mContext.getString(R.string.distance)).build());
         factory.setCurrency(distance0.getTrip().getTripCurrency());
         factory.setPrice(new PriceBuilderFactory().setPriceables(distancesThisDay, distance0.getTrip().getTripCurrency()).build());
 
