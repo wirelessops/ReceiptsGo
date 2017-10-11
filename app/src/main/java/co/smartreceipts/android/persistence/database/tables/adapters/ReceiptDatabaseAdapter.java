@@ -15,7 +15,6 @@ import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -113,9 +112,11 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final SyncState syncState = mSyncStateAdapter.read(cursor);
 
         // TODO: How to use JOINs w/o blocking
-        final Category categoryImpl = mCategoriesTable.findByPrimaryKey(categoryId)
-                .onErrorReturn(ignored -> new CategoryBuilderFactory().build())
+        final Optional<Category> categoryOptional = mCategoriesTable.findByPrimaryKey(categoryId)
+                .map(Optional::of)
+                .onErrorReturn(ignored -> Optional.absent())
                 .blockingGet();
+
         final Optional<PaymentMethod> paymentMethodOptional =
                 mPaymentMethodTable.findByPrimaryKey(paymentMethodId)
                         .map(Optional::of)
@@ -127,7 +128,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final ReceiptBuilderFactory builder = new ReceiptBuilderFactory(id);
         builder.setTrip(trip)
                 .setName(name)
-                .setCategory(categoryImpl)
+                .setCategory(categoryOptional.orNull())
                 .setFile(file)
                 .setDate(date)
                 .setTimeZone(timezone)

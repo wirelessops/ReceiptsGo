@@ -47,7 +47,6 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
     @NonNull
     public ContentValues write(@NonNull Category category, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         final ContentValues values = new ContentValues();
-        values.put(CategoriesTable.COLUMN_ID, category.getId());
         values.put(CategoriesTable.COLUMN_NAME, category.getName());
         values.put(CategoriesTable.COLUMN_CODE, category.getCode());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
@@ -65,7 +64,8 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
                 .setId(primaryKey.getPrimaryKeyValue(category))
                 .setName(category.getName())
                 .setCode(category.getCode())
-                .setSyncState(mSyncStateAdapter.get(category.getSyncState(), databaseOperationMetadata)).build();
+                .setSyncState(mSyncStateAdapter.get(category.getSyncState(), databaseOperationMetadata))
+                .build();
     }
 
 }

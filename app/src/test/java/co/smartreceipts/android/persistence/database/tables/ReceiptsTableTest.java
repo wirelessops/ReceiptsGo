@@ -50,7 +50,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -92,7 +91,7 @@ public class ReceiptsTableTest {
     Table<PaymentMethod, Integer> mPaymentMethodTable;
 
     @Mock
-    Table<Category, String> mCategoryTable;
+    Table<Category, Integer> mCategoryTable;
 
     @Mock
     PersistenceManager mPersistenceManager;
@@ -147,7 +146,7 @@ public class ReceiptsTableTest {
         when(mTripsTable.findByPrimaryKey(TRIP_2)).thenReturn(Single.just(mTrip2));
         when(mTripsTable.findByPrimaryKey(TRIP_3)).thenReturn(Single.just(mTrip3));
 
-        when(mCategoryTable.findByPrimaryKey(anyString())).thenReturn(Single.just(mCategory));
+        when(mCategoryTable.findByPrimaryKey(anyInt())).thenReturn(Single.just(mCategory));
         when(mPaymentMethodTable.findByPrimaryKey(anyInt())).thenReturn(Single.just(mPaymentMethod));
 
         when(mPersistenceManager.getPreferenceManager()).thenReturn(mPreferences);
@@ -196,7 +195,7 @@ public class ReceiptsTableTest {
         assertTrue(mSqlCaptor.getValue().contains("path TEXT"));
         assertTrue(mSqlCaptor.getValue().contains("name TEXT"));
         assertTrue(mSqlCaptor.getValue().contains("parent TEXT"));
-        assertTrue(mSqlCaptor.getValue().contains("category TEXT"));
+        assertTrue(mSqlCaptor.getValue().contains("categoryKey INTEGER"));
         assertTrue(mSqlCaptor.getValue().contains("price DECIMAL(10, 2)"));
         assertTrue(mSqlCaptor.getValue().contains("tax DECIMAL(10, 2)"));
         assertTrue(mSqlCaptor.getValue().contains("exchange_rate DECIMAL(10, 10)"));

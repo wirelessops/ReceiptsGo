@@ -57,6 +57,10 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
     @NonNull
     @Override
     public PaymentMethod build(@NonNull PaymentMethod paymentMethod, @NonNull PrimaryKey<PaymentMethod, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        return new PaymentMethodBuilderFactory().setId(primaryKey.getPrimaryKeyValue(paymentMethod)).setMethod(paymentMethod.getMethod()).setSyncState(mSyncStateAdapter.get(paymentMethod.getSyncState(), databaseOperationMetadata)).build();
+        return new PaymentMethodBuilderFactory()
+                .setId(primaryKey.getPrimaryKeyValue(paymentMethod))
+                .setMethod(paymentMethod.getMethod())
+                .setSyncState(mSyncStateAdapter.get(paymentMethod.getSyncState(), databaseOperationMetadata))
+                .build();
     }
 }

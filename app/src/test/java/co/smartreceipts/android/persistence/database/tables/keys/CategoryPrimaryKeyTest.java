@@ -29,18 +29,18 @@ public class CategoryPrimaryKeyTest {
 
     @Test
     public void getPrimaryKeyColumn() throws Exception {
-        assertEquals("name", mCategoryPrimaryKey.getPrimaryKeyColumn());
+        assertEquals("id", mCategoryPrimaryKey.getPrimaryKeyColumn());
     }
 
     @Test
     public void getPrimaryKeyClass() throws Exception {
-        assertEquals(String.class, mCategoryPrimaryKey.getPrimaryKeyClass());
+        assertEquals(Integer.class, mCategoryPrimaryKey.getPrimaryKeyClass());
     }
 
     @Test
     public void getPrimaryKeyValue() throws Exception {
-        final String name = "abcd";
-        when(mCategory.getName()).thenReturn(name);
-        assertEquals(name, mCategoryPrimaryKey.getPrimaryKeyValue(mCategory));
+        final int id = 18;
+        when(mCategory.getId()).thenReturn(id);
+        assertEquals(id, (int) mCategoryPrimaryKey.getPrimaryKeyValue(mCategory));
     }
 }

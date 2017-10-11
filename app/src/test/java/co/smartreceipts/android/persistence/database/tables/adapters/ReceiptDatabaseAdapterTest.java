@@ -23,9 +23,9 @@ import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
+import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -52,7 +52,7 @@ public class ReceiptDatabaseAdapterTest {
     private static final String PARENT = "Trip";
     private static final int CATEGORY_ID = 15;
     private static final String CATEGORY_NAME = "Category";
-    private static final Category CATEGORY = new CategoryBuilderFactory().setId(CATEGORY_ID).setName(CATEGORY_NAME).setCode("code").build(); //new ImmutableCategoryImpl(CATEGORY_NAME, "code");
+    private static final Category CATEGORY = new ImmutableCategoryImpl(CATEGORY_ID, CATEGORY_NAME, "code");
     private static final double PRICE = 12.55d;
     private static final double TAX = 2.50d;
     private static final String CURRENCY_CODE = "USD";
@@ -117,7 +117,7 @@ public class ReceiptDatabaseAdapterTest {
         final int pathIndex = 2;
         final int nameIndex = 3;
         final int parentIndex = 4;
-        final int categoryIndex = 5;
+        final int categoryIdIndex = 5;
         final int priceIndex = 6;
         final int taxIndex = 7;
         final int exchangeRateIndex = 8;
@@ -136,7 +136,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getColumnIndex("path")).thenReturn(pathIndex);
         when(mCursor.getColumnIndex("name")).thenReturn(nameIndex);
         when(mCursor.getColumnIndex("parent")).thenReturn(parentIndex);
-        when(mCursor.getColumnIndex("category")).thenReturn(categoryIndex);
+        when(mCursor.getColumnIndex("categoryKey")).thenReturn(categoryIdIndex);
         when(mCursor.getColumnIndex("price")).thenReturn(priceIndex);
         when(mCursor.getColumnIndex("tax")).thenReturn(taxIndex);
         when(mCursor.getColumnIndex("exchange_rate")).thenReturn(exchangeRateIndex);
@@ -155,7 +155,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getString(pathIndex)).thenReturn(PATH);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
         when(mCursor.getString(parentIndex)).thenReturn(PARENT);
-        when(mCursor.getString(categoryIndex)).thenReturn(CATEGORY_NAME);
+        when(mCursor.getInt(categoryIdIndex)).thenReturn(CATEGORY_ID);
         when(mCursor.getDouble(priceIndex)).thenReturn(PRICE);
         when(mCursor.getDouble(taxIndex)).thenReturn(TAX);
         when(mCursor.getDouble(exchangeRateIndex)).thenReturn(EXCHANGE_RATE_FOR_USD);
@@ -311,7 +311,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setPrice(PRICE)
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
-                .setCategory(new CategoryBuilderFactory().setId(CATEGORY_ID).setName(CATEGORY_NAME).setCode(CATEGORY_NAME).build())
+                .setCategory(null)
                 .setFile(new File(PATH))
                 .setDate(DATE)
                 .setTimeZone(TIMEZONE)
@@ -402,7 +402,7 @@ public class ReceiptDatabaseAdapterTest {
         assertEquals(PATH, contentValues.getAsString("path"));
         assertEquals(NAME, contentValues.getAsString("name"));
         assertEquals(PARENT, contentValues.getAsString("parent"));
-        assertEquals(CATEGORY_NAME, contentValues.getAsString("category"));
+        assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger("categoryKey"));
         assertEquals(PRICE, contentValues.getAsDouble("price"), 0.0001d);
         assertEquals(TAX, contentValues.getAsDouble("tax"), 0.0001d);
         assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble("exchange_rate"), 0.0001d);
@@ -433,7 +433,7 @@ public class ReceiptDatabaseAdapterTest {
         assertEquals(PATH, contentValues.getAsString("path"));
         assertEquals(NAME, contentValues.getAsString("name"));
         assertEquals(PARENT, contentValues.getAsString("parent"));
-        assertEquals(CATEGORY_NAME, contentValues.getAsString("category"));
+        assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger("categoryKey"));
         assertEquals(PRICE, contentValues.getAsDouble("price"), 0.0001d);
         assertEquals(TAX, contentValues.getAsDouble("tax"), 0.0001d);
         assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble("exchange_rate"), 0.0001d);

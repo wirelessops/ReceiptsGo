@@ -23,7 +23,16 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 
+import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED;
+import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION;
+import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_DRIVE_SYNC_ID;
+import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME;
+import static co.smartreceipts.android.persistence.database.tables.CategoriesTable.COLUMN_BREAKDOWN;
+import static co.smartreceipts.android.persistence.database.tables.CategoriesTable.COLUMN_CODE;
+import static co.smartreceipts.android.persistence.database.tables.CategoriesTable.COLUMN_ID;
+import static co.smartreceipts.android.persistence.database.tables.CategoriesTable.COLUMN_NAME;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
@@ -90,7 +99,8 @@ public class CategoriesTableTest {
         verify(customizer).insertCategoryDefaults(mCategoriesTable);
 
         assertTrue(mSqlCaptor.getValue().contains("CREATE TABLE categories"));
-        assertTrue(mSqlCaptor.getValue().contains("name TEXT PRIMARY KEY"));
+        assertTrue(mSqlCaptor.getValue().contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
+        assertTrue(mSqlCaptor.getValue().contains("name TEXT"));
         assertTrue(mSqlCaptor.getValue().contains("code TEXT"));
         assertTrue(mSqlCaptor.getValue().contains("breakdown BOOLEAN"));
         assertTrue(mSqlCaptor.getValue().contains("drive_sync_id TEXT"));
@@ -143,6 +153,31 @@ public class CategoriesTableTest {
         verify(customizer, never()).insertCategoryDefaults(mCategoriesTable);
 
         List<String> allValues = mSqlCaptor.getAllValues();
+
+        assertEquals(allValues.get(0), "CREATE TABLE " + CategoriesTable.TABLE_NAME + "_copy" + " ("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_NAME + " TEXT, "
+                + COLUMN_CODE + " TEXT, "
+                + COLUMN_BREAKDOWN + " BOOLEAN DEFAULT 1, "
+                + COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                + COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                + COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                + COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                + ");");
+
+        final String finalColumns = String.format("%s, %s, %s, %s, %s, %s, %s",
+                COLUMN_NAME, COLUMN_CODE, COLUMN_BREAKDOWN, COLUMN_DRIVE_SYNC_ID,
+                COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME);
+
+
+        assertEquals(allValues.get(1), "INSERT INTO " + CategoriesTable.TABLE_NAME + "_copy (" + finalColumns + ") "
+                + "SELECT " + finalColumns
+                + " FROM " + CategoriesTable.TABLE_NAME + ";");
+
+        assertEquals(allValues.get(2), "DROP TABLE " + CategoriesTable.TABLE_NAME + ";");
+
+        assertEquals(allValues.get(3), "ALTER TABLE " + CategoriesTable.TABLE_NAME + "_copy "
+                + "RENAME TO " + CategoriesTable.TABLE_NAME + ";");
     }
 
     @Test
@@ -173,7 +208,7 @@ public class CategoriesTableTest {
 
     @Test
     public void findByPrimaryKey() {
-        mCategoriesTable.findByPrimaryKey(mCategory1.getName())
+        mCategoriesTable.findByPrimaryKey(mCategory1.getId())
                 .test()
                 .assertNoErrors()
                 .assertResult(mCategory1);
@@ -181,7 +216,7 @@ public class CategoriesTableTest {
 
     @Test
     public void findByPrimaryMissingKey() {
-        mCategoriesTable.findByPrimaryKey("xxx")
+        mCategoriesTable.findByPrimaryKey(28)
                 .test()
                 .assertError(Exception.class);
     }
@@ -191,10 +226,13 @@ public class CategoriesTableTest {
         final String name = "abc";
         final String code = "abc";
         final Category insertCategory = new CategoryBuilderFactory().setName(name).setCode(code).build();
-        assertEquals(insertCategory, mCategoriesTable.insert(insertCategory, new DatabaseOperationMetadata()).blockingGet());
+        Category insertedCategory = mCategoriesTable.insert(insertCategory, new DatabaseOperationMetadata()).blockingGet();
+
+        assertEquals(insertCategory.getName(), insertedCategory.getName());
+        assertEquals(insertCategory.getCode(), insertedCategory.getCode());
 
         final List<Category> categories = mCategoriesTable.get().blockingGet();
-        assertEquals(categories, Arrays.asList(insertCategory, mCategory1, mCategory2));
+        assertEquals(categories, Arrays.asList(insertedCategory, mCategory1, mCategory2));
     }
     
     @Test
@@ -202,10 +240,15 @@ public class CategoriesTableTest {
         final String name = "NewName";
         final String code = "NewCode";
         final Category updateCategory = new CategoryBuilderFactory().setName(name).setCode(code).build();
-        assertEquals(updateCategory, mCategoriesTable.update(mCategory1, updateCategory, new DatabaseOperationMetadata()).blockingGet());
+        Category updatedCategory = mCategoriesTable.update(mCategory1, updateCategory, new DatabaseOperationMetadata()).blockingGet();
+
+        assertNotNull(updatedCategory);
+        assertEquals(name, updatedCategory.getName());
+        assertEquals(code, updatedCategory.getCode());
+        assertFalse(mCategory1.equals(updatedCategory));
 
         final List<Category> categories = mCategoriesTable.get().blockingGet();
-        assertTrue(categories.contains(updateCategory));
+        assertTrue(categories.contains(new CategoryBuilderFactory().setId(mCategory1.getId()).setName(name).setCode(code).build()));
         assertTrue(categories.contains(mCategory2));
     }
 

@@ -99,7 +99,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setPaymentMethod(PaymentMethod method) {
+    public ReceiptBuilderFactory setPaymentMethod(@Nullable PaymentMethod method) {
         _paymentMethod = method;
         return this;
     }
@@ -109,7 +109,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setCategory(@NonNull Category category) {
+    public ReceiptBuilderFactory setCategory(@Nullable Category category) {
         _category = category;
         return this;
     }
@@ -264,7 +264,12 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
     @Override
     @NonNull
     public Receipt build() {
-        return new DefaultReceiptImpl(_id, _index, _trip, _file, _paymentMethod == null ? ImmutablePaymentMethodImpl.NONE : _paymentMethod, _name, _category, _comment, _priceBuilderFactory.build(), _taxBuilderFactory.build(), _date, _timezone, _isReimbursable, _isFullPage, _isSelected, _source, _extraEditText1, _extraEditText2, _extraEditText3, _syncState);
+        return new DefaultReceiptImpl(_id, _index, _trip, _file,
+                _paymentMethod == null ? ImmutablePaymentMethodImpl.NONE : _paymentMethod, _name,
+                _category == null ? new CategoryBuilderFactory().build() : _category, _comment,
+                _priceBuilderFactory.build(), _taxBuilderFactory.build(), _date, _timezone,
+                _isReimbursable, _isFullPage, _isSelected, _source, _extraEditText1,
+                _extraEditText2, _extraEditText3, _syncState);
     }
 
 }

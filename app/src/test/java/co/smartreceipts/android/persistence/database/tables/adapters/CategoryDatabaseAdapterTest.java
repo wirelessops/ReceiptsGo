@@ -51,13 +51,17 @@ public class CategoryDatabaseAdapterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        final int nameIndex = 1;
-        final int codeIndex = 2;
+        final int idIndex = 1;
+        final int nameIndex = 2;
+        final int codeIndex = 3;
+        when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
         when(mCursor.getColumnIndex("name")).thenReturn(nameIndex);
         when(mCursor.getColumnIndex("code")).thenReturn(codeIndex);
+        when(mCursor.getInt(idIndex)).thenReturn(PRIMARY_KEY_INT);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
         when(mCursor.getString(codeIndex)).thenReturn(CODE);
 
+        when(mCategory.getId()).thenReturn(PRIMARY_KEY_INT);
         when(mCategory.getName()).thenReturn(NAME);
         when(mCategory.getCode()).thenReturn(CODE);
         when(mCategory.getSyncState()).thenReturn(mSyncState);
@@ -72,7 +76,7 @@ public class CategoryDatabaseAdapterTest {
 
     @Test
     public void read() throws Exception {
-        final Category category = new CategoryBuilderFactory().setName(NAME).setCode(CODE).setSyncState(mSyncState).build();
+        final Category category = new CategoryBuilderFactory().setId(PRIMARY_KEY_INT).setName(NAME).setCode(CODE).setSyncState(mSyncState).build();
         assertEquals(category, mCategoryDatabaseAdapter.read(mCursor));
     }
 
