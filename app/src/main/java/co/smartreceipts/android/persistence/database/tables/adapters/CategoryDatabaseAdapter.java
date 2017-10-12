@@ -14,6 +14,8 @@ import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
+import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID;
+
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link co.smartreceipts.android.persistence.database.tables.CategoriesTable}
  */
@@ -35,12 +37,14 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
         final int idIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_ID);
         final int nameIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_NAME);
         final int codeIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_CODE);
+        final int customOrderIdIndex = cursor.getColumnIndex(COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
         final String name = cursor.getString(nameIndex);
         final String code = cursor.getString(codeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
-        return new CategoryBuilderFactory().setId(id).setName(name).setCode(code).setSyncState(syncState).build();
+        final int orderId = cursor.getInt(customOrderIdIndex);
+        return new CategoryBuilderFactory().setId(id).setName(name).setCode(code).setSyncState(syncState).setCustomOrderId(orderId).build();
     }
 
     @Override
@@ -49,6 +53,9 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
         final ContentValues values = new ContentValues();
         values.put(CategoriesTable.COLUMN_NAME, category.getName());
         values.put(CategoriesTable.COLUMN_CODE, category.getCode());
+        if (category.getCustomOrderId() != CategoryBuilderFactory.MISSING_ID) {
+            values.put(COLUMN_CUSTOM_ORDER_ID, category.getCustomOrderId());
+        }
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(category.getSyncState()));
         } else {
@@ -60,11 +67,13 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
     @Override
     @NonNull
     public Category build(@NonNull Category category, @NonNull PrimaryKey<Category, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
+        Integer id = primaryKey.getPrimaryKeyValue(category);
         return new CategoryBuilderFactory()
-                .setId(primaryKey.getPrimaryKeyValue(category))
+                .setId(id)
                 .setName(category.getName())
                 .setCode(category.getCode())
                 .setSyncState(mSyncStateAdapter.get(category.getSyncState(), databaseOperationMetadata))
+                .setCustomOrderId(category.getCustomOrderId() == CategoryBuilderFactory.MISSING_ID ? id : category.getCustomOrderId())
                 .build();
     }
 

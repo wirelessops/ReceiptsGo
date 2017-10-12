@@ -20,6 +20,7 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
     private String name;
     private String code;
     private SyncState syncState;
+    private int customOrderId;
 
     /**
      * Default constructor for this class
@@ -29,6 +30,7 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
         name = "";
         code = "";
         syncState = new DefaultSyncState();
+        customOrderId  = MISSING_ID;
     }
 
 
@@ -65,6 +67,17 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
         return this;
     }
 
+    /**
+     * Defines the "custom_order_id" for this category
+     *
+     * @param orderId - the category custom order id
+     * @return this {@link CategoryBuilderFactory} for method chaining
+     */
+    public CategoryBuilderFactory setCustomOrderId(int orderId) {
+        this.customOrderId = orderId;
+        return this;
+    }
+
     public CategoryBuilderFactory setSyncState(@NonNull SyncState syncState) {
         this.syncState = Preconditions.checkNotNull(syncState);
         return this;
@@ -75,6 +88,6 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      */
     @NonNull
     public Category build() {
-        return new ImmutableCategoryImpl(id, name, code, syncState);
+        return new ImmutableCategoryImpl(id, name, code, syncState, customOrderId);
     }
 }

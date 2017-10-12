@@ -2,9 +2,9 @@ package co.smartreceipts.android.settings.widget.editors.categories;
 
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
-import co.smartreceipts.android.settings.widget.editors.adapters.EditableCardsAdapter;
+import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 
-public class CategoriesAdapter extends EditableCardsAdapter<Category> {
+public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
 
     public CategoriesAdapter(EditableItemListener<Category> listener) {
         super(listener);

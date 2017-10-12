@@ -14,7 +14,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.SimpleInsertableListFragment;
-import co.smartreceipts.android.settings.widget.editors.adapters.EditableCardsAdapter;
+import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.dialog.fragments.EditTextDialogFragment;
 
@@ -46,7 +46,7 @@ public class PaymentMethodsListFragment extends SimpleInsertableListFragment<Pay
     }
 
     @Override
-    protected EditableCardsAdapter<PaymentMethod> getAdapter() {
+    protected DraggableEditableCardsAdapter<PaymentMethod> getAdapter() {
         return new PaymentMethodsAdapter(this);
     }
 

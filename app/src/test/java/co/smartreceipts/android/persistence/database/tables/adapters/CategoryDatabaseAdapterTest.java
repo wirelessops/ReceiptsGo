@@ -112,4 +112,6 @@ public class CategoryDatabaseAdapterTest {
         assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
         assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
+
+    // TODO: 11.10.2017 test custom order id
 }

@@ -40,6 +40,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     public static final String COLUMN_DRIVE_IS_SYNCED = "drive_is_synced";
     public static final String COLUMN_DRIVE_MARKED_FOR_DELETION = "drive_marked_for_deletion";
     public static final String COLUMN_LAST_LOCAL_MODIFICATION_TIME = "last_local_modification_time";
+    public static final String COLUMN_CUSTOM_ORDER_ID = "custom_order_id";
 
     private final SQLiteOpenHelper mSQLiteOpenHelper;
     private final String mTableName;

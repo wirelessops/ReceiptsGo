@@ -25,13 +25,12 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
 
 
     public CategoriesTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper) {
+        // TODO: 12.10.2017 change orderBy
         super(sqLiteOpenHelper, TABLE_NAME, new CategoryDatabaseAdapter(), new CategoryPrimaryKey(), new OrderBy(COLUMN_NAME, false));
     }
 
     @Override
     public synchronized void onCreate(@NonNull SQLiteDatabase db, @NonNull TableDefaultsCustomizer customizer) {
-        // TODO: 03.10.2017 create table with ID
-        // TODO: 03.10.2017 change model -- done
         super.onCreate(db, customizer);
         final String categories = "CREATE TABLE " + getTableName() + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -41,12 +40,19 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
                 + COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                + COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                + COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
                 + ");";
 
         Logger.debug(this, categories);
         db.execSQL(categories);
+
         customizer.insertCategoryDefaults(this);
+
+        final String fillCustomOrderColumn = String.format("UPDATE %s SET %s = %s", getTableName(), COLUMN_CUSTOM_ORDER_ID, COLUMN_ID);
+        Logger.debug(this, fillCustomOrderColumn);
+        db.execSQL(fillCustomOrderColumn);
+
     }
 
     @Override
@@ -94,7 +100,16 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
             Logger.debug(this, renameTable);
             db.execSQL(renameTable);
 
-            // TODO: 06.10.2017  Add 'custom_order_id' column
+            // adding custom_order_id column
+            final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
+                    getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
+            Logger.debug(this, addCustomOrderColumn);
+            db.execSQL(addCustomOrderColumn);
+
+            final String fillCustomOrderColumn = String.format("UPDATE %s SET %s = %s", getTableName(), COLUMN_CUSTOM_ORDER_ID, COLUMN_ID);
+            Logger.debug(this, fillCustomOrderColumn);
+            db.execSQL(fillCustomOrderColumn);
+
         }
     }
 }

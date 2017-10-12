@@ -17,8 +17,8 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 
 
-public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<EditableCardsAdapter.EditableCardsViewHolder>
-        implements DraggableItemAdapter<EditableCardsAdapter.EditableCardsViewHolder> {
+public abstract class DraggableEditableCardsAdapter<T> extends RecyclerView.Adapter<DraggableEditableCardsAdapter.EditableCardsViewHolder>
+        implements DraggableItemAdapter<DraggableEditableCardsAdapter.EditableCardsViewHolder> {
 
     protected final List<T> items;
 
@@ -26,11 +26,11 @@ public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<Edita
 
     private boolean isOnDragMode;
 
-    public EditableCardsAdapter(EditableItemListener<T> listener) {
+    public DraggableEditableCardsAdapter(EditableItemListener<T> listener) {
         this(listener, new ArrayList<T>());
     }
 
-    private EditableCardsAdapter(EditableItemListener<T> listener, List<T> items) {
+    private DraggableEditableCardsAdapter(EditableItemListener<T> listener, List<T> items) {
         this.listener = listener;
         this.items = items;
 
@@ -75,7 +75,7 @@ public abstract class EditableCardsAdapter<T> extends RecyclerView.Adapter<Edita
         items.add(toPosition, movedItem);
         notifyItemMoved(fromPosition, toPosition);
 
-        //mProvider.moveItem(fromPosition, toPosition);
+        // TODO: 13.10.2017 moveItem(fromPosition, toPosition);
 
         notifyItemMoved(fromPosition, toPosition);
     }

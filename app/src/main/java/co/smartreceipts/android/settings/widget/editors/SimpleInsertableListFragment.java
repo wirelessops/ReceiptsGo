@@ -24,7 +24,7 @@ import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.settings.widget.editors.adapters.EditableCardsAdapter;
+import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 
 import static android.R.id.list;
 
@@ -33,7 +33,7 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
     private Toolbar toolbar;
     private RecyclerView recyclerView;
 
-    private EditableCardsAdapter<T> adapter;
+    private DraggableEditableCardsAdapter<T> adapter;
 
     private RecyclerViewDragDropManager recyclerViewDragDropManager = new RecyclerViewDragDropManager();
 
@@ -141,9 +141,9 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
     }
 
     /**
-     * @return the {@link EditableCardsAdapter} that is being used by this fragment
+     * @return the {@link DraggableEditableCardsAdapter} that is being used by this fragment
      */
-    protected abstract EditableCardsAdapter<T> getAdapter();
+    protected abstract DraggableEditableCardsAdapter<T> getAdapter();
 
     /**
      * @return - the data set used to populate this list fragment

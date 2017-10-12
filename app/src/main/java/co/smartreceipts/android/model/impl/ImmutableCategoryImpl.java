@@ -11,50 +11,59 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
 public class ImmutableCategoryImpl implements Category {
 
-    private final int mId;
-    private final String mName;
-    private final String mCode;
-    private final SyncState mSyncState;
+    private final int id;
+    private final String name;
+    private final String code;
+    private final SyncState syncState;
+    private final int customOrderId;
 
     public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code) {
-        this(id, name, code, new DefaultSyncState());
+        this(id, name, code, new DefaultSyncState(), id);
     }
 
-    public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code, @NonNull SyncState syncState) {
-        this.mId = id;
-        mName = Preconditions.checkNotNull(name);
-        mCode = Preconditions.checkNotNull(code);
-        mSyncState = Preconditions.checkNotNull(syncState);
+    public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code,
+                                 @NonNull SyncState syncState, int customOrderId) {
+        this.id = id;
+        this.name = Preconditions.checkNotNull(name);
+        this.code = Preconditions.checkNotNull(code);
+        this.syncState = Preconditions.checkNotNull(syncState);
+        this.customOrderId = customOrderId;
     }
 
     private ImmutableCategoryImpl(final Parcel in) {
-        mId = in.readInt();
-        mName = in.readString();
-        mCode = in.readString();
-        mSyncState = in.readParcelable(getClass().getClassLoader());
+        id = in.readInt();
+        name = in.readString();
+        code = in.readString();
+        syncState = in.readParcelable(getClass().getClassLoader());
+        customOrderId = in.readInt();
     }
 
     @Override
     public int getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
     @Override
     public String getName() {
-        return mName;
+        return name;
     }
 
     @NonNull
     @Override
     public String getCode() {
-        return mCode;
+        return code;
     }
 
     @NonNull
     @Override
     public SyncState getSyncState() {
-        return mSyncState;
+        return syncState;
+    }
+
+    @Override
+    public int getCustomOrderId() {
+        return customOrderId;
     }
 
     @Override
@@ -64,23 +73,26 @@ public class ImmutableCategoryImpl implements Category {
 
         ImmutableCategoryImpl that = (ImmutableCategoryImpl) o;
 
-        if (mId != that.mId) return false;
-        if (!mName.equals(that.mName)) return false;
-        return mCode.equals(that.mCode);
+        if (id != that.id) return false;
+        if (customOrderId != that.customOrderId) return false;
+        if (!name.equals(that.name)) return false;
+        return code.equals(that.code);
 
     }
 
-    @Override
+        @Override
     public int hashCode() {
-        int result = mId;
-        result = 31 * result + mName.hashCode();
-        result = 31 * result + mCode.hashCode();
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + code.hashCode();
+        result = 31 * result + customOrderId;
+
         return result;
     }
 
     @Override
     public String toString() {
-        return mName;
+        return name;
     }
 
     @Override
@@ -90,10 +102,11 @@ public class ImmutableCategoryImpl implements Category {
 
     @Override
     public void writeToParcel(final Parcel out, final int flags) {
-        out.writeInt(mId);
-        out.writeString(mName);
-        out.writeString(mCode);
-        out.writeParcelable(mSyncState, flags);
+        out.writeInt(id);
+        out.writeString(name);
+        out.writeString(code);
+        out.writeParcelable(syncState, flags);
+        out.writeInt(customOrderId);
     }
 
     public static Creator<ImmutableCategoryImpl> CREATOR = new Creator<ImmutableCategoryImpl>() {
@@ -110,9 +123,4 @@ public class ImmutableCategoryImpl implements Category {
 
     };
 
-//
-//    @Override
-//    public int compareTo(@NonNull Category category) {
-//        return mName.compareTo(category.getName());
-//    }
 }

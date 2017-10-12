@@ -4,9 +4,9 @@ import android.view.View;
 
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
-import co.smartreceipts.android.settings.widget.editors.adapters.EditableCardsAdapter;
+import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 
-public class PaymentMethodsAdapter extends EditableCardsAdapter<PaymentMethod> {
+public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<PaymentMethod> {
 
     public PaymentMethodsAdapter(EditableItemListener<PaymentMethod> listener) {
         super(listener);

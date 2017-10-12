@@ -18,7 +18,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.SimpleInsertableListFragment;
-import co.smartreceipts.android.settings.widget.editors.adapters.EditableCardsAdapter;
+import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import dagger.android.support.AndroidSupportInjection;
 
 public class CategoriesListFragment extends SimpleInsertableListFragment<Category> {
@@ -52,7 +52,7 @@ public class CategoriesListFragment extends SimpleInsertableListFragment<Categor
         }
     }
 
-    protected EditableCardsAdapter<Category> getAdapter() {
+    protected DraggableEditableCardsAdapter<Category> getAdapter() {
         return new CategoriesAdapter(this);
     }
 
