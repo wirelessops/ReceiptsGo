@@ -24,7 +24,7 @@ public class ImmutableCategoryImplTest {
     private static final int ID = 3;
     private static final String NAME = "name";
     private static final String CODE = "code";
-
+    private static final int CUSTOM_ORDER_ID = 15;
     // Class under test
     ImmutableCategoryImpl mImmutableCategory;
 
@@ -33,7 +33,7 @@ public class ImmutableCategoryImplTest {
     @Before
     public void setUp() throws Exception {
         mSyncState = DefaultObjects.newDefaultSyncState();
-        mImmutableCategory = new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState);
+        mImmutableCategory = new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState, CUSTOM_ORDER_ID);
     }
 
     @Test
@@ -52,14 +52,20 @@ public class ImmutableCategoryImplTest {
     }
 
     @Test
+    public void getCustomOrderId() {
+        assertEquals(CUSTOM_ORDER_ID, mImmutableCategory.getCustomOrderId());
+    }
+
+    @Test
     public void equals() {
         assertEquals(mImmutableCategory, mImmutableCategory);
-        assertEquals(mImmutableCategory, new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState));
+        assertEquals(mImmutableCategory, new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState, CUSTOM_ORDER_ID));
         assertThat(mImmutableCategory, not(equalTo(new Object())));
         assertThat(mImmutableCategory, not(equalTo(mock(Category.class))));
-        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(0, NAME, CODE, mSyncState))));
-        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, "wrong", CODE, mSyncState))));
-        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, NAME, "wrong", mSyncState))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(0, NAME, CODE, mSyncState, CUSTOM_ORDER_ID))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, "wrong", CODE, mSyncState, CUSTOM_ORDER_ID))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, NAME, "wrong", mSyncState, CUSTOM_ORDER_ID))));
+        assertThat(mImmutableCategory, not(equalTo(new ImmutableCategoryImpl(ID, NAME, "wrong", mSyncState, CUSTOM_ORDER_ID + 1))));
     }
 
     @Test

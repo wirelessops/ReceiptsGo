@@ -28,6 +28,12 @@ public class CategoryDatabaseAdapterTest {
     private static final String NAME = "name_123";
     private static final int PRIMARY_KEY_INT = 15;
     private static final String CODE = "code_123";
+    private static final int CUSTOM_ORDER_ID = 10;
+
+    private static final String CUSTOM_ORDER_ID_KEY = "custom_order_id";
+    private static final String ID_KEY = "id";
+    private static final String NAME_KEY = "name";
+    private static final String CODE_KEY = "code";
 
     // Class under test
     CategoryDatabaseAdapter mCategoryDatabaseAdapter;
@@ -54,17 +60,21 @@ public class CategoryDatabaseAdapterTest {
         final int idIndex = 1;
         final int nameIndex = 2;
         final int codeIndex = 3;
-        when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
-        when(mCursor.getColumnIndex("name")).thenReturn(nameIndex);
-        when(mCursor.getColumnIndex("code")).thenReturn(codeIndex);
+        final int customOrderIdIndex = 4;
+        when(mCursor.getColumnIndex(ID_KEY)).thenReturn(idIndex);
+        when(mCursor.getColumnIndex(NAME_KEY)).thenReturn(nameIndex);
+        when(mCursor.getColumnIndex(CODE_KEY)).thenReturn(codeIndex);
+        when(mCursor.getColumnIndex(CUSTOM_ORDER_ID_KEY)).thenReturn(customOrderIdIndex);
         when(mCursor.getInt(idIndex)).thenReturn(PRIMARY_KEY_INT);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
         when(mCursor.getString(codeIndex)).thenReturn(CODE);
+        when(mCursor.getInt(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
 
         when(mCategory.getId()).thenReturn(PRIMARY_KEY_INT);
         when(mCategory.getName()).thenReturn(NAME);
         when(mCategory.getCode()).thenReturn(CODE);
         when(mCategory.getSyncState()).thenReturn(mSyncState);
+        when(mCategory.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
 
         when(mPrimaryKey.getPrimaryKeyValue(mCategory)).thenReturn(PRIMARY_KEY_INT);
 
@@ -76,7 +86,13 @@ public class CategoryDatabaseAdapterTest {
 
     @Test
     public void read() throws Exception {
-        final Category category = new CategoryBuilderFactory().setId(PRIMARY_KEY_INT).setName(NAME).setCode(CODE).setSyncState(mSyncState).build();
+        final Category category = new CategoryBuilderFactory()
+                .setId(PRIMARY_KEY_INT)
+                .setName(NAME)
+                .setCode(CODE)
+                .setSyncState(mSyncState)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
+                .build();
         assertEquals(category, mCategoryDatabaseAdapter.read(mCursor));
     }
 
@@ -88,9 +104,10 @@ public class CategoryDatabaseAdapterTest {
         when(mSyncStateAdapter.writeUnsynced(mSyncState)).thenReturn(syncValues);
 
         final ContentValues contentValues = mCategoryDatabaseAdapter.write(mCategory, new DatabaseOperationMetadata());
-        assertEquals(NAME, contentValues.getAsString("name"));
-        assertEquals(CODE, contentValues.getAsString("code"));
+        assertEquals(NAME, contentValues.getAsString(NAME_KEY));
+        assertEquals(CODE, contentValues.getAsString(CODE_KEY));
         assertEquals(sync, contentValues.getAsString(sync));
+        assertEquals(CUSTOM_ORDER_ID, (int) contentValues.getAsInteger(CUSTOM_ORDER_ID_KEY));
     }
 
     @Test
@@ -101,17 +118,61 @@ public class CategoryDatabaseAdapterTest {
         when(mSyncStateAdapter.write(mSyncState)).thenReturn(syncValues);
 
         final ContentValues contentValues = mCategoryDatabaseAdapter.write(mCategory, new DatabaseOperationMetadata(OperationFamilyType.Sync));
-        assertEquals(NAME, contentValues.getAsString("name"));
-        assertEquals(CODE, contentValues.getAsString("code"));
+        assertEquals(NAME, contentValues.getAsString(NAME_KEY));
+        assertEquals(CODE, contentValues.getAsString(CODE_KEY));
         assertEquals(sync, contentValues.getAsString(sync));
+        assertEquals(CUSTOM_ORDER_ID, (int) contentValues.getAsInteger(CUSTOM_ORDER_ID_KEY));
     }
 
     @Test
     public void build() throws Exception {
-        final Category category = new CategoryBuilderFactory().setId(PRIMARY_KEY_INT).setName(NAME).setCode(CODE).setSyncState(mGetSyncState).build();
+        final Category category = new CategoryBuilderFactory()
+                .setId(PRIMARY_KEY_INT)
+                .setName(NAME)
+                .setCode(CODE)
+                .setSyncState(mGetSyncState)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
+                .build();
         assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
         assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 
-    // TODO: 11.10.2017 test custom order id
+    @Test
+    public void dontWriteCustomOrderIdIfNotPresent() {
+        final String sync = "sync";
+        final ContentValues syncValues = new ContentValues();
+        syncValues.put(sync, sync);
+        when(mSyncStateAdapter.write(mSyncState)).thenReturn(syncValues);
+
+        final Category category = new CategoryBuilderFactory()
+                .setId(PRIMARY_KEY_INT)
+                .setName(NAME)
+                .setCode(CODE)
+                .setSyncState(mSyncState)
+                .build();
+
+        final ContentValues contentValues = mCategoryDatabaseAdapter.write(category, new DatabaseOperationMetadata(OperationFamilyType.Sync));
+
+        assertEquals(null, contentValues.getAsInteger(CUSTOM_ORDER_ID_KEY));
+    }
+
+    @Test
+    public void buildCustomOrderIdAsIdIfNotPresent() {
+        final Category category = new CategoryBuilderFactory()
+                .setId(PRIMARY_KEY_INT)
+                .setName(NAME)
+                .setCode(CODE)
+                .setSyncState(mGetSyncState)
+                .build();
+
+        when(mPrimaryKey.getPrimaryKeyValue(category)).thenReturn(PRIMARY_KEY_INT);
+
+        final Category builtCategory = mCategoryDatabaseAdapter.build(category, mPrimaryKey, mock(DatabaseOperationMetadata.class));
+
+        assertEquals(category.getId(), builtCategory.getId());
+        assertEquals(category.getName(), builtCategory.getName());
+        assertEquals(category.getCode(), builtCategory.getCode());
+
+        assertEquals(category.getId(), builtCategory.getCustomOrderId());
+    }
 }

@@ -77,17 +77,19 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
                     + COLUMN_DRIVE_SYNC_ID + " TEXT, "
                     + COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                     + COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                    + COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                    + COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                    + COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
                     + ");";
             Logger.debug(this, copyTable);
             db.execSQL(copyTable);
 
-            final String finalColumns = String.format("%s, %s, %s, %s, %s, %s, %s",
+            final String baseColumns = String.format("%s, %s, %s, %s, %s, %s, %s",
                     COLUMN_NAME, COLUMN_CODE, COLUMN_BREAKDOWN, COLUMN_DRIVE_SYNC_ID,
                     COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME);
 
-            final String insertData = "INSERT INTO " + getTableName() + "_copy" + " (" + finalColumns + ") "
-                    + "SELECT " + finalColumns
+            final String insertData = "INSERT INTO " + getTableName() + "_copy"
+                    + " (" + baseColumns + ", " + COLUMN_CUSTOM_ORDER_ID + ") "
+                    + "SELECT " + baseColumns + ", " + COLUMN_ID
                     + " FROM " + getTableName() + ";";
             Logger.debug(this, insertData);
             db.execSQL(insertData);
@@ -99,17 +101,6 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
             final String renameTable = "ALTER TABLE " + getTableName() + "_copy" + " RENAME TO " + getTableName() + ";";
             Logger.debug(this, renameTable);
             db.execSQL(renameTable);
-
-            // adding custom_order_id column
-            final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
-                    getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
-            Logger.debug(this, addCustomOrderColumn);
-            db.execSQL(addCustomOrderColumn);
-
-            final String fillCustomOrderColumn = String.format("UPDATE %s SET %s = %s", getTableName(), COLUMN_CUSTOM_ORDER_ID, COLUMN_ID);
-            Logger.debug(this, fillCustomOrderColumn);
-            db.execSQL(fillCustomOrderColumn);
-
         }
     }
 }
