@@ -29,6 +29,7 @@ public class PaymentMethodDatabaseAdapterTest {
     private static final int ID = 5;
     private static final int PRIMARY_KEY_ID = 11;
     private static final String METHOD = "abcd";
+    private static final int CUSTOM_ORDER = 8;
 
     // Class under test
     PaymentMethodDatabaseAdapter mPaymentMethodDatabaseAdapter;
@@ -54,14 +55,18 @@ public class PaymentMethodDatabaseAdapterTest {
 
         final int idIndex = 1;
         final int methodIndex = 2;
+        final int orderIndex = 3;
         when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
         when(mCursor.getColumnIndex("method")).thenReturn(methodIndex);
+        when(mCursor.getColumnIndex("custom_order_id")).thenReturn(orderIndex);
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(methodIndex)).thenReturn(METHOD);
+        when(mCursor.getInt(orderIndex)).thenReturn(CUSTOM_ORDER);
 
         when(mPaymentMethod.getId()).thenReturn(ID);
         when(mPaymentMethod.getMethod()).thenReturn(METHOD);
         when(mPaymentMethod.getSyncState()).thenReturn(mSyncState);
+        when(mPaymentMethod.getCustomOrderId()).thenReturn(CUSTOM_ORDER);
 
         when(mPrimaryKey.getPrimaryKeyValue(mPaymentMethod)).thenReturn(PRIMARY_KEY_ID);
 
@@ -73,7 +78,12 @@ public class PaymentMethodDatabaseAdapterTest {
 
     @Test
     public void read() throws Exception {
-        final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory().setId(ID).setMethod(METHOD).setSyncState(mSyncState).build();
+        final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
+                .setId(ID)
+                .setMethod(METHOD)
+                .setSyncState(mSyncState)
+                .setCustomOrderId(CUSTOM_ORDER)
+                .build();
         assertEquals(paymentMethod, mPaymentMethodDatabaseAdapter.read(mCursor));
     }
 
@@ -87,6 +97,7 @@ public class PaymentMethodDatabaseAdapterTest {
         final ContentValues contentValues = mPaymentMethodDatabaseAdapter.write(mPaymentMethod, new DatabaseOperationMetadata());
         assertEquals(METHOD, contentValues.getAsString("method"));
         assertEquals(sync, contentValues.getAsString(sync));
+        assertEquals(CUSTOM_ORDER, (int) contentValues.getAsInteger("custom_order_id"));
         assertFalse(contentValues.containsKey("id"));
     }
 
@@ -100,12 +111,20 @@ public class PaymentMethodDatabaseAdapterTest {
         final ContentValues contentValues = mPaymentMethodDatabaseAdapter.write(mPaymentMethod, new DatabaseOperationMetadata(OperationFamilyType.Sync));
         assertEquals(METHOD, contentValues.getAsString("method"));
         assertEquals(sync, contentValues.getAsString(sync));
+        assertEquals(CUSTOM_ORDER, (int) contentValues.getAsInteger("custom_order_id"));
         assertFalse(contentValues.containsKey("id"));
     }
 
     @Test
     public void build() throws Exception {
-        final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory().setId(PRIMARY_KEY_ID).setMethod(METHOD).setSyncState(mGetSyncState).build();
-        assertEquals(paymentMethod, mPaymentMethodDatabaseAdapter.build(mPaymentMethod, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
+        final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
+                .setId(PRIMARY_KEY_ID)
+                .setMethod(METHOD)
+                .setSyncState(mGetSyncState)
+                .setCustomOrderId(CUSTOM_ORDER)
+                .build();
+        final PaymentMethod actual = mPaymentMethodDatabaseAdapter.build(mPaymentMethod, mPrimaryKey, mock(DatabaseOperationMetadata.class));
+
+        assertEquals(paymentMethod, actual);
     }
 }

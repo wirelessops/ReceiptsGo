@@ -20,24 +20,27 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
     
     public static final PaymentMethod NONE = new PaymentMethodBuilderFactory().setMethod(Resources.getSystem().getString(android.R.string.untitled)).build();
 
-    private final int mId;
-    private final String mMethod;
-    private final SyncState mSyncState;
+    private final int id;
+    private final String method;
+    private final SyncState syncState;
+    private final int customOrderId;
 
     public ImmutablePaymentMethodImpl(int id, @NonNull String method) {
-        this(id, method, new DefaultSyncState());
+        this(id, method, new DefaultSyncState(), 0);
     }
 
-    public ImmutablePaymentMethodImpl(int id, @NonNull String method, @NonNull SyncState syncState) {
-        mId = id;
-        mMethod = Preconditions.checkNotNull(method);
-        mSyncState = Preconditions.checkNotNull(syncState);
+    public ImmutablePaymentMethodImpl(int id, @NonNull String method, @NonNull SyncState syncState, int customOrderId) {
+        this.id = id;
+        this.method = Preconditions.checkNotNull(method);
+        this.syncState = Preconditions.checkNotNull(syncState);
+        this.customOrderId = customOrderId;
     }
 
     private ImmutablePaymentMethodImpl(final Parcel in) {
-        mId = in.readInt();
-        mMethod = in.readString();
-        mSyncState = in.readParcelable(getClass().getClassLoader());
+        id = in.readInt();
+        method = in.readString();
+        syncState = in.readParcelable(getClass().getClassLoader());
+        customOrderId = in.readInt();
     }
 
     /**
@@ -45,24 +48,29 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
      */
     @Override
     public int getId() {
-        return mId;
+        return id;
     }
 
     @Override
     @NonNull
     public String getMethod() {
-        return mMethod;
+        return method;
     }
 
     @NonNull
     @Override
     public SyncState getSyncState() {
-        return mSyncState;
+        return syncState;
+    }
+
+    @Override
+    public int getCustomOrderId() {
+        return customOrderId;
     }
 
     @Override
     public String toString() {
-        return mMethod;
+        return method;
     }
 
     @Override
@@ -72,14 +80,16 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
 
         ImmutablePaymentMethodImpl that = (ImmutablePaymentMethodImpl) o;
 
-        if (mId != that.mId) return false;
-        return (mMethod.equals(that.mMethod));
+        if (id != that.id) return false;
+        if (customOrderId != that.customOrderId) return false;
+        return (method.equals(that.method));
     }
 
     @Override
     public int hashCode() {
-        int result = mId;
-        result = 31 * result + mMethod.hashCode();
+        int result = id;
+        result = 31 * result + method.hashCode();
+        result = 31 * result + customOrderId;
         return result;
     }
 
@@ -90,9 +100,10 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
 
     @Override
     public void writeToParcel(final Parcel out, final int flags) {
-        out.writeInt(mId);
-        out.writeString(mMethod);
-        out.writeParcelable(mSyncState, flags);
+        out.writeInt(id);
+        out.writeString(method);
+        out.writeParcelable(syncState, flags);
+        out.writeInt(customOrderId);
     }
 
     public static Creator<ImmutablePaymentMethodImpl> CREATOR = new Creator<ImmutablePaymentMethodImpl>() {

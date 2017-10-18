@@ -18,6 +18,7 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
     private int _id;
     private String _method;
     private SyncState _syncState;
+    private int _customOrderId;
 
     /**
      * Default constructor for this class
@@ -26,6 +27,7 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
         _id = MISSING_ID;
         _method = "";
         _syncState = new DefaultSyncState();
+        _customOrderId = 0;
     }
 
     /**
@@ -55,11 +57,23 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
         return this;
     }
 
+
+    /**
+     * Defines the "custom_order_id" for this payment method
+     *
+     * @param orderId - the payment method custom order id
+     * @return this {@link PaymentMethodBuilderFactory} for method chaining
+     */
+    public PaymentMethodBuilderFactory setCustomOrderId(int orderId) {
+        _customOrderId = orderId;
+        return this;
+    }
+
     /**
      * @return - the {@link PaymentMethodBuilderFactory} object as set by the setter methods in this class
      */
     @NonNull
     public PaymentMethod build() {
-        return new ImmutablePaymentMethodImpl(_id, _method, _syncState);
+        return new ImmutablePaymentMethodImpl(_id, _method, _syncState, _customOrderId);
     }
 }

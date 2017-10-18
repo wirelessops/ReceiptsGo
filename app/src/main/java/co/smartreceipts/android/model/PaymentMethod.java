@@ -10,7 +10,7 @@ import co.smartreceipts.android.sync.model.Syncable;
  *
  * @author Will Baumann
  */
-public interface PaymentMethod extends Parcelable, Syncable {
+public interface PaymentMethod extends Parcelable, Syncable, Draggable {
 
     /**
      * @return - the database primary key id for this method

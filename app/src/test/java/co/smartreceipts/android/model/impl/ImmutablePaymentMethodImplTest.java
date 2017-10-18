@@ -23,6 +23,7 @@ public class ImmutablePaymentMethodImplTest {
 
     private static final int ID = 5;
     private static final String METHOD = "method";
+    private static final int CUSTOM_ORDER_ID = 2;
 
     // Class under test
     ImmutablePaymentMethodImpl mPaymentMethod;
@@ -32,7 +33,7 @@ public class ImmutablePaymentMethodImplTest {
     @Before
     public void setUp() throws Exception {
         mSyncState = DefaultObjects.newDefaultSyncState();
-        mPaymentMethod = new ImmutablePaymentMethodImpl(ID, METHOD, mSyncState);
+        mPaymentMethod = new ImmutablePaymentMethodImpl(ID, METHOD, mSyncState, CUSTOM_ORDER_ID);
     }
 
     @Test
@@ -51,13 +52,19 @@ public class ImmutablePaymentMethodImplTest {
     }
 
     @Test
+    public void getCustomOrderId() {
+        assertEquals(CUSTOM_ORDER_ID, mPaymentMethod.getCustomOrderId());
+    }
+
+    @Test
     public void equals() {
         assertEquals(mPaymentMethod, mPaymentMethod);
-        assertEquals(mPaymentMethod, new ImmutablePaymentMethodImpl(ID, METHOD, mSyncState));
+        assertEquals(mPaymentMethod, new ImmutablePaymentMethodImpl(ID, METHOD, mSyncState, CUSTOM_ORDER_ID));
         assertThat(mPaymentMethod, not(equalTo(new Object())));
         assertThat(mPaymentMethod, not(equalTo(mock(PaymentMethod.class))));
-        assertThat(mPaymentMethod, not(equalTo(new ImmutablePaymentMethodImpl(-1, METHOD, mSyncState))));
-        assertThat(mPaymentMethod, not(equalTo(new ImmutablePaymentMethodImpl(ID, "abcd", mSyncState))));
+        assertThat(mPaymentMethod, not(equalTo(new ImmutablePaymentMethodImpl(-1, METHOD, mSyncState, CUSTOM_ORDER_ID))));
+        assertThat(mPaymentMethod, not(equalTo(new ImmutablePaymentMethodImpl(ID, "abcd", mSyncState, CUSTOM_ORDER_ID))));
+        assertThat(mPaymentMethod, not(equalTo(new ImmutablePaymentMethodImpl(ID, "abcd", mSyncState, CUSTOM_ORDER_ID + 1))));
     }
 
     @Test

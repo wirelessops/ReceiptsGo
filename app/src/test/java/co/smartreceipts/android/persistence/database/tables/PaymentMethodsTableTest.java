@@ -39,6 +39,8 @@ public class PaymentMethodsTableTest {
     private static final String METHOD1 = "name1";
     private static final String METHOD2 = "name2";
     private static final String METHOD3 = "name3";
+    private static final int ORDER_ID1 = 1;
+    private static final int ORDER_ID2 = 2;
 
     // Class under test
     PaymentMethodsTable mPaymentMethodsTable;
@@ -67,8 +69,8 @@ public class PaymentMethodsTableTest {
 
         // Now create the table and insert some defaults
         mPaymentMethodsTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);
-        mPaymentMethod1 = mPaymentMethodsTable.insert(new PaymentMethodBuilderFactory().setMethod(METHOD1).build(), new DatabaseOperationMetadata()).blockingGet();
-        mPaymentMethod2 = mPaymentMethodsTable.insert(new PaymentMethodBuilderFactory().setMethod(METHOD2).build(), new DatabaseOperationMetadata()).blockingGet();
+        mPaymentMethod1 = mPaymentMethodsTable.insert(new PaymentMethodBuilderFactory().setMethod(METHOD1).setCustomOrderId(ORDER_ID1).build(), new DatabaseOperationMetadata()).blockingGet();
+        mPaymentMethod2 = mPaymentMethodsTable.insert(new PaymentMethodBuilderFactory().setMethod(METHOD2).setCustomOrderId(ORDER_ID2).build(), new DatabaseOperationMetadata()).blockingGet();
     }
 
     @After
@@ -85,16 +87,23 @@ public class PaymentMethodsTableTest {
     public void onCreate() {
         final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
         mPaymentMethodsTable.onCreate(mSQLiteDatabase, customizer);
-        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
+        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
         verify(customizer).insertPaymentMethodDefaults(mPaymentMethodsTable);
 
-        assertTrue(mSqlCaptor.getValue().contains("CREATE TABLE paymentmethods"));
-        assertTrue(mSqlCaptor.getValue().contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
-        assertTrue(mSqlCaptor.getValue().contains("method TEXT"));
-        assertTrue(mSqlCaptor.getValue().contains("drive_sync_id TEXT"));
-        assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN DEFAULT 0"));
-        assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
-        assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        final List<String> allValues = mSqlCaptor.getAllValues();
+
+        assertEquals(2, allValues.size());
+
+        assertTrue(allValues.get(0).contains("CREATE TABLE paymentmethods"));
+        assertTrue(allValues.get(0).contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
+        assertTrue(allValues.get(0).contains("method TEXT"));
+        assertTrue(allValues.get(0).contains("drive_sync_id TEXT"));
+        assertTrue(allValues.get(0).contains("drive_is_synced BOOLEAN DEFAULT 0"));
+        assertTrue(allValues.get(0).contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
+        assertTrue(allValues.get(0).contains("last_local_modification_time DATE"));
+        assertTrue(allValues.get(0).contains("custom_order_id INTEGER DEFAULT 0"));
+
+        assertTrue(allValues.get(1).contains("UPDATE paymentmethods SET custom_order_id = id"));
     }
 
     @Test
@@ -134,6 +143,17 @@ public class PaymentMethodsTableTest {
     }
 
     @Test
+    public void onUpgradeFromV15() {
+        final int oldVersion = 15;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mPaymentMethodsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertPaymentMethodDefaults(mPaymentMethodsTable);
+    }
+
+    @Test
     public void onUpgradeAlreadyOccurred() {
         final int oldVersion = DatabaseHelper.DATABASE_VERSION;
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
@@ -158,6 +178,8 @@ public class PaymentMethodsTableTest {
 
         final List<PaymentMethod> paymentMethods = mPaymentMethodsTable.get().blockingGet();
         assertEquals(paymentMethods, Arrays.asList(mPaymentMethod1, mPaymentMethod2, paymentMethod));
+
+        assertEquals(0, paymentMethod.getCustomOrderId());
     }
 
     @Test
