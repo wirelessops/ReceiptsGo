@@ -75,13 +75,11 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
     @Override
     public synchronized void onCreate(@NonNull SQLiteDatabase db, @NonNull TableDefaultsCustomizer customizer) {
         super.onCreate(db, customizer);
-        // TODO: 05.10.2017 remove COLUMN_CATEGORY
         final String receipts = "CREATE TABLE " + ReceiptsTable.TABLE_NAME + " ("
                 + ReceiptsTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ReceiptsTable.COLUMN_PATH + " TEXT, "
                 + ReceiptsTable.COLUMN_PARENT + " TEXT REFERENCES " + TripsTable.TABLE_NAME + " ON DELETE CASCADE, "
                 + ReceiptsTable.COLUMN_NAME + " TEXT DEFAULT \"New Receipt\", "
-//                + ReceiptsTable.COLUMN_CATEGORY + " TEXT, "
                 + ReceiptsTable.COLUMN_CATEGORY_ID + " INTEGER REFERENCES " + CategoriesTable.TABLE_NAME + " ON DELETE NO ACTION, "
                 + ReceiptsTable.COLUMN_DATE + " DATE DEFAULT (DATE('now', 'localtime')), "
                 + ReceiptsTable.COLUMN_TIMEZONE + " TEXT, "
@@ -100,7 +98,8 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
                 + ");";
         Logger.debug(this, receipts);
         db.execSQL(receipts);
@@ -211,7 +210,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
         if (oldVersion <= 14) {
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
         }
-        if (oldVersion <= 15) { // Changed Categories foreign key from category's Name to Id
+        if (oldVersion <= 15) { // Changed Categories foreign key from category's Name to Id, added new custom_order_id column
 
             final String OLD_COLUMN_CATEGORY = "category";
 
@@ -251,7 +250,8 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
                     + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                     + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                     + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                    + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
                     + ");";
             Logger.debug(this, copyTable);
             db.execSQL(copyTable);
@@ -281,8 +281,6 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
             final String renameTable = "ALTER TABLE " + getTableName() + "_copy" + " RENAME TO " + getTableName() + ";";
             Logger.debug(this, renameTable);
             db.execSQL(renameTable);
-
-            // TODO: 04.10.2017   add 'custom_order_id' column
         }
     }
 

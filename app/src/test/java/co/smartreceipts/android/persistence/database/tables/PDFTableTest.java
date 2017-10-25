@@ -113,6 +113,7 @@ public class PDFTableTest {
         assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN DEFAULT 0"));
         assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
         assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        assertTrue(mSqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
     }
 
     @Test
@@ -149,6 +150,19 @@ public class PDFTableTest {
         assertEquals(mSqlCaptor.getAllValues().get(1), "ALTER TABLE " + mPDFTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(2), "ALTER TABLE " + mPDFTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(3), "ALTER TABLE " + mPDFTable.getTableName() + " ADD last_local_modification_time DATE");
+    }
+
+    @Test
+    public void onUpgradeFromV15() {
+        final int oldVersion = 15;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mPDFTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertPDFDefaults(mPDFTable);
+
+        assertEquals(mSqlCaptor.getValue(), "ALTER TABLE " + mPDFTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0;");
     }
 
     @Test

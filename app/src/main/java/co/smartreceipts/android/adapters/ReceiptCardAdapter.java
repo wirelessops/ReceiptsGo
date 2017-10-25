@@ -46,7 +46,7 @@ public class ReceiptCardAdapter extends CardAdapter<Receipt> {
             textView.setVisibility(View.VISIBLE);
         }
 	}
-	
+
 	@Override
 	protected void setDateTextView(TextView textView, Receipt data) {
 		if (getPreferences().get(UserPreference.Layout.IncludeReceiptDateInLayout)) {

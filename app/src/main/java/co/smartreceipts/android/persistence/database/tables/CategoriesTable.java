@@ -88,8 +88,8 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
                     COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME);
 
             final String insertData = "INSERT INTO " + getTableName() + "_copy"
-                    + " (" + baseColumns + ", " + COLUMN_CUSTOM_ORDER_ID + ") "
-                    + "SELECT " + baseColumns + ", " + COLUMN_ID
+                    + " (" + baseColumns + /* " + COLUMN_CUSTOM_ORDER_ID +*/ ") "
+                    + "SELECT " + baseColumns /* + ", " + COLUMN_ID*/
                     + " FROM " + getTableName() + ";";
             Logger.debug(this, insertData);
             db.execSQL(insertData);

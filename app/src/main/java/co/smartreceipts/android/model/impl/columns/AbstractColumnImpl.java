@@ -15,16 +15,27 @@ public abstract class AbstractColumnImpl<T> implements Column<T>, Comparable<Abs
     private final int mId;
     private final String mName;
     private final SyncState mSyncState;
+    private final int mCustomOrderId;
 
     public AbstractColumnImpl(int id, @NonNull String name, @NonNull SyncState syncState) {
+        this(id, name, syncState, 0);
+    }
+
+    public AbstractColumnImpl(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
         mId = id;
         mName = name;
         mSyncState = syncState;
+        mCustomOrderId = customOrderId;
     }
 
     @Override
     public int getId() {
         return mId;
+    }
+
+    @Override
+    public int getCustomOrderId() {
+        return mCustomOrderId;
     }
 
     @Override
@@ -69,6 +80,7 @@ public abstract class AbstractColumnImpl<T> implements Column<T>, Comparable<Abs
         AbstractColumnImpl that = (AbstractColumnImpl) o;
 
         if (mId != that.mId) return false;
+        if (mCustomOrderId != that.mCustomOrderId) return false;
         if (!mName.equals(that.mName)) return false;
 
         return true;
@@ -77,6 +89,7 @@ public abstract class AbstractColumnImpl<T> implements Column<T>, Comparable<Abs
     @Override
     public int hashCode() {
         int result = mId;
+        result = 31 * result + mCustomOrderId;
         result = 31 * result + mName.hashCode();
         return result;
     }

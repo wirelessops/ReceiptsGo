@@ -23,6 +23,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
     private int mId;
     private String mColumnName;
     private SyncState mSyncState;
+    private int mCustomOrderId;
 
     public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions) {
         this(columnDefinitions, new ConstantColumnUnknownColumnResolutionStrategory<T>());
@@ -34,6 +35,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
         mId = Column.UNKNOWN_ID;
         mColumnName = "";
         mSyncState = new DefaultSyncState();
+        mCustomOrderId = 0;
     }
 
     public ColumnBuilderFactory<T> setColumnId(int id) {
@@ -53,6 +55,11 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
 
     public ColumnBuilderFactory<T> setSyncState(@NonNull SyncState syncState) {
         mSyncState = Preconditions.checkNotNull(syncState);
+        return this;
+    }
+
+    public ColumnBuilderFactory<T> setCustomOrderId(int orderId) {
+        mCustomOrderId = orderId;
         return this;
     }
 

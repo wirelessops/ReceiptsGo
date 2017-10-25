@@ -82,6 +82,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final int extra_edittext_1_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1);
         final int extra_edittext_2_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2);
         final int extra_edittext_3_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3);
+        final int orderIdIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
         final String path = cursor.getString(pathIndex);
@@ -105,6 +106,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final String extra_edittext_1 = cursor.getString(extra_edittext_1_Index);
         final String extra_edittext_2 = cursor.getString(extra_edittext_2_Index);
         final String extra_edittext_3 = cursor.getString(extra_edittext_3_Index);
+        final int orderId = cursor.getInt(orderIdIndex);
         File file = null;
         if (!TextUtils.isEmpty(path) && !DatabaseHelper.NO_DATA.equals(path)) {
             file = mStorageManager.getFile(trip.getDirectory(), path);
@@ -141,7 +143,8 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
                 .setExtraEditText1(extra_edittext_1)
                 .setExtraEditText2(extra_edittext_2)
                 .setExtraEditText3(extra_edittext_3)
-                .setSyncState(syncState);
+                .setSyncState(syncState)
+                .setOrderId(orderId);
 
 
         /*
@@ -222,13 +225,16 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
             values.putAll(mSyncStateAdapter.writeUnsynced(receipt.getSyncState()));
         }
 
+        values.put(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID, receipt.getCustomOrderId());
+
         return values;
     }
 
     @NonNull
     @Override
     public Receipt build(@NonNull Receipt receipt, @NonNull PrimaryKey<Receipt, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        return new ReceiptBuilderFactory(primaryKey.getPrimaryKeyValue(receipt), receipt).setSyncState(mSyncStateAdapter.get(receipt.getSyncState(), databaseOperationMetadata)).build();
+        return new ReceiptBuilderFactory(primaryKey.getPrimaryKeyValue(receipt), receipt)
+                .setSyncState(mSyncStateAdapter.get(receipt.getSyncState(), databaseOperationMetadata)).build();
     }
 
 

@@ -51,12 +51,13 @@ public final class DefaultReceiptImpl implements Receipt {
     private boolean mIsSelected;
     private File mFile;
     private long mFileLastModifiedTime;
+    private final int customOrderId;
 
     public DefaultReceiptImpl(int id, int index, @NonNull Trip trip, @Nullable File file, @NonNull PaymentMethod paymentMethod, @NonNull String name,
                               @NonNull Category category, @NonNull String comment, @NonNull Price price, @NonNull Price tax, @NonNull Date date,
                               @NonNull TimeZone timeZone, boolean isReimbursable, boolean isFullPage, boolean isSelected,
                               @NonNull Source source, @Nullable String extraEditText1, @Nullable String extraEditText2, @Nullable String extraEditText3) {
-        this(id, index, trip, file, paymentMethod, name, category, comment, price, tax, date, timeZone, isReimbursable, isFullPage, isSelected, source, extraEditText1, extraEditText2, extraEditText3, new DefaultSyncState());
+        this(id, index, trip, file, paymentMethod, name, category, comment, price, tax, date, timeZone, isReimbursable, isFullPage, isSelected, source, extraEditText1, extraEditText2, extraEditText3, new DefaultSyncState(), 0);
 
     }
 
@@ -64,7 +65,7 @@ public final class DefaultReceiptImpl implements Receipt {
                               @NonNull Category category, @NonNull String comment, @NonNull Price price, @NonNull Price tax, @NonNull Date date,
                               @NonNull TimeZone timeZone, boolean isReimbursable, boolean isFullPage, boolean isSelected,
                               @NonNull Source source, @Nullable String extraEditText1, @Nullable String extraEditText2, @Nullable String extraEditText3,
-                              @NonNull SyncState syncState) {
+                              @NonNull SyncState syncState, int customOrderId) {
 
         mTrip = Preconditions.checkNotNull(trip);
         mName = Preconditions.checkNotNull(name);
@@ -88,6 +89,7 @@ public final class DefaultReceiptImpl implements Receipt {
         mExtraEditText2 = extraEditText2;
         mExtraEditText3 = extraEditText3;
         mIsSelected = isSelected;
+        this.customOrderId = customOrderId;
     }
 
     private DefaultReceiptImpl(@NonNull Parcel in) {
@@ -113,6 +115,7 @@ public final class DefaultReceiptImpl implements Receipt {
         mTimeZone = TimeZone.getTimeZone(in.readString());
         mSyncState = in.readParcelable(SyncState.class.getClassLoader());
         mSource = Source.Parcel;
+        customOrderId = in.readInt();
     }
 
     @Override
@@ -302,6 +305,11 @@ public final class DefaultReceiptImpl implements Receipt {
         return mIndex;
     }
 
+    @Override
+    public int getCustomOrderId() {
+        return customOrderId;
+    }
+
     @Nullable
     @Override
     public String getExtraEditText1() {
@@ -379,6 +387,7 @@ public final class DefaultReceiptImpl implements Receipt {
                 ", mIsSelected=" + mIsSelected +
                 ", mFile=" + mFile +
                 ", mFileLastModifiedTime=" + mFileLastModifiedTime +
+                ", customOrderId=" + customOrderId +
                 '}';
     }
 
@@ -409,6 +418,7 @@ public final class DefaultReceiptImpl implements Receipt {
         if (mExtraEditText3 != null ? !mExtraEditText3.equals(that.mExtraEditText3) : that.mExtraEditText3 != null)
             return false;
         if (mFileLastModifiedTime != that.mFileLastModifiedTime) return false;
+        if (customOrderId != that.customOrderId) return false;
         return mFile != null ? mFile.equals(that.mFile) : that.mFile == null;
 
     }
@@ -433,6 +443,7 @@ public final class DefaultReceiptImpl implements Receipt {
         result = 31 * result + (mExtraEditText3 != null ? mExtraEditText3.hashCode() : 0);
         result = 31 * result + (mFile != null ? mFile.hashCode() : 0);
         result = 31 * result + (int) mFileLastModifiedTime;
+        result = 31 * result + customOrderId;
         return result;
     }
 
@@ -463,6 +474,7 @@ public final class DefaultReceiptImpl implements Receipt {
         dest.writeInt(getIndex());
         dest.writeString(mTimeZone.getID());
         dest.writeParcelable(getSyncState(), flags);
+        dest.writeInt(getCustomOrderId());
     }
 
     public static Creator<DefaultReceiptImpl> CREATOR = new Creator<DefaultReceiptImpl>() {

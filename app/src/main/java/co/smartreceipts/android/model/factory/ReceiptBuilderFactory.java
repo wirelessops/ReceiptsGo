@@ -48,6 +48,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
     private boolean _isReimbursable, _isFullPage, _isSelected;
     private Source _source;
     private SyncState _syncState;
+    private int _order_id;
 
     public ReceiptBuilderFactory() {
         this(UNKNOWN_ID);
@@ -64,6 +65,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         _index = -1;
         _source = Source.Undefined;
         _syncState = new DefaultSyncState();
+        _order_id = 0;
     }
 
     public ReceiptBuilderFactory(@NonNull Receipt receipt) {
@@ -87,6 +89,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         _index = receipt.getIndex();
         _source = receipt.getSource();
         _syncState = receipt.getSyncState();
+        _order_id = receipt.getCustomOrderId();
     }
 
     public ReceiptBuilderFactory(int id, @NonNull Receipt receipt) {
@@ -261,6 +264,11 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
+    public ReceiptBuilderFactory setOrderId(int order_id) {
+        _order_id = order_id;
+        return this;
+    }
+
     @Override
     @NonNull
     public Receipt build() {
@@ -269,7 +277,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
                 _category == null ? new CategoryBuilderFactory().build() : _category, _comment,
                 _priceBuilderFactory.build(), _taxBuilderFactory.build(), _date, _timezone,
                 _isReimbursable, _isFullPage, _isSelected, _source, _extraEditText1,
-                _extraEditText2, _extraEditText3, _syncState);
+                _extraEditText2, _extraEditText3, _syncState, _order_id);
     }
 
 }

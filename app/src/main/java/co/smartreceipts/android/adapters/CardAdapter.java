@@ -148,6 +148,7 @@ public class CardAdapter<T> extends BaseAdapter {
 		setCategory(holder.category, data);
 		setMarker(holder.marker, data);
         setSyncStateImage(holder.syncState, data);
+
 		return convertView;
 	}
 	

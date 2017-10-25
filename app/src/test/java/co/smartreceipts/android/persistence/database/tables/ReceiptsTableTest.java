@@ -214,6 +214,7 @@ public class ReceiptsTableTest {
         assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN DEFAULT 0"));
         assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
         assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        assertTrue(mSqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
     }
 
     @Test
@@ -359,6 +360,18 @@ public class ReceiptsTableTest {
         verifyV13Upgrade(never());
         verifyV14Upgrade(times(1));
     }
+
+//    @Test
+//    public void onUpgradeFromV15() {
+//        final int oldVersion = 15;
+//        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+//
+//        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+//        mReceiptsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+//        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
+//
+//        assertTrue(mSqlCaptor.getValue().contains());
+//    }
 
     @Test
     public void onUpgradeAlreadyOccurred() {

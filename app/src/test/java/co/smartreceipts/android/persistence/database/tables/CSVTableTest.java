@@ -113,6 +113,7 @@ public class CSVTableTest {
         assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN"));
         assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN"));
         assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        assertTrue(mSqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
     }
 
     @Test
@@ -149,6 +150,19 @@ public class CSVTableTest {
         assertEquals(mSqlCaptor.getAllValues().get(1), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(2), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(3), "ALTER TABLE " + mCSVTable.getTableName() + " ADD last_local_modification_time DATE");
+    }
+
+    @Test
+    public void onUpgradeFromV15() {
+        final int oldVersion = 15;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mCSVTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertCSVDefaults(mCSVTable);
+
+        assertEquals(mSqlCaptor.getValue(), "ALTER TABLE " + mCSVTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0;");
     }
 
     @Test

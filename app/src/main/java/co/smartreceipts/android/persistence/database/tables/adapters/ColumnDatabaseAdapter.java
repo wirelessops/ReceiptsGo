@@ -12,6 +12,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.ColumnBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
+import co.smartreceipts.android.persistence.database.tables.AbstractColumnTable;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
@@ -42,11 +43,18 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
     public Column<Receipt> read(@NonNull Cursor cursor) {
         final int idIndex = cursor.getColumnIndex(mIdColumnName);
         final int typeIndex = cursor.getColumnIndex(mTypeColumnName);
+        final int customOrderIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
         final String type = cursor.getString(typeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
-        return new ColumnBuilderFactory<>(mReceiptColumnDefinitions).setColumnId(id).setColumnName(type).setSyncState(syncState).build();
+        final int customOrderId = cursor.getInt(customOrderIndex);
+        return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
+                .setColumnId(id)
+                .setColumnName(type)
+                .setSyncState(syncState)
+                .setCustomOrderId(customOrderId)
+                .build();
     }
 
     @NonNull
@@ -54,6 +62,8 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
     public ContentValues write(@NonNull Column<Receipt> column, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         final ContentValues values = new ContentValues();
         values.put(mTypeColumnName, column.getName());
+        values.put(AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID, column.getCustomOrderId());
+
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(column.getSyncState()));
         } else {
@@ -65,7 +75,12 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
     @NonNull
     @Override
     public Column<Receipt> build(@NonNull Column<Receipt> column, @NonNull PrimaryKey<Column<Receipt>, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        return new ColumnBuilderFactory<>(mReceiptColumnDefinitions).setColumnId(primaryKey.getPrimaryKeyValue(column)).setColumnName(column.getName()).setSyncState(mSyncStateAdapter.get(column.getSyncState(), databaseOperationMetadata)).build();
+        return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
+                .setColumnId(primaryKey.getPrimaryKeyValue(column))
+                .setColumnName(column.getName())
+                .setSyncState(mSyncStateAdapter.get(column.getSyncState(), databaseOperationMetadata))
+                .setCustomOrderId(column.getCustomOrderId())
+                .build();
     }
 
 }

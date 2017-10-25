@@ -48,7 +48,9 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"+ ");";
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + ");";
         Logger.debug(this, columnsTable);
 
         db.execSQL(columnsTable);
@@ -73,6 +75,10 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
         }
         if (oldVersion <= 15) {
             // TODO: 02.10.2017 add 'custom_order_id' column
+            final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
+                    getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
+            Logger.debug(this, addCustomOrderColumn);
+            db.execSQL(addCustomOrderColumn);
         }
     }
 

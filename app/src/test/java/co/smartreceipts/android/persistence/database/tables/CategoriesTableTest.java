@@ -184,8 +184,8 @@ public class CategoriesTableTest {
 
 
         assertEquals(allValues.get(1), "INSERT INTO " + CategoriesTable.TABLE_NAME + "_copy ("
-                + baseColumns +", " + COLUMN_CUSTOM_ORDER_ID + ") "
-                + "SELECT " + baseColumns + ", " + COLUMN_ID
+                + baseColumns + ") "
+                + "SELECT " + baseColumns
                 + " FROM " + CategoriesTable.TABLE_NAME + ";");
 
         assertEquals(allValues.get(2), "DROP TABLE " + CategoriesTable.TABLE_NAME + ";");
