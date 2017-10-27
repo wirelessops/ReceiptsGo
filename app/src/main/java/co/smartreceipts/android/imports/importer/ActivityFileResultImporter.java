@@ -97,7 +97,7 @@ public class ActivityFileResultImporter {
                 .map(Optional::get);
     }
 
-    public void fakeDispose() {
+    public void markThatResultsWereConsumed() {
         importSubject.onNext(Optional.absent());
     }
 

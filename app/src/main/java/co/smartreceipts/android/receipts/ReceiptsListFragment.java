@@ -2,7 +2,6 @@ package co.smartreceipts.android.receipts;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -170,7 +169,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     private Receipt highlightedReceipt;
     private Uri imageUri;
 
-    private CompositeDisposable compositeDisposable;
+    // Note: Some behaviors need to be handled in separate lifecycle events, so we use different Disposables
+    private CompositeDisposable onCreateCompositeDisposable;
+    private CompositeDisposable onResumeCompositeDisposable = new CompositeDisposable();
 
     private ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
 
@@ -190,7 +191,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         }
 
         // we need to subscribe here because of possible permission dialog showing
-        subscribe();
+        subscribeOnCreate();
     }
 
     @Override
@@ -233,12 +234,39 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
         ocrStatusAlerterPresenter.subscribe();
         receiptCreateActionPresenter.subscribe();
+
+        onResumeCompositeDisposable.add(activityFileResultImporter.getResultStream()
+                .subscribe(response -> {
+                    Logger.info(ReceiptsListFragment.this, "Handled the import of {}", response);
+                    if (!response.getThrowable().isPresent()) {
+                        switch (response.getRequestCode()) {
+                            case RequestCodes.IMPORT_GALLERY_IMAGE:
+                            case RequestCodes.IMPORT_GALLERY_PDF:
+                            case RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST:
+                                navigationHandler.navigateToCreateNewReceiptFragment(trip, response.getFile(), response.getOcrResponse());
+                                break;
+                            case RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST:
+                                final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt).setImage(response.getFile()).build();
+                                receiptTableController.update(highlightedReceipt, updatedReceipt, new DatabaseOperationMetadata());
+                                break;
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
+                    }
+                    highlightedReceipt = null;
+                    if (updatingDataProgress != null) {
+                        updatingDataProgress.setVisibility(View.GONE);
+                    }
+                    // Indicate that we consumed these results to avoid using this same stream on the next event
+                    activityFileResultLocator.markThatResultsWereConsumed();
+                    activityFileResultImporter.markThatResultsWereConsumed();
+                }));
     }
 
-    private void subscribe() {
-        compositeDisposable = new CompositeDisposable();
+    private void subscribeOnCreate() {
+        onCreateCompositeDisposable = new CompositeDisposable();
 
-        compositeDisposable.add(activityFileResultLocator.getUriStream()
+        onCreateCompositeDisposable.add(activityFileResultLocator.getUriStream()
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMapSingle(response -> {
                     if (response.getUri().getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
@@ -262,34 +290,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         }
                         highlightedReceipt = null;
                         updatingDataProgress.setVisibility(View.GONE);
-                        activityFileResultLocator.fakeDispose();
+                        activityFileResultLocator.markThatResultsWereConsumed();
                     }
-                }));
-
-        compositeDisposable.add(activityFileResultImporter.getResultStream()
-                .subscribe(response -> {
-                    Logger.info(ReceiptsListFragment.this, "Handled the import of {}", response);
-                    if (!response.getThrowable().isPresent()) {
-                        switch (response.getRequestCode()) {
-                            case RequestCodes.IMPORT_GALLERY_IMAGE:
-                            case RequestCodes.IMPORT_GALLERY_PDF:
-                            case RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST:
-                                if (getView() != null) { // bypass the IllegalStateException
-                                    getView().post(() -> navigationHandler.navigateToCreateNewReceiptFragment(trip, response.getFile(), response.getOcrResponse()));
-                                }
-                                break;
-                            case RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST:
-                                final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt).setImage(response.getFile()).build();
-                                receiptTableController.update(highlightedReceipt, updatedReceipt, new DatabaseOperationMetadata());
-                                break;
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
-                    }
-                    highlightedReceipt = null;
-                    if (updatingDataProgress != null) updatingDataProgress.setVisibility(View.GONE);
-                    activityFileResultLocator.fakeDispose();
-                    activityFileResultImporter.fakeDispose();
                 }));
     }
 
@@ -304,6 +306,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onPause() {
+        onResumeCompositeDisposable.clear();
         receiptCreateActionPresenter.unsubscribe();
         ocrStatusAlerterPresenter.unsubscribe();
         floatingActionMenu.close(false);
@@ -357,7 +360,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onDestroy() {
-        compositeDisposable.clear();
+        onCreateCompositeDisposable.clear();
         super.onDestroy();
     }
 
@@ -400,7 +403,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         }
                     } else if (selection.equals(attachFile) || selection.equals(replaceFile)) { // Attach File to Receipt
                         final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(getActivity(), trip, persistenceManager, receiptTableController, analytics);
-                        compositeDisposable.add(importer.importAttachment(intentImportResult, receipt)
+                        onCreateCompositeDisposable.add(importer.importAttachment(intentImportResult, receipt)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(file -> {

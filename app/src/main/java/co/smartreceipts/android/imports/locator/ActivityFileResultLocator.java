@@ -83,7 +83,7 @@ public class ActivityFileResultLocator {
                 .map(Optional::get);
     }
 
-    public void fakeDispose() {
+    public void markThatResultsWereConsumed() {
         uriImportSubject.onNext(Optional.absent());
     }
 

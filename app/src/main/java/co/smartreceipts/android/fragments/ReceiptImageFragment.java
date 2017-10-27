@@ -180,7 +180,7 @@ public class ReceiptImageFragment extends WBFragment {
                     } else {
                         Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         progress.setVisibility(View.GONE);
-                        activityFileResultLocator.fakeDispose();
+                        activityFileResultLocator.markThatResultsWereConsumed();
                     }
                 }));
 
@@ -193,8 +193,8 @@ public class ReceiptImageFragment extends WBFragment {
                         Toast.makeText(getActivity(), getFlexString(R.string.IMG_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                     }
                     progress.setVisibility(View.GONE);
-                    activityFileResultLocator.fakeDispose();
-                    activityFileResultImporter.fakeDispose();
+                    activityFileResultLocator.markThatResultsWereConsumed();
+                    activityFileResultImporter.markThatResultsWereConsumed();
                 }));
     }
 
