@@ -161,9 +161,9 @@ public class UserPreferenceTest {
         Assert.assertEquals(name(UserPreference.ReportOutput.PrintReceiptsTableInLandscape), "ReceiptsTableLandscape");
         Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getDefaultValue(), R.bool.pref_output_receipts_landscape_defaultValue);
 
-        Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getType(), String.class);
-        Assert.assertEquals(name(UserPreference.ReportOutput.PrintReceiptsTableInLandscape), "PdfPageSize");
-        Assert.assertEquals(UserPreference.ReportOutput.PrintReceiptsTableInLandscape.getDefaultValue(), R.string.pref_output_pdf_page_size_defaultValue);
+        Assert.assertEquals(UserPreference.ReportOutput.DefaultPdfPageSize.getType(), String.class);
+        Assert.assertEquals(name(UserPreference.ReportOutput.DefaultPdfPageSize), "PdfPageSize");
+        Assert.assertEquals(UserPreference.ReportOutput.DefaultPdfPageSize.getDefaultValue(), R.string.pref_output_pdf_page_size_defaultValue);
     }
 
     @Test
