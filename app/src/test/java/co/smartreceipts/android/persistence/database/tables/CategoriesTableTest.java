@@ -74,7 +74,7 @@ public class CategoriesTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mCategoriesTable = new CategoriesTable(mSQLiteOpenHelper);
+        mCategoriesTable = new CategoriesTable(mSQLiteOpenHelper, false);
 
         // Now create the table and insert some defaults
         mCategoriesTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);

@@ -30,7 +30,7 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
         name = "";
         code = "";
         syncState = new DefaultSyncState();
-        customOrderId  = MISSING_ID;
+        customOrderId  = 0;
     }
 
 

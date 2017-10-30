@@ -75,43 +75,39 @@ public class AppRatingPreferencesStorage implements AppRatingStorage {
 
     @Override
     public void incrementLaunchCount() {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        int currentLaunchCount = sharedPreferences.getInt(Keys.LAUNCH_COUNT, 0);
+        SharedPreferences.Editor editor = getPreferencesEditor();
+        int currentLaunchCount = getSharedPreferences().getInt(Keys.LAUNCH_COUNT, 0);
         if (currentLaunchCount == 0) {
             editor.putLong(Keys.INSTALL_TIME_MILLIS, System.currentTimeMillis());
         }
-        editor.putInt(Keys.LAUNCH_COUNT, currentLaunchCount + 1);
-        editor.apply();
+        editor.putInt(Keys.LAUNCH_COUNT, currentLaunchCount + 1).apply();
     }
 
     @Override
     public void setDontShowRatingPromptMore() {
-        SharedPreferences.Editor editor = getPreferencesEditor();
-        editor.putBoolean(Keys.DONT_SHOW, true);
-        editor.apply();
+        getPreferencesEditor()
+                .putBoolean(Keys.DONT_SHOW, true)
+                .apply();
     }
 
     @Override
     public void crashOccurred() {
-        SharedPreferences.Editor editor = getPreferencesEditor();
-        editor.putBoolean(Keys.CRASH_OCCURRED, true);
-        editor.apply();
+        getPreferencesEditor()
+                .putBoolean(Keys.CRASH_OCCURRED, true)
+                .apply();
     }
 
     @Override
     public void prorogueRatingPrompt(int prorogueLaunches) {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        int oldAdditionalLaunches = sharedPreferences.getInt(Keys.ADDITIONAL_LAUNCH_THRESHOLD, 0);
-        editor.putInt(Keys.ADDITIONAL_LAUNCH_THRESHOLD, oldAdditionalLaunches + prorogueLaunches);
-        editor.putBoolean(Keys.DONT_SHOW, false);
-        editor.apply();
+        int oldAdditionalLaunches = getSharedPreferences().getInt(Keys.ADDITIONAL_LAUNCH_THRESHOLD, 0);
+        getPreferencesEditor()
+                .putInt(Keys.ADDITIONAL_LAUNCH_THRESHOLD, oldAdditionalLaunches + prorogueLaunches)
+                .putBoolean(Keys.DONT_SHOW, false)
+                .apply();
     }
 
     private SharedPreferences.Editor getPreferencesEditor() {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        return sharedPreferences.edit();
+        return getSharedPreferences().edit();
     }
 
     private SharedPreferences getSharedPreferences() {

@@ -49,6 +49,7 @@
     <string name="update">Обновить</string>
     <string name="yes">Да</string>
     <string name="yes_as_pdf">Да - в виде PDF</string>
+    <string name="reorder">Изменить порядок</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Смарт Чеки Плюс</string>
@@ -196,6 +197,7 @@
     <string name="toast_receipt_pdf_replaced">Успешно заменен PDF в %s</string>
     <string name="toast_import_complete">Все файлы успешно импортированы. Пожалуйста, перезапустите приложение.</string>
     <string name="toast_no_storage_permissions">Невозможно импортировать файл без разрешения на чтение</string>
+    <string name="toast_reorder_hint">Долго жмите на элемент чтобы начать перетаскивание</string>
     <string name="attachment_error">Не удалось прикрепить этот файл.</string>
 
     <!-- ================== Trip Adapter ===================== -->

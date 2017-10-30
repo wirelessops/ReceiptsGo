@@ -21,14 +21,16 @@ import java.util.List;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.fragments.WBFragment;
+import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
+import co.smartreceipts.android.utils.log.Logger;
 
 import static android.R.id.list;
 
-public abstract class SimpleInsertableListFragment<T> extends WBFragment implements EditableItemListener<T>, TableEventsListener<T> {
+public abstract class DraggableEditableListFragment<T extends Draggable> extends WBFragment implements EditableItemListener<T>, TableEventsListener<T> {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -38,6 +40,8 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
     private RecyclerViewDragDropManager recyclerViewDragDropManager = new RecyclerViewDragDropManager();
 
     private boolean isOnDragMode = false;
+
+    private Integer positionToScroll = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,6 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO: 08.09.2017 translate reorder string
         inflater.inflate(R.menu.menu_settings_add_drag, menu);
 
         // show just Save button if it's drag&drop mode
@@ -91,9 +94,10 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
                 isOnDragMode = true;
                 getActivity().invalidateOptionsMenu();
                 adapter.switchMode(isOnDragMode);
+                Toast.makeText(getContext(), R.string.toast_reorder_hint, Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_settings_save_order:
-                // TODO: 08.09.2017 save, show progress bar
+                saveTableOrdering();
                 isOnDragMode = false;
                 getActivity().invalidateOptionsMenu();
                 adapter.switchMode(isOnDragMode);
@@ -104,7 +108,6 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
             default:
                 return super.onOptionsItemSelected(item);
         }
-
         return true;
     }
 
@@ -113,12 +116,13 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
         super.onResume();
         getTableController().subscribe(this);
         getTableController().get();
-        // TODO: 06.10.2017 show snackBar or at least toast? with a tip about long press if isOnDragMode = true
-        Toast.makeText(getContext(), "", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onPause() {
+        if (!isOnDragMode) {
+            saveTableOrdering();
+        }
         getTableController().unsubscribe(this);
         recyclerViewDragDropManager.cancelDrag();
         super.onPause();
@@ -155,6 +159,11 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
      */
     protected abstract void addItem();
 
+    protected void saveTableOrdering() {
+        Logger.debug(this, "saveTableOrdering");
+        adapter.saveNewOrder(getTableController());
+    }
+
     private void setDragAndDrop() {
         recyclerViewDragDropManager.release();
         recyclerViewDragDropManager = new RecyclerViewDragDropManager();
@@ -170,10 +179,17 @@ public abstract class SimpleInsertableListFragment<T> extends WBFragment impleme
         recyclerViewDragDropManager.attachRecyclerView(recyclerView);
     }
 
+    protected void scrollToEnd() {
+        positionToScroll = recyclerView.getAdapter().getItemCount();
+    }
+
     @Override
     public void onGetSuccess(@NonNull List<T> list) {
         adapter.update(list);
-        setDragAndDrop();
+        if (positionToScroll != null) {
+            recyclerView.smoothScrollToPosition(positionToScroll);
+        }
+        positionToScroll = null;
     }
 
     @Override

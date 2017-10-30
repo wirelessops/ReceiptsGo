@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import co.smartreceipts.android.DefaultObjects;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -76,5 +80,22 @@ public class ImmutablePaymentMethodImplTest {
         final ImmutablePaymentMethodImpl paymentMethod = ImmutablePaymentMethodImpl.CREATOR.createFromParcel(parcel);
         assertNotNull(paymentMethod);
         assertEquals(paymentMethod, mPaymentMethod);
+    }
+
+    @Test
+    public void compare() {
+        ImmutablePaymentMethodImpl paymentMethod2 = new ImmutablePaymentMethodImpl(ID, METHOD, mSyncState, CUSTOM_ORDER_ID + 1);
+        ImmutablePaymentMethodImpl paymentMethod0 = new ImmutablePaymentMethodImpl(ID, METHOD, mSyncState, CUSTOM_ORDER_ID - 1);
+
+        List<ImmutablePaymentMethodImpl> list = new ArrayList<>();
+        list.add(mPaymentMethod);
+        list.add(paymentMethod2);
+        list.add(paymentMethod0);
+
+        Collections.sort(list);
+
+        assertEquals(paymentMethod0, list.get(0));
+        assertEquals(mPaymentMethod, list.get(1));
+        assertEquals(paymentMethod2, list.get(2));
     }
 }

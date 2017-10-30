@@ -49,6 +49,7 @@
     <string name="update">Atualizar</string>
     <string name="yes">Sim</string>
     <string name="yes_as_pdf">Sim - Como PDF</string>
+    <string name="reorder">Reordenar</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>
@@ -194,6 +195,7 @@
     <string name="toast_receipt_pdf_replaced">Novo PDF substituído por %s com êxito</string>
     <string name="toast_import_complete">Arquivos importados com êxito. Reinicialize o app.</string>
     <string name="toast_no_storage_permissions">Não é possível importar arquivos sem permissões de armazenamento</string>
+    <string name="toast_reorder_hint">Pressione prolongadamente o item para iniciar o arrastar</string>
     <string name="attachment_error">Não é possível anexar este arquivo.</string>
 
     <!-- ================== Trip Adapter ===================== -->
@@ -486,6 +488,5 @@
     <string name="graphs_label_reimbursable">Reembolsável</string>
     <string name="graphs_label_non_reimbursable">Não reembolsável</string>
     <string name="graphs_label_others">Outras</string>
-
 
 </resources>

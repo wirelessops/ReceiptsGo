@@ -73,8 +73,7 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
         if (oldVersion <= 14) {
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
         }
-        if (oldVersion <= 15) {
-            // TODO: 02.10.2017 add 'custom_order_id' column
+        if (oldVersion <= 15) { // adding custom_order_id column
             final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
                     getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
             Logger.debug(this, addCustomOrderColumn);

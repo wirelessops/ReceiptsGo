@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import co.smartreceipts.android.DefaultObjects;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -77,6 +81,23 @@ public class ImmutableCategoryImplTest {
         final ImmutableCategoryImpl category = ImmutableCategoryImpl.CREATOR.createFromParcel(parcel);
         assertNotNull(category);
         assertEquals(category, mImmutableCategory);
+    }
+
+    @Test
+    public void compare() {
+        ImmutableCategoryImpl category2 = new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState, CUSTOM_ORDER_ID + 1);
+        ImmutableCategoryImpl category0 = new ImmutableCategoryImpl(ID, NAME, CODE, mSyncState, CUSTOM_ORDER_ID - 1);
+
+        List<ImmutableCategoryImpl> list = new ArrayList<>();
+        list.add(mImmutableCategory);
+        list.add(category2);
+        list.add(category0);
+
+        Collections.sort(list);
+
+        assertEquals(category0, list.get(0));
+        assertEquals(mImmutableCategory, list.get(1));
+        assertEquals(category2, list.get(2));
     }
 
 }

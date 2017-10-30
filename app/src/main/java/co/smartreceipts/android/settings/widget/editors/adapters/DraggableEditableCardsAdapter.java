@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.model.Draggable;
+import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 
 
-public abstract class DraggableEditableCardsAdapter<T> extends RecyclerView.Adapter<DraggableEditableCardsAdapter.EditableCardsViewHolder>
+public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends RecyclerView.Adapter<DraggableEditableCardsAdapter.EditableCardsViewHolder>
         implements DraggableItemAdapter<DraggableEditableCardsAdapter.EditableCardsViewHolder> {
 
     protected final List<T> items;
-
     protected final EditableItemListener<T> listener;
-
     private boolean isOnDragMode;
 
     public DraggableEditableCardsAdapter(EditableItemListener<T> listener) {
@@ -75,8 +75,6 @@ public abstract class DraggableEditableCardsAdapter<T> extends RecyclerView.Adap
         items.add(toPosition, movedItem);
         notifyItemMoved(fromPosition, toPosition);
 
-        // TODO: 13.10.2017 moveItem(fromPosition, toPosition);
-
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -99,6 +97,7 @@ public abstract class DraggableEditableCardsAdapter<T> extends RecyclerView.Adap
         public View delete;
         View dragHandle;
         View divider;
+        public TextView testOrderNumber;
 
         EditableCardsViewHolder(View itemView) {
             super(itemView);
@@ -109,6 +108,7 @@ public abstract class DraggableEditableCardsAdapter<T> extends RecyclerView.Adap
             delete = itemView.findViewById(R.id.delete);
             dragHandle = itemView.findViewById(R.id.drag_handle);
             divider = itemView.findViewById(R.id.divider);
+            testOrderNumber = (TextView) itemView.findViewById(R.id.test_order_number);
         }
     }
 
@@ -122,5 +122,7 @@ public abstract class DraggableEditableCardsAdapter<T> extends RecyclerView.Adap
         isOnDragMode = isDragable;
         notifyDataSetChanged();
     }
+
+    public abstract void saveNewOrder(TableController<T> tableController);
 
 }

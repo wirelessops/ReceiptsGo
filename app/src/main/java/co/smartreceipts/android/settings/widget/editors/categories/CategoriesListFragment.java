@@ -17,20 +17,20 @@ import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.settings.widget.editors.SimpleInsertableListFragment;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.settings.widget.editors.DraggableEditableListFragment;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import dagger.android.support.AndroidSupportInjection;
 
-public class CategoriesListFragment extends SimpleInsertableListFragment<Category> {
+public class CategoriesListFragment extends DraggableEditableListFragment<Category> {
 
     public static String TAG = "CategoriesListFragment";
 
     @Inject
     CategoriesTableController categoriesTableController;
 
-//    private Category mScrollToCategory; // // TODO: 04.09.2017 ? scroll to end when inserted. onUpdateSuccess
-
-    // TODO: 04.09.2017 inserted category is at the middle of the list because of sorting in alphabetical order
+    @Inject
+    OrderingPreferencesManager orderingPreferencesManager;
 
     public static CategoriesListFragment newInstance() {
         return new CategoriesListFragment();
@@ -69,8 +69,13 @@ public class CategoriesListFragment extends SimpleInsertableListFragment<Categor
 
     @Override
     public void onEditItem(Category editCategory) {
-
         showCreateEditDialog(editCategory);
+    }
+
+    @Override
+    protected void saveTableOrdering() {
+        super.saveTableOrdering();
+        orderingPreferencesManager.saveCategoriesTableOrdering();
     }
 
     private void showCreateEditDialog(@Nullable Category editCategory) {
@@ -104,13 +109,16 @@ public class CategoriesListFragment extends SimpleInsertableListFragment<Categor
                     final Category category = new CategoryBuilderFactory()
                             .setName(newName)
                             .setCode(newCode)
+                            .setCustomOrderId(isEdit ? editCategory.getCustomOrderId() : Integer.MAX_VALUE)
                             .build();
 
                     if (isEdit) {
                         categoriesTableController.update(editCategory, category, new DatabaseOperationMetadata());
                     } else {
                         categoriesTableController.insert(category, new DatabaseOperationMetadata());
+                        scrollToEnd();
                     }
+
                 })
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .show();

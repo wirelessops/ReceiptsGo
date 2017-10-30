@@ -120,4 +120,8 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
 
     };
 
+    @Override
+    public int compareTo(@NonNull PaymentMethod paymentMethod) {
+        return customOrderId - paymentMethod.getCustomOrderId();
+    }
 }

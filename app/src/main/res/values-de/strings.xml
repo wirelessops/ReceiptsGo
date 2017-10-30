@@ -49,6 +49,7 @@
     <string name="update">Aktualisieren</string>
     <string name="yes">Ja</string>
     <string name="yes_as_pdf">Ja - Als PDF</string>
+    <string name="reorder">Nachbestellen</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart-Plus-Receipts</string>
@@ -194,6 +195,7 @@
     <string name="toast_receipt_pdf_replaced">Eine neue PDF für %s wurde erfolgreich ersetzt</string>
     <string name="toast_import_complete">Alle Dateien wurden erfolgreich importiert. Bitte starten Sie die App. erneut</string>
     <string name="toast_no_storage_permissions">Kann keine Datei ohne Speicherberechtigungen importieren</string>
+    <string name="toast_reorder_hint">Lange drücken, um das Ziehen zu starten</string>
     <string name="attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->

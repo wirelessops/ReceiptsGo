@@ -8,6 +8,8 @@ import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.PaymentMethodDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.PaymentMethodPrimaryKey;
+import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.utils.log.Logger;
 
 /**
@@ -21,8 +23,9 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
     public static final String COLUMN_METHOD = "method";
 
 
-    public PaymentMethodsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper) {
-        super(sqLiteOpenHelper, TABLE_NAME, new PaymentMethodDatabaseAdapter(), new PaymentMethodPrimaryKey());
+    public PaymentMethodsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, boolean isOrdered) {
+        super(sqLiteOpenHelper, TABLE_NAME, new PaymentMethodDatabaseAdapter(), new PaymentMethodPrimaryKey(),
+                isOrdered ? new OrderBy(COLUMN_CUSTOM_ORDER_ID, false) : new DefaultOrderBy());
     }
 
     @Override
@@ -42,12 +45,6 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
         db.execSQL(sql);
 
         customizer.insertPaymentMethodDefaults(this);
-
-        // TODO: 18.10.2017 maybe this step is odd and we can keep all order_id's as 0 before first user customization
-        final String fillCustomOrderColumn = String.format("UPDATE %s SET %s = %s", getTableName(), COLUMN_CUSTOM_ORDER_ID, COLUMN_ID);
-        Logger.debug(this, fillCustomOrderColumn);
-        db.execSQL(fillCustomOrderColumn);
-
     }
 
     @Override
@@ -68,18 +65,11 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
         }
 
-        if (oldVersion <= 15) {
-            // adding custom_order_id column
+        if (oldVersion <= 15) { // adding custom_order_id column
             final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
                     getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
             Logger.debug(this, addCustomOrderColumn);
             db.execSQL(addCustomOrderColumn);
-
-            // TODO: 18.10.2017 check
-            // filling custom_order_id with id
-            final String fillCustomOrderColumn = String.format("UPDATE %s SET %s = %s", getTableName(), COLUMN_CUSTOM_ORDER_ID, COLUMN_ID);
-            Logger.debug(this, fillCustomOrderColumn);
-            db.execSQL(fillCustomOrderColumn);
         }
     }
 

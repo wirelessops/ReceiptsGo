@@ -18,6 +18,7 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.defaults.WhiteLabelFriendlyTableDefaultsCustomizer;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.rating.data.AppRatingStorage;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -69,8 +70,10 @@ public class BaseAppModule {
     public static DatabaseHelper provideDatabaseHelper(Context context, StorageManager storageManager,
                                                        UserPreferenceManager preferences,
                                                        ReceiptColumnDefinitions receiptColumnDefinitions,
-                                                       WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer) {
-        return DatabaseHelper.getInstance(context, storageManager, preferences, receiptColumnDefinitions, tableDefaultsCustomizer);
+                                                       WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer,
+                                                       OrderingPreferencesManager orderingPreferencesManager) {
+        return DatabaseHelper.getInstance(context, storageManager, preferences, receiptColumnDefinitions,
+                tableDefaultsCustomizer, orderingPreferencesManager);
     }
 
     @Provides

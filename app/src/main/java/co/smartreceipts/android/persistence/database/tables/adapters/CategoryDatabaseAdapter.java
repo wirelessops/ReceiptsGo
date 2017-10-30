@@ -53,9 +53,9 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
         final ContentValues values = new ContentValues();
         values.put(CategoriesTable.COLUMN_NAME, category.getName());
         values.put(CategoriesTable.COLUMN_CODE, category.getCode());
-        if (category.getCustomOrderId() != CategoryBuilderFactory.MISSING_ID) {
-            values.put(COLUMN_CUSTOM_ORDER_ID, category.getCustomOrderId());
-        }
+//        if (category.getCustomOrderId() != CategoryBuilderFactory.MISSING_ID) {
+            values.put(CategoriesTable.COLUMN_CUSTOM_ORDER_ID, category.getCustomOrderId());
+//        }
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(category.getSyncState()));
         } else {
@@ -73,7 +73,7 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
                 .setName(category.getName())
                 .setCode(category.getCode())
                 .setSyncState(mSyncStateAdapter.get(category.getSyncState(), databaseOperationMetadata))
-                .setCustomOrderId(category.getCustomOrderId() == CategoryBuilderFactory.MISSING_ID ? id : category.getCustomOrderId())
+                .setCustomOrderId(category.getCustomOrderId())
                 .build();
     }
 

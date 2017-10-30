@@ -13,17 +13,21 @@ import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.settings.widget.editors.SimpleInsertableListFragment;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.settings.widget.editors.DraggableEditableListFragment;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.dialog.fragments.EditTextDialogFragment;
 
-public class PaymentMethodsListFragment extends SimpleInsertableListFragment<PaymentMethod> {
+public class PaymentMethodsListFragment extends DraggableEditableListFragment<PaymentMethod> {
 
     public static final String TAG = PaymentMethodsListFragment.class.getSimpleName();
 
     @Inject
     PaymentMethodsTableController paymentMethodsTableController;
+
+    @Inject
+    OrderingPreferencesManager orderingPreferencesManager;
 
     public static PaymentMethodsListFragment newInstance() {
         return new PaymentMethodsListFragment();
@@ -56,11 +60,21 @@ public class PaymentMethodsListFragment extends SimpleInsertableListFragment<Pay
     }
 
     @Override
+    protected void saveTableOrdering() {
+        super.saveTableOrdering();
+        orderingPreferencesManager.savePaymentMethodsTableOrdering();
+    }
+
+    @Override
     protected void addItem() {
         final EditTextDialogFragment.OnClickListener onClickListener = (text, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
-                final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory().setMethod(text).build();
+                final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
+                        .setMethod(text)
+                        .setCustomOrderId(Integer.MAX_VALUE)
+                        .build();
                 getTableController().insert(paymentMethod, new DatabaseOperationMetadata());
+                scrollToEnd();
             }
         };
         final String title = getString(R.string.payment_method_add);
@@ -81,17 +95,17 @@ public class PaymentMethodsListFragment extends SimpleInsertableListFragment<Pay
     public void onEditItem(PaymentMethod oldPaymentMethod) {
         final EditTextDialogFragment.OnClickListener onClickListener = (text, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
-                final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory().setMethod(text).build();
+                final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory()
+                        .setMethod(text)
+                        .setCustomOrderId(oldPaymentMethod.getCustomOrderId())
+                        .build();
+
                 getTableController().update(oldPaymentMethod, newPaymentMethod, new DatabaseOperationMetadata());
             }
         };
         final String title = getString(R.string.payment_method_edit);
         final String positiveButtonText = getString(R.string.save);
         showDialog(title, oldPaymentMethod.getMethod(), positiveButtonText, onClickListener);
-    }
-
-    public void onMoveItem(PaymentMethod movedPaymentMethod, int newPosition)  {
-
     }
 
     @Override

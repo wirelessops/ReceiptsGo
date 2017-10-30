@@ -65,7 +65,7 @@ public class PaymentMethodsTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mPaymentMethodsTable = new PaymentMethodsTable(mSQLiteOpenHelper);
+        mPaymentMethodsTable = new PaymentMethodsTable(mSQLiteOpenHelper, false);
 
         // Now create the table and insert some defaults
         mPaymentMethodsTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);
@@ -90,20 +90,14 @@ public class PaymentMethodsTableTest {
         verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
         verify(customizer).insertPaymentMethodDefaults(mPaymentMethodsTable);
 
-        final List<String> allValues = mSqlCaptor.getAllValues();
-
-        assertEquals(2, allValues.size());
-
-        assertTrue(allValues.get(0).contains("CREATE TABLE paymentmethods"));
-        assertTrue(allValues.get(0).contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
-        assertTrue(allValues.get(0).contains("method TEXT"));
-        assertTrue(allValues.get(0).contains("drive_sync_id TEXT"));
-        assertTrue(allValues.get(0).contains("drive_is_synced BOOLEAN DEFAULT 0"));
-        assertTrue(allValues.get(0).contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
-        assertTrue(allValues.get(0).contains("last_local_modification_time DATE"));
-        assertTrue(allValues.get(0).contains("custom_order_id INTEGER DEFAULT 0"));
-
-        assertTrue(allValues.get(1).contains("UPDATE paymentmethods SET custom_order_id = id"));
+        assertTrue(mSqlCaptor.getValue().contains("CREATE TABLE paymentmethods"));
+        assertTrue(mSqlCaptor.getValue().contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
+        assertTrue(mSqlCaptor.getValue().contains("method TEXT"));
+        assertTrue(mSqlCaptor.getValue().contains("drive_sync_id TEXT"));
+        assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN DEFAULT 0"));
+        assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
+        assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        assertTrue(mSqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
     }
 
     @Test

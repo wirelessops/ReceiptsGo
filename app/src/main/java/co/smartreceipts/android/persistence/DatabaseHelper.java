@@ -38,6 +38,7 @@ import co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.TripsTable;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
@@ -104,7 +105,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     public DatabaseHelper(@NonNull Context context, @NonNull StorageManager storageManager,
                           @NonNull UserPreferenceManager preferences,
                           @NonNull String databasePath, ReceiptColumnDefinitions receiptColumnDefinitions,
-                          WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer) {
+                          WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer,
+                          @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         super(context, databasePath, null, DATABASE_VERSION); // Requests the default cursor
 
         mContext = context;
@@ -116,10 +118,10 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         mTables = new ArrayList<>();
         mTripsTable = new TripsTable(this, storageManager, preferences);
         mDistanceTable = new DistanceTable(this, mTripsTable, preferences.get(UserPreference.General.DefaultCurrency));
-        mCategoriesTable = new CategoriesTable(this);
+        mCategoriesTable = new CategoriesTable(this, orderingPreferencesManager.isCategoriesTableOrdered());
         mCSVTable = new CSVTable(this, mReceiptColumnDefinitions);
         mPDFTable = new PDFTable(this, mReceiptColumnDefinitions);
-        mPaymentMethodsTable = new PaymentMethodsTable(this);
+        mPaymentMethodsTable = new PaymentMethodsTable(this, orderingPreferencesManager.isPaymentMethodsTableOrdered());
         mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable, storageManager, preferences);
         mTables.add(mTripsTable);
         mTables.add(mDistanceTable);
@@ -135,7 +137,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     public static final DatabaseHelper getInstance(Context context, StorageManager storageManager,
                                                    UserPreferenceManager preferences,
                                                    ReceiptColumnDefinitions receiptColumnDefinitions,
-                                                   WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer) {
+                                                   WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer,
+                                                   OrderingPreferencesManager orderingPreferencesManager) {
         if (INSTANCE == null || !INSTANCE.isOpen()) { // If we don't have an instance or it's closed
             String databasePath = StorageManager.GetRootPath();
             if (BuildConfig.DEBUG) {
@@ -147,7 +150,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 databasePath = databasePath + File.separator;
             }
             databasePath = databasePath + DATABASE_NAME;
-            INSTANCE = new DatabaseHelper(context, storageManager, preferences, databasePath, receiptColumnDefinitions, tableDefaultsCustomizer);
+            INSTANCE = new DatabaseHelper(context, storageManager, preferences, databasePath,
+                    receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager);
         }
         return INSTANCE;
     }

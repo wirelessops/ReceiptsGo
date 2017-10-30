@@ -8,7 +8,7 @@ import co.smartreceipts.android.sync.model.Syncable;
 /**
  * A contract definition by which we can track receipt categories
  */
-public interface Category extends Parcelable, Syncable, Draggable {
+public interface Category extends Parcelable, Syncable, Comparable<Category>, Draggable {
 
     /**
      * @return - the database primary key id for this category

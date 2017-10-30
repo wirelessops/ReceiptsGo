@@ -24,9 +24,9 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
     public static final String COLUMN_BREAKDOWN = "breakdown";
 
 
-    public CategoriesTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper) {
-        // TODO: 12.10.2017 change orderBy
-        super(sqLiteOpenHelper, TABLE_NAME, new CategoryDatabaseAdapter(), new CategoryPrimaryKey(), new OrderBy(COLUMN_NAME, false));
+    public CategoriesTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, boolean isOrdered) {
+        super(sqLiteOpenHelper, TABLE_NAME, new CategoryDatabaseAdapter(), new CategoryPrimaryKey(),
+                isOrdered ? new OrderBy(COLUMN_CUSTOM_ORDER_ID, false) : new OrderBy(COLUMN_NAME, false));
     }
 
     @Override
@@ -48,11 +48,6 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
         db.execSQL(categories);
 
         customizer.insertCategoryDefaults(this);
-
-        final String fillCustomOrderColumn = String.format("UPDATE %s SET %s = %s", getTableName(), COLUMN_CUSTOM_ORDER_ID, COLUMN_ID);
-        Logger.debug(this, fillCustomOrderColumn);
-        db.execSQL(fillCustomOrderColumn);
-
     }
 
     @Override
@@ -67,7 +62,6 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
         }
         if (oldVersion <= 15) {
-
             // changing primary key
             final String copyTable = "CREATE TABLE " + getTableName() + "_copy" + " ("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -88,8 +82,8 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
                     COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME);
 
             final String insertData = "INSERT INTO " + getTableName() + "_copy"
-                    + " (" + baseColumns + /* " + COLUMN_CUSTOM_ORDER_ID +*/ ") "
-                    + "SELECT " + baseColumns /* + ", " + COLUMN_ID*/
+                    + " (" + baseColumns + ") "
+                    + "SELECT " + baseColumns
                     + " FROM " + getTableName() + ";";
             Logger.debug(this, insertData);
             db.execSQL(insertData);

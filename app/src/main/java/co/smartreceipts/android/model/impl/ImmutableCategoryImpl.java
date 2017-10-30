@@ -123,4 +123,8 @@ public class ImmutableCategoryImpl implements Category {
 
     };
 
+    @Override
+    public int compareTo(@NonNull Category category) {
+        return customOrderId - category.getCustomOrderId();
+    }
 }
