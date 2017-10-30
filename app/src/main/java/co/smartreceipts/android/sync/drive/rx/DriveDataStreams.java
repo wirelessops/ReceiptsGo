@@ -100,6 +100,8 @@ class DriveDataStreams {
                         for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
                             if (isValidSmartReceiptsFolder(metadata)) {
                                 folderMetadataList.add(metadata);
+                            } else {
+                                Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
                             }
                         }
 
@@ -182,6 +184,8 @@ class DriveDataStreams {
                                 if (isValidSmartReceiptsFolder(metadata)) {
                                     folderId = metadata.getDriveId();
                                     break;
+                                } else {
+                                    Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
                                 }
                             }
 
