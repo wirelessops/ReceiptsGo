@@ -12,7 +12,7 @@ import co.smartreceipts.android.utils.log.Logger;
 
 public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<PaymentMethod> {
 
-    public PaymentMethodsAdapter(EditableItemListener<PaymentMethod> listener) {
+    PaymentMethodsAdapter(EditableItemListener<PaymentMethod> listener) {
         super(listener);
     }
 
@@ -27,9 +27,6 @@ public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<Payment
 
         holder.edit.setOnClickListener(v -> listener.onEditItem(method));
         holder.delete.setOnClickListener(v -> listener.onDeleteItem(method));
-
-        holder.testOrderNumber.setText(String.valueOf(method.getCustomOrderId()));
-
     }
 
     @Override

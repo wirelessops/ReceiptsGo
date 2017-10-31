@@ -104,7 +104,6 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
         public View delete;
         View dragHandle;
         View divider;
-        public TextView testOrderNumber;
 
         EditableCardsViewHolder(View itemView) {
             super(itemView);
@@ -115,7 +114,6 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
             delete = itemView.findViewById(R.id.delete);
             dragHandle = itemView.findViewById(R.id.drag_handle);
             divider = itemView.findViewById(R.id.divider);
-            testOrderNumber = itemView.findViewById(R.id.test_order_number);
         }
     }
 

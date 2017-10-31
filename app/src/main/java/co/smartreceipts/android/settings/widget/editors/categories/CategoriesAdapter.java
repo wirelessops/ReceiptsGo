@@ -10,7 +10,7 @@ import co.smartreceipts.android.utils.log.Logger;
 
 public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
 
-    public CategoriesAdapter(EditableItemListener<Category> listener) {
+    CategoriesAdapter(EditableItemListener<Category> listener) {
         super(listener);
     }
 
@@ -24,8 +24,6 @@ public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
 
         holder.edit.setOnClickListener(v -> listener.onEditItem(category));
         holder.delete.setOnClickListener(v -> listener.onDeleteItem(category));
-
-        holder.testOrderNumber.setText(String.valueOf(category.getCustomOrderId()));
     }
 
     @Override
