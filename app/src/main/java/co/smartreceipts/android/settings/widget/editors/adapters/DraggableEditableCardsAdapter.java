@@ -73,9 +73,16 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
 
         T movedItem = items.remove(fromPosition);
         items.add(toPosition, movedItem);
-        notifyItemMoved(fromPosition, toPosition);
+    }
 
-        notifyItemMoved(fromPosition, toPosition);
+    @Override
+    public void onItemDragStarted(int position) {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
+        notifyDataSetChanged();
     }
 
     @Override
@@ -102,13 +109,13 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
         EditableCardsViewHolder(View itemView) {
             super(itemView);
 
-            title = (TextView) itemView.findViewById(android.R.id.title);
-            summary = (TextView) itemView.findViewById(android.R.id.summary);
+            title = itemView.findViewById(android.R.id.title);
+            summary = itemView.findViewById(android.R.id.summary);
             edit = itemView.findViewById(R.id.edit);
             delete = itemView.findViewById(R.id.delete);
             dragHandle = itemView.findViewById(R.id.drag_handle);
             divider = itemView.findViewById(R.id.divider);
-            testOrderNumber = (TextView) itemView.findViewById(R.id.test_order_number);
+            testOrderNumber = itemView.findViewById(R.id.test_order_number);
         }
     }
 

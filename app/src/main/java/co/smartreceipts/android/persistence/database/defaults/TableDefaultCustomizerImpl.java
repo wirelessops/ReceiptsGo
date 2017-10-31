@@ -54,7 +54,7 @@ public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
     @Override
     public void insertCategoryDefaults(@NonNull final CategoriesTable categoriesTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        final Resources resources = mContext.getResources();
+        final Resources resources = context.getResources();
         categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_null))
                 .setCode(resources.getString(R.string.category_null_code)).build(), databaseOperationMetadata);
         categoriesTable.insertBlocking(new CategoryBuilderFactory().setName(resources.getString(R.string.category_airfare))

@@ -78,6 +78,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
 public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView,
@@ -370,7 +371,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     public final boolean showReceiptMenu(final Receipt receipt) {
         highlightedReceipt = receipt;
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
         builder.setTitle(receipt.getName()).setCancelable(true).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -425,43 +426,40 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             } else {
                 receiptActions = new String[]{receiptActionEdit, receiptActionView, receiptActionDelete, receiptActionMoveCopy, receiptActionSwapUp, receiptActionSwapDown};
             }
-            builder.setItems(receiptActions, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    final String selection = receiptActions[item];
-                    if (selection != null) {
-                        if (selection.equals(receiptActionEdit)) { // Edit Receipt
-                            analytics.record(Events.Receipts.ReceiptMenuEdit);
-                            // ReceiptsListFragment.this.receiptMenu(trip, receipt, null);
-                            navigationHandler.navigateToEditReceiptFragment(trip, receipt);
-                        } else if (selection.equals(receiptActionCamera)) { // Take Photo
-                            analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
-                            imageUri = new CameraInteractionController(ReceiptsListFragment.this).addPhoto();
-                        } else if (selection.equals(receiptActionView)) { // View Photo/PDF
-                            if (receipt.hasPDF()) {
-                                analytics.record(Events.Receipts.ReceiptMenuViewImage);
-                                ReceiptsListFragment.this.showPDF(receipt);
-                            } else {
-                                analytics.record(Events.Receipts.ReceiptMenuViewPdf);
-                                ReceiptsListFragment.this.showImage(receipt);
-                            }
-                        } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
-                            analytics.record(Events.Receipts.ReceiptMenuDelete);
-                            final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
-                            navigationHandler.showDialog(deleteReceiptDialogFragment);
-                        } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
-                            analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
-                            ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
-                        } else if (selection.equals(receiptActionSwapUp)) { // Swap Up
-                            analytics.record(Events.Receipts.ReceiptMenuSwapUp);
-                            receiptTableController.swapUp(receipt);
-                        } else if (selection.equals(receiptActionSwapDown)) { // Swap Down
-                            analytics.record(Events.Receipts.ReceiptMenuSwapDown);
-                            receiptTableController.swapDown(receipt);
+            builder.setItems(receiptActions, (dialog, item) -> {
+                final String selection = receiptActions[item];
+                if (selection != null) {
+                    if (selection.equals(receiptActionEdit)) { // Edit Receipt
+                        analytics.record(Events.Receipts.ReceiptMenuEdit);
+                        // ReceiptsListFragment.this.receiptMenu(trip, receipt, null);
+                        navigationHandler.navigateToEditReceiptFragment(trip, receipt);
+                    } else if (selection.equals(receiptActionCamera)) { // Take Photo
+                        analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
+                        imageUri = new CameraInteractionController(ReceiptsListFragment.this).addPhoto();
+                    } else if (selection.equals(receiptActionView)) { // View Photo/PDF
+                        if (receipt.hasPDF()) {
+                            analytics.record(Events.Receipts.ReceiptMenuViewImage);
+                            ReceiptsListFragment.this.showPDF(receipt);
+                        } else {
+                            analytics.record(Events.Receipts.ReceiptMenuViewPdf);
+                            ReceiptsListFragment.this.showImage(receipt);
                         }
+                    } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
+                        analytics.record(Events.Receipts.ReceiptMenuDelete);
+                        final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
+                        navigationHandler.showDialog(deleteReceiptDialogFragment);
+                    } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
+                        analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
+                        ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
+                    } else if (selection.equals(receiptActionSwapUp)) { // Swap Up
+                        analytics.record(Events.Receipts.ReceiptMenuSwapUp);
+                        receiptTableController.swapUp(receipt);
+                    } else if (selection.equals(receiptActionSwapDown)) { // Swap Down
+                        analytics.record(Events.Receipts.ReceiptMenuSwapDown);
+                        receiptTableController.swapDown(receipt);
                     }
-                    dialog.cancel();
                 }
+                dialog.cancel();
             });
         }
         builder.show();
