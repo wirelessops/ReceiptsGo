@@ -3,6 +3,7 @@ package co.smartreceipts.android.utils;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -29,12 +30,8 @@ public final class SoftKeyboardManager {
             if (inputMethodManager != null) {
                 // Try both immediately
                 inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // And delayed
-                        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-                    }
+                view.postDelayed(() -> {
+                    inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT); // And delayed
                 }, DELAY_TO_SHOW_KEYBOARD_MILLIS);
             }
         }
@@ -49,6 +46,20 @@ public final class SoftKeyboardManager {
         final InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static class HideSoftKeyboardOnTouchListener implements View.OnTouchListener {
+
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                view.performClick();
+                SoftKeyboardManager.hideKeyboard(view);
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -42,13 +43,29 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
         return position < super.getCount() ? super.getItem(position) : null;
     }
 
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (isFooter(position)) {
+            // Note: despite having #getItem(int) tagged as nullable, null values causes a crash... So we use this instead
+            final View view;
+            if (convertView == null) {
+                view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+            } else {
+                // Note: We don't update the text or anything here, since this item will never actually get selected
+                view = convertView;
+            }
+            return view;
+        } else {
+            // Create a standard view
+            return super.getView(position, convertView, parent);
+        }
+    }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        if (position == getCount() - 1) {
-            //create view for the footer button
-            Button button = new Button(getContext());
+        if (isFooter(position)) {
+            final Button button = new Button(getContext());
             button.setText(buttonTextResId);
             button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.card_background));
             UiUtils.setTextAppearance(button, R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
@@ -57,13 +74,23 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
 
             return button;
         } else {
-            //create view for standard spinner item
+            // Create view for standard spinner item
             return super.getDropDownView(position, null, parent);
         }
     }
 
-    public void  update(List<T> items) {
+    public void update(List<T> items) {
         super.clear();
         super.addAll(items);
+    }
+
+    /**
+     * Checks if the position is at the footer position
+     *
+     * @param position the current position
+     * @return {@code true} if this is the footer. {@code false} otherwise
+     */
+    private boolean isFooter(int position) {
+        return position == getCount() - 1;
     }
 }

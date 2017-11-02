@@ -58,11 +58,13 @@ android {
         compile "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
         compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
         compile "com.android.support:exifinterface:$SUPPORT_LIBRARY_VERSION"
+        compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
 
         compile "com.android.support:multidex:$MULTIDEX_VERSION"
 
-        compile "com.google.android.gms:play-services-drive:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        compile "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
+        compile "com.google.android.gms:play-services-drive:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
         compile "com.google.firebase:firebase-core:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
         compile "com.google.firebase:firebase-crash:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
         compile "com.google.firebase:firebase-messaging:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"

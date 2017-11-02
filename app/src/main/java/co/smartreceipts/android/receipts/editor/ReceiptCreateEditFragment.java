@@ -35,6 +35,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
@@ -65,6 +69,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
+import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
@@ -88,46 +93,90 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     @Inject
     Flex flex;
+
     @Inject
     DateManager dateManager;
+
     @Inject
     DatabaseHelper database;
+
     @Inject
     Analytics analytics;
+
     @Inject
     CategoriesTableController categoriesTableController;
+
     @Inject
     PaymentMethodsTableController paymentMethodsTableController;
+
     @Inject
     NavigationHandler navigationHandler;
+
     @Inject
     BackupReminderTooltipStorage backupReminderTooltipStorage;
 
     @Inject
     ReceiptCreateEditFragmentPresenter presenter;
 
+    // Butterknife Fields
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_NAME)
+    AutoCompleteTextView nameBox;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_PRICE)
+    EditText priceBox;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_TAX)
+    AutoCompleteTextView taxBox;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_CURRENCY)
+    Spinner currencySpinner;
+
+    @BindView(R.id.receipt_input_exchange_rate)
+    NetworkRequestAwareEditText exchangeRateBox;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_DATE)
+    DateEditText dateBox;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_CATEGORY)
+    Spinner categoriesSpinner;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_COMMENT)
+    AutoCompleteTextView commentBox;
+
+    @BindView(R.id.receipt_input_payment_method)
+    Spinner paymentMethodsSpinner;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)
+    CheckBox reimbursableCheckbox;
+
+    @BindView(R.id.DIALOG_RECEIPTMENU_FULLPAGE)
+    CheckBox fullpageCheckbox;
+
+    @BindView(R.id.receipt_input_tax_wrapper)
+    View taxInputWrapper;
+
+    @BindViews({R.id.receipt_input_guide_image_payment_method, R.id.receipt_input_payment_method })
+    List<View> paymentMethodsViewsList;
+
+    @BindViews({R.id.receipt_input_guide_image_exchange_rate, R.id.receipt_input_exchange_rate })
+    List<View> exchangeRateViewsList;
+
+    // Flex fields (ie for white-label projects)
+    EditText extraEditText1;
+    EditText extraEditText2;
+    EditText extraEditText3;
+
+    // Misc views
+    View focusedView;
+
+    // Butterknife unbinding
+    private Unbinder unbinder;
+
     // Metadata
     private OcrResponse ocrResponse;
-
-    // Views
-    private AutoCompleteTextView nameBox;
-    private EditText priceBox;
-    private AutoCompleteTextView taxBox;
-    private Spinner currencySpinner;
-    private NetworkRequestAwareEditText exchangeRateBox;
-    private DateEditText dateBox;
-    private AutoCompleteTextView commentBox;
-    private Spinner categoriesSpinner;
-    private CheckBox reimbursable;
-    private CheckBox fullpage;
-    private Spinner paymentMethodsSpinner;
-    private EditText extra_edittext_box_1;
-    private EditText extra_edittext_box_2;
-    private EditText extra_edittext_box_3;
-    private ViewGroup paymentMethodsContainer;
-    private ViewGroup exchangeRateContainer;
-    private Toolbar toolbar;
-    private View focusedView;
 
     // Rx
     private Disposable idDisposable;
@@ -196,37 +245,34 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     @Override
-    public void onViewCreated(View rootView, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(rootView, savedInstanceState);
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.unbinder = ButterKnife.bind(this, view);
         if (savedInstanceState == null) {
             if (getReceipt() == null) {
                 new ChildFragmentNavigationHandler(this).addChild(new OcrInformationalTooltipFragment(), R.id.update_receipt_tooltip);
             }
         }
 
-        this.nameBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_NAME);
-        this.priceBox = (EditText) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_PRICE);
-        this.taxBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_TAX);
-        this.currencySpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_CURRENCY);
-        this.exchangeRateBox = (NetworkRequestAwareEditText) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_EXCHANGE_RATE);
-        this.exchangeRateContainer = (ViewGroup) flex.getSubView(getActivity(), rootView, R.id.exchange_rate_container);
-        this.dateBox = (DateEditText) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_DATE);
-        this.commentBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_COMMENT);
-        this.categoriesSpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_CATEGORY);
-        this.reimbursable = (CheckBox) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_EXPENSABLE);
-        this.fullpage = (CheckBox) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_FULLPAGE);
-        this.paymentMethodsSpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.dialog_receiptmenu_payment_methods_spinner);
-        paymentMethodsContainer = (ViewGroup) flex.getSubView(getActivity(), rootView, R.id.payment_methods_container);
+        // Apply white-label settings via our 'Flex' mechanism to update defaults
+        flex.applyCustomSettings(nameBox);
+        flex.applyCustomSettings(priceBox);
+        flex.applyCustomSettings(taxBox);
+        flex.applyCustomSettings(currencySpinner);
+        flex.applyCustomSettings(exchangeRateBox);
+        flex.applyCustomSettings(dateBox);
+        flex.applyCustomSettings(categoriesSpinner);
+        flex.applyCustomSettings(commentBox);
+        flex.applyCustomSettings(reimbursableCheckbox);
+        flex.applyCustomSettings(fullpageCheckbox);
 
-        // Extras
-        final LinearLayout extras = (LinearLayout) flex.getSubView(getActivity(), rootView, R.id.DIALOG_RECEIPTMENU_EXTRAS);
-        this.extra_edittext_box_1 = (EditText) extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_1));
-        this.extra_edittext_box_2 = (EditText) extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_2));
-        this.extra_edittext_box_3 = (EditText) extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_3));
+        // Apply white-label settings via our 'Flex' mechanism to add custom fields
+        final LinearLayout extras = (LinearLayout) flex.getSubView(getActivity(), view, R.id.DIALOG_RECEIPTMENU_EXTRAS);
+        this.extraEditText1 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_1));
+        this.extraEditText2 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_2));
+        this.extraEditText3 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_3));
 
         // Toolbar stuff
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         if (navigationHandler.isDualPane()) {
             toolbar.setVisibility(View.GONE);
         } else {
@@ -242,26 +288,15 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         this.commentBox.setOnFocusChangeListener(this);
         this.paymentMethodsSpinner.setOnFocusChangeListener(this);
 
-        // Custom view properties
+        // Configure our custom view properties
         exchangeRateBox.setFailedHint(R.string.DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED);
 
-        // Set click listeners
-        View.OnTouchListener hideSoftKeyboardOnTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    SoftKeyboardManager.hideKeyboard(view);
-                }
-                return false;
-            }
-        };
+        // And ensure that we do not show the keyboard when clicking these views
+        final View.OnTouchListener hideSoftKeyboardOnTouchListener = new SoftKeyboardManager.HideSoftKeyboardOnTouchListener();
         dateBox.setOnTouchListener(hideSoftKeyboardOnTouchListener);
         categoriesSpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
         currencySpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
         paymentMethodsSpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
-
-        // Show default dictionary with auto-complete
-        nameBox.setKeyListener(TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES));
 
         // Set-up tax layers
         if (presenter.isIncludeTaxField()) {
@@ -269,7 +304,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     presenter.isUsePreTaxPrice(),
                     presenter.getDefaultTaxPercentage(), getReceipt() == null));
             priceBox.setHint(getFlexString(R.string.DIALOG_RECEIPTMENU_HINT_PRICE_SHORT));
-            taxBox.setVisibility(View.VISIBLE);
+            taxInputWrapper.setVisibility(View.VISIBLE);
+        } else {
+            taxInputWrapper.setVisibility(View.GONE);
         }
 
         // Configure dropdown defaults for currencies
@@ -280,7 +317,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         final boolean exchangeRateIsVisible = savedInstanceState != null && savedInstanceState.getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
         if (exchangeRateIsVisible) {
             // Note: the restoration of selected spinner items (in the currency spinner) is delayed so we use this state tracker to restore immediately
-            exchangeRateContainer.setVisibility(View.VISIBLE);
+            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
+        } else {
+            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
         }
         currencySpinner.setOnItemSelectedListener(new UserSelectionTrackingOnItemSelectedListener() {
 
@@ -323,7 +362,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 }
                 dateBox.setText(DateFormat.getDateFormat(getActivity()).format(dateBox.date));
 
-                reimbursable.setChecked(presenter.isReceiptsDefaultAsReimbursable());
+                reimbursableCheckbox.setChecked(presenter.isReceiptsDefaultAsReimbursable());
                 if (presenter.isMatchReceiptCommentToCategory() && presenter.isMatchReceiptNameToCategory()) {
                     if (focusedView == null) {
                         focusedView = priceBox;
@@ -347,7 +386,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 if (!parentTrip.getDefaultCurrencyCode().equals(receiptInputCache.getCachedCurrency())) {
                     configureExchangeRateField(receiptInputCache.getCachedCurrency());
                 }
-                fullpage.setChecked(presenter.isDefaultToFullPage());
+                fullpageCheckbox.setChecked(presenter.isDefaultToFullPage());
 
                 if (ocrResponse != null) {
                     final OcrResponseParser ocrResponseParser = new OcrResponseParser(ocrResponse);
@@ -399,22 +438,22 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 }
 
                 if (receipt.getPrice().getCurrency().equals(parentTrip.getPrice().getCurrency())) {
-                    exchangeRateContainer.setVisibility(View.GONE);
+                    ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
                 } else {
-                    exchangeRateContainer.setVisibility(View.VISIBLE);
+                    ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
                 }
 
-                reimbursable.setChecked(receipt.isReimbursable());
-                fullpage.setChecked(receipt.isFullPage());
+                reimbursableCheckbox.setChecked(receipt.isReimbursable());
+                fullpageCheckbox.setChecked(receipt.isFullPage());
 
-                if (extra_edittext_box_1 != null && receipt.hasExtraEditText1()) {
-                    extra_edittext_box_1.setText(receipt.getExtraEditText1());
+                if (extraEditText1 != null && receipt.hasExtraEditText1()) {
+                    extraEditText1.setText(receipt.getExtraEditText1());
                 }
-                if (extra_edittext_box_2 != null && receipt.hasExtraEditText2()) {
-                    extra_edittext_box_2.setText(receipt.getExtraEditText2());
+                if (extraEditText2 != null && receipt.hasExtraEditText2()) {
+                    extraEditText2.setText(receipt.getExtraEditText2());
                 }
-                if (extra_edittext_box_3 != null && receipt.hasExtraEditText3()) {
-                    extra_edittext_box_3.setText(receipt.getExtraEditText3());
+                if (extraEditText3 != null && receipt.hasExtraEditText3()) {
+                    extraEditText3.setText(receipt.getExtraEditText3());
                 }
             }
 
@@ -483,7 +522,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     paymentMethodsAdapter.update(paymentMethods);
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
                     if (presenter.isUsePaymentMethods()) {
-                        paymentMethodsContainer.setVisibility(View.VISIBLE);
+                        ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
                         if (getReceipt() != null) {
                             final PaymentMethod oldPaymentMethod = getReceipt().getPaymentMethod();
                             final int paymentIdx = paymentMethodsAdapter.getPosition(oldPaymentMethod);
@@ -491,6 +530,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                                 paymentMethodsSpinner.setSelection(paymentIdx);
                             }
                         }
+                    } else {
+                        ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.GONE));
                     }
                 }
             }
@@ -661,9 +702,20 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
 
-        if (exchangeRateContainer != null && outState != null) {
-            outState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateContainer.getVisibility() == View.VISIBLE);
+        if (outState != null) {
+            outState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateBox.getVisibility() == View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        Logger.debug(this, "onDestroyView");
+        extraEditText1 = null;
+        extraEditText2 = null;
+        extraEditText3 = null;
+        focusedView = null;
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     @Override
@@ -676,10 +728,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private void configureExchangeRateField(@Nullable String baseCurrencyCode) {
         final String exchangeRateCurrencyCode = getParentTrip().getDefaultCurrencyCode();
         if (exchangeRateCurrencyCode.equals(baseCurrencyCode) || baseCurrencyCode == null) {
-            exchangeRateContainer.setVisibility(View.GONE);
+            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
             exchangeRateBox.setText(""); // Clear out if we're hiding the box
         } else {
-            exchangeRateContainer.setVisibility(View.VISIBLE);
+            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
             submitExchangeRateRequest(baseCurrencyCode);
         }
     }
@@ -740,16 +792,16 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             final String exchangeRate = exchangeRateBox.getText().toString();
             final String comment = commentBox.getText().toString();
             final PaymentMethod paymentMethod = (PaymentMethod) (presenter.isUsePaymentMethods() ? paymentMethodsSpinner.getSelectedItem() : null);
-            final String extraText1 = (extra_edittext_box_1 == null) ? null : extra_edittext_box_1.getText().toString();
-            final String extraText2 = (extra_edittext_box_2 == null) ? null : extra_edittext_box_2.getText().toString();
-            final String extraText3 = (extra_edittext_box_3 == null) ? null : extra_edittext_box_3.getText().toString();
+            final String extraText1 = (extraEditText1 == null) ? null : extraEditText1.getText().toString();
+            final String extraText2 = (extraEditText2 == null) ? null : extraEditText2.getText().toString();
+            final String extraText3 = (extraEditText3 == null) ? null : extraEditText3.getText().toString();
 
             receiptInputCache.setCachedDate((Date) dateBox.date.clone());
             receiptInputCache.setCachedCategory(category);
             receiptInputCache.setCachedCurrency(currency);
 
             presenter.saveReceipt(dateBox.date, price, tax, exchangeRate, comment,
-                    paymentMethod, reimbursable.isChecked(), fullpage.isChecked(), name, category, currency,
+                    paymentMethod, reimbursableCheckbox.isChecked(), fullpageCheckbox.isChecked(), name, category, currency,
                     extraText1, extraText2, extraText3);
 
             analytics.record(getReceipt() == null ? Events.Receipts.PersistNewReceipt : Events.Receipts.PersistUpdateReceipt);

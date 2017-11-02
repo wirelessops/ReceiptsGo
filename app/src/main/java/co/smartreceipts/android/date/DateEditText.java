@@ -32,7 +32,11 @@ public class DateEditText extends AppCompatEditText {
     @Override
     public Parcelable onSaveInstanceState() {
         final Parcelable superDate = super.onSaveInstanceState();
-        return new SavedState(superDate, date);
+        if (superDate != null) {
+            return new SavedState(superDate, date);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -44,6 +48,13 @@ public class DateEditText extends AppCompatEditText {
         } else {
             super.onRestoreInstanceState(state);
         }
+    }
+
+    @Override
+    public boolean performClick() {
+        // Call super, which generates an AccessibilityEvent and calls the onClick() listener on the view
+        super.performClick();
+        return true;
     }
 
     /**

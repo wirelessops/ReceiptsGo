@@ -1,5 +1,6 @@
 package wb.android.flex;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -184,6 +185,28 @@ public class Flex {
 			Log.e(TAG, e.toString());
 		}
 		return view;
+	}
+
+	@SuppressLint("ResourceType")
+	public void applyCustomSettings(View view) {
+		if (mFlexViews != null) {
+			final String id;
+			if (view.getId() == 0xffffffff) {
+				id = "";
+			} else {
+				id = "@+id/" + view.getResources().getResourceEntryName(view.getId());
+			}
+			try {
+				if (view instanceof EditText)
+					mFlexViews.updateView((EditText) view, id);
+				else if (view instanceof CheckBox)
+					mFlexViews.updateView((CheckBox) view, id);
+				else
+					mFlexViews.updateView(view, id);
+			} catch (FlexFailedException e) {
+				Log.e(TAG, e.toString());
+			}
+		}
 	}
 	
 	/*
