@@ -50,85 +50,85 @@ android {
     }
 
     dependencies {
-        compile fileTree(dir: 'libs', include: '*.jar')
-        compile project(':wbMiniLibrary')
+        implementation fileTree(dir: 'libs', include: '*.jar')
+        implementation project(':wbMiniLibrary')
 
-        compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-        compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-        compile "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
-        compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
-        compile "com.android.support:exifinterface:$SUPPORT_LIBRARY_VERSION"
-        compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+		implementation "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
+        implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+        implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
+        implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+        implementation "com.android.support:exifinterface:$SUPPORT_LIBRARY_VERSION"
+        implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
 
-        compile "com.android.support:multidex:$MULTIDEX_VERSION"
+        implementation "com.android.support:multidex:$MULTIDEX_VERSION"
 
-        compile "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
+		implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
-        compile "com.google.android.gms:play-services-drive:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        compile "com.google.firebase:firebase-core:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        compile "com.google.firebase:firebase-crash:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        compile "com.google.firebase:firebase-messaging:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        implementation "com.google.android.gms:play-services-drive:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        implementation "com.google.firebase:firebase-core:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        implementation "com.google.firebase:firebase-crash:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        implementation "com.google.firebase:firebase-messaging:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
 
-        compile "com.squareup.picasso:picasso:$PICASSO_VERSION"
-        compile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
-        compile "com.squareup.okhttp3:logging-interceptor:$OK_HTTP_VERSION"
-        compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-        compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+        implementation "com.squareup.picasso:picasso:$PICASSO_VERSION"
+        implementation "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
+        implementation "com.squareup.okhttp3:logging-interceptor:$OK_HTTP_VERSION"
+        implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+        implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
 
         //Rx2
-        compile "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
-        compile "io.reactivex.rxjava2:rxandroid:$RX2_ANDROID_VERSION"
-        compile "com.jakewharton.rxbinding2:rxbinding:$RX2_BINDING_VERSION"
-        compile "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
+        implementation "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
+        implementation "io.reactivex.rxjava2:rxandroid:$RX2_ANDROID_VERSION"
+        implementation "com.jakewharton.rxbinding2:rxbinding:$RX2_BINDING_VERSION"
+        implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
 
-        compile "commons-io:commons-io:$IO_UTILS_VERSION"
-        compile "com.hadisatrio:Optional:$OPTIONAL_VERSION"
+        implementation "commons-io:commons-io:$IO_UTILS_VERSION"
+        implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
 
-        compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
+        implementation "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
         annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
-        compile "com.tapadoo.android:alerter:$ALERTER_VERSION"
-        compile "com.jpardogo.materialtabstrip:library:$MATERIAL_TAB_STRIP_VERSION"
-        compile "com.github.clans:fab:$FAB_MENU_VERSION"
+        implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
+        implementation "com.jpardogo.materialtabstrip:library:$MATERIAL_TAB_STRIP_VERSION"
+        implementation "com.github.clans:fab:$FAB_MENU_VERSION"
 
-        compile "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
-        compile "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"
+        implementation "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
+        implementation "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"
 
-        compile "org.slf4j:slf4j-api:$SLF4J_VERSION"
-        compile "com.github.tony19:logback-android-core:$LOGBACK_VERSION"
-        compile("com.github.tony19:logback-android-classic:$LOGBACK_VERSION") {
+        implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
+        implementation "com.github.tony19:logback-android-core:$LOGBACK_VERSION"
+        implementation("com.github.tony19:logback-android-classic:$LOGBACK_VERSION") {
             // workaround issue #73
             exclude group: 'com.google.android', module: 'android'
         }
 
-        compile "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
+        implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
 
-        compile ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar"){
+        implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar"){
             transitive=true
         }
 
-        compile "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
-        compile "com.amazonaws:aws-android-sdk-s3:$AWS_SDK_VERSION"
+        implementation "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
+        implementation "com.amazonaws:aws-android-sdk-s3:$AWS_SDK_VERSION"
 
         // Dagger
-        compile "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
-        compile "com.google.dagger:dagger:$DAGGER_VERSION"
+        implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
+        implementation "com.google.dagger:dagger:$DAGGER_VERSION"
         annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
 
         // Unit Tests
-        testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
-        testCompile "junit:junit:$JUNIT_VERSION"
-        testCompile "org.mockito:mockito-all:$MOCKITO_VERSION"
+        testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
+        testImplementation "junit:junit:$JUNIT_VERSION"
+        testImplementation "org.mockito:mockito-all:$MOCKITO_VERSION"
 
         // Leak Canary
-        debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
-        releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
-        testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
+        debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
+        releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
+        testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
 
         // Special dependencies for free flavor
-        freeCompile "com.google.android.gms:play-services-ads:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        freeCompile "com.google.android.gms:play-services-analytics:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        freeCompile files('src/free/libs/bugsense-3.6.jar')
+        freeImplementation "com.google.android.gms:play-services-ads:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        freeImplementation "com.google.android.gms:play-services-analytics:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        freeImplementation files('src/free/libs/bugsense-3.6.jar')
     }
 
     apply plugin: 'com.google.gms.google-services'

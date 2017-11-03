@@ -233,6 +233,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(times(1));
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -251,6 +252,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(times(1));
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -269,6 +271,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(times(1));
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -287,6 +290,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(times(1));
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -305,6 +309,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(times(1));
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -323,6 +328,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(times(1));
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -341,6 +347,7 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(never());
         verifyV13Upgrade(times(1));
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
     @Test
@@ -359,19 +366,27 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(never());
         verifyV13Upgrade(never());
         verifyV14Upgrade(times(1));
+        verifyV15Upgrade(times(1));
     }
 
-//    @Test
-//    public void onUpgradeFromV15() {
-//        final int oldVersion = 15;
-//        final int newVersion = DatabaseHelper.DATABASE_VERSION;
-//
-//        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
-//        mReceiptsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
-//        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
-//
-//        assertTrue(mSqlCaptor.getValue().contains());
-//    }
+    @Test
+    public void onUpgradeFromV15() {
+        final int oldVersion = 15;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mReceiptsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verifyZeroInteractions(customizer);
+        verifyV1Upgrade(never());
+        verifyV3Upgrade(never());
+        verifyV4Upgrade(never());
+        verifyV7Upgrade(never());
+        verifyV11Upgrade(never());
+        verifyV12Upgrade(never());
+        verifyV13Upgrade(never());
+        verifyV14Upgrade(never());
+        verifyV15Upgrade(times(1));
+    }
 
     @Test
     public void onUpgradeAlreadyOccurred() {
@@ -426,6 +441,62 @@ public class ReceiptsTableTest {
         verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + mReceiptsTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
         verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + mReceiptsTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
         verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + mReceiptsTable.getTableName() + " ADD last_local_modification_time DATE");
+    }
+
+    private void verifyV15Upgrade(@NonNull VerificationMode verificationMode) {
+        verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + mReceiptsTable.getTableName() +
+                " ADD " + ReceiptsTable.COLUMN_CATEGORY_ID + " INTEGER REFERENCES " + CategoriesTable.TABLE_NAME + " ON DELETE NO ACTION");
+
+        verify(mSQLiteDatabase, verificationMode).execSQL("UPDATE " + ReceiptsTable.TABLE_NAME + " SET " + ReceiptsTable.COLUMN_CATEGORY_ID +
+                " = ( SELECT " + CategoriesTable.COLUMN_ID + " FROM " + CategoriesTable.TABLE_NAME +
+                " WHERE " + CategoriesTable.COLUMN_NAME + " = category LIMIT 1 )");
+
+        verify(mSQLiteDatabase, verificationMode).execSQL("CREATE TABLE " + ReceiptsTable.TABLE_NAME + "_copy" + " ("
+                + ReceiptsTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ReceiptsTable.COLUMN_PATH + " TEXT, "
+                + ReceiptsTable.COLUMN_PARENT + " TEXT REFERENCES " + TripsTable.TABLE_NAME + " ON DELETE CASCADE, "
+                + ReceiptsTable.COLUMN_NAME + " TEXT DEFAULT \"New Receipt\", "
+                + ReceiptsTable.COLUMN_CATEGORY_ID + " INTEGER REFERENCES " + CategoriesTable.TABLE_NAME + " ON DELETE NO ACTION, "
+                + ReceiptsTable.COLUMN_DATE + " DATE DEFAULT (DATE('now', 'localtime')), "
+                + ReceiptsTable.COLUMN_TIMEZONE + " TEXT, "
+                + ReceiptsTable.COLUMN_COMMENT + " TEXT, "
+                + ReceiptsTable.COLUMN_ISO4217 + " TEXT NOT NULL, "
+                + ReceiptsTable.COLUMN_PRICE + " DECIMAL(10, 2) DEFAULT 0.00, "
+                + ReceiptsTable.COLUMN_TAX + " DECIMAL(10, 2) DEFAULT 0.00, "
+                + ReceiptsTable.COLUMN_EXCHANGE_RATE + " DECIMAL(10, 10) DEFAULT -1.00, "
+                + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID + " INTEGER REFERENCES " + PaymentMethodsTable.TABLE_NAME + " ON DELETE NO ACTION, "
+                + ReceiptsTable.COLUMN_REIMBURSABLE + " BOOLEAN DEFAULT 1, "
+                + ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE + " BOOLEAN DEFAULT 1, "
+                + ReceiptsTable.COLUMN_PROCESSING_STATUS + " TEXT, "
+                + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1 + " TEXT, "
+                + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2 + " TEXT, "
+                + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3 + " TEXT, "
+                + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + ");");
+
+        final String finalColumns = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
+                ReceiptsTable.COLUMN_ID, ReceiptsTable.COLUMN_PATH, ReceiptsTable.COLUMN_PARENT,
+                ReceiptsTable.COLUMN_NAME, ReceiptsTable.COLUMN_CATEGORY_ID, ReceiptsTable.COLUMN_DATE,
+                ReceiptsTable.COLUMN_TIMEZONE, ReceiptsTable.COLUMN_COMMENT, ReceiptsTable.COLUMN_ISO4217,
+                ReceiptsTable.COLUMN_PRICE, ReceiptsTable.COLUMN_TAX, ReceiptsTable.COLUMN_EXCHANGE_RATE,
+                ReceiptsTable.COLUMN_PAYMENT_METHOD_ID, ReceiptsTable.COLUMN_REIMBURSABLE,
+                ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE, ReceiptsTable.COLUMN_PROCESSING_STATUS,
+                ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1, ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2,
+                ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID,
+                AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION,
+                AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME);
+
+        verify(mSQLiteDatabase, verificationMode).execSQL("INSERT INTO " + ReceiptsTable.TABLE_NAME + "_copy" + " (" + finalColumns + ") "
+                + "SELECT " + finalColumns
+                + " FROM " + ReceiptsTable.TABLE_NAME + ";");
+
+        verify(mSQLiteDatabase, verificationMode).execSQL("DROP TABLE " + ReceiptsTable.TABLE_NAME + ";");
+
+        verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + "_copy" + " RENAME TO " + ReceiptsTable.TABLE_NAME + ";");
     }
 
     @Test

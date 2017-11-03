@@ -11,7 +11,7 @@ import java.util.TimeZone;
 
 import co.smartreceipts.android.sync.model.Syncable;
 
-public interface Receipt extends Parcelable, Priceable, Draggable, Comparable<Receipt>, Syncable {
+public interface Receipt extends Parcelable, Priceable, Draggable<Receipt>, Syncable {
 
     String PARCEL_KEY = Receipt.class.getName();
 

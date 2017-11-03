@@ -125,6 +125,10 @@ public class ImmutableCategoryImpl implements Category {
 
     @Override
     public int compareTo(@NonNull Category category) {
-        return customOrderId - category.getCustomOrderId();
+        if (customOrderId == 0 && category.getCustomOrderId() == 0) {
+            return  name.compareTo(category.getName());
+        } else {
+            return customOrderId - category.getCustomOrderId();
+        }
     }
 }

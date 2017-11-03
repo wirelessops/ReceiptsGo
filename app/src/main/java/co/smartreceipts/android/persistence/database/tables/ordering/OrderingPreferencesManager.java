@@ -10,8 +10,7 @@ import co.smartreceipts.android.di.scopes.ApplicationScope;
 @ApplicationScope
 public class OrderingPreferencesManager {
 
-    @Inject
-    Context appContext;
+    private final Context appContext;
 
     private static final class Keys {
         /**
@@ -32,7 +31,8 @@ public class OrderingPreferencesManager {
     }
 
     @Inject
-    public OrderingPreferencesManager() {
+    public OrderingPreferencesManager(Context context) {
+        this.appContext = context;
     }
 
     public void saveCategoriesTableOrdering() {
