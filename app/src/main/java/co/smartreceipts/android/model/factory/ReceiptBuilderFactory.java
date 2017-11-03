@@ -102,7 +102,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setPaymentMethod(@Nullable PaymentMethod method) {
+    public ReceiptBuilderFactory setPaymentMethod(@NonNull PaymentMethod method) {
         _paymentMethod = method;
         return this;
     }
@@ -112,7 +112,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setCategory(@Nullable Category category) {
+    public ReceiptBuilderFactory setCategory(@NonNull Category category) {
         _category = category;
         return this;
     }

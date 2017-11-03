@@ -114,23 +114,23 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final SyncState syncState = mSyncStateAdapter.read(cursor);
 
         // TODO: How to use JOINs w/o blocking
-        final Optional<Category> categoryOptional = mCategoriesTable.findByPrimaryKey(categoryId)
+        final Category category = mCategoriesTable.findByPrimaryKey(categoryId)
                 .map(Optional::of)
                 .onErrorReturn(ignored -> Optional.absent())
-                .blockingGet();
+                .blockingGet()
+                .orNull();
 
-        final Optional<PaymentMethod> paymentMethodOptional =
-                mPaymentMethodTable.findByPrimaryKey(paymentMethodId)
+        final PaymentMethod paymentMethod = mPaymentMethodTable.findByPrimaryKey(paymentMethodId)
                         .map(Optional::of)
                         .onErrorReturn(ignored -> Optional.absent())
-                        .blockingGet();
+                        .blockingGet()
+                        .orNull();
 
         final int index = isDescending ? cursor.getCount() - cursor.getPosition() : cursor.getPosition() + 1;
 
         final ReceiptBuilderFactory builder = new ReceiptBuilderFactory(id);
         builder.setTrip(trip)
                 .setName(name)
-                .setCategory(categoryOptional.orNull())
                 .setFile(file)
                 .setDate(date)
                 .setTimeZone(timezone)
@@ -139,12 +139,19 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
                 .setCurrency(currency)
                 .setIsFullPage(fullpage)
                 .setIndex(index)
-                .setPaymentMethod(paymentMethodOptional.orNull())
                 .setExtraEditText1(extra_edittext_1)
                 .setExtraEditText2(extra_edittext_2)
                 .setExtraEditText3(extra_edittext_3)
                 .setSyncState(syncState)
                 .setOrderId(orderId);
+
+        if (category != null) {
+            builder.setCategory(category);
+        }
+
+        if (paymentMethod != null) {
+            builder.setPaymentMethod(paymentMethod);
+        }
 
 
         /*
