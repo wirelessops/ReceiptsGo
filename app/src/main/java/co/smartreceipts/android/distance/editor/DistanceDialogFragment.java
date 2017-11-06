@@ -254,6 +254,12 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
     }
 
     @Override
+    public void onDestroyView() {
+        this.unbinder.unbind();
+        super.onDestroyView();
+    }
+
+    @Override
     public void onClick(DialogInterface dialog, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // Create/Edit
