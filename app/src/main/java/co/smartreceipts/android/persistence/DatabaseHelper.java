@@ -305,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         });
     }
 
-    public final ArrayList<CharSequence> getCurrenciesList() {
+    public final List<CharSequence> getCurrenciesList() {
         if (mFullCurrencyList != null) {
             return mFullCurrencyList;
         }

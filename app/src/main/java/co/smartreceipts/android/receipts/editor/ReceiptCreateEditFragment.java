@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -55,6 +57,7 @@ import co.smartreceipts.android.fragments.ReceiptInputCache;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
+import co.smartreceipts.android.model.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
@@ -68,6 +71,8 @@ import co.smartreceipts.android.persistence.database.controllers.TableEventsList
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
+import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyListEditorView;
+import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyListPresenter;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
@@ -75,8 +80,10 @@ import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -85,7 +92,9 @@ import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
 
-public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener {
+public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener,
+        NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener,
+        ReceiptCurrencyListEditorView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -178,6 +187,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     // Metadata
     private OcrResponse ocrResponse;
 
+    // Presenters
+    private ReceiptCurrencyListPresenter currencyListPresenter;
+
     // Rx
     private Disposable idDisposable;
     private TableEventsListener<Category> categoryTableEventsListener;
@@ -188,7 +200,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private ExchangeRateServiceManager exchangeRateServiceManager;
     private ReceiptInputCache receiptInputCache;
     private AutoCompleteAdapter receiptsNameAutoCompleteAdapter, receiptsCommentAutoCompleteAdapter;
-    private ArrayAdapter<CharSequence> currenciesAdapter;
     private List<Category> categoriesList;
     private FooterButtonArrayAdapter<Category> categoriesAdapter;
     private FooterButtonArrayAdapter<PaymentMethod> paymentMethodsAdapter;
@@ -204,14 +215,13 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
+
         ocrResponse = (OcrResponse) getArguments().getSerializable(ARG_OCR);
         receiptInputCache = new ReceiptInputCache(getFragmentManager());
         exchangeRateServiceManager = new ExchangeRateServiceManager(getFragmentManager());
-        currenciesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
-                database.getCurrenciesList());
         categoriesList = emptyList();
         categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), new ArrayList<Category>(),
                 R.string.manage_categories, v -> {
@@ -223,7 +233,18 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             analytics.record(Events.Informational.ManagePaymentMethods);
             navigationHandler.navigateToPaymentMethodsEditor();
         });
+
         setHasOptionsMenu(true);
+
+        final String defaultCurrencyCode;
+        if (getReceipt() != null) {
+            defaultCurrencyCode = getReceipt().getPrice().getCurrencyCode();
+        } else if (receiptInputCache.getCachedCurrency() != null) {
+            defaultCurrencyCode = receiptInputCache.getCachedCurrency();
+        } else {
+            defaultCurrencyCode = getParentTrip().getDefaultCurrencyCode();
+        }
+        currencyListPresenter = new ReceiptCurrencyListPresenter(this, database, defaultCurrencyCode, savedInstanceState);
     }
 
     Trip getParentTrip() {
@@ -309,10 +330,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             taxInputWrapper.setVisibility(View.GONE);
         }
 
-        // Configure dropdown defaults for currencies
-        currenciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        currencySpinner.setAdapter(currenciesAdapter);
-
         // And the exchange rate processing for our currencies
         final boolean exchangeRateIsVisible = savedInstanceState != null && savedInstanceState.getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
         if (exchangeRateIsVisible) {
@@ -321,13 +338,17 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         } else {
             ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
         }
+
         currencySpinner.setOnItemSelectedListener(new UserSelectionTrackingOnItemSelectedListener() {
 
             @Override
             public void onUserSelectedNewItem(AdapterView<?> parent, View view, int position, long id, int previousPosition) {
                 // Then determine if we should show/hide the box
-                final String baseCurrencyCode = currenciesAdapter.getItem(position).toString();
-                configureExchangeRateField(baseCurrencyCode);
+                final Object item = currencySpinner.getAdapter().getItem(position);
+                if (item != null) {
+                    final String baseCurrencyCode = item.toString();
+                    configureExchangeRateField(baseCurrencyCode);
+                }
             }
 
             @Override
@@ -374,15 +395,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 }
 
                 final Trip parentTrip = getParentTrip();
-
-                int idx = currenciesAdapter.getPosition((parentTrip != null) ?
-                        parentTrip.getDefaultCurrencyCode() : presenter.getDefaultCurrency());
-                int cachedIdx = (receiptInputCache.getCachedCurrency() != null) ?
-                        currenciesAdapter.getPosition(receiptInputCache.getCachedCurrency()) : -1;
-                idx = (cachedIdx >= 0) ? cachedIdx : idx;
-                if (idx >= 0) {
-                    currencySpinner.setSelection(idx);
-                }
                 if (!parentTrip.getDefaultCurrencyCode().equals(receiptInputCache.getCachedCurrency())) {
                     configureExchangeRateField(receiptInputCache.getCachedCurrency());
                 }
@@ -430,11 +442,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 final ExchangeRate exchangeRate = receipt.getPrice().getExchangeRate();
                 if (exchangeRate.supportsExchangeRateFor(parentTrip.getDefaultCurrencyCode())) {
                     exchangeRateBox.setText(exchangeRate.getDecimalFormattedExchangeRate(parentTrip.getDefaultCurrencyCode()));
-                }
-
-                int idx = currenciesAdapter.getPosition(receipt.getPrice().getCurrencyCode());
-                if (idx > 0) {
-                    currencySpinner.setSelection(idx);
                 }
 
                 if (receipt.getPrice().getCurrency().equals(parentTrip.getPrice().getCurrency())) {
@@ -609,6 +616,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
         exchangeRateBox.setRetryListener(this);
         database.registerReceiptAutoCompleteListener(this);
+
+        // Presenters
+        currencyListPresenter.subscribe();
     }
 
     @Override
@@ -676,6 +686,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     @Override
     public void onPause() {
+        // Presenters
+        currencyListPresenter.unsubscribe();
+
         // Notify the downstream adapters
         if (receiptsNameAutoCompleteAdapter != null) {
             receiptsNameAutoCompleteAdapter.onPause();
@@ -705,6 +718,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         if (outState != null) {
             outState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateBox.getVisibility() == View.VISIBLE);
         }
+
+        // Presenters
+        currencyListPresenter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -819,6 +835,28 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     public void showDateWarning() {
         Toast.makeText(getActivity(), getFlexString(R.string.DIALOG_RECEIPTMENU_TOAST_BAD_DATE), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    @NonNull
+    public Consumer<? super List<CharSequence>> displayCurrencies() {
+        return (Consumer<List<CharSequence>>) currencies -> {
+            final ArrayAdapter<CharSequence> currenciesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, currencies);
+            currenciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            currencySpinner.setAdapter(currenciesAdapter);
+        };
+    }
+
+    @Override
+    @NonNull
+    public Consumer<? super Integer> displayCurrencySelection() {
+        return RxAdapterView.selection(currencySpinner);
+    }
+
+    @Nullable
+    @Override
+    public Observable<Integer> currencyClicks() {
+        return RxAdapterView.itemSelections(currencySpinner);
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {

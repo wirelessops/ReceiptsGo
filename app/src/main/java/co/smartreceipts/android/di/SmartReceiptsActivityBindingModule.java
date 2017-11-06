@@ -11,7 +11,6 @@ import co.smartreceipts.android.di.subcomponents.GenerateReportFragmentSubcompon
 import co.smartreceipts.android.di.subcomponents.GraphsFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ImportLocalBackupDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ImportRemoteBackupDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ReceiptCreateEditFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.ReceiptImageFragmentSubcomponent;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
 import co.smartreceipts.android.receipts.di.DeleteReceiptDialogFragmentSubcomponent;
@@ -32,6 +31,7 @@ import co.smartreceipts.android.ocr.widget.di.OcrInformationalTooltipFragmentSub
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
+import co.smartreceipts.android.receipts.editor.di.ReceiptsCreateEditFragmentSubcomponent;
 import co.smartreceipts.android.sync.widget.backups.AutomaticBackupsInfoDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment;
 import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupDialogFragment;
@@ -52,7 +52,7 @@ import dagger.multibindings.IntoMap;
         subcomponents = {
                 TripFragmentSubcomponent.class,
                 TripCreateEditFragmentSubcomponent.class,
-                ReceiptCreateEditFragmentSubcomponent.class,
+                ReceiptsCreateEditFragmentSubcomponent.class,
                 ReceiptImageFragmentSubcomponent.class,
                 ReceiptsListFragmentSubcomponent.class,
                 DeleteReceiptDialogFragmentSubcomponent.class,
@@ -89,7 +89,7 @@ public abstract class SmartReceiptsActivityBindingModule {
     @IntoMap
     @FragmentKey(ReceiptCreateEditFragment.class)
     public abstract AndroidInjector.Factory<? extends Fragment> receiptCreateEditFragmentSubcomponentBuilder(
-            ReceiptCreateEditFragmentSubcomponent.Builder builder);
+            ReceiptsCreateEditFragmentSubcomponent.Builder builder);
 
     @Binds
     @IntoMap

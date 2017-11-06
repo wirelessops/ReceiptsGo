@@ -3,6 +3,7 @@ package co.smartreceipts.android.trips.editor;
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -98,7 +99,7 @@ public class TripCreateEditFragmentPresenter {
         return persistenceManager.getPreferenceManager().get(UserPreference.General.IncludeCostCenter);
     }
 
-    public ArrayList<CharSequence> getCurrenciesList() {
+    public List<CharSequence> getCurrenciesList() {
         return persistenceManager.getDatabase().getCurrenciesList();
     }
 

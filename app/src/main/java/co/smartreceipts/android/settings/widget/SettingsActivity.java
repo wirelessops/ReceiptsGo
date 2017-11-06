@@ -242,7 +242,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     public void configurePreferencesGeneral(UniversalPreferences universal) {
         // Get the currency list
 //        PersistenceManager persistenceManager = ((SmartReceiptsApplication) getApplication()).getPersistenceManager();
-        ArrayList<CharSequence> currencyList = persistenceManager.getDatabase().getCurrenciesList();
+        List<CharSequence> currencyList = persistenceManager.getDatabase().getCurrenciesList();
         CharSequence[] currencyArray = new CharSequence[currencyList.size()];
         currencyList.toArray(currencyArray);
 
