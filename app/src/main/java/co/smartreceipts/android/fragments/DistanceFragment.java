@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.adapters.DistanceAdapter;
+import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;

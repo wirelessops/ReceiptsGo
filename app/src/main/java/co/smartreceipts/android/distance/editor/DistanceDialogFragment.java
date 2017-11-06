@@ -1,4 +1,4 @@
-package co.smartreceipts.android.fragments;
+package co.smartreceipts.android.distance.editor;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,17 +17,14 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.common.base.Preconditions;
-import com.jakewharton.rxbinding2.widget.RxAdapterView;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -38,7 +35,6 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
-import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
@@ -52,10 +48,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTa
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.Supplier;
 import dagger.android.support.AndroidSupportInjection;
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 import wb.android.autocomplete.AutoCompleteAdapter;
 
 public class DistanceDialogFragment extends DialogFragment implements OnClickListener {

@@ -23,7 +23,7 @@ import co.smartreceipts.android.di.subcomponents.RatingDialogFragmentSubcomponen
 import co.smartreceipts.android.di.subcomponents.ReceiptMoveCopyDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.SelectAutomaticBackupProviderDialogFragmentSubcomponent;
 import co.smartreceipts.android.di.subcomponents.SettingsActivitySubcomponent;
-import co.smartreceipts.android.fragments.DistanceDialogFragment;
+import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
 import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
