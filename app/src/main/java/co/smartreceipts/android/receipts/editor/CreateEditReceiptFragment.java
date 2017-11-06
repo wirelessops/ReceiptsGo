@@ -89,7 +89,7 @@ import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
 
-public class CreateEditFragmentListEditor extends WBFragment implements View.OnFocusChangeListener,
+public class CreateEditReceiptFragment extends WBFragment implements View.OnFocusChangeListener,
         NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener,
         CurrencyListEditorView {
 
@@ -201,8 +201,8 @@ public class CreateEditFragmentListEditor extends WBFragment implements View.OnF
     private FooterButtonArrayAdapter<Category> categoriesAdapter;
     private FooterButtonArrayAdapter<PaymentMethod> paymentMethodsAdapter;
 
-    public static CreateEditFragmentListEditor newInstance() {
-        return new CreateEditFragmentListEditor();
+    public static CreateEditReceiptFragment newInstance() {
+        return new CreateEditReceiptFragment();
     }
 
     @Override
@@ -769,11 +769,11 @@ public class CreateEditFragmentListEditor extends WBFragment implements View.OnF
                         if (TextUtils.isEmpty(editText.getText())) {
                             editText.setText(exchangeRate.getDecimalFormattedExchangeRate(exchangeRateCurrencyCode));
                         } else {
-                            Logger.warn(CreateEditFragmentListEditor.this, "User already started typing... Ignoring exchange rate result");
+                            Logger.warn(CreateEditReceiptFragment.this, "User already started typing... Ignoring exchange rate result");
                         }
                         exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Success);
                     } else {
-                        Logger.error(CreateEditFragmentListEditor.this, "Received a null exchange rate");
+                        Logger.error(CreateEditReceiptFragment.this, "Received a null exchange rate");
                         analytics.record(Events.Receipts.RequestExchangeRateFailedWithNull);
                         exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
                     }
@@ -781,7 +781,7 @@ public class CreateEditFragmentListEditor extends WBFragment implements View.OnF
 
                 @Override
                 public void failure(EditText editText, Call<ExchangeRate> call, Throwable th) {
-                    Logger.error(CreateEditFragmentListEditor.this, th);
+                    Logger.error(CreateEditReceiptFragment.this, th);
                     analytics.record(Events.Receipts.RequestExchangeRateFailed);
                     exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
                 }

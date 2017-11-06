@@ -30,6 +30,7 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.SmartReceiptsApplication;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.model.Distance;
@@ -67,6 +68,9 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
     private Distance updateableDistance;
     private AutoCompleteAdapter locationAutoCompleteAdapter;
     private Date suggestedDate;
+
+    // Presenters
+    private CurrencyListEditorPresenter currencyListEditorPresenter;
 
     /**
      * Creates a new instance of a {@link DistanceDialogFragment}, which

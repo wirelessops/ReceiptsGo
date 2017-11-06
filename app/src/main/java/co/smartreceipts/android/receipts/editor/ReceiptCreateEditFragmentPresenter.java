@@ -25,7 +25,7 @@ import co.smartreceipts.android.utils.log.Logger;
 public class ReceiptCreateEditFragmentPresenter {
 
     @Inject
-    CreateEditFragmentListEditor fragment;
+    CreateEditReceiptFragment fragment;
     @Inject
     UserPreferenceManager preferenceManager;
     @Inject
