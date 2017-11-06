@@ -1,4 +1,4 @@
-package co.smartreceipts.android.receipts.editor.currency;
+package co.smartreceipts.android.currency.widget;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
  * A default presenter implementation to manage the fetching and displaying of a list of available
  * currencies for the end user to select.
  */
-public class ReceiptCurrencyListPresenter extends BasePresenter<ReceiptCurrencyListEditorView> {
+public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEditorView> {
 
     private static final String OUT_STATE_SELECTED_CURRENCY_POSITION = "out_state_selected_currency_position";
 
@@ -30,10 +30,10 @@ public class ReceiptCurrencyListPresenter extends BasePresenter<ReceiptCurrencyL
 
     private String lastSelectedCurrencyCode;
 
-    public ReceiptCurrencyListPresenter(@NonNull ReceiptCurrencyListEditorView view,
-                                        @NonNull DatabaseHelper databaseHelper,
-                                        @NonNull String defaultCurrencyCode,
-                                        @Nullable Bundle savedInstanceState) {
+    public CurrencyListEditorPresenter(@NonNull CurrencyListEditorView view,
+                                       @NonNull DatabaseHelper databaseHelper,
+                                       @NonNull String defaultCurrencyCode,
+                                       @Nullable Bundle savedInstanceState) {
         super(view);
         this.databaseHelper = Preconditions.checkNotNull(databaseHelper);
         this.defaultCurrencyCode = Preconditions.checkNotNull(defaultCurrencyCode);

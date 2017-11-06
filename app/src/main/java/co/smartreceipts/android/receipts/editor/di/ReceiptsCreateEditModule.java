@@ -1,7 +1,7 @@
 package co.smartreceipts.android.receipts.editor.di;
 
-import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
-import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyListEditorView;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
+import co.smartreceipts.android.receipts.editor.CreateEditFragmentListEditor;
 import dagger.Binds;
 import dagger.Module;
 
@@ -9,6 +9,6 @@ import dagger.Module;
 public abstract class ReceiptsCreateEditModule {
 
     @Binds
-    abstract ReceiptCurrencyListEditorView provideReceiptCurrencyListEditorView(ReceiptCreateEditFragment fragment);
+    abstract CurrencyListEditorView provideCurrencyListEditorView(CreateEditFragmentListEditor fragment);
 
 }

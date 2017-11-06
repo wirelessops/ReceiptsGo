@@ -48,6 +48,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ExchangeRateServiceManager;
 import co.smartreceipts.android.apis.MemoryLeakSafeCallback;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
@@ -68,8 +69,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableEventsList
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
-import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyListEditorView;
-import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyListPresenter;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
@@ -89,9 +89,9 @@ import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
 
-public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener,
+public class CreateEditFragmentListEditor extends WBFragment implements View.OnFocusChangeListener,
         NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener,
-        ReceiptCurrencyListEditorView {
+        CurrencyListEditorView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -185,7 +185,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private OcrResponse ocrResponse;
 
     // Presenters
-    private ReceiptCurrencyListPresenter currencyListPresenter;
+    private CurrencyListEditorPresenter currencyListEditorPresenter;
 
     // Rx
     private Disposable idDisposable;
@@ -201,8 +201,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     private FooterButtonArrayAdapter<Category> categoriesAdapter;
     private FooterButtonArrayAdapter<PaymentMethod> paymentMethodsAdapter;
 
-    public static ReceiptCreateEditFragment newInstance() {
-        return new ReceiptCreateEditFragment();
+    public static CreateEditFragmentListEditor newInstance() {
+        return new CreateEditFragmentListEditor();
     }
 
     @Override
@@ -241,7 +241,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         } else {
             defaultCurrencyCode = getParentTrip().getDefaultCurrencyCode();
         }
-        currencyListPresenter = new ReceiptCurrencyListPresenter(this, database, defaultCurrencyCode, savedInstanceState);
+        currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, defaultCurrencyCode, savedInstanceState);
     }
 
     Trip getParentTrip() {
@@ -615,7 +615,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         database.registerReceiptAutoCompleteListener(this);
 
         // Presenters
-        currencyListPresenter.subscribe();
+        currencyListEditorPresenter.subscribe();
     }
 
     @Override
@@ -684,7 +684,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     @Override
     public void onPause() {
         // Presenters
-        currencyListPresenter.unsubscribe();
+        currencyListEditorPresenter.unsubscribe();
 
         // Notify the downstream adapters
         if (receiptsNameAutoCompleteAdapter != null) {
@@ -717,7 +717,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         }
 
         // Presenters
-        currencyListPresenter.onSaveInstanceState(outState);
+        currencyListEditorPresenter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -769,11 +769,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                         if (TextUtils.isEmpty(editText.getText())) {
                             editText.setText(exchangeRate.getDecimalFormattedExchangeRate(exchangeRateCurrencyCode));
                         } else {
-                            Logger.warn(ReceiptCreateEditFragment.this, "User already started typing... Ignoring exchange rate result");
+                            Logger.warn(CreateEditFragmentListEditor.this, "User already started typing... Ignoring exchange rate result");
                         }
                         exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Success);
                     } else {
-                        Logger.error(ReceiptCreateEditFragment.this, "Received a null exchange rate");
+                        Logger.error(CreateEditFragmentListEditor.this, "Received a null exchange rate");
                         analytics.record(Events.Receipts.RequestExchangeRateFailedWithNull);
                         exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
                     }
@@ -781,7 +781,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
                 @Override
                 public void failure(EditText editText, Call<ExchangeRate> call, Throwable th) {
-                    Logger.error(ReceiptCreateEditFragment.this, th);
+                    Logger.error(CreateEditFragmentListEditor.this, th);
                     analytics.record(Events.Receipts.RequestExchangeRateFailed);
                     exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
                 }
