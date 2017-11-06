@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.utils.ModelUtils;
 

@@ -1,4 +1,4 @@
-package co.smartreceipts.android.model;
+package co.smartreceipts.android.currency;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,6 +9,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.utils.TestLocaleToggler;
 
 import static org.junit.Assert.assertEquals;

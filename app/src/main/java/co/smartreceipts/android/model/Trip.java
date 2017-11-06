@@ -9,6 +9,7 @@ import java.io.File;
 import java.sql.Date;
 import java.util.TimeZone;
 
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.filters.Filter;
 import co.smartreceipts.android.sync.model.Syncable;
 

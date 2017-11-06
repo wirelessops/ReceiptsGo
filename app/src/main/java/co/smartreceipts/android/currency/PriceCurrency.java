@@ -1,4 +1,4 @@
-package co.smartreceipts.android.model;
+package co.smartreceipts.android.currency;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;

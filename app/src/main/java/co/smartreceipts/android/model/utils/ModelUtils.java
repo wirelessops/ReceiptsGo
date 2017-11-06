@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 
 /**
  * A utility class, which will be used to standard some common functions that are

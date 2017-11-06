@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 
 public class SumCategoryGroupingResult {
 

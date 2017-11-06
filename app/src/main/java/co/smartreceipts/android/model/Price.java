@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.math.BigDecimal;
 
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 
 /**

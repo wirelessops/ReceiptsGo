@@ -11,7 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.math.BigDecimal;
 
 import co.smartreceipts.android.model.Distance;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.utils.TestUtils;

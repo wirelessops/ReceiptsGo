@@ -9,10 +9,6 @@ import com.google.common.base.Preconditions;
 
 import java.util.List;
 
-import co.smartreceipts.android.fragments.ReceiptInputCache;
-import co.smartreceipts.android.model.PriceCurrency;
-import co.smartreceipts.android.model.Receipt;
-import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.Observable;

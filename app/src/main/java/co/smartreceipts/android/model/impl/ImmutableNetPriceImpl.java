@@ -6,17 +6,15 @@ import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.utils.ModelUtils;

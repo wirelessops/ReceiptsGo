@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.utils.TestLocaleToggler;
 

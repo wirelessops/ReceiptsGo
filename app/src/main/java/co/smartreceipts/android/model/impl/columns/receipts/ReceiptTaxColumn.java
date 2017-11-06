@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;

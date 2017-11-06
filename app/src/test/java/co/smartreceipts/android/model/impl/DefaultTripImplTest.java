@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import co.smartreceipts.android.DefaultObjects;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.sync.model.SyncState;

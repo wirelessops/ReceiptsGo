@@ -10,7 +10,7 @@ import java.sql.Date;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.model.Category;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;

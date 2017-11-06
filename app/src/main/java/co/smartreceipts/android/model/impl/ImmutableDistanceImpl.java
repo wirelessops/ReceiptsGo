@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.PriceCurrency;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.utils.ModelUtils;
