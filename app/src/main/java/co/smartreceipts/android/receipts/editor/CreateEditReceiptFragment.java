@@ -17,15 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.jakewharton.rxbinding2.widget.RxAdapterView;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -48,7 +45,8 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ExchangeRateServiceManager;
 import co.smartreceipts.android.apis.MemoryLeakSafeCallback;
-import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
+import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
@@ -69,7 +67,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableEventsList
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
-import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
+import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyCodeSupplier;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
@@ -77,10 +75,8 @@ import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -90,8 +86,7 @@ import wb.android.flex.Flex;
 import static java.util.Collections.emptyList;
 
 public class CreateEditReceiptFragment extends WBFragment implements View.OnFocusChangeListener,
-        NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener,
-        CurrencyListEditorView {
+        NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -233,15 +228,9 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
         setHasOptionsMenu(true);
 
-        final String defaultCurrencyCode;
-        if (getReceipt() != null) {
-            defaultCurrencyCode = getReceipt().getPrice().getCurrencyCode();
-        } else if (receiptInputCache.getCachedCurrency() != null) {
-            defaultCurrencyCode = receiptInputCache.getCachedCurrency();
-        } else {
-            defaultCurrencyCode = getParentTrip().getDefaultCurrencyCode();
-        }
-        currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, defaultCurrencyCode, savedInstanceState);
+        final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
+        final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getReceipt());
+        currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
     }
 
     Trip getParentTrip() {
@@ -832,28 +821,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     public void showDateWarning() {
         Toast.makeText(getActivity(), getFlexString(R.string.DIALOG_RECEIPTMENU_TOAST_BAD_DATE), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    @NonNull
-    public Consumer<? super List<CharSequence>> displayCurrencies() {
-        return (Consumer<List<CharSequence>>) currencies -> {
-            final ArrayAdapter<CharSequence> currenciesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, currencies);
-            currenciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            currencySpinner.setAdapter(currenciesAdapter);
-        };
-    }
-
-    @Override
-    @NonNull
-    public Consumer<? super Integer> displayCurrencySelection() {
-        return RxAdapterView.selection(currencySpinner);
-    }
-
-    @Nullable
-    @Override
-    public Observable<Integer> currencyClicks() {
-        return RxAdapterView.itemSelections(currencySpinner);
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {

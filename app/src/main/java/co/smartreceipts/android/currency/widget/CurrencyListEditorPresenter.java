@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import java.util.List;
 
 import co.smartreceipts.android.persistence.DatabaseHelper;
+import co.smartreceipts.android.utils.Supplier;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,18 +26,18 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
     private static final String OUT_STATE_SELECTED_CURRENCY_POSITION = "out_state_selected_currency_position";
 
     private final DatabaseHelper databaseHelper;
-    private final String defaultCurrencyCode;
+    private final Supplier<String> defaultCurrencyCodeSupplier;
     private final Bundle savedInstanceState;
 
     private String lastSelectedCurrencyCode;
 
     public CurrencyListEditorPresenter(@NonNull CurrencyListEditorView view,
                                        @NonNull DatabaseHelper databaseHelper,
-                                       @NonNull String defaultCurrencyCode,
+                                       @NonNull Supplier<String> defaultCurrencyCodeSupplier,
                                        @Nullable Bundle savedInstanceState) {
         super(view);
         this.databaseHelper = Preconditions.checkNotNull(databaseHelper);
-        this.defaultCurrencyCode = Preconditions.checkNotNull(defaultCurrencyCode);
+        this.defaultCurrencyCodeSupplier = Preconditions.checkNotNull(defaultCurrencyCodeSupplier);
         this.savedInstanceState = savedInstanceState;
     }
 
@@ -59,7 +60,7 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
                     if (savedInstanceState != null && savedInstanceState.containsKey(OUT_STATE_SELECTED_CURRENCY_POSITION)) {
                         currencyCode = savedInstanceState.getString(OUT_STATE_SELECTED_CURRENCY_POSITION);
                     } else {
-                        currencyCode = defaultCurrencyCode;
+                        currencyCode = defaultCurrencyCodeSupplier.get();
                     }
 
                     final int currencyPosition = currenciesList.indexOf(currencyCode);

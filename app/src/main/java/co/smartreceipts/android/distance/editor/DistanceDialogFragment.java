@@ -38,6 +38,7 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
+import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
@@ -48,6 +49,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTa
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.autocomplete.AutoCompleteAdapter;
 
@@ -55,9 +57,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
 
     public static final String TAG = DistanceDialogFragment.class.getSimpleName();
     private static final String ARG_SUGGESTED_DATE = "arg_suggested_date";
-
-    @Inject
-    PersistenceManager persistenceManager;
 
     @Inject
     DatabaseHelper database;
@@ -70,6 +69,9 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
 
     @Inject
     DistanceTableController distanceTableController;
+
+    @Inject
+    UserPreferenceManager userPreferenceManager;
 
     // Butterknife Fields
     @BindView(R.id.dialog_mileage_distance)
@@ -174,14 +176,9 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
         now.setToNow();
         suggestedDate = new Date(getArguments().getLong(ARG_SUGGESTED_DATE, now.toMillis(false)));
 
-        final String defaultCurrencyCode;
-        if (updateableDistance != null) {
-            defaultCurrencyCode = updateableDistance.getPrice().getCurrencyCode();
-        } else {
-            defaultCurrencyCode = trip.getDefaultCurrencyCode();
-        }
+        final DistanceCurrencyCodeSupplier currencyCodeSupplier = new DistanceCurrencyCodeSupplier(trip, updateableDistance);
         final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
-        currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, defaultCurrencyCode, savedInstanceState);
+        currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
     }
 
     @SuppressLint("InflateParams")
@@ -191,9 +188,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
         final View rootView = inflater.inflate(R.layout.dialog_mileage, null);
         this.unbinder = ButterKnife.bind(this, rootView);
-
-        DatabaseHelper databaseHelper = persistenceManager.getDatabase();
-        UserPreferenceManager prefs = persistenceManager.getPreferenceManager();
 
         dateEditText.setOnClickListener(dateManager.getDateEditTextListener());
         dateEditText.setFocusable(false);
@@ -207,27 +201,18 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             builder.setPositiveButton(getString(R.string.dialog_mileage_positive_create), this);
             dateEditText.date = suggestedDate;
             dateEditText.setText(DateFormat.getDateFormat(getActivity()).format(dateEditText.date));
-            final float distanceRate = prefs.get(UserPreference.Distance.DefaultDistanceRate);
+            final float distanceRate = userPreferenceManager.get(UserPreference.Distance.DefaultDistanceRate);
             if (distanceRate > 0) {
                 rateEditText.setText(ModelUtils.getDecimalFormattedValue(new BigDecimal(distanceRate), Distance.RATE_PRECISION));
             }
             if (locationAutoCompleteAdapter == null) {
                 locationAutoCompleteAdapter = AutoCompleteAdapter.getInstance(getActivity(),
-                        DatabaseHelper.TAG_DISTANCE_LOCATION, databaseHelper);
+                        DatabaseHelper.TAG_DISTANCE_LOCATION, database);
             } else {
                 locationAutoCompleteAdapter.reset();
             }
             locationAutoCompleteTextView.setAdapter(locationAutoCompleteAdapter);
-            distanceEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus && getActivity() != null && getDialog() != null) {
-                        if (getActivity().getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
-                            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        }
-                    }
-                }
-            });
+            distanceEditText.setOnFocusChangeListener((view, hasFocus) -> SoftKeyboardManager.showKeyboard(view));
         } else {
             // Update distance
             builder.setTitle(getString(R.string.dialog_mileage_title_update));
@@ -237,7 +222,7 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             rateEditText.setText(updateableDistance.getDecimalFormattedRate());
             locationAutoCompleteTextView.setText(updateableDistance.getLocation());
             commentEditText.setText(updateableDistance.getComment());
-            dateEditText.setText(updateableDistance.getFormattedDate(getActivity(), prefs.get(UserPreference.General.DateSeparator)));
+            dateEditText.setText(updateableDistance.getFormattedDate(getActivity(), userPreferenceManager.get(UserPreference.General.DateSeparator)));
             dateEditText.date = updateableDistance.getDate();
         }
         builder.setNegativeButton(android.R.string.cancel, this);

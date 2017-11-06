@@ -5,6 +5,6 @@ import co.smartreceipts.android.utils.Supplier;
 /**
  * A marker interface that extends the {@link Supplier} contract to provide a default currency code
  */
-public interface DefaultCurrencyCodeSupplier extends Supplier<String> {
+public interface CurrencyCodeSupplier extends Supplier<String> {
 
 }
