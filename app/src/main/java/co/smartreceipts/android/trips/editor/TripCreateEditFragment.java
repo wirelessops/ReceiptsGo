@@ -2,6 +2,7 @@ package co.smartreceipts.android.trips.editor;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -23,30 +24,46 @@ import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
+import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
 
-public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener {
+public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, CurrencyListEditorView {
     
     @Inject
     Flex flex;
+
     @Inject
     DateManager dateManager;
+
     @Inject
     NavigationHandler navigationHandler;
+
+    @Inject
+    UserPreferenceManager userPreferenceManager;
+
+    @Inject
+    DatabaseHelper database;
 
     @Inject
     TripCreateEditFragmentPresenter presenter;
@@ -61,7 +78,10 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     private View focusedView;
     private AutoCompleteAdapter nameAutoCompleteAdapter, costCenterAutoCompleteAdapter;
 
-    private ArrayAdapter<CharSequence> currencies;
+    // Presenters
+    private CurrencyListEditorPresenter currencyListEditorPresenter;
+
+    private DefaultCurrencyListEditorView defaultCurrencyListEditorView;
 
     public static TripCreateEditFragment newInstance() {
         return new TripCreateEditFragment();
@@ -74,9 +94,13 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        final TripCurrencyCodeSupplier currencyCodeSupplier = new TripCurrencyCodeSupplier(userPreferenceManager, getTrip());
+        currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, currencyCodeSupplier, savedInstanceState);
+        defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
     }
 
     @Nullable
@@ -137,10 +161,14 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         if (focusedView != null) {
             focusedView.requestFocus(); // Make sure we're focused on the right view
         }
+
+        currencyListEditorPresenter.subscribe();
     }
 
     @Override
     public void onPause() {
+        currencyListEditorPresenter.unsubscribe();
+
         if (nameAutoCompleteAdapter != null) {
             nameAutoCompleteAdapter.onPause();
         }
@@ -152,6 +180,12 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         SoftKeyboardManager.hideKeyboard(focusedView);
 
         super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        currencyListEditorPresenter.onSaveInstanceState(outState);
     }
 
     private void initViews(View rootView) {
@@ -172,10 +206,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
             setSupportActionBar(toolbar);
         }
 
-        currencies = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, presenter.getCurrenciesList());
-        currencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        currencySpinner.setAdapter(currencies);
-
         // Show default dictionary with auto-complete
         TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
         nameBox.setKeyListener(input);
@@ -184,8 +214,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     }
 
     private void fillFields() {
-        int currencySpinnerPosition;
-
         if (getTrip() == null) { // new trip
 
             if (presenter.isEnableAutoCompleteSuggestions()) {
@@ -204,8 +232,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
             startDateBox.setText(DateFormat.getDateFormat(getActivity()).format(startDateBox.date));
             endDateBox.date = new Date(startDateBox.date.getTime() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration()));
             endDateBox.setText(DateFormat.getDateFormat(getActivity()).format(endDateBox.date));
-
-            currencySpinnerPosition = currencies.getPosition(presenter.getDefaultCurrency());
         } else { // edit trip
             nameBox.setText(getTrip().getName());
 
@@ -217,22 +243,13 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
             commentBox.setText(getTrip().getComment());
 
-            currencySpinnerPosition = currencies.getPosition(getTrip().getDefaultCurrencyCode());
-
             startDateBox.setOnClickListener(dateManager.getDateEditTextListener());
             costCenterBox.setText(getTrip().getCostCenter());
-
-            currencySpinner.setOnItemSelectedListener(new CurrencySpinnerSelectionListener());
-
         }
 
         // Focused View
         if (focusedView == null) {
             focusedView = nameBox;
-        }
-        // set currency
-        if (currencySpinnerPosition > 0) {
-            currencySpinner.setSelection(currencySpinnerPosition);
         }
 
         startDateBox.setFocusableInTouchMode(false);
@@ -308,20 +325,28 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         }
     }
 
-    private class CurrencySpinnerSelectionListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            final String newCurrencyCode = currencies.getItem(position).toString();
+    @NonNull
+    @Override
+    public Consumer<? super List<CharSequence>> displayCurrencies() {
+        return defaultCurrencyListEditorView.displayCurrencies();
+    }
 
-            if (!getTrip().getDefaultCurrencyCode().equals(newCurrencyCode)) {
-                Toast.makeText(view.getContext(), R.string.toast_warning_reset_exchange_rate, Toast.LENGTH_LONG).show();
+    @NonNull
+    @Override
+    public Consumer<? super Integer> displayCurrencySelection() {
+        // Note: we override the default behavior in the #link DefaultCurrencyListEditorView class for the exchange rate warning
+        return (Consumer<Integer>) position -> {
+            currencySpinner.setSelection(position);
+            if (getTrip() != null && position >= 0 && !getTrip().getDefaultCurrencyCode().equals(currencySpinner.getItemAtPosition(position).toString())) {
+                Toast.makeText(getContext(), R.string.toast_warning_reset_exchange_rate, Toast.LENGTH_LONG).show();
             }
-        }
+        };
+    }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Intentional no-op
-        }
+    @NonNull
+    @Override
+    public Observable<Integer> currencyClicks() {
+        return defaultCurrencyListEditorView.currencyClicks();
     }
 
     private String getFlexString(int id) {

@@ -13,7 +13,9 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.utils.Supplier;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -29,7 +31,7 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
     private final Supplier<String> defaultCurrencyCodeSupplier;
     private final Bundle savedInstanceState;
 
-    private String lastSelectedCurrencyCode;
+    private int lastSelectedCurrencyCodeIndex;
 
     public CurrencyListEditorPresenter(@NonNull CurrencyListEditorView view,
                                        @NonNull DatabaseHelper databaseHelper,
@@ -50,15 +52,17 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
                 .observeOn(AndroidSchedulers.mainThread())
                 .publish();
 
+        // Display the full list of currencies
         this.compositeDisposable.add(currenciesConnectableObservable
                 .subscribe(view.displayCurrencies()));
 
+        // Ensure we always restore the "last" currency
         //noinspection Convert2MethodRef
         this.compositeDisposable.add(currenciesConnectableObservable
                 .map(currenciesList -> {
                     final String currencyCode;
                     if (savedInstanceState != null && savedInstanceState.containsKey(OUT_STATE_SELECTED_CURRENCY_POSITION)) {
-                        currencyCode = savedInstanceState.getString(OUT_STATE_SELECTED_CURRENCY_POSITION);
+                        currencyCode = currenciesList.get(savedInstanceState.getInt(OUT_STATE_SELECTED_CURRENCY_POSITION)).toString();
                     } else {
                         currencyCode = defaultCurrencyCodeSupplier.get();
                     }
@@ -72,19 +76,18 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
                 })
                 .subscribe(view.displayCurrencySelection()));
 
-
+        // Handle selections
         this.compositeDisposable.add(currenciesConnectableObservable
                     .flatMap(currenciesList -> {
                         //noinspection ConstantConditions
                         return view.currencyClicks()
                                 .filter(currencyIndex -> currencyIndex >= 0)
-                                .map(currenciesList::get)
-                                .map(CharSequence::toString);
+                                .distinct();
                     })
-                    .subscribe(currencyCode -> {
-                        this.lastSelectedCurrencyCode = currencyCode;
-                    }));
-
+                    .doOnNext(currencyIndex -> {
+                        lastSelectedCurrencyCodeIndex = currencyIndex;
+                    })
+                    .subscribe(view.displayCurrencySelection()));
 
         // Call #connect to start out emissions
         this.compositeDisposable.add(currenciesConnectableObservable.connect());
@@ -92,7 +95,7 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
 
     public void onSaveInstanceState(@Nullable Bundle outState) {
         if (outState != null) {
-            outState.putString(OUT_STATE_SELECTED_CURRENCY_POSITION, lastSelectedCurrencyCode);
+            outState.putInt(OUT_STATE_SELECTED_CURRENCY_POSITION, lastSelectedCurrencyCodeIndex);
         }
     }
 

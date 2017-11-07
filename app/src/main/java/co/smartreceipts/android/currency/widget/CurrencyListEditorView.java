@@ -32,7 +32,7 @@ public interface CurrencyListEditorView {
      * @return an {@link Observable} that will emit an {@link Integer}, which corresponds to the
      * position of the clicked currency as determined via the {@link #displayCurrencies()} list
      */
-    @Nullable
+    @NonNull
     @UiThread
     Observable<Integer> currencyClicks();
 

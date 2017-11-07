@@ -55,8 +55,8 @@ public class DefaultCurrencyListEditorView implements CurrencyListEditorView {
         return RxAdapterView.selection(currencySpinnerSupplier.get());
     }
 
-    @Nullable
     @Override
+    @NonNull
     @UiThread
     public Observable<Integer> currencyClicks() {
         return RxAdapterView.itemSelections(currencySpinnerSupplier.get());
