@@ -4,18 +4,18 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
 import java.util.List;
 
 import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.utils.Supplier;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -28,19 +28,33 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
     private static final String OUT_STATE_SELECTED_CURRENCY_POSITION = "out_state_selected_currency_position";
 
     private final DatabaseHelper databaseHelper;
-    private final Supplier<String> defaultCurrencyCodeSupplier;
+    private final CurrencyCodeSupplier defaultCurrencyCodeSupplier;
     private final Bundle savedInstanceState;
+    private final Scheduler subscribeOnScheduler;
+    private final Scheduler observeOnScheduler;
 
     private int lastSelectedCurrencyCodeIndex;
 
     public CurrencyListEditorPresenter(@NonNull CurrencyListEditorView view,
                                        @NonNull DatabaseHelper databaseHelper,
-                                       @NonNull Supplier<String> defaultCurrencyCodeSupplier,
+                                       @NonNull CurrencyCodeSupplier defaultCurrencyCodeSupplier,
                                        @Nullable Bundle savedInstanceState) {
+        this(view, databaseHelper, defaultCurrencyCodeSupplier, savedInstanceState, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    CurrencyListEditorPresenter(@NonNull CurrencyListEditorView view,
+                                @NonNull DatabaseHelper databaseHelper,
+                                @NonNull CurrencyCodeSupplier defaultCurrencyCodeSupplier,
+                                @Nullable Bundle savedInstanceState,
+                                @NonNull Scheduler subscribeOnScheduler,
+                                @NonNull Scheduler observeOnScheduler) {
         super(view);
         this.databaseHelper = Preconditions.checkNotNull(databaseHelper);
         this.defaultCurrencyCodeSupplier = Preconditions.checkNotNull(defaultCurrencyCodeSupplier);
         this.savedInstanceState = savedInstanceState;
+        this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
+        this.observeOnScheduler = Preconditions.checkNotNull(observeOnScheduler);
     }
 
     @Override
@@ -48,8 +62,8 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
     public void subscribe() {
         // A ConnectableObservable resembles an ordinary Observable, but it does not begin emitting until #connect is called
         final ConnectableObservable<List<CharSequence>> currenciesConnectableObservable = Observable.fromCallable(this.databaseHelper::getCurrenciesList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(subscribeOnScheduler)
+                .observeOn(observeOnScheduler)
                 .publish();
 
         // Display the full list of currencies
