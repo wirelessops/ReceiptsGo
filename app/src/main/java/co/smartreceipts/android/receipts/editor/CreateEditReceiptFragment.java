@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -23,6 +24,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -54,6 +58,7 @@ import co.smartreceipts.android.fragments.ReceiptInputCache;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
@@ -68,6 +73,9 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyCodeSupplier;
+import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
+import co.smartreceipts.android.receipts.editor.pricing.ReceiptPricingPresenter;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
@@ -75,8 +83,10 @@ import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -86,7 +96,8 @@ import wb.android.flex.Flex;
 import static java.util.Collections.emptyList;
 
 public class CreateEditReceiptFragment extends WBFragment implements View.OnFocusChangeListener,
-        NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener {
+        NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener,
+        EditableReceiptPricingView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -115,6 +126,9 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     @Inject
     BackupReminderTooltipStorage backupReminderTooltipStorage;
+
+    @Inject
+    UserPreferenceManager userPreferenceManager;
 
     @Inject
     ReceiptCreateEditFragmentPresenter presenter;
@@ -162,7 +176,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     @BindViews({R.id.receipt_input_guide_image_payment_method, R.id.receipt_input_payment_method })
     List<View> paymentMethodsViewsList;
 
-    @BindViews({R.id.receipt_input_guide_image_exchange_rate, R.id.receipt_input_exchange_rate })
+    @BindViews({R.id.receipt_input_guide_image_exchange_rate, R.id.receipt_input_exchange_rate, R.id.receipt_input_exchanged_result, R.id.receipt_input_exchange_rate_base_currency })
     List<View> exchangeRateViewsList;
 
     // Flex fields (ie for white-label projects)
@@ -181,6 +195,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     // Presenters
     private CurrencyListEditorPresenter currencyListEditorPresenter;
+    private ReceiptPricingPresenter receiptPricingPresenter;
 
     // Rx
     private Disposable idDisposable;
@@ -231,6 +246,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
         final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
         final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getReceipt());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
+        receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getReceipt(), savedInstanceState);
     }
 
     Trip getParentTrip() {
@@ -305,15 +321,14 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
         currencySpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
         paymentMethodsSpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
 
-        // Set-up tax layers
+        // Set-up tax adapter
         if (presenter.isIncludeTaxField()) {
-            taxBox.setAdapter(new TaxAutoCompleteAdapter(getActivity(), priceBox, taxBox,
+            taxBox.setAdapter(new TaxAutoCompleteAdapter(getActivity(),
+                    priceBox,
+                    taxBox,
                     presenter.isUsePreTaxPrice(),
-                    presenter.getDefaultTaxPercentage(), getReceipt() == null));
-            priceBox.setHint(getFlexString(R.string.DIALOG_RECEIPTMENU_HINT_PRICE_SHORT));
-            taxInputWrapper.setVisibility(View.VISIBLE);
-        } else {
-            taxInputWrapper.setVisibility(View.GONE);
+                    presenter.getDefaultTaxPercentage(),
+                    getReceipt() == null));
         }
 
         // And the exchange rate processing for our currencies
@@ -418,12 +433,9 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                 final Trip parentTrip = getParentTrip();
 
                 nameBox.setText(receipt.getName());
-                priceBox.setText(receipt.getPrice().getDecimalFormattedPrice());
-                dateBox.setText(receipt.getFormattedDate(getActivity(),
-                        presenter.getDateSeparator()));
+                dateBox.setText(receipt.getFormattedDate(getActivity(), presenter.getDateSeparator()));
                 dateBox.date = receipt.getDate();
                 commentBox.setText(receipt.getComment());
-                taxBox.setText(receipt.getTax().getDecimalFormattedPrice());
 
                 final ExchangeRate exchangeRate = receipt.getPrice().getExchangeRate();
                 if (exchangeRate.supportsExchangeRateFor(parentTrip.getDefaultCurrencyCode())) {
@@ -605,6 +617,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
         // Presenters
         currencyListEditorPresenter.subscribe();
+        receiptPricingPresenter.subscribe();
     }
 
     @Override
@@ -673,6 +686,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     @Override
     public void onPause() {
         // Presenters
+        receiptPricingPresenter.unsubscribe();
         currencyListEditorPresenter.unsubscribe();
 
         // Notify the downstream adapters
@@ -821,6 +835,39 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     public void showDateWarning() {
         Toast.makeText(getActivity(), getFlexString(R.string.DIALOG_RECEIPTMENU_TOAST_BAD_DATE), Toast.LENGTH_LONG).show();
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super Price> displayReceiptPrice() {
+        return (Consumer<Price>) price -> priceBox.setText(price.getDecimalFormattedPrice());
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super Price> displayReceiptTax() {
+        return (Consumer<Price>) price -> taxBox.setText(price.getDecimalFormattedPrice());
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super Boolean> toggleReceiptTaxFieldVisibility() {
+        return RxView.visibility(taxInputWrapper);
+    }
+
+    @NonNull
+    @Override
+    public Observable<CharSequence> getReceiptPriceChanges() {
+        return RxTextView.textChanges(priceBox);
+    }
+
+    @NonNull
+    @Override
+    public Observable<CharSequence> getReceiptTaxChanges() {
+        return RxTextView.textChanges(taxBox);
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {

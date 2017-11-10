@@ -15,7 +15,6 @@ import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.schedulers.Schedulers;
 
