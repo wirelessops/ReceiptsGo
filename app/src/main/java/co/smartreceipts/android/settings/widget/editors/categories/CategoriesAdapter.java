@@ -1,5 +1,13 @@
 package co.smartreceipts.android.settings.widget.editors.categories;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
+
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
@@ -15,15 +23,27 @@ public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
     }
 
     @Override
-    public void onBindViewHolder(EditableCardsViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public AbstractDraggableItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View inflatedView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_dragable_editable_card, parent, false);
+        return new CategoryViewHolder(inflatedView);
+    }
+
+    @Override
+    public void onBindViewHolder(AbstractDraggableItemViewHolder holder, int position) {
+        CategoryViewHolder categoryHolder = (CategoryViewHolder) holder;
         Category category = items.get(position);
 
-        holder.title.setText(category.getName());
-        holder.summary.setText(category.getCode());
+        categoryHolder.dragHandle.setVisibility(isOnDragMode ? View.VISIBLE : View.GONE);
+        categoryHolder.delete.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
+        categoryHolder.edit.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
+        categoryHolder.divider.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
 
-        holder.edit.setOnClickListener(v -> listener.onEditItem(category));
-        holder.delete.setOnClickListener(v -> listener.onDeleteItem(category));
+        categoryHolder.categoryName.setText(category.getName());
+        categoryHolder.categoryCode.setText(category.getCode());
+
+        categoryHolder.edit.setOnClickListener(v -> listener.onEditItem(category));
+        categoryHolder.delete.setOnClickListener(v -> listener.onDeleteItem(category));
     }
 
     @Override
@@ -45,6 +65,27 @@ public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
                                 .build(),
                         new DatabaseOperationMetadata());
             }
+        }
+    }
+
+    private static class CategoryViewHolder extends AbstractDraggableItemViewHolder {
+
+        TextView categoryName;
+        TextView categoryCode;
+        public View edit;
+        public View delete;
+        View dragHandle;
+        View divider;
+
+        CategoryViewHolder(View itemView) {
+            super(itemView);
+
+            categoryName = itemView.findViewById(android.R.id.title);
+            categoryCode = itemView.findViewById(android.R.id.summary);
+            edit = itemView.findViewById(R.id.edit);
+            delete = itemView.findViewById(R.id.delete);
+            dragHandle = itemView.findViewById(R.id.drag_handle);
+            divider = itemView.findViewById(R.id.divider);
         }
     }
 

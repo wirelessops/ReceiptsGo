@@ -1,10 +1,6 @@
 package co.smartreceipts.android.settings.widget.editors.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
@@ -13,18 +9,17 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemView
 import java.util.ArrayList;
 import java.util.List;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 
 
-public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends RecyclerView.Adapter<DraggableEditableCardsAdapter.EditableCardsViewHolder>
-        implements DraggableItemAdapter<DraggableEditableCardsAdapter.EditableCardsViewHolder> {
+public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends RecyclerView.Adapter<AbstractDraggableItemViewHolder>
+        implements DraggableItemAdapter<AbstractDraggableItemViewHolder> {
 
     protected final List<T> items;
     protected final EditableItemListener<T> listener;
-    private boolean isOnDragMode;
+    protected boolean isOnDragMode;
 
     public DraggableEditableCardsAdapter(EditableItemListener<T> listener) {
         this(listener, new ArrayList<T>());
@@ -35,21 +30,6 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
         this.items = items;
 
         setHasStableIds(true);
-    }
-
-    @Override
-    public EditableCardsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_dragable_editable_card, parent, false);
-        return new EditableCardsViewHolder(inflatedView);
-    }
-
-    @Override
-    public void onBindViewHolder(EditableCardsViewHolder holder, int position) {
-            holder.dragHandle.setVisibility(isOnDragMode ? View.VISIBLE : View.GONE);
-            holder.delete.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
-            holder.edit.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
-            holder.divider.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -86,35 +66,14 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
     }
 
     @Override
-    public ItemDraggableRange onGetItemDraggableRange(EditableCardsViewHolder holder, int position) {
+    public ItemDraggableRange onGetItemDraggableRange(AbstractDraggableItemViewHolder holder, int position) {
         // no drag-sortable range specified
         return null;
     }
 
     @Override
-    public boolean onCheckCanStartDrag(EditableCardsViewHolder holder, int position, int x, int y) {
+    public boolean onCheckCanStartDrag(AbstractDraggableItemViewHolder holder, int position, int x, int y) {
         return isOnDragMode;
-    }
-
-    protected static class EditableCardsViewHolder extends AbstractDraggableItemViewHolder{
-
-        public TextView title;
-        public TextView summary;
-        public View edit;
-        public View delete;
-        View dragHandle;
-        View divider;
-
-        EditableCardsViewHolder(View itemView) {
-            super(itemView);
-
-            title = itemView.findViewById(android.R.id.title);
-            summary = itemView.findViewById(android.R.id.summary);
-            edit = itemView.findViewById(R.id.edit);
-            delete = itemView.findViewById(R.id.delete);
-            dragHandle = itemView.findViewById(R.id.drag_handle);
-            divider = itemView.findViewById(R.id.divider);
-        }
     }
 
     public void update(List<T> newData)  {

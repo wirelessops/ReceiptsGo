@@ -53,7 +53,7 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.simple_recycler_view, container, false);
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        toolbar = rootView.findViewById(R.id.toolbar);
 
         return rootView;
     }
@@ -62,7 +62,7 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (RecyclerView) getView().findViewById(list);
+        recyclerView = getView().findViewById(list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         setDragAndDrop();

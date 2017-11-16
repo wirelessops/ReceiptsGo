@@ -5,9 +5,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.settings.widget.editors.CSVColumnsListFragment;
+import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
-import co.smartreceipts.android.settings.widget.editors.PDFColumnsListFragment;
+import co.smartreceipts.android.settings.widget.editors.columns.PDFColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
 
 public class SettingsViewerActivity extends AppCompatActivity {

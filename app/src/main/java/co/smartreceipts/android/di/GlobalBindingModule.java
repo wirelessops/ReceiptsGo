@@ -31,9 +31,9 @@ import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFra
 import co.smartreceipts.android.ocr.widget.di.OcrConfigurationFragmentSubcomponent;
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
-import co.smartreceipts.android.settings.widget.editors.CSVColumnsListFragment;
+import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
-import co.smartreceipts.android.settings.widget.editors.PDFColumnsListFragment;
+import co.smartreceipts.android.settings.widget.editors.columns.PDFColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.sync.drive.services.DriveCompletionEventService;

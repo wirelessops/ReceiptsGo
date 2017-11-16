@@ -1,4 +1,4 @@
-package co.smartreceipts.android.settings.widget.editors;
+package co.smartreceipts.android.settings.widget.editors.columns;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

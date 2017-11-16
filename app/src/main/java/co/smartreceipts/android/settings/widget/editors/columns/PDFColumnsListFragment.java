@@ -1,4 +1,4 @@
-package co.smartreceipts.android.settings.widget.editors;
+package co.smartreceipts.android.settings.widget.editors.columns;
 
 import android.content.Context;
 import android.support.v7.app.ActionBar;
