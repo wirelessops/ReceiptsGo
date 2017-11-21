@@ -24,7 +24,6 @@ import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListen
 
 public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt>> {
 
-    //    private final AdapterView.OnItemSelectedListener mSpinnerSelectionListener = new ColumnTypeChangeSelectionListener();
     private ArrayAdapter<Column<Receipt>> spinnerAdapter;
     private Context context;
     private ReceiptColumnDefinitions receiptColumnDefinitions;
@@ -57,7 +56,6 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
         columnHolder.spinner.setEnabled(!isOnDragMode);
 
         columnHolder.spinner.setAdapter(spinnerAdapter);
-//        columnHolder.spinner.setTag(new SpinnerTag());
 
         columnHolder.column.setText(context.getString(R.string.column_item, Integer.toString(position + 1))); //Add +1 to make it not 0-th index
         final int selectedPosition = getSpinnerPositionByColumnName(position);
@@ -135,8 +133,6 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
         }
     }
 
-    // TODO: 17.11.2017 save order, then identify columns as items with customOrderId
-
     private class ColumnTypeChangeSelectionListener extends UserSelectionTrackingOnItemSelectedListener {
 
         @Override
@@ -152,8 +148,6 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
                     .setCustomOrderId(oldColumn.getCustomOrderId())
                     .build()
             );
-//            listener.onEditItem(oldColumn, newColumn);
-//            mColumnTableController.update(oldColumn, newColumn, new DatabaseOperationMetadata());
 
         }
 
