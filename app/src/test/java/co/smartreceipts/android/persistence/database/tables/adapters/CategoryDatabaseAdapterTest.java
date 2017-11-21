@@ -136,43 +136,4 @@ public class CategoryDatabaseAdapterTest {
         assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
         assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
-
-    @Test
-    public void dontWriteCustomOrderIdIfNotPresent() {
-        final String sync = "sync";
-        final ContentValues syncValues = new ContentValues();
-        syncValues.put(sync, sync);
-        when(mSyncStateAdapter.write(mSyncState)).thenReturn(syncValues);
-
-        final Category category = new CategoryBuilderFactory()
-                .setId(PRIMARY_KEY_INT)
-                .setName(NAME)
-                .setCode(CODE)
-                .setSyncState(mSyncState)
-                .build();
-
-        final ContentValues contentValues = mCategoryDatabaseAdapter.write(category, new DatabaseOperationMetadata(OperationFamilyType.Sync));
-
-        assertEquals(null, contentValues.getAsInteger(CUSTOM_ORDER_ID_KEY));
-    }
-
-    @Test
-    public void buildCustomOrderIdAsIdIfNotPresent() {
-        final Category category = new CategoryBuilderFactory()
-                .setId(PRIMARY_KEY_INT)
-                .setName(NAME)
-                .setCode(CODE)
-                .setSyncState(mGetSyncState)
-                .build();
-
-        when(mPrimaryKey.getPrimaryKeyValue(category)).thenReturn(PRIMARY_KEY_INT);
-
-        final Category builtCategory = mCategoryDatabaseAdapter.build(category, mPrimaryKey, mock(DatabaseOperationMetadata.class));
-
-        assertEquals(category.getId(), builtCategory.getId());
-        assertEquals(category.getName(), builtCategory.getName());
-        assertEquals(category.getCode(), builtCategory.getCode());
-
-        assertEquals(category.getId(), builtCategory.getCustomOrderId());
-    }
 }

@@ -75,11 +75,11 @@ public class CSVTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mCSVTable = new CSVTable(mSQLiteOpenHelper, mReceiptColumnDefinitions);
+        mCSVTable = new CSVTable(mSQLiteOpenHelper, mReceiptColumnDefinitions, false);
         mDefaultColumn = new BlankColumn<>(-1, "", new DefaultSyncState());
 
         when(mReceiptColumnDefinitions.getDefaultInsertColumn()).thenReturn(mDefaultColumn);
-        when(mReceiptColumnDefinitions.getColumn(anyInt(), eq(""), any(SyncState.class))).thenReturn(mDefaultColumn);
+        when(mReceiptColumnDefinitions.getColumn(anyInt(), eq(""), any(SyncState.class), anyInt())).thenReturn(mDefaultColumn);
 
         // Now create the table and insert some defaults
         mCSVTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);

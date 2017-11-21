@@ -77,8 +77,8 @@ public class ColumnDatabaseAdapterTest {
 
         mIdColumn = new ConstantColumn<>(ID, NAME, mSyncState);
         mPrimaryKeyIdColumn = new ConstantColumn<>(PRIMARY_KEY_ID, NAME, mGetSyncState);
-        when(mReceiptColumnDefinitions.getColumn(ID, NAME, mSyncState)).thenReturn(mIdColumn);
-        when(mReceiptColumnDefinitions.getColumn(PRIMARY_KEY_ID, NAME, mGetSyncState)).thenReturn(mPrimaryKeyIdColumn);
+        when(mReceiptColumnDefinitions.getColumn(ID, NAME, mSyncState, 0)).thenReturn(mIdColumn);
+        when(mReceiptColumnDefinitions.getColumn(PRIMARY_KEY_ID, NAME, mGetSyncState, 0)).thenReturn(mPrimaryKeyIdColumn);
 
         when(mPrimaryKey.getPrimaryKeyValue(mColumn)).thenReturn(PRIMARY_KEY_ID);
 

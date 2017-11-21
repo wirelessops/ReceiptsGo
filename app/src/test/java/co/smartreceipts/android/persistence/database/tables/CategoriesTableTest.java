@@ -102,9 +102,8 @@ public class CategoriesTableTest {
         verify(customizer).insertCategoryDefaults(mCategoriesTable);
 
         final List<String> allValues = mSqlCaptor.getAllValues();
-        assertEquals(2, allValues.size());
+        assertEquals(1, allValues.size());
         String creatingTable = allValues.get(0);
-        String fillingCustomOrderId = allValues.get(1);
 
         assertTrue(creatingTable.contains("CREATE TABLE categories"));
         assertTrue(creatingTable.contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
@@ -116,8 +115,6 @@ public class CategoriesTableTest {
         assertTrue(creatingTable.contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
         assertTrue(creatingTable.contains("last_local_modification_time DATE"));
         assertTrue(creatingTable.contains("custom_order_id INTEGER DEFAULT 0"));
-
-        assertTrue(fillingCustomOrderId.contains("UPDATE categories SET custom_order_id = id"));
     }
 
     @Test

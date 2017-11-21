@@ -75,11 +75,11 @@ public class PDFTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mPDFTable = new PDFTable(mSQLiteOpenHelper, mReceiptColumnDefinitions);
+        mPDFTable = new PDFTable(mSQLiteOpenHelper, mReceiptColumnDefinitions, false);
         mDefaultColumn = new BlankColumn<>(-1, "", new DefaultSyncState());
 
         when(mReceiptColumnDefinitions.getDefaultInsertColumn()).thenReturn(mDefaultColumn);
-        when(mReceiptColumnDefinitions.getColumn(anyInt(), eq(""), any(SyncState.class))).thenReturn(mDefaultColumn);
+        when(mReceiptColumnDefinitions.getColumn(anyInt(), eq(""), any(SyncState.class), anyInt())).thenReturn(mDefaultColumn);
 
         // Now create the table and insert some defaults
         mPDFTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);
