@@ -19,8 +19,9 @@ public final class ReceiptNetExchangedPricePlusTaxColumn extends AbstractExchang
 
     private final UserPreferenceManager mPreferences;
 
-    public ReceiptNetExchangedPricePlusTaxColumn(int id, @NonNull String name, @NonNull SyncState syncState, @NonNull Context context, @NonNull UserPreferenceManager preferences) {
-        super(id, name, syncState, context);
+    public ReceiptNetExchangedPricePlusTaxColumn(int id, @NonNull String name, @NonNull SyncState syncState,
+                                                 @NonNull Context context, @NonNull UserPreferenceManager preferences, int customOrderId) {
+        super(id, name, syncState, context, customOrderId);
         mPreferences = preferences;
     }
 

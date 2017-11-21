@@ -28,6 +28,16 @@ public class OrderingPreferencesManager {
          * If user didn't open that screen - we need to use default order
          */
         private static final String ORDERING_PAYMENT_METHODS = "payment methods custom ordering";
+        /**
+         * Key to track if the user has already opened "Manage CSV columns" screen.
+         * If user didn't open that screen - we need to use default order
+         */
+        private static final String ORDERING_COLUMNS_CSV = "csv columns custom ordering";
+        /**
+         * Key to track if the user has already opened "Manage PDF columns" screen.
+         * If user didn't open that screen - we need to use default order
+         */
+        private static final String ORDERING_COLUMNS_PDF = "pdf columns custom ordering";
     }
 
     @Inject
@@ -47,12 +57,32 @@ public class OrderingPreferencesManager {
                 .apply();
     }
 
+    public void saveCsvColumnsTableOrdering() {
+        getPreferencesEditor()
+                .putBoolean(Keys.ORDERING_COLUMNS_CSV, true)
+                .apply();
+    }
+
+    public void savePdfColumnsTableOrdering() {
+        getPreferencesEditor()
+                .putBoolean(Keys.ORDERING_COLUMNS_PDF, true)
+                .apply();
+    }
+
     public boolean isCategoriesTableOrdered() {
         return getSharedPreferences().getBoolean(Keys.ORDERING_CATEGORIES, false);
     }
 
     public boolean isPaymentMethodsTableOrdered() {
         return getSharedPreferences().getBoolean(Keys.ORDERING_PAYMENT_METHODS, false);
+    }
+
+    public boolean isCsvColumnsOrdered() {
+        return getSharedPreferences().getBoolean(Keys.ORDERING_COLUMNS_CSV, false);
+    }
+
+    public boolean isPdfColumnsOrdered() {
+        return getSharedPreferences().getBoolean(Keys.ORDERING_COLUMNS_PDF, false);
     }
 
     private SharedPreferences.Editor getPreferencesEditor() {

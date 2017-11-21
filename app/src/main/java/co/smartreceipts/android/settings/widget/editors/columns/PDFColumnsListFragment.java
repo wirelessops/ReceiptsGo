@@ -11,7 +11,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ColumnTabl
 import co.smartreceipts.android.persistence.database.controllers.impl.PDFTableController;
 import dagger.android.support.AndroidSupportInjection;
 
-public class PDFColumnsListFragment extends ColumnsListFragment {
+public class PDFColumnsListFragment extends ColumnsListFragment1 {
 
     public static String TAG = "PDFColumnsListFragment";
 
@@ -21,7 +21,7 @@ public class PDFColumnsListFragment extends ColumnsListFragment {
     @Inject
     PDFTableController pdfTableController;
 
-    public static ColumnsListFragment newInstance() {
+    public static ColumnsListFragment1 newInstance() {
         return new PDFColumnsListFragment();
     }
 

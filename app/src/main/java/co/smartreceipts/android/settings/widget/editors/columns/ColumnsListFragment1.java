@@ -30,7 +30,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ColumnTabl
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
 
-public abstract class ColumnsListFragment extends WBFragment implements TableEventsListener<Column<Receipt>> {
+public abstract class ColumnsListFragment1 extends WBFragment implements TableEventsListener<Column<Receipt>> {
 
 	public static String TAG = "ColumnsListFragment";
 

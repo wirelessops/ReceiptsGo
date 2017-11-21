@@ -11,8 +11,8 @@ import co.smartreceipts.android.sync.model.SyncState;
  */
 public final class ReceiptCategoryCodeColumn extends AbstractColumnImpl<Receipt> {
 
-    public ReceiptCategoryCodeColumn(int id, @NonNull String name, @NonNull SyncState syncState) {
-        super(id, name, syncState);
+    public ReceiptCategoryCodeColumn(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+        super(id, name, syncState, customOrderId);
     }
 
     @Override

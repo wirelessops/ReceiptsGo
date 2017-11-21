@@ -11,8 +11,8 @@ import co.smartreceipts.android.sync.model.SyncState;
  */
 public final class ReceiptFilePathColumn extends AbstractColumnImpl<Receipt> {
 
-    public ReceiptFilePathColumn(int id, @NonNull String name, @NonNull SyncState syncState) {
-        super(id, name, syncState);
+    public ReceiptFilePathColumn(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+        super(id, name, syncState, customOrderId);
     }
 
     @Override

@@ -15,8 +15,9 @@ public final class ReceiptIsReimbursableColumn extends AbstractColumnImpl<Receip
 
     private final Context mContext;
 
-    public ReceiptIsReimbursableColumn(int id, @NonNull String name, @NonNull SyncState syncState, @NonNull Context context) {
-        super(id, name, syncState);
+    public ReceiptIsReimbursableColumn(int id, @NonNull String name, @NonNull SyncState syncState,
+                                       @NonNull Context context, int customOrderId) {
+        super(id, name, syncState, customOrderId);
         mContext = context;
     }
 

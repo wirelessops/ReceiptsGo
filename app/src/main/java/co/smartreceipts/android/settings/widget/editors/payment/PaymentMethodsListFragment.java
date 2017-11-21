@@ -3,6 +3,7 @@ package co.smartreceipts.android.settings.widget.editors.payment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 
 import javax.inject.Inject;
@@ -92,7 +93,7 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
     }
 
     @Override
-    public void onEditItem(PaymentMethod oldPaymentMethod) {
+    public void onEditItem(PaymentMethod oldPaymentMethod, @Nullable PaymentMethod ignored) {
         final EditTextDialogFragment.OnClickListener onClickListener = (text, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory()

@@ -3,6 +3,7 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -15,6 +16,8 @@ import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCusto
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.ColumnDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.ColumnPrimaryKey;
+import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.utils.ListUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Single;
@@ -30,9 +33,11 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
     private final String mIdColumnName;
     private final String mTypeColumnName;
 
-    public AbstractColumnTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName, int tableExistsSinceDatabaseVersion,
-                               @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions, @NonNull String idColumnName, @NonNull String typeColumnName) {
-        super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(receiptColumnDefinitions, idColumnName, typeColumnName), new ColumnPrimaryKey(idColumnName));
+    public AbstractColumnTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName,
+                               int tableExistsSinceDatabaseVersion, @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
+                               @NonNull String idColumnName, @NonNull String typeColumnName, boolean isOrdered) {
+        super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(receiptColumnDefinitions, idColumnName, typeColumnName),
+                new ColumnPrimaryKey(idColumnName), isOrdered ? new OrderBy(COLUMN_CUSTOM_ORDER_ID, false) : new DefaultOrderBy());
         mTableExistsSinceDatabaseVersion = tableExistsSinceDatabaseVersion;
         mReceiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
         mIdColumnName = Preconditions.checkNotNull(idColumnName);
@@ -87,6 +92,7 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
      * @return {@link Single} with the inserted {@link Column} or {@link Exception} if the insert failed
      */
     @NonNull
+    @VisibleForTesting
     public final Single<Column<Receipt>> insertDefaultColumn() {
         return insert(mReceiptColumnDefinitions.getDefaultInsertColumn(), new DatabaseOperationMetadata());
     }
@@ -97,6 +103,7 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
      * @return {@code true} if it could be delete. {@code false} otherwise (e.g. there are no more columns)
      */
     @NonNull
+    @VisibleForTesting
     public final Single<Boolean> deleteLast(@NonNull final DatabaseOperationMetadata databaseOperationMetadata) {
         return get().flatMap(columns -> AbstractColumnTable.this.removeLastColumnIfPresent(columns, databaseOperationMetadata));
     }

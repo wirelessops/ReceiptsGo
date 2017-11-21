@@ -20,7 +20,7 @@ public interface ColumnDefinitions<T> {
      * @param syncState the current {@link SyncState} of the column
      * @return a new column instance or {@code null} if none can be found
      */
-    Column<T> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState);
+    Column<T> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, int customOrderId);
 
     /**
      * Gets a list of all {@link Column} instances that are available as part

@@ -10,7 +10,7 @@ import co.smartreceipts.android.sync.model.Syncable;
 /**
  * Provides a contract for how each individual column in a report should operate
  */
-public interface Column<T> extends Syncable, Draggable<Column> {
+public interface Column<T> extends Syncable, Draggable<Column<T>> {
 
     int UNKNOWN_ID = -1;
 

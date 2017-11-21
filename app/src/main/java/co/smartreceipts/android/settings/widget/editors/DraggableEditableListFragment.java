@@ -159,6 +159,9 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
      */
     protected abstract void addItem();
 
+    /**
+     * super.saveTableOrdering must be called
+     */
     protected void saveTableOrdering() {
         Logger.debug(this, "saveTableOrdering");
         adapter.saveNewOrder(getTableController());

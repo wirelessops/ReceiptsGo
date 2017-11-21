@@ -14,7 +14,6 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.android.utils.log.Logger;
 
 public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
 
@@ -42,7 +41,7 @@ public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
         categoryHolder.categoryName.setText(category.getName());
         categoryHolder.categoryCode.setText(category.getCode());
 
-        categoryHolder.edit.setOnClickListener(v -> listener.onEditItem(category));
+        categoryHolder.edit.setOnClickListener(v -> listener.onEditItem(category, null));
         categoryHolder.delete.setOnClickListener(v -> listener.onDeleteItem(category));
     }
 
@@ -53,7 +52,6 @@ public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
 
     @Override
     public void saveNewOrder(TableController<Category> tableController) {
-        Logger.debug(this, "saveNewOrder Categories");
         for (Category item : items) {
             if (item.getCustomOrderId() != items.indexOf(item)) {
                 tableController.update(item, new CategoryBuilderFactory()

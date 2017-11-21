@@ -17,8 +17,9 @@ public final class ReceiptDateColumn extends AbstractColumnImpl<Receipt> {
     private final Context mContext;
     private final UserPreferenceManager mPreferences;
 
-    public ReceiptDateColumn(int id, @NonNull String name, @NonNull SyncState syncState, @NonNull Context context, @NonNull UserPreferenceManager preferences) {
-        super(id, name, syncState);
+    public ReceiptDateColumn(int id, @NonNull String name, @NonNull SyncState syncState, @NonNull Context context,
+                             @NonNull UserPreferenceManager preferences, int customOrderId) {
+        super(id, name, syncState, customOrderId);
         mContext = context;
         mPreferences = preferences;
     }

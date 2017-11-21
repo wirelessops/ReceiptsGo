@@ -20,8 +20,9 @@ public final class PDFTable extends AbstractColumnTable {
 
     private static final int TABLE_EXISTS_SINCE = 9;
 
-    public PDFTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions) {
-        super(sqLiteOpenHelper, TABLE_NAME, TABLE_EXISTS_SINCE, receiptColumnDefinitions, COLUMN_ID, COLUMN_TYPE);
+    public PDFTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
+                    boolean isOrdered) {
+        super(sqLiteOpenHelper, TABLE_NAME, TABLE_EXISTS_SINCE, receiptColumnDefinitions, COLUMN_ID, COLUMN_TYPE, isOrdered);
     }
 
     @Override

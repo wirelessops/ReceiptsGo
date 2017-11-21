@@ -58,7 +58,8 @@ public abstract class AbstractColumnImpl<T> implements Column<T> {
 
     @Override
     public int compareTo(@NonNull Column otherColumn) {
-        return getId() - otherColumn.getId();
+        int orderCompare = mCustomOrderId - otherColumn.getCustomOrderId();
+        return orderCompare != 0 ? orderCompare : getId() - otherColumn.getId();
     }
 
     @NonNull

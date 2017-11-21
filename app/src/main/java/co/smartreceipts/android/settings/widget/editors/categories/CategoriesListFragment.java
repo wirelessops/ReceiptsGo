@@ -64,13 +64,22 @@ public class CategoriesListFragment extends DraggableEditableListFragment<Catego
 
     @Override
     protected void addItem() {
-
         showCreateEditDialog(null);
     }
 
     @Override
-    public void onEditItem(Category editCategory) {
-        showCreateEditDialog(editCategory);
+    public void onEditItem(Category oldItem, @Nullable Category ignored) {
+        showCreateEditDialog(oldItem);
+    }
+
+    @Override
+    public void onDeleteItem(Category category) {
+        final AlertDialog.Builder innerBuilder = new AlertDialog.Builder(getActivity());
+        innerBuilder.setTitle(getString(R.string.delete_item, category.getName()))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.delete), (dialog, which) -> categoriesTableController.delete(category, new DatabaseOperationMetadata()))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
+                .show();
     }
 
     @Override
@@ -121,16 +130,6 @@ public class CategoriesListFragment extends DraggableEditableListFragment<Catego
                     }
 
                 })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
-                .show();
-    }
-
-    @Override
-    public void onDeleteItem(Category category) {
-        final AlertDialog.Builder innerBuilder = new AlertDialog.Builder(getActivity());
-        innerBuilder.setTitle(getString(R.string.delete_item, category.getName()))
-                .setCancelable(true)
-                .setPositiveButton(getString(R.string.delete), (dialog, which) -> categoriesTableController.delete(category, new DatabaseOperationMetadata()))
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .show();
     }

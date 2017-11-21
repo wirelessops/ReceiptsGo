@@ -41,7 +41,7 @@ public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<Payment
 
         paymentMethodHolder.paymentMethodName.setText(method.getMethod());
 
-        paymentMethodHolder.edit.setOnClickListener(v -> listener.onEditItem(method));
+        paymentMethodHolder.edit.setOnClickListener(v -> listener.onEditItem(method, null));
         paymentMethodHolder.delete.setOnClickListener(v -> listener.onDeleteItem(method));
     }
 
