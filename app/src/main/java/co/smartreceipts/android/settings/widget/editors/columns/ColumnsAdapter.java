@@ -67,8 +67,6 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
         spinnerTag.column = items.get(position);
 
         columnHolder.delete.setOnClickListener(v -> listener.onDeleteItem(items.get(position)));
-
-        columnHolder.order.setText(String.valueOf(items.get(position).getCustomOrderId()));
     }
 
     @Override
@@ -116,7 +114,6 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
         public Spinner spinner;
         public View delete;
         View dragHandle;
-        TextView order;
 
         ColumnViewHolder(View itemView) {
             super(itemView);
@@ -126,10 +123,7 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
             delete = itemView.findViewById(R.id.delete);
             dragHandle = itemView.findViewById(R.id.drag_handle);
 
-            order = itemView.findViewById(R.id.order);
-
             spinner.setTag(new SpinnerTag());
-
         }
     }
 
