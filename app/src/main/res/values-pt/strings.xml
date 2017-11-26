@@ -247,6 +247,7 @@
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Moeda</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Taxa de câmbio</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Falha na taxa de câmbio. Deseja tentar novamente?</string>
+    <string name="receipt_input_exchanged_result_hint">Cotação Moeda Preço</string>
     <string name="DIALOG_RECEIPTMENU_HINT_DATE">Data</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Categoria</string>
     <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Observação</string>

@@ -249,6 +249,7 @@
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Валюта</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Курс обмена</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Обмен не удался. Повторить попытку?</string>
+    <string name="receipt_input_exchanged_result_hint">Ответить Цитировать</string>
     <string name="DIALOG_RECEIPTMENU_HINT_DATE">Дата</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Категория</string>
     <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Комментарий</string>

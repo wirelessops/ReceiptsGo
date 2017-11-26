@@ -3,5 +3,4 @@
     <string name="pref_output_pdf_page_size_title">Pdf Page Size</string>
     <string name="pref_output_pdf_page_size_a4_entry">A4</string>
     <string name="pref_output_pdf_page_size_letter_entry">Letter</string>
-    <string name="receipt_input_exchanged_result_hint">Base Currency Price</string>
 </resources>

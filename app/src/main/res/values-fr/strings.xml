@@ -247,6 +247,7 @@
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Devise</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Taux de change</string>
     <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Échec du taux de change. Réessayer ?</string>
+    <string name="receipt_input_exchanged_result_hint">Cours Devise Prix</string>
     <string name="DIALOG_RECEIPTMENU_HINT_DATE">Date</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Catégorie</string>
     <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Commentaire</string>
