@@ -116,7 +116,7 @@ public class ImageImportProcessorTest {
         final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG);
         when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(false);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(ImageImportProcessor.COMPRESSION_QUALITY))).thenReturn(false);
 
         importProcessor.process(uri)
                 .test()
@@ -128,7 +128,7 @@ public class ImageImportProcessorTest {
         final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG);
         when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(ImageImportProcessor.COMPRESSION_QUALITY))).thenReturn(true);
 
         importProcessor.process(uri)
                 .test()
@@ -146,7 +146,7 @@ public class ImageImportProcessorTest {
         final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG_WITH_EXIF);
         when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(ImageImportProcessor.COMPRESSION_QUALITY))).thenReturn(true);
 
         importProcessor.process(uri)
                 .test()
@@ -166,7 +166,7 @@ public class ImageImportProcessorTest {
         final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG_BIG);
         when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(false);
-        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(ImageImportProcessor.COMPRESSION_QUALITY))).thenReturn(true);
 
         importProcessor.process(uri)
                 .test()
@@ -185,7 +185,7 @@ public class ImageImportProcessorTest {
         final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG);
         when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(true);
-        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(ImageImportProcessor.COMPRESSION_QUALITY))).thenReturn(true);
 
         importProcessor.process(uri)
                 .test()
@@ -203,7 +203,7 @@ public class ImageImportProcessorTest {
         final Uri uri = Uri.fromFile(destination);
         configureUriForStream(uri, SAMPLE_JPG_WITH_EXIF);
         when(preferences.get(UserPreference.Camera.AutomaticallyRotateImages)).thenReturn(true);
-        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(85))).thenReturn(true);
+        when(storageManager.writeBitmap(any(Uri.class), bitmapCaptor.capture(), eq(Bitmap.CompressFormat.JPEG), eq(ImageImportProcessor.COMPRESSION_QUALITY))).thenReturn(true);
 
         importProcessor.process(uri)
                 .test()

@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.media.ExifInterface;
 import android.support.v4.content.ContextCompat;
 
@@ -30,6 +31,9 @@ import wb.android.image.ImageUtils;
 import wb.android.storage.StorageManager;
 
 public class ImageImportProcessor implements FileImportProcessor {
+
+    @VisibleForTesting
+    static final int COMPRESSION_QUALITY = 95;
 
     private static final int MAX_DIMENSION = 1024;
     private static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
@@ -109,8 +113,8 @@ public class ImageImportProcessor implements FileImportProcessor {
                         Logger.info(ImageImportProcessor.this, "Image import rotation is disabled. Ignoring...");
                     }
 
-                    final File destination = mStorageManner.getFile(mTrip.getDirectory(), System.currentTimeMillis() + "." + UriUtils.getExtension(uri, mContentResolver));
-                    if (!mStorageManner.writeBitmap(Uri.fromFile(destination), bitmap, Bitmap.CompressFormat.JPEG, 85)) {
+                    final File destination = mStorageManner.getFile(mTrip.getDirectory(), System.currentTimeMillis() + ".jpg");
+                    if (!mStorageManner.writeBitmap(Uri.fromFile(destination), bitmap, Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY)) {
                         Logger.error(ImageImportProcessor.this, "Failed to write the image data. Aborting");
                         emitter.onError(new IOException("Failed to write the image data. Aborting"));
                     } else {
@@ -169,7 +173,7 @@ public class ImageImportProcessor implements FileImportProcessor {
         try {
             final String[] imageColumns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION };
             cursor = mContentResolver.query(externalUri, imageColumns, null, null, null);
-            if(cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0){
+            if(cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
                 return cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
             }
             else {
