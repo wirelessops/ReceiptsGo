@@ -269,7 +269,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         onCreateCompositeDisposable.add(activityFileResultLocator.getUriStream()
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMapSingle(response -> {
-                    if (response.getUri().getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+                    if (response.getUri().getScheme() != null && response.getUri().getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
                         return Single.just(response);
                     } else { // we need to check read external storage permission
                         return permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)
