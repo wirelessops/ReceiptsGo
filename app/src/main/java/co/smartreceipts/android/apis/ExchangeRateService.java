@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import java.sql.Date;
 
 import co.smartreceipts.android.model.gson.ExchangeRate;
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -23,7 +23,7 @@ public interface ExchangeRateService {
      * @param baseCurrencyCode     the base currency code (to which all conversion rates apply)
      */
     @GET("/api/historical/{date}.json")
-    Call<ExchangeRate> getExchangeRate(@NonNull @Path("date") Date date, @NonNull @Query("app_id") String app_id, @NonNull @Query("base") String baseCurrencyCode);
+    Observable<ExchangeRate> getExchangeRate(@NonNull @Path("date") Date date, @NonNull @Query("app_id") String app_id, @NonNull @Query("base") String baseCurrencyCode);
 
     /**
      * Submits an asynchronous network request to get the exchange rate for a particular currency on a given date
@@ -34,5 +34,5 @@ public interface ExchangeRateService {
      * @param exchangeCurrencyCode the currency code that we would want to exchange the base into
      */
     @GET("/api/historical/{date}.json")
-    Call<ExchangeRate> getExchangeRate(@NonNull @Path("date") Date date, @NonNull @Query("app_id") String app_id, @NonNull @Query("base") String baseCurrencyCode, @NonNull @Query("symbols") String exchangeCurrencyCode);
+    Observable<ExchangeRate> getExchangeRate(@NonNull @Path("date") Date date, @NonNull @Query("app_id") String app_id, @NonNull @Query("base") String baseCurrencyCode, @NonNull @Query("symbols") String exchangeCurrencyCode);
 }

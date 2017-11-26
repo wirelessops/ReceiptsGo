@@ -183,7 +183,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         currencyListEditorPresenter.onSaveInstanceState(outState);
     }

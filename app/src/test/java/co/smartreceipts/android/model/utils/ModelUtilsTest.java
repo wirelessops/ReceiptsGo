@@ -54,6 +54,12 @@ public class ModelUtilsTest {
     }
 
     @Test
+    public void tryParse() {
+        assertEquals(ModelUtils.tryParse(null), new BigDecimal(0));
+        assertEquals(ModelUtils.tryParse(null, new BigDecimal(1)), new BigDecimal(1));
+    }
+
+    @Test
     public void isPriceZero() {
         assertTrue(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(0).setCurrency("USD").build()));
         assertFalse(ModelUtils.isPriceZero(new PriceBuilderFactory().setPrice(0.1).setCurrency("USD").build()));

@@ -1,6 +1,5 @@
 package co.smartreceipts.android.receipts.editor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,9 +22,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.io.File;
@@ -42,13 +44,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.activities.SmartReceiptsActivity;
 import co.smartreceipts.android.adapters.FooterButtonArrayAdapter;
 import co.smartreceipts.android.adapters.TaxAutoCompleteAdapter;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.apis.ExchangeRateServiceManager;
-import co.smartreceipts.android.apis.MemoryLeakSafeCallback;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
@@ -73,6 +73,10 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyCodeSupplier;
+import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
+import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorPresenter;
+import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorView;
+import co.smartreceipts.android.receipts.editor.exchange.ExchangeRateServiceManager;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
 import co.smartreceipts.android.receipts.editor.pricing.ReceiptPricingPresenter;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -80,7 +84,8 @@ import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
-import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
+import co.smartreceipts.android.widget.model.UiIndicator;
+import co.smartreceipts.android.widget.rxbinding2.RxTextViewExtensions;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
@@ -88,20 +93,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Response;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
 
 public class CreateEditReceiptFragment extends WBFragment implements View.OnFocusChangeListener,
-        NetworkRequestAwareEditText.RetryListener, DatabaseHelper.ReceiptAutoCompleteListener,
-        EditableReceiptPricingView {
+        DatabaseHelper.ReceiptAutoCompleteListener,
+        EditableReceiptPricingView,
+        ReceiptDateView,
+        CurrencyExchangeRateEditorView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
-    private static final String KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE = "key_is_exchange_rate_visible";
 
     @Inject
     Flex flex;
@@ -111,6 +115,9 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     @Inject
     DatabaseHelper database;
+
+    @Inject
+    ExchangeRateServiceManager exchangeRateServiceManager;
 
     @Inject
     Analytics analytics;
@@ -151,6 +158,12 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     @BindView(R.id.receipt_input_exchange_rate)
     NetworkRequestAwareEditText exchangeRateBox;
+
+    @BindView(R.id.receipt_input_exchanged_result)
+    EditText exchangedPriceInBaseCurrencyBox;
+
+    @BindView(R.id.receipt_input_exchange_rate_base_currency)
+    TextView receiptInputExchangeRateBaseCurrencyTextView;
 
     @BindView(R.id.DIALOG_RECEIPTMENU_DATE)
     DateEditText dateBox;
@@ -196,6 +209,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     // Presenters
     private CurrencyListEditorPresenter currencyListEditorPresenter;
     private ReceiptPricingPresenter receiptPricingPresenter;
+    private CurrencyExchangeRateEditorPresenter currencyExchangeRateEditorPresenter;
 
     // Rx
     private Disposable idDisposable;
@@ -203,8 +217,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     private TableEventsListener<PaymentMethod> paymentMethodTableEventsListener;
 
     // Misc
-    private MemoryLeakSafeCallback<ExchangeRate, EditText> lastExchangeRateFetchCallback;
-    private ExchangeRateServiceManager exchangeRateServiceManager;
     private ReceiptInputCache receiptInputCache;
     private AutoCompleteAdapter receiptsNameAutoCompleteAdapter, receiptsCommentAutoCompleteAdapter;
     private List<Category> categoriesList;
@@ -228,7 +240,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
         ocrResponse = (OcrResponse) getArguments().getSerializable(ARG_OCR);
         receiptInputCache = new ReceiptInputCache(getFragmentManager());
-        exchangeRateServiceManager = new ExchangeRateServiceManager(getFragmentManager());
         categoriesList = emptyList();
         categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), new ArrayList<Category>(),
                 R.string.manage_categories, v -> {
@@ -247,6 +258,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
         final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getReceipt());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
         receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getReceipt(), savedInstanceState);
+        currencyExchangeRateEditorPresenter = new CurrencyExchangeRateEditorPresenter(this, this, defaultCurrencyListEditorView, this, exchangeRateServiceManager, database, getParentTrip(), getReceipt(), savedInstanceState);
     }
 
     Trip getParentTrip() {
@@ -263,12 +275,12 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.update_receipt, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind(this, view);
         if (savedInstanceState == null) {
@@ -331,33 +343,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                     getReceipt() == null));
         }
 
-        // And the exchange rate processing for our currencies
-        final boolean exchangeRateIsVisible = savedInstanceState != null && savedInstanceState.getBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE);
-        if (exchangeRateIsVisible) {
-            // Note: the restoration of selected spinner items (in the currency spinner) is delayed so we use this state tracker to restore immediately
-            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
-        } else {
-            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
-        }
-
-        currencySpinner.setOnItemSelectedListener(new UserSelectionTrackingOnItemSelectedListener() {
-
-            @Override
-            public void onUserSelectedNewItem(AdapterView<?> parent, View view, int position, long id, int previousPosition) {
-                // Then determine if we should show/hide the box
-                final Object item = currencySpinner.getAdapter().getItem(position);
-                if (item != null) {
-                    final String baseCurrencyCode = item.toString();
-                    configureExchangeRateField(baseCurrencyCode);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Intentional no-op
-            }
-        });
-
         // Outline date defaults
         dateBox.setFocusableInTouchMode(false);
         dateBox.setOnClickListener(dateManager.getDateEditTextListener());
@@ -395,10 +380,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                     }
                 }
 
-                final Trip parentTrip = getParentTrip();
-                if (!parentTrip.getDefaultCurrencyCode().equals(receiptInputCache.getCachedCurrency())) {
-                    configureExchangeRateField(receiptInputCache.getCachedCurrency());
-                }
                 fullpageCheckbox.setChecked(presenter.isDefaultToFullPage());
 
                 if (ocrResponse != null) {
@@ -436,17 +417,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                 dateBox.setText(receipt.getFormattedDate(getActivity(), presenter.getDateSeparator()));
                 dateBox.date = receipt.getDate();
                 commentBox.setText(receipt.getComment());
-
-                final ExchangeRate exchangeRate = receipt.getPrice().getExchangeRate();
-                if (exchangeRate.supportsExchangeRateFor(parentTrip.getDefaultCurrencyCode())) {
-                    exchangeRateBox.setText(exchangeRate.getDecimalFormattedExchangeRate(parentTrip.getDefaultCurrencyCode()));
-                }
-
-                if (receipt.getPrice().getCurrency().equals(parentTrip.getPrice().getCurrency())) {
-                    ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
-                } else {
-                    ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
-                }
 
                 reimbursableCheckbox.setChecked(receipt.isReimbursable());
                 fullpageCheckbox.setChecked(receipt.isFullPage());
@@ -612,12 +582,12 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
             focusedView.requestFocus(); // Make sure we're focused on the right view
         }
 
-        exchangeRateBox.setRetryListener(this);
         database.registerReceiptAutoCompleteListener(this);
 
         // Presenters
         currencyListEditorPresenter.subscribe();
         receiptPricingPresenter.subscribe();
+        currencyExchangeRateEditorPresenter.subscribe();
     }
 
     @Override
@@ -649,20 +619,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     }
 
     @Override
-    public void onUserRetry() {
-        if (presenter.hasActivePlusPurchase()) {
-            Logger.info(this, "Attempting to retry with valid subscription. Submitting request directly");
-            submitExchangeRateRequest((String) currencySpinner.getSelectedItem());
-        } else {
-            Logger.info(this, "Attempting to retry without valid subscription. Directing user to purchase intent");
-            final Activity activity = getActivity();
-            if (activity instanceof SmartReceiptsActivity) {
-                presenter.initiatePurchase();
-            }
-        }
-    }
-
-    @Override
     public void onReceiptRowAutoCompleteQueryResult(String name, String price, @Nullable Integer categoryId) {
         if (isAdded()) {
             if (nameBox != null && name != null) {
@@ -689,6 +645,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
         // Presenters
         receiptPricingPresenter.unsubscribe();
         currencyListEditorPresenter.unsubscribe();
+        currencyExchangeRateEditorPresenter.unsubscribe();
 
         // Notify the downstream adapters
         if (receiptsNameAutoCompleteAdapter != null) {
@@ -705,20 +662,15 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
         // Dismiss the soft keyboard
         SoftKeyboardManager.hideKeyboard(focusedView);
 
-        exchangeRateBox.setRetryListener(null);
         database.unregisterReceiptAutoCompleteListener();
         super.onPause();
     }
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-
-        if (outState != null) {
-            outState.putBoolean(KEY_OUT_STATE_IS_EXCHANGE_RATE_VISIBLE, exchangeRateBox.getVisibility() == View.VISIBLE);
-        }
 
         // Presenters
         currencyListEditorPresenter.onSaveInstanceState(outState);
@@ -740,61 +692,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
         categoriesTableController.unsubscribe(categoryTableEventsListener);
         paymentMethodsTableController.unsubscribe(paymentMethodTableEventsListener);
         super.onDestroy();
-    }
-
-    private void configureExchangeRateField(@Nullable String baseCurrencyCode) {
-        final String exchangeRateCurrencyCode = getParentTrip().getDefaultCurrencyCode();
-        if (exchangeRateCurrencyCode.equals(baseCurrencyCode) || baseCurrencyCode == null) {
-            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.GONE));
-            exchangeRateBox.setText(""); // Clear out if we're hiding the box
-        } else {
-            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
-            submitExchangeRateRequest(baseCurrencyCode);
-        }
-    }
-
-    private synchronized void submitExchangeRateRequest(@NonNull String baseCurrencyCode) {
-        exchangeRateBox.setText(""); // Clear results to avoid stale data here
-        if (presenter.hasActivePlusPurchase()) {
-            Logger.info(this, "Submitting exchange rate request");
-            analytics.record(Events.Receipts.RequestExchangeRate);
-            final String exchangeRateCurrencyCode = getParentTrip().getDefaultCurrencyCode();
-            exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Loading);
-            if (lastExchangeRateFetchCallback != null) {
-                // Ignore any outstanding results to not confuse ourselves
-                lastExchangeRateFetchCallback.ignoreResult();
-            }
-            lastExchangeRateFetchCallback = new MemoryLeakSafeCallback<ExchangeRate, EditText>(exchangeRateBox) {
-                @Override
-                public void success(EditText editText, Call<ExchangeRate> call, Response<ExchangeRate> response) {
-                    final ExchangeRate exchangeRate = response.body();
-                    if (exchangeRate != null && exchangeRate.supportsExchangeRateFor(exchangeRateCurrencyCode)) {
-                        analytics.record(Events.Receipts.RequestExchangeRateSuccess);
-                        if (TextUtils.isEmpty(editText.getText())) {
-                            editText.setText(exchangeRate.getDecimalFormattedExchangeRate(exchangeRateCurrencyCode));
-                        } else {
-                            Logger.warn(CreateEditReceiptFragment.this, "User already started typing... Ignoring exchange rate result");
-                        }
-                        exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Success);
-                    } else {
-                        Logger.error(CreateEditReceiptFragment.this, "Received a null exchange rate");
-                        analytics.record(Events.Receipts.RequestExchangeRateFailedWithNull);
-                        exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
-                    }
-                }
-
-                @Override
-                public void failure(EditText editText, Call<ExchangeRate> call, Throwable th) {
-                    Logger.error(CreateEditReceiptFragment.this, th);
-                    analytics.record(Events.Receipts.RequestExchangeRateFailed);
-                    exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
-                }
-            };
-            exchangeRateServiceManager.getService().getExchangeRate(dateBox.date, getString(R.string.exchange_rate_key), baseCurrencyCode).enqueue(lastExchangeRateFetchCallback);
-        } else {
-            exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Ready);
-            Logger.info(this, "Ignoring exchange rate request, since there is no subscription for it");
-        }
     }
 
     private void saveReceipt() {
@@ -842,14 +739,14 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     @UiThread
     @Override
     public Consumer<? super Price> displayReceiptPrice() {
-        return (Consumer<Price>) price -> priceBox.setText(price.getDecimalFormattedPrice());
+        return RxTextViewExtensions.price(priceBox);
     }
 
     @NonNull
     @UiThread
     @Override
     public Consumer<? super Price> displayReceiptTax() {
-        return (Consumer<Price>) price -> taxBox.setText(price.getDecimalFormattedPrice());
+        return RxTextViewExtensions.price(taxBox);
     }
 
     @NonNull
@@ -860,15 +757,116 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     }
 
     @NonNull
+    @UiThread
     @Override
     public Observable<CharSequence> getReceiptPriceChanges() {
         return RxTextView.textChanges(priceBox);
     }
 
     @NonNull
+    @UiThread
     @Override
     public Observable<CharSequence> getReceiptTaxChanges() {
         return RxTextView.textChanges(taxBox);
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Observable<Date> getReceiptDateChanges() {
+        return RxDateEditText.dateChanges(dateBox)
+                .doOnNext(ignored -> {
+                    if (exchangedPriceInBaseCurrencyBox.isFocused()) {
+                        exchangedPriceInBaseCurrencyBox.clearFocus();
+                    }
+                });
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super Boolean> toggleExchangeRateFieldVisibility() {
+        return (Consumer<Boolean>) isVisible -> {
+            ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(isVisible ? View.VISIBLE : View.GONE));
+            if (!isVisible) {
+                // Clear out if we're hiding the box
+                exchangeRateBox.setText("");
+            }
+        };
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super UiIndicator<ExchangeRate>> displayExchangeRate() {
+        return (Consumer<UiIndicator<ExchangeRate>>) exchangeRateUiIndicator -> {
+            if (exchangeRateUiIndicator.getState() == UiIndicator.State.Loading) {
+                exchangeRateBox.setText("");
+                exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Loading);
+            } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Error) {
+                exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
+            } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Success){
+                if (exchangeRateUiIndicator.getData().isPresent()) {
+                    if (TextUtils.isEmpty(exchangeRateBox.getText()) || exchangedPriceInBaseCurrencyBox.isFocused()) {
+                        exchangeRateBox.setText(exchangeRateUiIndicator.getData().get().getDecimalFormattedExchangeRate(getParentTrip().getDefaultCurrencyCode()));
+                    } else {
+                        Logger.warn(CreateEditReceiptFragment.this, "Ignoring remote exchange rate result now that one is already set");
+                    }
+                    exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Success);
+                } else {
+                    // If the data is empty, reset to use the ready state to allow for user interaction
+                    exchangeRateBox.setText("");
+                }
+            } else {
+                exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Ready);
+            }
+        };
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super PriceCurrency> displayBaseCurrency() {
+        return (Consumer<PriceCurrency>) priceCurrency -> receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCurrencyCode());
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Consumer<? super Optional<Price>> displayExchangedPriceInBaseCurrency() {
+        return RxTextViewExtensions.priceOptional(exchangedPriceInBaseCurrencyBox);
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Observable<CharSequence> getExchangeRateChanges() {
+        return RxTextView.textChanges(exchangeRateBox);
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Observable<CharSequence> getExchangedPriceInBaseCurrencyChanges() {
+        return RxTextView.textChanges(exchangedPriceInBaseCurrencyBox);
+    }
+
+    @NonNull
+    @Override
+    public Observable<Boolean> getExchangedPriceInBaseCurrencyFocusChanges() {
+        return RxView.focusChanges(exchangedPriceInBaseCurrencyBox);
+    }
+
+    @NonNull
+    @UiThread
+    @Override
+    public Observable<Object> getUserInitiatedExchangeRateRetries() {
+        return exchangeRateBox.getUserRetries()
+                .doOnNext(ignored -> {
+                   if (exchangedPriceInBaseCurrencyBox.isFocused()) {
+                       exchangedPriceInBaseCurrencyBox.clearFocus();
+                   }
+                });
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {

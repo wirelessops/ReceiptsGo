@@ -25,6 +25,8 @@ public class DefaultCurrencyListEditorView implements CurrencyListEditorView {
     private final Context context;
     private final Supplier<Spinner> currencySpinnerSupplier;
 
+    // Note: We cache this, since Android doesn't support the registration of multiple OnItemSelectedListener instances
+    private Observable<Integer> currencyClicks;
     /**
      * Default constructor for this class
      *
@@ -58,7 +60,10 @@ public class DefaultCurrencyListEditorView implements CurrencyListEditorView {
     @Override
     @NonNull
     @UiThread
-    public Observable<Integer> currencyClicks() {
-        return RxAdapterView.itemSelections(currencySpinnerSupplier.get());
+    public synchronized Observable<Integer> currencyClicks() {
+        if (currencyClicks == null) {
+            currencyClicks = RxAdapterView.itemSelections(currencySpinnerSupplier.get()).share();
+        }
+        return currencyClicks;
     }
 }

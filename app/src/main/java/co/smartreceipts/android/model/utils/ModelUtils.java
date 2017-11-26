@@ -159,8 +159,24 @@ public class ModelUtils {
      * Tries to parse a string to find the underlying numerical value
      *
      * @param number the string containing a number (hopefully)
+     * @return the {@link BigDecimal} value
+     * @throws NumberFormatException if we cannot parse this number
+     */
+    @NonNull
+    public static BigDecimal parseOrThrow(@Nullable String number) throws NumberFormatException {
+        if (number == null || TextUtils.isEmpty(number)) {
+            throw new NumberFormatException("Cannot parse an empty string");
+        }
+        return new BigDecimal(number.replace(",", "."));
+    }
+
+    /**
+     * Tries to parse a string to find the underlying numerical value
+     *
+     * @param number the string containing a number (hopefully)
      * @return the {@link BigDecimal} value or "0" if it cannot be found
      */
+    @NonNull
     public static BigDecimal tryParse(@Nullable String number) {
         return tryParse(number, new BigDecimal(0));
     }
@@ -172,12 +188,10 @@ public class ModelUtils {
      * @param defaultValue the default value to use if this string is not parseable
      * @return the {@link BigDecimal} value or "0" if it cannot be found
      */
-    public static BigDecimal tryParse(@Nullable String number, @Nullable BigDecimal defaultValue) {
-        if (TextUtils.isEmpty(number)) {
-            return defaultValue;
-        }
+    @NonNull
+    public static BigDecimal tryParse(@Nullable String number, @NonNull BigDecimal defaultValue) {
         try {
-            return new BigDecimal(number.replace(",", "."));
+            return ModelUtils.parseOrThrow(number);
         } catch (NumberFormatException e) {
             return defaultValue;
         }

@@ -116,4 +116,23 @@ public class CurrencyListEditorPresenterTest {
         verify(displayCurrencySelectionConsumer, times(2)).accept(1);
     }
 
+    // onPause -> onResume case
+    @Test
+    public void subscribeUnsubscribeAndReSubscribeTracksLastCurrencyWhenNotSavingState() throws Exception {
+        // Initial config verification
+        savedStatePresenter.subscribe();
+        verify(displayCurrenciesConsumer).accept(CURRENCIES);
+        verify(displayCurrencySelectionConsumer).accept(0);
+
+        // Click our second currency
+        currencyClicks.onNext(1);
+        verify(displayCurrencySelectionConsumer).accept(1);
+
+        // Unsubscribe and resubscribe to verify we have our old position
+        savedStatePresenter.unsubscribe();
+        savedStatePresenter.subscribe();
+        verify(displayCurrenciesConsumer, times(2)).accept(CURRENCIES);
+        verify(displayCurrencySelectionConsumer, times(2)).accept(1);
+    }
+
 }

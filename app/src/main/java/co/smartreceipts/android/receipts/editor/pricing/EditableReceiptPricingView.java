@@ -18,6 +18,7 @@ public interface EditableReceiptPricingView extends ReceiptPricingView {
      * the receipt price
      */
     @NonNull
+    @UiThread
     Observable<CharSequence> getReceiptPriceChanges();
 
     /**
@@ -25,5 +26,6 @@ public interface EditableReceiptPricingView extends ReceiptPricingView {
      * the receipt tax
      */
     @NonNull
+    @UiThread
     Observable<CharSequence> getReceiptTaxChanges();
 }

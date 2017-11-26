@@ -32,7 +32,7 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
     private final Scheduler subscribeOnScheduler;
     private final Scheduler observeOnScheduler;
 
-    private int lastSelectedCurrencyCodeIndex;
+    private int lastSelectedCurrencyCodeIndex = -1;
 
     public CurrencyListEditorPresenter(@NonNull CurrencyListEditorView view,
                                        @NonNull DatabaseHelper databaseHelper,
@@ -76,6 +76,8 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
                     final String currencyCode;
                     if (savedInstanceState != null && savedInstanceState.containsKey(OUT_STATE_SELECTED_CURRENCY_POSITION)) {
                         currencyCode = currenciesList.get(savedInstanceState.getInt(OUT_STATE_SELECTED_CURRENCY_POSITION)).toString();
+                    } else if (lastSelectedCurrencyCodeIndex >= 0) {
+                        currencyCode = currenciesList.get(lastSelectedCurrencyCodeIndex).toString();
                     } else {
                         currencyCode = defaultCurrencyCodeSupplier.get();
                     }
@@ -94,22 +96,17 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
                     .flatMap(currenciesList -> {
                         //noinspection ConstantConditions
                         return view.currencyClicks()
-                                .filter(currencyIndex -> currencyIndex >= 0)
-                                .distinct();
+                                .filter(currencyIndex -> currencyIndex >= 0);
                     })
-                    .doOnNext(currencyIndex -> {
-                        lastSelectedCurrencyCodeIndex = currencyIndex;
-                    })
+                    .doOnNext(currencyIndex -> lastSelectedCurrencyCodeIndex = currencyIndex)
                     .subscribe(view.displayCurrencySelection()));
 
         // Call #connect to start out emissions
         this.compositeDisposable.add(currenciesConnectableObservable.connect());
     }
 
-    public void onSaveInstanceState(@Nullable Bundle outState) {
-        if (outState != null) {
-            outState.putInt(OUT_STATE_SELECTED_CURRENCY_POSITION, lastSelectedCurrencyCodeIndex);
-        }
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(OUT_STATE_SELECTED_CURRENCY_POSITION, lastSelectedCurrencyCodeIndex);
     }
 
 }

@@ -49,7 +49,7 @@ public final class Events {
         public static final Event RequestExchangeRate = new DefaultEvent(Category.Receipts, "RequestExchangeRate");
         public static final Event RequestExchangeRateSuccess = new DefaultEvent(Category.Receipts, "RequestExchangeRateSuccess");
         public static final Event RequestExchangeRateFailed = new DefaultEvent(Category.Receipts, "RequestExchangeRateFailed");
-        public static final Event RequestExchangeRateFailedWithNull = new DefaultEvent(Category.Receipts, "RequestExchangeRateFailedWithNull");
+        public static final Event RequestExchangeRateFailedMissingQuoteCurrency = new DefaultEvent(Category.Receipts, "RequestExchangeRateFailedMissingQuoteCurrency");
     }
 
     public static final class Distance {

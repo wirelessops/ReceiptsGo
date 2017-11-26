@@ -1,9 +1,10 @@
 package co.smartreceipts.android.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -18,6 +19,8 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 
 import co.smartreceipts.android.R;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * <p>
@@ -66,19 +69,11 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
         Failure
     }
 
-    public interface RetryListener {
-
-        /**
-         * Callback method that is called whenever the user wish to retry the network request
-         */
-        void onUserRetry();
-    }
-
     private State mState = State.Unprepared;
-    private CharSequence mOriginalHint;
-    private CharSequence mFailedHint;
-    private RetryListener mRetryListener;
-    private boolean mUserRetryActionEnabled;
+    private CharSequence originalHint;
+    private CharSequence failedHint;
+    private final PublishSubject<Object> userRetrySubject = PublishSubject.create();
+    private boolean userRetryActionEnabled;
 
     public NetworkRequestAwareEditText(Context context) {
         super(context);
@@ -96,15 +91,16 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
     }
 
     private void init() {
-        mOriginalHint = getHint();
-        mFailedHint = getHint();
-        mUserRetryActionEnabled = true;
+        originalHint = getHint();
+        failedHint = getHint();
+        userRetryActionEnabled = true;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         final Drawable drawableEnd;
-        if (!mUserRetryActionEnabled) {
+        if (!userRetryActionEnabled) {
             drawableEnd = null;
         }
         else {
@@ -122,13 +118,10 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
             final boolean wasTapped = event.getX() > start && event.getX() < start + drawableEnd.getIntrinsicWidth();
             if (wasTapped) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (mRetryListener != null) {
-                        mRetryListener.onUserRetry();
-                    }
-                    return true;
-                } else {
-                    return super.onTouchEvent(event);
+                    userRetrySubject.onNext(new Object());
+                    performClick();
                 }
+                return true;
             }
         }
         return super.onTouchEvent(event);
@@ -161,32 +154,32 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
         final Drawable drawableTop = drawables[1];
         final Drawable drawableBottom = drawables[3];
         final Drawable drawableEnd;
-        if (mUserRetryActionEnabled) {
+        if (userRetryActionEnabled) {
             switch (state) {
                 case Ready:
                     drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh, getContext().getTheme());
-                    setHint(mOriginalHint);
+                    setHint(originalHint);
                     break;
                 case Loading:
                     drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh_in_progress, getContext().getTheme());
-                    setHint(mOriginalHint);
+                    setHint(originalHint);
                     break;
                 case Failure:
                     drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh, getContext().getTheme());
-                    setHint(mFailedHint);
+                    setHint(failedHint);
                     break;
                 case Success:
                     drawableEnd = null;
-                    setHint(mOriginalHint);
+                    setHint(originalHint);
                     break;
                 default:
                     drawableEnd = null;
-                    setHint(mOriginalHint);
+                    setHint(originalHint);
                     break;
             }
         } else {
             drawableEnd = null;
-            setHint(mOriginalHint);
+            setHint(originalHint);
         }
 
         setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, drawableTop, drawableEnd, drawableBottom);
@@ -196,8 +189,11 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
         }
     }
 
-    public void setRetryListener(@Nullable RetryListener retryListener) {
-        mRetryListener = retryListener;
+    /**
+     * @return an {@link Observable} that will emit an {@link Object} whenever the user taps the retry button
+     */
+    public Observable<Object> getUserRetries() {
+        return userRetrySubject;
     }
 
     @Override
@@ -214,7 +210,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
      * @return the hint that appears if we enter the Failed state
      */
     public CharSequence getFailedHint() {
-        return mFailedHint;
+        return failedHint;
     }
 
     /**
@@ -223,7 +219,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
      * @param failedHint the new failed hint
      */
     public void setFailedHint(CharSequence failedHint) {
-        mFailedHint = failedHint;
+        this.failedHint = failedHint;
     }
 
     /**
@@ -232,7 +228,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
      * @param failedHint the new failed hint
      */
     public void setFailedHint(@StringRes int failedHint) {
-        mFailedHint = getContext().getString(failedHint);
+        this.failedHint = getContext().getString(failedHint);
     }
 
     /**
@@ -241,7 +237,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
      * @param enabled {@code true} if this behavior should be enabled. {@code false} otherwise
      */
     public void setUserRetryActionEnabled(boolean enabled) {
-        mUserRetryActionEnabled = enabled;
+        userRetryActionEnabled = enabled;
         invalidate();
     }
 
@@ -249,7 +245,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
      * @return {@code true} if user retry actions are enabled, {@code false} otherwise
      */
     public boolean isUserRetryActionEnabled() {
-        return mUserRetryActionEnabled;
+        return userRetryActionEnabled;
     }
 
     @Override

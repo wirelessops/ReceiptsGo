@@ -248,7 +248,7 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         currencyListEditorPresenter.onSaveInstanceState(outState);
     }
