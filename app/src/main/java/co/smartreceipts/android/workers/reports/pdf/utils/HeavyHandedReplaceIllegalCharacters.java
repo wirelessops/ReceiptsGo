@@ -14,7 +14,7 @@ public class HeavyHandedReplaceIllegalCharacters {
     @NonNull
     public static String getSafeString(@Nullable String string) {
         if (string != null) {
-            return string.replaceAll("\\p{C}", "");
+            return string.replaceAll("\\p{C}", "").replace("(", "{").replace(")", "}");
         } else {
             return "";
         }
