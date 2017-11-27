@@ -37,17 +37,19 @@ public class IntentUtils {
         Preconditions.checkNotNull(file);
         Preconditions.checkNotNull(fallbackMimeType);
 
-        final Intent sentIntent = new Intent(Intent.ACTION_VIEW);
+        final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
         final Uri uri = Uri.fromFile(file);
+
+        viewIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
         final String mimeType = UriUtils.getMimeType(uri, context.getContentResolver());
         if (!TextUtils.isEmpty(mimeType)) {
-            sentIntent.setDataAndType(uri, mimeType);
+            viewIntent.setDataAndType(uri, mimeType);
         } else {
-            sentIntent.setDataAndType(uri, fallbackMimeType);
+            viewIntent.setDataAndType(uri, fallbackMimeType);
         }
-        sentIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        return sentIntent;
+        viewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return viewIntent;
     }
 
     @NonNull
@@ -56,21 +58,24 @@ public class IntentUtils {
         Preconditions.checkNotNull(file);
         Preconditions.checkNotNull(fallbackMimeType);
 
-        final Intent sentIntent = new Intent(Intent.ACTION_VIEW);
+        final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
         final String authority = String.format(Locale.US, AUTHORITY_FORMAT, context.getPackageName());
         final Uri uri = getUriFromFile(context, authority, file);
 
-        // We need to do this for all devices (not just KK+) but this to work it seems
-        grantReadPermissionsToUri(context, sentIntent, uri);
+        viewIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
         final String mimeType = UriUtils.getMimeType(uri, context.getContentResolver());
         if (!TextUtils.isEmpty(mimeType)) {
-            sentIntent.setDataAndType(uri, mimeType);
+            viewIntent.setDataAndType(uri, mimeType);
         } else {
-            sentIntent.setDataAndType(uri, fallbackMimeType);
+            viewIntent.setDataAndType(uri, fallbackMimeType);
         }
-        sentIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        return sentIntent;
+
+        // Grant permissions - Despite lots of testing, we seem to need to grant permissions to everything :/
+        grantReadPermissionsToUri(context, viewIntent, uri);
+        viewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        return viewIntent;
     }
 
     @NonNull
