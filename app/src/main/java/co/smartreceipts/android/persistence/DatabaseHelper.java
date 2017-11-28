@@ -513,33 +513,19 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
 
                 // Merge CSV
+                // Replacing current table with imported one
                 Logger.debug(this, "Merging CSV");
 
-                final String mergeCSV = "INSERT INTO " + CSVTable.TABLE_NAME +
-                        "( " + CSVTable.COLUMN_TYPE + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
-                        " SELECT backup_csv." + CSVTable.COLUMN_TYPE + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Integer.MAX_VALUE + "\"" +
-                        " FROM backup_db." + CSVTable.TABLE_NAME + " backup_csv " +
-                        " LEFT JOIN " + CSVTable.TABLE_NAME + " current_csv " +
-                        " ON backup_csv." + CSVTable.COLUMN_TYPE + " = current_csv." + CSVTable.COLUMN_TYPE +
-                        " WHERE current_csv." + CSVTable.COLUMN_TYPE + " IS NULL" +
-                        " AND backup_csv." + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = 0;";
-                Logger.debug(this, mergeCSV);
-                currDB.execSQL(mergeCSV);
+                currDB.execSQL("DROP TABLE " + CSVTable.TABLE_NAME);
+                currDB.execSQL("CREATE TABLE " + CSVTable.TABLE_NAME + " AS SELECT * FROM backup_db." + CSVTable.TABLE_NAME);
 
 
                 // Merge PDF
+                // Replacing current table with imported one
                 Logger.debug(this, "Merging PDF");
 
-                final String mergePDF = "INSERT INTO " + PDFTable.TABLE_NAME +
-                        "( " + PDFTable.COLUMN_TYPE + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
-                        " SELECT backup_pdf." + PDFTable.COLUMN_TYPE + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Integer.MAX_VALUE + "\"" +
-                        " FROM backup_db." + PDFTable.TABLE_NAME + " backup_pdf " +
-                        " LEFT JOIN " + PDFTable.TABLE_NAME + " current_pdf " +
-                        " ON backup_pdf." + PDFTable.COLUMN_TYPE + " = current_pdf." + PDFTable.COLUMN_TYPE +
-                        " WHERE current_pdf." + PDFTable.COLUMN_TYPE + " IS NULL" +
-                        " AND backup_pdf." + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = 0;";
-                Logger.debug(this, mergePDF);
-                currDB.execSQL(mergePDF);
+                currDB.execSQL("DROP TABLE " + PDFTable.TABLE_NAME);
+                currDB.execSQL("CREATE TABLE " + PDFTable.TABLE_NAME + " AS SELECT * FROM backup_db." + PDFTable.TABLE_NAME);
 
 
                 // Merge Payment methods
