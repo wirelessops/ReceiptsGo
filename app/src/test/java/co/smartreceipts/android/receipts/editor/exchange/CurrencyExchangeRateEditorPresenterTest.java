@@ -43,6 +43,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -289,6 +290,50 @@ public class CurrencyExchangeRateEditorPresenterTest {
     }
 
     @Test
+    public void userEditsPriceThenExchangeRateFieldsWithCommaForDecimal() throws Exception {
+        presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
+        presenter.subscribe();
+
+        exchangedPriceInBaseCurrencyFocusChanges.onNext(false);
+        currencyClicks.onNext(1);
+
+        receiptPriceChanges.onNext("1");
+        receiptPriceChanges.onNext("10");
+        receiptPriceChanges.onNext("10,");
+        receiptPriceChanges.onNext("10,0");
+        receiptPriceChanges.onNext("10,00");
+
+        final InOrder inOrderVerifier = inOrder(displayExchangedPriceInBaseCurrencyConsumer);
+
+        exchangeRateChanges.onNext("");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.absent());
+
+        exchangeRateChanges.onNext("0");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("0").build()));
+
+        exchangeRateChanges.onNext("0,");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("0").build()));
+
+        exchangeRateChanges.onNext("0,1");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("1").build()));
+
+        exchangeRateChanges.onNext("0,");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("0").build()));
+
+        exchangeRateChanges.onNext("0,2");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("2").build()));
+
+        exchangeRateChanges.onNext("0,");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("0").build()));
+
+        exchangeRateChanges.onNext("0");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("0").build()));
+
+        exchangeRateChanges.onNext("");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.absent());
+    }
+
+    @Test
     public void userEditsExchangeRateThenPriceFields() throws Exception {
         presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
         presenter.subscribe();
@@ -333,6 +378,32 @@ public class CurrencyExchangeRateEditorPresenterTest {
 
         receiptPriceChanges.onNext("1");
         inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.of(new PriceBuilderFactory().setCurrency(TRIP_CURRENCY).setPrice("0.2").build()));
+    }
+
+    @Test
+    public void userEditsExchangeRateThenPriceFieldThatCausesDivisionByZero() throws Exception {
+        presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
+        presenter.subscribe();
+
+        exchangedPriceInBaseCurrencyFocusChanges.onNext(false);
+        currencyClicks.onNext(1);
+
+        exchangeRateChanges.onNext("");
+        exchangeRateChanges.onNext("0");
+        exchangeRateChanges.onNext("0.1");
+        exchangeRateChanges.onNext("0.");
+        exchangeRateChanges.onNext("0.2");
+
+        final InOrder inOrderVerifier = inOrder(displayExchangedPriceInBaseCurrencyConsumer);
+
+        receiptPriceChanges.onNext("");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer).accept(Optional.absent());
+
+        receiptPriceChanges.onNext("0");
+        receiptPriceChanges.onNext("0.0");
+        receiptPriceChanges.onNext("0.00");
+        receiptPriceChanges.onNext("0.000");
+        inOrderVerifier.verify(displayExchangedPriceInBaseCurrencyConsumer, never()).accept(Optional.absent());
     }
 
     @Test
