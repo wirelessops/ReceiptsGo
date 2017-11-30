@@ -212,14 +212,15 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
         this.compositeDisposable.add(exchangedPriceInBaseCurrencyAsDecimalChanges
                 .withLatestFrom(receiptPriceChangesAsDecimalConnectableObservable, selectedCurrencyConnectableObservable, (exchangedPriceInBaseCurrency, receiptPrice, selectedReceiptCurrencyCode) -> {
                     if (exchangedPriceInBaseCurrency.isPresent() && receiptPrice.isPresent()) {
-                        if (BigDecimal.ZERO.equals(receiptPrice.get())) {
-                            return Optional.<ExchangeRate>absent();
-                        } else {
+                        try {
                             final ExchangeRateBuilderFactory factory = new ExchangeRateBuilderFactory();
                             final BigDecimal rate = exchangedPriceInBaseCurrency.get().divide(receiptPrice.get(), ExchangeRate.PRECISION, BigDecimal.ROUND_HALF_UP);
                             factory.setBaseCurrency(selectedReceiptCurrencyCode);
                             factory.setRate(trip.getDefaultCurrencyCode(), rate); // ie from receipt currency to trip currency
                             return Optional.of(factory.build());
+                        } catch (ArithmeticException e) {
+                            Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Caught ArithmeticException (likely divide by 0). Returning an absent value", e);
+                            return Optional.<ExchangeRate>absent();
                         }
                     } else {
                         return Optional.<ExchangeRate>absent();
