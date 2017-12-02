@@ -30,6 +30,16 @@ public final class PriceBuilderFactory implements BuilderFactory<Price> {
     private List<Price> prices;
     private int decimalPrecision = Price.DEFAULT_DECIMAL_PRECISION;
 
+    public PriceBuilderFactory() {
+
+    }
+
+    public PriceBuilderFactory(@NonNull Price price) {
+        priceDecimal = price.getPrice();
+        currency = price.getCurrency();
+        exchangeRate = price.getExchangeRate();
+    }
+
     @NonNull
     public PriceBuilderFactory setPrice(Price price) {
         priceDecimal = price.getPrice();

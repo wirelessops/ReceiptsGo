@@ -15,6 +15,7 @@ import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -37,26 +38,26 @@ public class ReceiptsTotalsTest {
     @Mock
     Distance distance1, distance2;
 
-    Price priceOneUsd, priceFiveUsd, priceTenUsd;
+    Price priceTwoEurThatConvertsToOneUsd, priceFiveUsd, priceTenUsd;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        priceOneUsd = new PriceBuilderFactory().setPrice(1).setCurrency("USD").build();
+        priceTwoEurThatConvertsToOneUsd = new PriceBuilderFactory().setPrice(2).setCurrency("EUR").setExchangeRate(new ExchangeRateBuilderFactory().setBaseCurrency("EUR").setRate("USD", "0.5").build()).build();
         priceFiveUsd = new PriceBuilderFactory().setPrice(5).setCurrency("USD").build();
         priceTenUsd = new PriceBuilderFactory().setPrice(10).setCurrency("USD").build();
         when(trip.getTripCurrency()).thenReturn(PriceCurrency.getInstance("USD"));
         when(reimbursableReceipt1.getPrice()).thenReturn(priceFiveUsd);
-        when(reimbursableReceipt1.getTax()).thenReturn(priceOneUsd);
+        when(reimbursableReceipt1.getTax()).thenReturn(priceTwoEurThatConvertsToOneUsd);
         when(reimbursableReceipt1.isReimbursable()).thenReturn(true);
         when(reimbursableReceipt2.getPrice()).thenReturn(priceTenUsd);
         when(reimbursableReceipt2.getTax()).thenReturn(priceFiveUsd);
         when(reimbursableReceipt2.isReimbursable()).thenReturn(true);
         when(nonReimbursableReceipt.getPrice()).thenReturn(priceFiveUsd);
-        when(nonReimbursableReceipt.getTax()).thenReturn(priceOneUsd);
+        when(nonReimbursableReceipt.getTax()).thenReturn(priceTwoEurThatConvertsToOneUsd);
         when(nonReimbursableReceipt.isReimbursable()).thenReturn(false);
-        when(distance1.getPrice()).thenReturn(priceOneUsd);
-        when(distance2.getPrice()).thenReturn(priceOneUsd);
+        when(distance1.getPrice()).thenReturn(priceTwoEurThatConvertsToOneUsd);
+        when(distance2.getPrice()).thenReturn(priceTwoEurThatConvertsToOneUsd);
     }
 
     @Test

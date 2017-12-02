@@ -65,10 +65,8 @@ public final class ReceiptPriceMinusTaxColumn extends AbstractColumnImpl<Receipt
         if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
             return receipt.getPrice();
         } else {
-            final PriceBuilderFactory factory = new PriceBuilderFactory();
-            final BigDecimal priceMinusTax = receipt.getPrice().getPrice().subtract(receipt.getTax().getPrice());
-            factory.setPrice(priceMinusTax);
-            factory.setCurrency(receipt.getTrip().getTripCurrency());
+            final PriceBuilderFactory factory = new PriceBuilderFactory(receipt.getPrice());
+            factory.setPrice(receipt.getPrice().getPrice().subtract(receipt.getTax().getPrice()));
             return factory.build();
         }
     }
