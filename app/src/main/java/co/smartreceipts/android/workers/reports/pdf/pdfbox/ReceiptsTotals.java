@@ -58,7 +58,7 @@ public class ReceiptsTotals {
                     grandTotal.add(receipt.getTax());
                     receiptsWithTaxTotal.add(receipt.getTax());
                 } else {
-                    // In post-tax mode, we'll add the tax as a negative value (ie subsctract it)
+                    // In post-tax mode, we'll add the tax as a negative value (ie subtract it)
                     receiptsWithOutTaxTotal.add(new PriceBuilderFactory().setCurrency(receipt.getTax().getCurrency()).setPrice(receipt.getTax().getPrice().multiply(new BigDecimal(-1))).build());
                 }
 

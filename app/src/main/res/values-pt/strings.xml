@@ -387,9 +387,11 @@
     <string name="column_item_image_file_name">Nome da imagem</string>
     <string name="column_item_image_path">Diretório da imagem</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">Preço sem impostos</string>
     <string name="column_item_converted_price_exchange_rate">Preço (com câmbio)</string>
     <string name="column_item_converted_tax_exchange_rate">Impostos (com câmbio)</string>
     <string name="column_item_converted_price_plus_tax_exchange_rate">Preço mais impostos (com câmbio)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Preço sem impostos (com câmbio)</string>
     <string name="column_item_exchange_rate">Taxa de câmbio</string>
     <string name="column_item_pictured">Incluso na imagem</string>
     <string name="column_item_reimbursable">Reembolsável</string>

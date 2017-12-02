@@ -409,9 +409,11 @@
     <string name="column_item_image_file_name">Image Name</string>
     <string name="column_item_image_path">Image Path</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">Price Minus Tax</string>
     <string name="column_item_converted_price_exchange_rate">Price (Exchanged)</string>
     <string name="column_item_converted_tax_exchange_rate">Tax (Exchanged)</string>
     <string name="column_item_converted_price_plus_tax_exchange_rate">Price Plus Tax (Exchanged)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Price Minus Tax (Exchanged)</string>
     <string name="column_item_exchange_rate">Exchange Rate</string>
     <string name="column_item_pictured">Pictured</string>
     <string name="column_item_reimbursable">Reimbursable</string>
