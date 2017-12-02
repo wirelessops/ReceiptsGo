@@ -389,9 +389,11 @@
     <string name="column_item_image_file_name">Имя изображения</string>
     <string name="column_item_image_path">Путь к изображению</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">Цена без налог</string>
     <string name="column_item_converted_price_exchange_rate">Цена (после обмена)</string>
     <string name="column_item_converted_tax_exchange_rate">Налог (после обмена)</string>
     <string name="column_item_converted_price_plus_tax_exchange_rate">Цена плюс налог (после обмена)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Цена без налог (после обмена)</string>
     <string name="column_item_exchange_rate">Курс обмена</string>
     <string name="column_item_pictured">С изображениями</string>
     <string name="column_item_reimbursable">Возмещаемые</string>

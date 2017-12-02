@@ -102,7 +102,7 @@
     <string name="ocr_is_enabled">Увімкнути автоматичне сканування (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Дозвольте нам зберігати зображення, щоб підвищити точність?</string>
     <string name="ocr_configuration_available_purchases">Доступні покупки - Натисніть, щоб купити:</string>
-    <string name="ocr_configuration_information_line3">Щоб спробувати OCR, всі нові користувачі отримають 2 безкоштовних сканування! Будь ласка, пам'ятайте, що OCR є додатковою функцією, і її можна будь-коли вимкнути.</string>
+    <string name="ocr_configuration_information_line3">Щоб спробувати OCR, всі нові користувачі отримають 2 безкоштовних сканування! Будь ласка, пам\'ятайте, що OCR є додатковою функцією, і її можна будь-коли вимкнути.</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_name">Ім\'я:</string>
@@ -389,9 +389,11 @@
     <string name="column_item_image_file_name">Ім\'я зображення</string>
     <string name="column_item_image_path">Шлях до зображення</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">Вартість без податок</string>
     <string name="column_item_converted_price_exchange_rate">Вартість (після обміну)</string>
     <string name="column_item_converted_tax_exchange_rate">Податок (після обміну)</string>
     <string name="column_item_converted_price_plus_tax_exchange_rate">Вартість плюс податок (після обміну)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Вартість без податок (після обміну)</string>
     <string name="column_item_exchange_rate">Курс обміну</string>
     <string name="column_item_pictured">З зображеннями</string>
     <string name="column_item_reimbursable">Що відшкодовуються</string>

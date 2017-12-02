@@ -48,10 +48,12 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
         DATE(R.string.RECEIPTMENU_FIELD_DATE, R.string.original_column_RECEIPTMENU_FIELD_DATE_en_us_name),
         NAME(R.string.RECEIPTMENU_FIELD_NAME, R.string.original_column_RECEIPTMENU_FIELD_NAME_en_us_name),
         PRICE(R.string.RECEIPTMENU_FIELD_PRICE, R.string.original_column_RECEIPTMENU_FIELD_PRICE_en_us_name),
+        PRICE_MINUS_TAX(R.string.column_item_receipt_price_minus_tax),
         PRICE_EXCHANGED(R.string.column_item_converted_price_exchange_rate, R.string.original_column_item_converted_price_exchange_rate_en_us_name),
         TAX(R.string.RECEIPTMENU_FIELD_TAX, R.string.original_column_RECEIPTMENU_FIELD_TAX_en_us_name),
         TAX_EXCHANGED(R.string.column_item_converted_tax_exchange_rate, R.string.original_column_item_converted_tax_exchange_rate_en_us_name),
         PRICE_PLUS_TAX_EXCHANGED(R.string.column_item_converted_price_plus_tax_exchange_rate, R.string.original_column_item_converted_price_plus_tax_exchange_rate_en_us_name),
+        PRICE_MINUS_TAX_EXCHANGED(R.string.column_item_converted_price_minus_tax_exchange_rate),
         EXCHANGE_RATE(R.string.column_item_exchange_rate, R.string.original_column_item_exchange_rate_en_us_name),
         PICTURED(R.string.column_item_pictured, R.string.original_column_item_pictured_en_us_name),
         REIMBURSABLE(R.string.column_item_reimbursable, R.string.original_column_item_reimbursable_en_us_name, R.string.column_item_deprecated_expensable),
@@ -240,6 +242,8 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
                 return new ReceiptNameColumn(id, definitionName, syncState, customOrderId);
             case PRICE:
                 return new ReceiptPriceColumn(id, definitionName, syncState, customOrderId);
+            case PRICE_MINUS_TAX:
+                return new ReceiptPriceMinusTaxColumn(id, definitionName, syncState, mPreferences, customOrderId);
             case PRICE_EXCHANGED:
                 return new ReceiptExchangedPriceColumn(id, definitionName, syncState, context, customOrderId);
             case TAX:
@@ -248,6 +252,8 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
                 return new ReceiptExchangedTaxColumn(id, definitionName, syncState, context, customOrderId);
             case PRICE_PLUS_TAX_EXCHANGED:
                 return new ReceiptNetExchangedPricePlusTaxColumn(id, definitionName, syncState, context, mPreferences, customOrderId);
+            case PRICE_MINUS_TAX_EXCHANGED:
+                return new ReceiptNetExchangedPriceMinusTaxColumn(id, definitionName, syncState, context, mPreferences, customOrderId);
             case EXCHANGE_RATE:
                 return new ReceiptExchangeRateColumn(id, definitionName, syncState, customOrderId);
             case PICTURED:
