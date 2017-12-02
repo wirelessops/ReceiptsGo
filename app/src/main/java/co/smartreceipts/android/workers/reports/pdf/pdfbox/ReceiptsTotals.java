@@ -59,7 +59,7 @@ public class ReceiptsTotals {
                     receiptsWithTaxTotal.add(receipt.getTax());
                 } else {
                     // In post-tax mode, we'll add the tax as a negative value (ie subtract it)
-                    receiptsWithOutTaxTotal.add(new PriceBuilderFactory().setCurrency(receipt.getTax().getCurrency()).setPrice(receipt.getTax().getPrice().multiply(new BigDecimal(-1))).build());
+                    receiptsWithOutTaxTotal.add(new PriceBuilderFactory(receipt.getTax()).setPrice(receipt.getTax().getPrice().multiply(new BigDecimal(-1))).build());
                 }
 
                 // Add reimbursable totals
