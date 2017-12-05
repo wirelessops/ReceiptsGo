@@ -106,7 +106,9 @@ public class CurrencyListEditorPresenter extends BasePresenter<CurrencyListEdito
     }
 
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt(OUT_STATE_SELECTED_CURRENCY_POSITION, lastSelectedCurrencyCodeIndex);
+        if (lastSelectedCurrencyCodeIndex >= 0) {
+            outState.putInt(OUT_STATE_SELECTED_CURRENCY_POSITION, lastSelectedCurrencyCodeIndex);
+        }
     }
 
 }

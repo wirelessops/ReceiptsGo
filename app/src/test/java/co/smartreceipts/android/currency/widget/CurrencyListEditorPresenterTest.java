@@ -135,4 +135,19 @@ public class CurrencyListEditorPresenterTest {
         verify(displayCurrencySelectionConsumer, times(2)).accept(1);
     }
 
+    @Test
+    public void savesStateAndThenSubscribe() throws Exception {
+        // Save state
+        savedStatePresenter.onSaveInstanceState(savedInstanceState);
+
+        // Initial config verification
+        savedStatePresenter.subscribe();
+        verify(displayCurrenciesConsumer).accept(CURRENCIES);
+        verify(displayCurrencySelectionConsumer).accept(0);
+
+        // Click our second currency
+        currencyClicks.onNext(1);
+        verify(displayCurrencySelectionConsumer).accept(1);
+    }
+
 }
