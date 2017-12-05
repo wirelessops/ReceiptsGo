@@ -4,6 +4,8 @@ import android.content.Context;
 
 import co.smartreceipts.android.SmartReceiptsApplication;
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder;
+import co.smartreceipts.android.apis.hosts.BetaSmartReceiptsHostConfiguration;
+import co.smartreceipts.android.apis.hosts.HostConfiguration;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
 import co.smartreceipts.android.apis.hosts.SmartReceiptsHostConfiguration;
 import co.smartreceipts.android.config.ConfigurationManager;
@@ -22,6 +24,8 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPre
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.rating.data.AppRatingStorage;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.utils.FeatureFlags;
+import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderPreferencesStorage;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import co.smartreceipts.android.widget.tooltip.report.generate.data.GenerateInfoTooltipPreferencesStorage;
@@ -104,8 +108,14 @@ public class BaseAppModule {
     @ApplicationScope
     public static ServiceManager provideServiceManager(MutableIdentityStore mutableIdentityStore,
                                                        ReceiptColumnDefinitions receiptColumnDefinitions) {
-        return new ServiceManager(new SmartReceiptsHostConfiguration(mutableIdentityStore,
-                new SmartReceiptsGsonBuilder(receiptColumnDefinitions)));
+        final HostConfiguration host;
+        if (FeatureFlags.UseProductionEndpoint.isEnabled()) {
+            host = new SmartReceiptsHostConfiguration(mutableIdentityStore, new SmartReceiptsGsonBuilder(receiptColumnDefinitions));
+        } else {
+            Logger.warn(BaseAppModule.class, "*****Configuring our app to use our beta endpoint*****");
+            host = new BetaSmartReceiptsHostConfiguration(mutableIdentityStore, new SmartReceiptsGsonBuilder(receiptColumnDefinitions));
+        }
+        return new ServiceManager(host);
     }
 
     @Provides
