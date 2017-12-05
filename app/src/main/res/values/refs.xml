@@ -9,6 +9,6 @@
 	-->
     <item name="activity_main" type="layout">@layout/activity_main_onepane</item>
     <item name="trip_fragment_layout" type="layout">@layout/trips_fragment_layout</item>
-    <item name="receipt_fragment_layout" type="layout">@layout/report_receipt_list</item>
+    <item name="receipt_fragment_layout" type="layout">@layout/report_receipts_fragment</item>
 
 </resources>

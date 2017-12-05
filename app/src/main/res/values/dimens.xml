@@ -17,7 +17,7 @@
     <dimen name="card_name_date_margin">16dp</dimen>
     <dimen name="card_padding">2dp</dimen>
     <dimen name="card_thumbnail_margins">4dp</dimen>
-    
+    <dimen name="card_corner_radius">2dp</dimen>
     <!-- Charts -->
 
     <!-- Action Bar -->

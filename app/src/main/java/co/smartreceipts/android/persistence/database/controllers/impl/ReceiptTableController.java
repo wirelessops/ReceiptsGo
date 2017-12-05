@@ -4,10 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
-import com.hadisatrio.optional.Optional;
 
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,9 +22,7 @@ import co.smartreceipts.android.persistence.database.controllers.alterations.Rec
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.utils.log.Logger;
-import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
 import wb.android.storage.StorageManager;
@@ -141,85 +136,5 @@ public class ReceiptTableController extends TripForeignKeyAbstractTableControlle
                 });
         disposableRef.set(disposable);
         compositeDisposable.add(disposable);
-    }
-
-    public synchronized void swapUp(@NonNull final Receipt receiptToSwapUp) {
-        Logger.info(TAG, "#swapUp: {}", receiptToSwapUp);
-        final AtomicReference<Disposable> disposableRef = new AtomicReference<>();
-        final Disposable disposable = mTripForeignKeyTable.get(receiptToSwapUp.getTrip())
-                .flatMapObservable(receipts -> mReceiptTableActionAlterations.getReceiptsToSwapUp(receiptToSwapUp, receipts))
-                .flatMapSingle(this::swapReceiptsSingle)
-                .subscribeOn(mSubscribeOnScheduler)
-                .observeOn(mObserveOnScheduler)
-                .subscribe(success -> {
-                    if (success) {
-                        Logger.debug(this, "#onSwapUpSuccess - onNext");
-                        for (final ReceiptTableEventsListener tableEventsListener : mReceiptTableEventsListeners) {
-                            tableEventsListener.onSwapSuccess();
-                        }
-                    } else {
-                        Logger.debug(this, "#onSwapUpFailure - onNext");
-                        for (final ReceiptTableEventsListener tableEventsListener : mReceiptTableEventsListeners) {
-                            tableEventsListener.onSwapFailure(null);
-                        }
-                    }
-                }, throwable -> {
-                    mAnalytics.record(new ErrorEvent(ReceiptTableController.this, throwable));
-                    Logger.debug(this, "#onSwapUpFailure - onError");
-                    for (final ReceiptTableEventsListener tableEventsListener : mReceiptTableEventsListeners) {
-                        tableEventsListener.onSwapFailure(throwable);
-                    }
-                    unsubscribeReference(disposableRef);
-                }, () -> {
-                    Logger.debug(this, "#swapUp - onComplete");
-                    unsubscribeReference(disposableRef);
-                });
-
-        disposableRef.set(disposable);
-        compositeDisposable.add(disposable);
-    }
-
-    public synchronized void swapDown(@NonNull final Receipt receiptToSwapDown) {
-        Logger.info(this, "#swapDown: {}", receiptToSwapDown);
-        final AtomicReference<Disposable> disposableRef = new AtomicReference<>();
-        final Disposable disposable = mTripForeignKeyTable.get(receiptToSwapDown.getTrip())
-                .flatMapObservable(receipts -> mReceiptTableActionAlterations.getReceiptsToSwapDown(receiptToSwapDown, receipts))
-                .flatMapSingle(this::swapReceiptsSingle)
-                .subscribeOn(mSubscribeOnScheduler)
-                .observeOn(mObserveOnScheduler)
-                .subscribe(success -> {
-                    if (success) {
-                        Logger.debug(this, "#onSwapDownSuccess - onNext");
-                        for (final ReceiptTableEventsListener tableEventsListener : mReceiptTableEventsListeners) {
-                            tableEventsListener.onSwapSuccess();
-                        }
-                    } else {
-                        Logger.debug(this, "#onSwapDownFailure - onNext");
-                        for (final ReceiptTableEventsListener tableEventsListener : mReceiptTableEventsListeners) {
-                            tableEventsListener.onSwapFailure(null);
-                        }
-                    }
-                }, throwable -> {
-                    mAnalytics.record(new ErrorEvent(ReceiptTableController.this, throwable));
-                    Logger.debug(this, "#onSwapDownFailure - onError");
-                    for (final ReceiptTableEventsListener tableEventsListener : mReceiptTableEventsListeners) {
-                        tableEventsListener.onSwapFailure(throwable);
-                    }
-                    unsubscribeReference(disposableRef);
-                }, () -> {
-                    Logger.debug(this, "#swapDown - onComplete");
-                    unsubscribeReference(disposableRef);
-                });
-
-        disposableRef.set(disposable);
-        compositeDisposable.add(disposable);
-    }
-
-    private Single<Boolean> swapReceiptsSingle(final List<? extends Map.Entry<Receipt, Receipt>> entries) {
-        return Observable.fromIterable(entries)
-                .flatMap(entry -> update(entry.getKey(), entry.getValue(), new DatabaseOperationMetadata()))
-                .filter(Optional::isPresent)
-                .toList()
-                .flatMap(updatedReceipts -> Single.just(entries.size() == updatedReceipts.size()));
     }
 }

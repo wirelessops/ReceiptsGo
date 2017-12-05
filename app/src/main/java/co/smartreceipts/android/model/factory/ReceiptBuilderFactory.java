@@ -264,7 +264,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setOrderId(int order_id) {
+    public ReceiptBuilderFactory setCustomOrderId(int order_id) {
         _order_id = order_id;
         return this;
     }

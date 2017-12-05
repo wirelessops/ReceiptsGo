@@ -3,8 +3,6 @@ package co.smartreceipts.android.settings.widget.editors;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,34 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
-
 import java.util.List;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Draggable;
-import co.smartreceipts.android.persistence.database.controllers.TableController;
-import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import co.smartreceipts.android.utils.log.Logger;
 
-import static android.R.id.list;
-
-public abstract class DraggableEditableListFragment<T extends Draggable> extends WBFragment implements EditableItemListener<T>, TableEventsListener<T> {
+/**
+ * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options
+ */
+public abstract class DraggableEditableListFragment<T extends Draggable> extends DraggableListFragment<T> implements EditableItemListener<T> {
 
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
-
-    private DraggableEditableCardsAdapter<T> adapter;
-
-    private RecyclerViewDragDropManager recyclerViewDragDropManager = new RecyclerViewDragDropManager();
 
     private boolean isOnDragMode = false;
-
-    private Integer positionToScroll = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,16 +42,6 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
         toolbar = rootView.findViewById(R.id.toolbar);
 
         return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        recyclerView = getView().findViewById(list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        setDragAndDrop();
     }
 
     @Override
@@ -93,14 +69,14 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
             case R.id.menu_settings_drag:
                 isOnDragMode = true;
                 getActivity().invalidateOptionsMenu();
-                adapter.switchMode(isOnDragMode);
+                ((DraggableEditableCardsAdapter<Draggable>) adapter).switchMode(isOnDragMode);
                 Toast.makeText(getContext(), R.string.toast_reorder_hint, Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_settings_save_order:
                 saveTableOrdering();
                 isOnDragMode = false;
                 getActivity().invalidateOptionsMenu();
-                adapter.switchMode(isOnDragMode);
+                ((DraggableEditableCardsAdapter<Draggable>) adapter).switchMode(isOnDragMode);
                 break;
             case android.R.id.home:
                 getActivity().onBackPressed();
@@ -128,31 +104,10 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
         super.onPause();
     }
 
-    @Override
-    public void onDestroyView() {
-        if (recyclerViewDragDropManager != null) {
-            recyclerViewDragDropManager.release();
-            recyclerViewDragDropManager = null;
-        }
-
-        if (recyclerView != null) {
-            recyclerView.setItemAnimator(null);
-            recyclerView.setAdapter(null);
-            recyclerView = null;
-        }
-
-        super.onDestroyView();
-    }
-
     /**
      * @return the {@link DraggableEditableCardsAdapter} that is being used by this fragment
      */
     protected abstract DraggableEditableCardsAdapter<T> getAdapter();
-
-    /**
-     * @return - the data set used to populate this list fragment
-     */
-    protected abstract TableController<T> getTableController();
 
     /**
      * Shows the proper message in order to assist the user with inserting an item
@@ -165,25 +120,6 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     protected void saveTableOrdering() {
         Logger.debug(this, "saveTableOrdering");
         adapter.saveNewOrder(getTableController());
-    }
-
-    private void setDragAndDrop() {
-        recyclerViewDragDropManager.release();
-        recyclerViewDragDropManager = new RecyclerViewDragDropManager();
-
-        // Start dragging after long press
-        recyclerViewDragDropManager.setInitiateOnLongPress(true);
-        recyclerViewDragDropManager.setInitiateOnMove(false);
-        recyclerViewDragDropManager.setDraggingItemRotation(-5);
-
-        recyclerView.setAdapter(recyclerViewDragDropManager.createWrappedAdapter(adapter));
-        recyclerView.setItemAnimator(new DraggableItemAnimator());
-
-        recyclerViewDragDropManager.attachRecyclerView(recyclerView);
-    }
-
-    protected void scrollToEnd() {
-        positionToScroll = recyclerView.getAdapter().getItemCount();
     }
 
     @Override

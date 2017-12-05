@@ -491,6 +491,7 @@ public final class DefaultReceiptImpl implements Receipt {
 
     };
 
+    // TODO: 30.11.2017 compare with custom_order_id
     @Override
     public int compareTo(@NonNull Receipt receipt) {
         return receipt.getDate().compareTo(mDate);

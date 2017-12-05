@@ -143,7 +143,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
                 .setExtraEditText2(extra_edittext_2)
                 .setExtraEditText3(extra_edittext_3)
                 .setSyncState(syncState)
-                .setOrderId(orderId);
+                .setCustomOrderId(orderId);
 
         if (category != null) {
             builder.setCategory(category);

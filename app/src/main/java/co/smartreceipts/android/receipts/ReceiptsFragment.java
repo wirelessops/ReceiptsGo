@@ -3,15 +3,16 @@ package co.smartreceipts.android.receipts;
 import android.support.v7.app.ActionBar;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.fragments.WBListFragment;
+import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.settings.widget.editors.DraggableListFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class ReceiptsFragment extends WBListFragment {
+public abstract class ReceiptsFragment extends DraggableListFragment<Receipt> {
 
     public static final String TAG = "ReceiptsFragment";
 

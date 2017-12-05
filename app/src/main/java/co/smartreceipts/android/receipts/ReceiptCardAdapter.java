@@ -1,4 +1,4 @@
-package co.smartreceipts.android.adapters;
+package co.smartreceipts.android.receipts;
 
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.adapters.CardAdapter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;

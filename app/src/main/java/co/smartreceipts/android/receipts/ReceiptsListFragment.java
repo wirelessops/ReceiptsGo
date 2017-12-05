@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +32,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.adapters.ReceiptCardAdapter;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
@@ -60,6 +57,7 @@ import co.smartreceipts.android.permissions.PermissionsDelegate;
 import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.ReceiptTableEventsListener;
+import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
@@ -68,6 +66,7 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
@@ -135,11 +134,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Inject
     OcrStatusAlerterPresenter ocrStatusAlerterPresenter;
 
+    @Inject
+    UserPreferenceManager preferenceManager;
+
     @BindView(R.id.progress)
     ProgressBar loadingProgress;
-
-    @BindView(R.id.progress_adding_new)
-    ProgressBar updatingDataProgress;
 
     @BindView(R.id.no_data)
     TextView noDataAlert;
@@ -165,7 +164,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private Unbinder unbinder;
 
-    private ReceiptCardAdapter adapter;
     private Receipt highlightedReceipt;
     private Uri imageUri;
 
@@ -184,7 +182,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new ReceiptCardAdapter(getActivity(), navigationHandler, persistenceManager.getPreferenceManager(), backupProvidersManager);
+        adapter = new ReceiptsAdapter(getContext(), getTableController(), preferenceManager, backupProvidersManager, navigationHandler);
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
@@ -214,6 +212,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         Logger.debug(this, "onViewCreated");
 
         this.unbinder = ButterKnife.bind(this, view);
+
+
         receiptActionTextButton.setVisibility(configurationManager.isTextReceiptsOptionAvailable() ? View.VISIBLE : View.GONE);
         floatingActionMenuActiveMaskView.setOnClickListener(v -> {
             // Intentional stub to block click events when this view is active
@@ -227,7 +227,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
-        setListAdapter(adapter); // Set this here to ensure this has been laid out already
+    }
+
+    @Override
+    protected TableController<Receipt> getTableController() {
+        return receiptTableController;
     }
 
     @Override
@@ -261,13 +265,17 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                     }
                     highlightedReceipt = null;
-                    if (updatingDataProgress != null) {
-                        updatingDataProgress.setVisibility(View.GONE);
+
+                    if (loadingProgress != null) {
+                        loadingProgress.setVisibility(View.GONE);
                     }
                     // Indicate that we consumed these results to avoid using this same stream on the next event
                     activityFileResultLocator.markThatResultsWereConsumed();
                     activityFileResultImporter.markThatResultsWereConsumed();
                 }));
+
+        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getItemClickStream()
+                .subscribe(this::showReceiptMenu));
     }
 
     private void subscribeOnCreate() {
@@ -286,9 +294,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 })
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
-                        if (updatingDataProgress != null) {
-                            updatingDataProgress.setVisibility(View.VISIBLE);
-                        }
+                        loadingProgress.setVisibility(View.VISIBLE);
                         activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
                                 locatorResponse.getResultCode(), locatorResponse.getUri(), trip);
                     } else {
@@ -298,9 +304,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         }
                         highlightedReceipt = null;
-                        if (updatingDataProgress != null) {
-                            updatingDataProgress.setVisibility(View.GONE);
-                        }
+                        loadingProgress.setVisibility(View.GONE);
                         activityFileResultLocator.markThatResultsWereConsumed();
                     }
                 }));
@@ -351,12 +355,12 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         final Uri cachedImageSaveLocation = imageUri;
         imageUri = null;
 
-        updatingDataProgress.setVisibility(View.VISIBLE);
+        loadingProgress.setVisibility(View.VISIBLE);
 
         activityFileResultLocator.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
 
         if (resultCode != Activity.RESULT_OK) {
-            updatingDataProgress.setVisibility(View.GONE);
+            loadingProgress.setVisibility(View.GONE);
         }
     }
 
@@ -383,12 +387,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public final boolean showReceiptMenu(final Receipt receipt) {
         highlightedReceipt = receipt;
         final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
-        builder.setTitle(receipt.getName()).setCancelable(true).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setTitle(receipt.getName()).setCancelable(true).setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());
 
         final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
         if (intentImportResult != null && (intentImportResult.getFileType() == FileType.Image || intentImportResult.getFileType() == FileType.Pdf)) {
@@ -429,20 +428,17 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             final String receiptActionCamera = getString(R.string.receipt_dialog_action_camera);
             final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
             final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
-            final String receiptActionSwapUp = getString(R.string.receipt_dialog_action_swap_up);
-            final String receiptActionSwapDown = getString(R.string.receipt_dialog_action_swap_down);
             final String[] receiptActions;
             if (!receipt.hasFile()) {
-                receiptActions = new String[]{receiptActionEdit, receiptActionCamera, receiptActionDelete, receiptActionMoveCopy, receiptActionSwapUp, receiptActionSwapDown};
+                receiptActions = new String[]{receiptActionEdit, receiptActionCamera, receiptActionDelete, receiptActionMoveCopy};
             } else {
-                receiptActions = new String[]{receiptActionEdit, receiptActionView, receiptActionDelete, receiptActionMoveCopy, receiptActionSwapUp, receiptActionSwapDown};
+                receiptActions = new String[]{receiptActionEdit, receiptActionView, receiptActionDelete, receiptActionMoveCopy};
             }
             builder.setItems(receiptActions, (dialog, item) -> {
                 final String selection = receiptActions[item];
                 if (selection != null) {
                     if (selection.equals(receiptActionEdit)) { // Edit Receipt
                         analytics.record(Events.Receipts.ReceiptMenuEdit);
-                        // ReceiptsListFragment.this.receiptMenu(trip, receipt, null);
                         navigationHandler.navigateToEditReceiptFragment(trip, receipt);
                     } else if (selection.equals(receiptActionCamera)) { // Take Photo
                         analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
@@ -462,12 +458,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
                         analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
                         ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
-                    } else if (selection.equals(receiptActionSwapUp)) { // Swap Up
-                        analytics.record(Events.Receipts.ReceiptMenuSwapUp);
-                        receiptTableController.swapUp(receipt);
-                    } else if (selection.equals(receiptActionSwapDown)) { // Swap Down
-                        analytics.record(Events.Receipts.ReceiptMenuSwapDown);
-                        receiptTableController.swapDown(receipt);
                     }
                 }
                 dialog.cancel();
@@ -486,21 +476,16 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        showReceiptMenu(adapter.getItem(position));
-    }
-
-    @Override
     public void onGetSuccess(@NonNull List<Receipt> receipts, @NonNull Trip trip) {
         if (isAdded()) {
             loadingProgress.setVisibility(View.GONE);
-            getListView().setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             if (receipts.isEmpty()) {
                 noDataAlert.setVisibility(View.VISIBLE);
             } else {
                 noDataAlert.setVisibility(View.INVISIBLE);
             }
-            adapter.notifyDataSetChanged(receipts);
+            adapter.update(receipts);
             updateActionBarTitle(getUserVisibleHint());
         }
     }
