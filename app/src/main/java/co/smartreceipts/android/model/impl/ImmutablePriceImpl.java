@@ -36,7 +36,7 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
     }
 
     private ImmutablePriceImpl(@NonNull Parcel in) {
-        this.price = new BigDecimal(in.readFloat());
+        this.price = (BigDecimal) in.readSerializable();
         this.currency = PriceCurrency.getInstance(in.readString());
         this.exchangeRate = (ExchangeRate) in.readSerializable();
         this.decimalPrecision = in.readInt();
@@ -101,7 +101,7 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeFloat(getPriceAsFloat());
+        dest.writeSerializable(price);
         dest.writeString(getCurrencyCode());
         dest.writeSerializable(exchangeRate);
         dest.writeInt(decimalPrecision);
