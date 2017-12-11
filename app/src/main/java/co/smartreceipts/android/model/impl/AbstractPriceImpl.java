@@ -4,8 +4,6 @@ import co.smartreceipts.android.model.Price;
 
 /**
  * Provides common methods that all {@link co.smartreceipts.android.model.Price} implementations use
- *
- * @author williambaumann
  */
 abstract class AbstractPriceImpl implements Price {
 
