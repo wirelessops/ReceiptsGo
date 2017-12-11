@@ -394,7 +394,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                             if (presenter.isUsePreTaxPrice()) {
                                 // If we're in pre-tax mode, let's calculate the price as (total - tax = pre-tax-price)
                                 final BigDecimal preTaxPrice = ModelUtils.tryParse(ocrResponseParser.getTotalAmount()).subtract(ModelUtils.tryParse(ocrResponseParser.getTaxAmount()));
-                                taxBox.setText(ModelUtils.getDecimalFormattedValue(preTaxPrice));
+                                priceBox.setText(ModelUtils.getDecimalFormattedValue(preTaxPrice));
                             } else {
                                 priceBox.setText(ocrResponseParser.getTotalAmount());
                             }
