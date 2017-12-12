@@ -189,9 +189,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
         }
-
-        // we need to subscribe here because of possible permission dialog showing
-        subscribeOnCreate();
     }
 
     @Override
@@ -223,6 +220,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
         setListAdapter(adapter); // Set this here to ensure this has been laid out already
+
+        // we need to subscribe here because of possible permission dialog showing
+        subscribeOnCreate();
     }
 
     @Override
