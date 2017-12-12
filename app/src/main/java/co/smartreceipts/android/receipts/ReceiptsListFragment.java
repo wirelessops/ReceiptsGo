@@ -189,10 +189,14 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
         }
+
+        // we need to subscribe here because of possible permission dialog showing
+        subscribeOnCreate();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Logger.debug(this, "onCreateView");
 
         // Create our OCR drop-down alerter
         this.alerter = Alerter.create(getActivity())
@@ -207,6 +211,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Logger.debug(this, "onViewCreated");
+
         this.unbinder = ButterKnife.bind(this, view);
         receiptActionTextButton.setVisibility(configurationManager.isTextReceiptsOptionAvailable() ? View.VISIBLE : View.GONE);
         floatingActionMenuActiveMaskView.setOnClickListener(v -> {
@@ -217,17 +223,18 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Logger.debug(this, "onActivityCreated");
+
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
         setListAdapter(adapter); // Set this here to ensure this has been laid out already
-
-        // we need to subscribe here because of possible permission dialog showing
-        subscribeOnCreate();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Logger.debug(this, "onResume");
+
         tripTableController.subscribe(actionBarSubtitleUpdatesListener);
         receiptTableController.subscribe(this);
         receiptTableController.get(trip);
@@ -279,7 +286,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 })
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
-                        updatingDataProgress.setVisibility(View.VISIBLE);
+                        if (updatingDataProgress != null) {
+                            updatingDataProgress.setVisibility(View.VISIBLE);
+                        }
                         activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
                                 locatorResponse.getResultCode(), locatorResponse.getUri(), trip);
                     } else {
@@ -289,7 +298,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         }
                         highlightedReceipt = null;
-                        updatingDataProgress.setVisibility(View.GONE);
+                        if (updatingDataProgress != null) {
+                            updatingDataProgress.setVisibility(View.GONE);
+                        }
                         activityFileResultLocator.markThatResultsWereConsumed();
                     }
                 }));
