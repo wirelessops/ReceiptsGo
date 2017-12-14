@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -99,6 +100,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
     @Override
     public void initialize(@Nullable FragmentActivity activity) {
         Preconditions.checkNotNull(activity, "Google Drive requires a valid activity to be provided");
+        Logger.info(this, "Initializing Drive Backup Provider");
 
         final FragmentActivity existingActivity = mActivityReference.get().get();
         if (!activity.equals(existingActivity)) {
@@ -112,6 +114,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
 
     @Override
     public void deinitialize() {
+        Logger.info(this, "De-initializing Drive Backup Provider");
         mNetworkManager.unregisterListener(this);
         if (isConnectedOrConnecting()) {
             mGoogleApiClient.disconnect();
@@ -120,8 +123,10 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
 
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Logger.debug(this, "Handling drive request. request = {}, result = {}", requestCode, resultCode);
         if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == Activity.RESULT_OK) {
             if (!isConnectedOrConnecting()) {
+                Logger.debug(this, "Initiating Drive Connection now that permissions have been granted");
                 mGoogleApiClient.connect();
             }
             return true;
@@ -151,6 +156,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
     @NonNull
     @Override
     public Single<Boolean> restoreBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata, boolean overwriteExistingData) {
+        Logger.info(this, "Restoring drive backup: {}", remoteBackupMetadata);
         return mDriveRestoreDataManager.restoreBackup(remoteBackupMetadata, overwriteExistingData);
     }
 
@@ -158,8 +164,10 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
     @Override
     public Single<Boolean> deleteBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata) {
         Preconditions.checkNotNull(remoteBackupMetadata);
+        Logger.info(this, "Deleting drive backup: {}", remoteBackupMetadata);
 
         if (remoteBackupMetadata.getSyncDeviceId().equals(mGoogleDriveSyncMetadata.getDeviceIdentifier())) {
+            Logger.info(this, "The backup is our local backup");
             mGoogleDriveSyncMetadata.clear();
             mDriveReceiptsManager.disable();
         }
@@ -175,6 +183,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
 
     @Override
     public Single<Boolean> clearCurrentBackupConfiguration() {
+        Logger.info(this, "Clearing our current backup configuration");
         mDriveReceiptsManager.disable();
         mGoogleDriveSyncMetadata.clear();
         mDriveTaskManager.clearCachedData();

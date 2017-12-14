@@ -40,6 +40,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -85,6 +86,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.debug(this, "onCreate");
         setHasOptionsMenu(true);
         remoteBackupsDataCache = new RemoteBackupsDataCache(getFragmentManager(), getContext(),
                 backupProvidersManager, networkManager, persistenceManager.getDatabase());
@@ -170,6 +172,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     @Override
     public void onResume() {
         super.onResume();
+        Logger.debug(this, "onResume");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -205,6 +208,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
 
     @Override
     public void onPause() {
+        Logger.debug(this, "onPause");
         backupProvidersManager.unregisterChangeListener(this);
         compositeDisposable.dispose();
         super.onPause();

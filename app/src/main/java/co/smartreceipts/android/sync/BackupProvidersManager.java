@@ -25,6 +25,7 @@ import co.smartreceipts.android.sync.network.SupportedNetworkType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.provider.SyncProviderFactory;
 import co.smartreceipts.android.sync.provider.SyncProviderStore;
+import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -61,6 +62,7 @@ public class BackupProvidersManager implements BackupProvider {
 
     public synchronized void setAndInitializeSyncProvider(@NonNull SyncProvider syncProvider, @Nullable FragmentActivity fragmentActivity) {
         if (syncProviderStore.setSyncProvider(syncProvider)) {
+            Logger.info(this, "Initializing new Backup Provider: {}", syncProvider);
             backupProvider.deinitialize();
             backupProvider = syncProviderFactory.get(syncProvider);
             backupProvider.initialize(fragmentActivity);

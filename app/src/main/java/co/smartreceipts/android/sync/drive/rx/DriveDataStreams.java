@@ -99,6 +99,7 @@ class DriveDataStreams {
                         final List<Metadata> folderMetadataList = new ArrayList<>();
                         for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
                             if (isValidSmartReceiptsFolder(metadata)) {
+                                Logger.info(DriveDataStreams.this, "Tentatively found a Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
                                 folderMetadataList.add(metadata);
                             } else {
                                 Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
