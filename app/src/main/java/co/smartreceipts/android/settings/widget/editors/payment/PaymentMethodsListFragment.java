@@ -98,7 +98,7 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory()
                         .setMethod(text)
-                        .setCustomOrderId(oldPaymentMethod.getCustomOrderId())
+                        .setCustomOrderId((int)oldPaymentMethod.getCustomOrderId())
                         .build();
 
                 getTableController().update(oldPaymentMethod, newPaymentMethod, new DatabaseOperationMetadata());

@@ -5,5 +5,5 @@ public interface Draggable<T> extends Comparable<T> {
     /**
      * @return - custom order id from the database
      */
-    int getCustomOrderId();
+    long getCustomOrderId();
 }

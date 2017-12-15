@@ -76,5 +76,4 @@ public abstract class DraggableCardsAdapter<T extends Draggable> extends Recycle
     public abstract boolean onCheckCanStartDrag(AbstractDraggableItemViewHolder holder, int position, int x, int y);
 
     public abstract void saveNewOrder(TableController<T> tableController);
-
 }

@@ -48,7 +48,7 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
         final int id = cursor.getInt(idIndex);
         final String type = cursor.getString(typeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
-        final int customOrderId = cursor.getInt(customOrderIndex);
+        final long customOrderId = cursor.getLong(customOrderIndex);
         return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
                 .setColumnId(id)
                 .setColumnName(type)

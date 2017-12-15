@@ -15,8 +15,4 @@ public interface ReceiptTableEventsListener extends TripForeignKeyTableEventsLis
 
     void onCopyFailure(@NonNull Receipt oldReceipt, @Nullable Throwable e);
 
-    void onSwapSuccess();
-
-    void onSwapFailure(@Nullable Throwable e);
-
 }

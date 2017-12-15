@@ -18,7 +18,7 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
     private int _id;
     private String _method;
     private SyncState _syncState;
-    private int _customOrderId;
+    private long _customOrderId;
 
     /**
      * Default constructor for this class
@@ -64,7 +64,7 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
      * @param orderId - the payment method custom order id
      * @return this {@link PaymentMethodBuilderFactory} for method chaining
      */
-    public PaymentMethodBuilderFactory setCustomOrderId(int orderId) {
+    public PaymentMethodBuilderFactory setCustomOrderId(long orderId) {
         _customOrderId = orderId;
         return this;
     }

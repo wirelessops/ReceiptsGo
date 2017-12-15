@@ -20,7 +20,7 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
     private String name;
     private String code;
     private SyncState syncState;
-    private int customOrderId;
+    private long customOrderId;
 
     /**
      * Default constructor for this class
@@ -73,7 +73,7 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      * @param orderId - the category custom order id
      * @return this {@link CategoryBuilderFactory} for method chaining
      */
-    public CategoryBuilderFactory setCustomOrderId(int orderId) {
+    public CategoryBuilderFactory setCustomOrderId(long orderId) {
         this.customOrderId = orderId;
         return this;
     }

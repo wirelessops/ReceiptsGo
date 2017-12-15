@@ -51,7 +51,7 @@ public class CategoryColumnDefinitions implements ColumnDefinitions<SumCategoryG
 
     @Override
     public Column<SumCategoryGroupingResult> getColumn(int id, @NonNull String definitionName,
-                                                       @NonNull SyncState syncState, int ignoredCustomOrderId) {
+                                                       @NonNull SyncState syncState, long ignoredCustomOrderId) {
         for (int i = 0; i < actualDefinitions.length; i++) {
             final ActualDefinition definition = actualDefinitions[i];
             if (definitionName.equals(context.getString(definition.getStringResId()))) {

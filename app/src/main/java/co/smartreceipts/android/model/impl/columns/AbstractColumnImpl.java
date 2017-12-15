@@ -15,13 +15,13 @@ public abstract class AbstractColumnImpl<T> implements Column<T> {
     private final int mId;
     private final String mName;
     private final SyncState mSyncState;
-    private final int mCustomOrderId;
+    private final long mCustomOrderId;
 
     public AbstractColumnImpl(int id, @NonNull String name, @NonNull SyncState syncState) {
         this(id, name, syncState, 0);
     }
 
-    public AbstractColumnImpl(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+    public AbstractColumnImpl(int id, @NonNull String name, @NonNull SyncState syncState, long customOrderId) {
         mId = id;
         mName = name;
         mSyncState = syncState;
@@ -34,7 +34,7 @@ public abstract class AbstractColumnImpl<T> implements Column<T> {
     }
 
     @Override
-    public int getCustomOrderId() {
+    public long getCustomOrderId() {
         return mCustomOrderId;
     }
 
@@ -58,8 +58,8 @@ public abstract class AbstractColumnImpl<T> implements Column<T> {
 
     @Override
     public int compareTo(@NonNull Column otherColumn) {
-        int orderCompare = mCustomOrderId - otherColumn.getCustomOrderId();
-        return orderCompare != 0 ? orderCompare : getId() - otherColumn.getId();
+        return mCustomOrderId == otherColumn.getCustomOrderId() ? getId() - otherColumn.getId() :
+                Long.compare(mCustomOrderId, otherColumn.getCustomOrderId());
     }
 
     @NonNull
@@ -90,7 +90,7 @@ public abstract class AbstractColumnImpl<T> implements Column<T> {
     @Override
     public int hashCode() {
         int result = mId;
-        result = 31 * result + mCustomOrderId;
+        result = 31 * result + (int) (mCustomOrderId ^ (mCustomOrderId >>> 32));
         result = 31 * result + mName.hashCode();
         return result;
     }

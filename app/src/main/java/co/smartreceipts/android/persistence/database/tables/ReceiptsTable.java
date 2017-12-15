@@ -65,9 +65,11 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
     public ReceiptsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, String> tripsTable,
                          @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
                          @NonNull Table<Category, Integer> categoryTable,
-                         @NonNull StorageManager storageManager, @NonNull UserPreferenceManager preferences) {
+                         @NonNull StorageManager storageManager, @NonNull UserPreferenceManager preferences,
+                         boolean isTableOrdered) {
         super(sqLiteOpenHelper, TABLE_NAME, new ReceiptDatabaseAdapter(tripsTable, paymentMethodTable,
-                categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT, COLUMN_DATE);
+                categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT,
+                isTableOrdered ? COLUMN_CUSTOM_ORDER_ID : COLUMN_DATE);
 
         mDefaultCurrencyCode = preferences.get(UserPreference.General.DefaultCurrency);
     }

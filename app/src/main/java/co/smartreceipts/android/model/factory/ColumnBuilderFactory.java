@@ -23,7 +23,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
     private int mId;
     private String mColumnName;
     private SyncState mSyncState;
-    private int mCustomOrderId;
+    private long mCustomOrderId;
 
     public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions) {
         this(columnDefinitions, new ConstantColumnUnknownColumnResolutionStrategory<T>());
@@ -58,7 +58,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
         return this;
     }
 
-    public ColumnBuilderFactory<T> setCustomOrderId(int orderId) {
+    public ColumnBuilderFactory<T> setCustomOrderId(long orderId) {
         mCustomOrderId = orderId;
         return this;
     }

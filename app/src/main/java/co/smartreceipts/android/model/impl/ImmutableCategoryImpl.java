@@ -15,14 +15,14 @@ public class ImmutableCategoryImpl implements Category {
     private final String name;
     private final String code;
     private final SyncState syncState;
-    private final int customOrderId;
+    private final long customOrderId;
 
     public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code) {
         this(id, name, code, new DefaultSyncState(), id);
     }
 
     public ImmutableCategoryImpl(int id, @NonNull String name, @NonNull String code,
-                                 @NonNull SyncState syncState, int customOrderId) {
+                                 @NonNull SyncState syncState, long customOrderId) {
         this.id = id;
         this.name = Preconditions.checkNotNull(name);
         this.code = Preconditions.checkNotNull(code);
@@ -35,7 +35,7 @@ public class ImmutableCategoryImpl implements Category {
         name = in.readString();
         code = in.readString();
         syncState = in.readParcelable(getClass().getClassLoader());
-        customOrderId = in.readInt();
+        customOrderId = in.readLong();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ImmutableCategoryImpl implements Category {
     }
 
     @Override
-    public int getCustomOrderId() {
+    public long getCustomOrderId() {
         return customOrderId;
     }
 
@@ -80,12 +80,12 @@ public class ImmutableCategoryImpl implements Category {
 
     }
 
-        @Override
+    @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + name.hashCode();
         result = 31 * result + code.hashCode();
-        result = 31 * result + customOrderId;
+        result = 31 * result + (int) (customOrderId ^ (customOrderId >>> 32));
 
         return result;
     }
@@ -106,7 +106,7 @@ public class ImmutableCategoryImpl implements Category {
         out.writeString(name);
         out.writeString(code);
         out.writeParcelable(syncState, flags);
-        out.writeInt(customOrderId);
+        out.writeLong(customOrderId);
     }
 
     public static Creator<ImmutableCategoryImpl> CREATOR = new Creator<ImmutableCategoryImpl>() {
@@ -126,9 +126,9 @@ public class ImmutableCategoryImpl implements Category {
     @Override
     public int compareTo(@NonNull Category category) {
         if (customOrderId == 0 && category.getCustomOrderId() == 0) {
-            return  name.compareTo(category.getName());
+            return name.compareTo(category.getName());
         } else {
-            return customOrderId - category.getCustomOrderId();
+            return Long.compare(customOrderId, category.getCustomOrderId());
         }
     }
 }

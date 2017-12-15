@@ -43,7 +43,7 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
         final String name = cursor.getString(nameIndex);
         final String code = cursor.getString(codeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
-        final int orderId = cursor.getInt(customOrderIdIndex);
+        final long orderId = cursor.getLong(customOrderIdIndex);
         return new CategoryBuilderFactory().setId(id).setName(name).setCode(code).setSyncState(syncState).setCustomOrderId(orderId).build();
     }
 

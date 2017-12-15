@@ -39,7 +39,7 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
         final int id = cursor.getInt(idIndex);
         final String method = cursor.getString(methodIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
-        final int customOrderId = cursor.getInt(customOrderIdIndex);
+        final long customOrderId = cursor.getLong(customOrderIdIndex);
         return new PaymentMethodBuilderFactory().setId(id).setMethod(method).setSyncState(syncState).setCustomOrderId(customOrderId).build();
     }
 

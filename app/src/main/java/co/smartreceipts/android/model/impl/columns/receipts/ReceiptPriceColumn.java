@@ -21,7 +21,7 @@ public final class ReceiptPriceColumn extends AbstractColumnImpl<Receipt> {
         super(id, name, syncState);
     }
 
-    public ReceiptPriceColumn(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+    public ReceiptPriceColumn(int id, @NonNull String name, @NonNull SyncState syncState, long customOrderId) {
         super(id, name, syncState, customOrderId);
     }
 

@@ -404,8 +404,6 @@
     <string name="receipt_dialog_action_camera">Prendre la photo du reçu</string>
     <string name="receipt_dialog_action_delete">Supprimer le reçu</string>
     <string name="receipt_dialog_action_move_copy">Déplacer/Copier</string>
-    <string name="receipt_dialog_action_swap_up">Déplacer vers le haut</string>
-    <string name="receipt_dialog_action_swap_down">Déplacer vers le bas</string>
 
     <string name="dialog_attachment_title">Ajouter %s au reçu</string>
     <string name="dialog_attachment_text">Appuyez sur un reçu existant pour y ajouter cette %s</string>

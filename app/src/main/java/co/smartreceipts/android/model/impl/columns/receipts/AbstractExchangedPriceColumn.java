@@ -25,7 +25,7 @@ public abstract class AbstractExchangedPriceColumn extends AbstractColumnImpl<Re
     private final Context mContext;
 
     public AbstractExchangedPriceColumn(int id, @NonNull String name, @NonNull SyncState syncState,
-                                        @NonNull Context context, int customOrderId) {
+                                        @NonNull Context context, long customOrderId) {
         super(id, name, syncState, customOrderId);
         mContext = context;
     }

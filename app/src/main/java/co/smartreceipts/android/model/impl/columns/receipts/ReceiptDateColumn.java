@@ -25,7 +25,7 @@ public final class ReceiptDateColumn extends AbstractColumnImpl<Receipt> {
     }
 
     public ReceiptDateColumn(int id, @NonNull String name, @NonNull SyncState syncState, @NonNull Context context,
-                             @NonNull UserPreferenceManager preferences, int customOrderId) {
+                             @NonNull UserPreferenceManager preferences, long customOrderId) {
         super(id, name, syncState, customOrderId);
         mContext = context;
         mPreferences = preferences;

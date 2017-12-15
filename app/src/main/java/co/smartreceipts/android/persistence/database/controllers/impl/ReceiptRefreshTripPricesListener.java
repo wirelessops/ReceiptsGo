@@ -42,16 +42,6 @@ class ReceiptRefreshTripPricesListener extends RefreshTripPricesListener<Receipt
     }
 
     @Override
-    public void onSwapSuccess() {
-
-    }
-
-    @Override
-    public void onSwapFailure(@Nullable Throwable e) {
-
-    }
-
-    @Override
     public void onGetSuccess(@NonNull List<Receipt> list, @NonNull Trip trip) {
 
     }

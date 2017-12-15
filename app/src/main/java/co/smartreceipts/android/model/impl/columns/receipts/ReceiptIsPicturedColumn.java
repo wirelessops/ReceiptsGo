@@ -16,7 +16,7 @@ public final class ReceiptIsPicturedColumn extends AbstractColumnImpl<Receipt> {
     private final Context mContext;
 
     public ReceiptIsPicturedColumn(int id, @NonNull String name, @NonNull SyncState syncState,
-                                   @NonNull Context context, int customOrderId) {
+                                   @NonNull Context context, long customOrderId) {
         super(id, name, syncState, customOrderId);
         mContext = context;
     }

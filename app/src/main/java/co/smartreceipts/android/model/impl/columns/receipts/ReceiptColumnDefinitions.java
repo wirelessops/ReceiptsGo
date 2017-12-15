@@ -126,7 +126,7 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
 
     @Nullable
     @Override
-    public Column<Receipt> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, int customOrderId) {
+    public Column<Receipt> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, long customOrderId) {
         for (int i = 0; i < mActualDefinitions.length; i++) {
             final ActualDefinition definition = mActualDefinitions[i];
             if (definitionName.equals(getColumnNameFromStringResId(definition.getStringResId()))) {
@@ -204,7 +204,7 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
 
     @Nullable
     private AbstractColumnImpl<Receipt> getColumnFromClass(int id, @NonNull ActualDefinition definition, @NonNull String definitionName,
-                                                           @NonNull SyncState syncState, int customOrderId) {
+                                                           @NonNull SyncState syncState, long customOrderId) {
         if (TextUtils.isEmpty(definitionName)) {
             // Exit early if we have no name (i.e. it's an undefined extra)
             return null;

@@ -11,7 +11,7 @@ import co.smartreceipts.android.sync.model.SyncState;
  */
 public final class ReceiptExchangeRateColumn extends AbstractColumnImpl<Receipt> {
 
-    public ReceiptExchangeRateColumn(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+    public ReceiptExchangeRateColumn(int id, @NonNull String name, @NonNull SyncState syncState, long customOrderId) {
         super(id, name, syncState, customOrderId);
     }
 

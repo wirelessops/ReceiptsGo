@@ -38,6 +38,10 @@ public class OrderingPreferencesManager {
          * If user didn't open that screen - we need to use default order
          */
         private static final String ORDERING_COLUMNS_PDF = "pdf columns custom ordering";
+        /**
+         * Key to track if we need to use custom_order_id column for ordering receipts.
+         */
+        private static final String ORDERING_RECEIPTS = "receipts custom ordering";
     }
 
     @Inject
@@ -69,6 +73,12 @@ public class OrderingPreferencesManager {
                 .apply();
     }
 
+    public void saveReceiptsTableOrdering() {
+        getPreferencesEditor()
+                .putBoolean(Keys.ORDERING_RECEIPTS, true)
+                .apply();
+    }
+
     public boolean isCategoriesTableOrdered() {
         return getSharedPreferences().getBoolean(Keys.ORDERING_CATEGORIES, false);
     }
@@ -83,6 +93,10 @@ public class OrderingPreferencesManager {
 
     public boolean isPdfColumnsOrdered() {
         return getSharedPreferences().getBoolean(Keys.ORDERING_COLUMNS_PDF, false);
+    }
+
+    public boolean isReceiptsTableOrdered() {
+        return getSharedPreferences().getBoolean(Keys.ORDERING_RECEIPTS, false);
     }
 
     private SharedPreferences.Editor getPreferencesEditor() {

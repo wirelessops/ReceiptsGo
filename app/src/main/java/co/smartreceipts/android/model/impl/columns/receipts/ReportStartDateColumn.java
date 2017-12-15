@@ -20,7 +20,7 @@ public final class ReportStartDateColumn extends AbstractColumnImpl<Receipt> {
     private final UserPreferenceManager mPreferences;
 
     public ReportStartDateColumn(int id, @NonNull String name, @NonNull SyncState syncState, @NonNull Context context,
-                                 @NonNull UserPreferenceManager preferences, int customOrderId) {
+                                 @NonNull UserPreferenceManager preferences, long customOrderId) {
         super(id, name, syncState, customOrderId);
         mContext = context;
         mPreferences = preferences;

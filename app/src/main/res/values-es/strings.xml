@@ -404,8 +404,6 @@
     <string name="receipt_dialog_action_camera">Tomar imagen del recibo</string>
     <string name="receipt_dialog_action_delete">Eliminar recibo</string>
     <string name="receipt_dialog_action_move_copy">Mover/copiar</string>
-    <string name="receipt_dialog_action_swap_up">Intercambiar arriba</string>
-    <string name="receipt_dialog_action_swap_down">Intercambiar abajo</string>
 
     <string name="dialog_attachment_title">Añadir %s al recibo</string>
     <string name="dialog_attachment_text">Toca un recibo existente para añadirle este %s</string>

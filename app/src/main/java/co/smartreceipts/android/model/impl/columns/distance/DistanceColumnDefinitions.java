@@ -71,7 +71,7 @@ public final class DistanceColumnDefinitions implements ColumnDefinitions<Distan
 
 
     @Override
-    public Column<Distance> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, int ignoredCustomOrderId) {
+    public Column<Distance> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, long ignoredCustomOrderId) {
         for (int i = 0; i < mActualDefinitions.length; i++) {
             final ActualDefinition definition = mActualDefinitions[i];
             if (definitionName.equals(getColumnNameFromStringResId(definition.getStringResId()))) {

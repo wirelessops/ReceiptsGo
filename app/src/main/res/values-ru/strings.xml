@@ -406,8 +406,6 @@
     <string name="receipt_dialog_action_camera">Сделать снимок чека</string>
     <string name="receipt_dialog_action_delete">Удалить чек</string>
     <string name="receipt_dialog_action_move_copy">Переместить/Копировать</string>
-    <string name="receipt_dialog_action_swap_up">Поменять местами с верхним</string>
-    <string name="receipt_dialog_action_swap_down">Поменять местами с нижним</string>
 
     <string name="dialog_attachment_title">Добавить %s к чеку</string>
     <string name="dialog_attachment_text">Нажмите на существующий чек, чтобы добавить этот %s к нему</string>

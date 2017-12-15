@@ -1,6 +1,8 @@
 package co.smartreceipts.android.receipts.editor;
 
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -13,6 +15,7 @@ import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
@@ -34,6 +37,8 @@ public class ReceiptCreateEditFragmentPresenter {
     PurchaseWallet purchaseWallet;
     @Inject
     ReceiptTableController receiptTableController;
+    @Inject
+    OrderingPreferencesManager orderingPreferencesManager;
 
     @Inject
     ReceiptCreateEditFragmentPresenter() {
@@ -117,13 +122,20 @@ public class ReceiptCreateEditFragmentPresenter {
     }
 
     void saveReceipt(Date date, String price, String tax,
-                            String exchangeRate, String comment, PaymentMethod paymentMethod,
-                            boolean isReimursable, boolean isFullpage,
-                            String name, Category category, String currency,
-                            String extraText1, String extraText2, String extraText3) {
+                     String exchangeRate, String comment, PaymentMethod paymentMethod,
+                     boolean isReimursable, boolean isFullpage,
+                     String name, Category category, String currency,
+                     String extraText1, String extraText2, String extraText3) {
 
         final Receipt receipt = fragment.getReceipt();
         final Trip parentTrip = fragment.getParentTrip();
+
+        Calendar cal = Calendar.getInstance();
+        long secondsOfDay = TimeUnit.HOURS.toMillis(cal.get(Calendar.HOUR_OF_DAY)) +
+                TimeUnit.MINUTES.toMillis(cal.get(Calendar.MINUTE)) +
+                TimeUnit.SECONDS.toMillis(cal.get(Calendar.SECOND)) +
+                cal.get(Calendar.SECOND);
+
 
         final ReceiptBuilderFactory builderFactory = (receipt == null) ? new ReceiptBuilderFactory(-1) : new ReceiptBuilderFactory(receipt);
         builderFactory.setName(name)
@@ -142,7 +154,9 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setIsFullPage(isFullpage)
                 .setExtraEditText1(extraText1)
                 .setExtraEditText2(extraText2)
-                .setExtraEditText3(extraText3);
+                .setExtraEditText3(extraText3)
+                .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ?
+                       date.getTime() + secondsOfDay : 0); // hack to prevent receipts with same date having same customOrderIds
 
         if (receipt == null) {
             receiptTableController.insert(builderFactory.setFile(fragment.getFile()).build(), new DatabaseOperationMetadata());

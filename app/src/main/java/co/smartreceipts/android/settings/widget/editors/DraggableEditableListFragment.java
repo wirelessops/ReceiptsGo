@@ -1,8 +1,6 @@
 package co.smartreceipts.android.settings.widget.editors;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,13 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.List;
-
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Draggable;
-import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.android.utils.log.Logger;
 
 /**
  * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options
@@ -113,56 +107,4 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
      * Shows the proper message in order to assist the user with inserting an item
      */
     protected abstract void addItem();
-
-    /**
-     * super.saveTableOrdering must be called
-     */
-    protected void saveTableOrdering() {
-        Logger.debug(this, "saveTableOrdering");
-        adapter.saveNewOrder(getTableController());
-    }
-
-    @Override
-    public void onGetSuccess(@NonNull List<T> list) {
-        adapter.update(list);
-        if (positionToScroll != null) {
-            recyclerView.smoothScrollToPosition(positionToScroll);
-        }
-        positionToScroll = null;
-    }
-
-    @Override
-    public void onGetFailure(@Nullable Throwable e) {
-
-    }
-
-    @Override
-    public void onInsertSuccess(@NonNull T t, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        getTableController().get();
-    }
-
-    @Override
-    public void onInsertFailure(@NonNull T t, @Nullable Throwable e, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-
-    }
-
-    @Override
-    public void onUpdateSuccess(@NonNull T oldT, @NonNull T newT, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        getTableController().get();
-    }
-
-    @Override
-    public void onUpdateFailure(@NonNull T oldT, @Nullable Throwable e, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-
-    }
-
-    @Override
-    public void onDeleteSuccess(@NonNull T t, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        getTableController().get();
-    }
-
-    @Override
-    public void onDeleteFailure(@NonNull T t, @Nullable Throwable e, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-
-    }
 }

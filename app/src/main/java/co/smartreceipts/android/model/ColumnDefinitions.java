@@ -15,12 +15,13 @@ public interface ColumnDefinitions<T> {
      * Gets a {@link Column} instance for a specific definition (i.e. column
      * name). Please note that different definition names can potentially be applied to the same column).
      *
-     * @param id the unique identifier for the column
+     * @param id             the unique identifier for the column
      * @param definitionName the name of the new column
-     * @param syncState the current {@link SyncState} of the column
+     * @param syncState      the current {@link SyncState} of the column
+     * @param customOrderId  the order id for this column
      * @return a new column instance or {@code null} if none can be found
      */
-    Column<T> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, int customOrderId);
+    Column<T> getColumn(int id, @NonNull String definitionName, @NonNull SyncState syncState, long customOrderId);
 
     /**
      * Gets a list of all {@link Column} instances that are available as part

@@ -48,7 +48,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
     private boolean _isReimbursable, _isFullPage, _isSelected;
     private Source _source;
     private SyncState _syncState;
-    private int _order_id;
+    private long _order_id;
 
     public ReceiptBuilderFactory() {
         this(UNKNOWN_ID);
@@ -264,7 +264,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setCustomOrderId(int order_id) {
+    public ReceiptBuilderFactory setCustomOrderId(long order_id) {
         _order_id = order_id;
         return this;
     }

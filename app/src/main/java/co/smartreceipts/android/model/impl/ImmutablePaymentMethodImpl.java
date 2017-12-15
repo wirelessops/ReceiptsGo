@@ -23,13 +23,13 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
     private final int id;
     private final String method;
     private final SyncState syncState;
-    private final int customOrderId;
+    private final long customOrderId;
 
     public ImmutablePaymentMethodImpl(int id, @NonNull String method) {
         this(id, method, new DefaultSyncState(), 0);
     }
 
-    public ImmutablePaymentMethodImpl(int id, @NonNull String method, @NonNull SyncState syncState, int customOrderId) {
+    public ImmutablePaymentMethodImpl(int id, @NonNull String method, @NonNull SyncState syncState, long customOrderId) {
         this.id = id;
         this.method = Preconditions.checkNotNull(method);
         this.syncState = Preconditions.checkNotNull(syncState);
@@ -40,7 +40,7 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
         id = in.readInt();
         method = in.readString();
         syncState = in.readParcelable(getClass().getClassLoader());
-        customOrderId = in.readInt();
+        customOrderId = in.readLong();
     }
 
     /**
@@ -64,7 +64,7 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
     }
 
     @Override
-    public int getCustomOrderId() {
+    public long getCustomOrderId() {
         return customOrderId;
     }
 
@@ -89,7 +89,7 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
     public int hashCode() {
         int result = id;
         result = 31 * result + method.hashCode();
-        result = 31 * result + customOrderId;
+        result = 31 * result + (int) (customOrderId ^ (customOrderId >>> 32));
         return result;
     }
 
@@ -103,7 +103,7 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
         out.writeInt(id);
         out.writeString(method);
         out.writeParcelable(syncState, flags);
-        out.writeInt(customOrderId);
+        out.writeLong(customOrderId);
     }
 
     public static Creator<ImmutablePaymentMethodImpl> CREATOR = new Creator<ImmutablePaymentMethodImpl>() {
@@ -122,6 +122,6 @@ public final class ImmutablePaymentMethodImpl implements PaymentMethod {
 
     @Override
     public int compareTo(@NonNull PaymentMethod paymentMethod) {
-        return customOrderId - paymentMethod.getCustomOrderId();
+        return Long.compare(customOrderId, paymentMethod.getCustomOrderId());
     }
 }

@@ -63,6 +63,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.StubTableE
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
@@ -137,6 +138,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Inject
     UserPreferenceManager preferenceManager;
 
+    @Inject
+    OrderingPreferencesManager orderingPreferencesManager;
+
     @BindView(R.id.progress)
     ProgressBar loadingProgress;
 
@@ -182,7 +186,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new ReceiptsAdapter(getContext(), getTableController(), preferenceManager, backupProvidersManager, navigationHandler);
+        adapter = new ReceiptsAdapter(getContext(), getTableController(), preferenceManager,
+                backupProvidersManager, navigationHandler, orderingPreferencesManager);
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
@@ -478,6 +483,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void onGetSuccess(@NonNull List<Receipt> receipts, @NonNull Trip trip) {
         if (isAdded()) {
+            super.onGetSuccess(receipts);
+
             loadingProgress.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             if (receipts.isEmpty()) {
@@ -485,8 +492,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             } else {
                 noDataAlert.setVisibility(View.INVISIBLE);
             }
-            adapter.update(receipts);
             updateActionBarTitle(getUserVisibleHint());
+
         }
     }
 
@@ -588,16 +595,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    public void onSwapSuccess() {
-        receiptTableController.get(trip);
-    }
-
-    @Override
-    public void onSwapFailure(@Nullable Throwable e) {
-        // TODO: Respond?
-    }
-
-    @Override
     public void onMoveSuccess(@NonNull Receipt oldReceipt, @NonNull Receipt newReceipt) {
         if (isAdded()) {
             receiptTableController.get(trip);
@@ -635,6 +632,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void createNewReceiptViaPlainText() {
+        scrollToStart();
         navigationHandler.navigateToCreateNewReceiptFragment(trip, null, null);
     }
 

@@ -15,7 +15,7 @@ public final class BlankColumn<T> extends AbstractColumnImpl<T> {
         super(id, name, syncState);
     }
 
-    public BlankColumn(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+    public BlankColumn(int id, @NonNull String name, @NonNull SyncState syncState, long customOrderId) {
         super(id, name, syncState, customOrderId);
     }
 

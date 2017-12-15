@@ -51,7 +51,7 @@ public final class DefaultReceiptImpl implements Receipt {
     private boolean mIsSelected;
     private File mFile;
     private long mFileLastModifiedTime;
-    private final int customOrderId;
+    private final long customOrderId;
 
     public DefaultReceiptImpl(int id, int index, @NonNull Trip trip, @Nullable File file, @NonNull PaymentMethod paymentMethod, @NonNull String name,
                               @NonNull Category category, @NonNull String comment, @NonNull Price price, @NonNull Price tax, @NonNull Date date,
@@ -65,7 +65,7 @@ public final class DefaultReceiptImpl implements Receipt {
                               @NonNull Category category, @NonNull String comment, @NonNull Price price, @NonNull Price tax, @NonNull Date date,
                               @NonNull TimeZone timeZone, boolean isReimbursable, boolean isFullPage, boolean isSelected,
                               @NonNull Source source, @Nullable String extraEditText1, @Nullable String extraEditText2, @Nullable String extraEditText3,
-                              @NonNull SyncState syncState, int customOrderId) {
+                              @NonNull SyncState syncState, long customOrderId) {
 
         mTrip = Preconditions.checkNotNull(trip);
         mName = Preconditions.checkNotNull(name);
@@ -115,7 +115,7 @@ public final class DefaultReceiptImpl implements Receipt {
         mTimeZone = TimeZone.getTimeZone(in.readString());
         mSyncState = in.readParcelable(SyncState.class.getClassLoader());
         mSource = Source.Parcel;
-        customOrderId = in.readInt();
+        customOrderId = in.readLong();
     }
 
     @Override
@@ -306,7 +306,7 @@ public final class DefaultReceiptImpl implements Receipt {
     }
 
     @Override
-    public int getCustomOrderId() {
+    public long getCustomOrderId() {
         return customOrderId;
     }
 
@@ -315,8 +315,7 @@ public final class DefaultReceiptImpl implements Receipt {
     public String getExtraEditText1() {
         if (DatabaseHelper.NO_DATA.equals(mExtraEditText1)) {
             return null;
-        }
-        else {
+        } else {
             return mExtraEditText1;
         }
     }
@@ -326,8 +325,7 @@ public final class DefaultReceiptImpl implements Receipt {
     public String getExtraEditText2() {
         if (DatabaseHelper.NO_DATA.equals(mExtraEditText2)) {
             return null;
-        }
-        else {
+        } else {
             return mExtraEditText2;
         }
     }
@@ -337,8 +335,7 @@ public final class DefaultReceiptImpl implements Receipt {
     public String getExtraEditText3() {
         if (DatabaseHelper.NO_DATA.equals(mExtraEditText3)) {
             return null;
-        }
-        else {
+        } else {
             return mExtraEditText3;
         }
     }
@@ -355,7 +352,7 @@ public final class DefaultReceiptImpl implements Receipt {
 
     @Override
     public boolean hasExtraEditText3() {
-        return (mExtraEditText3 != null)&& !mExtraEditText3.equals(DatabaseHelper.NO_DATA);
+        return (mExtraEditText3 != null) && !mExtraEditText3.equals(DatabaseHelper.NO_DATA);
     }
 
     @NonNull
@@ -443,7 +440,7 @@ public final class DefaultReceiptImpl implements Receipt {
         result = 31 * result + (mExtraEditText3 != null ? mExtraEditText3.hashCode() : 0);
         result = 31 * result + (mFile != null ? mFile.hashCode() : 0);
         result = 31 * result + (int) mFileLastModifiedTime;
-        result = 31 * result + customOrderId;
+        result = 31 * result + (int) (customOrderId ^ (customOrderId >>> 32));
         return result;
     }
 
@@ -474,7 +471,7 @@ public final class DefaultReceiptImpl implements Receipt {
         dest.writeInt(getIndex());
         dest.writeString(mTimeZone.getID());
         dest.writeParcelable(getSyncState(), flags);
-        dest.writeInt(getCustomOrderId());
+        dest.writeLong(getCustomOrderId());
     }
 
     public static Creator<DefaultReceiptImpl> CREATOR = new Creator<DefaultReceiptImpl>() {
@@ -491,9 +488,12 @@ public final class DefaultReceiptImpl implements Receipt {
 
     };
 
-    // TODO: 30.11.2017 compare with custom_order_id
     @Override
     public int compareTo(@NonNull Receipt receipt) {
-        return receipt.getDate().compareTo(mDate);
+        if (customOrderId == receipt.getCustomOrderId() && customOrderId == 0) {
+            return receipt.getDate().compareTo(mDate);
+        } else {
+            return -Long.compare(customOrderId, receipt.getCustomOrderId());
+        }
     }
 }

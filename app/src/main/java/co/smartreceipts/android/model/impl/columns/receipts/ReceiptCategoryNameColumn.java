@@ -15,7 +15,7 @@ public final class ReceiptCategoryNameColumn extends AbstractColumnImpl<Receipt>
         super(id, name, syncState);
     }
 
-    public ReceiptCategoryNameColumn(int id, @NonNull String name, @NonNull SyncState syncState, int customOrderId) {
+    public ReceiptCategoryNameColumn(int id, @NonNull String name, @NonNull SyncState syncState, long customOrderId) {
         super(id, name, syncState, customOrderId);
     }
 

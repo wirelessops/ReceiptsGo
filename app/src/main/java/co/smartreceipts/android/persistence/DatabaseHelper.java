@@ -122,7 +122,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         mCSVTable = new CSVTable(this, mReceiptColumnDefinitions, orderingPreferencesManager.isCsvColumnsOrdered());
         mPDFTable = new PDFTable(this, mReceiptColumnDefinitions, orderingPreferencesManager.isPdfColumnsOrdered());
         mPaymentMethodsTable = new PaymentMethodsTable(this, orderingPreferencesManager.isPaymentMethodsTableOrdered());
-        mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable, storageManager, preferences);
+        mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable,
+                storageManager, preferences, orderingPreferencesManager.isReceiptsTableOrdered());
         mTables.add(mTripsTable);
         mTables.add(mDistanceTable);
         mTables.add(mCategoriesTable);
