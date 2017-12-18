@@ -77,6 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     private final Context mContext;
     private final TableDefaultsCustomizer mCustomizations;
     private final UserPreferenceManager mPreferences;
+    private final OrderingPreferencesManager mOrderingPreferencesManager;
 
     // Listeners
     private ReceiptAutoCompleteListener mReceiptAutoCompleteListener;
@@ -113,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         mPreferences = preferences;
         mReceiptColumnDefinitions = receiptColumnDefinitions;
         mCustomizations = tableDefaultsCustomizer;
+        mOrderingPreferencesManager = orderingPreferencesManager;
 
         // Tables:
         mTables = new ArrayList<>();
@@ -512,7 +514,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 Logger.debug(this, mergeCategories);
                 currDB.execSQL(mergeCategories);
 
-
                 // Merge CSV
                 // Replacing current table with imported one
                 Logger.debug(this, "Merging CSV");
@@ -615,7 +616,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                     }
                 }
 
-                // TODO: 16.12.2017 deal with customOrderId-s
                 // Merge Receipts
                 // Note: Receipts table must be the last merged one
                 Logger.debug(this, "Merging Receipts");
@@ -667,6 +667,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                         final int processingStatusIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PROCESSING_STATUS);
                         final int exchangeRateIndex = c.getColumnIndex(ReceiptsTable.COLUMN_EXCHANGE_RATE);
                         final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
+                        final int customOrderidIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID);
                         do {
                             final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
                             if (!driveMarkedForDeletion) {
@@ -707,6 +708,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                                 final int paymentMethod = getInt(c, paymentMethodIndex, 0);
                                 final String processingStatus = getString(c, processingStatusIndex, "");
                                 final BigDecimal exchangeRate = getDecimal(c, exchangeRateIndex);
+                                final long customOrderId = mOrderingPreferencesManager.isReceiptsTableOrdered() ?
+                                        getLong(c, customOrderidIndex, 0) : 0;
                                 try {
                                     countCursor = currDB.rawQuery(queryCount, new String[]{newPath, name, Long.toString(date)});
                                     if (countCursor != null && countCursor.moveToFirst()) {
@@ -730,6 +733,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                                         values.put(ReceiptsTable.COLUMN_PROCESSING_STATUS, processingStatus);
                                         values.put(ReceiptsTable.COLUMN_EXCHANGE_RATE, exchangeRate.doubleValue());
                                         values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
+                                        values.put(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID, customOrderId);
                                         if (timeZoneIndex > 0) {
                                             final String timeZone = c.getString(timeZoneIndex);
                                             values.put(ReceiptsTable.COLUMN_TIMEZONE, timeZone);
