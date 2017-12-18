@@ -72,7 +72,7 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
                         .setMethod(text)
-                        .setCustomOrderId(Integer.MAX_VALUE)
+                        .setCustomOrderId(Long.MAX_VALUE)
                         .build();
                 getTableController().insert(paymentMethod, new DatabaseOperationMetadata());
                 scrollToEnd();
@@ -98,7 +98,7 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory()
                         .setMethod(text)
-                        .setCustomOrderId((int)oldPaymentMethod.getCustomOrderId())
+                        .setCustomOrderId(oldPaymentMethod.getCustomOrderId())
                         .build();
 
                 getTableController().update(oldPaymentMethod, newPaymentMethod, new DatabaseOperationMetadata());

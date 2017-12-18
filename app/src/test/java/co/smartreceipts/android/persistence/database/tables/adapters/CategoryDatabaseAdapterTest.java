@@ -28,7 +28,7 @@ public class CategoryDatabaseAdapterTest {
     private static final String NAME = "name_123";
     private static final int PRIMARY_KEY_INT = 15;
     private static final String CODE = "code_123";
-    private static final int CUSTOM_ORDER_ID = 10;
+    private static final long CUSTOM_ORDER_ID = 10;
 
     private static final String CUSTOM_ORDER_ID_KEY = "custom_order_id";
     private static final String ID_KEY = "id";
@@ -68,7 +68,7 @@ public class CategoryDatabaseAdapterTest {
         when(mCursor.getInt(idIndex)).thenReturn(PRIMARY_KEY_INT);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
         when(mCursor.getString(codeIndex)).thenReturn(CODE);
-        when(mCursor.getInt(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
+        when(mCursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
 
         when(mCategory.getId()).thenReturn(PRIMARY_KEY_INT);
         when(mCategory.getName()).thenReturn(NAME);

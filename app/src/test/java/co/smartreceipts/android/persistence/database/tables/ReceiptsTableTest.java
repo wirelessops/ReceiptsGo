@@ -155,7 +155,7 @@ public class ReceiptsTableTest {
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
         mReceiptsTable = new ReceiptsTable(mSQLiteOpenHelper, mTripsTable, mPaymentMethodTable, mCategoryTable,
-                mPersistenceManager.getStorageManager(), mPersistenceManager.getPreferenceManager());
+                mPersistenceManager.getStorageManager(), mPersistenceManager.getPreferenceManager(), false);
 
         // Now create the table and insert some defaults
         mReceiptsTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);

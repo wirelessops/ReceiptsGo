@@ -38,7 +38,7 @@ public class ColumnTableController extends AbstractTableController<Column<Receip
 
     /**
      * Inserts the default column as defined by {@link ColumnDefinitions#getDefaultInsertColumn()}
-     * with customOrderId = Integer.MAX_VALUE
+     * with customOrderId = Long.MAX_VALUE
      */
     public synchronized void insertDefaultColumn() {
         insert(mReceiptColumnDefinitions.getDefaultInsertColumn(), new DatabaseOperationMetadata());

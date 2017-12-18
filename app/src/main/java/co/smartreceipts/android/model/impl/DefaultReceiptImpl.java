@@ -490,7 +490,7 @@ public final class DefaultReceiptImpl implements Receipt {
 
     @Override
     public int compareTo(@NonNull Receipt receipt) {
-        if (customOrderId == receipt.getCustomOrderId() && customOrderId == 0) {
+        if (customOrderId == receipt.getCustomOrderId()) {
             return receipt.getDate().compareTo(mDate);
         } else {
             return -Long.compare(customOrderId, receipt.getCustomOrderId());

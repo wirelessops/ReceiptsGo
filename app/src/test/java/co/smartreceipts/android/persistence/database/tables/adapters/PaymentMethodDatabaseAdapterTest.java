@@ -29,7 +29,7 @@ public class PaymentMethodDatabaseAdapterTest {
     private static final int ID = 5;
     private static final int PRIMARY_KEY_ID = 11;
     private static final String METHOD = "abcd";
-    private static final int CUSTOM_ORDER = 8;
+    private static final long CUSTOM_ORDER = 8;
 
     // Class under test
     PaymentMethodDatabaseAdapter mPaymentMethodDatabaseAdapter;
@@ -61,7 +61,7 @@ public class PaymentMethodDatabaseAdapterTest {
         when(mCursor.getColumnIndex("custom_order_id")).thenReturn(orderIndex);
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(methodIndex)).thenReturn(METHOD);
-        when(mCursor.getInt(orderIndex)).thenReturn(CUSTOM_ORDER);
+        when(mCursor.getLong(orderIndex)).thenReturn(CUSTOM_ORDER);
 
         when(mPaymentMethod.getId()).thenReturn(ID);
         when(mPaymentMethod.getMethod()).thenReturn(METHOD);

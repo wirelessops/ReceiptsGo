@@ -131,11 +131,10 @@ public class ReceiptCreateEditFragmentPresenter {
         final Trip parentTrip = fragment.getParentTrip();
 
         Calendar cal = Calendar.getInstance();
-        long secondsOfDay = TimeUnit.HOURS.toMillis(cal.get(Calendar.HOUR_OF_DAY)) +
-                TimeUnit.MINUTES.toMillis(cal.get(Calendar.MINUTE)) +
-                TimeUnit.SECONDS.toMillis(cal.get(Calendar.SECOND)) +
+        long secondsOfDay = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
+                TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
                 cal.get(Calendar.SECOND);
-
+        Logger.debug(this, "Saving receipt: date.getTime() = " + date.getTime() + " seconds of day = " + secondsOfDay);
 
         final ReceiptBuilderFactory builderFactory = (receipt == null) ? new ReceiptBuilderFactory(-1) : new ReceiptBuilderFactory(receipt);
         builderFactory.setName(name)

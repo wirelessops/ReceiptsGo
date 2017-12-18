@@ -73,17 +73,4 @@ public class ReceiptRefreshTripPricesListenerTest {
         mReceiptRefreshTripPricesListener.onUpdateFailure(mReceipt, null, new DatabaseOperationMetadata());
         verifyZeroInteractions(mTripTableController);
     }
-
-    @Test
-    public void onSwapSuccess() {
-        mReceiptRefreshTripPricesListener.onSwapSuccess();
-        verifyZeroInteractions(mTripTableController);
-    }
-
-    @Test
-    public void onSwapFailure() {
-        mReceiptRefreshTripPricesListener.onSwapFailure(null);
-        verifyZeroInteractions(mTripTableController);
-    }
-
 }

@@ -162,7 +162,7 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
     @NonNull
     @Override
     public Column<Receipt> getDefaultInsertColumn() {
-        return new BlankColumn<>(Column.UNKNOWN_ID, getColumnNameFromStringResId(ActualDefinition.BLANK.getStringResId()), new DefaultSyncState(), Integer.MAX_VALUE);
+        return new BlankColumn<>(Column.UNKNOWN_ID, getColumnNameFromStringResId(ActualDefinition.BLANK.getStringResId()), new DefaultSyncState(), Long.MAX_VALUE);
     }
 
     public List<Column<Receipt>> getCsvDefaults() {

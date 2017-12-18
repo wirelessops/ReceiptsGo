@@ -502,8 +502,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
                 // getting unique categories from old db which are not present in the new db and inserting
                 final String mergeCategories = "INSERT INTO " + CategoriesTable.TABLE_NAME +
-                        "( " + CategoriesTable.COLUMN_NAME + ", " + CategoriesTable.COLUMN_CODE + ", " + CategoriesTable.COLUMN_BREAKDOWN + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + /* ", " + COLUMN_OLD_ID + */")" +
-                        " SELECT backup_categories." + CategoriesTable.COLUMN_NAME + ", backup_categories." + CategoriesTable.COLUMN_CODE + ", backup_categories." + CategoriesTable.COLUMN_BREAKDOWN + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Integer.MAX_VALUE + "\"" + // ", backup_categories." + CategoriesTable.COLUMN_ID  +
+                        "( " + CategoriesTable.COLUMN_NAME + ", " + CategoriesTable.COLUMN_CODE + ", " + CategoriesTable.COLUMN_BREAKDOWN + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
+                        " SELECT backup_categories." + CategoriesTable.COLUMN_NAME + ", backup_categories." + CategoriesTable.COLUMN_CODE + ", backup_categories." + CategoriesTable.COLUMN_BREAKDOWN + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Long.MAX_VALUE + "\"" +
                         " FROM backup_db." + CategoriesTable.TABLE_NAME + " backup_categories " +
                         " LEFT JOIN " + CategoriesTable.TABLE_NAME + " current_categories " +
                         " ON backup_categories." + CategoriesTable.COLUMN_NAME + " = current_categories." + CategoriesTable.COLUMN_NAME +
@@ -534,7 +534,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
                 final String mergePaymentMethods = "INSERT INTO " + PaymentMethodsTable.TABLE_NAME +
                         "( " + PaymentMethodsTable.COLUMN_METHOD + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
-                        " SELECT backup_methods." + PaymentMethodsTable.COLUMN_METHOD + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Integer.MAX_VALUE + "\"" +
+                        " SELECT backup_methods." + PaymentMethodsTable.COLUMN_METHOD + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Long.MAX_VALUE + "\"" +
                         " FROM backup_db." + PaymentMethodsTable.TABLE_NAME + " backup_methods " +
                         " LEFT JOIN " + PaymentMethodsTable.TABLE_NAME + " current_methods " +
                         " ON backup_methods." + PaymentMethodsTable.COLUMN_METHOD + " = current_methods." + PaymentMethodsTable.COLUMN_METHOD +
@@ -615,6 +615,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                     }
                 }
 
+                // TODO: 16.12.2017 deal with customOrderId-s
                 // Merge Receipts
                 // Note: Receipts table must be the last merged one
                 Logger.debug(this, "Merging Receipts");

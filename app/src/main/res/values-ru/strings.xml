@@ -82,7 +82,7 @@
     <string name="report_pdf_error_go_to_settings">Перейти к настройкам</string>
 
     <!-- ===================== ocr ======================== -->
-    <string name="ocr_informational_tooltip_configure_text">(Необязательный) Настроить автоматическое сканирование? Нажмите здесь.</string>
+    <string name="ocr_informational_tooltip_configure_text">(Необязательно) Настроить автоматическое сканирование? Нажмите здесь.</string>
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">%d Скан остался. Нажмите здесь, чтобы добавить еще.</item>
         <item quantity="few">%d Скана осталось. Нажмите, чтобы добавить еще.</item>
