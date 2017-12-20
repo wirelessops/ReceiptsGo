@@ -4,7 +4,7 @@
 
 ![SmartReceipts](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
-Turn your phone into a receipt scanner and expense report generator with Smart Receipts! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
+Turn your phone into a receipt scanner and expense report generator with [Smart Receipts](https://www.smartreceipts.co/)! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
  
 Download Smart Receipts on the Google Play Store:
  
