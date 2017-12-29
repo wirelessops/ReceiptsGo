@@ -2,7 +2,9 @@ package co.smartreceipts.android.receipts;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,10 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
 
     private Integer draggedReceiptNewPosition = null;
 
-    private final PublishSubject<Receipt> onItemClickSubject = PublishSubject.create();
+    private final PublishSubject<Receipt> itemClickSubject = PublishSubject.create();
+    private final PublishSubject<Receipt> menuClickSubject = PublishSubject.create();
+    private final PublishSubject<Receipt> imageClickSubject = PublishSubject.create();
+
 
     public ReceiptsAdapter(Context context, TableController<Receipt> tableController, UserPreferenceManager preferenceManager,
                            BackupProvidersManager backupProvidersManager, NavigationHandler navigationHandler,
@@ -69,9 +76,27 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         ReceiptViewHolder receiptHolder = (ReceiptViewHolder) holder;
         Receipt receipt = items.get(position);
 
-        receiptHolder.itemView.setOnClickListener(v -> onItemClickSubject.onNext(receipt));
+        receiptHolder.itemView.setOnClickListener(v -> itemClickSubject.onNext(receipt));
+        receiptHolder.menuButton.setOnClickListener(v -> menuClickSubject.onNext(receipt));
+        receiptHolder.image.setOnClickListener(v -> {
+            if (receipt.hasPDF() || receipt.hasImage()) {
+                imageClickSubject.onNext(receipt);
+            }
+        });
 
-        receiptHolder.order.setText(String.valueOf(receipt.getCustomOrderId()));
+        if (receipt.hasPDF()) {
+            setIcon(receiptHolder.image, R.drawable.ic_file_black_24dp);
+        } else if (receipt.hasImage()) {
+            receiptHolder.image.setPadding(0, 0, 0, 0);
+            Picasso.with(context)
+                    .load(receipt.getImage())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .fit()
+                    .centerCrop()
+                    .into(receiptHolder.image);
+        } else {
+            setIcon(receiptHolder.image, R.drawable.ic_receipt_white_24dp);
+        }
 
         receiptHolder.price.setText(receipt.getPrice().getCurrencyFormattedPrice());
         receiptHolder.name.setText(receipt.getName());
@@ -185,8 +210,26 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         }
     }
 
-    public Observable<Receipt> getItemClickStream() {
-        return onItemClickSubject;
+    Observable<Receipt> getItemClicks() {
+        return itemClickSubject;
+    }
+
+    Observable<Receipt> getMenuClicks() {
+        return menuClickSubject;
+    }
+
+    Observable<Receipt> getImageClicks() {
+        return imageClickSubject;
+    }
+
+    private void setIcon(ImageView view, @DrawableRes int drawableRes) {
+        final Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), drawableRes, context.getTheme());
+
+        DrawableCompat.setTint(drawable, ResourcesCompat.getColor(context.getResources(), R.color.grey_image_tint, null));
+        final int pixelPadding = context.getResources().getDimensionPixelOffset(R.dimen.card_image_padding);
+
+        view.setImageDrawable(drawable);
+        view.setPadding(pixelPadding, pixelPadding, pixelPadding, pixelPadding);
     }
 
     private static class ReceiptViewHolder extends AbstractDraggableItemViewHolder {
@@ -195,22 +238,22 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         public TextView name;
         public TextView date;
         public TextView category;
-        public TextView marker;
         public ImageView syncState;
-
-        private TextView order;
+        public ImageView image;
+        ImageView menuButton;
+        TextView marker;
 
         ReceiptViewHolder(View itemView) {
             super(itemView);
 
             price = itemView.findViewById(R.id.price);
             name = itemView.findViewById(android.R.id.title);
-            date = itemView.findViewById(android.R.id.summary);
+            date = itemView.findViewById(R.id.card_date);
             category = itemView.findViewById(android.R.id.text1);
             marker = itemView.findViewById(android.R.id.text2);
             syncState = itemView.findViewById(R.id.card_sync_state);
-
-            order = itemView.findViewById(R.id.tmp_order);
+            menuButton = itemView.findViewById(R.id.card_menu);
+            image = itemView.findViewById(R.id.card_image);
         }
     }
 }

@@ -29,7 +29,6 @@ import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -212,15 +211,14 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
         this.compositeDisposable.add(exchangedPriceInBaseCurrencyAsDecimalChanges
                 .withLatestFrom(receiptPriceChangesAsDecimalConnectableObservable, selectedCurrencyConnectableObservable, (exchangedPriceInBaseCurrency, receiptPrice, selectedReceiptCurrencyCode) -> {
                     if (exchangedPriceInBaseCurrency.isPresent() && receiptPrice.isPresent()) {
-                        try {
+                        if (receiptPrice.get().compareTo(BigDecimal.ZERO) == 0) {
+                            return Optional.<ExchangeRate>absent();
+                        } else {
                             final ExchangeRateBuilderFactory factory = new ExchangeRateBuilderFactory();
                             final BigDecimal rate = exchangedPriceInBaseCurrency.get().divide(receiptPrice.get(), ExchangeRate.PRECISION, BigDecimal.ROUND_HALF_UP);
                             factory.setBaseCurrency(selectedReceiptCurrencyCode);
                             factory.setRate(trip.getDefaultCurrencyCode(), rate); // ie from receipt currency to trip currency
                             return Optional.of(factory.build());
-                        } catch (ArithmeticException e) {
-                            Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Caught ArithmeticException (likely divide by 0). Returning an absent value", e);
-                            return Optional.<ExchangeRate>absent();
                         }
                     } else {
                         return Optional.<ExchangeRate>absent();

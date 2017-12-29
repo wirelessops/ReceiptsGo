@@ -279,8 +279,27 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     activityFileResultImporter.markThatResultsWereConsumed();
                 }));
 
-        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getItemClickStream()
+        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getItemClicks()
+                .subscribe(receipt -> {
+                    analytics.record(Events.Receipts.ReceiptMenuEdit);
+                    navigationHandler.navigateToEditReceiptFragment(trip, receipt);
+                }));
+
+        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getMenuClicks()
                 .subscribe(this::showReceiptMenu));
+
+        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getImageClicks()
+        .subscribe(receipt -> {
+            if (receipt.hasImage()) {
+                analytics.record(Events.Receipts.ReceiptMenuViewImage);
+                navigationHandler.navigateToViewReceiptImage(receipt);
+            } else if (receipt.hasPDF()) {
+                analytics.record(Events.Receipts.ReceiptMenuViewPdf);
+                navigationHandler.navigateToViewReceiptPdf(receipt);
+            } else {
+                showReceiptMenu(receipt);
+            }
+        }));
     }
 
     private void subscribeOnCreate() {
@@ -396,27 +415,15 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
         final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
         if (intentImportResult != null && (intentImportResult.getFileType() == FileType.Image || intentImportResult.getFileType() == FileType.Pdf)) {
-            final String[] receiptActions;
             final int attachmentStringId = intentImportResult.getFileType() == FileType.Pdf ? R.string.pdf : R.string.image;
-            final int receiptStringId = receipt.hasPDF() ? R.string.pdf : R.string.image;
             final String attachFile = getString(R.string.action_send_attach, getString(attachmentStringId));
-            final String viewFile = getString(R.string.action_send_view, getString(receiptStringId));
             final String replaceFile = getString(R.string.action_send_replace, getString(receipt.hasPDF() ? R.string.pdf : R.string.image));
-            if (receipt.hasFile()) {
-                receiptActions = new String[]{viewFile, replaceFile};
-            } else {
-                receiptActions = new String[]{attachFile};
-            }
+            final String[] receiptActions = receipt.hasFile() ? new String[]{replaceFile} : new String[]{attachFile};
+
             builder.setItems(receiptActions, (dialog, item) -> {
                 final String selection = receiptActions[item];
                 if (selection != null) {
-                    if (selection.equals(viewFile)) { // Show File
-                        if (intentImportResult.getFileType() == FileType.Pdf) {
-                            ReceiptsListFragment.this.showPDF(receipt);
-                        } else {
-                            ReceiptsListFragment.this.showImage(receipt);
-                        }
-                    } else if (selection.equals(attachFile) || selection.equals(replaceFile)) { // Attach File to Receipt
+                    if (selection.equals(attachFile) || selection.equals(replaceFile)) { // Attach File to Receipt
                         final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(getActivity(), trip, persistenceManager, receiptTableController, analytics);
                         onCreateCompositeDisposable.add(importer.importAttachment(intentImportResult, receipt)
                                 .subscribeOn(Schedulers.io())
@@ -428,34 +435,21 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 }
             });
         } else {
-            final String receiptActionEdit = getString(R.string.receipt_dialog_action_edit);
-            final String receiptActionView = getString(R.string.receipt_dialog_action_view, getString(receipt.hasPDF() ? R.string.pdf : R.string.image));
             final String receiptActionCamera = getString(R.string.receipt_dialog_action_camera);
             final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
             final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
             final String[] receiptActions;
             if (!receipt.hasFile()) {
-                receiptActions = new String[]{receiptActionEdit, receiptActionCamera, receiptActionDelete, receiptActionMoveCopy};
+                receiptActions = new String[]{receiptActionCamera, receiptActionDelete, receiptActionMoveCopy};
             } else {
-                receiptActions = new String[]{receiptActionEdit, receiptActionView, receiptActionDelete, receiptActionMoveCopy};
+                receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
             }
             builder.setItems(receiptActions, (dialog, item) -> {
                 final String selection = receiptActions[item];
                 if (selection != null) {
-                    if (selection.equals(receiptActionEdit)) { // Edit Receipt
-                        analytics.record(Events.Receipts.ReceiptMenuEdit);
-                        navigationHandler.navigateToEditReceiptFragment(trip, receipt);
-                    } else if (selection.equals(receiptActionCamera)) { // Take Photo
+                    if (selection.equals(receiptActionCamera)) { // Take Photo
                         analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
                         imageUri = new CameraInteractionController(ReceiptsListFragment.this).addPhoto();
-                    } else if (selection.equals(receiptActionView)) { // View Photo/PDF
-                        if (receipt.hasPDF()) {
-                            analytics.record(Events.Receipts.ReceiptMenuViewImage);
-                            ReceiptsListFragment.this.showPDF(receipt);
-                        } else {
-                            analytics.record(Events.Receipts.ReceiptMenuViewPdf);
-                            ReceiptsListFragment.this.showImage(receipt);
-                        }
                     } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
                         analytics.record(Events.Receipts.ReceiptMenuDelete);
                         final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
@@ -470,14 +464,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         }
         builder.show();
         return true;
-    }
-
-    private void showImage(@NonNull Receipt receipt) {
-        navigationHandler.navigateToViewReceiptImage(receipt);
-    }
-
-    private void showPDF(@NonNull Receipt receipt) {
-        navigationHandler.navigateToViewReceiptPdf(receipt);
     }
 
     @Override

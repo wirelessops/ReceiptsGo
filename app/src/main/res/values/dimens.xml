@@ -18,6 +18,9 @@
     <dimen name="card_padding">2dp</dimen>
     <dimen name="card_thumbnail_margins">4dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_image_size">80dp</dimen>
+    <dimen name="card_image_padding">8dp</dimen>
+
     <!-- Charts -->
 
     <!-- Action Bar -->
