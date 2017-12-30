@@ -3,9 +3,6 @@ package co.smartreceipts.android.model.impl.columns.receipts;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
@@ -25,7 +22,7 @@ public final class ReceiptNetExchangedPriceMinusTaxColumn extends AbstractExchan
                                                   @NonNull SyncState syncState,
                                                   @NonNull Context context,
                                                   @NonNull UserPreferenceManager preferences,
-                                                  int customOrderId) {
+                                                  long customOrderId) {
         super(id, name, syncState, context, customOrderId);
         userPreferenceManager = preferences;
     }

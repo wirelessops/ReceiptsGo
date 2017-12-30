@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public final class ReceiptPriceMinusTaxColumn extends AbstractColumnImpl<Receipt
                                       @NonNull String name,
                                       @NonNull SyncState syncState,
                                       @NonNull UserPreferenceManager userPreferenceManager,
-                                      int customOrderId) {
+                                      long customOrderId) {
         super(id, name, syncState, customOrderId);
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
     }
