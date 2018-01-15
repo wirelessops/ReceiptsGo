@@ -114,6 +114,15 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
     }
 
     @NonNull
+    public synchronized Single<List<Metadata>> getParents(@NonNull final DriveFile driveFile) {
+        Preconditions.checkNotNull(driveFile);
+
+        return newBlockUntilConnectedCompletable()
+                .andThen(driveDataStreams.getParents(driveFile))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
+    }
+
+    @NonNull
     public Single<SyncState> uploadFileToDrive(@NonNull final SyncState currentSyncState, @NonNull final File file) {
         Preconditions.checkNotNull(currentSyncState);
         Preconditions.checkNotNull(file);

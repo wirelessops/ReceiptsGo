@@ -17,6 +17,7 @@ import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResource;
 import com.google.android.gms.drive.ExecutionOptions;
 import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.metadata.CustomPropertyKey;
 import com.google.android.gms.drive.query.Filters;
@@ -323,7 +324,36 @@ class DriveDataStreams {
 
                 @Override
                 public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to query files in folder with status: {}", status);
+                    Logger.error(DriveDataStreams.this, "Failed to get metadata for file with status: {}", status);
+                    emitter.onError(new IOException(status.getStatusMessage()));
+                }
+            });
+        });
+    }
+
+    @NonNull
+    public synchronized Single<List<Metadata>> getParents(@NonNull final DriveFile driveFile) {
+        Preconditions.checkNotNull(driveFile);
+
+        return Single.create(emitter -> {
+            driveFile.listParents(mGoogleApiClient).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
+                @Override
+                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                    final MetadataBuffer buffer = metadataBufferResult.getMetadataBuffer();
+                    try {
+                        final List<Metadata> results = new ArrayList<>();
+                        for (Metadata metadata : buffer) {
+                            results.add(metadata);
+                        }
+                        emitter.onSuccess(results);
+                    } finally {
+                        buffer.release();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Status status) {
+                    Logger.error(DriveDataStreams.this, "Failed to get parents for file with status: {}", status);
                     emitter.onError(new IOException(status.getStatusMessage()));
                 }
             });
