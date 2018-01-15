@@ -71,25 +71,26 @@ public class ManualBackupTask {
                 internal.delete(outputSmrBackupFile); //Remove old export
 
                 external.copy(external.getFile(DatabaseHelper.DATABASE_NAME), external.getFile(DATABASE_EXPORT_NAME), true);
-                final File prefs = internal.getFile(internal.getRoot().getParentFile(), "shared_prefs");
+                final File internalSharedPreferencesFolder = internal.getFile(internal.getRoot().getParentFile(), "shared_prefs");
 
-                //Preferences File
-                if (prefs != null && prefs.exists()) {
-                    File sdPrefs = external.getFile("shared_prefs");
-                    Logger.debug(ManualBackupTask.this, "Copying the prefs file from: {} to {}", prefs.getAbsolutePath(), sdPrefs.getAbsolutePath());
-                    try {
-                        external.copy(prefs, sdPrefs, true);
-                    } catch (IOException e) {
-                        Logger.error(this, e);
+                // Preferences File
+                if (internalSharedPreferencesFolder != null && internalSharedPreferencesFolder.exists()) {
+                    File backupSharedPreferencesFolder = external.getFile("shared_prefs");
+                    // Delete this first to clear out any old instances of it before copying over
+                    //noinspection ResultOfMethodCallIgnored
+                    backupSharedPreferencesFolder.delete();
+                    if (backupSharedPreferencesFolder.exists() || backupSharedPreferencesFolder.mkdir()) {
+                        final File smartReceiptsPreferencesFile = new File(internalSharedPreferencesFolder, "SmartReceiptsPrefFile.xml");
+                        final File backupSmartReceiptsPreferencesFile = new File(backupSharedPreferencesFolder, "SmartReceiptsPrefFile.xml");
+                        Logger.debug(ManualBackupTask.this, "Copying the prefs file from: {} to {}", smartReceiptsPreferencesFile.getAbsolutePath(), backupSmartReceiptsPreferencesFile.getAbsolutePath());
+                        if (external.copy(smartReceiptsPreferencesFile, backupSmartReceiptsPreferencesFile, true)) {
+                            Logger.debug(ManualBackupTask.this, "Successfully copied our preferences files");
+                        } else {
+                            throw new IOException("Failed to copy our shared prefs");
+                        }
+                    } else {
+                        throw new IOException("Failed to create a folder for our shared prefs");
                     }
-                }
-
-                //Internal Files
-                final File[] internalFiles = internal.listFilesAndDirectories();
-                if (internalFiles != null && internalFiles.length > 0) {
-                    Logger.debug(ManualBackupTask.this, "Copying {} files/directories to the SD Card.", internalFiles.length);
-                    final File internalOnSD = external.mkdir("Internal");
-                    internal.copy(internalOnSD, true);
                 }
 
                 // Finish
