@@ -2,7 +2,6 @@ package co.smartreceipts.android.trips.editor;
 
 import java.io.File;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,7 +45,7 @@ public class TripCreateEditFragmentPresenter {
             fragment.showError(TripEditorErrors.CALENDAR_ERROR);
             return false;
         }
-        if (startDate.getTime() > endDate.getTime()) {
+        if (startDate.compareTo(endDate) > 0) {
             fragment.showError(TripEditorErrors.DURATION_ERROR);
             return false;
         }

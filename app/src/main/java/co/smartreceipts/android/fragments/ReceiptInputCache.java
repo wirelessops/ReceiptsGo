@@ -29,6 +29,7 @@ public class ReceiptInputCache {
     }
 
     public void setCachedDate(@Nullable Date cachedDate) {
+        // TODO: 13.01.2018 check!
         if (cachedDate != null) {
             mHeadlessFragment.mCachedDate = new Date(cachedDate.getTime() + 1);
         } else {

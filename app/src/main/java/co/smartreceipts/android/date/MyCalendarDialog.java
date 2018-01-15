@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 import wb.android.dialog.CalendarDialog;
 
@@ -33,7 +34,17 @@ public class MyCalendarDialog extends CalendarDialog {
 	@Override
 	@SuppressWarnings("deprecation")
 	public final void onDateSet(int day, int month, int year) {
-		final Date date = new Date(year - 1900, month, day);  //**This Date constructor is deprecated
+		final Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_MONTH, day);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+		final Date date = new Date(calendar.getTimeInMillis());
+
 		mDateManager.setCachedDate(date);
 		String dateString = DateFormat.getDateFormat(mContext).format(date);
 		//This block is for mEdit

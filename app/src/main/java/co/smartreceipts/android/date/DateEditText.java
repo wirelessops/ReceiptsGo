@@ -12,7 +12,7 @@ import java.sql.Date;
 
 public class DateEditText extends AppCompatEditText {
 
-	public Date date;	
+	public Date date;
 	
 	public DateEditText(Context context) {
 		super(context);

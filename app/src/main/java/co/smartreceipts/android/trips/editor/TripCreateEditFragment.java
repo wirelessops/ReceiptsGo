@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -228,8 +226,15 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
             startDateBox.setOnClickListener(dateManager.getDurationDateEditTextListener(endDateBox));
 
             //prefill the dates
-            startDateBox.date = new Date(Calendar.getInstance().getTimeInMillis());
+            final Calendar startCalendar = Calendar.getInstance();
+            startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            startCalendar.set(Calendar.MINUTE, 0);
+            startCalendar.set(Calendar.SECOND, 0);
+            startCalendar.set(Calendar.MILLISECOND, 0);
+
+            startDateBox.date = new Date(startCalendar.getTimeInMillis());
             startDateBox.setText(DateFormat.getDateFormat(getActivity()).format(startDateBox.date));
+
             endDateBox.date = new Date(startDateBox.date.getTime() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration()));
             endDateBox.setText(DateFormat.getDateFormat(getActivity()).format(endDateBox.date));
         } else { // edit trip
