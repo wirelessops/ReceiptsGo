@@ -31,7 +31,7 @@
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="@dimen/card_image_padding"
-                tools:src="@drawable/ic_file_pdf_white_24px"
+                tools:src="@drawable/ic_file_black_24dp"
                 tools:tint="@color/grey_image_tint" />
 
             <TextView
@@ -54,15 +54,14 @@
                 android:layout_alignBottom="@id/card_image"
                 android:layout_alignParentEnd="true"
                 android:layout_marginBottom="@dimen/default_margin_item_separator"
-                android:layout_toEndOf="@id/card_date"
-                android:gravity="end"
                 android:layout_marginStart="@dimen/default_margin_item_separator"
-                android:maxLines="1"
+                android:layout_toEndOf="@id/card_date"
                 android:ellipsize="end"
+                android:gravity="end"
+                android:maxLines="1"
                 android:textColor="@color/card_price"
                 android:textSize="20sp"
                 tools:text="20$" />
-
 
             <ImageView
                 android:id="@+id/card_menu"
@@ -98,7 +97,6 @@
                 android:layout_toEndOf="@+id/card_image"
                 android:textSize="12sp"
                 tools:text="30.11.17" />
-
 
             <TextView
                 android:id="@android:id/text1"

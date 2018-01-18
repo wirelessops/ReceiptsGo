@@ -34,7 +34,9 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -710,11 +712,23 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
             final String extraText2 = (extraEditText2 == null) ? null : extraEditText2.getText().toString();
             final String extraText3 = (extraEditText3 == null) ? null : extraEditText3.getText().toString();
 
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateBox.date);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            long secondsOfDay = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
+                    TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
+                    cal.get(Calendar.SECOND);
+
+            // Note: we're saving date that was picked by user (without time information) + current secondsOfDay
+            final Date receiptDate = new Date(cal.getTimeInMillis() + secondsOfDay);
+
             receiptInputCache.setCachedDate((Date) dateBox.date.clone());
             receiptInputCache.setCachedCategory(category);
             receiptInputCache.setCachedCurrency(currency);
 
-            presenter.saveReceipt(dateBox.date, price, tax, exchangeRate, comment,
+            presenter.saveReceipt(receiptDate, price, tax, exchangeRate, comment,
                     paymentMethod, reimbursableCheckbox.isChecked(), fullpageCheckbox.isChecked(), name, category, currency,
                     extraText1, extraText2, extraText3);
 
