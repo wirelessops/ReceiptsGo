@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/default_margin_item_separator"
+    android:layout_marginStart="@dimen/default_margin_item_separator"
+    android:layout_marginEnd="@dimen/default_margin_item_separator"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
 
@@ -16,8 +18,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingEnd="8dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/card_image"
@@ -56,6 +57,7 @@
                 android:layout_marginBottom="@dimen/default_margin_item_separator"
                 android:layout_marginStart="@dimen/default_margin_item_separator"
                 android:layout_toEndOf="@id/card_date"
+                android:layout_marginEnd="@dimen/default_margin_item_separator"
                 android:ellipsize="end"
                 android:gravity="end"
                 android:maxLines="1"
@@ -69,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/default_margin_item_separator"
+                android:padding="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:src="@drawable/ic_menu_24dp"
@@ -82,7 +84,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="@dimen/default_margin_item_separator"
                 android:layout_marginStart="@dimen/default_margin_item_separator"
-                android:layout_marginTop="@dimen/default_margin_item_separator"
+                android:padding="4dp"
                 android:layout_toStartOf="@id/card_menu"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"

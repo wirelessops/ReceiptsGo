@@ -188,10 +188,10 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     @BindView(R.id.receipt_input_tax_wrapper)
     View taxInputWrapper;
 
-    @BindViews({R.id.receipt_input_guide_image_payment_method, R.id.receipt_input_payment_method })
+    @BindViews({R.id.receipt_input_guide_image_payment_method, R.id.receipt_input_payment_method})
     List<View> paymentMethodsViewsList;
 
-    @BindViews({R.id.receipt_input_guide_image_exchange_rate, R.id.receipt_input_exchange_rate, R.id.receipt_input_exchanged_result, R.id.receipt_input_exchange_rate_base_currency })
+    @BindViews({R.id.receipt_input_guide_image_exchange_rate, R.id.receipt_input_exchange_rate, R.id.receipt_input_exchanged_result, R.id.receipt_input_exchange_rate_base_currency})
     List<View> exchangeRateViewsList;
 
     // Flex fields (ie for white-label projects)
@@ -699,7 +699,6 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     private void saveReceipt() {
 
         if (presenter.checkReceipt(dateBox.date)) {
-
             final String name = TextUtils.isEmpty(nameBox.getText().toString()) ? "" : nameBox.getText().toString();
             final Category category = categoriesAdapter.getItem(categoriesSpinner.getSelectedItemPosition());
             final String currency = currencySpinner.getSelectedItem().toString();
@@ -712,17 +711,24 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
             final String extraText2 = (extraEditText2 == null) ? null : extraEditText2.getText().toString();
             final String extraText3 = (extraEditText3 == null) ? null : extraEditText3.getText().toString();
 
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(dateBox.date);
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            long secondsOfDay = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
-                    TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
-                    cal.get(Calendar.SECOND);
+            final Date receiptDate;
 
-            // Note: we're saving date that was picked by user (without time information) + current secondsOfDay
-            final Date receiptDate = new Date(cal.getTimeInMillis() + secondsOfDay);
+            // updating date just if it was really changed (to prevent reordering)
+            if (getReceipt() != null && getReceipt().getDate().equals(dateBox.date)) {
+                receiptDate = getReceipt().getDate();
+            } else {
+                Calendar cal = Calendar.getInstance();
+                long secondsOfDay = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
+                        TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
+                        cal.get(Calendar.SECOND);
+                cal.setTime(dateBox.date);
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+
+                // Note: we're saving date that was picked by user (without time information) + current secondsOfDay
+                receiptDate = new Date(cal.getTimeInMillis() + secondsOfDay);
+            }
 
             receiptInputCache.setCachedDate((Date) dateBox.date.clone());
             receiptInputCache.setCachedCategory(category);
@@ -819,7 +825,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                 exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Loading);
             } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Error) {
                 exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
-            } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Success){
+            } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Success) {
                 if (exchangeRateUiIndicator.getData().isPresent()) {
                     if (TextUtils.isEmpty(exchangeRateBox.getText()) || exchangedPriceInBaseCurrencyBox.isFocused()) {
                         exchangeRateBox.setText(exchangeRateUiIndicator.getData().get().getDecimalFormattedExchangeRate(getParentTrip().getDefaultCurrencyCode()));
@@ -877,9 +883,9 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     public Observable<Object> getUserInitiatedExchangeRateRetries() {
         return exchangeRateBox.getUserRetries()
                 .doOnNext(ignored -> {
-                   if (exchangedPriceInBaseCurrencyBox.isFocused()) {
-                       exchangedPriceInBaseCurrencyBox.clearFocus();
-                   }
+                    if (exchangedPriceInBaseCurrencyBox.isFocused()) {
+                        exchangedPriceInBaseCurrencyBox.clearFocus();
+                    }
                 });
     }
 

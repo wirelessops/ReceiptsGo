@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/default_margin_size">
+
+    <TextView
+        android:id="@+id/attach_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_photo_camera_white_24dp"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="@string/receipt_attach_photo" />
+
+    <TextView
+        android:id="@+id/attach_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_image_white_24dp"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="@string/receipt_attach_image" />
+
+    <TextView
+        android:id="@+id/attach_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_attach_file_white_24dp"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="@string/receipt_attach_file" />
+
+</LinearLayout>

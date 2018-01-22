@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -78,11 +77,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
 
         receiptHolder.itemView.setOnClickListener(v -> itemClickSubject.onNext(receipt));
         receiptHolder.menuButton.setOnClickListener(v -> menuClickSubject.onNext(receipt));
-        receiptHolder.image.setOnClickListener(v -> {
-            if (receipt.hasPDF() || receipt.hasImage()) {
-                imageClickSubject.onNext(receipt);
-            }
-        });
+        receiptHolder.image.setOnClickListener(v -> imageClickSubject.onNext(receipt));
 
         if (receipt.hasPDF()) {
             setIcon(receiptHolder.image, R.drawable.ic_file_black_24dp);
@@ -90,7 +85,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
             receiptHolder.image.setPadding(0, 0, 0, 0);
             Picasso.with(context)
                     .load(receipt.getImage())
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerCrop()
                     .into(receiptHolder.image);

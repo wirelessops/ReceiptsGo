@@ -38,19 +38,19 @@
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/receipt_action_import"
             style="@style/Widget.SmartReceipts.FloatingActionButton"
-            android:src="@drawable/fab_gallery"
+            android:src="@drawable/ic_image_white_24dp"
             fab:fab_label="@string/receipt_action_import" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/receipt_action_text"
             style="@style/Widget.SmartReceipts.FloatingActionButton"
-            android:src="@drawable/fab_text_only"
+            android:src="@drawable/ic_receipt_white_24dp"
             fab:fab_label="@string/receipt_action_text" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/receipt_action_camera"
             style="@style/Widget.SmartReceipts.FloatingActionButton"
-            android:src="@drawable/fab_camera"
+            android:src="@drawable/ic_photo_camera_white_24dp"
             fab:fab_label="@string/receipt_action_camera" />
 
     </com.github.clans.fab.FloatingActionMenu>

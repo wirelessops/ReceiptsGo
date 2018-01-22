@@ -2,6 +2,7 @@ package co.smartreceipts.android.receipts;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -289,17 +290,17 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 .subscribe(this::showReceiptMenu));
 
         onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getImageClicks()
-        .subscribe(receipt -> {
-            if (receipt.hasImage()) {
-                analytics.record(Events.Receipts.ReceiptMenuViewImage);
-                navigationHandler.navigateToViewReceiptImage(receipt);
-            } else if (receipt.hasPDF()) {
-                analytics.record(Events.Receipts.ReceiptMenuViewPdf);
-                navigationHandler.navigateToViewReceiptPdf(receipt);
-            } else {
-                showReceiptMenu(receipt);
-            }
-        }));
+                .subscribe(receipt -> {
+                    if (receipt.hasImage()) {
+                        analytics.record(Events.Receipts.ReceiptMenuViewImage);
+                        navigationHandler.navigateToViewReceiptImage(receipt);
+                    } else if (receipt.hasPDF()) {
+                        analytics.record(Events.Receipts.ReceiptMenuViewPdf);
+                        navigationHandler.navigateToViewReceiptPdf(receipt);
+                    } else {
+                        showAttachmentDialog(receipt);
+                    }
+                }));
     }
 
     private void subscribeOnCreate() {
@@ -410,6 +411,37 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     protected PersistenceManager getPersistenceManager() {
         return persistenceManager;
+    }
+
+    private void showAttachmentDialog(final Receipt receipt) {
+        // TODO: 19.01.2018 show new dialog with attachment options (take photo, add image, add file)
+        // TODO: 19.01.2018 translate strings for attachment dialog
+        highlightedReceipt = receipt;
+        BetterDialogBuilder dialogBuilder = new BetterDialogBuilder(getActivity());
+        dialogBuilder.setTitle(receipt.getName())
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_receipt_attachment, null);
+        dialogBuilder.setView(dialogView);
+
+        final AlertDialog dialog = dialogBuilder.create();
+
+        dialogView.findViewById(R.id.attach_photo).setOnClickListener(v -> {
+            analytics.record(Events.Receipts.ReceiptAttachPhoto);
+            imageUri = new CameraInteractionController(ReceiptsListFragment.this).addPhoto();
+            dialog.cancel();
+        });
+        dialogView.findViewById(R.id.attach_picture).setOnClickListener(v -> {
+            analytics.record(Events.Receipts.ReceiptAttachPicture);
+            dialog.cancel();
+        });
+        dialogView.findViewById(R.id.attach_file).setOnClickListener(v -> {
+            analytics.record(Events.Receipts.ReceiptAttachFile);
+            dialog.cancel();
+        });
+
+
+        dialog.show();
     }
 
     public final boolean showReceiptMenu(final Receipt receipt) {

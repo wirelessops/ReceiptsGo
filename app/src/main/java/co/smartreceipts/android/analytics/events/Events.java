@@ -37,8 +37,9 @@ public final class Events {
         public static final Event ReceiptMenuViewImage = new DefaultEvent(Category.Receipts, "ReceiptMenuViewImage");
         public static final Event ReceiptMenuDelete = new DefaultEvent(Category.Receipts, "ReceiptMenuDelete");
         public static final Event ReceiptMenuMoveCopy = new DefaultEvent(Category.Receipts, "ReceiptMenuMoveCopy");
-        public static final Event ReceiptMenuSwapUp = new DefaultEvent(Category.Receipts, "ReceiptMenuSwapUp");
-        public static final Event ReceiptMenuSwapDown = new DefaultEvent(Category.Receipts, "ReceiptMenuSwapDown");
+        public static final Event ReceiptAttachPhoto = new DefaultEvent(Category.Receipts, "ReceiptAttachPhoto");
+        public static final Event ReceiptAttachPicture = new DefaultEvent(Category.Receipts, "ReceiptAttachPicture");
+        public static final Event ReceiptAttachFile = new DefaultEvent(Category.Receipts, "ReceiptAttachFile");
 
         public static final Event ReceiptImageViewRotateCcw = new DefaultEvent(Category.Receipts, "ReceiptImageViewRotateCcw");
         public static final Event ReceiptImageViewRotateCw = new DefaultEvent(Category.Receipts, "ReceiptImageViewRotateCw");
