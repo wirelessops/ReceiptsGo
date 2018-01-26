@@ -318,7 +318,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 })
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
-                        loadingProgress.setVisibility(View.VISIBLE);
+                        if (loadingProgress != null) {
+                            loadingProgress.setVisibility(View.VISIBLE);
+                        }
                         activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
                                 locatorResponse.getResultCode(), locatorResponse.getUri(), trip);
                     } else {
@@ -328,7 +330,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         }
                         highlightedReceipt = null;
-                        loadingProgress.setVisibility(View.GONE);
+                        if (loadingProgress != null) {
+                            loadingProgress.setVisibility(View.GONE);
+                        }
                         activityFileResultLocator.markThatResultsWereConsumed();
                     }
                 }));
