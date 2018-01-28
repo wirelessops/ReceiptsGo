@@ -30,7 +30,7 @@ import co.smartreceipts.android.ocr.widget.di.OcrConfigurationFragmentSubcompone
 import co.smartreceipts.android.ocr.widget.di.OcrInformationalTooltipFragmentSubcomponent;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
-import co.smartreceipts.android.receipts.editor.CreateEditReceiptFragment;
+import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
 import co.smartreceipts.android.receipts.editor.di.ReceiptsCreateEditFragmentSubcomponent;
 import co.smartreceipts.android.sync.widget.backups.AutomaticBackupsInfoDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment;
@@ -87,7 +87,7 @@ public abstract class SmartReceiptsActivityBindingModule {
 
     @Binds
     @IntoMap
-    @FragmentKey(CreateEditReceiptFragment.class)
+    @FragmentKey(ReceiptCreateEditFragment.class)
     public abstract AndroidInjector.Factory<? extends Fragment> receiptCreateEditFragmentSubcomponentBuilder(
             ReceiptsCreateEditFragmentSubcomponent.Builder builder);
 

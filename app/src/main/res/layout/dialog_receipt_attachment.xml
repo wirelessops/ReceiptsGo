@@ -2,41 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/default_margin_size">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/attach_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/margin_normal"
         android:background="?attr/selectableItemBackground"
-        android:drawablePadding="16dp"
+        android:drawablePadding="@dimen/padding_large"
         android:drawableStart="@drawable/ic_photo_camera_white_24dp"
         android:gravity="center_vertical"
-        android:padding="8dp"
-        android:text="@string/receipt_attach_photo" />
+        android:paddingBottom="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_larger"
+        android:paddingStart="@dimen/padding_larger"
+        android:paddingTop="@dimen/padding_normal"
+        android:text="@string/receipt_attach_photo"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_subhead" />
 
     <TextView
         android:id="@+id/attach_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:drawablePadding="16dp"
+        android:layout_marginTop="@dimen/margin_tiniest"
+        android:background="?attr/selectableItemBackground"
+        android:drawablePadding="@dimen/padding_large"
         android:drawableStart="@drawable/ic_image_white_24dp"
         android:gravity="center_vertical"
-        android:padding="8dp"
-        android:text="@string/receipt_attach_image" />
+        android:paddingBottom="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_larger"
+        android:paddingStart="@dimen/padding_larger"
+        android:paddingTop="@dimen/padding_normal"
+        android:text="@string/receipt_attach_image"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_subhead" />
 
     <TextView
         android:id="@+id/attach_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:drawablePadding="16dp"
+        android:layout_marginTop="@dimen/margin_tiniest"
+        android:background="?attr/selectableItemBackground"
+        android:drawablePadding="@dimen/padding_large"
         android:drawableStart="@drawable/ic_attach_file_white_24dp"
         android:gravity="center_vertical"
-        android:padding="8dp"
-        android:text="@string/receipt_attach_file" />
+        android:paddingBottom="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_larger"
+        android:paddingStart="@dimen/padding_larger"
+        android:paddingTop="@dimen/padding_normal"
+        android:text="@string/receipt_attach_file"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_subhead" />
 
 </LinearLayout>

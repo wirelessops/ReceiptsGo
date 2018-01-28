@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:tools="http://schemas.android.com/tools">
 
     <include layout="@layout/toolbar"
              android:id="@+id/toolbar"/>
@@ -21,7 +22,8 @@
     	android:orientation="horizontal"
     	android:baselineAligned="false"
     	android:background="@color/transparent_overlay"
-    	android:visibility="gone" >
+    	android:visibility="gone"
+		tools:visibility="visible">
 
 		<LinearLayout
 		    android:id="@+id/rotate_ccw"

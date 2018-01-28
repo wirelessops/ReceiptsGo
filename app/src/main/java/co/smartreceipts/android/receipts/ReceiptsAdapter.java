@@ -219,6 +219,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
     private void setIcon(ImageView view, @DrawableRes int drawableRes) {
         final Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), drawableRes, context.getTheme());
 
+        drawable.mutate(); // hack to prevent fab icon tinting (fab has drawable with the same src)
         DrawableCompat.setTint(drawable, ResourcesCompat.getColor(context.getResources(), R.color.grey_image_tint, null));
         final int pixelPadding = context.getResources().getDimensionPixelOffset(R.dimen.card_image_padding);
 

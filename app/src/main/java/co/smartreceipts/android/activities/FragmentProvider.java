@@ -16,13 +16,13 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
-import co.smartreceipts.android.receipts.editor.CreateEditReceiptFragment;
+import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 
-import static co.smartreceipts.android.receipts.editor.CreateEditReceiptFragment.ARG_FILE;
-import static co.smartreceipts.android.receipts.editor.CreateEditReceiptFragment.ARG_OCR;
+import static co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_FILE;
+import static co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_OCR;
 import static co.smartreceipts.android.trips.TripFragment.ARG_NAVIGATE_TO_VIEW_LAST_TRIP;
 
 public class FragmentProvider {
@@ -59,39 +59,39 @@ public class FragmentProvider {
     }
 
     /**
-     * Creates a {@link CreateEditReceiptFragment} for a new receipt
+     * Creates a {@link ReceiptCreateEditFragment} for a new receipt
      *
      * @param trip the parent trip of this receipt
      * @param file the file associated with this receipt or null if we do not have one
      * @return the new instance of this fragment
      */
     @NonNull
-    public CreateEditReceiptFragment newCreateReceiptFragment(@NonNull Trip trip, @Nullable File file, @Nullable OcrResponse ocrResponse) {
+    public ReceiptCreateEditFragment newCreateReceiptFragment(@NonNull Trip trip, @Nullable File file, @Nullable OcrResponse ocrResponse) {
         final Bundle args = new Bundle();
         args.putParcelable(Trip.PARCEL_KEY, trip);
         args.putParcelable(Receipt.PARCEL_KEY, null);
         args.putSerializable(ARG_FILE, file);
         args.putSerializable(ARG_OCR, ocrResponse);
 
-        return attachArguments(CreateEditReceiptFragment.newInstance(), args);
+        return attachArguments(ReceiptCreateEditFragment.newInstance(), args);
     }
 
     /**
-     * Creates a {@link CreateEditReceiptFragment} to edit an existing receipt
+     * Creates a {@link ReceiptCreateEditFragment} to edit an existing receipt
      *
      * @param trip the parent trip of this receipt
      * @param receiptToEdit the receipt to edit
      * @return the new instance of this fragment
      */
     @NonNull
-    public CreateEditReceiptFragment newEditReceiptFragment(@NonNull Trip trip, @NonNull Receipt receiptToEdit) {
+    public ReceiptCreateEditFragment newEditReceiptFragment(@NonNull Trip trip, @NonNull Receipt receiptToEdit) {
         final Bundle args = new Bundle();
         args.putParcelable(Trip.PARCEL_KEY, trip);
         args.putParcelable(Receipt.PARCEL_KEY, receiptToEdit);
         args.putSerializable(ARG_FILE, null);
         args.putSerializable(ARG_OCR, null);
 
-        return attachArguments(CreateEditReceiptFragment.newInstance(), args);
+        return attachArguments(ReceiptCreateEditFragment.newInstance(), args);
     }
 
     /**

@@ -100,7 +100,7 @@ import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
 
-public class CreateEditReceiptFragment extends WBFragment implements View.OnFocusChangeListener,
+public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener,
         DatabaseHelper.ReceiptAutoCompleteListener,
         EditableReceiptPricingView,
         ReceiptDateView,
@@ -225,8 +225,8 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
     private FooterButtonArrayAdapter<Category> categoriesAdapter;
     private FooterButtonArrayAdapter<PaymentMethod> paymentMethodsAdapter;
 
-    public static CreateEditReceiptFragment newInstance() {
-        return new CreateEditReceiptFragment();
+    public static ReceiptCreateEditFragment newInstance() {
+        return new ReceiptCreateEditFragment();
     }
 
     @Override
@@ -830,7 +830,7 @@ public class CreateEditReceiptFragment extends WBFragment implements View.OnFocu
                     if (TextUtils.isEmpty(exchangeRateBox.getText()) || exchangedPriceInBaseCurrencyBox.isFocused()) {
                         exchangeRateBox.setText(exchangeRateUiIndicator.getData().get().getDecimalFormattedExchangeRate(getParentTrip().getDefaultCurrencyCode()));
                     } else {
-                        Logger.warn(CreateEditReceiptFragment.this, "Ignoring remote exchange rate result now that one is already set");
+                        Logger.warn(ReceiptCreateEditFragment.this, "Ignoring remote exchange rate result now that one is already set");
                     }
                     exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Success);
                 } else {

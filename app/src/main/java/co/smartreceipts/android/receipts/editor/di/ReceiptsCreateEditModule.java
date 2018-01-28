@@ -1,6 +1,6 @@
 package co.smartreceipts.android.receipts.editor.di;
 
-import co.smartreceipts.android.receipts.editor.CreateEditReceiptFragment;
+import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorView;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
@@ -11,12 +11,12 @@ import dagger.Module;
 public abstract class ReceiptsCreateEditModule {
 
     @Binds
-    abstract EditableReceiptPricingView provideEditableReceiptPricingView(CreateEditReceiptFragment fragment);
+    abstract EditableReceiptPricingView provideEditableReceiptPricingView(ReceiptCreateEditFragment fragment);
 
     @Binds
-    abstract ReceiptDateView provideReceiptDateView(CreateEditReceiptFragment fragment);
+    abstract ReceiptDateView provideReceiptDateView(ReceiptCreateEditFragment fragment);
 
     @Binds
-    abstract CurrencyExchangeRateEditorView provideCurrencyExchangeRateEditorView(CreateEditReceiptFragment fragment);
+    abstract CurrencyExchangeRateEditorView provideCurrencyExchangeRateEditorView(ReceiptCreateEditFragment fragment);
 
 }

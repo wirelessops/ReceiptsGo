@@ -65,6 +65,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
@@ -141,6 +142,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Inject
     OrderingPreferencesManager orderingPreferencesManager;
+
+    @Inject
+    ReceiptAttachmentManager receiptAttachmentManager;
 
     @BindView(R.id.progress)
     ProgressBar loadingProgress;
@@ -262,9 +266,18 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             case RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST:
                                 navigationHandler.navigateToCreateNewReceiptFragment(trip, response.getFile(), response.getOcrResponse());
                                 break;
+                            case RequestCodes.ATTACH_GALLERY_IMAGE:
                             case RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST:
-                                final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt).setImage(response.getFile()).build();
+                                final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt)
+                                        .setImage(response.getFile())
+                                        .build();
                                 receiptTableController.update(highlightedReceipt, updatedReceipt, new DatabaseOperationMetadata());
+                                break;
+                            case RequestCodes.ATTACH_GALLERY_PDF:
+                                final Receipt updatedReceiptWithFile = new ReceiptBuilderFactory(highlightedReceipt)
+                                        .setPDF(response.getFile())
+                                        .build();
+                                receiptTableController.update(highlightedReceipt, updatedReceiptWithFile, new DatabaseOperationMetadata());
                                 break;
                         }
                     } else {
@@ -414,8 +427,10 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void showAttachmentDialog(final Receipt receipt) {
-        // TODO: 19.01.2018 show new dialog with attachment options (take photo, add image, add file)
         // TODO: 19.01.2018 translate strings for attachment dialog
+        // TODO: 22.01.2018 i need to try create file icon with "PDF"
+        // TODO: 22.01.2018 deal with dimens
+        // TODO: 25.01.2018 'Remove attachment' option?
         highlightedReceipt = receipt;
         BetterDialogBuilder dialogBuilder = new BetterDialogBuilder(getActivity());
         dialogBuilder.setTitle(receipt.getName())
@@ -427,19 +442,21 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         final AlertDialog dialog = dialogBuilder.create();
 
         dialogView.findViewById(R.id.attach_photo).setOnClickListener(v -> {
-            analytics.record(Events.Receipts.ReceiptAttachPhoto);
-            imageUri = new CameraInteractionController(ReceiptsListFragment.this).addPhoto();
+            imageUri = receiptAttachmentManager.attachPhoto(ReceiptsListFragment.this);
             dialog.cancel();
         });
         dialogView.findViewById(R.id.attach_picture).setOnClickListener(v -> {
-            analytics.record(Events.Receipts.ReceiptAttachPicture);
+            if (!receiptAttachmentManager.attachPicture(ReceiptsListFragment.this)) {
+                Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
+            }
             dialog.cancel();
         });
         dialogView.findViewById(R.id.attach_file).setOnClickListener(v -> {
-            analytics.record(Events.Receipts.ReceiptAttachFile);
+            if (!receiptAttachmentManager.attachFile(this)) {
+                Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
+            }
             dialog.cancel();
         });
-
 
         dialog.show();
     }
@@ -485,7 +502,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 if (selection != null) {
                     if (selection.equals(receiptActionCamera)) { // Take Photo
                         analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
-                        imageUri = new CameraInteractionController(ReceiptsListFragment.this).addPhoto();
+                        imageUri = receiptAttachmentManager.attachPhoto(ReceiptsListFragment.this);
                     } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
                         analytics.record(Events.Receipts.ReceiptMenuDelete);
                         final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
