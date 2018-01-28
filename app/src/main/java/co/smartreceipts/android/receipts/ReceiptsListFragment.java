@@ -427,7 +427,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void showAttachmentDialog(final Receipt receipt) {
-        // TODO: 19.01.2018 translate strings for attachment dialog
         // TODO: 22.01.2018 i need to try create file icon with "PDF"
         // TODO: 22.01.2018 deal with dimens
         // TODO: 25.01.2018 'Remove attachment' option?

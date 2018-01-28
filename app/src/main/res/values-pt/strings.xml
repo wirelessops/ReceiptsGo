@@ -262,6 +262,11 @@
     <string name="manage_categories">Gerenciar categorias</string>
     <string name="manage_payment_methods">Gerenciar Métodos de Pagamento</string>
 
+    <!-- ================= DIALOG_RECEIPT_ATTACHMENT =================== -->
+    <string name="receipt_attach_photo">Tire uma foto</string>
+    <string name="receipt_attach_image">Escolha uma foto</string>
+    <string name="receipt_attach_file">Anexar arquivo</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Exportar recibos?</string>
     <string name="dialog_export_text">Você pode importar seus dados novamente clicando no arquivo SmartReceipts.SMR, que será gerado ao clicar abaixo</string>

@@ -264,6 +264,11 @@
     <string name="manage_categories">Управління категоріями</string>
     <string name="manage_payment_methods">Управління методами сплати</string>
 
+    <!-- ================= DIALOG_RECEIPT_ATTACHMENT =================== -->
+    <string name="receipt_attach_photo">Зробити фото</string>
+    <string name="receipt_attach_image">Обрати зображення</string>
+    <string name="receipt_attach_file">Прикріпити файл</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Експортувати ваші чеки?</string>
     <string name="dialog_export_text">Ви можете повторно імпортувати ваші дані, натиснувши на файл SmartReceipts.SMR, що генерується натисканням нижче.</string>
