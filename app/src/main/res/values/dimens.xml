@@ -28,10 +28,6 @@
     <dimen name="action_bar_border_stroke">2dp</dimen>
 
     <!-- Material Styling Defaults -->
-    <dimen name="default_margin_size">16dp</dimen>
-    <dimen name="default_input_row_size">40dp</dimen>
-    <dimen name="default_margin_item_separator">8dp</dimen>
-
     <dimen name="margin_tiniest">4dp</dimen>
     <dimen name="margin_tiny">8dp</dimen>
     <dimen name="margin_small">12dp</dimen>
@@ -45,8 +41,10 @@
     <dimen name="padding_large">16dp</dimen>
     <dimen name="padding_larger">24dp</dimen>
 
+    <dimen name="default_input_row_size">40dp</dimen>
+
     <!-- Generate Report -->
-    <dimen name="generate_report_padding">@dimen/default_margin_size</dimen>
+    <dimen name="generate_report_padding">@dimen/margin_normal</dimen>
     <dimen name="generate_report_item_separation">8dp</dimen>
 
     <!-- Floating Action Buttons -->

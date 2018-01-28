@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:visibility="invisible"
-        android:layout_marginBottom="@dimen/default_margin_item_separator"
+        android:layout_marginBottom="@dimen/margin_tiny"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <ProgressBar

@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="@dimen/default_margin_size">
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/automatic_backup_provider_radiogroup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_large">
 
-    <RadioGroup
-        android:id="@+id/automatic_backup_provider_radiogroup"
+    <RadioButton
+        android:id="@+id/automatic_backup_provider_none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:text="@string/auto_backup_source_none"
+        android:textAppearance="@style/Widget.SmartReceipts.TextView.Body2" />
 
-        <RadioButton
-            android:id="@+id/automatic_backup_provider_none"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Body2"
-            android:text="@string/auto_backup_source_none" />
+    <RadioButton
+        android:id="@+id/automatic_backup_provider_google_drive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:text="@string/auto_backup_source_google_drive"
+        android:textAppearance="@style/Widget.SmartReceipts.TextView.Body2" />
 
-        <RadioButton
-            android:id="@+id/automatic_backup_provider_google_drive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin_size"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Body2"
-            android:text="@string/auto_backup_source_google_drive" />
-
-    </RadioGroup>
-
-</LinearLayout>
+</RadioGroup>

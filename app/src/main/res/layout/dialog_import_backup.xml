@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/default_margin_size">
+    android:padding="@dimen/padding_large">
 
     <CheckBox
         android:id="@+id/dialog_import_overwrite"

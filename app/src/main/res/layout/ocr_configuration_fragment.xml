@@ -7,33 +7,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingStart="@dimen/default_margin_size"
-        android:paddingEnd="@dimen/default_margin_size"
-        android:paddingTop="@dimen/default_margin_size"
+        android:paddingStart="@dimen/padding_large"
+        android:paddingEnd="@dimen/padding_large"
+        android:paddingTop="@dimen/padding_large"
         android:layout_alignParentTop="true" >
 
         <TextView style="@style/Widget.SmartReceipts.TextView.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_item_separator"
+            android:layout_marginBottom="@dimen/margin_tiny"
             android:text="@string/ocr_configuration_welcome" />
 
         <TextView style="@style/Widget.SmartReceipts.TextView.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_item_separator"
+            android:layout_marginBottom="@dimen/margin_tiny"
             android:text="@string/ocr_configuration_information" />
 
         <TextView style="@style/Widget.SmartReceipts.TextView.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_item_separator"
+            android:layout_marginBottom="@dimen/margin_tiny"
             android:text="@string/ocr_configuration_information_line2" />
 
         <TextView style="@style/Widget.SmartReceipts.TextView.Subhead"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:layout_marginBottom="@dimen/default_margin_item_separator"
+                  android:layout_marginBottom="@dimen/margin_tiny"
                   android:text="@string/ocr_configuration_information_line3" />
 
         <CheckBox
@@ -42,10 +42,8 @@
             android:layout_height="wrap_content"
             android:text="@string/ocr_is_enabled"
             android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
-            android:paddingLeft="@dimen/default_margin_item_separator"
-            android:paddingStart="@dimen/default_margin_item_separator"
-            android:paddingRight="@dimen/default_margin_item_separator"
-            android:paddingEnd="@dimen/default_margin_item_separator" />
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal" />
 
         <CheckBox
             android:id="@+id/ocr_save_scans_to_improve_results"
@@ -53,14 +51,12 @@
             android:layout_height="wrap_content"
             android:text="@string/ocr_save_scans_to_improve_results"
             android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
-            android:paddingLeft="@dimen/default_margin_item_separator"
-            android:paddingStart="@dimen/default_margin_item_separator"
-            android:paddingRight="@dimen/default_margin_item_separator"
-            android:paddingEnd="@dimen/default_margin_item_separator" />
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal" />
 
         <View style="@style/Widget.View.Divider.Horizontal"
-            android:layout_marginTop="@dimen/default_margin_size"
-            android:layout_marginBottom="@dimen/default_margin_size"/>
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"/>
 
         <TextView style="@style/Widget.SmartReceipts.TextView.Title"
             android:layout_width="match_parent"
