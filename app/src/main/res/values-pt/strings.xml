@@ -409,6 +409,7 @@
     <string name="receipt_dialog_action_camera">Tirar foto do recibo</string>
     <string name="receipt_dialog_action_delete">Excluir recibo</string>
     <string name="receipt_dialog_action_move_copy">Mover/copiar</string>
+    <string name="receipt_dialog_action_remove_attachment">Remover anexo</string>
 
     <string name="dialog_attachment_title">Adicionar %s ao recibo</string>
     <string name="dialog_attachment_text">Toque em um recibo existente para adicionar esse %s a ele</string>
@@ -417,6 +418,8 @@
     <string name="action_send_view">Visualizar recibo existente %s</string>
     <string name="action_send_attach">Anexar %s ao recibo</string>
     <string name="action_send_replace">Substituir recibo %s</string>
+
+    <string name="receipt_dialog_remove_attachment">Deseja remover o anexo?</string>
 
     <!-- ================== Preference Dialog ==================== -->
     <string name="dialog_custom_csv_spinner">Tipo de coluna</string>

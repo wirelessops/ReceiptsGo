@@ -409,6 +409,7 @@
     <string name="receipt_dialog_action_camera">Belegbild machen</string>
     <string name="receipt_dialog_action_delete">Beleg löschen</string>
     <string name="receipt_dialog_action_move_copy">Verschieben / Kopieren</string>
+    <string name="receipt_dialog_action_remove_attachment">Entfernen Sie den Anhang</string>
 
     <string name="dialog_attachment_title">Zum Beleg %s hinzufügen</string>
     <string name="dialog_attachment_text">Tippen Sie auf einen bestehenden Beleg um ihn hinzufügen %s</string>
@@ -417,6 +418,8 @@
     <string name="action_send_view">Ansicht bestehender Beleg %s</string>
     <string name="action_send_attach">Zum Beleg  %s hinzufügen</string>
     <string name="action_send_replace">Beleg ersetzen %s</string>
+
+    <string name="receipt_dialog_remove_attachment">Möchten Sie den Anhang entfernen?</string>
 
     <!-- ================== Preference Dialog ==================== -->
     <string name="dialog_custom_csv_spinner">Typ Spalte</string>

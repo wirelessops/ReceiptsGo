@@ -411,6 +411,7 @@
     <string name="receipt_dialog_action_camera">Сделать снимок чека</string>
     <string name="receipt_dialog_action_delete">Удалить чек</string>
     <string name="receipt_dialog_action_move_copy">Переместить/Копировать</string>
+    <string name="receipt_dialog_action_remove_attachment">Удалить вложение</string>
 
     <string name="dialog_attachment_title">Добавить %s к чеку</string>
     <string name="dialog_attachment_text">Нажмите на существующий чек, чтобы добавить этот %s к нему</string>
@@ -419,6 +420,8 @@
     <string name="action_send_view">Просмотреть текущий чек %s</string>
     <string name="action_send_attach">Прикрепить %s к чеку</string>
     <string name="action_send_replace">Заменить чек %s</string>
+
+    <string name="receipt_dialog_remove_attachment">Вы хотите удалить вложение?</string>
 
     <!-- ================== Preference Dialog ==================== -->
     <string name="dialog_custom_csv_spinner">Тип колонки</string>

@@ -409,6 +409,7 @@
     <string name="receipt_dialog_action_camera">Prendre la photo du reçu</string>
     <string name="receipt_dialog_action_delete">Supprimer le reçu</string>
     <string name="receipt_dialog_action_move_copy">Déplacer/Copier</string>
+    <string name="receipt_dialog_action_remove_attachment">Supprimer la pièce jointe</string>
 
     <string name="dialog_attachment_title">Ajouter %s au reçu</string>
     <string name="dialog_attachment_text">Appuyez sur un reçu existant pour y ajouter cette %s</string>
@@ -417,6 +418,8 @@
     <string name="action_send_view">Afficher le reçu existant %s</string>
     <string name="action_send_attach">Joindre %s au reçu</string>
     <string name="action_send_replace">Remplacer le reçu %s</string>
+
+    <string name="receipt_dialog_remove_attachment">Voulez-vous supprimer la pièce jointe?</string>
 
     <!-- ================== Preference Dialog ==================== -->
     <string name="dialog_custom_csv_spinner">Type de colonne</string>

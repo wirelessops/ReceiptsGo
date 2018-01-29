@@ -427,8 +427,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void showAttachmentDialog(final Receipt receipt) {
-        // TODO: 22.01.2018 i need to try create file icon with "PDF"
-        // TODO: 25.01.2018 'Remove attachment' option?
         highlightedReceipt = receipt;
         BetterDialogBuilder dialogBuilder = new BetterDialogBuilder(getActivity());
         dialogBuilder.setTitle(receipt.getName())
@@ -462,7 +460,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public final boolean showReceiptMenu(final Receipt receipt) {
         highlightedReceipt = receipt;
         final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
-        builder.setTitle(receipt.getName()).setCancelable(true).setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());
+        builder.setTitle(receipt.getName())
+                .setCancelable(true)
+                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());
 
         final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
         if (intentImportResult != null && (intentImportResult.getFileType() == FileType.Image || intentImportResult.getFileType() == FileType.Pdf)) {
@@ -489,11 +489,12 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             final String receiptActionCamera = getString(R.string.receipt_dialog_action_camera);
             final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
             final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
+            final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
             final String[] receiptActions;
             if (!receipt.hasFile()) {
                 receiptActions = new String[]{receiptActionCamera, receiptActionDelete, receiptActionMoveCopy};
             } else {
-                receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
+                receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};
             }
             builder.setItems(receiptActions, (dialog, item) -> {
                 final String selection = receiptActions[item];
@@ -501,13 +502,29 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     if (selection.equals(receiptActionCamera)) { // Take Photo
                         analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
                         imageUri = receiptAttachmentManager.attachPhoto(ReceiptsListFragment.this);
+
                     } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
                         analytics.record(Events.Receipts.ReceiptMenuDelete);
                         final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
                         navigationHandler.showDialog(deleteReceiptDialogFragment);
+
                     } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
                         analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
                         ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
+
+                    } else if (selection.equals(receiptActionRemoveAttachment)) { // Remove Attachment
+                        analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(receipt.getName())
+                                .setCancelable(true)
+                                .setMessage(getString(R.string.receipt_dialog_remove_attachment))
+                                .setNegativeButton(android.R.string.cancel, (dialogRemove, id) -> dialogRemove.cancel())
+                                .setPositiveButton(android.R.string.ok, (dialogRemove, which) -> {
+                                    receiptTableController.update(receipt, new ReceiptBuilderFactory(receipt)
+                                            .setFile(null).build(), new DatabaseOperationMetadata());
+                                })
+                                .create()
+                                .show();
                     }
                 }
                 dialog.cancel();
