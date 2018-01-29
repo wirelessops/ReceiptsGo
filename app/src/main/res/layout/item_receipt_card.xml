@@ -45,7 +45,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/card_name"
-                android:textSize="@dimen/font_title"
+                android:textSize="@dimen/font_subhead"
                 tools:text="Title" />
 
             <TextView
@@ -53,16 +53,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/card_image"
-                android:layout_alignParentEnd="true"
                 android:layout_marginBottom="@dimen/margin_tiny"
                 android:layout_marginEnd="@dimen/margin_tiny"
-                android:layout_marginStart="@dimen/margin_tiny"
-                android:layout_toEndOf="@id/card_date"
+                android:layout_toEndOf="@+id/card_image"
+                android:layout_toStartOf="@+id/card_date"
                 android:ellipsize="end"
-                android:gravity="end"
                 android:maxLines="1"
                 android:textColor="@color/card_price"
-                android:textSize="@dimen/font_title"
+                android:textSize="@dimen/font_headline"
                 tools:text="20$" />
 
             <ImageView
@@ -96,7 +94,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/price"
-                android:layout_toEndOf="@+id/card_image"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_tiny"
                 android:textSize="@dimen/font_caption"
                 tools:text="30.11.17" />
 
