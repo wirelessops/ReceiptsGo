@@ -44,7 +44,6 @@ import wb.android.storage.StorageManager;
 public class SmartReceiptsApplication extends Application implements VersionUpgradedListener,
         HasActivityInjector, HasSupportFragmentInjector, HasServiceInjector {
 
-
     @Inject
     DispatchingAndroidInjector<Activity> activityInjector;
 

@@ -1,37 +1,20 @@
 package co.smartreceipts.android.di;
 
-import android.support.v4.app.Fragment;
-
-import co.smartreceipts.android.di.subcomponents.AutomaticBackupsInfoDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.BackupsFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.DeleteRemoteBackupDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.DriveRecoveryDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ExportBackupDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.GenerateReportFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.GraphsFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ImportLocalBackupDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ImportRemoteBackupDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ReceiptImageFragmentSubcomponent;
-import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
-import co.smartreceipts.android.receipts.di.DeleteReceiptDialogFragmentSubcomponent;
-import co.smartreceipts.android.receipts.di.ReceiptsListFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ReportInfoFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ReportTooltipFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.TripCreateEditFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.TripFragmentSubcomponent;
+import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.graphs.GraphsFragment;
-import co.smartreceipts.android.identity.widget.di.LoginFragmentSubcomponent;
+import co.smartreceipts.android.identity.widget.di.LoginModule;
 import co.smartreceipts.android.identity.widget.login.LoginFragment;
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
-import co.smartreceipts.android.ocr.widget.di.OcrConfigurationFragmentSubcomponent;
-import co.smartreceipts.android.ocr.widget.di.OcrInformationalTooltipFragmentSubcomponent;
+import co.smartreceipts.android.ocr.widget.di.OcrConfigurationModule;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
+import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
+import co.smartreceipts.android.receipts.di.ReceiptsListModule;
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
-import co.smartreceipts.android.receipts.editor.di.ReceiptsCreateEditFragmentSubcomponent;
+import co.smartreceipts.android.receipts.editor.di.ReceiptsCreateEditModule;
 import co.smartreceipts.android.sync.widget.backups.AutomaticBackupsInfoDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment;
 import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupDialogFragment;
@@ -42,155 +25,90 @@ import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
-import dagger.Binds;
 import dagger.Module;
-import dagger.android.AndroidInjector;
-import dagger.android.support.FragmentKey;
-import dagger.multibindings.IntoMap;
+import dagger.android.ContributesAndroidInjector;
 
-@Module(
-        subcomponents = {
-                TripFragmentSubcomponent.class,
-                TripCreateEditFragmentSubcomponent.class,
-                ReceiptsCreateEditFragmentSubcomponent.class,
-                ReceiptImageFragmentSubcomponent.class,
-                ReceiptsListFragmentSubcomponent.class,
-                DeleteReceiptDialogFragmentSubcomponent.class,
-                GenerateReportFragmentSubcomponent.class,
-                BackupsFragmentSubcomponent.class,
-                ReportInfoFragmentSubcomponent.class,
-                OcrInformationalTooltipFragmentSubcomponent.class,
-                DeleteRemoteBackupDialogFragmentSubcomponent.class,
-                AutomaticBackupsInfoDialogFragmentSubcomponent.class,
-                ImportRemoteBackupDialogFragmentSubcomponent.class,
-                ReportTooltipFragmentSubcomponent.class,
-                DriveRecoveryDialogFragmentSubcomponent.class,
-                ImportLocalBackupDialogFragmentSubcomponent.class,
-                ExportBackupDialogFragmentSubcomponent.class,
-                LoginFragmentSubcomponent.class,
-                OcrConfigurationFragmentSubcomponent.class,
-                GraphsFragmentSubcomponent.class
-        }
-)
+@Module
 public abstract class SmartReceiptsActivityBindingModule {
-    @Binds
-    @IntoMap
-    @FragmentKey(TripFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> tripFragmentSubcomponentBuilder(
-            TripFragmentSubcomponent.Builder builder);
 
-    @Binds
-    @IntoMap
-    @FragmentKey(TripCreateEditFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> tripCreateEditFragmentSubcomponentBuilder(
-            TripCreateEditFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract TripFragment tripFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ReceiptCreateEditFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> receiptCreateEditFragmentSubcomponentBuilder(
-            ReceiptsCreateEditFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract TripCreateEditFragment tripCreateEditFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ReceiptImageFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> receiptImageFragmentSubcomponentBuilder(
-            ReceiptImageFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector(modules = ReceiptsCreateEditModule.class)
+    public abstract ReceiptCreateEditFragment receiptCreateEditFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ReceiptsListFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> receiptsListFragmentSubcomponentBuilder(
-            ReceiptsListFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ReceiptImageFragment receiptImageFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DeleteReceiptDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> deleteReceiptDialogFragmentSubcomponentBuilder(
-            DeleteReceiptDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector(modules = ReceiptsListModule.class)
+    public abstract ReceiptsListFragment receiptsListFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(GenerateReportFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> generateReportFragmentSubcomponentBuilder(
-            GenerateReportFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DeleteReceiptDialogFragment deleteReceiptDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(BackupsFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> backupsFragmentBuilder(
-            BackupsFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract GenerateReportFragment generateReportFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ReportInfoFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> reportInfoFragmentBuilder(
-            ReportInfoFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract BackupsFragment backupsFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(OcrInformationalTooltipFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> ocrInformationalTooltipFragmentBuilder(
-            OcrInformationalTooltipFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ReportInfoFragment reportInfoFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DeleteRemoteBackupDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> deleteRemoteBackupDialogFragmentBuilder(
-            DeleteRemoteBackupDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract OcrInformationalTooltipFragment ocrInformationalTooltipFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(AutomaticBackupsInfoDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> automaticBackupsInfoDialogFragmentBuilder(
-            AutomaticBackupsInfoDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DeleteRemoteBackupDialogFragment deleteRemoteBackupDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ImportRemoteBackupDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> importRemoteBackupDialogFragmentBuilder(
-            ImportRemoteBackupDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract AutomaticBackupsInfoDialogFragment automaticBackupsInfoDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ReportTooltipFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> syncErrorFragmentBuilder(
-            ReportTooltipFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ImportRemoteBackupDialogFragment importRemoteBackupDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DriveRecoveryDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> driveRecoveryDialogFragmentBuilder(
-            DriveRecoveryDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector(modules = ReportTooltipModule.class)
+    public abstract ReportTooltipFragment reportTooltipFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ImportLocalBackupDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> importLocalBackupDialogFragmentBuilder(
-            ImportLocalBackupDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DriveRecoveryDialogFragment driveRecoveryDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ExportBackupDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> exportBackupDialogFragmentBuilder(
-            ExportBackupDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ImportLocalBackupDialogFragment importLocalBackupDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(LoginFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> loginFragmentBuilder(
-            LoginFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ExportBackupDialogFragment exportBackupDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(OcrConfigurationFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> ocrInformationalFragmentBuilder(
-            OcrConfigurationFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector(modules = LoginModule.class)
+    public abstract LoginFragment loginFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(GraphsFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> graphsFragmentBuilder(
-            GraphsFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector(modules = OcrConfigurationModule.class)
+    public abstract OcrConfigurationFragment ocrConfigurationFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = GraphsViewModule.class)
+    public abstract GraphsFragment graphsFragment();
 
 }

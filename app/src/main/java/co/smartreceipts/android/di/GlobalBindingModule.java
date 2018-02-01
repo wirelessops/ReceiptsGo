@@ -1,193 +1,113 @@
 package co.smartreceipts.android.di;
 
-import android.app.Activity;
-import android.app.Service;
-import android.support.v4.app.Fragment;
-
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
-import co.smartreceipts.android.activities.di.SmartReceiptsActivitySubcomponent;
-import co.smartreceipts.android.di.subcomponents.CSVColumnsListFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.CategoriesListFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.DeleteRemoteBackupProgressDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.DistanceDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.DistanceFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.DownloadRemoteBackupImagesProgressDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ExportBackupWorkerProgressDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.FeedbackDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ImportLocalBackupWorkerProgressDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ImportRemoteBackupWorkerProgressDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.InformAboutPdfImageAttachmentDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.PDFColumnsListFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.PaymentMethodsListFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.RatingDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.ReceiptMoveCopyDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.SelectAutomaticBackupProviderDialogFragmentSubcomponent;
-import co.smartreceipts.android.di.subcomponents.SettingsActivitySubcomponent;
+import co.smartreceipts.android.di.scopes.ActivityScope;
+import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.android.di.scopes.ServiceScope;
 import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
 import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
-import co.smartreceipts.android.ocr.widget.di.OcrConfigurationFragmentSubcomponent;
+import co.smartreceipts.android.imports.intents.di.IntentImportInformationModule;
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
-import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
+import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
+import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.columns.PDFColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
-import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.sync.drive.services.DriveCompletionEventService;
-import co.smartreceipts.android.sync.drive.services.di.DriveCompletionEventServiceSubcomponent;
 import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.DownloadRemoteBackupImagesProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ExportBackupWorkerProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupWorkerProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupWorkerProgressDialogFragment;
-import dagger.Binds;
 import dagger.Module;
-import dagger.android.ActivityKey;
-import dagger.android.AndroidInjector;
-import dagger.android.ServiceKey;
-import dagger.android.support.FragmentKey;
-import dagger.multibindings.IntoMap;
+import dagger.android.ContributesAndroidInjector;
 
-@Module(
-        subcomponents = {
-                SmartReceiptsActivitySubcomponent.class,
-                SettingsActivitySubcomponent.class,
-                DriveCompletionEventServiceSubcomponent.class,
-                CSVColumnsListFragmentSubcomponent.class,
-                PDFColumnsListFragmentSubcomponent.class,
-                DistanceFragmentSubcomponent.class,
-                DistanceDialogFragmentSubcomponent.class,
-                InformAboutPdfImageAttachmentDialogFragmentSubcomponent.class,
-                DeleteRemoteBackupProgressDialogFragmentSubcomponent.class,
-                DownloadRemoteBackupImagesProgressDialogFragmentSubcomponent.class,
-                ExportBackupWorkerProgressDialogFragmentSubcomponent.class,
-                ImportLocalBackupWorkerProgressDialogFragmentSubcomponent.class,
-                ImportRemoteBackupWorkerProgressDialogFragmentSubcomponent.class,
-                FeedbackDialogFragmentSubcomponent.class,
-                OcrConfigurationFragmentSubcomponent.class,
-                RatingDialogFragmentSubcomponent.class,
-                PaymentMethodsListFragmentSubcomponent.class,
-                CategoriesListFragmentSubcomponent.class,
-                ReceiptMoveCopyDialogFragmentSubcomponent.class,
-                SelectAutomaticBackupProviderDialogFragmentSubcomponent.class,
-        }
-)
+@Module
 public abstract class GlobalBindingModule {
-    @Binds
-    @IntoMap
-    @ActivityKey(SmartReceiptsActivity.class)
-    public abstract AndroidInjector.Factory<? extends Activity> smartReceiptsActivitySubcomponentBuilder(
-            SmartReceiptsActivitySubcomponent.Builder builder);
 
-    @Binds
-    @IntoMap
-    @ActivityKey(SettingsActivity.class)
-    public abstract AndroidInjector.Factory<? extends Activity> settingsActivitySubcomponentBuilder(
-            SettingsActivitySubcomponent.Builder builder);
+    @ActivityScope
+    @ContributesAndroidInjector(modules = {
+            SmartReceiptsActivityModule.class,
+            SmartReceiptsActivityBindingModule.class,
+            IntentImportInformationModule.class,
+            SmartReceiptsActivityAdModule.class
+    })
+    public abstract SmartReceiptsActivity smartReceiptsActivity();
 
-    @Binds
-    @IntoMap
-    @ServiceKey(DriveCompletionEventService.class)
-    public abstract AndroidInjector.Factory<? extends Service> driveCompletionEventServiceSubcomponentBuilder(
-            DriveCompletionEventServiceSubcomponent.Builder builder);
+    @ActivityScope
+    @ContributesAndroidInjector
+    public abstract SettingsActivity settingsActivity();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(CSVColumnsListFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> csvColumnListFragmentSubcomponentBuilder(
-            CSVColumnsListFragmentSubcomponent.Builder builder);
+    @ServiceScope
+    @ContributesAndroidInjector
+    public abstract DriveCompletionEventService driveCompletionEventService();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(PDFColumnsListFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> pdfColumnListFragmentSubcomponentBuilder(
-            PDFColumnsListFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract CSVColumnsListFragment csvColumnsListFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DistanceFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> distanceFragmentBuilder(
-            DistanceFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract PDFColumnsListFragment pdfColumnsListFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DistanceDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> distanceDialogFragmentBuilder(
-            DistanceDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DistanceFragment distanceFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(InformAboutPdfImageAttachmentDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> informDialogBuilder(
-            InformAboutPdfImageAttachmentDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DistanceDialogFragment distanceDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DeleteRemoteBackupProgressDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> deleteRemoteBackupProgressFragmentBuilder(
-            DeleteRemoteBackupProgressDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract InformAboutPdfImageAttachmentDialogFragment informAboutPdfImageAttachmentDialogFragment();
 
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DeleteRemoteBackupProgressDialogFragment deleteRemoteBackupProgressDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(DownloadRemoteBackupImagesProgressDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> downloadRemoteBackupImagesProgressFragmentBuilder(
-            DownloadRemoteBackupImagesProgressDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DownloadRemoteBackupImagesProgressDialogFragment downloadRemoteBackupImagesProgressDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ExportBackupWorkerProgressDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> exportBackupWorkerProgressDialogFragmentBuilder(
-            ExportBackupWorkerProgressDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ExportBackupWorkerProgressDialogFragment exportBackupWorkerProgressDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ImportLocalBackupWorkerProgressDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> importLocalBackupWorkerProgressDialogFragmentBuilder(
-            ImportLocalBackupWorkerProgressDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ImportLocalBackupWorkerProgressDialogFragment importLocalBackupWorkerProgressDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ImportRemoteBackupWorkerProgressDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> importRemoteBackupWorkerProgressDialogFragmentBuilder(
-            ImportRemoteBackupWorkerProgressDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ImportRemoteBackupWorkerProgressDialogFragment importRemoteBackupWorkerProgressDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(FeedbackDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> feedbackDialogFragmentBuilder(
-            FeedbackDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract FeedbackDialogFragment feedbackDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(RatingDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> ratingDialogFragmentBuilder(
-            RatingDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract RatingDialogFragment ratingDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(PaymentMethodsListFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> paymentMethodsListFragmentBuilder(
-            PaymentMethodsListFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract PaymentMethodsListFragment paymentMethodsListFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(CategoriesListFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> categoriesListFragmentBuilder(
-            CategoriesListFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract CategoriesListFragment categoriesListFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(ReceiptMoveCopyDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> receiptMoveCopyDialogFragmentBuilder(
-            ReceiptMoveCopyDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ReceiptMoveCopyDialogFragment receiptMoveCopyDialogFragment();
 
-    @Binds
-    @IntoMap
-    @FragmentKey(SelectAutomaticBackupProviderDialogFragment.class)
-    public abstract AndroidInjector.Factory<? extends Fragment> selectAutomaticBackupProviderDialogFragmentBuilder(
-            SelectAutomaticBackupProviderDialogFragmentSubcomponent.Builder builder);
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract SelectAutomaticBackupProviderDialogFragment selectAutomaticBackupProviderDialogFragment();
+
 }
