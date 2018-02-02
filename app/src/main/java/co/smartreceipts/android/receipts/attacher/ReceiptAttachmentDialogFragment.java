@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,6 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Receipt;
 import dagger.android.support.AndroidSupportInjection;
-import io.reactivex.annotations.NonNull;
 
 
 public class ReceiptAttachmentDialogFragment extends DialogFragment {
@@ -50,9 +50,15 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         Preconditions.checkNotNull(receipt, "ReceiptAttachmentDialogFragment requires a valid Receipt");
     }
 
-    @android.support.annotation.NonNull
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        final Fragment targetFragment = getTargetFragment();
+
+        if (targetFragment == null || !(targetFragment instanceof Listener)) {
+            throw new IllegalStateException("Target fragment must implement ReceiptAttachmentDialogFragment.Listener interface");
+        }
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle(receipt.getName())
@@ -64,15 +70,7 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         final AlertDialog dialog = dialogBuilder.create();
 
         dialogView.findViewById(R.id.attach_photo).setOnClickListener(v -> {
-            Uri imageUri = receiptAttachmentManager.attachPhoto(getTargetFragment());
-
-            final Fragment targetFragment = getTargetFragment();
-            if (targetFragment != null && targetFragment instanceof Listener) {
-                ((Listener) targetFragment).setImageUri(imageUri);
-            } else {
-                throw new IllegalStateException("Target fragment must implement ReceiptAttachmentDialogFragment.Listener interface");
-            }
-
+            ((Listener) targetFragment).setImageUri(receiptAttachmentManager.attachPhoto(getTargetFragment()));
             dialog.cancel();
         });
 

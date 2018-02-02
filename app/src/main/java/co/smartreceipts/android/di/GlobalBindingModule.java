@@ -13,6 +13,7 @@ import co.smartreceipts.android.imports.intents.di.IntentImportInformationModule
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentDialogFragment;
+import co.smartreceipts.android.receipts.attacher.ReceiptRemoveAttachmentDialogFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
 import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
@@ -114,5 +115,9 @@ public abstract class GlobalBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     public abstract ReceiptAttachmentDialogFragment receiptAttachmentDialogFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ReceiptRemoveAttachmentDialogFragment receiptRemoveAttachmentDialogFragment();
 
 }

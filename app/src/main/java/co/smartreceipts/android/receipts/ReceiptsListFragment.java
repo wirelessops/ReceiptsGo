@@ -2,7 +2,6 @@ package co.smartreceipts.android.receipts;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -67,6 +66,7 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentDialogFragment;
 import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager;
+import co.smartreceipts.android.receipts.attacher.ReceiptRemoveAttachmentDialogFragment;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
@@ -428,7 +428,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void showAttachmentDialog(final Receipt receipt) {
-
         highlightedReceipt = receipt;
 
         final ReceiptAttachmentDialogFragment attachmentDialogFragment = ReceiptAttachmentDialogFragment.newInstance(receipt);
@@ -494,17 +493,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
                     } else if (selection.equals(receiptActionRemoveAttachment)) { // Remove Attachment
                         analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle(receipt.getName())
-                                .setCancelable(true)
-                                .setMessage(getString(R.string.receipt_dialog_remove_attachment))
-                                .setNegativeButton(android.R.string.cancel, (dialogRemove, id) -> dialogRemove.cancel())
-                                .setPositiveButton(android.R.string.ok, (dialogRemove, which) -> {
-                                    receiptTableController.update(receipt, new ReceiptBuilderFactory(receipt)
-                                            .setFile(null).build(), new DatabaseOperationMetadata());
-                                })
-                                .create()
-                                .show();
+                        navigationHandler.showDialog(ReceiptRemoveAttachmentDialogFragment.newInstance(receipt));
                     }
                 }
                 dialog.cancel();
