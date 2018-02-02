@@ -65,6 +65,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentDialogFragment;
 import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
@@ -84,7 +85,7 @@ import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
 public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView,
-        OcrStatusAlerterView {
+        OcrStatusAlerterView, ReceiptAttachmentDialogFragment.Listener {
 
     public static final String READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
 
@@ -427,34 +428,13 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     private void showAttachmentDialog(final Receipt receipt) {
+
         highlightedReceipt = receipt;
-        BetterDialogBuilder dialogBuilder = new BetterDialogBuilder(getActivity());
-        dialogBuilder.setTitle(receipt.getName())
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_receipt_attachment, null);
-        dialogBuilder.setView(dialogView);
 
-        final AlertDialog dialog = dialogBuilder.create();
+        final ReceiptAttachmentDialogFragment attachmentDialogFragment = ReceiptAttachmentDialogFragment.newInstance(receipt);
+        attachmentDialogFragment.setTargetFragment(this, 0);
 
-        dialogView.findViewById(R.id.attach_photo).setOnClickListener(v -> {
-            imageUri = receiptAttachmentManager.attachPhoto(ReceiptsListFragment.this);
-            dialog.cancel();
-        });
-        dialogView.findViewById(R.id.attach_picture).setOnClickListener(v -> {
-            if (!receiptAttachmentManager.attachPicture(ReceiptsListFragment.this)) {
-                Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
-            }
-            dialog.cancel();
-        });
-        dialogView.findViewById(R.id.attach_file).setOnClickListener(v -> {
-            if (!receiptAttachmentManager.attachFile(this)) {
-                Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
-            }
-            dialog.cancel();
-        });
-
-        dialog.show();
+        attachmentDialogFragment.show(getFragmentManager(), ReceiptAttachmentDialogFragment.class.getSimpleName());
     }
 
     public final boolean showReceiptMenu(final Receipt receipt) {
@@ -734,6 +714,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             alert.hide();
             alert = null;
         }
+    }
+
+    @Override
+    public void setImageUri(Uri uri) {
+        imageUri = uri;
     }
 
     private class ActionBarSubtitleUpdatesListener extends StubTableEventsListener<Trip> {
