@@ -6,6 +6,7 @@ import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.di.scopes.ServiceScope;
 import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
 import co.smartreceipts.android.fragments.DistanceFragment;
+import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
@@ -119,5 +120,9 @@ public abstract class GlobalBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     public abstract ReceiptRemoveAttachmentDialogFragment receiptRemoveAttachmentDialogFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract ImportPhotoPdfDialogFragment importPhotoPdfDialogFragment();
 
 }

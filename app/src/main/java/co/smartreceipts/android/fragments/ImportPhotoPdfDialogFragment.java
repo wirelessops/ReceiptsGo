@@ -2,16 +2,18 @@ package co.smartreceipts.android.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.imports.RequestCodes;
+import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager;
+import dagger.android.support.AndroidSupportInjection;
 
 public class ImportPhotoPdfDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
@@ -19,6 +21,15 @@ public class ImportPhotoPdfDialogFragment extends DialogFragment implements Dial
 
     private final int WHICH_IMAGE = 0;
     private final int WHICH_PDF = 1;
+
+    @Inject
+    ReceiptAttachmentManager receiptAttachmentManager;
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
 
     @NonNull
     @Override
@@ -34,21 +45,32 @@ public class ImportPhotoPdfDialogFragment extends DialogFragment implements Dial
 
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
-        // @see https://developer.android.com/guide/topics/providers/document-provider.html#client
-        // Use ACTION_GET_CONTENT instead of ACTION_OPEN_DOCUMENT as this is simply a read/import
-        try {
-            final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            if (which == WHICH_IMAGE) {
-                intent.setType("image/*");
-                getParentFragment().startActivityForResult(intent, RequestCodes.IMPORT_GALLERY_IMAGE);
-            } else if (which == WHICH_PDF) {
-                intent.setType("application/pdf");
-                getParentFragment().startActivityForResult(intent, RequestCodes.IMPORT_GALLERY_PDF);
-            }
-        } catch (ActivityNotFoundException ex) {
+        boolean attachmentResult = false;
+
+        if (which == WHICH_IMAGE) {
+            attachmentResult = receiptAttachmentManager.attachPicture(getParentFragment(), true);
+        } else if (which == WHICH_PDF) {
+            attachmentResult = receiptAttachmentManager.attachFile(getParentFragment(), true);
+        }
+
+        if (!attachmentResult) {
             Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
         }
+
+//
+//        try {
+//            final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//            intent.addCategory(Intent.CATEGORY_OPENABLE);
+//            if (which == WHICH_IMAGE) {
+//                intent.setType("image/*");
+//                getParentFragment().startActivityForResult(intent, RequestCodes.IMPORT_GALLERY_IMAGE);
+//            } else if (which == WHICH_PDF) {
+//                intent.setType("application/pdf");
+//                getParentFragment().startActivityForResult(intent, RequestCodes.IMPORT_GALLERY_PDF);
+//            }
+//        } catch (ActivityNotFoundException ex) {
+//            Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
+//        }
         dismiss();
     }
 }

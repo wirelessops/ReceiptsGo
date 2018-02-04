@@ -75,14 +75,14 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         });
 
         dialogView.findViewById(R.id.attach_picture).setOnClickListener(v -> {
-            if (!receiptAttachmentManager.attachPicture(getTargetFragment())) {
+            if (!receiptAttachmentManager.attachPicture(getTargetFragment(), false)) {
                 Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
             }
             dialog.cancel();
         });
 
         dialogView.findViewById(R.id.attach_file).setOnClickListener(v -> {
-            if (!receiptAttachmentManager.attachFile(this)) {
+            if (!receiptAttachmentManager.attachFile(getTargetFragment(), false)) {
                 Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
             }
             dialog.cancel();

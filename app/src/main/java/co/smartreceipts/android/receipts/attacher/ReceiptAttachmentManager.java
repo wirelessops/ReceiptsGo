@@ -28,28 +28,30 @@ public class ReceiptAttachmentManager {
         return new CameraInteractionController(fragment).addPhoto();
     }
 
-    public boolean attachPicture(Fragment fragment) {
-        analytics.record(Events.Receipts.ReceiptAttachPicture);
+    public boolean attachPicture(Fragment fragment, boolean newReceipt) {
+        analytics.record(newReceipt ? Events.Receipts.ReceiptImportImage : Events.Receipts.ReceiptAttachPicture);
 
+        // @see https://developer.android.com/guide/topics/providers/document-provider.html#client
+        // Use ACTION_GET_CONTENT instead of ACTION_OPEN_DOCUMENT as this is simply a read/import
         try {
             final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
-            fragment.startActivityForResult(intent, RequestCodes.ATTACH_GALLERY_IMAGE);
+            fragment.startActivityForResult(intent, newReceipt ? RequestCodes.IMPORT_GALLERY_IMAGE : RequestCodes.ATTACH_GALLERY_IMAGE);
         } catch (ActivityNotFoundException ex) {
             return false;
         }
         return true;
     }
 
-    public boolean attachFile(Fragment fragment) {
-        analytics.record(Events.Receipts.ReceiptAttachFile);
+    public boolean attachFile(Fragment fragment, boolean newReceipt) {
+        analytics.record(newReceipt ? Events.Receipts.ReceiptImportPdf : Events.Receipts.ReceiptAttachFile);
 
         try {
             final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/pdf");
-            fragment.startActivityForResult(intent, RequestCodes.ATTACH_GALLERY_PDF);
+            fragment.startActivityForResult(intent, newReceipt ? RequestCodes.IMPORT_GALLERY_PDF : RequestCodes.ATTACH_GALLERY_PDF);
         } catch (ActivityNotFoundException ex) {
             return false;
         }
