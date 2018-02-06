@@ -128,13 +128,6 @@ public interface Receipt extends Parcelable, Priceable, Draggable<Receipt>, Sync
     long getFileLastModifiedTime();
 
     /**
-     * Attaches a file to this receipt (e.g. a PDF or Image)
-     *
-     * @param file the {@link File} to associate with this receipt or {@code null} if the picture was removed
-     */
-    void setFile(File file);
-
-    /**
      * Gets the source from which this receipt was built for debugging purposes
      *
      * @return the {@link Source}

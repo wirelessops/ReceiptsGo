@@ -231,12 +231,6 @@ public final class DefaultReceiptImpl implements Receipt {
         return mFileLastModifiedTime;
     }
 
-    @Override
-    public void setFile(File file) {
-        mFile = file;
-        mFileLastModifiedTime = file != null ? file.lastModified() : -1;
-    }
-
     @NonNull
     @Override
     public Source getSource() {

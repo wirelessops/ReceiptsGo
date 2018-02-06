@@ -103,7 +103,7 @@ public class DistanceToReceiptsConverter implements ModelConverter<Distance, Rec
         }
         factory.setTrip(distance0.getTrip());
         factory.setDate(distance0.getDate());
-        factory.setImage(null);
+        factory.setFile(null);
         factory.setIsReimbursable(true);
         factory.setTimeZone(distance0.getTimeZone());
         factory.setCategory(new CategoryBuilderFactory().setName(mContext.getString(R.string.distance)).build());

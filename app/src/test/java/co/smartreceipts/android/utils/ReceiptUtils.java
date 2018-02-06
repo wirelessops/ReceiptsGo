@@ -63,7 +63,7 @@ public class ReceiptUtils {
         factory.setComment(Constants.COMMENT);
         factory.setIsReimbursable(Constants.IS_REIMBURSABLE);
         factory.setIsFullPage(Constants.IS_FULLPAGE);
-        factory.setImage(img);
+        factory.setFile(img);
         factory.setIndex(Constants.INDEX);
         factory.setExtraEditText1(Constants.EXTRA1);
         factory.setExtraEditText2(Constants.EXTRA2);

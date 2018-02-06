@@ -180,16 +180,6 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setImage(File image) {
-        _file = image;
-        return this;
-    }
-
-    public ReceiptBuilderFactory setPDF(File pdf) {
-        _file = pdf;
-        return this;
-    }
-
     public ReceiptBuilderFactory setDate(Date date) {
         _date = date;
         return this;

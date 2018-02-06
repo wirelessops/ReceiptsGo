@@ -270,13 +270,13 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             case RequestCodes.ATTACH_GALLERY_IMAGE:
                             case RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST:
                                 final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt)
-                                        .setImage(response.getFile())
+                                        .setFile(response.getFile())
                                         .build();
                                 receiptTableController.update(highlightedReceipt, updatedReceipt, new DatabaseOperationMetadata());
                                 break;
                             case RequestCodes.ATTACH_GALLERY_PDF:
                                 final Receipt updatedReceiptWithFile = new ReceiptBuilderFactory(highlightedReceipt)
-                                        .setPDF(response.getFile())
+                                        .setFile(response.getFile())
                                         .build();
                                 receiptTableController.update(highlightedReceipt, updatedReceiptWithFile, new DatabaseOperationMetadata());
                                 break;
