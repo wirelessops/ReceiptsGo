@@ -46,7 +46,7 @@ public class DriveStreamMappings {
         } else {
             markedForDeletionMap = new MarkedForDeletionMap(Collections.singletonMap(SyncProvider.GoogleDrive, oldSyncState.isMarkedForDeletion(SyncProvider.GoogleDrive)));
         }
-        return new DefaultSyncState(new IdentifierMap(Collections.singletonMap(SyncProvider.GoogleDrive, oldSyncState.getSyncId(SyncProvider.GoogleDrive))),
+        return new DefaultSyncState(new IdentifierMap(Collections.singletonMap(SyncProvider.GoogleDrive, null)),
                 newDriveSyncedStatusMap(), markedForDeletionMap, new Date(System.currentTimeMillis()));
     }
 

@@ -27,6 +27,10 @@ public class ReceiptRemoveAttachmentDialogFragment extends DialogFragment {
 
     private Receipt receipt;
 
+    // TODO: 05.02.2018 remove attachment file manually. All files are saved to app's dir
+    // while deleting receipt - it's deleting too
+    // while removing attachment - no
+
 
     public static ReceiptRemoveAttachmentDialogFragment newInstance(@NonNull Receipt receipt) {
         final ReceiptRemoveAttachmentDialogFragment dialogFragment = new ReceiptRemoveAttachmentDialogFragment();
