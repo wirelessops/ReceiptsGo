@@ -54,15 +54,15 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final Fragment targetFragment = getTargetFragment();
+        final Fragment parentFragment = getParentFragment();
 
-        if (targetFragment == null || !(targetFragment instanceof Listener)) {
-            throw new IllegalStateException("Target fragment must implement ReceiptAttachmentDialogFragment.Listener interface");
+        if (parentFragment == null || !(parentFragment instanceof Listener)) {
+            throw new IllegalStateException("Parent fragment must implement ReceiptAttachmentDialogFragment.Listener interface");
         }
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle(receipt.getName())
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
 
         final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_receipt_attachment, null);
         dialogBuilder.setView(dialogView);
@@ -70,22 +70,22 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         final AlertDialog dialog = dialogBuilder.create();
 
         dialogView.findViewById(R.id.attach_photo).setOnClickListener(v -> {
-            ((Listener) targetFragment).setImageUri(receiptAttachmentManager.attachPhoto(getTargetFragment()));
-            dialog.cancel();
+            ((Listener) parentFragment).setImageUri(receiptAttachmentManager.attachPhoto(parentFragment));
+            dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.attach_picture).setOnClickListener(v -> {
-            if (!receiptAttachmentManager.attachPicture(getTargetFragment(), false)) {
+            if (!receiptAttachmentManager.attachPicture(parentFragment, false)) {
                 Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
             }
-            dialog.cancel();
+            dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.attach_file).setOnClickListener(v -> {
-            if (!receiptAttachmentManager.attachFile(getTargetFragment(), false)) {
+            if (!receiptAttachmentManager.attachFile(parentFragment, false)) {
                 Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
             }
-            dialog.cancel();
+            dialog.dismiss();
         });
 
         return dialog;

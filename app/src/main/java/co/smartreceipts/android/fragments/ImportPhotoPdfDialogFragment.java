@@ -57,20 +57,6 @@ public class ImportPhotoPdfDialogFragment extends DialogFragment implements Dial
             Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
         }
 
-//
-//        try {
-//            final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//            intent.addCategory(Intent.CATEGORY_OPENABLE);
-//            if (which == WHICH_IMAGE) {
-//                intent.setType("image/*");
-//                getParentFragment().startActivityForResult(intent, RequestCodes.IMPORT_GALLERY_IMAGE);
-//            } else if (which == WHICH_PDF) {
-//                intent.setType("application/pdf");
-//                getParentFragment().startActivityForResult(intent, RequestCodes.IMPORT_GALLERY_PDF);
-//            }
-//        } catch (ActivityNotFoundException ex) {
-//            Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
-//        }
         dismiss();
     }
 }

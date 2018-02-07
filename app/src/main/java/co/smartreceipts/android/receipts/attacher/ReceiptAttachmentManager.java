@@ -3,6 +3,7 @@ package co.smartreceipts.android.receipts.attacher;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import javax.inject.Inject;
@@ -23,12 +24,13 @@ public class ReceiptAttachmentManager {
         this.analytics = analytics;
     }
 
-    public Uri attachPhoto(Fragment fragment) {
+    @NonNull
+    public Uri attachPhoto(@NonNull Fragment fragment) {
         analytics.record(Events.Receipts.ReceiptAttachPhoto);
         return new CameraInteractionController(fragment).addPhoto();
     }
 
-    public boolean attachPicture(Fragment fragment, boolean newReceipt) {
+    public boolean attachPicture(@NonNull Fragment fragment, boolean newReceipt) {
         analytics.record(newReceipt ? Events.Receipts.ReceiptImportImage : Events.Receipts.ReceiptAttachPicture);
 
         // @see https://developer.android.com/guide/topics/providers/document-provider.html#client
@@ -44,7 +46,7 @@ public class ReceiptAttachmentManager {
         return true;
     }
 
-    public boolean attachFile(Fragment fragment, boolean newReceipt) {
+    public boolean attachFile(@NonNull Fragment fragment, boolean newReceipt) {
         analytics.record(newReceipt ? Events.Receipts.ReceiptImportPdf : Events.Receipts.ReceiptAttachFile);
 
         try {

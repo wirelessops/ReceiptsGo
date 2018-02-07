@@ -430,10 +430,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     private void showAttachmentDialog(final Receipt receipt) {
         highlightedReceipt = receipt;
 
-        final ReceiptAttachmentDialogFragment attachmentDialogFragment = ReceiptAttachmentDialogFragment.newInstance(receipt);
-        attachmentDialogFragment.setTargetFragment(this, 0);
-
-        attachmentDialogFragment.show(getFragmentManager(), ReceiptAttachmentDialogFragment.class.getSimpleName());
+        ReceiptAttachmentDialogFragment.newInstance(receipt).show(getChildFragmentManager(), ReceiptAttachmentDialogFragment.class.getSimpleName());
     }
 
     public final boolean showReceiptMenu(final Receipt receipt) {
@@ -706,7 +703,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    public void setImageUri(Uri uri) {
+    public void setImageUri(@NonNull Uri uri) {
         imageUri = uri;
     }
 
