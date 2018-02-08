@@ -106,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     public DatabaseHelper(@NonNull Context context, @NonNull StorageManager storageManager,
                           @NonNull UserPreferenceManager preferences,
                           @NonNull String databasePath, ReceiptColumnDefinitions receiptColumnDefinitions,
-                          WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer,
+                          @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
                           @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         super(context, databasePath, null, DATABASE_VERSION); // Requests the default cursor
 
@@ -137,16 +137,16 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         this.getReadableDatabase(); // Called here, so onCreate gets called on the UI thread
     }
 
-    public static final DatabaseHelper getInstance(Context context, StorageManager storageManager,
+    public static synchronized DatabaseHelper getInstance(Context context, StorageManager storageManager,
                                                    UserPreferenceManager preferences,
                                                    ReceiptColumnDefinitions receiptColumnDefinitions,
-                                                   WhiteLabelFriendlyTableDefaultsCustomizer tableDefaultsCustomizer,
+                                                   TableDefaultsCustomizer tableDefaultsCustomizer,
                                                    OrderingPreferencesManager orderingPreferencesManager) {
         if (INSTANCE == null || !INSTANCE.isOpen()) { // If we don't have an instance or it's closed
             String databasePath = StorageManager.GetRootPath();
             if (BuildConfig.DEBUG) {
                 if (databasePath.equals("")) {
-                    throw new RuntimeException("The SDCard must be created beforoe GetRootPath is called in DBHelper");
+                    throw new RuntimeException("The SDCard must be created before GetRootPath is called in DBHelper");
                 }
             }
             if (!databasePath.endsWith(File.separator)) {

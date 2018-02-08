@@ -13,9 +13,8 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 public class DistanceTableController extends TripForeignKeyAbstractTableController<Distance> {
 
     @Inject
-    public DistanceTableController(DatabaseHelper databaseHelper, Analytics analytics,
-                                   @co.smartreceipts.android.di.qualifiers.TripTableController TableController<Trip> tripTableController) {
+    public DistanceTableController(DatabaseHelper databaseHelper, Analytics analytics, TripTableController tripTableController) {
         super(databaseHelper.getDistanceTable(), analytics);
-        subscribe(new RefreshTripPricesListener<Distance>(tripTableController));
+        subscribe(new RefreshTripPricesListener<>(tripTableController));
     }
 }

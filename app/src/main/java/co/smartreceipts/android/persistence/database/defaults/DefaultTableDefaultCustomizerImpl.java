@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Preconditions;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,15 +22,14 @@ import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
 import co.smartreceipts.android.persistence.database.tables.PDFTable;
 import co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable;
 
-public class TableDefaultCustomizerImpl implements TableDefaultsCustomizer {
+public class DefaultTableDefaultCustomizerImpl implements TableDefaultsCustomizer {
 
     private final Context context;
     private final ReceiptColumnDefinitions receiptColumnDefinitions;
 
-    @Inject
-    public TableDefaultCustomizerImpl(Context context, ReceiptColumnDefinitions receiptColumnDefinitions) {
-        this.context = context;
-        this.receiptColumnDefinitions = receiptColumnDefinitions;
+    public DefaultTableDefaultCustomizerImpl(@NonNull Context context, @NonNull ReceiptColumnDefinitions receiptColumnDefinitions) {
+        this.context = Preconditions.checkNotNull(context);
+        this.receiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
     }
 
     @Override
