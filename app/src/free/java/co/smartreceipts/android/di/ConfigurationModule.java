@@ -14,6 +14,11 @@ import dagger.Provides;
 import wb.android.flex.Flex;
 import wb.android.flex.Flexable;
 
+/**
+ * <b>PLEASE NOTE:</b> Unlike the other modules, this one has been copied between both the free and
+ * paid versions of the app to better support client-specific white-labelling features. Should any
+ * other configurations be required, it is critical that we copy them to both components.
+ */
 @Module
 public class ConfigurationModule {
 
@@ -34,4 +39,8 @@ public class ConfigurationModule {
     public static TableDefaultsCustomizer provideTableDefaultsCustomizer(Context context, ReceiptColumnDefinitions receiptColumnDefinitions) {
         return new WhiteLabelFriendlyTableDefaultsCustomizer(new DefaultTableDefaultCustomizerImpl(context, receiptColumnDefinitions));
     }
+
+    ///////////////////////////////////////////////////////
+    // Remember to copy changes to the free/plus module
+    ///////////////////////////////////////////////////////
 }
