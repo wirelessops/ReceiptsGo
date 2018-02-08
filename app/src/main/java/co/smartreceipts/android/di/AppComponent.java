@@ -7,7 +7,7 @@ import dagger.Component;
 
 @ApplicationScope
 @Component(modules = {
-        AppModule.class,
+        FlavorModule.class,
         GlobalBindingModule.class,
         BaseAppModule.class
 })

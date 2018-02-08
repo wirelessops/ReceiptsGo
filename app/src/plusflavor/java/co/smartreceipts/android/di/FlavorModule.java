@@ -16,7 +16,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class AppModule {
+public class FlavorModule {
 
     @Provides
     @ApplicationScope
