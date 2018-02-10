@@ -59,7 +59,13 @@ To install, clone or pull down this project. Please note that it will **NOT** wo
 * `app/src/free/res/values/ads.xml`. The ads file in smartReceiptsFree. You can add `adUnitId` and `classicAdUnitId` to enable support for AdMob Native and Classic Ads, respectively.
 * `app/src/free/res/xml/analytics.xml`. The analytics file in smartReceiptsFree. You can add a key here if you wish to enable Google Analytics.
 
-Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Receipts PlusFlavor), since there are less secrets that have been explicitly git ignored to avoid key leaks. 
+Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Receipts PlusFlavor), since there are less secrets that have been explicitly git ignored to avoid key leaks.
+
+## Donate
+If you like our project, please consider donating:
+
+* **BTC:** [3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK](bitcoin:3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK)
+* **ETH:** [0xd5F9Da6a4F9c93B12588D89c7F702a0f7d92303D](https://etherscan.io/address/0xd5F9Da6a4F9c93B12588D89c7F702a0f7d92303D)
 
 ## Contribute
 
