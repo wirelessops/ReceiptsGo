@@ -474,7 +474,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             builder.setItems(receiptActions, (dialog, item) -> {
                 final String selection = receiptActions[item];
                 if (selection != null) {
-                   if (selection.equals(receiptActionDelete)) { // Delete Receipt
+                    if (selection.equals(receiptActionDelete)) { // Delete Receipt
                         analytics.record(Events.Receipts.ReceiptMenuDelete);
                         final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
                         navigationHandler.showDialog(deleteReceiptDialogFragment);

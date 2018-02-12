@@ -27,8 +27,6 @@ public class ReceiptRemoveAttachmentDialogFragment extends DialogFragment {
 
     private Receipt receipt;
 
-    // TODO: 07.02.2018 after retake image old image is shown in recycler --> Picasso
-
 
     public static ReceiptRemoveAttachmentDialogFragment newInstance(@NonNull Receipt receipt) {
         final ReceiptRemoveAttachmentDialogFragment dialogFragment = new ReceiptRemoveAttachmentDialogFragment();

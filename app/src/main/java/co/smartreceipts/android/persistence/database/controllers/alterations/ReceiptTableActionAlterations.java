@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +71,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                         final String oldExtension = "." + UriUtils.getExtension(oldReceipt.getFile(), context);
                         final String newExtension = "." + UriUtils.getExtension(newReceipt.getFile(), context);
                         if (newExtension.equals(oldExtension)) {
+                            Picasso.with(context).invalidate(oldReceipt.getFile());
                             if (newReceipt.getFile().renameTo(oldReceipt.getFile())) {
                                 // Note: Keep 'oldReceipt' here, since File is immutable (and renamedTo doesn't change it)
                                 factory.setFile(oldReceipt.getFile());
@@ -106,8 +108,9 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             }
 
             if (oldReceipt.getFile() != null) {
-                // Delete old file if user removed or changed it
-                if (newReceipt.getFile() == null || !newReceipt.getFile().equals(oldReceipt.getFile())) {
+                // Delete old file if user removed it
+                if (newReceipt.getFile() == null) {
+                    Picasso.with(context).invalidate(oldReceipt.getFile());
                     mStorageManager.delete(oldReceipt.getFile());
                 }
             }
