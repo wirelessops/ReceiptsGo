@@ -114,13 +114,13 @@ public class ReceiptImageFragment extends WBFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.receipt_image_view, container, false);
-        imageView = (PinchToZoomImageView) rootView.findViewById(R.id.receiptimagefragment_imageview);
-        footer = (LinearLayout) rootView.findViewById(R.id.footer);
-        progress = (ProgressBar) rootView.findViewById(R.id.progress);
+        imageView = rootView.findViewById(R.id.receiptimagefragment_imageview);
+        footer = rootView.findViewById(R.id.footer);
+        progress = rootView.findViewById(R.id.progress);
 
-        final LinearLayout rotateCCW = (LinearLayout) rootView.findViewById(R.id.rotate_ccw);
-        final LinearLayout retakePhoto = (LinearLayout) rootView.findViewById(R.id.retake_photo);
-        final LinearLayout rotateCW = (LinearLayout) rootView.findViewById(R.id.rotate_cw);
+        final LinearLayout rotateCCW = rootView.findViewById(R.id.rotate_ccw);
+        final LinearLayout retakePhoto = rootView.findViewById(R.id.retake_photo);
+        final LinearLayout rotateCW = rootView.findViewById(R.id.rotate_cw);
 
         rotateCCW.setOnClickListener(view -> {
             analytics.record(Events.Receipts.ReceiptImageViewRotateCcw);
@@ -175,8 +175,8 @@ public class ReceiptImageFragment extends WBFragment {
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
                         progress.setVisibility(View.VISIBLE);
-                        activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
-                                locatorResponse.getResultCode(), locatorResponse.getUri(), receipt.getTrip());
+                        // Note: no need to call activityFileResultImporter.importFile
+                        // because ReceiptsListFragment is still subscribed to activityFileResultLocator.getUriStream()
                     } else {
                         Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         progress.setVisibility(View.GONE);

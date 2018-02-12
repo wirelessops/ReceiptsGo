@@ -105,10 +105,13 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                 throw new Exception("Post update failed due to a null receipt");
             }
 
-            if (oldReceipt.getFile() != null && newReceipt.getFile() != null && !newReceipt.getFile().equals(oldReceipt.getFile())) {
-                // Only delete the old file if we have a new one now...
-                mStorageManager.delete(oldReceipt.getFile());
+            if (oldReceipt.getFile() != null) {
+                // Delete old file if user removed or changed it
+                if (newReceipt.getFile() == null || !newReceipt.getFile().equals(oldReceipt.getFile())) {
+                    mStorageManager.delete(oldReceipt.getFile());
+                }
             }
+
             return newReceipt;
         });
     }
@@ -183,7 +186,6 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     @NonNull
     private Receipt updateReceiptFileNameBlocking(@NonNull Receipt receipt) {
         final ReceiptBuilderFactory builder = mReceiptBuilderFactoryFactory.build(receipt);
-
         final StringBuilder stringBuilder = new StringBuilder(receipt.getIndex() + "_");
         stringBuilder.append(FileUtils.omitIllegalCharactersFromFileName(receipt.getName().trim()));
         final File file = receipt.getFile();

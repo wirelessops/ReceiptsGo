@@ -27,9 +27,8 @@ public class ReceiptRemoveAttachmentDialogFragment extends DialogFragment {
 
     private Receipt receipt;
 
-    // TODO: 05.02.2018 remove attachment file manually. All files are saved to app's dir
-    // while deleting receipt - it's deleting too
-    // while removing attachment - no
+    // TODO: 07.02.2018 R.string.receipt_dialog_action_camera we can remove it
+    // TODO: 07.02.2018 after retake image old image is shown in recycler --> Picasso
 
 
     public static ReceiptRemoveAttachmentDialogFragment newInstance(@NonNull Receipt receipt) {
