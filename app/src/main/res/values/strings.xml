@@ -430,7 +430,6 @@
 
     <string name="receipt_dialog_action_edit">Edit Receipt</string>
     <string name="receipt_dialog_action_view">View Receipt %s</string>
-    <string name="receipt_dialog_action_camera">Take Receipt Image</string>
     <string name="receipt_dialog_action_delete">Delete Receipt</string>
     <string name="receipt_dialog_action_move_copy">Move/Copy</string>
     <string name="receipt_dialog_action_remove_attachment">Remove Attachment</string>

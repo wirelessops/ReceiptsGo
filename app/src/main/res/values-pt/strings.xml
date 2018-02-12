@@ -406,7 +406,6 @@
 
     <string name="receipt_dialog_action_edit">Editar recibo</string>
     <string name="receipt_dialog_action_view">Visualizar recibo %s</string>
-    <string name="receipt_dialog_action_camera">Tirar foto do recibo</string>
     <string name="receipt_dialog_action_delete">Excluir recibo</string>
     <string name="receipt_dialog_action_move_copy">Mover/copiar</string>
     <string name="receipt_dialog_action_remove_attachment">Remover anexo</string>

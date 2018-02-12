@@ -27,7 +27,6 @@ public class ReceiptRemoveAttachmentDialogFragment extends DialogFragment {
 
     private Receipt receipt;
 
-    // TODO: 07.02.2018 R.string.receipt_dialog_action_camera we can remove it
     // TODO: 07.02.2018 after retake image old image is shown in recycler --> Picasso
 
 

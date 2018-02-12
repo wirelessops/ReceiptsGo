@@ -406,7 +406,6 @@
 
     <string name="receipt_dialog_action_edit">Beleg bearbeiten</string>
     <string name="receipt_dialog_action_view">Ansicht Beleg %s</string>
-    <string name="receipt_dialog_action_camera">Belegbild machen</string>
     <string name="receipt_dialog_action_delete">Beleg löschen</string>
     <string name="receipt_dialog_action_move_copy">Verschieben / Kopieren</string>
     <string name="receipt_dialog_action_remove_attachment">Entfernen Sie den Anhang</string>

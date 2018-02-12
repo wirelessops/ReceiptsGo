@@ -462,24 +462,19 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 }
             });
         } else {
-            final String receiptActionCamera = getString(R.string.receipt_dialog_action_camera);
             final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
             final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
             final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
             final String[] receiptActions;
             if (!receipt.hasFile()) {
-                receiptActions = new String[]{receiptActionCamera, receiptActionDelete, receiptActionMoveCopy};
+                receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
             } else {
                 receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};
             }
             builder.setItems(receiptActions, (dialog, item) -> {
                 final String selection = receiptActions[item];
                 if (selection != null) {
-                    if (selection.equals(receiptActionCamera)) { // Take Photo
-                        analytics.record(Events.Receipts.ReceiptMenuRetakePhoto);
-                        imageUri = receiptAttachmentManager.attachPhoto(ReceiptsListFragment.this);
-
-                    } else if (selection.equals(receiptActionDelete)) { // Delete Receipt
+                   if (selection.equals(receiptActionDelete)) { // Delete Receipt
                         analytics.record(Events.Receipts.ReceiptMenuDelete);
                         final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
                         navigationHandler.showDialog(deleteReceiptDialogFragment);

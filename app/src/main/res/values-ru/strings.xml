@@ -408,7 +408,6 @@
 
     <string name="receipt_dialog_action_edit">Редактировать чек</string>
     <string name="receipt_dialog_action_view">Просмотреть чек %s</string>
-    <string name="receipt_dialog_action_camera">Сделать снимок чека</string>
     <string name="receipt_dialog_action_delete">Удалить чек</string>
     <string name="receipt_dialog_action_move_copy">Переместить/Копировать</string>
     <string name="receipt_dialog_action_remove_attachment">Удалить вложение</string>

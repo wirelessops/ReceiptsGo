@@ -406,7 +406,6 @@
 
     <string name="receipt_dialog_action_edit">Modifier le reçu</string>
     <string name="receipt_dialog_action_view">Afficher le reçu %s</string>
-    <string name="receipt_dialog_action_camera">Prendre la photo du reçu</string>
     <string name="receipt_dialog_action_delete">Supprimer le reçu</string>
     <string name="receipt_dialog_action_move_copy">Déplacer/Copier</string>
     <string name="receipt_dialog_action_remove_attachment">Supprimer la pièce jointe</string>
