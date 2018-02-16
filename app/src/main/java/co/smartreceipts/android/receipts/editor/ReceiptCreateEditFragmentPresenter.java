@@ -2,6 +2,7 @@ package co.smartreceipts.android.receipts.editor;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -121,7 +122,7 @@ public class ReceiptCreateEditFragmentPresenter {
         return true;
     }
 
-    void saveReceipt(Date date, String price, String tax,
+    void saveReceipt(Date date, TimeZone timeZone, String price, String tax,
                      String exchangeRate, String comment, PaymentMethod paymentMethod,
                      boolean isReimursable, boolean isFullpage,
                      String name, Category category, String currency,
@@ -131,15 +132,16 @@ public class ReceiptCreateEditFragmentPresenter {
         final Trip parentTrip = fragment.getParentTrip();
 
         Calendar cal = Calendar.getInstance();
-        long secondsOfDay = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
+        long currentSecondsElapsedToday = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
                 TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
                 cal.get(Calendar.SECOND);
-        Logger.debug(this, "Saving receipt: date.getTime() = " + date.getTime() + " seconds of day = " + secondsOfDay);
+        Logger.debug(this, "Saving receipt: date.getTime() = " + date.getTime() + " seconds of day = " + currentSecondsElapsedToday);
 
         final ReceiptBuilderFactory builderFactory = (receipt == null) ? new ReceiptBuilderFactory(-1) : new ReceiptBuilderFactory(receipt);
         builderFactory.setName(name)
                 .setTrip(parentTrip)
                 .setDate((Date) date.clone())
+                .setTimeZone(timeZone)
                 .setPrice(price)
                 .setTax(tax)
                 .setExchangeRate(new ExchangeRateBuilderFactory().setBaseCurrency(currency)
@@ -155,7 +157,7 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setExtraEditText2(extraText2)
                 .setExtraEditText3(extraText3)
                 .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ?
-                       date.getTime() + secondsOfDay : 0); // hack to prevent receipts with same date having same customOrderIds
+                       date.getTime() + currentSecondsElapsedToday : 0); // hack to prevent receipts with same date having same customOrderIds
 
         if (receipt == null) {
             receiptTableController.insert(builderFactory.setFile(fragment.getFile()).build(), new DatabaseOperationMetadata());

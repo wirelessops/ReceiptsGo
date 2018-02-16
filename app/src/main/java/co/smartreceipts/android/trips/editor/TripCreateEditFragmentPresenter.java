@@ -3,6 +3,7 @@ package co.smartreceipts.android.trips.editor;
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -61,7 +62,7 @@ public class TripCreateEditFragmentPresenter {
         return true;
     }
 
-    public Trip saveTrip(String name, Date startDate, Date endDate, String defaultCurrency,
+    public Trip saveTrip(String name, Date startDate, TimeZone startTimeZone, Date endDate, TimeZone endTimeZone, String defaultCurrency,
                          String comment, String costCenter) {
 
         File file = persistenceManager.getStorageManager().getFile(name);
@@ -71,7 +72,9 @@ public class TripCreateEditFragmentPresenter {
             final Trip insertTrip = new TripBuilderFactory()
                     .setDirectory(file)
                     .setStartDate(startDate)
+                    .setStartTimeZone(startTimeZone)
                     .setEndDate(endDate)
+                    .setEndTimeZone(endTimeZone)
                     .setComment(comment)
                     .setCostCenter(costCenter)
                     .setDefaultCurrency(defaultCurrency)

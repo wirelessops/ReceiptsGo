@@ -8,7 +8,6 @@ import android.support.annotation.UiThread;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +35,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -54,7 +54,6 @@ import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
-import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
 import co.smartreceipts.android.fragments.ReceiptInputCache;
 import co.smartreceipts.android.fragments.WBFragment;
@@ -82,6 +81,7 @@ import co.smartreceipts.android.receipts.editor.exchange.ExchangeRateServiceMana
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
 import co.smartreceipts.android.receipts.editor.pricing.ReceiptPricingPresenter;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
@@ -111,9 +111,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     @Inject
     Flex flex;
-
-    @Inject
-    DateManager dateManager;
 
     @Inject
     DatabaseHelper database;
@@ -347,7 +344,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
         // Outline date defaults
         dateBox.setFocusableInTouchMode(false);
-        dateBox.setOnClickListener(dateManager.getDateEditTextListener());
+        dateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
     }
 
     @Override
@@ -362,14 +359,13 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 now.setToNow();
                 if (receiptInputCache.getCachedDate() == null) {
                     if (presenter.isReceiptDateDefaultsToReportStartDate()) {
-                        dateBox.date = getParentTrip().getStartDate();
+                        dateBox.setDate(getParentTrip().getStartDate());
                     } else {
-                        dateBox.date = new Date(now.toMillis(false));
+                        dateBox.setDate(new Date(now.toMillis(false)));
                     }
                 } else {
-                    dateBox.date = receiptInputCache.getCachedDate();
+                    dateBox.setDate(receiptInputCache.getCachedDate());
                 }
-                dateBox.setText(DateFormat.getDateFormat(getActivity()).format(dateBox.date));
 
                 reimbursableCheckbox.setChecked(presenter.isReceiptsDefaultAsReimbursable());
                 if (presenter.isMatchReceiptCommentToCategory() && presenter.isMatchReceiptNameToCategory()) {
@@ -406,18 +402,16 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     }
 
                     if (ocrResponseParser.getDate() != null) {
-                        dateBox.date = ocrResponseParser.getDate();
-                        dateBox.setText(DateFormat.getDateFormat(getActivity()).format(dateBox.date));
+                        dateBox.setDate(ocrResponseParser.getDate());
                     }
                 }
 
             } else { // edit receipt
                 final Receipt receipt = getReceipt();
-                final Trip parentTrip = getParentTrip();
 
                 nameBox.setText(receipt.getName());
-                dateBox.setText(receipt.getFormattedDate(getActivity(), presenter.getDateSeparator()));
-                dateBox.date = receipt.getDate();
+                dateBox.setDate(receipt.getDate());
+                dateBox.setTimeZone(receipt.getTimeZone());
                 commentBox.setText(receipt.getComment());
 
                 reimbursableCheckbox.setChecked(receipt.isReimbursable());
@@ -698,7 +692,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     private void saveReceipt() {
 
-        if (presenter.checkReceipt(dateBox.date)) {
+        if (presenter.checkReceipt(dateBox.getDate())) {
             final String name = TextUtils.isEmpty(nameBox.getText().toString()) ? "" : nameBox.getText().toString();
             final Category category = categoriesAdapter.getItem(categoriesSpinner.getSelectedItemPosition());
             final String currency = currencySpinner.getSelectedItem().toString();
@@ -710,36 +704,36 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             final String extraText1 = (extraEditText1 == null) ? null : extraEditText1.getText().toString();
             final String extraText2 = (extraEditText2 == null) ? null : extraEditText2.getText().toString();
             final String extraText3 = (extraEditText3 == null) ? null : extraEditText3.getText().toString();
-
+            final TimeZone timeZone = dateBox.getTimeZone();
             final Date receiptDate;
 
             // updating date just if it was really changed (to prevent reordering)
-            if (getReceipt() != null && getReceipt().getDate().equals(dateBox.date)) {
+            if (getReceipt() != null && getReceipt().getDate().equals(dateBox.getDate())) {
                 receiptDate = getReceipt().getDate();
             } else {
-                Calendar cal = Calendar.getInstance();
-                long secondsOfDay = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
-                        TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
-                        cal.get(Calendar.SECOND);
-                cal.setTime(dateBox.date);
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
+                final Calendar calendar = Calendar.getInstance();
+                final long currentSecondsElapsedToday =
+                        TimeUnit.HOURS.toSeconds(calendar.get(Calendar.HOUR_OF_DAY)) +
+                        TimeUnit.MINUTES.toSeconds(calendar.get(Calendar.MINUTE)) +
+                        calendar.get(Calendar.SECOND);
+                calendar.setTime(dateBox.getDate());
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
-                // Note: we're saving date that was picked by user (without time information) + current secondsOfDay
-                receiptDate = new Date(cal.getTimeInMillis() + secondsOfDay);
+                // Note: we're saving date that was picked by user (without time information) + currentSecondsElapsedToday to create ordering
+                receiptDate = new Date(calendar.getTimeInMillis() + currentSecondsElapsedToday);
             }
 
-            receiptInputCache.setCachedDate((Date) dateBox.date.clone());
+            receiptInputCache.setCachedDate((Date) dateBox.getDate().clone());
             receiptInputCache.setCachedCategory(category);
             receiptInputCache.setCachedCurrency(currency);
 
-            presenter.saveReceipt(receiptDate, price, tax, exchangeRate, comment,
+            presenter.saveReceipt(receiptDate, timeZone, price, tax, exchangeRate, comment,
                     paymentMethod, reimbursableCheckbox.isChecked(), fullpageCheckbox.isChecked(), name, category, currency,
                     extraText1, extraText2, extraText3);
 
             analytics.record(getReceipt() == null ? Events.Receipts.PersistNewReceipt : Events.Receipts.PersistUpdateReceipt);
-            dateManager.setDateEditTextListenerDialogHolder(null);
 
             backupReminderTooltipStorage.setOneMoreNewReceipt();
 

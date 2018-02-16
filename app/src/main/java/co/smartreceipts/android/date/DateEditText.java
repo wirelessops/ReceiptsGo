@@ -1,39 +1,114 @@
 package co.smartreceipts.android.date;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.DatePicker;
+
+import com.google.common.base.Preconditions;
 
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.TimeZone;
 
-public class DateEditText extends AppCompatEditText {
+import co.smartreceipts.android.model.utils.ModelUtils;
 
-	public Date date;
-	
+/**
+ * Provides a custom implementation of the {@link AppCompatEditText}, which automatically launches
+ * a {@link DatePickerDialog} when this view is clicked.
+ */
+public class DateEditText extends AppCompatEditText implements DatePickerDialog.OnDateSetListener, DialogInterface.OnDismissListener {
+
+	private Date date = new Date(Calendar.getInstance().getTimeInMillis());
+    private TimeZone timeZone = TimeZone.getDefault();
+    private String dateSeparator = "/";
+    private DatePickerDialog datePickerDialog = null;
+
 	public DateEditText(Context context) {
 		super(context);
-		date = null;
+        super.setOnClickListener(new LaunchDatePickerDialogOnClickListener());
 	}
-	
+
 	public DateEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		date = null;
+        super.setOnClickListener(new LaunchDatePickerDialogOnClickListener());
 	}
 	
 	public DateEditText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		date = null;
+        super.setOnClickListener(new LaunchDatePickerDialogOnClickListener());
 	}
+
+    @NonNull
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(@NonNull Date date) {
+        this.date = Preconditions.checkNotNull(date);
+        setText(ModelUtils.getFormattedDate(date, timeZone, getContext(), dateSeparator));
+    }
+
+    @NonNull
+    public TimeZone getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(@NonNull TimeZone timeZone) {
+        this.timeZone = Preconditions.checkNotNull(timeZone);
+        setText(ModelUtils.getFormattedDate(date, timeZone, getContext(), dateSeparator));
+    }
+
+    @NonNull
+    public String getDateSeparator() {
+        return dateSeparator;
+    }
+
+    public void setDateSeparator(@NonNull String dateSeparator) {
+        this.dateSeparator = Preconditions.checkNotNull(dateSeparator);
+        setText(ModelUtils.getFormattedDate(date, timeZone, getContext(), dateSeparator));
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+	    final TimeZone activeTimeZone = TimeZone.getDefault(); // Since if the user changes this, we're now using this TimeZone
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(activeTimeZone);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        setDate(new Date(calendar.getTimeInMillis()));
+        setTimeZone(activeTimeZone);
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        throw new UnsupportedOperationException("We currently do not support custom listeners");
+    }
+
+    @Override
+    public boolean performClick() {
+        // Call super, which generates an AccessibilityEvent and calls the onClick() listener on the view
+        super.performClick();
+        return true;
+    }
 
     @Override
     public Parcelable onSaveInstanceState() {
         final Parcelable superDate = super.onSaveInstanceState();
         if (superDate != null) {
-            return new SavedState(superDate, date);
+            return new SavedState(superDate, date, timeZone, dateSeparator, datePickerDialog);
         } else {
             return null;
         }
@@ -45,16 +120,36 @@ public class DateEditText extends AppCompatEditText {
             final SavedState savedState = (SavedState) state;
             super.onRestoreInstanceState(savedState.getSuperState());
             date = savedState.getDate();
+            timeZone = savedState.getTimeZone();
+            dateSeparator = savedState.getDateSeparator();
+            if (savedState.wasDialogShowing()) {
+                launchCalendarDialog(savedState);
+            }
         } else {
             super.onRestoreInstanceState(state);
         }
     }
 
     @Override
-    public boolean performClick() {
-        // Call super, which generates an AccessibilityEvent and calls the onClick() listener on the view
-        super.performClick();
-        return true;
+    public void onDismiss(DialogInterface dialog) {
+        datePickerDialog = null;
+    }
+
+    /**
+     * Launches the calendar dialog
+     *
+     * @param savedState the saved state to restore or {@code null} to launch a fresh dialog
+     */
+    private void launchCalendarDialog(@Nullable SavedState savedState) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.setTimeZone(timeZone);
+        datePickerDialog = new DatePickerDialog(getContext(), DateEditText.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setOnDismissListener(DateEditText.this);
+        datePickerDialog.show();
+        if (savedState != null) {
+            datePickerDialog.getDatePicker().init(savedState.getYear(), savedState.getMonthOfYear(), savedState.getDayOfMonth(), datePickerDialog);
+        }
     }
 
     /**
@@ -62,27 +157,89 @@ public class DateEditText extends AppCompatEditText {
      */
     static class SavedState extends BaseSavedState {
 
-        private final Date mDate;
+        private final Date savedStateDate;
+        private final TimeZone savedStateTimeZone;
+        private final String savedStateDateSeparator;
+        private final boolean savedStatesWasDialogShowing;
+        private final int year;
+        private final int monthOfYear;
+        private final int dayOfMonth;
 
-        public SavedState(@NonNull Parcelable superDate, @Nullable Date date) {
-            super(superDate);
-            mDate = date;
+
+        public SavedState(@NonNull Parcelable superState,
+                          @NonNull Date savedStateDate,
+                          @NonNull TimeZone savedStateTimeZone,
+                          @NonNull String savedStateDateSeparator,
+                          @Nullable DatePickerDialog datePickerDialog) {
+            super(superState);
+            this.savedStateDate = Preconditions.checkNotNull(savedStateDate);
+            this.savedStateTimeZone = Preconditions.checkNotNull(savedStateTimeZone);
+            this.savedStateDateSeparator = Preconditions.checkNotNull(savedStateDateSeparator);
+            this.savedStatesWasDialogShowing = datePickerDialog != null;
+            if (this.savedStatesWasDialogShowing) {
+                final DatePicker datePicker = datePickerDialog.getDatePicker();
+                this.year = datePicker.getYear();
+                this.monthOfYear = datePicker.getMonth();
+                this.dayOfMonth = datePicker.getDayOfMonth();
+            } else {
+                this.year = -1;
+                this.monthOfYear = -1;
+                this.dayOfMonth = -1;
+            }
         }
 
         public SavedState(@NonNull Parcel in) {
             super(in);
-            mDate = (Date) in.readSerializable();
+            savedStateDate = (Date) in.readSerializable();
+            savedStateTimeZone = (TimeZone) in.readSerializable();
+            savedStateDateSeparator = in.readString();
+            savedStatesWasDialogShowing = (in.readByte() != 0);
+            year = in.readInt();
+            monthOfYear = in.readInt();
+            dayOfMonth = in.readInt();
         }
 
-        @Nullable
-        public Date getDate() {
-            return mDate;
+        @NonNull
+        Date getDate() {
+            return savedStateDate;
+        }
+
+        @NonNull
+        TimeZone getTimeZone() {
+            return savedStateTimeZone;
+        }
+
+        @NonNull
+        String getDateSeparator() {
+            return savedStateDateSeparator;
+        }
+
+        boolean wasDialogShowing() {
+            return savedStatesWasDialogShowing;
+        }
+
+        int getYear() {
+            return year;
+        }
+
+        int getMonthOfYear() {
+            return monthOfYear;
+        }
+
+        int getDayOfMonth() {
+            return dayOfMonth;
         }
 
         @Override
         public void writeToParcel(@NonNull Parcel out, int flags) {
             super.writeToParcel(out, flags);
-            out.writeSerializable(mDate);
+            out.writeSerializable(savedStateDate);
+            out.writeSerializable(savedStateTimeZone);
+            out.writeString(savedStateDateSeparator);
+            out.writeByte((byte) (savedStatesWasDialogShowing ? 1 : 0));
+            out.writeInt(year);
+            out.writeInt(monthOfYear);
+            out.writeInt(dayOfMonth);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
@@ -95,6 +252,17 @@ public class DateEditText extends AppCompatEditText {
                 return new SavedState[size];
             }
         };
+    }
+
+    /**
+     * Launches a {@link DatePickerDialog} using the configured date on click
+     */
+    private final class LaunchDatePickerDialogOnClickListener implements OnClickListener {
+
+        @Override
+        public void onClick(@NonNull View view) {
+            launchCalendarDialog(null);
+        }
     }
 
 }

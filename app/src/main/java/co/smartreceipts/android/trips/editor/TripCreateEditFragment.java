@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
 import android.text.method.TextKeyListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,11 +32,11 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
-import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
@@ -50,9 +49,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     
     @Inject
     Flex flex;
-
-    @Inject
-    DateManager dateManager;
 
     @Inject
     NavigationHandler navigationHandler;
@@ -193,11 +189,11 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         currencySpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_currency);
         commentBox = (EditText) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_comment);
 
-        costCenterBox = (AutoCompleteTextView) rootView.findViewById(R.id.dialog_tripmenu_cost_center);
+        costCenterBox = rootView.findViewById(R.id.dialog_tripmenu_cost_center);
         View costCenterBoxLayout = rootView.findViewById(R.id.dialog_tripmenu_cost_center_layout);
         costCenterBoxLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         if (navigationHandler.isDualPane()) {
             toolbar.setVisibility(View.GONE);
         } else {
@@ -207,6 +203,10 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         // Show default dictionary with auto-complete
         TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
         nameBox.setKeyListener(input);
+
+        // Configure default separators
+        startDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+        endDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
 
         setKeyboardRelatedListeners();
     }
@@ -223,8 +223,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
                 costCenterBox.setAdapter(costCenterAutoCompleteAdapter);
             }
 
-            startDateBox.setOnClickListener(dateManager.getDurationDateEditTextListener(endDateBox));
-
             //prefill the dates
             final Calendar startCalendar = Calendar.getInstance();
             startCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -232,23 +230,15 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
             startCalendar.set(Calendar.SECOND, 0);
             startCalendar.set(Calendar.MILLISECOND, 0);
 
-            startDateBox.date = new Date(startCalendar.getTimeInMillis());
-            startDateBox.setText(DateFormat.getDateFormat(getActivity()).format(startDateBox.date));
-
-            endDateBox.date = new Date(startDateBox.date.getTime() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration()));
-            endDateBox.setText(DateFormat.getDateFormat(getActivity()).format(endDateBox.date));
+            startDateBox.setDate(new Date(startCalendar.getTimeInMillis()));
+            endDateBox.setDate(new Date(startCalendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration())));
         } else { // edit trip
             nameBox.setText(getTrip().getName());
-
-            startDateBox.setText(getTrip().getFormattedStartDate(getActivity(), presenter.getDateSeparator()));
-            startDateBox.date = getTrip().getStartDate();
-
-            endDateBox.setText(getTrip().getFormattedEndDate(getActivity(), presenter.getDateSeparator()));
-            endDateBox.date = getTrip().getEndDate();
-
+            startDateBox.setDate(getTrip().getStartDate());
+            startDateBox.setTimeZone(getTrip().getStartTimeZone());
+            endDateBox.setDate(getTrip().getEndDate());
+            endDateBox.setTimeZone(getTrip().getEndTimeZone());
             commentBox.setText(getTrip().getComment());
-
-            startDateBox.setOnClickListener(dateManager.getDateEditTextListener());
             costCenterBox.setText(getTrip().getCostCenter());
         }
 
@@ -258,9 +248,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         }
 
         startDateBox.setFocusableInTouchMode(false);
-
         endDateBox.setFocusableInTouchMode(false);
-        endDateBox.setOnClickListener(dateManager.getDateEditTextListener());
         nameBox.setSelection(nameBox.getText().length()); // Put the cursor at the end
     }
 
@@ -296,8 +284,8 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         final String comment = commentBox.getText().toString();
         final String costCenter = costCenterBox.getText().toString();
 
-        if (presenter.checkTrip(name, startDateText, startDateBox.date, endDateText, endDateBox.date)) {
-            presenter.saveTrip(name, startDateBox.date, endDateBox.date, currencyCode, comment, costCenter);
+        if (presenter.checkTrip(name, startDateText, startDateBox.getDate(), endDateText, endDateBox.getDate())) {
+            presenter.saveTrip(name, startDateBox.getDate(), startDateBox.getTimeZone(), endDateBox.getDate(), endDateBox.getTimeZone(), currencyCode, comment, costCenter);
             navigationHandler.navigateBack();
         }
     }

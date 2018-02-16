@@ -36,6 +36,6 @@ public class RxDateEditText {
     public static Observable<Date> dateChanges(@NonNull DateEditText view) {
         Preconditions.checkNotNull(view, "view == null");
         return new TextViewTextObservable(view)
-                .map(charSequence -> view.date);
+                .map(charSequence -> view.getDate());
     }
 }

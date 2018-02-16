@@ -6,17 +6,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,6 +22,7 @@ import com.google.common.base.Preconditions;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -37,14 +35,12 @@ import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
-import co.smartreceipts.android.date.DateManager;
 import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -60,9 +56,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
 
     @Inject
     DatabaseHelper database;
-
-    @Inject
-    DateManager dateManager;
 
     @Inject
     Analytics analytics;
@@ -189,7 +182,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
         final View rootView = inflater.inflate(R.layout.dialog_mileage, null);
         this.unbinder = ButterKnife.bind(this, rootView);
 
-        dateEditText.setOnClickListener(dateManager.getDateEditTextListener());
         dateEditText.setFocusable(false);
         dateEditText.setFocusableInTouchMode(false);
 
@@ -199,8 +191,8 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             // New Distance
             builder.setTitle(getString(R.string.dialog_mileage_title_create));
             builder.setPositiveButton(getString(R.string.dialog_mileage_positive_create), this);
-            dateEditText.date = suggestedDate;
-            dateEditText.setText(DateFormat.getDateFormat(getActivity()).format(dateEditText.date));
+            dateEditText.setDate(suggestedDate);
+            dateEditText.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
             final float distanceRate = userPreferenceManager.get(UserPreference.Distance.DefaultDistanceRate);
             if (distanceRate > 0) {
                 rateEditText.setText(ModelUtils.getDecimalFormattedValue(new BigDecimal(distanceRate), Distance.RATE_PRECISION));
@@ -222,14 +214,13 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             rateEditText.setText(updateableDistance.getDecimalFormattedRate());
             locationAutoCompleteTextView.setText(updateableDistance.getLocation());
             commentEditText.setText(updateableDistance.getComment());
-            dateEditText.setText(updateableDistance.getFormattedDate(getActivity(), userPreferenceManager.get(UserPreference.General.DateSeparator)));
-            dateEditText.date = updateableDistance.getDate();
+            dateEditText.setDate(updateableDistance.getDate());
+            dateEditText.setTimeZone(updateableDistance.getTimeZone());
+            dateEditText.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
         }
         builder.setNegativeButton(android.R.string.cancel, this);
 
-        final Dialog dialog = builder.create();
-        dateManager.setDateEditTextListenerDialogHolder(dialog);
-        return dialog;
+        return builder.create();
     }
 
     @Override
@@ -266,7 +257,8 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             final String currency = this.currencySpinner.getSelectedItem().toString();
             final String location = this.locationAutoCompleteTextView.getText().toString();
             final String comment = this.commentEditText.getText().toString();
-            final Date date = this.dateEditText.date;
+            final Date date = this.dateEditText.getDate();
+            final TimeZone timeZone = this.dateEditText.getTimeZone();
 
             if (updateableDistance == null) {
                 // We're inserting a new one
@@ -277,6 +269,7 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
                 builder.setLocation(location);
                 builder.setDistance(distance);
                 builder.setDate(date);
+                builder.setTimezone(timeZone);
                 builder.setRate(rate);
                 builder.setCurrency(currency);
                 builder.setComment(comment);
@@ -290,6 +283,7 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
                 builder.setLocation(location);
                 builder.setDistance(distance);
                 builder.setDate(date);
+                builder.setTimezone(timeZone);
                 builder.setRate(rate);
                 builder.setCurrency(currency);
                 builder.setComment(comment);

@@ -9,13 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import co.smartreceipts.android.SmartReceiptsApplication;
-import co.smartreceipts.android.date.DateManager;
 import wb.android.flex.Flex;
 
 public class WBFragment extends Fragment {
 
 	private SmartReceiptsApplication mApplication;
-	private DateManager mDateManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
