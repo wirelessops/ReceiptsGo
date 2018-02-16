@@ -38,7 +38,7 @@ public class ReceiptInputCacheTest {
         final ReceiptInputCache postConfigurationChangeCache = new ReceiptInputCache(mActivityController.get().getSupportFragmentManager());
         assertNotNull(postConfigurationChangeCache.getCachedDate());
 
-        // Confirm we bump the time by one for ordering
+        // Confirm we bump the time by one for ordering, so cached dates never lead to stale orders
         assertEquals(new Date(date.getTime() + 1), postConfigurationChangeCache.getCachedDate());
     }
 

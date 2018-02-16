@@ -29,7 +29,7 @@ public class ReceiptInputCache {
     }
 
     public void setCachedDate(@Nullable Date cachedDate) {
-        mHeadlessFragment.mCachedDate = cachedDate == null ? null : new Date(cachedDate.getTime());
+        mHeadlessFragment.mCachedDate = cachedDate == null ? null : new Date(cachedDate.getTime() + 1);
     }
 
     @Nullable
