@@ -131,12 +131,6 @@ public class ReceiptCreateEditFragmentPresenter {
         final Receipt receipt = fragment.getReceipt();
         final Trip parentTrip = fragment.getParentTrip();
 
-        Calendar cal = Calendar.getInstance();
-        long currentSecondsElapsedToday = TimeUnit.HOURS.toSeconds(cal.get(Calendar.HOUR_OF_DAY)) +
-                TimeUnit.MINUTES.toSeconds(cal.get(Calendar.MINUTE)) +
-                cal.get(Calendar.SECOND);
-        Logger.debug(this, "Saving receipt: date.getTime() = " + date.getTime() + " seconds of day = " + currentSecondsElapsedToday);
-
         final ReceiptBuilderFactory builderFactory = (receipt == null) ? new ReceiptBuilderFactory(-1) : new ReceiptBuilderFactory(receipt);
         builderFactory.setName(name)
                 .setTrip(parentTrip)
@@ -156,8 +150,7 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setExtraEditText1(extraText1)
                 .setExtraEditText2(extraText2)
                 .setExtraEditText3(extraText3)
-                .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ?
-                       date.getTime() + currentSecondsElapsedToday : 0); // hack to prevent receipts with same date having same customOrderIds
+                .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? date.getTime() : 0); // hack to prevent receipts with same date having same customOrderIds
 
         if (receipt == null) {
             receiptTableController.insert(builderFactory.setFile(fragment.getFile()).build(), new DatabaseOperationMetadata());
