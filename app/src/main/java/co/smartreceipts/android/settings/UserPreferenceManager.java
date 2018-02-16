@@ -54,7 +54,7 @@ public class UserPreferenceManager {
                 .subscribeOn(this.initializationScheduler)
                 .subscribe(userPreferences -> {
                     for (final UserPreference<?> userPreference : userPreferences) {
-                        final String preferenceName = getName(userPreference);
+                        final String preferenceName = name(userPreference);
                         if (!preferences.contains(preferenceName)) {
                             // In here - we assign values that don't allow for preference_defaults.xml definitions (e.g. Locale Based Setings)
                             // Additionally, we set all float fields, which don't don't allow for 'android:defaultValue' settings
@@ -157,7 +157,7 @@ public class UserPreferenceManager {
     }
 
     @NonNull
-    public String getName(@NonNull UserPreference<?> preference) {
+    public String name(@NonNull UserPreference<?> preference) {
         return context.getString(preference.getName());
     }
 

@@ -95,7 +95,7 @@ public class OrganizationManager {
     @Nullable
     @SuppressWarnings("unchecked")
     public <T> Observable<T> apply(@NonNull JsonObject settings, @NonNull UserPreference<T> toPreference) {
-        final String preferenceName = userPreferenceManager.getName(toPreference);
+        final String preferenceName = userPreferenceManager.name(toPreference);
         if (settings.has(preferenceName)) {
             final JsonElement element = settings.get(preferenceName);
             if (!element.isJsonNull()) {
