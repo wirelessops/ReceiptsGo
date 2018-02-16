@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.model.utils.ModelUtils;
+import co.smartreceipts.android.utils.SoftKeyboardManager;
 
 /**
  * Provides a custom implementation of the {@link AppCompatEditText}, which automatically launches
@@ -150,6 +151,7 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
         if (savedState != null) {
             datePickerDialog.getDatePicker().init(savedState.getYear(), savedState.getMonthOfYear(), savedState.getDayOfMonth(), datePickerDialog);
         }
+        SoftKeyboardManager.hideKeyboard(this);
     }
 
     /**

@@ -19,9 +19,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.widget.RxDateEditText;
+
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -38,6 +41,8 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
+import co.smartreceipts.android.trips.editor.date.TripDateView;
+import co.smartreceipts.android.trips.editor.date.TripDatesPresenter;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
@@ -45,7 +50,7 @@ import io.reactivex.functions.Consumer;
 import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
 
-public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, CurrencyListEditorView {
+public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, CurrencyListEditorView, TripDateView {
     
     @Inject
     Flex flex;
@@ -61,6 +66,8 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
     @Inject
     TripCreateEditFragmentPresenter presenter;
+
+    TripDatesPresenter tripDatesPresenter;
 
     private AutoCompleteTextView nameBox;
     private DateEditText startDateBox;
@@ -95,6 +102,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         final TripCurrencyCodeSupplier currencyCodeSupplier = new TripCurrencyCodeSupplier(userPreferenceManager, getTrip());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, currencyCodeSupplier, savedInstanceState);
         defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
+        tripDatesPresenter = new TripDatesPresenter(this, userPreferenceManager, getTrip());
     }
 
     @Nullable
@@ -157,11 +165,13 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         }
 
         currencyListEditorPresenter.subscribe();
+        tripDatesPresenter.subscribe();
     }
 
     @Override
     public void onPause() {
         currencyListEditorPresenter.unsubscribe();
+        tripDatesPresenter.unsubscribe();
 
         if (nameAutoCompleteAdapter != null) {
             nameAutoCompleteAdapter.onPause();
@@ -340,6 +350,21 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Override
     public Observable<Integer> currencyClicks() {
         return defaultCurrencyListEditorView.currencyClicks();
+    }
+
+    @NonNull
+    @Override
+    public Consumer<Date> displayEndDate() {
+        return date -> {
+            endDateBox.setDate(date);
+            endDateBox.setTimeZone(TimeZone.getDefault());
+        };
+    }
+
+    @NonNull
+    @Override
+    public Observable<Date> getStartDateChanges() {
+        return RxDateEditText.dateChanges(startDateBox);
     }
 
     private String getFlexString(int id) {
