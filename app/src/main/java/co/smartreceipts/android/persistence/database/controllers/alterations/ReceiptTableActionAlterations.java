@@ -108,8 +108,8 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             }
 
             if (oldReceipt.getFile() != null) {
-                // Delete old file if user removed it
-                if (newReceipt.getFile() == null) {
+                // Delete old file if user removed or changed it
+                if (newReceipt.getFile() == null  || !newReceipt.getFile().equals(oldReceipt.getFile())) {
                     Picasso.with(context).invalidate(oldReceipt.getFile());
                     mStorageManager.delete(oldReceipt.getFile());
                 }
