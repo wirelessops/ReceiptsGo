@@ -26,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class IntentImportInformationInteractor {
 
     private static final String INTENT_INFORMATION_SHOW = "co.smartreceipts.android.INTENT_CONSUMED";
+    public static final String READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
 
     private final IntentImportProcessor intentImportProcessor;
     private final PermissionStatusChecker permissionStatusChecker;
@@ -51,18 +52,19 @@ public class IntentImportInformationInteractor {
                             return Maybe.just(intentImportResult);
                         } else {
                             final IntentImportResult intentImportResultReference = intentImportResult;
-                            return permissionStatusChecker.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            return permissionStatusChecker.isPermissionGranted(READ_PERMISSION)
                                     .subscribeOn(AndroidSchedulers.mainThread())
                                     .flatMapMaybe(isGranted -> {
                                         if (isGranted) {
                                             return Maybe.just(intentImportResult);
                                         } else {
-                                            return permissionRequester.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                            return permissionRequester.request(READ_PERMISSION)
                                                     .flatMapMaybe(permissionAuthorizationResponse -> {
                                                         if (permissionAuthorizationResponse.wasGranted()) {
                                                             return Maybe.just(intentImportResultReference);
                                                         } else {
-                                                            return Maybe.error(new PermissionsNotGrantedException("User failed to grant READ permission", Manifest.permission.READ_EXTERNAL_STORAGE));
+                                                            permissionRequester.markRequestConsumed(READ_PERMISSION);
+                                                            return Maybe.error(new PermissionsNotGrantedException("User failed to grant READ permission", READ_PERMISSION));
                                                         }
                                                     });
                                         }

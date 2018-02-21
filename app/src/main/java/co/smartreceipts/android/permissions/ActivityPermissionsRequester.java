@@ -39,4 +39,12 @@ public class ActivityPermissionsRequester<T extends FragmentActivity> implements
         }
     }
 
+    @Override
+    public void markRequestConsumed(@NonNull String manifestPermission) {
+        Logger.info(this, "Marking permission request consumed {}", manifestPermission);
+
+        permissionRequesterFactory.get().markRequestConsumed(manifestPermission);
+    }
+
+
 }

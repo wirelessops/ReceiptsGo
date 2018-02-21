@@ -20,4 +20,6 @@ public interface PermissionRequester {
      */
     @NonNull
     Single<PermissionAuthorizationResponse> request(@NonNull String manifestPermission);
+
+    void markRequestConsumed(@NonNull String manifestPermission);
 }

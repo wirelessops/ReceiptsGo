@@ -22,7 +22,7 @@ import io.reactivex.subjects.SingleSubject;
 public class PermissionRequesterHeadlessFragment extends Fragment implements PermissionRequester {
 
     private static final int PERMISSION_REQUEST = 33;
-    
+
     private final Map<String, SingleSubject<PermissionAuthorizationResponse>> permissionRequestMap = new HashMap<>();
     private final Object lock = new Object();
 
@@ -38,30 +38,26 @@ public class PermissionRequesterHeadlessFragment extends Fragment implements Per
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST) {
-            if (permissions.length > 0) {
-                final String permission = permissions[0];
-                final SingleSubject<PermissionAuthorizationResponse> responseSubject;
-                final PermissionAuthorizationResponse response;
-                synchronized (lock) {
-                    responseSubject = Preconditions.checkNotNull(permissionRequestMap.remove(permission));
-                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        response = new PermissionAuthorizationResponse(permission, true);
-                    } else {
-                        response = new PermissionAuthorizationResponse(permission, false);
-                    }
-                }
-                responseSubject.onSuccess(response);
-                if (response.wasGranted()) {
-                    analytics.record(new DefaultDataPointEvent(Events.Permissions.PermissionGranted).addDataPoint(new DataPoint("permission", permission)));
-                    Logger.info(this, "User authorized: {}.", response.getPermission());
+        if (requestCode == PERMISSION_REQUEST && permissions.length > 0) {
+
+            final String permission = permissions[0];
+            final SingleSubject<PermissionAuthorizationResponse> responseSubject;
+            final PermissionAuthorizationResponse response;
+            synchronized (lock) {
+                responseSubject = Preconditions.checkNotNull(permissionRequestMap.get(permission));
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    response = new PermissionAuthorizationResponse(permission, true);
                 } else {
-                    analytics.record(new DefaultDataPointEvent(Events.Permissions.PermissionDenied).addDataPoint(new DataPoint("permission", permission)));
-                    Logger.info(this, "User did NOT authorize: {}.", response.getPermission());
+                    response = new PermissionAuthorizationResponse(permission, false);
                 }
-            } else {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+            responseSubject.onSuccess(response);
+
+            analytics.record(new DefaultDataPointEvent(response.wasGranted() ? Events.Permissions.PermissionGranted : Events.Permissions.PermissionDenied)
+                    .addDataPoint(new DataPoint("permission", permission)));
+
+            Logger.info(this, response.wasGranted() ? "User authorized: {}." : "User did NOT authorize: {}.", response.getPermission());
+
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -84,8 +80,13 @@ public class PermissionRequesterHeadlessFragment extends Fragment implements Per
             }
         }
         if (permissionRequestIsRequired) {
-            requestPermissions(new String[] { manifestPermission }, PERMISSION_REQUEST);
+            requestPermissions(new String[]{manifestPermission}, PERMISSION_REQUEST);
         }
         return single;
+    }
+
+    public void markRequestConsumed(@NonNull String manifestPermission) {
+        Logger.info(this, "Marking permission request consumed: {}", manifestPermission);
+        permissionRequestMap.remove(manifestPermission);
     }
 }

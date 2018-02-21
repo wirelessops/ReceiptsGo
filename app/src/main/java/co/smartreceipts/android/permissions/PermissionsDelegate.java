@@ -38,4 +38,8 @@ public class PermissionsDelegate {
                     }
                 });
     }
+
+    public void markRequestConsumed(@NonNull String manifestPermission) {
+        permissionRequester.markRequestConsumed(manifestPermission);
+    }
 }

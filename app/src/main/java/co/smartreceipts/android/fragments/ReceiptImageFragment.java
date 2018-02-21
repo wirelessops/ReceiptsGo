@@ -147,7 +147,7 @@ public class ReceiptImageFragment extends WBFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar = getActivity().findViewById(R.id.toolbar);
     }
 
     @Override
@@ -175,8 +175,8 @@ public class ReceiptImageFragment extends WBFragment {
                 .subscribe(locatorResponse -> {
                     if (!locatorResponse.getThrowable().isPresent()) {
                         progress.setVisibility(View.VISIBLE);
-                        // Note: no need to call activityFileResultImporter.importFile
-                        // because ReceiptsListFragment is still subscribed to activityFileResultLocator.getUriStream()
+                        activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
+                                locatorResponse.getResultCode(), locatorResponse.getUri(), receipt.getTrip());
                     } else {
                         Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
                         progress.setVisibility(View.GONE);

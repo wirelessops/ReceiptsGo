@@ -177,9 +177,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     private Receipt highlightedReceipt;
     private Uri imageUri;
 
-    // Note: Some behaviors need to be handled in separate lifecycle events, so we use different Disposables
-    private CompositeDisposable onCreateCompositeDisposable;
-    private CompositeDisposable onResumeCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
 
@@ -191,6 +189,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Logger.debug(this, "onCreate");
         super.onCreate(savedInstanceState);
         adapter = new ReceiptsAdapter(getContext(), getTableController(), preferenceManager,
                 backupProvidersManager, navigationHandler, orderingPreferencesManager);
@@ -198,9 +197,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
         }
-
-        // we need to subscribe here because of possible permission dialog showing
-        subscribeOnCreate();
     }
 
     @Override
@@ -257,7 +253,45 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         ocrStatusAlerterPresenter.subscribe();
         receiptCreateActionPresenter.subscribe();
 
-        onResumeCompositeDisposable.add(activityFileResultImporter.getResultStream()
+        compositeDisposable.add(activityFileResultLocator.getUriStream()
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMapSingle(response -> {
+                    Logger.debug(this, "getting response from activityFileResultLocator.getUriStream() uri {}", response.getUri().toString());
+                    if (response.getUri().getScheme() != null && response.getUri().getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+                        return Single.just(response);
+                    } else { // we need to check read external storage permission
+                        Logger.debug(this, "need to check permission");
+                        return permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)
+                                .toSingleDefault(response)
+                                .onErrorReturn(ActivityFileResultLocatorResponse::LocatorError);
+                    }
+                })
+                .subscribe(locatorResponse -> {
+                    permissionsDelegate.markRequestConsumed(READ_PERMISSION);
+                    if (!locatorResponse.getThrowable().isPresent()) {
+                        if (loadingProgress != null) {
+                            loadingProgress.setVisibility(View.VISIBLE);
+                        }
+                        activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
+                                locatorResponse.getResultCode(), locatorResponse.getUri(), trip);
+                    } else {
+                        Logger.debug(this, "Error with permissions");
+                        if (locatorResponse.getThrowable().get() instanceof PermissionsNotGrantedException) {
+                            Toast.makeText(getActivity(), getString(R.string.toast_no_storage_permissions), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
+                        }
+                        highlightedReceipt = null;
+                        if (loadingProgress != null) {
+                            loadingProgress.setVisibility(View.GONE);
+                        }
+                        Logger.debug(this, "marking that locator result were consumed");
+                        activityFileResultLocator.markThatResultsWereConsumed();
+                        Logger.debug(this, "marked that locator result were consumed");
+                    }
+                }));
+
+        compositeDisposable.add(activityFileResultImporter.getResultStream()
                 .subscribe(response -> {
                     Logger.info(ReceiptsListFragment.this, "Handled the import of {}", response);
                     if (!response.getThrowable().isPresent()) {
@@ -294,16 +328,16 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     activityFileResultImporter.markThatResultsWereConsumed();
                 }));
 
-        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getItemClicks()
+        compositeDisposable.add(((ReceiptsAdapter) adapter).getItemClicks()
                 .subscribe(receipt -> {
                     analytics.record(Events.Receipts.ReceiptMenuEdit);
                     navigationHandler.navigateToEditReceiptFragment(trip, receipt);
                 }));
 
-        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getMenuClicks()
+        compositeDisposable.add(((ReceiptsAdapter) adapter).getMenuClicks()
                 .subscribe(this::showReceiptMenu));
 
-        onResumeCompositeDisposable.add(((ReceiptsAdapter) adapter).getImageClicks()
+        compositeDisposable.add(((ReceiptsAdapter) adapter).getImageClicks()
                 .subscribe(receipt -> {
                     if (receipt.hasImage()) {
                         analytics.record(Events.Receipts.ReceiptMenuViewImage);
@@ -313,42 +347,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         navigationHandler.navigateToViewReceiptPdf(receipt);
                     } else {
                         showAttachmentDialog(receipt);
-                    }
-                }));
-    }
-
-    private void subscribeOnCreate() {
-        onCreateCompositeDisposable = new CompositeDisposable();
-
-        onCreateCompositeDisposable.add(activityFileResultLocator.getUriStream()
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMapSingle(response -> {
-                    if (response.getUri().getScheme() != null && response.getUri().getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-                        return Single.just(response);
-                    } else { // we need to check read external storage permission
-                        return permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)
-                                .toSingleDefault(response)
-                                .onErrorReturn(ActivityFileResultLocatorResponse::LocatorError);
-                    }
-                })
-                .subscribe(locatorResponse -> {
-                    if (!locatorResponse.getThrowable().isPresent()) {
-                        if (loadingProgress != null) {
-                            loadingProgress.setVisibility(View.VISIBLE);
-                        }
-                        activityFileResultImporter.importFile(locatorResponse.getRequestCode(),
-                                locatorResponse.getResultCode(), locatorResponse.getUri(), trip);
-                    } else {
-                        if (locatorResponse.getThrowable().get() instanceof PermissionsNotGrantedException) {
-                            Toast.makeText(getActivity(), getString(R.string.toast_no_storage_permissions), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show();
-                        }
-                        highlightedReceipt = null;
-                        if (loadingProgress != null) {
-                            loadingProgress.setVisibility(View.GONE);
-                        }
-                        activityFileResultLocator.markThatResultsWereConsumed();
                     }
                 }));
     }
@@ -364,7 +362,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onPause() {
-        onResumeCompositeDisposable.clear();
+        compositeDisposable.clear();
         receiptCreateActionPresenter.unsubscribe();
         ocrStatusAlerterPresenter.unsubscribe();
         floatingActionMenu.close(false);
@@ -417,12 +415,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    public void onDestroy() {
-        onCreateCompositeDisposable.clear();
-        super.onDestroy();
-    }
-
-    @Override
     protected PersistenceManager getPersistenceManager() {
         return persistenceManager;
     }
@@ -452,7 +444,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 if (selection != null) {
                     if (selection.equals(attachFile) || selection.equals(replaceFile)) { // Attach File to Receipt
                         final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(getActivity(), trip, persistenceManager, receiptTableController, analytics);
-                        onCreateCompositeDisposable.add(importer.importAttachment(intentImportResult, receipt)
+                        compositeDisposable.add(importer.importAttachment(intentImportResult, receipt)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(file -> {
