@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/DIALOG_TRIPMENU_HINT_NAME"
+                android:imeOptions="actionNext"
                 android:inputType="textCapSentences"
                 android:maxLength="50"
                 android:minHeight="@dimen/default_input_row_size"
@@ -112,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:hint="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                    android:imeOptions="actionNext"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
             </LinearLayout>
 
@@ -128,7 +130,6 @@
                 <ImageView
                     style="@style/Widget.SmartReceipts.GuideImage"
                     android:src="@drawable/ic_category" />
-
 
                 <AutoCompleteTextView
                     android:id="@+id/dialog_tripmenu_cost_center"
