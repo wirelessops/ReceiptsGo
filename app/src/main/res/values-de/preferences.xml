@@ -125,9 +125,6 @@
     <string name="pref_layout_display_category_title">Beleg-Kategorie hinzufügen</string>
     <string name="pref_layout_display_category_summary">Zeigt die Kategorie des Belegs-Listenelemente</string>
 
-    <string name="pref_layout_display_photo_title">Fügen Sie Bild / PDF Marker hinzu</string>
-    <string name="pref_layout_display_photo_summary">Geben Sie an, ob Einträge ein Foto / PDF haben</string>
-
     <!-- ============= Preference Distance ================= -->
 
     <string name="pref_distance_include_price_in_report_title">Einen Entfernungs-Preis hinzufügen</string>

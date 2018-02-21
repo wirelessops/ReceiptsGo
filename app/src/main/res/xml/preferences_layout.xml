@@ -13,10 +13,5 @@
 	        android:title="@string/pref_layout_display_category_title"
 	        android:summary="@string/pref_layout_display_category_summary"
 	        android:defaultValue="@bool/pref_layout_display_category_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_layout_display_photo_key"
-	        android:title="@string/pref_layout_display_photo_title"
-	        android:summary="@string/pref_layout_display_photo_summary"
-	        android:defaultValue="@bool/pref_layout_display_photo_defaultValue"/>
 	</PreferenceCategory>
 </PreferenceScreen>

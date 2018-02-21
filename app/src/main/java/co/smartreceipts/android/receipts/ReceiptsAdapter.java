@@ -109,13 +109,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
             receiptHolder.category.setVisibility(View.GONE);
         }
 
-        if (preferences.get(UserPreference.Layout.IncludeReceiptFileMarkerInLayout)) {
-            receiptHolder.marker.setVisibility(View.VISIBLE);
-            receiptHolder.marker.setText(receipt.getMarkerAsString(context));
-        } else {
-            receiptHolder.marker.setVisibility(View.GONE);
-        }
-
         Drawable cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
         Drawable notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
         Drawable syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
@@ -236,7 +229,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         public ImageView syncState;
         public ImageView image;
         ImageView menuButton;
-        TextView marker;
 
         ReceiptViewHolder(View itemView) {
             super(itemView);
@@ -245,7 +237,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
             name = itemView.findViewById(android.R.id.title);
             date = itemView.findViewById(R.id.card_date);
             category = itemView.findViewById(android.R.id.text1);
-            marker = itemView.findViewById(android.R.id.text2);
             syncState = itemView.findViewById(R.id.card_sync_state);
             menuButton = itemView.findViewById(R.id.card_menu);
             image = itemView.findViewById(R.id.card_image);

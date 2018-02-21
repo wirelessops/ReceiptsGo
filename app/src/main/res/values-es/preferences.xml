@@ -125,9 +125,6 @@
     <string name="pref_layout_display_category_title">Incluir categoría del recibo</string>
     <string name="pref_layout_display_category_summary">Muestra la categoría de la lista de ítems del recibo</string>
 
-    <string name="pref_layout_display_photo_title">Incluir imagen/marcador PDF</string>
-    <string name="pref_layout_display_photo_summary">Indica si las entradas tienen una foto/PDF</string>
-
     <!-- ============= Preference Distance ================= -->
 
     <string name="pref_distance_include_price_in_report_title">Añadir precio de la distancia al informe</string>

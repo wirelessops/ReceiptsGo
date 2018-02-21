@@ -12,7 +12,6 @@ import java.io.File;
 import java.sql.Date;
 import java.util.TimeZone;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
@@ -173,18 +172,6 @@ public final class DefaultReceiptImpl implements Receipt {
             }
         } else {
             return false;
-        }
-    }
-
-    @NonNull
-    @Override
-    public String getMarkerAsString(@NonNull Context context) {
-        if (hasImage()) {
-            return context.getString(R.string.image);
-        } else if (hasPDF()) {
-            return context.getString(R.string.pdf);
-        } else {
-            return "";
         }
     }
 

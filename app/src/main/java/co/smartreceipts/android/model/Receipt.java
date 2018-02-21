@@ -69,16 +69,6 @@ public interface Receipt extends Parcelable, Priceable, Draggable<Receipt>, Sync
     boolean hasPDF();
 
     /**
-     * Returns the data-type marker for the underlying file (e.g. "pdf" for PDF, "image" for image, or empty
-     * if there is no file)
-     *
-     * @param context the current {@link Context}
-     * @return the {@link String} representation of the file-type
-     */
-    @NonNull
-    String getMarkerAsString(@NonNull Context context);
-
-    /**
      * Gets the Image attached to this receipt. This is identical to calling {@link #getFile()}
      *
      * @return the {@link File} or {@code null} if none is presentFirstTimeInformation

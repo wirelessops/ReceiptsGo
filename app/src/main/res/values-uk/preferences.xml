@@ -126,9 +126,6 @@
     <string name="pref_layout_display_category_title">Включати категорію чека</string>
     <string name="pref_layout_display_category_summary">Показувати категорію чека</string>
 
-    <string name="pref_layout_display_photo_title">Включати зображення/PDF-маркер</string>
-    <string name="pref_layout_display_photo_summary">Вказувати, чи містять елементи фото/PDF</string>
-
     <!-- ============= Preference Distance ================= -->
 
     <string name="pref_distance_include_price_in_report_title">Додати вартість відстані до звіту</string>
