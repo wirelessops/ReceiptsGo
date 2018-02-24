@@ -15,8 +15,10 @@ import com.google.common.base.Preconditions;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
@@ -95,7 +97,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         receiptHolder.price.setText(receipt.getPrice().getCurrencyFormattedPrice());
         receiptHolder.name.setText(receipt.getName());
 
-        if (preferences.get(UserPreference.Layout.IncludeReceiptDateInLayout)) {
+        if (preferences.get(UserPreference.Layout.IncludeReceiptDateInLayout) && checkIfNeedToShowDate(position)) {
             receiptHolder.date.setVisibility(View.VISIBLE);
             receiptHolder.date.setText(receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator)));
         } else {
@@ -166,7 +168,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
 
     @Override
     public void saveNewOrder(TableController<Receipt> tableController) {
-
         if (draggedReceiptNewPosition != null) {
             final Receipt draggedReceipt = items.get(draggedReceiptNewPosition);
             tableController.update(draggedReceipt, draggedReceipt, new DatabaseOperationMetadata());
@@ -194,6 +195,20 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
             items.addAll(updatedItems);
 
             orderingPreferencesManager.saveReceiptsTableOrdering();
+        }
+    }
+
+    private boolean checkIfNeedToShowDate(int itemPosition) {
+        if (itemPosition == 0) {
+            return true;
+        } else {
+            final Date receiptDate = items.get(itemPosition).getDate();
+            final Date previousReceiptDate = items.get(itemPosition - 1).getDate();
+
+            final long receiptDays = TimeUnit.MILLISECONDS.toDays(receiptDate.getTime());
+            final long previousReceiptDays = TimeUnit.MILLISECONDS.toDays(previousReceiptDate.getTime());
+
+            return receiptDays != previousReceiptDays;
         }
     }
 
@@ -236,7 +251,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
             price = itemView.findViewById(R.id.price);
             name = itemView.findViewById(android.R.id.title);
             date = itemView.findViewById(R.id.card_date);
-            category = itemView.findViewById(android.R.id.text1);
+            category = itemView.findViewById(R.id.card_category);
             syncState = itemView.findViewById(R.id.card_sync_state);
             menuButton = itemView.findViewById(R.id.card_menu);
             image = itemView.findViewById(R.id.card_image);
