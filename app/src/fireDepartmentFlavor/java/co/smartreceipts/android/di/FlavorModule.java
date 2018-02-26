@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import co.smartreceipts.android.ExtraInitializer;
-import co.smartreceipts.android.ExtraInitializerPlusImpl;
+import co.smartreceipts.android.ExtraInitializerFireDepartmentImpl;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.AnalyticsManager;
 import co.smartreceipts.android.analytics.impl.firebase.FirebaseAnalytics;
@@ -26,7 +26,7 @@ public class FlavorModule {
 
     @Provides
     @ApplicationScope
-    public static ExtraInitializer provideExtraInitializer(ExtraInitializerPlusImpl plusInitializer) {
+    public static ExtraInitializer provideExtraInitializer(ExtraInitializerFireDepartmentImpl plusInitializer) {
         return plusInitializer;
     }
 

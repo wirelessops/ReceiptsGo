@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sr_app_name">Smart Receipts Plus</string>
-    <string name="package_name">wb.receiptspro</string>
 </resources>

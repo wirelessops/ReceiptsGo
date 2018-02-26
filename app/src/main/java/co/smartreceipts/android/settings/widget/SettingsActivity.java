@@ -433,7 +433,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
 
     private String getAppVersion() {
         try {
-            return getPackageManager().getPackageInfo(getString(R.string.package_name), 0).versionName;
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (NameNotFoundException e) {
             return null;
         }
