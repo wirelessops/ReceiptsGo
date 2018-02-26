@@ -15,7 +15,8 @@
         android:layout_marginLeft="@dimen/card_thumbnail_margins"
         android:textColor="@color/card_price"
         android:textSize="@dimen/card_price_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="250$"/>
 
     <ImageView
         android:id="@+id/card_sync_state"
@@ -26,7 +27,8 @@
         android:layout_marginRight="@dimen/card_thumbnail_margins"
         android:tint="@color/text_secondary_color"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true" />
+        android:clickable="true"
+        tools:src="@drawable/ic_cloud_done_24dp"/>
     
     <LinearLayout
         android:id="@+id/data_layout"
@@ -46,13 +48,15 @@
             android:layout_marginBottom="@dimen/card_name_date_separator"
             android:textColor="@color/card_name"
             android:textSize="@dimen/card_name_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Title"/>
 
         <TextView
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/card_date_size" />
+            android:textSize="@dimen/card_date_size"
+            tools:text="Summary"/>
 
         <TextView
             android:id="@android:id/text1"
@@ -60,7 +64,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
-            android:textSize="@dimen/card_date_size" />
+            android:textSize="@dimen/card_date_size"
+            tools:text="text1"/>
     </LinearLayout>
 
 

@@ -282,6 +282,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Override
     public void onInsertSuccess(@NonNull Trip trip, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         if (isResumed()) {
+            tripTableController.get();
             viewReceipts(trip);
         }
     }
