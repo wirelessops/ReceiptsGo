@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-files-path name="public-files-path" path="." />
-    <cache-path name="private-cache-path" path="." />
-    <files-path path="" name="log"/>
+    <external-files-path name="public-files-path" path="/" />
+    <cache-path name="private-cache-path" path="/" />
+    <files-path name="log" path="/" />
+    <external-cache-path name="public-cache-path" path="/" />
 </paths>

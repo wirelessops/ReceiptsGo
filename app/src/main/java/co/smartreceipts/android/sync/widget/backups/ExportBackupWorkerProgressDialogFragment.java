@@ -69,8 +69,8 @@ public class ExportBackupWorkerProgressDialogFragment extends DialogFragment {
         super.onResume();
         disposable = manualBackupAndRestoreTaskCache.getManualBackupTask().backupData().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file -> {
-                    final Intent sentIntent = IntentUtils.getSendIntent(getContext(), file);
-                    getActivity().startActivity(Intent.createChooser(sentIntent, getString(R.string.export)));
+                    final Intent intent = IntentUtils.getSendIntent(getContext(), file);
+                    getActivity().startActivity(Intent.createChooser(intent, getString(R.string.export)));
                     backupReminderTooltipStorage.setLastManualBackupDate();
                 }, throwable -> {
                     analytics.record(new ErrorEvent(ExportBackupWorkerProgressDialogFragment.this, throwable));

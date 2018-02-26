@@ -144,8 +144,8 @@ public class RemoteBackupsDataCache {
 
         ReplaySubject<File> downloadBackupReplaySubjectMap = mHeadlessFragment.downloadBackupReplaySubjectMap.get(remoteBackupMetadata);
         if (downloadBackupReplaySubjectMap == null) {
-            final File cacheDir = new SmartReceiptsTemporaryFileCache(mContext).getFile(FileUtils.omitIllegalCharactersFromFileName(remoteBackupMetadata.getSyncDeviceName()));
-            final File cacheDirZipFile = new SmartReceiptsTemporaryFileCache(mContext).getFile(FileUtils.omitIllegalCharactersFromFileName(remoteBackupMetadata.getSyncDeviceName()) + ".zip");
+            final File cacheDir = new SmartReceiptsTemporaryFileCache(mContext).getInternalCacheFile(FileUtils.omitIllegalCharactersFromFileName(remoteBackupMetadata.getSyncDeviceName()));
+            final File cacheDirZipFile = new SmartReceiptsTemporaryFileCache(mContext).getInternalCacheFile(FileUtils.omitIllegalCharactersFromFileName(remoteBackupMetadata.getSyncDeviceName()) + ".zip");
             downloadBackupReplaySubjectMap = ReplaySubject.create();
 
 

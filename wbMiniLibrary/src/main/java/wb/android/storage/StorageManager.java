@@ -156,6 +156,21 @@ public class StorageManager {
 			return oldFile;
 	}
 
+	/**
+	 * Attempts to rename oldFile with name newName. It returns a new file if successful and the oldFile if not
+	 *
+	 * @param oldFile
+	 * @param file
+	 * @return
+	 */
+	public File rename(final File oldFile, final File file) {
+		final boolean success = oldFile.renameTo(file);
+		if (success)
+			return file;
+		else
+			return oldFile;
+	}
+
 	public boolean delete(final String filename) {
 		return deleteHelper(new File(_root, filename));
 	}

@@ -34,7 +34,7 @@ public class CameraInteractionController {
      */
     @NonNull
     public Uri takePhoto() {
-        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(context).getFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST);
+        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(context).getInternalCacheFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST);
     }
 
     /**
@@ -44,7 +44,7 @@ public class CameraInteractionController {
      */
     @NonNull
     public Uri addPhoto() {
-        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(context).getFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST);
+        return startPhotoIntent(new SmartReceiptsTemporaryFileCache(context).getInternalCacheFile(System.currentTimeMillis() + "x.jpg"), RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST);
     }
 
     /**

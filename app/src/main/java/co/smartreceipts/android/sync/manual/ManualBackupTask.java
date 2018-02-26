@@ -29,17 +29,23 @@ public class ManualBackupTask {
     private static final String DATABASE_JOURNAL = "receipts.db-journal";
 
     private final Context context;
+    private final SmartReceiptsTemporaryFileCache smartReceiptsTemporaryFileCache;
     private final PersistenceManager persistenceManager;
     private final Scheduler observeonscheduler;
     private final Scheduler subscribeOnScheduler;
     private ReplaySubject<File> backupBehaviorSubject;
 
     ManualBackupTask(@NonNull Context context, @NonNull PersistenceManager persistenceManager) {
-        this(context, persistenceManager, Schedulers.io(), Schedulers.io());
+        this(context, new SmartReceiptsTemporaryFileCache(context), persistenceManager, Schedulers.io(), Schedulers.io());
     }
 
-    ManualBackupTask(@NonNull Context context, @NonNull PersistenceManager persistenceManager, @NonNull Scheduler observeOnScheduler, @NonNull Scheduler subscribeOnScheduler) {
+    ManualBackupTask(@NonNull Context context,
+                     @NonNull SmartReceiptsTemporaryFileCache smartReceiptsTemporaryFileCache,
+                     @NonNull PersistenceManager persistenceManager,
+                     @NonNull Scheduler observeOnScheduler,
+                     @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
+        this.smartReceiptsTemporaryFileCache = Preconditions.checkNotNull(smartReceiptsTemporaryFileCache);
         this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
         this.observeonscheduler = Preconditions.checkNotNull(observeOnScheduler);
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
@@ -60,50 +66,45 @@ public class ManualBackupTask {
 
     @NonNull
     private Single<File> backupDataToSingle() {
-        return Single.fromCallable(new Callable<File>() {
-            @Override
-            public File call() throws Exception {
-                final SmartReceiptsTemporaryFileCache smartReceiptsTemporaryFileCache = new SmartReceiptsTemporaryFileCache(context);
-                final File outputSmrBackupFile = smartReceiptsTemporaryFileCache.getFile(EXPORT_FILENAME);
-                final StorageManager external = persistenceManager.getExternalStorageManager();
-                final StorageManager internal = persistenceManager.getInternalStorageManager();
-                external.delete(external.getFile(EXPORT_FILENAME)); //Remove old export
-                internal.delete(outputSmrBackupFile); //Remove old export
+        return Single.fromCallable(() -> {
 
-                external.copy(external.getFile(DatabaseHelper.DATABASE_NAME), external.getFile(DATABASE_EXPORT_NAME), true);
-                final File internalSharedPreferencesFolder = internal.getFile(internal.getRoot().getParentFile(), "shared_prefs");
+            final StorageManager external = persistenceManager.getExternalStorageManager();
+            final StorageManager internal = persistenceManager.getInternalStorageManager();
+            external.delete(external.getFile(EXPORT_FILENAME)); // Remove old export
 
-                // Preferences File
-                if (internalSharedPreferencesFolder != null && internalSharedPreferencesFolder.exists()) {
-                    File backupSharedPreferencesFolder = external.getFile("shared_prefs");
-                    // Delete this first to clear out any old instances of it before copying over
-                    //noinspection ResultOfMethodCallIgnored
-                    backupSharedPreferencesFolder.delete();
-                    if (backupSharedPreferencesFolder.exists() || backupSharedPreferencesFolder.mkdir()) {
-                        final File smartReceiptsPreferencesFile = new File(internalSharedPreferencesFolder, "SmartReceiptsPrefFile.xml");
-                        final File backupSmartReceiptsPreferencesFile = new File(backupSharedPreferencesFolder, "SmartReceiptsPrefFile.xml");
-                        Logger.debug(ManualBackupTask.this, "Copying the prefs file from: {} to {}", smartReceiptsPreferencesFile.getAbsolutePath(), backupSmartReceiptsPreferencesFile.getAbsolutePath());
-                        if (external.copy(smartReceiptsPreferencesFile, backupSmartReceiptsPreferencesFile, true)) {
-                            Logger.debug(ManualBackupTask.this, "Successfully copied our preferences files");
-                        } else {
-                            throw new IOException("Failed to copy our shared prefs");
-                        }
+            external.copy(external.getFile(DatabaseHelper.DATABASE_NAME), external.getFile(DATABASE_EXPORT_NAME), true);
+            final File internalSharedPreferencesFolder = internal.getFile(internal.getRoot().getParentFile(), "shared_prefs");
+
+            // Preferences File
+            if (internalSharedPreferencesFolder != null && internalSharedPreferencesFolder.exists()) {
+                File backupSharedPreferencesFolder = external.getFile("shared_prefs");
+                // Delete this first to clear out any old instances of it before copying over
+                //noinspection ResultOfMethodCallIgnored
+                backupSharedPreferencesFolder.delete();
+                if (backupSharedPreferencesFolder.exists() || backupSharedPreferencesFolder.mkdir()) {
+                    final File smartReceiptsPreferencesFile = new File(internalSharedPreferencesFolder, "SmartReceiptsPrefFile.xml");
+                    final File backupSmartReceiptsPreferencesFile = new File(backupSharedPreferencesFolder, "SmartReceiptsPrefFile.xml");
+                    Logger.debug(ManualBackupTask.this, "Copying the prefs file from: {} to {}", smartReceiptsPreferencesFile.getAbsolutePath(), backupSmartReceiptsPreferencesFile.getAbsolutePath());
+                    if (external.copy(smartReceiptsPreferencesFile, backupSmartReceiptsPreferencesFile, true)) {
+                        Logger.debug(ManualBackupTask.this, "Successfully copied our preferences files");
                     } else {
-                        throw new IOException("Failed to create a folder for our shared prefs");
+                        throw new IOException("Failed to copy our shared prefs");
                     }
+                } else {
+                    throw new IOException("Failed to create a folder for our shared prefs");
                 }
-
-                // Finish
-                File zip = external.zipBuffered(8192, new BackupFileFilter());
-                zip = external.rename(zip, EXPORT_FILENAME);
-
-                // Move to our temporary file cache to not pollute disk space
-                internal.copy(zip, outputSmrBackupFile, true);
-                external.delete(zip);
-
-                return outputSmrBackupFile;
-
             }
+
+            // Finish
+            File zip = external.zipBuffered(8192, new BackupFileFilter());
+            File backupFile = smartReceiptsTemporaryFileCache.getExternalCacheFile(EXPORT_FILENAME);
+
+            if (zip.renameTo(backupFile)) {
+                return backupFile;
+            } else {
+                throw new IOException("Failed to rename the backup file to: " + backupFile.getAbsolutePath());
+            }
+
         });
     }
 

@@ -40,7 +40,7 @@ public class ContentUriProvider {
                 } else {
                     Logger.warn(ContentUriProvider.class, "ANR Risk -- Copying the file the location cache to avoid Huawei 'external-files-path' bug for N+ devices", e);
                     final SmartReceiptsTemporaryFileCache temporaryFileCache = new SmartReceiptsTemporaryFileCache(context);
-                    final File cacheLocation = temporaryFileCache.getFile(file.getName());
+                    final File cacheLocation = temporaryFileCache.getInternalCacheFile(file.getName());
                     InputStream in = null;
                     OutputStream out = null;
                     try {
