@@ -35,17 +35,17 @@ public class CardAdapter<T> extends BaseAdapter {
     private static final int MIN_PRICE_WIDTH_DIVIDER = 6;
     private static final float PRICE_WIDTH_BUFFER = 1.1f;
 
-    protected final BackupProvidersManager mBackupProvidersManager;
-    protected final Drawable mCloudDisabledDrawable;
-    protected final Drawable mNotSyncedDrawable;
-    protected final Drawable mSyncedDrawable;
+    protected final BackupProvidersManager backupProvidersManager;
+    protected final Drawable cloudDisabledDrawable;
+    protected final Drawable notSyncedDrawable;
+    protected final Drawable syncedDrawable;
 
-    private final LayoutInflater mInflater;
-    private final UserPreferenceManager mPreferences;
-    private final Context mContext;
-    private final float mCardPriceTextSize;
+    private final LayoutInflater inflater;
+    private final UserPreferenceManager preferences;
+    private final Context context;
+    private final float cardPriceTextSize;
 
-    private List<T> mData;
+    private List<T> data;
 
     private int listViewWidth, priceLayoutWidth;
     private int oldLongestPriceWidth, newLongestPriceWidth;
@@ -55,40 +55,40 @@ public class CardAdapter<T> extends BaseAdapter {
     }
 
     public CardAdapter(@NonNull Context context, @NonNull UserPreferenceManager preferences, @NonNull BackupProvidersManager backupProvidersManager, @NonNull List<T> data) {
-        mInflater = LayoutInflater.from(context);
-        mPreferences = preferences;
-        mContext = context;
-        mData = new ArrayList<>(data);
-        mBackupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
+        inflater = LayoutInflater.from(context);
+        this.preferences = preferences;
+        this.context = context;
+        this.data = new ArrayList<>(data);
+        this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mCloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-            mNotSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-            mSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+            cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+            notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+            syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
         } else {
-            mCloudDisabledDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-            mNotSyncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-            mSyncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+            cloudDisabledDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+            notSyncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+            syncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
         }
 
-        mCardPriceTextSize = mContext.getResources().getDimension(getCardPriceTextSizeResource());
+        cardPriceTextSize = this.context.getResources().getDimension(getCardPriceTextSizeResource());
     }
 
     @Override
     public int getCount() {
-        if (mData == null) {
+        if (data == null) {
             return 0;
         } else {
-            return mData.size();
+            return data.size();
         }
     }
 
     @Override
     public T getItem(int i) {
-        if (mData == null) {
+        if (data == null) {
             return null;
         } else {
-            return mData.get(i);
+            return data.get(i);
         }
     }
 
@@ -97,11 +97,11 @@ public class CardAdapter<T> extends BaseAdapter {
     }
 
     public final Context getContext() {
-        return mContext;
+        return context;
     }
 
     public final UserPreferenceManager getPreferences() {
-        return mPreferences;
+        return preferences;
     }
 
     private static class MyViewHolder {
@@ -135,7 +135,7 @@ public class CardAdapter<T> extends BaseAdapter {
         MyViewHolder holder;
         final T data = getItem(i);
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.simple_card, parent, false);
+            convertView = inflater.inflate(R.layout.simple_card, parent, false);
             holder = new MyViewHolder();
             holder.price = convertView.findViewById(R.id.price);
             holder.name = convertView.findViewById(android.R.id.title);
@@ -190,20 +190,20 @@ public class CardAdapter<T> extends BaseAdapter {
 
     protected void setSyncStateImage(ImageView image, T data) {
         image.setClickable(false);
-        if (mBackupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
+        if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
             if (data instanceof Syncable) {
                 final Syncable syncableData = (Syncable) data;
-                if (mBackupProvidersManager.getLastDatabaseSyncTime().getTime() >= syncableData.getSyncState().getLastLocalModificationTime().getTime()
+                if (backupProvidersManager.getLastDatabaseSyncTime().getTime() >= syncableData.getSyncState().getLastLocalModificationTime().getTime()
                         && syncableData.getSyncState().getLastLocalModificationTime().getTime() >= 0) {
-                    Picasso.with(getContext()).load(Uri.EMPTY).placeholder(mSyncedDrawable).into(image);
+                    Picasso.with(getContext()).load(Uri.EMPTY).placeholder(syncedDrawable).into(image);
                 } else {
-                    Picasso.with(getContext()).load(Uri.EMPTY).placeholder(mNotSyncedDrawable).into(image);
+                    Picasso.with(getContext()).load(Uri.EMPTY).placeholder(notSyncedDrawable).into(image);
                 }
             } else {
                 image.setVisibility(View.GONE);
             }
         } else {
-            Picasso.with(getContext()).load(Uri.EMPTY).placeholder(mCloudDisabledDrawable).into(image);
+            Picasso.with(getContext()).load(Uri.EMPTY).placeholder(cloudDisabledDrawable).into(image);
         }
     }
 
@@ -212,21 +212,21 @@ public class CardAdapter<T> extends BaseAdapter {
     }
 
     public final synchronized void notifyDataSetChanged(List<T> newData) {
-        mData = new ArrayList<>(newData);
+        data = new ArrayList<>(newData);
         calculateLongestPriceWidth();
         super.notifyDataSetChanged();
     }
 
     private void calculateLongestPriceWidth() {
-        if (mData != null && mData.size() != 0) {
+        if (data != null && data.size() != 0) {
             Paint paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setTextSize(mCardPriceTextSize * PRICE_WIDTH_BUFFER);
+            paint.setTextSize(cardPriceTextSize * PRICE_WIDTH_BUFFER);
             paint.setTypeface(Typeface.DEFAULT_BOLD); // Set in the Price field
             int curr = 0, measured = 0;
-            final int size = mData.size();
+            final int size = data.size();
             for (int i = 0; i < size; i++) {
-                measured = (int) paint.measureText(getPrice(mData.get(i)));
+                measured = (int) paint.measureText(getPrice(data.get(i)));
                 if (measured > curr) {
                     curr = measured;
                 }
