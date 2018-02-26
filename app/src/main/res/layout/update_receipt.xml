@@ -32,16 +32,16 @@
                 style="@style/Widget.SmartReceipts.TextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hint="@string/DIALOG_RECEIPTMENU_HINT_NAME"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <AutoCompleteTextView
+                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/DIALOG_RECEIPTMENU_NAME"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:completionThreshold="1"
-                    android:hint="@string/DIALOG_RECEIPTMENU_HINT_NAME"
                     android:inputType="textCapSentences"
                     android:singleLine="true"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
@@ -62,15 +62,15 @@
                 android:id="@+id/receipt_input_price_wrapper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hint="@string/DIALOG_RECEIPTMENU_HINT_PRICE_SHORT"
                 app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_price"
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_name_wrapper"
                 app:layout_constraintEnd_toStartOf="@id/receipt_input_tax_wrapper" >
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/DIALOG_RECEIPTMENU_PRICE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/DIALOG_RECEIPTMENU_HINT_PRICE_SHORT"
                     android:inputType="numberDecimal|numberSigned"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"/>
 
@@ -80,16 +80,16 @@
                 android:id="@+id/receipt_input_tax_wrapper"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
                 app:layout_constraintStart_toEndOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintEnd_toStartOf="@id/DIALOG_RECEIPTMENU_CURRENCY" >
 
-                <AutoCompleteTextView
+                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/DIALOG_RECEIPTMENU_TAX"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
                     android:inputType="numberDecimal|numberSigned"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                     android:completionThreshold="1" />
