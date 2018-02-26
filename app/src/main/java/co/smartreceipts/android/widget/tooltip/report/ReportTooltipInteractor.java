@@ -114,7 +114,7 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
         if (syncErrorType == SyncErrorType.NoRemoteDiskSpace) {
             backupProvidersManager.markErrorResolved(syncErrorType);
 
-        } else if (syncErrorType == SyncErrorType.UserDeletedRemoteData) {
+        } else if (syncErrorType == SyncErrorType.DriveRecoveryRequired) {
             navigationHandler.showDialog(new DriveRecoveryDialogFragment());
 
         } else if (syncErrorType == SyncErrorType.UserRevokedRemoteRights) {

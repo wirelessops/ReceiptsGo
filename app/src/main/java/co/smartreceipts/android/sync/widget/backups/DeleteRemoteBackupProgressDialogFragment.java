@@ -110,7 +110,7 @@ public class DeleteRemoteBackupProgressDialogFragment extends DialogFragment {
                             Toast.makeText(getContext(), getString(R.string.dialog_remote_backup_delete_toast_success), Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getContext(), getString(R.string.dialog_remote_backup_restore_toast_success), Toast.LENGTH_LONG).show();
-                            backupProvidersManager.markErrorResolved(SyncErrorType.UserDeletedRemoteData);
+                            backupProvidersManager.markErrorResolved(SyncErrorType.DriveRecoveryRequired);
                         }
 
                         // Note: this is kind of hacky but should work

@@ -111,7 +111,7 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
         if (syncErrorType == SyncErrorType.UserRevokedRemoteRights) {
             tooltip.setErrorWithoutClose(R.string.drive_sync_error_no_permissions, view ->
                     tooltipClickStream.onNext(ReportTooltipUiIndicator.syncError(syncErrorType)));
-        } else if (syncErrorType == SyncErrorType.UserDeletedRemoteData) {
+        } else if (syncErrorType == SyncErrorType.DriveRecoveryRequired) {
             tooltip.setErrorWithoutClose(R.string.drive_sync_error_lost_data, view -> {
                 tooltipClickStream.onNext(ReportTooltipUiIndicator.syncError(syncErrorType));
             });
