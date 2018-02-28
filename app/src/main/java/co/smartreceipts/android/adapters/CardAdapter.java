@@ -7,7 +7,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,8 @@ public class CardAdapter<T> extends BaseAdapter {
 
     private int listViewWidth, priceLayoutWidth;
     private int oldLongestPriceWidth, newLongestPriceWidth;
+
+    private T selectedItem;
 
     public CardAdapter(@NonNull Context context, @NonNull UserPreferenceManager preferences, @NonNull BackupProvidersManager backupProvidersManager) {
         this(context, preferences, backupProvidersManager, Collections.<T>emptyList());
@@ -160,7 +164,18 @@ public class CardAdapter<T> extends BaseAdapter {
         setMarker(holder.marker, data);
         setSyncStateImage(holder.syncState, data);
 
+        if (selectedItem != null && this.data.indexOf(selectedItem) == i) {
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.grey_card));
+        } else {
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.card_background));
+        }
+
         return convertView;
+    }
+
+    public void setSelectedItem(@Nullable T item) {
+        selectedItem = item;
+        notifyDataSetChanged();
     }
 
 

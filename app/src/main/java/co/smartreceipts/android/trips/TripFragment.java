@@ -52,6 +52,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     public static final String ARG_NAVIGATE_TO_VIEW_LAST_TRIP = "arg_nav_to_last_trip";
     private static final String OUT_NAV_TO_LAST_TRIP = "out_nav_to_last_trip";
+    private static final String OUT_SELECTED_TRIP = "out_selected_trip";
 
     @Inject
     Flex flex;
@@ -76,6 +77,10 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     private boolean navigateToLastTrip;
 
+    private Trip selectedTrip;
+
+    // TODO: 27.02.2018 take a look at NavigationHandler. maybe we can avoid keeping all ReceiptsListFragments at back stack
+
     public static TripFragment newInstance() {
         return new TripFragment();
     }
@@ -95,6 +100,10 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             navigateToLastTrip = getArguments().getBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP);
         } else {
             navigateToLastTrip = savedInstanceState.getBoolean(OUT_NAV_TO_LAST_TRIP);
+            selectedTrip = savedInstanceState.getParcelable(OUT_SELECTED_TRIP);
+            if (navigationHandler.isDualPane()) {
+                tripCardAdapter.setSelectedItem(selectedTrip);
+            }
         }
         tripTableController.subscribe(this);
     }
@@ -103,15 +112,10 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         final View rootView = inflater.inflate(R.layout.trip_fragment_layout, container, false);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
-        noDataAlert = (TextView) rootView.findViewById(R.id.no_data);
-        tooltip = (Tooltip) rootView.findViewById(R.id.trip_tooltip);
-        rootView.findViewById(R.id.trip_action_new).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tripMenu(null);
-            }
-        });
+        progressBar = rootView.findViewById(R.id.progress);
+        noDataAlert = rootView.findViewById(R.id.no_data);
+        tooltip = rootView.findViewById(R.id.trip_tooltip);
+        rootView.findViewById(R.id.trip_action_new).setOnClickListener(v -> tripMenu(null));
         return rootView;
     }
 
@@ -121,7 +125,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onActivityCreated(savedInstanceState);
         setListAdapter(tripCardAdapter); // Set this here to ensure this has been laid out already
         getListView().setOnItemLongClickListener(this);
-        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         if (toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         }
@@ -164,6 +168,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
         outState.putBoolean(OUT_NAV_TO_LAST_TRIP, navigateToLastTrip);
+        outState.putParcelable(OUT_SELECTED_TRIP, selectedTrip);
     }
 
     public final void tripMenu(final Trip trip) {
@@ -184,23 +189,15 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         final String[] editTripItems = flex.getStringArray(getActivity(), R.array.EDIT_TRIP_ITEMS);
         builder.setTitle(trip.getName())
                 .setCancelable(true)
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel())
+                .setItems(editTripItems, (dialog, item) -> {
+                    final String selection = editTripItems[item];
+                    if (selection == editTripItems[0]) {
+                        TripFragment.this.tripMenu(trip);
+                    } else if (selection == editTripItems[1]) {
+                        TripFragment.this.deleteTrip(trip);
                     }
-                })
-                .setItems(editTripItems, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        final String selection = editTripItems[item];
-                        if (selection == editTripItems[0]) {
-                            TripFragment.this.tripMenu(trip);
-                        } else if (selection == editTripItems[1]) {
-                            TripFragment.this.deleteTrip(trip);
-                        }
-                        dialog.cancel();
-                    }
+                    dialog.cancel();
                 }).show();
         return true;
     }
@@ -210,24 +207,13 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         builder.setTitle(getString(R.string.delete_item, trip.getName()))
                 .setMessage(getString(R.string.delete_sync_information))
                 .setCancelable(true)
-                .setPositiveButton(getFlexString(R.string.DIALOG_TRIP_DELETE_POSITIVE_BUTTON), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        tripTableController.delete(trip, new DatabaseOperationMetadata());
-                    }
-                })
-                .setNegativeButton(getFlexString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                }).show();
+                .setPositiveButton(getFlexString(R.string.DIALOG_TRIP_DELETE_POSITIVE_BUTTON), (dialog, id) -> tripTableController.delete(trip, new DatabaseOperationMetadata()))
+                .setNegativeButton(getFlexString(R.string.DIALOG_CANCEL), (dialog, id) -> dialog.cancel()).show();
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         viewReceipts(tripCardAdapter.getItem(position));
-        // v.setSelected(true);
     }
 
     @Override
@@ -339,6 +325,10 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     private void viewReceipts(Trip trip) {
+        selectedTrip = trip;
+        if (navigationHandler.isDualPane()) {
+            tripCardAdapter.setSelectedItem(trip);
+        }
         navigationHandler.navigateToReportInfoFragment(trip);
     }
 
@@ -360,7 +350,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         analytics.record(Events.Ratings.RatingPromptShown);
     }
 
-    private String getFlexString(int id){
+    private String getFlexString(int id) {
         return getFlexString(flex, id);
     }
 }

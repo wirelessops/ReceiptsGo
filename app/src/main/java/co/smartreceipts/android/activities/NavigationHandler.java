@@ -225,7 +225,7 @@ public class NavigationHandler<T extends FragmentActivity> {
         return isDualPane;
     }
 
-    public boolean shouldFinishOnBackNaviagtion() {
+    public boolean shouldFinishOnBackNavigation() {
         return fragmentManager.getBackStackEntryCount() == 1;
     }
 

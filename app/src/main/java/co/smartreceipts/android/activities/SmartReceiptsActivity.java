@@ -189,7 +189,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
 
     @Override
     public void onBackPressed() {
-        if (navigationHandler.shouldFinishOnBackNaviagtion()) {
+        if (navigationHandler.shouldFinishOnBackNavigation()) {
             finish();
         } else {
             super.onBackPressed();
