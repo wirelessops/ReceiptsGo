@@ -108,9 +108,10 @@
                 android:layout_marginEnd="@dimen/margin_tiny"
                 android:ellipsize="end"
                 android:lines="1"
+                android:maxWidth="100dp"
                 android:textSize="@dimen/font_caption"
                 android:visibility="gone"
-                tools:text="category"
+                tools:text="category long name"
                 tools:visibility="visible" />
 
         </RelativeLayout>
