@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.di.scopes.ActivityScope;
+import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
@@ -63,6 +64,12 @@ public class NavigationHandler<T extends FragmentActivity> {
 
     public void navigateToReportInfoFragment(@NonNull Trip trip) {
         if (isDualPane) {
+            // we don't need to keep several ReportInfoFragment instances in backstack
+            final String tag = ReportInfoFragment.class.getName();
+            if (fragmentManager.findFragmentByTag(tag) != null) {
+                fragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+
             replaceFragment(fragmentProvider.newReportInfoFragment(trip), R.id.content_details);
         } else {
             replaceFragment(fragmentProvider.newReportInfoFragment(trip), R.id.content_list);

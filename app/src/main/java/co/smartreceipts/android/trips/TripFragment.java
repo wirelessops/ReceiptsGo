@@ -79,7 +79,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     private Trip selectedTrip;
 
-    // TODO: 27.02.2018 take a look at NavigationHandler. maybe we can avoid keeping all ReceiptsListFragments at back stack
 
     public static TripFragment newInstance() {
         return new TripFragment();
@@ -118,7 +117,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         rootView.findViewById(R.id.trip_action_new).setOnClickListener(v -> tripMenu(null));
         return rootView;
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
