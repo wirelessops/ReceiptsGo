@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.SmartReceipts.RelativeLayout.SlidingPane">
 
@@ -11,7 +11,7 @@
         android:scrollbars="vertical"
         android:visibility="invisible"
         android:layout_marginBottom="@dimen/margin_tiny"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        tools:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <ProgressBar
         android:id="@+id/progress"
