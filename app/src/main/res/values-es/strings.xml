@@ -196,6 +196,7 @@
     <string name="toast_import_complete">Se importaron correctamente todos los archivos. Por favor reinicia la app.</string>
     <string name="toast_no_storage_permissions">No se puede importar archivos sin permisos de almacenamiento</string>
     <string name="toast_reorder_hint">Mantenga pulsado el elemento para iniciar el arrastre</string>
+    <string name="toast_csv_report_distances">Para crear un informe CSV, compruebe la opción %s</string>
     <string name="attachment_error">No se puede adjuntar este archivo.</string>
 
     <!-- ================== Trip Adapter ===================== -->

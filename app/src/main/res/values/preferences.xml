@@ -12,6 +12,7 @@
     <string name="pref_camera_header_key" translatable="false">pref_camera_category_key</string>
     <string name="pref_layout_header">Layout Customizations</string>
     <string name="pref_distance_header">Distance</string>
+    <string name="pref_distance_header_key" translatable="false">pref_distance_category_key</string>
     <string name="pref_pro_header">Smart Receipts Plus</string>
     <string name="pref_help_header">Support</string>
     <string name="pref_about_header">About</string>

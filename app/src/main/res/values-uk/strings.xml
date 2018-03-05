@@ -198,6 +198,7 @@
     <string name="toast_import_complete">Всі файли вдало імпортовані. Будь ласка, перезапустіть додаток.</string>
     <string name="toast_no_storage_permissions">Неможливо імпортувати файл без дозволу на читання</string>
     <string name="toast_reorder_hint">Утримуйте елемент, щоб почати перетягування</string>
+    <string name="toast_csv_report_distances">Щоб створити звіт у форматі CSV, будь ласка, поставте галочку %s</string>
     <string name="attachment_error">Не вдається прикріпити цей файл.</string>
 
     <!-- ================== Trip Adapter ===================== -->

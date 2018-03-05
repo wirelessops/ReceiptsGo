@@ -201,6 +201,7 @@
     <string name="toast_no_storage_permissions">Cannot import file without storage permissions</string>
     <string name="toast_import_complete">Successfully imported all files. Please re-launch the app.</string>
     <string name="toast_reorder_hint"><![CDATA[Long press item to initiate dragging]]></string>
+    <string name="toast_csv_report_distances">To create CSV report please check option %s</string>
     <string name="attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->

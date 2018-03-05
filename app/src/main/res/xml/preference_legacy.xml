@@ -216,7 +216,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_layout_category_key"
+        android:key="@string/pref_distance_header_key"
         android:title="@string/pref_distance_header">
         <CheckBoxPreference
             android:defaultValue="@bool/pref_distance_include_price_in_report_defaultValue"
