@@ -182,6 +182,20 @@ public class NavigationHandler<T extends FragmentActivity> {
         }
     }
 
+    public void navigateToSettingsScrollToDistanceSection() {
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, SettingsActivity.class);
+            if (isDualPane) {
+                intent.putExtra(EXTRA_SHOW_FRAGMENT, PreferenceHeaderReportOutputFragment.class.getName());
+            } else {
+                intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, R.string.pref_distance_header_key);
+            }
+
+            activity.startActivity(intent);
+        }
+    }
+
     public void navigateToCategoriesEditor() {
         final FragmentActivity activity = fragmentActivityWeakReference.get();
         if (activity != null) {

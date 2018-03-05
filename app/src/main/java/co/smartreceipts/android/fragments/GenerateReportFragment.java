@@ -24,6 +24,8 @@ import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import co.smartreceipts.android.workers.EmailAssistant;
@@ -44,6 +46,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     GenerateInfoTooltipManager generateInfoTooltipManager;
     @Inject
     PurchaseWallet purchaseWallet;
+    @Inject
+    UserPreferenceManager preferenceManager;
 
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
@@ -72,12 +76,9 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         csvCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.DIALOG_EMAIL_CHECKBOX_CSV);
         zipStampedImagesCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED);
         root.findViewById(R.id.receipt_action_send).setOnClickListener(this);
-        root.findViewById(R.id.generate_report_tooltip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                analytics.record(Events.Informational.ConfigureReport);
-                navigationHandler.navigateToSettingsScrollToReportSection();
-            }
+        root.findViewById(R.id.generate_report_tooltip).setOnClickListener(v -> {
+            analytics.record(Events.Informational.ConfigureReport);
+            navigationHandler.navigateToSettingsScrollToReportSection();
         });
         return root;
     }
@@ -133,17 +134,26 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
 
         // TODO: Off the UI thread :/
         if (persistenceManager.getDatabase().getReceiptsTable().getBlocking(trip, true).isEmpty()) {
-            if (persistenceManager.getDatabase().getDistanceTable().getBlocking(trip, true).isEmpty() || !pdfFullCheckbox.isChecked()) {
-                // Only allow report processing to continue with no reciepts if we're doing a full pdf report with distances
+
+            if (persistenceManager.getDatabase().getDistanceTable().getBlocking(trip, true).isEmpty() ||
+                    !(pdfFullCheckbox.isChecked() || csvCheckbox.isChecked())) {
+                // Only allow report processing to continue with no reciepts if we're doing a full pdf or CSV report with distances
                 Toast.makeText(getActivity(), flex.getString(getActivity(), R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS), Toast.LENGTH_SHORT).show();
                 return;
             } else {
+                if (csvCheckbox.isChecked() && !preferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)) {
+                    // user wants to create CSV report with just distances but this option is disabled
+                    Toast.makeText(getActivity(),getString(R.string.toast_csv_report_distances, getString(R.string.pref_distance_print_table_title)), Toast.LENGTH_LONG)
+                            .show();
+                    navigationHandler.navigateToSettingsScrollToDistanceSection();
+                    return;
+                }
                 // Uncheck "Illegal" Items
                 pdfImagesCheckbox.setChecked(false);
-                csvCheckbox.setChecked(false);
                 zipStampedImagesCheckbox.setChecked(false);
             }
         }
+
         EnumSet<EmailAssistant.EmailOptions> options = EnumSet.noneOf(EmailAssistant.EmailOptions.class);
         if (pdfFullCheckbox.isChecked()) {
             options.add(EmailAssistant.EmailOptions.PDF_FULL);
