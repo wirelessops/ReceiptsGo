@@ -8,7 +8,6 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Single;
@@ -19,8 +18,8 @@ public class ActivityPermissionsRequester<T extends FragmentActivity> implements
     private final HeadlessFragmentPermissionRequesterFactory permissionRequesterFactory;
 
     @Inject
-    public ActivityPermissionsRequester(@NonNull T activity, @NonNull Analytics analytics) {
-        this(new HeadlessFragmentPermissionRequesterFactory(activity, analytics));
+    public ActivityPermissionsRequester(@NonNull T activity) {
+        this(new HeadlessFragmentPermissionRequesterFactory(activity));
     }
 
     @VisibleForTesting

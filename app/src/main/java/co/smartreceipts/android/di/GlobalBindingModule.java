@@ -11,6 +11,7 @@ import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFra
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
 import co.smartreceipts.android.imports.intents.di.IntentImportInformationModule;
+import co.smartreceipts.android.permissions.PermissionRequesterHeadlessFragment;
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentDialogFragment;
@@ -124,5 +125,9 @@ public abstract class GlobalBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     public abstract ImportPhotoPdfDialogFragment importPhotoPdfDialogFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract PermissionRequesterHeadlessFragment permissionRequesterHeadlessFragment();
 
 }
