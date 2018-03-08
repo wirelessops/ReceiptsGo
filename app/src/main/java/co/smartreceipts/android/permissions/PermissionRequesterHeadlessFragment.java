@@ -1,5 +1,6 @@
 package co.smartreceipts.android.permissions;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +12,14 @@ import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Single;
 import io.reactivex.subjects.SingleSubject;
 
@@ -26,7 +30,14 @@ public class PermissionRequesterHeadlessFragment extends Fragment implements Per
     private final Map<String, SingleSubject<PermissionAuthorizationResponse>> permissionRequestMap = new HashMap<>();
     private final Object lock = new Object();
 
+    @Inject
     Analytics analytics;
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
