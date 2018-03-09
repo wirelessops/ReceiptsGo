@@ -39,6 +39,11 @@ import io.reactivex.subjects.PublishSubject;
 
 public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
 
+    /**
+     * List that contains all Receipts from items and needed Headers
+     */
+    private List<ReceiptsListItem> listItems;
+
     private final UserPreferenceManager preferences;
     private final BackupProvidersManager backupProvidersManager;
     private final NavigationHandler navigationHandler;
@@ -63,108 +68,94 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
         this.tableController = Preconditions.checkNotNull(tableController);
         this.orderingPreferencesManager = Preconditions.checkNotNull(orderingPreferencesManager);
+
+        listItems = new ArrayList<>();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return listItems.get(position).getListItemType();
+    }
+
+    @Override
+    public int getItemCount() {
+        return listItems.size();
     }
 
     @Override
     public AbstractDraggableItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_receipt_card, parent, false);
-        return new ReceiptViewHolder(inflatedView);
+                .inflate(viewType, parent, false);
+
+        return viewType == ReceiptsListItem.TYPE_HEADER ? new ReceiptHeaderReceiptsListViewHolder(inflatedView)
+                : new ReceiptReceiptsListViewHolder(inflatedView);
     }
 
     @Override
     public void onBindViewHolder(AbstractDraggableItemViewHolder holder, int position) {
-        ReceiptViewHolder receiptHolder = (ReceiptViewHolder) holder;
-        Receipt receipt = items.get(position);
-
-        receiptHolder.itemView.setOnClickListener(v -> itemClickSubject.onNext(receipt));
-        receiptHolder.menuButton.setOnClickListener(v -> menuClickSubject.onNext(receipt));
-        receiptHolder.image.setOnClickListener(v -> imageClickSubject.onNext(receipt));
-
-        if (receipt.hasPDF()) {
-            setIcon(receiptHolder.image, R.drawable.ic_file_black_24dp);
-        } else if (receipt.hasImage()) {
-            receiptHolder.image.setPadding(0, 0, 0, 0);
-            Picasso.with(context)
-                    .load(receipt.getImage())
-                    .fit()
-                    .centerCrop()
-                    .into(receiptHolder.image);
-        } else {
-            setIcon(receiptHolder.image, R.drawable.ic_receipt_white_24dp);
-        }
-
-        receiptHolder.price.setText(receipt.getPrice().getCurrencyFormattedPrice());
-        receiptHolder.name.setText(receipt.getName());
-
-        if (preferences.get(UserPreference.Layout.IncludeReceiptDateInLayout) && checkIfNeedToShowDate(position)) {
-            receiptHolder.date.setVisibility(View.VISIBLE);
-            receiptHolder.date.setText(receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator)));
-        } else {
-            receiptHolder.date.setVisibility(View.GONE);
-        }
-
-        if (preferences.get(UserPreference.Layout.IncludeReceiptCategoryInLayout)) {
-            receiptHolder.category.setVisibility(View.VISIBLE);
-            receiptHolder.category.setText(receipt.getCategory().getName());
-        } else {
-            receiptHolder.category.setVisibility(View.GONE);
-        }
-
-        Drawable cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-        Drawable notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-        Drawable syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
-
-        if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
-            receiptHolder.syncState.setClickable(false);
-            receiptHolder.syncState.setImageDrawable(receipt.getSyncState().isSynced(SyncProvider.GoogleDrive) ? syncedDrawable : notSyncedDrawable);
-            receiptHolder.syncState.setOnClickListener(null);
-        } else {
-            receiptHolder.syncState.setClickable(true);
-            receiptHolder.syncState.setImageDrawable(cloudDisabledDrawable);
-            receiptHolder.syncState.setOnClickListener(view -> navigationHandler.showDialog(new AutomaticBackupsInfoDialogFragment()));
-        }
+        ((ReceiptsListViewHolder) holder).bindType(listItems.get(position));
     }
 
     @Override
     public long getItemId(int position) {
-        return items.get(position).getId();
+        if (listItems.get(position) instanceof ReceiptContentItem) {
+            return ((ReceiptContentItem) listItems.get(position)).getReceipt().getId();
+        } else {
+            return -1;
+        }
     }
 
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
         if (fromPosition == toPosition) return;
 
-        draggedReceiptNewPosition = toPosition;
-
         saveOrderIdsAsDateIfNeeded();
-        updateDraggedItem(fromPosition, toPosition);
-
-        super.onMoveItem(fromPosition, toPosition);
-        saveNewOrder(tableController);
+        if (updateDraggedItem(fromPosition, toPosition)) {
+            saveNewOrder(tableController);
+        }
     }
 
     @Override
     public boolean onCheckCanStartDrag(AbstractDraggableItemViewHolder holder, int position, int x, int y) {
-        return items.size() > 1;
+        return getItemViewType(position) == ReceiptsListItem.TYPE_RECEIPT && items.size() > 1;
     }
 
-    private void updateDraggedItem(int oldPosition, int newPosition) {
+    @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
+        return getItemViewType(draggingPosition) == ReceiptsListItem.TYPE_RECEIPT && getItemViewType(dropPosition) == ReceiptsListItem.TYPE_RECEIPT;
+    }
+
+    private boolean updateDraggedItem(int oldPosition, int newPosition) {
         Logger.debug(this, "Reordering, from position " + oldPosition + " to position " + newPosition);
 
-        // update custom order id for dragged item
-        long newCustomOrderId;
-        if (oldPosition < newPosition) { // move down
-            newCustomOrderId = items.get(newPosition).getCustomOrderId() - 1;
-        } else { // move up
-            newCustomOrderId = items.get(newPosition).getCustomOrderId() + 1;
-        }
+        if (listItems.get(oldPosition) instanceof ReceiptContentItem && listItems.get(newPosition) instanceof ReceiptContentItem) {
 
-        // updating local list
-        final Receipt draggedReceipt = new ReceiptBuilderFactory(items.get(oldPosition)).setCustomOrderId(newCustomOrderId).build();
-        items.remove(oldPosition);
-        items.add(oldPosition, draggedReceipt);
+            int oldPositionInItems = items.indexOf(((ReceiptContentItem) listItems.get(oldPosition)).getReceipt());
+            int newPositionInItems = items.indexOf(((ReceiptContentItem) listItems.get(newPosition)).getReceipt());
+
+            draggedReceiptNewPosition = newPositionInItems;
+
+            // update custom order id for dragged item
+            long newCustomOrderId;
+            if (oldPositionInItems < newPositionInItems) { // move down
+                newCustomOrderId = items.get(newPositionInItems).getCustomOrderId() - 1;
+            } else { // move up
+                newCustomOrderId = items.get(newPositionInItems).getCustomOrderId() + 1;
+            }
+
+            // updating local list
+            final Receipt draggedReceipt = new ReceiptBuilderFactory(items.remove(oldPositionInItems))
+                    .setCustomOrderId(newCustomOrderId)
+                    .build();
+            items.add(newPositionInItems, draggedReceipt);
+            updateListItems();
+
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     @Override
     public void saveNewOrder(TableController<Receipt> tableController) {
@@ -193,22 +184,9 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
 
             items.clear();
             items.addAll(updatedItems);
+            updateListItems();
 
             orderingPreferencesManager.saveReceiptsTableOrdering();
-        }
-    }
-
-    private boolean checkIfNeedToShowDate(int itemPosition) {
-        if (itemPosition == 0) {
-            return true;
-        } else {
-            final Date receiptDate = items.get(itemPosition).getDate();
-            final Date previousReceiptDate = items.get(itemPosition - 1).getDate();
-
-            final long receiptDays = TimeUnit.MILLISECONDS.toDays(receiptDate.getTime());
-            final long previousReceiptDays = TimeUnit.MILLISECONDS.toDays(previousReceiptDate.getTime());
-
-            return receiptDays != previousReceiptDays;
         }
     }
 
@@ -235,7 +213,58 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         view.setPadding(pixelPadding, pixelPadding, pixelPadding, pixelPadding);
     }
 
-    private static class ReceiptViewHolder extends AbstractDraggableItemViewHolder {
+    @Override
+    public void update(List<Receipt> newData) {
+        items.clear();
+        items.addAll(newData);
+        updateListItems();
+        notifyDataSetChanged();
+    }
+
+    private void updateListItems() {
+        listItems.clear();
+
+        // if we don't need headers
+        if (!preferences.get(UserPreference.Layout.IncludeReceiptDateInLayout)) {
+            for (Receipt receipt : items) {
+                listItems.add(new ReceiptContentItem(receipt));
+            }
+            return;
+        }
+
+        // if we need headers
+        Receipt previousReceipt = null;
+
+        for (Receipt receipt : items) {
+            if (previousReceipt != null) {
+                final Date receiptDate = receipt.getDate();
+                final Date previousReceiptDate = previousReceipt.getDate();
+
+                final long receiptDays = TimeUnit.MILLISECONDS.toDays(receiptDate.getTime());
+                final long previousReceiptDays = TimeUnit.MILLISECONDS.toDays(previousReceiptDate.getTime());
+
+                if (receiptDays != previousReceiptDays) {
+                    listItems.add(new ReceiptHeaderItem(receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
+                }
+            } else {
+                listItems.add(new ReceiptHeaderItem(receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
+            }
+
+            listItems.add(new ReceiptContentItem(receipt));
+            previousReceipt = receipt;
+        }
+    }
+
+    private abstract class ReceiptsListViewHolder extends AbstractDraggableItemViewHolder {
+
+        ReceiptsListViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        public abstract void bindType(ReceiptsListItem item);
+    }
+
+    private class ReceiptReceiptsListViewHolder extends ReceiptsListViewHolder {
 
         public TextView price;
         public TextView name;
@@ -245,16 +274,78 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
         public ImageView image;
         ImageView menuButton;
 
-        ReceiptViewHolder(View itemView) {
+        ReceiptReceiptsListViewHolder(View itemView) {
             super(itemView);
 
             price = itemView.findViewById(R.id.price);
             name = itemView.findViewById(android.R.id.title);
-            date = itemView.findViewById(R.id.card_date);
             category = itemView.findViewById(R.id.card_category);
             syncState = itemView.findViewById(R.id.card_sync_state);
             menuButton = itemView.findViewById(R.id.card_menu);
             image = itemView.findViewById(R.id.card_image);
+        }
+
+        @Override
+        public void bindType(ReceiptsListItem item) {
+            Receipt receipt = ((ReceiptContentItem) item).getReceipt();
+
+            itemView.setOnClickListener(v -> itemClickSubject.onNext(receipt));
+            menuButton.setOnClickListener(v -> menuClickSubject.onNext(receipt));
+            image.setOnClickListener(v -> imageClickSubject.onNext(receipt));
+
+            if (receipt.hasPDF()) {
+                setIcon(image, R.drawable.ic_file_black_24dp);
+            } else if (receipt.hasImage()) {
+                image.setPadding(0, 0, 0, 0);
+                Picasso.with(context)
+                        .load(receipt.getImage())
+                        .fit()
+                        .centerCrop()
+                        .into(image);
+            } else {
+                setIcon(image, R.drawable.ic_receipt_white_24dp);
+            }
+
+            price.setText(receipt.getPrice().getCurrencyFormattedPrice());
+            name.setText(receipt.getName());
+
+            if (preferences.get(UserPreference.Layout.IncludeReceiptCategoryInLayout)) {
+                category.setVisibility(View.VISIBLE);
+                category.setText(receipt.getCategory().getName());
+            } else {
+                category.setVisibility(View.GONE);
+            }
+
+            Drawable cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+            Drawable notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+            Drawable syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+
+            if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
+                syncState.setClickable(false);
+                syncState.setImageDrawable(receipt.getSyncState().isSynced(SyncProvider.GoogleDrive) ? syncedDrawable : notSyncedDrawable);
+                syncState.setOnClickListener(null);
+            } else {
+                syncState.setClickable(true);
+                syncState.setImageDrawable(cloudDisabledDrawable);
+                syncState.setOnClickListener(view -> navigationHandler.showDialog(new AutomaticBackupsInfoDialogFragment()));
+            }
+
+        }
+
+    }
+
+    private class ReceiptHeaderReceiptsListViewHolder extends ReceiptsListViewHolder {
+        public TextView date;
+
+        ReceiptHeaderReceiptsListViewHolder(View itemView) {
+            super(itemView);
+
+            date = itemView.findViewById(R.id.card_date);
+        }
+
+        @Override
+        public void bindType(ReceiptsListItem item) {
+            date.setText(((ReceiptHeaderItem) item).getHeaderText());
         }
     }
 }
