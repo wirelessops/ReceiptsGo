@@ -51,17 +51,17 @@ public abstract class DraggableCardsAdapter<T extends Draggable> extends Recycle
     }
 
     @Override
-    public void onItemDragStarted(int position) {
+    public final void onItemDragStarted(int position) {
         notifyDataSetChanged();
     }
 
     @Override
-    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
+    public final void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
         notifyDataSetChanged();
     }
 
     @Override
-    public ItemDraggableRange onGetItemDraggableRange(AbstractDraggableItemViewHolder holder, int position) {
+    public final ItemDraggableRange onGetItemDraggableRange(AbstractDraggableItemViewHolder holder, int position) {
         // no drag-sortable range specified
         return null;
     }
