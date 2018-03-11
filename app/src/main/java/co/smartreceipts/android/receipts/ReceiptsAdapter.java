@@ -37,7 +37,7 @@ import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
+public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements ReceiptsHeaderItemDecoration.StickyHeaderInterface {
 
     /**
      * List that contains all Receipts from items and needed Headers
@@ -98,10 +98,10 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
 
     @Override
     public long getItemId(int position) {
-        if (listItems.get(position) instanceof ReceiptContentItem) {
+        if (getItemViewType(position) == ReceiptsListItem.TYPE_RECEIPT) {
             return ((ReceiptContentItem) listItems.get(position)).getReceipt().getId();
         } else {
-            return -1;
+            return ((ReceiptHeaderItem)listItems.get(position)).getDateTime();
         }
     }
 
@@ -128,7 +128,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
     private boolean updateDraggedItem(int oldPosition, int newPosition) {
         Logger.debug(this, "Reordering, from position " + oldPosition + " to position " + newPosition);
 
-        if (listItems.get(oldPosition) instanceof ReceiptContentItem && listItems.get(newPosition) instanceof ReceiptContentItem) {
+        if (getItemViewType(oldPosition) == ReceiptsListItem.TYPE_RECEIPT && getItemViewType(newPosition) == ReceiptsListItem.TYPE_RECEIPT) {
 
             int oldPositionInItems = items.indexOf(((ReceiptContentItem) listItems.get(oldPosition)).getReceipt());
             int newPositionInItems = items.indexOf(((ReceiptContentItem) listItems.get(newPosition)).getReceipt());
@@ -244,15 +244,42 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> {
                 final long previousReceiptDays = TimeUnit.MILLISECONDS.toDays(previousReceiptDate.getTime());
 
                 if (receiptDays != previousReceiptDays) {
-                    listItems.add(new ReceiptHeaderItem(receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
+                    listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(),
+                            receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
                 }
             } else {
-                listItems.add(new ReceiptHeaderItem(receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
+                listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(),
+                        receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
             }
 
             listItems.add(new ReceiptContentItem(receipt));
             previousReceipt = receipt;
         }
+    }
+
+    @Override
+    public int getHeaderPositionForItem(int itemPosition) {
+        int headerPosition = 0;
+        Preconditions.checkArgument(isHeader(headerPosition), "First item must be header");
+        do {
+            if (this.isHeader(itemPosition)) {
+                headerPosition = itemPosition;
+                break;
+            }
+            itemPosition -= 1;
+        } while (itemPosition >= 0);
+
+        return headerPosition;
+    }
+
+    @Override
+    public void bindHeaderData(View header, int headerPosition) {
+        new ReceiptHeaderReceiptsListViewHolder(header).bindType(listItems.get(headerPosition));
+    }
+
+    @Override
+    public boolean isHeader(int itemPosition) {
+        return getItemViewType(itemPosition) == ReceiptsListItem.TYPE_HEADER;
     }
 
     private abstract class ReceiptsListViewHolder extends AbstractDraggableItemViewHolder {
