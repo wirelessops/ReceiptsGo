@@ -71,6 +71,7 @@ import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
@@ -181,6 +182,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
 
+    private boolean showDateHeaders;
+    private ReceiptsHeaderItemDecoration headerItemDecoration;
+
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
@@ -220,11 +224,17 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
         this.unbinder = ButterKnife.bind(this, view);
 
-
         receiptActionTextButton.setVisibility(configurationManager.isTextReceiptsOptionAvailable() ? View.VISIBLE : View.GONE);
         floatingActionMenuActiveMaskView.setOnClickListener(v -> {
             // Intentional stub to block click events when this view is active
         });
+
+        showDateHeaders = preferenceManager.get(UserPreference.Layout.IncludeReceiptDateInLayout);
+        headerItemDecoration = new ReceiptsHeaderItemDecoration((ReceiptsAdapter) adapter, ReceiptsListItem.TYPE_HEADER);
+        if (showDateHeaders) {
+            recyclerView.addItemDecoration(headerItemDecoration);
+        }
+
     }
 
     @Override
@@ -245,6 +255,15 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onResume() {
         super.onResume();
         Logger.debug(this, "onResume");
+
+        if (showDateHeaders != preferenceManager.get(UserPreference.Layout.IncludeReceiptDateInLayout)) {
+            showDateHeaders = preferenceManager.get(UserPreference.Layout.IncludeReceiptDateInLayout);
+            if (showDateHeaders) {
+                recyclerView.addItemDecoration(headerItemDecoration);
+            } else {
+                recyclerView.removeItemDecoration(headerItemDecoration);
+            }
+        }
 
         tripTableController.subscribe(actionBarSubtitleUpdatesListener);
         receiptTableController.subscribe(this);
