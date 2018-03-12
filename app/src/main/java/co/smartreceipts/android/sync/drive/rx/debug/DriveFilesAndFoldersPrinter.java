@@ -39,6 +39,7 @@ public class DriveFilesAndFoldersPrinter {
                             final String fileName = metadata.getOriginalFilename();
                             final long size = metadata.getFileSize();
                             final Date createdAt = metadata.getCreatedDate();
+                            final Date modifiedDate = metadata.getModifiedDate();
                             final boolean isFolder = metadata.isFolder();
                             final boolean inAppFolder = metadata.isInAppFolder();
                             final String id = metadata.getDriveId().getResourceId();
@@ -48,11 +49,12 @@ public class DriveFilesAndFoldersPrinter {
                                     "  'fileName '= '{}',\n" +
                                     "  'size' = '{}',\n" +
                                     "  'createdAt' = '{}',\n" +
+                                    "  'modifiedDate' = '{}',\n" +
                                     "  'isFolder' = '{}',\n" +
                                     "  'inAppFolder' = '{}',\n" +
                                     "  'id' = '{}',\n" +
                                     "}",
-                                    title, fileName, size, createdAt, isFolder, inAppFolder, id
+                                    title, fileName, size, createdAt, modifiedDate, isFolder, inAppFolder, id
                                     );
                         }
                     }
