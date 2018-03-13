@@ -45,15 +45,15 @@ public class DriveFilesAndFoldersPrinter {
                             final String id = metadata.getDriveId().getResourceId();
                             Logger.info(DriveFilesAndFoldersPrinter.class, "Found drive file:\n" +
                                     "{\n" +
-                                    "  'title' = '{}',\n" +
-                                    "  'fileName '= '{}',\n" +
-                                    "  'size' = '{}',\n" +
-                                    "  'createdAt' = '{}',\n" +
-                                    "  'modifiedDate' = '{}',\n" +
-                                    "  'isFolder' = '{}',\n" +
-                                    "  'inAppFolder' = '{}',\n" +
-                                    "  'id' = '{}',\n" +
-                                    "}",
+                                    "  \"title\": \"{}\",\n" +
+                                    "  \"fileName\": \"{}\",\n" +
+                                    "  \"size\": \"{}\",\n" +
+                                    "  \"createdAt\": \"{}\",\n" +
+                                    "  \"modifiedDate\": \"{}\",\n" +
+                                    "  \"isFolder\": \"{}\",\n" +
+                                    "  \"inAppFolder\": \"{}\",\n" +
+                                    "  \"id\": \"{}\"\n" +
+                                    "},",
                                     title, fileName, size, createdAt, modifiedDate, isFolder, inAppFolder, id
                                     );
                         }
