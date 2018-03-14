@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sr_app_name">Fire Department Expense Tracker</string>
+
+    <string name="fire_department_category_trucks">Trucks</string>
+    <string name="fire_department_category_station">Station</string>
+    <string name="fire_department_category_computer_it">Computer/IT</string>
+    <string name="fire_department_category_office_supplies">Office Supplies</string>
+    <string name="fire_department_category_training_fees">Training Fees/Dues</string>
+    <string name="fire_department_category_gear">Gear</string>
+    <string name="fire_department_category_uniforms">Uniforms</string>
+    <string name="fire_department_category_equipment">Equipment</string>
+    <string name="fire_department_category_hotel">Hotel</string>
+    <string name="fire_department_category_meals">Meals</string>
+    <string name="fire_department_category_fuel">Fuel</string>
+    <string name="fire_department_category_other">Other</string>
+
+    <string name="fire_department_payment_method_charge">Charge</string>
+    <string name="fire_department_payment_method_department_credit_card">Department Credit Card</string>
+    <string name="fire_department_payment_method_cash_reimbursable">Cash (Reimbursable)</string>
+    <string name="fire_department_payment_method_department_check">Department Check</string>
+
 </resources>

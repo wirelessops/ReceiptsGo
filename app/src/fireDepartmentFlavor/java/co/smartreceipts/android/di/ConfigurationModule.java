@@ -7,6 +7,7 @@ import co.smartreceipts.android.config.DefaultConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.database.defaults.DefaultTableDefaultCustomizerImpl;
+import co.smartreceipts.android.persistence.database.defaults.FireDepartmentTableDefaultCustomizerImpl;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.defaults.WhiteLabelFriendlyTableDefaultsCustomizer;
 import dagger.Module;
@@ -37,7 +38,7 @@ public class ConfigurationModule {
     @Provides
     @ApplicationScope
     public static TableDefaultsCustomizer provideTableDefaultsCustomizer(Context context, ReceiptColumnDefinitions receiptColumnDefinitions) {
-        return new WhiteLabelFriendlyTableDefaultsCustomizer(new DefaultTableDefaultCustomizerImpl(context, receiptColumnDefinitions));
+        return new FireDepartmentTableDefaultCustomizerImpl(context, receiptColumnDefinitions);
     }
 
     ///////////////////////////////////////////////////////

@@ -31,7 +31,7 @@ import wb.android.flex.Flex;
  */
 public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt> {
 
-    private enum ActualDefinition {
+    public enum ActualDefinition {
         BLANK(R.string.column_item_blank, R.string.original_column_item_blank_en_us_name),
         CATEGORY_CODE(R.string.column_item_category_code, R.string.original_column_item_category_code_en_us_name),
         CATEGORY_NAME(R.string.column_item_category_name, R.string.original_column_item_category_name_en_us_name),
@@ -192,7 +192,8 @@ public final class ReceiptColumnDefinitions implements ColumnDefinitions<Receipt
         return columns;
     }
 
-    private Column<Receipt> getColumn(@NonNull ActualDefinition actualDefinition) {
+    @Nullable
+    public Column<Receipt> getColumn(@NonNull ActualDefinition actualDefinition) {
         return getColumnFromClass(Column.UNKNOWN_ID, actualDefinition, getColumnNameFromStringResId(actualDefinition.getStringResId()), new DefaultSyncState());
     }
 
