@@ -12,6 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="bottom"
         android:padding="@dimen/padding_small"
+        android:textColor="@color/text_primary_color"
         android:textSize="@dimen/font_caption"
         tools:text="30.11.17" />
 

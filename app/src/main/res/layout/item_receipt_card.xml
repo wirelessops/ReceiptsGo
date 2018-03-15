@@ -101,6 +101,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxWidth="100dp"
+                android:textColor="@color/text_primary_color"
                 android:textSize="@dimen/font_caption"
                 android:visibility="gone"
                 tools:text="category long name"

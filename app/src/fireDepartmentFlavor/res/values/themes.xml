@@ -2,7 +2,7 @@
 <resources>
     
     <!-- All SDK 8 specific settings in here. *** Updated later versions in their styles folders -->
-    <style name="Theme.SmartReceiptsBase" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.SmartReceiptsBase" parent="Theme.AppCompat.Light.NoActionBar">
 
         <!--
 		<item name="actionBarStyle">@style/Widget.SmartReceipts.ActionBar</item>
