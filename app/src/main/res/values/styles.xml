@@ -8,11 +8,6 @@
     <style name="Widget.SmartReceipts">
     </style>
     
-    <style name="Widget.SmartReceipts.ActionBar" parent="Widget.AppCompat.ActionBar" >
-        <item name="background">@drawable/action_bar_background</item>
-        <item name="android:background">@drawable/action_bar_background</item>
-    </style>
-    
     <style name="Widget.SmartReceipts.PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/purple_selector</item>
     </style>

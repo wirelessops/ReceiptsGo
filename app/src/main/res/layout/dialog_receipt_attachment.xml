@@ -19,7 +19,7 @@
         android:paddingStart="@dimen/padding_larger"
         android:paddingTop="@dimen/padding_normal"
         android:text="@string/receipt_attach_photo"
-        android:textColor="@color/white"
+        android:textColor="@color/text_primary_color"
         android:textSize="@dimen/font_subhead" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:paddingStart="@dimen/padding_larger"
         android:paddingTop="@dimen/padding_normal"
         android:text="@string/receipt_attach_image"
-        android:textColor="@color/white"
+        android:textColor="@color/text_primary_color"
         android:textSize="@dimen/font_subhead" />
 
     <TextView
@@ -55,7 +55,7 @@
         android:paddingStart="@dimen/padding_larger"
         android:paddingTop="@dimen/padding_normal"
         android:text="@string/receipt_attach_file"
-        android:textColor="@color/white"
+        android:textColor="@color/text_primary_color"
         android:textSize="@dimen/font_subhead" />
 
 </LinearLayout>

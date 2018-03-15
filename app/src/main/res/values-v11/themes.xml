@@ -3,9 +3,8 @@
 
     <!-- API 11 theme customizations can go here. -->
     <style name="Theme.SmartReceipts" parent="Theme.SmartReceiptsBase">
-		<item name="android:actionBarStyle">@style/Widget.SmartReceipts.ActionBar</item>
-		<item name="android:popupMenuStyle">@style/Widget.SmartReceipts.PopupMenu</item> 
-		<item name="android:windowBackground">@color/dark_purple</item>
+		<item name="android:popupMenuStyle">@style/Widget.SmartReceipts.PopupMenu</item>
+		<item name="android:windowBackground">@color/window_background_color</item>
     </style>
 
 </resources>

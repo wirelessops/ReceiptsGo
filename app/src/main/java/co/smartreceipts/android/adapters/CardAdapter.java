@@ -165,7 +165,7 @@ public class CardAdapter<T> extends BaseAdapter {
         setSyncStateImage(holder.syncState, data);
 
         if (selectedItem != null && this.data.indexOf(selectedItem) == i) {
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.grey_card));
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.selected_card_background));
         } else {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.card_background));
         }

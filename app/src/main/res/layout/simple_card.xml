@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/card_thumbnail_margins"
-        android:textColor="@color/card_price"
+        android:textColor="@color/text_primary_color"
         android:textSize="@dimen/card_price_size"
         android:textStyle="bold"
         tools:text="250$"/>
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_name_date_separator"
-            android:textColor="@color/card_name"
+            android:textColor="@color/text_primary_color"
             android:textSize="@dimen/card_name_size"
             android:textStyle="bold"
             tools:text="Title"/>

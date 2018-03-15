@@ -27,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/card_name"
+        android:textColor="@color/text_primary_color"
         android:textSize="@dimen/card_name_size"
         android:textStyle="italic"
         android:layout_marginLeft="5dp"

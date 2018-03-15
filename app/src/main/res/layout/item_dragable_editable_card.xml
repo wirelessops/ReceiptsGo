@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_name_date_separator"
-            android:textColor="@color/card_name"
+            android:textColor="@color/text_primary_color"
             android:textSize="@dimen/card_name_size"
             android:textStyle="bold"
             tools:text="Title" />
