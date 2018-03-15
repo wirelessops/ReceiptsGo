@@ -14,6 +14,8 @@
     <color name="smart_receipts_colorError_pressed">#b71c1c</color>
     <color name="text_primary_color">#DFFFFFFF</color>
     <color name="text_secondary_color">#8AFFFFFF</color>
+    <color name="accent_text_primary_color">@color/text_primary_color</color>
+    <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="fab_transparency_mask">#40FFFFFF</color>
     <color name="window_background_color">#0B0114</color>
     <color name="transparent_overlay">#66000000</color>

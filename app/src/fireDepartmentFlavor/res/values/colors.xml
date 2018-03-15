@@ -13,6 +13,8 @@
     <color name="smart_receipts_colorError_pressed">#b71c1c</color>
     <color name="text_primary_color">#DF000000</color>
     <color name="text_secondary_color">#8A000000</color>
+    <color name="accent_text_primary_color">#DFFFFFFF</color>
+    <color name="accent_text_secondary_color">#8AFFFFFF</color>
     <color name="fab_transparency_mask">#B0FFFFFF</color>
     <color name="window_background_color">#F4FEEB</color>
     <color name="transparent_overlay">#66000000</color>

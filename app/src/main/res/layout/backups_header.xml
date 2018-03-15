@@ -47,6 +47,7 @@
                 android:drawablePadding="@dimen/padding_normal"
                 android:drawableStart="@drawable/ic_cloud_upload_24dp"
                 android:gravity="center_vertical"
+                android:textColor="@color/accent_text_primary"
                 android:text="@string/manual_backup_export"
                 android:textStyle="bold" />
         </FrameLayout>
@@ -68,6 +69,7 @@
                 android:drawablePadding="@dimen/padding_normal"
                 android:drawableStart="@drawable/ic_cloud_download_24dp"
                 android:gravity="center_vertical"
+                android:textColor="@color/accent_text_primary"
                 android:text="@string/manual_backup_import"
                 android:textStyle="bold" />
         </FrameLayout>
