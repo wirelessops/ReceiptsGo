@@ -1,27 +1,20 @@
 package co.smartreceipts.android.utils;
 
-public enum FeatureFlags implements Feature {
+import android.content.Context;
+import android.support.annotation.NonNull;
 
-    /**
-     * Tracks if the OCR feature is enabled or not
-     */
-    Ocr(true),
-
-    /**
-     * Allows us to manage syncing of organization settings across users
-     */
-    OrganizationSyncing(false),
+/**
+ * This differs from the {@link ConfigurableResourceFeature} in that it is only intended to be
+ * managed via a static boolean value as opposed to a resource configuration. Features added here
+ * should not be considered as candidates for white-labelling.
+ */
+public enum ConfigurableStaticFeature implements Feature {
 
     /**
      * Since Android has a bug on pre-O devices for PDF rendering, this enables "Compat" PDF rendering
      * in which we use our local '.so' libraries for PDF generation
      */
     CompatPdfRendering(true),
-
-    /**
-     * Enables the graphs tab for users to see their spending habits
-     */
-    Graphs(true),
 
     /**
      * Indicates that we should use the production SmartReceipts.co endpoint (ie instead of beta).
@@ -31,12 +24,13 @@ public enum FeatureFlags implements Feature {
 
     private final boolean isEnabled;
 
-    FeatureFlags(boolean isEnabled) {
+    ConfigurableStaticFeature(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled(@NonNull Context context) {
         return isEnabled;
     }
+
 }

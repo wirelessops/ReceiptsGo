@@ -73,6 +73,7 @@ import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.rxbinding2.RxFloatingActionMenu;
@@ -224,7 +225,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
         this.unbinder = ButterKnife.bind(this, view);
 
-        receiptActionTextButton.setVisibility(configurationManager.isTextReceiptsOptionAvailable() ? View.VISIBLE : View.GONE);
+        receiptActionTextButton.setVisibility(configurationManager.isEnabled(ConfigurableResourceFeature.TextOnlyReceipts) ? View.VISIBLE : View.GONE);
         floatingActionMenuActiveMaskView.setOnClickListener(v -> {
             // Intentional stub to block click events when this view is active
         });

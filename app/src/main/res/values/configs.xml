@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="config_is_settings_menu_available">true</bool>
+    <bool name="config_is_the_settings_menu_enabled">true</bool>
+    <bool name="config_is_the_graphs_screen_enabled">true</bool>
+    <bool name="config_is_the_distance_screen_enabled">true</bool>
+    <bool name="config_is_the_text_only_receipt_feature_enabled">true</bool>
+    <bool name="config_is_ocr_enabled">true</bool>
+
+    <!-- Incubating Features -->
+    <bool name="config_is_organization_syncing_enabled">false</bool>
 </resources>

@@ -10,32 +10,37 @@ import com.google.gson.JsonObject;
 
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.apis.organizations.Organization;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsService;
 import co.smartreceipts.android.identity.store.IdentityStore;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.FeatureFlags;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
-
 
 public class OrganizationManager {
 
     private final ServiceManager serviceManager;
     private final IdentityStore identityStore;
     private final UserPreferenceManager userPreferenceManager;
+    private final ConfigurationManager configurationManager;
 
-    public OrganizationManager(@NonNull ServiceManager serviceManager, @NonNull IdentityStore identityStore, @NonNull UserPreferenceManager userPreferenceManager) {
+    public OrganizationManager(@NonNull ServiceManager serviceManager,
+                               @NonNull IdentityStore identityStore,
+                               @NonNull UserPreferenceManager userPreferenceManager,
+                               @NonNull ConfigurationManager configurationManager) {
         this.serviceManager = Preconditions.checkNotNull(serviceManager);
         this.identityStore = Preconditions.checkNotNull(identityStore);
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
+        this.configurationManager = Preconditions.checkNotNull(configurationManager);
     }
 
     @NonNull
     public Observable<OrganizationsResponse> getOrganizations() {
-        if (FeatureFlags.OrganizationSyncing.isEnabled()) {
+        if (configurationManager.isEnabled(ConfigurableResourceFeature.OrganizationSyncing)) {
             return getOrganizationsApiRequest()
                     .flatMap(organizationsResponse -> applyOrganizationsResponse(organizationsResponse)
                             .map(o -> organizationsResponse))

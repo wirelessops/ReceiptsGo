@@ -15,6 +15,7 @@ import java.io.File;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
 import co.smartreceipts.android.aws.s3.S3Manager;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.apis.OcrService;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
@@ -26,7 +27,7 @@ import co.smartreceipts.android.ocr.push.OcrPushMessageReceiverFactory;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.Feature;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
@@ -76,7 +77,7 @@ public class OcrManagerTest {
     Analytics analytics;
 
     @Mock
-    Feature ocrFeature;
+    ConfigurationManager configurationManager;
 
     @Mock
     File file;
@@ -103,7 +104,7 @@ public class OcrManagerTest {
         MockitoAnnotations.initMocks(this);
         testObserver = new TestObserver<>();
 
-        when(ocrFeature.isEnabled()).thenReturn(true);
+        when(configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)).thenReturn(true);
         when(identityManager.isLoggedIn()).thenReturn(true);
         when(ocrPurchaseTracker.hasAvailableScans()).thenReturn(true);
         when(ocrPushMessageReceiverFactory.get()).thenReturn(pushMessageReceiver);
@@ -120,12 +121,12 @@ public class OcrManagerTest {
         when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode)).thenReturn(false);
 
-        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrServiceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, ocrFeature);
+        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrServiceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
     }
 
     @Test
     public void scanWhenFeatureIsDisabled() {
-        when(ocrFeature.isEnabled()).thenReturn(false);
+        when(configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)).thenReturn(false);
         ocrManager.scan(file).subscribe(testObserver);
 
         testObserver.awaitTerminalEvent();

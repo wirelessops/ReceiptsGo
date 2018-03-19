@@ -32,7 +32,7 @@ import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.utils.FeatureFlags;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
@@ -153,11 +153,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
         }
 
         // If we disabled settings in our config, let's remove it
-        if (!configurationManager.isSettingsMenuAvailable()) {
+        if (!configurationManager.isEnabled(ConfigurableResourceFeature.SettingsMenu)) {
             menu.removeItem(R.id.menu_main_settings);
         }
 
-        if (!FeatureFlags.Ocr.isEnabled()) {
+        if (!configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)) {
             menu.removeItem(R.id.menu_main_ocr_configuration);
         }
 

@@ -1,5 +1,9 @@
 package co.smartreceipts.android.config;
 
+import android.support.annotation.NonNull;
+
+import co.smartreceipts.android.utils.Feature;
+
 /**
  * Provides a top level mechanism from which we can easily toggle on/off certain components within the app
  * in order that we might better support certain "white-label" efforts for our clients. This is defined in
@@ -8,17 +12,10 @@ package co.smartreceipts.android.config;
 public interface ConfigurationManager {
 
     /**
-     * @return {@code true} if we should show the settings menu. {@code false} if it should be hidden
+     * Checks if this particular feature is enabled
+     *
+     * @return {@code true} if it is enabled. {@code false} otherwise
      */
-    boolean isSettingsMenuAvailable();
+    boolean isEnabled(@NonNull Feature feature);
 
-    /**
-     * @return {@code true} if we should show let the user create text receipts. {@code false} if it should be hidden
-     */
-    boolean isTextReceiptsOptionAvailable();
-
-    /**
-     * @return {@code true} if we should show let the user track distance. {@code false} if it should be hidden
-     */
-    boolean isDistanceTrackingOptionAvailable();
 }

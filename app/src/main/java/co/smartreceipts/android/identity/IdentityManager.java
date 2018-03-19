@@ -14,6 +14,7 @@ import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.apis.login.LoginPayload;
 import co.smartreceipts.android.identity.apis.login.LoginResponse;
@@ -48,15 +49,16 @@ public class IdentityManager implements IdentityStore {
     private final BehaviorSubject<Boolean> isLoggedInBehaviorSubject;
 
     @Inject
-    public IdentityManager(Analytics analytics,
-                           UserPreferenceManager userPreferenceManager,
-                           MutableIdentityStore mutableIdentityStore,
-                           ServiceManager serviceManager) {
+    public IdentityManager(@NonNull Analytics analytics,
+                           @NonNull UserPreferenceManager userPreferenceManager,
+                           @NonNull MutableIdentityStore mutableIdentityStore,
+                           @NonNull ServiceManager serviceManager,
+                           @NonNull ConfigurationManager configurationManager) {
 
         this.serviceManager = serviceManager;
         this.analytics = analytics;
         this.mutableIdentityStore = mutableIdentityStore;
-        this.organizationManager = new OrganizationManager(serviceManager, mutableIdentityStore, userPreferenceManager);
+        this.organizationManager = new OrganizationManager(serviceManager, mutableIdentityStore, userPreferenceManager, configurationManager);
         this.isLoggedInBehaviorSubject = BehaviorSubject.createDefault(isLoggedIn());
 
     }

@@ -12,7 +12,7 @@ import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.graphs.GraphsFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
-import co.smartreceipts.android.utils.FeatureFlags;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 
 public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -31,8 +31,8 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
         this.resources = resources;
         this.configurationManager = configurationManager;
 
-        boolean distanceAvailable = configurationManager.isDistanceTrackingOptionAvailable();
-        boolean graphsAvailable = FeatureFlags.Graphs.isEnabled();
+        boolean distanceAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.DistanceScreen);
+        boolean graphsAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.GraphsScreen);
 
         graphsTabPosition = graphsAvailable ? 0 : -1;
         receiptsTabPosition = graphsAvailable ? 1 : 0;
@@ -44,8 +44,8 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        boolean distanceAvailable = configurationManager.isDistanceTrackingOptionAvailable();
-        boolean graphsAvailable = FeatureFlags.Graphs.isEnabled();
+        boolean distanceAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.DistanceScreen);
+        boolean graphsAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.GraphsScreen);
 
         if (distanceAvailable && graphsAvailable) {
             return MAX_FRAGMENT_COUNT;

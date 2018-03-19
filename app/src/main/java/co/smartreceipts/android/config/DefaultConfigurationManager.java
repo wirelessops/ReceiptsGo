@@ -7,8 +7,9 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
+import co.smartreceipts.android.utils.Feature;
 
 /**
  * The default implementation of the Smart Receipts {@link ConfigurationManager} to enable/disable all standard
@@ -25,19 +26,7 @@ public final class DefaultConfigurationManager implements ConfigurationManager {
     }
 
     @Override
-    public boolean isSettingsMenuAvailable() {
-        return context.getResources().getBoolean(R.bool.config_is_settings_menu_available);
-    }
-
-
-    @Override
-    public boolean isTextReceiptsOptionAvailable() {
-        return context.getResources().getBoolean(R.bool.config_is_settings_menu_available);
-    }
-
-
-    @Override
-    public boolean isDistanceTrackingOptionAvailable() {
-        return context.getResources().getBoolean(R.bool.config_is_settings_menu_available);
+    public boolean isEnabled(@NonNull Feature feature) {
+        return feature.isEnabled(context);
     }
 }

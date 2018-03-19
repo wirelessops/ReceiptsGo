@@ -16,6 +16,7 @@ import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.hosts.ServiceManager;
 import co.smartreceipts.android.aws.s3.S3Manager;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.apis.OcrService;
@@ -28,8 +29,7 @@ import co.smartreceipts.android.ocr.widget.alert.OcrProcessingStatus;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.Feature;
-import co.smartreceipts.android.utils.FeatureFlags;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -49,21 +49,22 @@ public class OcrManager {
     private final Analytics analytics;
     private final OcrPurchaseTracker ocrPurchaseTracker;
     private final OcrPushMessageReceiverFactory pushMessageReceiverFactory;
-    private final Feature ocrFeature;
+    private final ConfigurationManager configurationManager;
     private final BehaviorSubject<OcrProcessingStatus> ocrProcessingStatusSubject = BehaviorSubject.createDefault(OcrProcessingStatus.Idle);
 
     @Inject
     public OcrManager(@NonNull Context context, @NonNull S3Manager s3Manager, @NonNull IdentityManager identityManager,
                       @NonNull ServiceManager serviceManager, @NonNull PushManager pushManager, @NonNull OcrPurchaseTracker ocrPurchaseTracker,
-                      @NonNull UserPreferenceManager userPreferenceManager, @NonNull Analytics analytics) {
-        this(context, s3Manager, identityManager, serviceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), FeatureFlags.Ocr);
+                      @NonNull UserPreferenceManager userPreferenceManager, @NonNull Analytics analytics,
+                      @NonNull ConfigurationManager configurationManager) {
+        this(context, s3Manager, identityManager, serviceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
     }
 
     @VisibleForTesting
     OcrManager(@NonNull Context context, @NonNull S3Manager s3Manager, @NonNull IdentityManager identityManager,
                @NonNull ServiceManager serviceManager, @NonNull PushManager pushManager, @NonNull OcrPurchaseTracker ocrPurchaseTracker,
                @NonNull UserPreferenceManager userPreferenceManager, @NonNull Analytics analytics,
-               @NonNull OcrPushMessageReceiverFactory pushMessageReceiverFactory, @NonNull Feature ocrFeature) {
+               @NonNull OcrPushMessageReceiverFactory pushMessageReceiverFactory, @NonNull ConfigurationManager configurationManager) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.s3Manager = Preconditions.checkNotNull(s3Manager);
         this.identityManager = Preconditions.checkNotNull(identityManager);
@@ -73,7 +74,7 @@ public class OcrManager {
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
         this.analytics = Preconditions.checkNotNull(analytics);
         this.pushMessageReceiverFactory = Preconditions.checkNotNull(pushMessageReceiverFactory);
-        this.ocrFeature = Preconditions.checkNotNull(ocrFeature);
+        this.configurationManager = Preconditions.checkNotNull(configurationManager);
     }
 
     public void initialize() {
@@ -85,7 +86,8 @@ public class OcrManager {
         Preconditions.checkNotNull(file);
 
         ocrProcessingStatusSubject.onNext(OcrProcessingStatus.Idle);
-        if (ocrFeature.isEnabled() && identityManager.isLoggedIn() && ocrPurchaseTracker.hasAvailableScans() && userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)) {
+        final boolean isOcrEnabled = configurationManager.isEnabled(ConfigurableResourceFeature.Ocr);
+        if (isOcrEnabled && identityManager.isLoggedIn() && ocrPurchaseTracker.hasAvailableScans() && userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)) {
             Logger.info(OcrManager.this, "Initiating scan of {}.", file);
             final OcrPushMessageReceiver ocrPushMessageReceiver = pushMessageReceiverFactory.get();
             ocrProcessingStatusSubject.onNext(OcrProcessingStatus.UploadingImage);
@@ -157,7 +159,7 @@ public class OcrManager {
                         pushManager.unregisterReceiver(ocrPushMessageReceiver);
                     });
         } else {
-            Logger.debug(OcrManager.this, "Ignoring ocr scan of as: isFeatureEnabled = {}, isLoggedIn = {}, hasAvailableScans = {}.", ocrFeature.isEnabled(), identityManager.isLoggedIn(), ocrPurchaseTracker.hasAvailableScans());
+            Logger.debug(OcrManager.this, "Ignoring ocr scan of as: isFeatureEnabled = {}, isLoggedIn = {}, hasAvailableScans = {}.", isOcrEnabled, identityManager.isLoggedIn(), ocrPurchaseTracker.hasAvailableScans());
             return Observable.just(new OcrResponse());
         }
     }

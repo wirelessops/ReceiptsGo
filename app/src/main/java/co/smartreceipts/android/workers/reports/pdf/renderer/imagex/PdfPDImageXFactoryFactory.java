@@ -9,7 +9,7 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
 
-import co.smartreceipts.android.utils.FeatureFlags;
+import co.smartreceipts.android.utils.ConfigurableStaticFeature;
 
 public class PdfPDImageXFactoryFactory {
 
@@ -25,7 +25,7 @@ public class PdfPDImageXFactoryFactory {
 
     @NonNull
     public PdfPDImageXFactory get() {
-        if (FeatureFlags.CompatPdfRendering.isEnabled()) {
+        if (ConfigurableStaticFeature.CompatPdfRendering.isEnabled(context)) {
             return new CompatPdfPDImageXFactory(context, pdDocument, file);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
