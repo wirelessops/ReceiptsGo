@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="config_is_the_settings_menu_enabled">true</bool>
+    <bool name="config_is_the_graphs_screen_enabled">false</bool>
+    <bool name="config_is_the_distance_screen_enabled">false</bool>
+    <bool name="config_is_the_text_only_receipt_feature_enabled">true</bool>
+    <bool name="config_is_ocr_enabled">false</bool>
+</resources>
