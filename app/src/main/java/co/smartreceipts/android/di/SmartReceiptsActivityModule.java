@@ -9,6 +9,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipInteractor;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupReminderTooltipManager;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
+import co.smartreceipts.android.widget.tooltip.report.intent.ImportInfoTooltipManager;
 import dagger.Module;
 import dagger.Provides;
 
@@ -28,8 +29,9 @@ public class SmartReceiptsActivityModule {
                                                            BackupProvidersManager backupProvidersManager,
                                                            Analytics analytics,
                                                            GenerateInfoTooltipManager generateInfoTooltipManager,
-                                                           BackupReminderTooltipManager backupReminderTooltipManager) {
+                                                           BackupReminderTooltipManager backupReminderTooltipManager,
+                                                           ImportInfoTooltipManager importInfoTooltipManager) {
         return new ReportTooltipInteractor<>(activity, navigationHandler, backupProvidersManager,
-                analytics, generateInfoTooltipManager, backupReminderTooltipManager);
+                analytics, generateInfoTooltipManager, backupReminderTooltipManager, importInfoTooltipManager);
     }
 }

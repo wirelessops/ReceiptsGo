@@ -37,4 +37,13 @@ public class ReportTooltipUiIndicatorTest {
         assertEquals(State.BackupReminder, indicator.getState());
         assertEquals(DAYS, (int)indicator.getDaysSinceBackup().get());
     }
+
+    @Test
+    public void importInfo() {
+        final ReportTooltipUiIndicator indicator = ReportTooltipUiIndicator.importInfo();
+
+        assertEquals(ReportTooltipUiIndicator.importInfo(), indicator);
+        assertEquals(State.ImportInfo, indicator.getState());
+        assertEquals(null, indicator.getErrorType().orNull());
+    }
 }

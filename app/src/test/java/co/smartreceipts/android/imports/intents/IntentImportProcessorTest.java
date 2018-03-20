@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.hadisatrio.optional.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +22,6 @@ import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import io.reactivex.observers.TestObserver;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
@@ -32,9 +33,6 @@ public class IntentImportProcessorTest {
 
     @Mock
     Analytics analytics;
-
-    @Mock
-    Intent intent;
 
     @Mock
     Context context;
@@ -74,7 +72,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         intentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -83,7 +83,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
     @Test
@@ -97,7 +99,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         intentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -106,7 +110,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
     @Test
@@ -120,7 +126,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         intentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -129,7 +137,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
     @Test
@@ -143,7 +153,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         intentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -152,7 +164,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
     @Test
@@ -166,7 +180,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         intentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -175,7 +191,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
     @Test
@@ -188,7 +206,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         intentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -197,7 +217,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(intentImportProcessor.getLastResult());
+        intentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
     @Test
@@ -213,7 +235,9 @@ public class IntentImportProcessorTest {
         testObserver1.assertValue(result)
                 .assertComplete()
                 .assertNoErrors();
-        assertEquals(result, mockContentIntentImportProcessor.getLastResult());
+        mockContentIntentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
 
         // But confirm subsequent attempts do nothing after marking consumed
         mockContentIntentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
@@ -222,7 +246,9 @@ public class IntentImportProcessorTest {
         testObserver2.assertNoValues()
                 .assertComplete()
                 .assertNoErrors();
-        assertNull(mockContentIntentImportProcessor.getLastResult());
+        mockContentIntentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
     }
 
 }

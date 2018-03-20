@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -25,7 +26,10 @@ import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 
 @ApplicationScope
 public class IntentImportProcessor {
@@ -36,7 +40,7 @@ public class IntentImportProcessor {
     private final Context context;
     private final Analytics analytics;
 
-    private IntentImportResult lastResult;
+    private Subject<Optional<IntentImportResult>> lastResult = BehaviorSubject.createDefault(Optional.absent());
 
     @Inject
     public IntentImportProcessor(@NonNull Context context, @NonNull Analytics analytics) {
@@ -77,7 +81,7 @@ public class IntentImportProcessor {
                 .doOnSuccess(intentImportResult -> {
                     Logger.debug(IntentImportProcessor.this, "Successfully processed the file {} with uri: {}.", intentImportResult.getFileType(), intentImportResult.getUri());
                     analytics.record(new DefaultDataPointEvent(Events.Intents.ReceivedActionableIntent).addDataPoint(new DataPoint("type", intentImportResult.getFileType())));
-                    lastResult = intentImportResult;
+                    lastResult.onNext(Optional.of(intentImportResult));
                 })
                 .subscribeOn(Schedulers.io());
     }
@@ -89,16 +93,14 @@ public class IntentImportProcessor {
      */
     public synchronized void markIntentAsSuccessfullyProcessed(@NonNull Intent intent) {
         intent.putExtra(INTENT_CONSUMED, true);
-        lastResult = null;
+        lastResult.onNext(Optional.absent());
     }
 
     /**
      * @return the last {@link IntentImportResult} that has passed through this stream.
      *
-     * TODO: Refactor this once we've cleaned up the receipt list, so we can use Rx everywhere
      */
-    @Nullable
-    public synchronized IntentImportResult getLastResult() {
+    public synchronized Observable<Optional<IntentImportResult>> getLastResult() {
         return lastResult;
     }
 

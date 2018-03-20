@@ -70,6 +70,8 @@ public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, Repo
                         interactor.generateInfoTooltipClosed();
                     } else if (uiIndicator.getState() == ReportTooltipUiIndicator.State.BackupReminder) {
                         interactor.backupReminderTooltipClosed();
+                    } else if (uiIndicator.getState() == ReportTooltipUiIndicator.State.ImportInfo) {
+                        interactor.importInfoTooltipClosed();
                     }
                 }));
     }

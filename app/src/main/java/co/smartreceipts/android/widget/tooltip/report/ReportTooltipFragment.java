@@ -24,6 +24,7 @@ import io.reactivex.subjects.PublishSubject;
 import static android.view.View.GONE;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.BackupReminder;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.GenerateInfo;
+import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.ImportInfo;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.None;
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.SyncError;
 
@@ -90,6 +91,8 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
             presentGenerateInfo();
         } else if (uiIndicator.getState() == BackupReminder) {
             presentBackupReminder(uiIndicator.getDaysSinceBackup().get());
+        } else if (uiIndicator.getState() == ImportInfo) {
+            presentImportInfo();
         } else if (uiIndicator.getState() == None) {
             tooltip.hideWithAnimation();
         }
@@ -142,6 +145,13 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
                 },
                 v -> closeClickStream.onNext(ReportTooltipUiIndicator.backupReminder(days)),
                 days);
+
+        tooltip.showWithAnimation();
+    }
+
+    private void presentImportInfo() {
+        tooltip.setInfoMessage(R.string.tooltip_import_info_message);
+        tooltip.showCancelButton(v -> closeClickStream.onNext(ReportTooltipUiIndicator.importInfo()));
 
         tooltip.showWithAnimation();
     }

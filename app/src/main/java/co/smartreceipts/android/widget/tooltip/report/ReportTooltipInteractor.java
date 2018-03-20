@@ -21,10 +21,12 @@ import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupReminderTooltipManager;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
-import io.reactivex.Maybe;
+import co.smartreceipts.android.widget.tooltip.report.intent.ImportInfoTooltipManager;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.None;
 
 @ActivityScope
 public class ReportTooltipInteractor<T extends FragmentActivity> {
@@ -35,39 +37,29 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
     private final Analytics analytics;
     private final GenerateInfoTooltipManager generateInfoTooltipManager;
     private final BackupReminderTooltipManager backupReminderTooltipManager;
+    private final ImportInfoTooltipManager importInfoTooltipManager;
 
     @Inject
     public ReportTooltipInteractor(T activity, NavigationHandler navigationHandler,
                                    BackupProvidersManager backupProvidersManager,
                                    Analytics analytics, GenerateInfoTooltipManager infoTooltipManager,
-                                   BackupReminderTooltipManager backupReminderTooltipManager) {
+                                   BackupReminderTooltipManager backupReminderTooltipManager,
+                                   ImportInfoTooltipManager importInfoTooltipManager) {
         this.fragmentActivity = activity;
         this.navigationHandler = navigationHandler;
         this.backupProvidersManager = backupProvidersManager;
         this.analytics = analytics;
         this.generateInfoTooltipManager = infoTooltipManager;
         this.backupReminderTooltipManager = backupReminderTooltipManager;
+        this.importInfoTooltipManager = importInfoTooltipManager;
     }
 
+    // Tooltips (sorted by priority):
+    // 1) errors
+    // 2) import info
+    // 3) backup reminder
+    // 4) generate info
     public Observable<ReportTooltipUiIndicator> checkTooltipCauses() {
-
-        Observable<ReportTooltipUiIndicator> infoIndicatorObservable = Observable.concat(
-                needToShowGenerateInfo()
-                        .flatMapObservable(needToShow -> needToShow ? Observable.just(ReportTooltipUiIndicator.generateInfo())
-                                : Observable.just(ReportTooltipUiIndicator.none())),
-                needToShowBackupReminder()
-                        .flatMapObservable(days -> Observable.just(ReportTooltipUiIndicator.backupReminder(days))))
-                .toList()
-                .flatMapObservable(
-                        reportTooltipUiIndicators -> {
-                            for (ReportTooltipUiIndicator reportTooltipUiIndicator : reportTooltipUiIndicators) {
-                                // this makes priority for backup reminder stream
-                                if (reportTooltipUiIndicator.getState() == ReportTooltipUiIndicator.State.BackupReminder) {
-                                    return Observable.just(reportTooltipUiIndicator);
-                                }
-                            }
-                            return Observable.just(reportTooltipUiIndicators.get(0));
-                        });
 
         return Observable.combineLatest(
                 getErrorStream()
@@ -78,14 +70,8 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
                         })
                         .flatMap(syncErrorType -> Observable.just(ReportTooltipUiIndicator.syncError(syncErrorType)))
                         .startWith(ReportTooltipUiIndicator.none()),
-                infoIndicatorObservable,
-                (errorUiIndicator, infoUiIndicator) -> {
-                    if (errorUiIndicator.equals(ReportTooltipUiIndicator.none())) { // this makes some kind of priority for errors stream
-                        return infoUiIndicator;
-                    } else {
-                        return errorUiIndicator;
-                    }
-                })
+                getInfoStream(),
+                (errorUiIndicator, infoUiIndicator) -> errorUiIndicator.getState() != None ? errorUiIndicator : infoUiIndicator)
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -94,12 +80,42 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
                 .map(CriticalSyncError::getSyncErrorType);
     }
 
-    private Single<Boolean> needToShowGenerateInfo() {
-        return generateInfoTooltipManager.needToShowGenerateTooltip();
+    /**
+     * Checks all info causes (import info, backup reminder, generate info)
+     *
+     * @return The most important info {@link ReportTooltipUiIndicator}
+     */
+    private Observable<ReportTooltipUiIndicator> getInfoStream() {
+        return Observable.combineLatest(checkImportInfoCauses(),
+                checkBackupReminderCauses().toObservable(),
+                checkGenerateInfoCauses().toObservable(),
+                (importInfoUiIndicator, backupReminderUiIndicator, generateInfoUiIndicator) -> {
+
+                    if (importInfoUiIndicator.getState() != None) { // import info has the highest info priority
+                        return importInfoUiIndicator;
+                    } else if (backupReminderUiIndicator.getState() != None) { // backup reminder has higher priority than generate info
+                        return backupReminderUiIndicator;
+                    } else {
+                        return generateInfoUiIndicator;
+                    }
+
+                });
     }
 
-    private Maybe<Integer> needToShowBackupReminder() {
-        return backupReminderTooltipManager.needToShowBackupReminder();
+    private Single<ReportTooltipUiIndicator> checkGenerateInfoCauses() {
+        return generateInfoTooltipManager.needToShowGenerateTooltip()
+                .flatMap(needToShow -> needToShow ? Single.just(ReportTooltipUiIndicator.generateInfo()) : Single.just(ReportTooltipUiIndicator.none()));
+    }
+
+    private Observable<ReportTooltipUiIndicator> checkImportInfoCauses() {
+        return importInfoTooltipManager.needToShowImportInfo()
+                .map(importIntentPresent -> importIntentPresent ? ReportTooltipUiIndicator.importInfo() : ReportTooltipUiIndicator.none());
+    }
+
+    private Single<ReportTooltipUiIndicator> checkBackupReminderCauses() {
+        return backupReminderTooltipManager.needToShowBackupReminder()
+                .flatMapSingleElement(days -> Single.just(ReportTooltipUiIndicator.backupReminder(days)))
+                .toSingle(ReportTooltipUiIndicator.none());
     }
 
     public void handleClickOnErrorTooltip(@NonNull SyncErrorType syncErrorType) {
@@ -132,6 +148,10 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
 
     public void backupReminderTooltipClosed() {
         backupReminderTooltipManager.tooltipWasDismissed();
+    }
+
+    public void importInfoTooltipClosed() {
+        importInfoTooltipManager.tooltipWasDismissed();
     }
 
 }

@@ -1,6 +1,7 @@
 package co.smartreceipts.android.widget.tooltip;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +18,7 @@ import co.smartreceipts.android.R;
 
 public class Tooltip extends RelativeLayout {
 
-    private Button buttonNo, buttonYes;
+    private Button buttonNo, buttonYes, buttonCancel;
     private TextView messageText;
     private ImageView closeIcon, errorIcon;
 
@@ -38,11 +39,12 @@ public class Tooltip extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.app_tooltip, this);
-        messageText = (TextView) findViewById(R.id.tooltip_message);
-        buttonNo = (Button) findViewById(R.id.tooltip_no);
-        buttonYes = (Button) findViewById(R.id.tooltip_yes);
-        closeIcon = (ImageView) findViewById(R.id.tooltip_close_icon);
-        errorIcon = (ImageView) findViewById(R.id.tooltip_error_icon);
+        messageText = findViewById(R.id.tooltip_message);
+        buttonNo = findViewById(R.id.tooltip_no);
+        buttonYes = findViewById(R.id.tooltip_yes);
+        buttonCancel = findViewById(R.id.tooltip_cancel);
+        closeIcon = findViewById(R.id.tooltip_close_icon);
+        errorIcon = findViewById(R.id.tooltip_error_icon);
 
         setVisibility(VISIBLE);
     }
@@ -70,6 +72,7 @@ public class Tooltip extends RelativeLayout {
         errorIcon.setVisibility(VISIBLE);
         buttonNo.setVisibility(GONE);
         buttonYes.setVisibility(GONE);
+        buttonCancel.setVisibility(GONE);
     }
 
     public void setInfo(@StringRes int infoStringId, @Nullable OnClickListener tooltipClickListener, @Nullable OnClickListener closeClickListener) {
@@ -80,6 +83,7 @@ public class Tooltip extends RelativeLayout {
         errorIcon.setVisibility(GONE);
         buttonNo.setVisibility(GONE);
         buttonYes.setVisibility(GONE);
+        buttonCancel.setVisibility(GONE);
     }
 
     public void setQuestion(@StringRes int questionStringId, @Nullable OnClickListener noClickListener, @Nullable OnClickListener yesClickListener) {
@@ -87,6 +91,7 @@ public class Tooltip extends RelativeLayout {
 
         buttonNo.setVisibility(VISIBLE);
         buttonYes.setVisibility(VISIBLE);
+        buttonCancel.setVisibility(GONE);
 
         closeIcon.setVisibility(GONE);
         errorIcon.setVisibility(GONE);
@@ -116,6 +121,11 @@ public class Tooltip extends RelativeLayout {
         closeIcon.setOnClickListener(closeClickListener);
     }
 
+    public void showCancelButton(@NonNull OnClickListener cancelClickListener) {
+        buttonCancel.setVisibility(VISIBLE);
+        buttonCancel.setOnClickListener(cancelClickListener);
+    }
+
     private void setErrorBackground() {
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.smart_receipts_colorError));
     }
@@ -133,6 +143,7 @@ public class Tooltip extends RelativeLayout {
 
         buttonNo.setVisibility(GONE);
         buttonYes.setVisibility(GONE);
+        buttonCancel.setVisibility(GONE);
     }
 
     public void hideWithAnimation() {

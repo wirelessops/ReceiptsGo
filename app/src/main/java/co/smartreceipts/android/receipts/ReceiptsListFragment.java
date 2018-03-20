@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tapadoo.alerter.Alert;
 import com.tapadoo.alerter.Alerter;
@@ -44,7 +45,6 @@ import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.imports.importer.ActivityFileResultImporter;
 import co.smartreceipts.android.imports.intents.IntentImportProcessor;
 import co.smartreceipts.android.imports.intents.model.FileType;
-import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.imports.locator.ActivityFileResultLocator;
 import co.smartreceipts.android.imports.locator.ActivityFileResultLocatorResponse;
 import co.smartreceipts.android.model.Receipt;
@@ -185,6 +185,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private boolean showDateHeaders;
     private ReceiptsHeaderItemDecoration headerItemDecoration;
+
+    private boolean importIntentMode;
+
+    // TODO: 20.03.2018 remove InformAboutPdfImageAttachmentDialogFragment
+    // TODO: 20.03.2018 change IntentImportInformationView, check tests
 
     @Override
     public void onAttach(Context context) {
@@ -350,25 +355,42 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
         compositeDisposable.add(((ReceiptsAdapter) adapter).getItemClicks()
                 .subscribe(receipt -> {
-                    analytics.record(Events.Receipts.ReceiptMenuEdit);
-                    navigationHandler.navigateToEditReceiptFragment(trip, receipt);
+                    if (!importIntentMode) {
+                        analytics.record(Events.Receipts.ReceiptMenuEdit);
+                        navigationHandler.navigateToEditReceiptFragment(trip, receipt);
+                    } else {
+                        attachImportIntent(receipt);
+                    }
                 }));
 
         compositeDisposable.add(((ReceiptsAdapter) adapter).getMenuClicks()
-                .subscribe(this::showReceiptMenu));
+                .subscribe(receipt -> {
+                    if (!importIntentMode) {
+                        showReceiptMenu(receipt);
+                    }
+                }));
 
         compositeDisposable.add(((ReceiptsAdapter) adapter).getImageClicks()
                 .subscribe(receipt -> {
-                    if (receipt.hasImage()) {
-                        analytics.record(Events.Receipts.ReceiptMenuViewImage);
-                        navigationHandler.navigateToViewReceiptImage(receipt);
-                    } else if (receipt.hasPDF()) {
-                        analytics.record(Events.Receipts.ReceiptMenuViewPdf);
-                        navigationHandler.navigateToViewReceiptPdf(receipt);
+                    if (!importIntentMode) {
+                        if (receipt.hasImage()) {
+                            analytics.record(Events.Receipts.ReceiptMenuViewImage);
+                            navigationHandler.navigateToViewReceiptImage(receipt);
+                        } else if (receipt.hasPDF()) {
+                            analytics.record(Events.Receipts.ReceiptMenuViewPdf);
+                            navigationHandler.navigateToViewReceiptPdf(receipt);
+                        } else {
+                            showAttachmentDialog(receipt);
+                        }
                     } else {
-                        showAttachmentDialog(receipt);
+                        attachImportIntent(receipt);
                     }
                 }));
+
+        compositeDisposable.add(intentImportProcessor.getLastResult()
+                .map(intentImportResultOptional -> intentImportResultOptional.isPresent() &&
+                        (intentImportResultOptional.get().getFileType() == FileType.Image || intentImportResultOptional.get().getFileType() == FileType.Pdf))
+                .subscribe(importIntentPresent -> importIntentMode = importIntentPresent));
     }
 
     @Override
@@ -452,57 +474,34 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 .setCancelable(true)
                 .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());
 
-        final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
-        if (intentImportResult != null && (intentImportResult.getFileType() == FileType.Image || intentImportResult.getFileType() == FileType.Pdf)) {
-            final int attachmentStringId = intentImportResult.getFileType() == FileType.Pdf ? R.string.pdf : R.string.image;
-            final String attachFile = getString(R.string.action_send_attach, getString(attachmentStringId));
-            final String replaceFile = getString(R.string.action_send_replace, getString(receipt.hasPDF() ? R.string.pdf : R.string.image));
-            final String[] receiptActions = receipt.hasFile() ? new String[]{replaceFile} : new String[]{attachFile};
-
-            builder.setItems(receiptActions, (dialog, item) -> {
-                final String selection = receiptActions[item];
-                if (selection != null) {
-                    if (selection.equals(attachFile) || selection.equals(replaceFile)) { // Attach File to Receipt
-                        final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(getActivity(), trip, persistenceManager, receiptTableController, analytics);
-                        compositeDisposable.add(importer.importAttachment(intentImportResult, receipt)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(file -> {
-                                    // Intentional no-op
-                                }, throwable -> Toast.makeText(getActivity(), R.string.database_error, Toast.LENGTH_SHORT).show()));
-                    }
-                }
-            });
+        final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
+        final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
+        final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
+        final String[] receiptActions;
+        if (!receipt.hasFile()) {
+            receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
         } else {
-            final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
-            final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
-            final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
-            final String[] receiptActions;
-            if (!receipt.hasFile()) {
-                receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
-            } else {
-                receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};
-            }
-            builder.setItems(receiptActions, (dialog, item) -> {
-                final String selection = receiptActions[item];
-                if (selection != null) {
-                    if (selection.equals(receiptActionDelete)) { // Delete Receipt
-                        analytics.record(Events.Receipts.ReceiptMenuDelete);
-                        final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
-                        navigationHandler.showDialog(deleteReceiptDialogFragment);
-
-                    } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
-                        analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
-                        ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
-
-                    } else if (selection.equals(receiptActionRemoveAttachment)) { // Remove Attachment
-                        analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
-                        navigationHandler.showDialog(ReceiptRemoveAttachmentDialogFragment.newInstance(receipt));
-                    }
-                }
-                dialog.cancel();
-            });
+            receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};
         }
+        builder.setItems(receiptActions, (dialog, item) -> {
+            final String selection = receiptActions[item];
+            if (selection != null) {
+                if (selection.equals(receiptActionDelete)) { // Delete Receipt
+                    analytics.record(Events.Receipts.ReceiptMenuDelete);
+                    final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
+                    navigationHandler.showDialog(deleteReceiptDialogFragment);
+
+                } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
+                    analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
+                    ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
+
+                } else if (selection.equals(receiptActionRemoveAttachment)) { // Remove Attachment
+                    analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
+                    navigationHandler.showDialog(ReceiptRemoveAttachmentDialogFragment.newInstance(receipt));
+                }
+            }
+            dialog.cancel();
+        });
         builder.show();
         return true;
     }
@@ -573,11 +572,16 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         }
                     }
                     Toast.makeText(getActivity(), getString(stringId, newReceipt.getName()), Toast.LENGTH_SHORT).show();
-                    final IntentImportResult intentImportResult = intentImportProcessor.getLastResult();
-                    if (intentImportResult != null) {
-                        intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
-                        getActivity().finish();
-                    }
+
+                    intentImportProcessor.getLastResult()
+                            .filter(intentImportResultOptional -> intentImportResultOptional.isPresent() &&
+                                    (intentImportResultOptional.get().getFileType() == FileType.Image || intentImportResultOptional.get().getFileType() == FileType.Pdf))
+                            .subscribe(ignored -> {
+                                if (getActivity() != null) {
+                                    intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
+                                    //getActivity().finish();
+                                }
+                            });
                 }
             }
             // But still refresh for sync operations
@@ -712,6 +716,21 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Override
     public void setImageUri(@NonNull Uri uri) {
         imageUri = uri;
+    }
+
+    private void attachImportIntent(Receipt receipt) {
+        compositeDisposable.add(intentImportProcessor.getLastResult()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .flatMapSingle(intentImportResult -> {
+                    final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(getActivity(), trip, persistenceManager, receiptTableController, analytics);
+                    return importer.importAttachment(intentImportResult, receipt);
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(file -> {
+
+                }, throwable -> Toast.makeText(getActivity(), R.string.database_error, Toast.LENGTH_SHORT).show()));
     }
 
     private class ActionBarSubtitleUpdatesListener extends StubTableEventsListener<Trip> {
