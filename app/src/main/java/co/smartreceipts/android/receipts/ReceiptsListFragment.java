@@ -188,8 +188,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private boolean importIntentMode;
 
-    // TODO: 20.03.2018 change IntentImportInformationView, check tests
-
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);

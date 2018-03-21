@@ -123,4 +123,16 @@ public class ReportTooltipPresenterTest {
         verify(tooltipView).present(ReportTooltipUiIndicator.none());
         verify(interactor).backupReminderTooltipClosed();
     }
+
+    @Test
+    public void passImportInfoTooltipCloseClicks() {
+        when(interactor.checkTooltipCauses()).thenReturn(Observable.just(ReportTooltipUiIndicator.importInfo()));
+        when(tooltipView.getCloseButtonClicks()).thenReturn(Observable.just(ReportTooltipUiIndicator.importInfo()));
+
+        presenter.subscribe();
+
+        verify(tooltipView).present(ReportTooltipUiIndicator.importInfo());
+        verify(tooltipView).present(ReportTooltipUiIndicator.none());
+        verify(interactor).importInfoTooltipClosed();
+    }
 }

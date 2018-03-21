@@ -2,6 +2,8 @@ package co.smartreceipts.android.widget.tooltip.report.intent;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Preconditions;
+
 import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.ActivityScope;
@@ -19,8 +21,8 @@ public class ImportInfoTooltipManager implements TooltipManager {
 
     @Inject
     public ImportInfoTooltipManager(@NonNull IntentImportProcessor intentImportProcessor, @NonNull IntentImportProvider intentImportProvider) {
-        this.intentImportProcessor = intentImportProcessor;
-        this.intentImportProvider = intentImportProvider;
+        this.intentImportProcessor = Preconditions.checkNotNull(intentImportProcessor);
+        this.intentImportProvider = Preconditions.checkNotNull(intentImportProvider);
     }
 
     public Observable<Boolean> needToShowImportInfo() {
