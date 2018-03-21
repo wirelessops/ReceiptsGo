@@ -11,11 +11,9 @@ import javax.inject.Inject;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
 import co.smartreceipts.android.di.scopes.ActivityScope;
-import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
-import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
@@ -32,16 +30,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class IntentImportInformationPresenter extends BaseViperPresenter<IntentImportInformationView, IntentImportInformationInteractor> {
 
     private final IntentImportProvider intentImportProvider;
-    private final PersistenceManager persistenceManager;
     private final NavigationHandler<SmartReceiptsActivity> navigationHandler;
 
     @Inject
     public IntentImportInformationPresenter(@NonNull IntentImportInformationView view, @NonNull IntentImportInformationInteractor interactor,
-                                            @NonNull IntentImportProvider intentImportProvider, @NonNull PersistenceManager persistenceManager,
+                                            @NonNull IntentImportProvider intentImportProvider,
                                             @NonNull NavigationHandler<SmartReceiptsActivity> navigationHandler) {
         super(view, interactor);
         this.intentImportProvider = Preconditions.checkNotNull(intentImportProvider);
-        this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
     }
 
@@ -52,21 +48,17 @@ public class IntentImportInformationPresenter extends BaseViperPresenter<IntentI
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(uiIndicator -> uiIndicator.getState() == UiIndicator.State.Success)
                 .subscribe(uiIndicator -> {
-                    final IntentImportResult result = uiIndicator.getData().get();
-                    if (result.getFileType() == FileType.Smr) {
-                        navigationHandler.showDialog(ImportLocalBackupDialogFragment.newInstance(result.getUri()));
-                    } else {
-                        if (InformAboutPdfImageAttachmentDialogFragment.shouldInformAboutPdfImageAttachmentDialogFragment(persistenceManager.getPreferenceManager())) {
-                            view.presentFirstTimeInformation(result.getFileType());
-                        } else {
-                            view.presentGenericImportInformation(result.getFileType());
-                        }
-                    }
-                },
-                throwable -> {
-                    Logger.error(IntentImportInformationPresenter.this, "Failed to process file import", throwable);
-                    view.presentFatalError();
-                }));
+                            final IntentImportResult result = uiIndicator.getData().get();
+                            if (result.getFileType() == FileType.Smr) {
+                                navigationHandler.showDialog(ImportLocalBackupDialogFragment.newInstance(result.getUri()));
+                            } else {
+                                view.presentIntentImportInformation(result.getFileType());
+                            }
+                        },
+                        throwable -> {
+                            Logger.error(IntentImportInformationPresenter.this, "Failed to process file import", throwable);
+                            view.presentIntentImportFatalError();
+                        }));
     }
 
 }

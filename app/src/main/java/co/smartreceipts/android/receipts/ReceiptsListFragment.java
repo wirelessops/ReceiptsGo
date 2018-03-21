@@ -188,7 +188,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private boolean importIntentMode;
 
-    // TODO: 20.03.2018 remove InformAboutPdfImageAttachmentDialogFragment
     // TODO: 20.03.2018 change IntentImportInformationView, check tests
 
     @Override
@@ -467,7 +466,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         ReceiptAttachmentDialogFragment.newInstance(receipt).show(getChildFragmentManager(), ReceiptAttachmentDialogFragment.class.getSimpleName());
     }
 
-    public final boolean showReceiptMenu(final Receipt receipt) {
+    public final void showReceiptMenu(final Receipt receipt) {
         highlightedReceipt = receipt;
         final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
         builder.setTitle(receipt.getName())
@@ -503,7 +502,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             dialog.cancel();
         });
         builder.show();
-        return true;
     }
 
     @Override
@@ -579,7 +577,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             .subscribe(ignored -> {
                                 if (getActivity() != null) {
                                     intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
-                                    //getActivity().finish();
+//                                    getActivity().finish();
                                 }
                             });
                 }

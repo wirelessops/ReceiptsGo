@@ -20,11 +20,10 @@ import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.fragments.InformAboutPdfImageAttachmentDialogFragment;
 import co.smartreceipts.android.imports.intents.model.FileType;
+import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationView;
-import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
@@ -252,18 +251,13 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
     }
 
     @Override
-    public void presentFirstTimeInformation(@NonNull FileType fileType) {
-        navigationHandler.showDialog(InformAboutPdfImageAttachmentDialogFragment.newInstance(fileType));
-    }
-
-    @Override
-    public void presentGenericImportInformation(@NonNull FileType fileType) {
+    public void presentIntentImportInformation(@NonNull FileType fileType) {
         final int stringId = fileType == FileType.Pdf ? R.string.pdf : R.string.image;
         Toast.makeText(this, getString(R.string.dialog_attachment_text, getString(stringId)), Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void presentFatalError() {
+    public void presentIntentImportFatalError() {
         Toast.makeText(this, R.string.attachment_error, Toast.LENGTH_SHORT).show();
         finish();
     }

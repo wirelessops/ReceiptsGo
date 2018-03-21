@@ -411,10 +411,7 @@
     <string name="receipt_dialog_action_move_copy">Mover/copiar</string>
     <string name="receipt_dialog_action_remove_attachment">Eliminar archivo adjunto</string>
 
-    <string name="dialog_attachment_title">Añadir %s al recibo</string>
     <string name="dialog_attachment_text">Toca un recibo existente para añadirle este %s</string>
-    <string name="dialog_attachment_positive">Aceptar</string>
-    <string name="dialog_attachment_negative">No mostrar de nuevo</string>
 
     <string name="receipt_dialog_remove_attachment">¿Quieres eliminar el archivo adjunto?</string>
 

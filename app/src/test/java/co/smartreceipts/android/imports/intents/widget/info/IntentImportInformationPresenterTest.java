@@ -18,8 +18,6 @@ import co.smartreceipts.android.activities.SmartReceiptsActivity;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
-import co.smartreceipts.android.persistence.PersistenceManager;
-import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
@@ -46,12 +44,6 @@ public class IntentImportInformationPresenterTest {
     IntentImportProvider intentImportProvider;
 
     @Mock
-    PersistenceManager persistenceManager;
-
-    @Mock
-    UserPreferenceManager userPreferenceManager;
-
-    @Mock
     NavigationHandler<SmartReceiptsActivity> navigationHandler;
 
     @Mock
@@ -61,9 +53,7 @@ public class IntentImportInformationPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(intentImportProvider.getIntentMaybe()).thenReturn(Maybe.just(intent));
-        when(persistenceManager.getPreferenceManager()).thenReturn(userPreferenceManager);
-        when(userPreferenceManager.getSharedPreferences()).thenReturn(PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application));
-        presenter = new IntentImportInformationPresenter(view, interactor, intentImportProvider, persistenceManager, navigationHandler);
+        presenter = new IntentImportInformationPresenter(view, interactor, intentImportProvider, navigationHandler);
     }
 
     @After
@@ -94,18 +84,17 @@ public class IntentImportInformationPresenterTest {
         when(interactor.process(intent)).thenReturn(Observable.just(UiIndicator.idle(), UiIndicator.success(new IntentImportResult(Uri.EMPTY, FileType.Image))));
         presenter.subscribe();
 
-        verify(view).presentFirstTimeInformation(FileType.Image);
+        verify(view).presentIntentImportInformation(FileType.Image);
         verifyNoMoreInteractions(view);
         verifyZeroInteractions(navigationHandler);
     }
 
     @Test
     public void importPdfSubsequentlyShowsGenericView() {
-        PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application).edit().putBoolean("ShowHelpDialog", false).apply();
         when(interactor.process(intent)).thenReturn(Observable.just(UiIndicator.idle(), UiIndicator.success(new IntentImportResult(Uri.EMPTY, FileType.Pdf))));
         presenter.subscribe();
 
-        verify(view).presentGenericImportInformation(FileType.Pdf);
+        verify(view).presentIntentImportInformation(FileType.Pdf);
         verifyNoMoreInteractions(view);
         verifyZeroInteractions(navigationHandler);
     }
@@ -115,7 +104,7 @@ public class IntentImportInformationPresenterTest {
         when(interactor.process(intent)).thenReturn(Observable.error(new Exception("test")));
         presenter.subscribe();
 
-        verify(view).presentFatalError();
+        verify(view).presentIntentImportFatalError();
         verifyNoMoreInteractions(view);
         verifyZeroInteractions(navigationHandler);
     }

@@ -411,10 +411,7 @@
     <string name="receipt_dialog_action_move_copy">Verschieben / Kopieren</string>
     <string name="receipt_dialog_action_remove_attachment">Entfernen Sie den Anhang</string>
 
-    <string name="dialog_attachment_title">Zum Beleg %s hinzufügen</string>
     <string name="dialog_attachment_text">Tippen Sie auf einen bestehenden Beleg um ihn hinzufügen %s</string>
-    <string name="dialog_attachment_positive">okay</string>
-    <string name="dialog_attachment_negative">Nicht mehr anzeigen</string>
 
     <string name="receipt_dialog_remove_attachment">Möchten Sie den Anhang entfernen?</string>
 

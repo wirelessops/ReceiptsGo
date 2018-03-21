@@ -435,10 +435,7 @@
     <string name="receipt_dialog_action_move_copy">Move/Copy</string>
     <string name="receipt_dialog_action_remove_attachment">Remove Attachment</string>
 
-    <string name="dialog_attachment_title">Add %s to Receipt</string>
     <string name="dialog_attachment_text">Tap on an existing receipt to add this %s to it</string>
-    <string name="dialog_attachment_positive">Okay</string>
-    <string name="dialog_attachment_negative">Don\'t Show Again</string>
     <string name="receipt_dialog_remove_attachment">Do you want to remove attachment?</string>
 
     <!-- ================== Preference Dialog ==================== -->

@@ -413,10 +413,7 @@
     <string name="receipt_dialog_action_move_copy">Перемістити/Копіювати</string>
     <string name="receipt_dialog_action_remove_attachment">Видалити вкладення</string>
 
-    <string name="dialog_attachment_title">Додати %s до чеку</string>
     <string name="dialog_attachment_text">Натисніть на існуючий чек, щоб додати цей %s до нього</string>
-    <string name="dialog_attachment_positive">ОК</string>
-    <string name="dialog_attachment_negative">Більше не показувати це</string>
 
     <string name="receipt_dialog_remove_attachment">Ви хочете видалити вкладення?</string>
 
