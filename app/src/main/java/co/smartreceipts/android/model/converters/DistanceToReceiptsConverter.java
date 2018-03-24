@@ -90,16 +90,23 @@ public class DistanceToReceiptsConverter implements ModelConverter<Distance, Rec
         final Distance distance0 = distancesThisDay.get(0);
         final ReceiptBuilderFactory factory = new ReceiptBuilderFactory(-1); // Randomize the id
         final ArrayList<String> names = new ArrayList<>();
+        final ArrayList<String> comments = new ArrayList<>();
         for (int i = 0; i < distancesThisDay.size(); i++) {
             final Distance distance = distancesThisDay.get(i);
             if (!names.contains(distance.getLocation())) {
                 names.add(distance.getLocation());
+            }
+            if (!TextUtils.isEmpty(distance.getComment()) && !comments.contains(distance.getComment())) {
+                comments.add(distance.getComment());
             }
         }
         if (names.isEmpty()) {
             factory.setName(mContext.getString(R.string.distance));
         } else {
             factory.setName(TextUtils.join("; ", names));
+        }
+        if (!comments.isEmpty()) {
+            factory.setComment(TextUtils.join("; ", comments));
         }
         factory.setTrip(distance0.getTrip());
         factory.setDate(distance0.getDate());
