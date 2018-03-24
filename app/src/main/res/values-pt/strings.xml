@@ -207,7 +207,7 @@
     <string name="receipt_no_data">Parece que você ainda não tem nenhum recibo. Tente clicar no botão \'+\' para começar.</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Parece que você ainda não dispõe de uma distância rastreada. Tente clicar no botão \'+\' no canto superior para começar.</string>
+    <string name="distance_no_data">Parece que você ainda não dispõe de uma distância rastreada. Tente clicar no botão \'+\' para começar.</string>
     <string name="distance_insert_failed">Erro: Falha ao criar esse item de distância. Certifique-se de que seu celular não está conectado ao seu computador.</string>
     <string name="distance_update_failed">Erro: Falha ao atualizar esse item de distância. Certifique-se de que seu celular não está conectado ao seu computador.</string>
     <string name="distance_delete_failed">Erro: Falha ao  excluir esse item de distância. Certifique-se de que seu celular não está conectado ao seu computador.</string>

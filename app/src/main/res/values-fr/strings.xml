@@ -207,7 +207,7 @@
     <string name="receipt_no_data">Il semblerait que vous n\'ayez encore aucun reçu. Appuyez sur le bouton + (plus) pour commencer…</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Il semblerait que vous n\'ayez encore aucune distance parcourue. Cliquez sur le bouton + (plus) en haut pour commencer.</string>
+    <string name="distance_no_data">Il semblerait que vous n\'ayez encore aucune distance parcourue. Cliquez sur le bouton + (plus) pour commencer.</string>
     <string name="distance_insert_failed">Erreur : Impossible de créer cet élément de distance. Veuillez vérifier que votre téléphone n’est pas monté sur votre ordinateur.</string>
     <string name="distance_update_failed">Erreur : Impossible de mettre à jour cet élément de distance. Veuillez vérifier que votre téléphone n’est pas monté sur votre ordinateur.</string>
     <string name="distance_delete_failed">Erreur : Impossible de supprimer cet élément de distance. Veuillez vérifier que votre téléphone n\'est pas monté sur votre ordinateur.</string>

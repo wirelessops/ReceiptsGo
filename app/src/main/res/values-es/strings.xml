@@ -207,7 +207,7 @@
     <string name="receipt_no_data">Parece que aún no tienes recibos. Intenta tocar el botón + (más) para comenzar…</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Parece que aún no has hecho monitoreo de distancias. Intenta hacer clic en el botón + (más) arriba para comenzar.</string>
+    <string name="distance_no_data">Parece que aún no has hecho monitoreo de distancias. Intenta hacer clic en el botón + (más) para comenzar.</string>
     <string name="distance_insert_failed">Error: No se pudo crear este ítem de distancia. Asegúrate que tu teléfono no esté montado en tu computador.</string>
     <string name="distance_update_failed">Error: No se pudo actualizar este ítem de distancia. Asegúrate que tu teléfono no esté montado en tu computador.</string>
     <string name="distance_delete_failed">Error: No se pudo eliminar este ítem de distancia. Asegúrate que tu teléfono no esté montado en tu computador.</string>

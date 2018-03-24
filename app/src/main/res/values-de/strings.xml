@@ -207,7 +207,7 @@
     <string name="receipt_no_data">Sie scheinen noch keine Belege zu haben. Versuchen Sie, die + (plus) Taste zu drücken, um loszulegen …</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Sie scheinen noch keine Entfernung aufgespürt zu haben. Versuchen Sie, die + (Plus) Taste oben zu drücken, um loszulegen.</string>
+    <string name="distance_no_data">Sie scheinen noch keine Entfernung aufgespürt zu haben. Versuchen Sie, die + (Plus) um loszulegen.</string>
     <string name="distance_insert_failed">Fehler: Es ist nicht gelungen, diesen Abstand zu erstellen. Bitte stellen Sie sicher, dass Ihr Telefon nicht an Ihrem Computer angebracht ist.</string>
     <string name="distance_update_failed">Fehler: Fehler, diesen Abstand Artikel zu aktualisieren. Bitte stellen Sie sicher, dass Ihr Telefon an Ihrem Computer angebracht ist.</string>
     <string name="distance_delete_failed">Fehler: Es ist nicht gelungen, diesen Abstand zu löschen. Bitte stellen Sie sicher, dass Ihr Telefon nicht an Ihrem Computer angebracht ist.</string>

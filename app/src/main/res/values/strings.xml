@@ -212,7 +212,7 @@
     <string name="receipt_no_data">You don\'t seem to have any receipts yet. Try tapping the "+" (plus) button to get started&#8230;</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">You don\'t seem to have any distance tracked yet. Try clicking the "+" (plus) button up top to get started.</string>
+    <string name="distance_no_data">You don\'t seem to have any distance tracked yet. Try clicking the "+" (plus) button to get started.</string>
     <string name="distance_insert_failed">Error: Failed to create this distance item. Please make sure your phone is not mounted to your computer.</string>
     <string name="distance_update_failed">Error: Failed to update this distance item. Please make sure your phone is not mounted to your computer.</string>
     <string name="distance_delete_failed">Error: Failed to delete this distance item. Please make sure your phone is not mounted to your computer.</string>
