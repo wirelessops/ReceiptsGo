@@ -283,7 +283,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind(this, view);
         if (savedInstanceState == null) {
-            if (getReceipt() == null) {
+            if (isNewReceipt()) {
                 new ChildFragmentNavigationHandler(this).addChild(new OcrInformationalTooltipFragment(), R.id.update_receipt_tooltip);
             }
         }
@@ -339,7 +339,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     taxBox,
                     presenter.isUsePreTaxPrice(),
                     presenter.getDefaultTaxPercentage(),
-                    getReceipt() == null));
+                    isNewReceipt()));
         }
 
         // Outline date defaults
@@ -353,7 +353,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
         // Configure things if it's not a restored fragment
         if (savedInstanceState == null) {
-            if (getReceipt() == null) { // new receipt
+            if (isNewReceipt()) { // new receipt
 
                 final Time now = new Time();
                 now.setToNow();
@@ -368,11 +368,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 }
 
                 reimbursableCheckbox.setChecked(presenter.isReceiptsDefaultAsReimbursable());
-                if (presenter.isMatchReceiptCommentToCategory() && presenter.isMatchReceiptNameToCategory()) {
-                    if (focusedView == null) {
-                        focusedView = priceBox;
-                    }
-                } else if (presenter.isMatchReceiptNameToCategory()) {
+
+                if (presenter.isMatchReceiptNameToCategory()) {
                     if (focusedView == null) {
                         focusedView = priceBox;
                     }
@@ -444,7 +441,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     categoriesAdapter.update(list);
                     categoriesSpinner.setAdapter(categoriesAdapter);
 
-                    if (getReceipt() == null) { // new receipt
+                    if (isNewReceipt()) { // new receipt
                         if (presenter.isPredictCategories()) { // Predict Breakfast, Lunch, Dinner by the hour
                             if (receiptInputCache.getCachedCategory() == null) {
                                 final Time now = new Time();
@@ -518,10 +515,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         super.onResume();
         Logger.debug(this, "onResume");
 
-        final boolean isNewReceipt = getReceipt() == null;
-
         final String title;
-        if (isNewReceipt) {
+        if (isNewReceipt()) {
             title = getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_NEW);
         } else {
             if (presenter.isShowReceiptId()) {
@@ -540,7 +535,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             actionBar.setSubtitle("");
         }
 
-        if (isNewReceipt && presenter.isShowReceiptId()) {
+        if (isNewReceipt() && presenter.isShowReceiptId()) {
             idDisposable = database.getNextReceiptAutoIncremenetIdHelper()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -555,7 +550,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     });
         }
 
-        if (isNewReceipt) {
+        if (isNewReceipt()) {
             if (presenter.isEnableAutoCompleteSuggestions()) {
                 if (receiptsNameAutoCompleteAdapter == null) {
                     receiptsNameAutoCompleteAdapter = AutoCompleteAdapter.getInstance(getActivity(),
@@ -608,7 +603,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         focusedView = hasFocus ? v : null;
-        if (getReceipt() == null && hasFocus) {
+        if (isNewReceipt() && hasFocus) {
             // Only launch if we have focus and it's a new receipt
             SoftKeyboardManager.showKeyboard(v);
         }
@@ -690,6 +685,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         super.onDestroy();
     }
 
+    private boolean isNewReceipt() {
+        return getReceipt() == null;
+    }
+
     private void saveReceipt() {
 
         if (presenter.checkReceipt(dateBox.getDate())) {
@@ -733,7 +732,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     paymentMethod, reimbursableCheckbox.isChecked(), fullpageCheckbox.isChecked(), name, category, currency,
                     extraText1, extraText2, extraText3);
 
-            analytics.record(getReceipt() == null ? Events.Receipts.PersistNewReceipt : Events.Receipts.PersistUpdateReceipt);
+            analytics.record(isNewReceipt() ? Events.Receipts.PersistNewReceipt : Events.Receipts.PersistUpdateReceipt);
 
             backupReminderTooltipStorage.setOneMoreNewReceipt();
 
@@ -887,11 +886,13 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            if (presenter.isMatchReceiptNameToCategory()) {
-                nameBox.setText(categoriesAdapter.getItem(position).getName());
-            }
-            if (presenter.isMatchReceiptCommentToCategory()) {
-                commentBox.setText(categoriesAdapter.getItem(position).getName());
+            if (isNewReceipt()) {
+                if (presenter.isMatchReceiptNameToCategory()) {
+                    nameBox.setText(categoriesAdapter.getItem(position).getName());
+                }
+                if (presenter.isMatchReceiptCommentToCategory()) {
+                    commentBox.setText(categoriesAdapter.getItem(position).getName());
+                }
             }
         }
 
