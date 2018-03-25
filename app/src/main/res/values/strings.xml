@@ -53,6 +53,7 @@
     <string name="update">Update</string>
     <string name="yes">Yes</string>
     <string name="yes_as_pdf">Yes - As PDF</string>
+    <string name="share">Share</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>

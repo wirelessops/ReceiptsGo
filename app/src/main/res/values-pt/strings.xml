@@ -50,6 +50,7 @@
     <string name="yes">Sim</string>
     <string name="yes_as_pdf">Sim - Como PDF</string>
     <string name="reorder">Reordenar</string>
+    <string name="share">Enviar</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>

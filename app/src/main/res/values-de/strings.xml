@@ -50,6 +50,7 @@
     <string name="yes">Ja</string>
     <string name="yes_as_pdf">Ja - Als PDF</string>
     <string name="reorder">Nachbestellen</string>
+    <string name="share">Senden</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart-Plus-Receipts</string>

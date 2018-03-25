@@ -50,6 +50,7 @@
     <string name="yes">Да</string>
     <string name="yes_as_pdf">Да - в виде PDF</string>
     <string name="reorder">Изменить порядок</string>
+    <string name="share">Поделиться</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Смарт Чеки Плюс</string>
