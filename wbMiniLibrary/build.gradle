@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 dependencies {
     api "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
@@ -7,6 +8,7 @@ dependencies {
     api "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
     api "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
 
@@ -42,5 +44,7 @@ android {
         release {
             setRoot('build-types/release')
         }
+
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
