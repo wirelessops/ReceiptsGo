@@ -78,7 +78,7 @@ public class ImmutableCategoryImplTest {
         mImmutableCategory.writeToParcel(parcel, 0);
         parcel.setDataPosition(0);
 
-        final ImmutableCategoryImpl category = ImmutableCategoryImpl.CREATOR.createFromParcel(parcel);
+        final ImmutableCategoryImpl category = (ImmutableCategoryImpl) ImmutableCategoryImpl.CREATOR.createFromParcel(parcel);
         assertNotNull(category);
         assertEquals(category, mImmutableCategory);
     }
