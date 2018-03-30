@@ -395,377 +395,406 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     // //////////////////////////////////////////////////////////////////////////////////////////////////
     // Merge
     // //////////////////////////////////////////////////////////////////////////////////////////////////
-    public final synchronized boolean merge(String dbPath, String packageName, boolean overwrite) {
+    public final synchronized boolean merge(String importBackupDatabasePath, String packageName, boolean overwrite) {
         synchronized (mDatabaseLock) {
-            SQLiteDatabase importDB = null, currDB = null;
+            SQLiteDatabase importedBackupDatabase = null;
+            SQLiteDatabase currentDatabase = null;
             Cursor c = null, countCursor = null;
 
             try {
-                if (dbPath == null) {
+                if (importBackupDatabasePath == null) {
                     Logger.debug(this, "Null database file");
                     return false;
                 }
-                currDB = this.getWritableDatabase();
-                importDB = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READWRITE);
+                currentDatabase = this.getWritableDatabase();
+                importedBackupDatabase = SQLiteDatabase.openDatabase(importBackupDatabasePath, null, SQLiteDatabase.OPEN_READWRITE);
 
                 // updating backup db to current version
-                final int oldVersion = importDB.getVersion();
+                final int oldVersion = importedBackupDatabase.getVersion();
                 if (oldVersion < DATABASE_VERSION) {
-                    importDB.beginTransaction();
+                    importedBackupDatabase.beginTransaction();
                     try {
-                        onUpgrade(importDB, oldVersion, DATABASE_VERSION);
+                        onUpgrade(importedBackupDatabase, oldVersion, DATABASE_VERSION);
 
-                        importDB.setVersion(DATABASE_VERSION);
-                        importDB.setTransactionSuccessful();
+                        importedBackupDatabase.setVersion(DATABASE_VERSION);
+                        importedBackupDatabase.setTransactionSuccessful();
                     } finally {
-                        importDB.endTransaction();
+                        importedBackupDatabase.endTransaction();
                     }
                 }
 
-                // attaching backup db to allow queries which can use tables from both current and backup tables together
-                currDB.execSQL("ATTACH ? AS backup_db", new String[]{dbPath});
+                // attaching backup db to allow queries which can use tables from both current (ie local) and backup tables together
+                currentDatabase.execSQL("ATTACH ? AS backup_db", new String[]{importBackupDatabasePath});
 
+                if (overwrite) {
+                    Logger.info(this, "Over-writing database entries to clear out existing reports/receipts");
 
-                // Merge Trips
-                try {
-                    Logger.debug(this, "Merging Trips");
+                    Logger.debug(this, "Overwriting Categories");
+                    currentDatabase.execSQL("DROP TABLE " + CategoriesTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + CategoriesTable.TABLE_NAME + " AS SELECT * FROM backup_db." + CategoriesTable.TABLE_NAME);
 
-                    c = importDB.query(TripsTable.TABLE_NAME, null, null, null, null, null, null);
-                    if (c != null && c.moveToFirst()) {
-                        final int nameIndex = c.getColumnIndex(TripsTable.COLUMN_NAME);
-                        final int fromIndex = c.getColumnIndex(TripsTable.COLUMN_FROM);
-                        final int fromTimeZoneIndex = c.getColumnIndex(TripsTable.COLUMN_FROM_TIMEZONE);
-                        final int toIndex = c.getColumnIndex(TripsTable.COLUMN_TO);
-                        final int toTimeZoneIndex = c.getColumnIndex(TripsTable.COLUMN_TO_TIMEZONE);
-                        final int commentIndex = c.getColumnIndex(TripsTable.COLUMN_COMMENT);
-                        final int filtersIndex = c.getColumnIndex(TripsTable.COLUMN_FILTERS);
-                        final int costCenterIndex = c.getColumnIndex(TripsTable.COLUMN_COST_CENTER);
-                        final int processingStatusIndex = c.getColumnIndex(TripsTable.COLUMN_PROCESSING_STATUS);
-                        final int defaultCurrencyIndex = c.getColumnIndex(TripsTable.COLUMN_DEFAULT_CURRENCY);
-                        final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
-                        do {
-                            final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
-                            if (!driveMarkedForDeletion) {
-                                String name = getString(c, nameIndex, "");
-                                if (name.contains("wb.receipts")) { // Backwards compatibility stuff
-                                    if (packageName.equalsIgnoreCase("wb.receipts")) {
-                                        name = name.replace("wb.receiptspro/", "wb.receipts/");
-                                    } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
-                                        name = name.replace("wb.receipts/", "wb.receiptspro/");
+                    Logger.debug(this, "Overwriting CSV Columns");
+                    currentDatabase.execSQL("DROP TABLE " + CSVTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + CSVTable.TABLE_NAME + " AS SELECT * FROM backup_db." + CSVTable.TABLE_NAME);
+
+                    Logger.debug(this, "Overwriting PDF Columns");
+                    currentDatabase.execSQL("DROP TABLE " + PDFTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + PDFTable.TABLE_NAME + " AS SELECT * FROM backup_db." + PDFTable.TABLE_NAME);
+
+                    Logger.debug(this, "Overwriting Payment Methods");
+                    currentDatabase.execSQL("DROP TABLE " + PaymentMethodsTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + PaymentMethodsTable.TABLE_NAME + " AS SELECT * FROM backup_db." + PaymentMethodsTable.TABLE_NAME);
+
+                    Logger.debug(this, "Overwriting Trips");
+                    currentDatabase.execSQL("DROP TABLE " + TripsTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + TripsTable.TABLE_NAME + " AS SELECT * FROM backup_db." + TripsTable.TABLE_NAME);
+
+                    Logger.debug(this, "Overwriting Distances");
+                    currentDatabase.execSQL("DROP TABLE " + DistanceTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + DistanceTable.TABLE_NAME + " AS SELECT * FROM backup_db." + DistanceTable.TABLE_NAME);
+
+                    Logger.debug(this, "Overwriting Receipts");
+                    currentDatabase.execSQL("DROP TABLE " + ReceiptsTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + ReceiptsTable.TABLE_NAME + " AS SELECT * FROM backup_db." + ReceiptsTable.TABLE_NAME);
+                } else {
+                    Logger.info(this, "Importing database entries via a merge process");
+                    // Merge Trips
+                    try {
+                        Logger.debug(this, "Merging Trips");
+
+                        c = importedBackupDatabase.query(TripsTable.TABLE_NAME, null, null, null, null, null, null);
+                        if (c != null && c.moveToFirst()) {
+                            final int nameIndex = c.getColumnIndex(TripsTable.COLUMN_NAME);
+                            final int fromIndex = c.getColumnIndex(TripsTable.COLUMN_FROM);
+                            final int fromTimeZoneIndex = c.getColumnIndex(TripsTable.COLUMN_FROM_TIMEZONE);
+                            final int toIndex = c.getColumnIndex(TripsTable.COLUMN_TO);
+                            final int toTimeZoneIndex = c.getColumnIndex(TripsTable.COLUMN_TO_TIMEZONE);
+                            final int commentIndex = c.getColumnIndex(TripsTable.COLUMN_COMMENT);
+                            final int filtersIndex = c.getColumnIndex(TripsTable.COLUMN_FILTERS);
+                            final int costCenterIndex = c.getColumnIndex(TripsTable.COLUMN_COST_CENTER);
+                            final int processingStatusIndex = c.getColumnIndex(TripsTable.COLUMN_PROCESSING_STATUS);
+                            final int defaultCurrencyIndex = c.getColumnIndex(TripsTable.COLUMN_DEFAULT_CURRENCY);
+                            final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
+                            do {
+                                final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
+                                if (!driveMarkedForDeletion) {
+                                    String name = getString(c, nameIndex, "");
+                                    if (name.contains("wb.receipts")) { // Backwards compatibility stuff
+                                        if (packageName.equalsIgnoreCase("wb.receipts")) {
+                                            name = name.replace("wb.receiptspro/", "wb.receipts/");
+                                        } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
+                                            name = name.replace("wb.receipts/", "wb.receiptspro/");
+                                        }
+                                        File f = new File(name);
+                                        name = f.getName();
                                     }
-                                    File f = new File(name);
-                                    name = f.getName();
-                                }
-                                final long from = getLong(c, fromIndex, 0L);
-                                final long to = getLong(c, toIndex, 0L);
-                                final String comment = getString(c, commentIndex, "");
-                                final String filters = getString(c, filtersIndex, "");
-                                final String costCenter = getString(c, costCenterIndex, "");
-                                final String processingStatus = getString(c, processingStatusIndex, "");
-                                final String defaultCurrency = getString(c, defaultCurrencyIndex, mPreferences.get(UserPreference.General.DefaultCurrency));
-                                ContentValues values = new ContentValues(10);
-                                values.put(TripsTable.COLUMN_NAME, name);
-                                values.put(TripsTable.COLUMN_FROM, from);
-                                values.put(TripsTable.COLUMN_TO, to);
-                                values.put(TripsTable.COLUMN_COMMENT, comment);
-                                values.put(TripsTable.COLUMN_FILTERS, filters);
-                                values.put(TripsTable.COLUMN_COST_CENTER, costCenter);
-                                values.put(TripsTable.COLUMN_PROCESSING_STATUS, processingStatus);
-                                values.put(TripsTable.COLUMN_DEFAULT_CURRENCY, defaultCurrency);
-                                values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
-                                if (fromTimeZoneIndex > 0) {
-                                    final String fromTimeZone = c.getString(fromTimeZoneIndex);
-                                    values.put(TripsTable.COLUMN_FROM_TIMEZONE, fromTimeZone);
-                                }
-                                if (toTimeZoneIndex > 0) {
-                                    final String toTimeZome = c.getString(toTimeZoneIndex);
-                                    values.put(TripsTable.COLUMN_TO_TIMEZONE, toTimeZome);
-                                }
-                                if (overwrite) {
-                                    currDB.insertWithOnConflict(TripsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                } else {
-                                    currDB.insertWithOnConflict(TripsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                                    final long from = getLong(c, fromIndex, 0L);
+                                    final long to = getLong(c, toIndex, 0L);
+                                    final String comment = getString(c, commentIndex, "");
+                                    final String filters = getString(c, filtersIndex, "");
+                                    final String costCenter = getString(c, costCenterIndex, "");
+                                    final String processingStatus = getString(c, processingStatusIndex, "");
+                                    final String defaultCurrency = getString(c, defaultCurrencyIndex, mPreferences.get(UserPreference.General.DefaultCurrency));
+                                    ContentValues values = new ContentValues(10);
+                                    values.put(TripsTable.COLUMN_NAME, name);
+                                    values.put(TripsTable.COLUMN_FROM, from);
+                                    values.put(TripsTable.COLUMN_TO, to);
+                                    values.put(TripsTable.COLUMN_COMMENT, comment);
+                                    values.put(TripsTable.COLUMN_FILTERS, filters);
+                                    values.put(TripsTable.COLUMN_COST_CENTER, costCenter);
+                                    values.put(TripsTable.COLUMN_PROCESSING_STATUS, processingStatus);
+                                    values.put(TripsTable.COLUMN_DEFAULT_CURRENCY, defaultCurrency);
+                                    values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
+                                    if (fromTimeZoneIndex > 0) {
+                                        final String fromTimeZone = c.getString(fromTimeZoneIndex);
+                                        values.put(TripsTable.COLUMN_FROM_TIMEZONE, fromTimeZone);
+                                    }
+                                    if (toTimeZoneIndex > 0) {
+                                        final String toTimeZome = c.getString(toTimeZoneIndex);
+                                        values.put(TripsTable.COLUMN_TO_TIMEZONE, toTimeZome);
+                                    }
+                                    if (overwrite) {
+                                        currentDatabase.insertWithOnConflict(TripsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                    } else {
+                                        currentDatabase.insertWithOnConflict(TripsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                                    }
                                 }
                             }
+                            while (c.moveToNext());
                         }
-                        while (c.moveToNext());
+                    } catch (SQLiteException e) {
+                        Logger.error(this, "Caught sql exception during import at [a1]", e); // Occurs if Table does not exist
+                    } finally {
+                        if (c != null && !c.isClosed()) {
+                            c.close();
+                            c = null;
+                        }
                     }
-                } catch (SQLiteException e) {
-                    Logger.error(this, "Caught sql exception during import at [a1]", e); // Occurs if Table does not exist
-                } finally {
-                    if (c != null && !c.isClosed()) {
-                        c.close();
-                        c = null;
-                    }
-                }
 
-                // Merge Categories
-                Logger.debug(this, "Merging Categories");
-
-                // getting unique categories from old db which are not present in the new db and inserting
-                final String mergeCategories = "INSERT INTO " + CategoriesTable.TABLE_NAME +
-                        "( " + CategoriesTable.COLUMN_NAME + ", " + CategoriesTable.COLUMN_CODE + ", " + CategoriesTable.COLUMN_BREAKDOWN + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
-                        " SELECT backup_categories." + CategoriesTable.COLUMN_NAME + ", backup_categories." + CategoriesTable.COLUMN_CODE + ", backup_categories." + CategoriesTable.COLUMN_BREAKDOWN + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Long.MAX_VALUE + "\"" +
-                        " FROM backup_db." + CategoriesTable.TABLE_NAME + " backup_categories " +
-                        " LEFT JOIN " + CategoriesTable.TABLE_NAME + " current_categories " +
-                        " ON backup_categories." + CategoriesTable.COLUMN_NAME + " = current_categories." + CategoriesTable.COLUMN_NAME +
-                        " WHERE current_categories." + CategoriesTable.COLUMN_NAME + " IS NULL" +
-                        " AND backup_categories." + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = 0;";
-                Logger.debug(this, mergeCategories);
-                currDB.execSQL(mergeCategories);
-
-                // Merge CSV
-                // Replacing current table with imported one
-                Logger.debug(this, "Merging CSV");
-
-                currDB.execSQL("DROP TABLE " + CSVTable.TABLE_NAME);
-                currDB.execSQL("CREATE TABLE " + CSVTable.TABLE_NAME + " AS SELECT * FROM backup_db." + CSVTable.TABLE_NAME);
+                    // Merge Categories
+                    Logger.debug(this, "Merging Categories");
+                    // getting unique categories from old db which are not present in the new db and inserting
+                    final String mergeCategories = "INSERT INTO " + CategoriesTable.TABLE_NAME +
+                            "( " + CategoriesTable.COLUMN_NAME + ", " + CategoriesTable.COLUMN_CODE + ", " + CategoriesTable.COLUMN_BREAKDOWN + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
+                            " SELECT backup_categories." + CategoriesTable.COLUMN_NAME + ", backup_categories." + CategoriesTable.COLUMN_CODE + ", backup_categories." + CategoriesTable.COLUMN_BREAKDOWN + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Long.MAX_VALUE + "\"" +
+                            " FROM backup_db." + CategoriesTable.TABLE_NAME + " backup_categories " +
+                            " LEFT JOIN " + CategoriesTable.TABLE_NAME + " current_categories " +
+                            " ON backup_categories." + CategoriesTable.COLUMN_NAME + " = current_categories." + CategoriesTable.COLUMN_NAME +
+                            " WHERE current_categories." + CategoriesTable.COLUMN_NAME + " IS NULL" +
+                            " AND backup_categories." + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = 0;";
+                    Logger.debug(this, mergeCategories);
+                    currentDatabase.execSQL(mergeCategories);
 
 
-                // Merge PDF
-                // Replacing current table with imported one
-                Logger.debug(this, "Merging PDF");
+                    // Note: we always overwrite the categories
+                    // Merge CSV
+                    // Replacing current table with imported one
+                    Logger.debug(this, "Overwriting CSV Columns");
+                    currentDatabase.execSQL("DROP TABLE " + CSVTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + CSVTable.TABLE_NAME + " AS SELECT * FROM backup_db." + CSVTable.TABLE_NAME);
 
-                currDB.execSQL("DROP TABLE " + PDFTable.TABLE_NAME);
-                currDB.execSQL("CREATE TABLE " + PDFTable.TABLE_NAME + " AS SELECT * FROM backup_db." + PDFTable.TABLE_NAME);
+                    // Merge PDF
+                    // Replacing current table with imported oneLogger.debug(this, "Overwriting PDF Columns");
+                    Logger.debug(this, "Overwriting PDF Columns");
+                    currentDatabase.execSQL("DROP TABLE " + PDFTable.TABLE_NAME);
+                    currentDatabase.execSQL("CREATE TABLE " + PDFTable.TABLE_NAME + " AS SELECT * FROM backup_db." + PDFTable.TABLE_NAME);
 
+                    // Merge Payment methods
+                    Logger.debug(this, "Merging Payment Methods");
+                    final String mergePaymentMethods = "INSERT INTO " + PaymentMethodsTable.TABLE_NAME +
+                            "( " + PaymentMethodsTable.COLUMN_METHOD + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
+                            " SELECT backup_methods." + PaymentMethodsTable.COLUMN_METHOD + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Long.MAX_VALUE + "\"" +
+                            " FROM backup_db." + PaymentMethodsTable.TABLE_NAME + " backup_methods " +
+                            " LEFT JOIN " + PaymentMethodsTable.TABLE_NAME + " current_methods " +
+                            " ON backup_methods." + PaymentMethodsTable.COLUMN_METHOD + " = current_methods." + PaymentMethodsTable.COLUMN_METHOD +
+                            " WHERE current_methods." + PaymentMethodsTable.COLUMN_METHOD + " IS NULL" +
+                            " AND backup_methods." + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = 0;";
+                    Logger.debug(this, mergePaymentMethods);
+                    currentDatabase.execSQL(mergePaymentMethods);
 
-                // Merge Payment methods
-                Logger.debug(this, "Merging Payment Methods");
-
-                final String mergePaymentMethods = "INSERT INTO " + PaymentMethodsTable.TABLE_NAME +
-                        "( " + PaymentMethodsTable.COLUMN_METHOD + ", " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + ", " + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + ")" +
-                        " SELECT backup_methods." + PaymentMethodsTable.COLUMN_METHOD + ", \"" + System.currentTimeMillis() + "\"" + ", \"" + Long.MAX_VALUE + "\"" +
-                        " FROM backup_db." + PaymentMethodsTable.TABLE_NAME + " backup_methods " +
-                        " LEFT JOIN " + PaymentMethodsTable.TABLE_NAME + " current_methods " +
-                        " ON backup_methods." + PaymentMethodsTable.COLUMN_METHOD + " = current_methods." + PaymentMethodsTable.COLUMN_METHOD +
-                        " WHERE current_methods." + PaymentMethodsTable.COLUMN_METHOD + " IS NULL" +
-                        " AND backup_methods." + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = 0;";
-                Logger.debug(this, mergePaymentMethods);
-                currDB.execSQL(mergePaymentMethods);
-
-
-                // Merge Distances
-                Logger.debug(this, "Merging Distance");
-                try {
-                    c = importDB.query(DistanceTable.TABLE_NAME, null, null, null, null, null, null);
-                    if (c != null && c.moveToFirst()) {
-                        final String distanceCountQuery = "SELECT COUNT(*), " + DistanceTable.COLUMN_ID + " FROM " + DistanceTable.TABLE_NAME + " WHERE " + DistanceTable.COLUMN_PARENT + "=? AND " + DistanceTable.COLUMN_LOCATION + "=? AND " + DistanceTable.COLUMN_DATE + "=?";
-                        final int parentTripIndex = c.getColumnIndex(DistanceTable.COLUMN_PARENT);
-                        final int locationIndex = c.getColumnIndex(DistanceTable.COLUMN_LOCATION);
-                        final int distanceIndex = c.getColumnIndex(DistanceTable.COLUMN_DISTANCE);
-                        final int rateIndex = c.getColumnIndex(DistanceTable.COLUMN_RATE);
-                        final int currencyIndex = c.getColumnIndex(DistanceTable.COLUMN_RATE_CURRENCY);
-                        final int dateIndex = c.getColumnIndex(DistanceTable.COLUMN_DATE);
-                        final int timezoneIndex = c.getColumnIndex(DistanceTable.COLUMN_TIMEZONE);
-                        final int commentIndex = c.getColumnIndex(DistanceTable.COLUMN_COMMENT);
-                        final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
-                        do {
-                            final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
-                            if (!driveMarkedForDeletion) {
-                                final ContentValues values = new ContentValues(8);
-                                final String parentTripPath = getString(c, parentTripIndex, "");
-                                final String location = getString(c, locationIndex, "");
-                                final BigDecimal distance = getDecimal(c, distanceIndex);
-                                final BigDecimal rate = getDecimal(c, rateIndex);
-                                final String currency = getString(c, currencyIndex, mPreferences.get(UserPreference.General.DefaultCurrency));
-                                final long date = getLong(c, dateIndex, 0L);
-                                final String timezone = getString(c, timezoneIndex, TimeZone.getDefault().getID());
-                                final String comment = getString(c, commentIndex, "");
-                                values.put(DistanceTable.COLUMN_PARENT, parentTripPath);
-                                values.put(DistanceTable.COLUMN_LOCATION, location);
-                                values.put(DistanceTable.COLUMN_DISTANCE, distance.doubleValue());
-                                values.put(DistanceTable.COLUMN_RATE, rate.doubleValue());
-                                values.put(DistanceTable.COLUMN_RATE_CURRENCY, currency);
-                                values.put(DistanceTable.COLUMN_DATE, date);
-                                values.put(DistanceTable.COLUMN_TIMEZONE, timezone);
-                                values.put(DistanceTable.COLUMN_COMMENT, comment);
-                                values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
-                                try {
-                                    countCursor = currDB.rawQuery(distanceCountQuery, new String[]{parentTripPath, location, Long.toString(date)});
-                                    if (countCursor != null && countCursor.moveToFirst()) {
-                                        int count = countCursor.getInt(0);
-                                        int updateID = countCursor.getInt(1);
-                                        if (count > 0 && overwrite) { // Update
-                                            currDB.update(DistanceTable.TABLE_NAME, values, DistanceTable.COLUMN_ID + " = ?", new String[]{Integer.toString(updateID)});
-                                        } else { // insert
-                                            if (overwrite) {
-                                                currDB.insertWithOnConflict(DistanceTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                            } else if (count == 0) {
-                                                // If we're not overwriting anything, let's check that there are no entries here
-                                                currDB.insertWithOnConflict(DistanceTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                    // Merge Distances
+                    Logger.debug(this, "Merging Distance");
+                    try {
+                        c = importedBackupDatabase.query(DistanceTable.TABLE_NAME, null, null, null, null, null, null);
+                        if (c != null && c.moveToFirst()) {
+                            final String distanceCountQuery = "SELECT COUNT(*), " + DistanceTable.COLUMN_ID + " FROM " + DistanceTable.TABLE_NAME + " WHERE " + DistanceTable.COLUMN_PARENT + "=? AND " + DistanceTable.COLUMN_LOCATION + "=? AND " + DistanceTable.COLUMN_DATE + "=?";
+                            final int parentTripIndex = c.getColumnIndex(DistanceTable.COLUMN_PARENT);
+                            final int locationIndex = c.getColumnIndex(DistanceTable.COLUMN_LOCATION);
+                            final int distanceIndex = c.getColumnIndex(DistanceTable.COLUMN_DISTANCE);
+                            final int rateIndex = c.getColumnIndex(DistanceTable.COLUMN_RATE);
+                            final int currencyIndex = c.getColumnIndex(DistanceTable.COLUMN_RATE_CURRENCY);
+                            final int dateIndex = c.getColumnIndex(DistanceTable.COLUMN_DATE);
+                            final int timezoneIndex = c.getColumnIndex(DistanceTable.COLUMN_TIMEZONE);
+                            final int commentIndex = c.getColumnIndex(DistanceTable.COLUMN_COMMENT);
+                            final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
+                            do {
+                                final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
+                                if (!driveMarkedForDeletion) {
+                                    final ContentValues values = new ContentValues(8);
+                                    final String parentTripPath = getString(c, parentTripIndex, "");
+                                    final String location = getString(c, locationIndex, "");
+                                    final BigDecimal distance = getDecimal(c, distanceIndex);
+                                    final BigDecimal rate = getDecimal(c, rateIndex);
+                                    final String currency = getString(c, currencyIndex, mPreferences.get(UserPreference.General.DefaultCurrency));
+                                    final long date = getLong(c, dateIndex, 0L);
+                                    final String timezone = getString(c, timezoneIndex, TimeZone.getDefault().getID());
+                                    final String comment = getString(c, commentIndex, "");
+                                    values.put(DistanceTable.COLUMN_PARENT, parentTripPath);
+                                    values.put(DistanceTable.COLUMN_LOCATION, location);
+                                    values.put(DistanceTable.COLUMN_DISTANCE, distance.doubleValue());
+                                    values.put(DistanceTable.COLUMN_RATE, rate.doubleValue());
+                                    values.put(DistanceTable.COLUMN_RATE_CURRENCY, currency);
+                                    values.put(DistanceTable.COLUMN_DATE, date);
+                                    values.put(DistanceTable.COLUMN_TIMEZONE, timezone);
+                                    values.put(DistanceTable.COLUMN_COMMENT, comment);
+                                    values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
+                                    try {
+                                        countCursor = currentDatabase.rawQuery(distanceCountQuery, new String[]{parentTripPath, location, Long.toString(date)});
+                                        if (countCursor != null && countCursor.moveToFirst()) {
+                                            int count = countCursor.getInt(0);
+                                            int updateID = countCursor.getInt(1);
+                                            if (count > 0 && overwrite) { // Update
+                                                currentDatabase.update(DistanceTable.TABLE_NAME, values, DistanceTable.COLUMN_ID + " = ?", new String[]{Integer.toString(updateID)});
+                                            } else { // insert
+                                                if (overwrite) {
+                                                    currentDatabase.insertWithOnConflict(DistanceTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                                } else if (count == 0) {
+                                                    // If we're not overwriting anything, let's check that there are no entries here
+                                                    currentDatabase.insertWithOnConflict(DistanceTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                                                }
                                             }
                                         }
-                                    }
-                                } finally {
-                                    if (countCursor != null && !countCursor.isClosed()) {
-                                        countCursor.close();
-                                        countCursor = null;
+                                    } finally {
+                                        if (countCursor != null && !countCursor.isClosed()) {
+                                            countCursor.close();
+                                            countCursor = null;
+                                        }
                                     }
                                 }
                             }
+                            while (c.moveToNext());
                         }
-                        while (c.moveToNext());
+                    } catch (SQLiteException e) {
+                        Logger.error(this, "Caught sql exception during import at [a6]", e); // Occurs if Table does not exist
+                    } finally {
+                        if (c != null && !c.isClosed()) {
+                            c.close();
+                            c = null;
+                        }
                     }
-                } catch (SQLiteException e) {
-                    Logger.error(this, "Caught sql exception during import at [a6]", e); // Occurs if Table does not exist
-                } finally {
-                    if (c != null && !c.isClosed()) {
-                        c.close();
-                        c = null;
-                    }
-                }
 
-                // Merge Receipts
-                // Note: Receipts table must be the last merged one
-                Logger.debug(this, "Merging Receipts");
+                    // replacing old category id's with new ones in the backup receipts table
+                    Logger.debug(this, "Merging categories for non-overwrite");
+                    final String updateOldCategoriesIds = "UPDATE backup_db." + ReceiptsTable.TABLE_NAME +
+                            " SET " + ReceiptsTable.COLUMN_CATEGORY_ID +
+                            " = ( SELECT curr_c." + CategoriesTable.COLUMN_ID +
+                            " FROM " + CategoriesTable.TABLE_NAME + " curr_c, backup_db." + CategoriesTable.TABLE_NAME + " backup_c " +
+                            " WHERE backup_db." + ReceiptsTable.TABLE_NAME + "." + ReceiptsTable.COLUMN_CATEGORY_ID + " = backup_c." + CategoriesTable.COLUMN_ID +
+                            " AND backup_c." + CategoriesTable.COLUMN_NAME + " = curr_c." + CategoriesTable.COLUMN_NAME +
+                            " AND backup_c." + CategoriesTable.COLUMN_CODE + " = curr_c." + CategoriesTable.COLUMN_CODE +
+                            " LIMIT 1);";
+                    Logger.debug(this, updateOldCategoriesIds);
+                    currentDatabase.execSQL(updateOldCategoriesIds);
 
-                // replacing old category id's with new ones in the backup receipts table
-                final String updateOldCategoriesIds = "UPDATE backup_db." + ReceiptsTable.TABLE_NAME +
-                        " SET " + ReceiptsTable.COLUMN_CATEGORY_ID +
-                        " = ( SELECT curr_c." + CategoriesTable.COLUMN_ID +
-                        " FROM " + CategoriesTable.TABLE_NAME + " curr_c, backup_db." + CategoriesTable.TABLE_NAME + " backup_c " +
-                        " WHERE backup_db." + ReceiptsTable.TABLE_NAME + "." + ReceiptsTable.COLUMN_CATEGORY_ID + " = backup_c." + CategoriesTable.COLUMN_ID +
-                        " AND backup_c." + CategoriesTable.COLUMN_NAME + " = curr_c." + CategoriesTable.COLUMN_NAME +
-                        " AND backup_c." + CategoriesTable.COLUMN_CODE + " = curr_c." + CategoriesTable.COLUMN_CODE +
-                        " LIMIT 1);";
-                Logger.debug(this, updateOldCategoriesIds);
-                currDB.execSQL(updateOldCategoriesIds);
+                    // replacing old payment method id's with new ones in the backup receipts table
+                    Logger.debug(this, "Merging payment methods for non-overwrite");
+                    final String updateOldMethodsIds = "UPDATE backup_db." + ReceiptsTable.TABLE_NAME +
+                            " SET " + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID +
+                            " = ( SELECT curr_pm." + PaymentMethodsTable.COLUMN_ID +
+                            " FROM " + PaymentMethodsTable.TABLE_NAME + " curr_pm, backup_db." + PaymentMethodsTable.TABLE_NAME + " backup_pm " +
+                            " WHERE backup_db." + ReceiptsTable.TABLE_NAME + "." + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID + " = backup_pm." + PaymentMethodsTable.COLUMN_ID +
+                            " AND backup_pm." + PaymentMethodsTable.COLUMN_METHOD + " = curr_pm." + PaymentMethodsTable.COLUMN_METHOD +
+                            " LIMIT 1);";
+                    Logger.debug(this, updateOldMethodsIds);
+                    currentDatabase.execSQL(updateOldMethodsIds);
 
-                // replacing old payment method id's with new ones in the backup receipts table
-                final String updateOldMethodsIds = "UPDATE backup_db." + ReceiptsTable.TABLE_NAME +
-                        " SET " + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID +
-                        " = ( SELECT curr_pm." + PaymentMethodsTable.COLUMN_ID +
-                        " FROM " + PaymentMethodsTable.TABLE_NAME + " curr_pm, backup_db." + PaymentMethodsTable.TABLE_NAME + " backup_pm " +
-                        " WHERE backup_db." + ReceiptsTable.TABLE_NAME + "." + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID + " = backup_pm." + PaymentMethodsTable.COLUMN_ID +
-                        " AND backup_pm." + PaymentMethodsTable.COLUMN_METHOD + " = curr_pm." + PaymentMethodsTable.COLUMN_METHOD +
-                        " LIMIT 1);";
-                Logger.debug(this, updateOldMethodsIds);
-                currDB.execSQL(updateOldMethodsIds);
+                    // Merge Receipts
+                    // Note: Receipts table must be the last merged one
+                    Logger.debug(this, "Merging Receipts");
 
-
-                try {
-                    final String queryCount = "SELECT COUNT(*), " + ReceiptsTable.COLUMN_ID + " FROM " + ReceiptsTable.TABLE_NAME + " WHERE " + ReceiptsTable.COLUMN_PATH + "=? AND " + ReceiptsTable.COLUMN_NAME + "=? AND " + ReceiptsTable.COLUMN_DATE + "=?";
-                    c = importDB.query(ReceiptsTable.TABLE_NAME, null, null, null, null, null, null);
-                    if (c != null && c.moveToFirst()) {
-                        final int pathIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PATH);
-                        final int nameIndex = c.getColumnIndex(ReceiptsTable.COLUMN_NAME);
-                        final int parentIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PARENT);
-                        final int categoryIdIndex = c.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY_ID);
-                        final int priceIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PRICE);
-                        final int dateIndex = c.getColumnIndex(ReceiptsTable.COLUMN_DATE);
-                        final int commentIndex = c.getColumnIndex(ReceiptsTable.COLUMN_COMMENT);
-                        final int reimbursableIndex = c.getColumnIndex(ReceiptsTable.COLUMN_REIMBURSABLE);
-                        final int currencyIndex = c.getColumnIndex(ReceiptsTable.COLUMN_ISO4217);
-                        final int fullpageIndex = c.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE);
-                        final int extra_edittext_1_Index = c.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1);
-                        final int extra_edittext_2_Index = c.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2);
-                        final int extra_edittext_3_Index = c.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3);
-                        final int taxIndex = c.getColumnIndex(ReceiptsTable.COLUMN_TAX);
-                        final int timeZoneIndex = c.getColumnIndex(ReceiptsTable.COLUMN_TIMEZONE);
-                        final int paymentMethodIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID);
-                        final int processingStatusIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PROCESSING_STATUS);
-                        final int exchangeRateIndex = c.getColumnIndex(ReceiptsTable.COLUMN_EXCHANGE_RATE);
-                        final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
-                        final int customOrderidIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID);
-                        do {
-                            final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
-                            if (!driveMarkedForDeletion) {
-                                final String oldPath = getString(c, pathIndex, "");
-                                String newPath = oldPath != null ? oldPath : "";
-                                if (newPath.contains("wb.receipts")) { // Backwards compatibility stuff
-                                    if (packageName.equalsIgnoreCase("wb.receipts")) {
-                                        newPath = oldPath.replace("wb.receiptspro/", "wb.receipts/");
-                                    } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
-                                        newPath = oldPath.replace("wb.receipts/", "wb.receiptspro/");
-                                    }
-                                    File f = new File(newPath);
-                                    newPath = f.getName();
-                                }
-                                final String name = getString(c, nameIndex, "");
-                                final String oldParent = getString(c, parentIndex, "");
-                                String newParent = oldParent != null ? oldParent : "";
-                                if (newParent.contains("wb.receipts")) { // Backwards compatibility stuff
-                                    if (packageName.equalsIgnoreCase("wb.receipts")) {
-                                        newParent = oldParent.replace("wb.receiptspro/", "wb.receipts/");
-                                    } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
-                                        newParent = oldParent.replace("wb.receipts/", "wb.receiptspro/");
-                                    }
-                                    File f = new File(newParent);
-                                    newParent = f.getName();
-                                }
-                                final int categoryId = getInt(c, categoryIdIndex, 0);
-                                final BigDecimal price = getDecimal(c, priceIndex);
-                                final long date = getLong(c, dateIndex, 0L);
-                                final String comment = getString(c, commentIndex, "");
-                                final boolean reimbursable = getBoolean(c, reimbursableIndex, true);
-                                final String currency = getString(c, currencyIndex, mPreferences.get(UserPreference.General.DefaultCurrency));
-                                final boolean fullpage = getBoolean(c, fullpageIndex, false);
-                                final String extra_edittext_1 = getString(c, extra_edittext_1_Index, null);
-                                final String extra_edittext_2 = getString(c, extra_edittext_2_Index, null);
-                                final String extra_edittext_3 = getString(c, extra_edittext_3_Index, null);
-                                final BigDecimal tax = getDecimal(c, taxIndex);
-                                final int paymentMethod = getInt(c, paymentMethodIndex, 0);
-                                final String processingStatus = getString(c, processingStatusIndex, "");
-                                final BigDecimal exchangeRate = getDecimal(c, exchangeRateIndex);
-                                final long customOrderId = mOrderingPreferencesManager.isReceiptsTableOrdered() ?
-                                        getLong(c, customOrderidIndex, 0) : 0;
-                                try {
-                                    countCursor = currDB.rawQuery(queryCount, new String[]{newPath, name, Long.toString(date)});
-                                    if (countCursor != null && countCursor.moveToFirst()) {
-                                        int count = countCursor.getInt(0);
-                                        int updateID = countCursor.getInt(1);
-                                        final ContentValues values = new ContentValues(14);
-                                        values.put(ReceiptsTable.COLUMN_PATH, newPath);
-                                        values.put(ReceiptsTable.COLUMN_NAME, name);
-                                        values.put(ReceiptsTable.COLUMN_PARENT, newParent);
-                                        values.put(ReceiptsTable.COLUMN_CATEGORY_ID, categoryId);
-                                        values.put(ReceiptsTable.COLUMN_PRICE, price.doubleValue());
-                                        values.put(ReceiptsTable.COLUMN_DATE, date);
-                                        values.put(ReceiptsTable.COLUMN_COMMENT, comment);
-                                        values.put(ReceiptsTable.COLUMN_REIMBURSABLE, reimbursable);
-                                        values.put(ReceiptsTable.COLUMN_ISO4217, currency);
-                                        values.put(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE, fullpage);
-                                        values.put(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1, extra_edittext_1);
-                                        values.put(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2, extra_edittext_2);
-                                        values.put(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3, extra_edittext_3);
-                                        values.put(ReceiptsTable.COLUMN_TAX, tax.doubleValue());
-                                        values.put(ReceiptsTable.COLUMN_PROCESSING_STATUS, processingStatus);
-                                        values.put(ReceiptsTable.COLUMN_EXCHANGE_RATE, exchangeRate.doubleValue());
-                                        values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
-                                        values.put(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID, customOrderId);
-                                        if (timeZoneIndex > 0) {
-                                            final String timeZone = c.getString(timeZoneIndex);
-                                            values.put(ReceiptsTable.COLUMN_TIMEZONE, timeZone);
+                    try {
+                        final String queryCount = "SELECT COUNT(*), " + ReceiptsTable.COLUMN_ID + " FROM " + ReceiptsTable.TABLE_NAME + " WHERE " + ReceiptsTable.COLUMN_PATH + "=? AND " + ReceiptsTable.COLUMN_NAME + "=? AND " + ReceiptsTable.COLUMN_DATE + "=?";
+                        c = importedBackupDatabase.query(ReceiptsTable.TABLE_NAME, null, null, null, null, null, null);
+                        if (c != null && c.moveToFirst()) {
+                            final int pathIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PATH);
+                            final int nameIndex = c.getColumnIndex(ReceiptsTable.COLUMN_NAME);
+                            final int parentIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PARENT);
+                            final int categoryIdIndex = c.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY_ID);
+                            final int priceIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PRICE);
+                            final int dateIndex = c.getColumnIndex(ReceiptsTable.COLUMN_DATE);
+                            final int commentIndex = c.getColumnIndex(ReceiptsTable.COLUMN_COMMENT);
+                            final int reimbursableIndex = c.getColumnIndex(ReceiptsTable.COLUMN_REIMBURSABLE);
+                            final int currencyIndex = c.getColumnIndex(ReceiptsTable.COLUMN_ISO4217);
+                            final int fullpageIndex = c.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE);
+                            final int extra_edittext_1_Index = c.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1);
+                            final int extra_edittext_2_Index = c.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2);
+                            final int extra_edittext_3_Index = c.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3);
+                            final int taxIndex = c.getColumnIndex(ReceiptsTable.COLUMN_TAX);
+                            final int timeZoneIndex = c.getColumnIndex(ReceiptsTable.COLUMN_TIMEZONE);
+                            final int paymentMethodIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID);
+                            final int processingStatusIndex = c.getColumnIndex(ReceiptsTable.COLUMN_PROCESSING_STATUS);
+                            final int exchangeRateIndex = c.getColumnIndex(ReceiptsTable.COLUMN_EXCHANGE_RATE);
+                            final int driveMarkedForDeletionIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION);
+                            final int customOrderidIndex = c.getColumnIndex(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID);
+                            do {
+                                final boolean driveMarkedForDeletion = getBoolean(c, driveMarkedForDeletionIndex, false);
+                                if (!driveMarkedForDeletion) {
+                                    final String oldPath = getString(c, pathIndex, "");
+                                    String newPath = oldPath != null ? oldPath : "";
+                                    if (newPath.contains("wb.receipts")) { // Backwards compatibility stuff
+                                        if (packageName.equalsIgnoreCase("wb.receipts")) {
+                                            newPath = oldPath.replace("wb.receiptspro/", "wb.receipts/");
+                                        } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
+                                            newPath = oldPath.replace("wb.receipts/", "wb.receiptspro/");
                                         }
-                                        values.put(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID, paymentMethod);
-                                        if (count > 0 && overwrite) { // Update
-                                            currDB.update(ReceiptsTable.TABLE_NAME, values, ReceiptsTable.COLUMN_ID + " = ?", new String[]{Integer.toString(updateID)});
-                                        } else { // insert
-                                            if (overwrite) {
-                                                currDB.insertWithOnConflict(ReceiptsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                            } else if (count == 0) {
-                                                // If we're not overwriting anything, let's check that there are no entries here
-                                                currDB.insertWithOnConflict(ReceiptsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                                        File f = new File(newPath);
+                                        newPath = f.getName();
+                                    }
+                                    final String name = getString(c, nameIndex, "");
+                                    final String oldParent = getString(c, parentIndex, "");
+                                    String newParent = oldParent != null ? oldParent : "";
+                                    if (newParent.contains("wb.receipts")) { // Backwards compatibility stuff
+                                        if (packageName.equalsIgnoreCase("wb.receipts")) {
+                                            newParent = oldParent.replace("wb.receiptspro/", "wb.receipts/");
+                                        } else if (packageName.equalsIgnoreCase("wb.receiptspro")) {
+                                            newParent = oldParent.replace("wb.receipts/", "wb.receiptspro/");
+                                        }
+                                        File f = new File(newParent);
+                                        newParent = f.getName();
+                                    }
+                                    final int categoryId = getInt(c, categoryIdIndex, 0);
+                                    final BigDecimal price = getDecimal(c, priceIndex);
+                                    final long date = getLong(c, dateIndex, 0L);
+                                    final String comment = getString(c, commentIndex, "");
+                                    final boolean reimbursable = getBoolean(c, reimbursableIndex, true);
+                                    final String currency = getString(c, currencyIndex, mPreferences.get(UserPreference.General.DefaultCurrency));
+                                    final boolean fullpage = getBoolean(c, fullpageIndex, false);
+                                    final String extra_edittext_1 = getString(c, extra_edittext_1_Index, null);
+                                    final String extra_edittext_2 = getString(c, extra_edittext_2_Index, null);
+                                    final String extra_edittext_3 = getString(c, extra_edittext_3_Index, null);
+                                    final BigDecimal tax = getDecimal(c, taxIndex);
+                                    final int paymentMethod = getInt(c, paymentMethodIndex, 0);
+                                    final String processingStatus = getString(c, processingStatusIndex, "");
+                                    final BigDecimal exchangeRate = getDecimal(c, exchangeRateIndex);
+                                    final long customOrderId = mOrderingPreferencesManager.isReceiptsTableOrdered() ?
+                                            getLong(c, customOrderidIndex, 0) : 0;
+                                    try {
+                                        countCursor = currentDatabase.rawQuery(queryCount, new String[]{newPath, name, Long.toString(date)});
+                                        if (countCursor != null && countCursor.moveToFirst()) {
+                                            int count = countCursor.getInt(0);
+                                            int updateID = countCursor.getInt(1);
+                                            final ContentValues values = new ContentValues(14);
+                                            values.put(ReceiptsTable.COLUMN_PATH, newPath);
+                                            values.put(ReceiptsTable.COLUMN_NAME, name);
+                                            values.put(ReceiptsTable.COLUMN_PARENT, newParent);
+                                            values.put(ReceiptsTable.COLUMN_CATEGORY_ID, categoryId);
+                                            values.put(ReceiptsTable.COLUMN_PRICE, price.doubleValue());
+                                            values.put(ReceiptsTable.COLUMN_DATE, date);
+                                            values.put(ReceiptsTable.COLUMN_COMMENT, comment);
+                                            values.put(ReceiptsTable.COLUMN_REIMBURSABLE, reimbursable);
+                                            values.put(ReceiptsTable.COLUMN_ISO4217, currency);
+                                            values.put(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE, fullpage);
+                                            values.put(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1, extra_edittext_1);
+                                            values.put(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2, extra_edittext_2);
+                                            values.put(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3, extra_edittext_3);
+                                            values.put(ReceiptsTable.COLUMN_TAX, tax.doubleValue());
+                                            values.put(ReceiptsTable.COLUMN_PROCESSING_STATUS, processingStatus);
+                                            values.put(ReceiptsTable.COLUMN_EXCHANGE_RATE, exchangeRate.doubleValue());
+                                            values.put(AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME, System.currentTimeMillis());
+                                            values.put(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID, customOrderId);
+                                            if (timeZoneIndex > 0) {
+                                                final String timeZone = c.getString(timeZoneIndex);
+                                                values.put(ReceiptsTable.COLUMN_TIMEZONE, timeZone);
+                                            }
+                                            values.put(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID, paymentMethod);
+                                            if (count > 0 && overwrite) { // Update
+                                                currentDatabase.update(ReceiptsTable.TABLE_NAME, values, ReceiptsTable.COLUMN_ID + " = ?", new String[]{Integer.toString(updateID)});
+                                            } else { // insert
+                                                if (overwrite) {
+                                                    currentDatabase.insertWithOnConflict(ReceiptsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                                } else if (count == 0) {
+                                                    // If we're not overwriting anything, let's check that there are no entries here
+                                                    currentDatabase.insertWithOnConflict(ReceiptsTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                                                }
                                             }
                                         }
-                                    }
-                                } finally {
-                                    if (countCursor != null && !countCursor.isClosed()) {
-                                        countCursor.close();
-                                        countCursor = null;
+                                    } finally {
+                                        if (countCursor != null && !countCursor.isClosed()) {
+                                            countCursor.close();
+                                            countCursor = null;
+                                        }
                                     }
                                 }
                             }
+                            while (c.moveToNext());
                         }
-                        while (c.moveToNext());
-                    }
-                } catch (SQLiteException e) {
-                    Logger.error(this, "Caught sql exception during import at [a2]", e); // Occurs if Table does not exist
-                } finally {
-                    if (c != null && !c.isClosed()) {
-                        c.close();
-                        c = null;
+                    } catch (SQLiteException e) {
+                        Logger.error(this, "Caught sql exception during import at [a2]", e); // Occurs if Table does not exist
+                    } finally {
+                        if (c != null && !c.isClosed()) {
+                            c.close();
+                            c = null;
+                        }
                     }
                 }
 
@@ -776,7 +805,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 return false;
             } finally {
 
-                currDB.execSQL("DETACH backup_db");
+                currentDatabase.execSQL("DETACH backup_db");
 
                 if (c != null && !c.isClosed()) {
                     c.close();
@@ -784,11 +813,12 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                 if (countCursor != null && !countCursor.isClosed()) {
                     countCursor.close();
                 }
-                if (importDB != null) {
-                    importDB.close();
+                if (importedBackupDatabase != null) {
+                    importedBackupDatabase.close();
                 }
             }
         }
+
     }
 
     private boolean getBoolean(Cursor cursor, int index, boolean defaultValue) {

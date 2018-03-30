@@ -251,4 +251,33 @@ public class IntentImportProcessorTest {
                 .assertValue(Optional.absent());
     }
 
+    @Test
+    public void processViewSmrContentIntentWithPeriodInParams() {
+        final Uri uri = Uri.parse("content://tmp/123456?mimeType=0.1");
+        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        final IntentImportResult result = new IntentImportResult(uri, FileType.Smr);
+        when(contentResolver.getType(uri)).thenReturn("application/octet-stream");
+
+        // Note: We use the mock context processor for this test
+        final TestObserver<IntentImportResult> testObserver1 = mockContentIntentImportProcessor.process(intent).test();
+        testObserver1.awaitTerminalEvent();
+        testObserver1.assertValue(result)
+                .assertComplete()
+                .assertNoErrors();
+        mockContentIntentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.of(result));
+
+        // But confirm subsequent attempts do nothing after marking consumed
+        mockContentIntentImportProcessor.markIntentAsSuccessfullyProcessed(intent);
+        final TestObserver<IntentImportResult> testObserver2 = mockContentIntentImportProcessor.process(intent).test();
+        testObserver2.awaitTerminalEvent();
+        testObserver2.assertNoValues()
+                .assertComplete()
+                .assertNoErrors();
+        mockContentIntentImportProcessor.getLastResult()
+                .test()
+                .assertValue(Optional.absent());
+    }
+
 }

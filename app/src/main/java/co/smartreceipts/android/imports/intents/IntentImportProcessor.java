@@ -106,18 +106,18 @@ public class IntentImportProcessor {
 
     @Nullable
     private IntentImportResult buildResultFromUri(@NonNull Uri uri) {
-        final FileType fileType;
+        FileType fileType = null;
         final String extension = UriUtils.getExtension(uri, context);
         if (!TextUtils.isEmpty(extension)) {
             fileType = FileType.getFileTypeFromExtension(extension);
-        } else {
+        }
+        if (fileType == null) {
             final String mimeType = UriUtils.getMimeType(uri, context);
             if (SUPPORTED_SMR_MIME_TYPES.contains(mimeType)) {
                 fileType = FileType.Smr;
-            } else {
-                fileType = null;
             }
         }
+
         if (fileType != null) {
             return new IntentImportResult(uri, fileType);
         } else {
