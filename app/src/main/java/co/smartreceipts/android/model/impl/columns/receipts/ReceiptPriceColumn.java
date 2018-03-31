@@ -5,10 +5,11 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
+import co.smartreceipts.android.model.impl.ImmutableNetPriceImpl;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;
 import co.smartreceipts.android.sync.model.SyncState;
 
@@ -29,7 +30,7 @@ public final class ReceiptPriceColumn extends AbstractColumnImpl<Receipt> {
     public String getValue(@NonNull Receipt receipt) {
         return receipt.getPrice().getDecimalFormattedPrice();
     }
-    
+
     @Override
     @NonNull
     public String getFooter(@NonNull List<Receipt> receipts) {
@@ -39,7 +40,14 @@ public final class ReceiptPriceColumn extends AbstractColumnImpl<Receipt> {
             for (final Receipt receipt : receipts) {
                 prices.add(receipt.getPrice());
             }
-            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getDecimalFormattedPrice();
+
+            final Price netPrice = new PriceBuilderFactory().setPrices(prices, tripCurrency).build();
+            if (netPrice instanceof ImmutableNetPriceImpl) {
+                return ((ImmutableNetPriceImpl) netPrice).getCurrencyCodeFormattedNotExchangedPrice();
+            } else {
+                return netPrice.getDecimalFormattedPrice();
+            }
+
         } else {
             return "";
         }
