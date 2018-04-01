@@ -1,14 +1,13 @@
 package co.smartreceipts.android.model.factory;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Priceable;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.impl.ImmutableLegacyNetPriceImpl;
@@ -85,14 +84,14 @@ public final class PriceBuilderFactory implements BuilderFactory<Price> {
     }
 
     @NonNull
-    public PriceBuilderFactory setPrices(@NonNull List<? extends Price> prices, @Nullable PriceCurrency desiredCurrency) {
+    public PriceBuilderFactory setPrices(@NonNull List<? extends Price> prices, @NonNull PriceCurrency desiredCurrency) {
         this.prices = new ArrayList<>(prices);
         currency = desiredCurrency;
         return this;
     }
 
     @NonNull
-    public PriceBuilderFactory setPriceables(@NonNull List<? extends Priceable> priceables, @Nullable PriceCurrency desiredCurrency) {
+    public PriceBuilderFactory setPriceables(@NonNull List<? extends Priceable> priceables, @NonNull PriceCurrency desiredCurrency) {
         this.priceables = new ArrayList<>(priceables);
         currency = desiredCurrency;
         return this;

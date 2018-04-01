@@ -189,7 +189,15 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     @NonNull
     @Override
     public String getCurrencyCode() {
-        return currency.getCurrencyCode();
+        if (notExchangedPriceMap.size() > 1) {
+            final List<String> currencyStrings = new ArrayList<>();
+            for (PriceCurrency currency : notExchangedPriceMap.keySet()) {
+                currencyStrings.add(currency.getCurrencyCode());
+            }
+            return TextUtils.join("; ", currencyStrings);
+        } else {
+            return currency.getCurrencyCode();
+        }
     }
 
     @NonNull

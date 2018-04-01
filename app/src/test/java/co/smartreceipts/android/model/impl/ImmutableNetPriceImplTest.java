@@ -100,8 +100,16 @@ public class ImmutableNetPriceImplTest {
     @Test
     public void getCurrencyCode() {
         assertEquals(USD_CURRENCY.getCurrencyCode(), sameCurrencyPrice.getCurrencyCode());
-        assertEquals(USD_CURRENCY.getCurrencyCode(), differentCurrenciesNoExchangeRatePrice.getCurrencyCode());
-        assertEquals(USD_CURRENCY.getCurrencyCode(), differentCurrenciesWithExchangeRatePrice.getCurrencyCode());
+        assertEquals(String.format("%s; %s", EUR_CURRENCY.getCurrencyCode(), USD_CURRENCY.getCurrencyCode()) , differentCurrenciesNoExchangeRatePrice.getCurrencyCode());
+        assertEquals(String.format("%s; %s", EUR_CURRENCY.getCurrencyCode(), USD_CURRENCY.getCurrencyCode()), differentCurrenciesWithExchangeRatePrice.getCurrencyCode());
+    }
+
+    @Test
+    public void getCurrencyCodeFormattedNotExchangedPriceTest() {
+        assertEquals("$3.00", sameCurrencyPrice.getCurrencyCodeFormattedNotExchangedPrice());
+        assertEquals("EUR1.00; USD2.00", differentCurrenciesNoExchangeRatePrice.getCurrencyCodeFormattedNotExchangedPrice());
+        assertEquals("EUR1.00; USD2.00", differentCurrenciesWithExchangeRatePrice.getCurrencyCodeFormattedNotExchangedPrice());
+
     }
 
     @Test

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;
@@ -26,6 +27,7 @@ public final class ReceiptCurrencyCodeColumn extends AbstractColumnImpl<Receipt>
     @Override
     @NonNull
     public String getFooter(@NonNull List<Receipt> receipts) {
-        return new PriceBuilderFactory().setPriceables(receipts, null).build().getCurrencyCode();
+        final PriceCurrency tripCurrency = receipts.get(0).getTrip().getTripCurrency();
+        return new PriceBuilderFactory().setPriceables(receipts, tripCurrency).build().getCurrencyCode();
     }
 }
