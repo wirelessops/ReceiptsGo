@@ -25,8 +25,6 @@ import co.smartreceipts.android.model.utils.ModelUtils;
  */
 public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
 
-    private static final int ROUNDING_PRECISION = Price.ROUNDING_PRECISION + 2;
-
     private final PriceCurrency currency;
     private final BigDecimal totalPrice;
     private final BigDecimal possiblyIncorrectTotalPrice;
@@ -51,13 +49,14 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
             final BigDecimal priceToAdd;
             final PriceCurrency currencyForPriceToAdd;
             if (price.getExchangeRate().supportsExchangeRateFor(baseCurrency)) {
-                priceToAdd = price.getPrice().multiply(price.getExchangeRate().getExchangeRate(baseCurrency));
+                priceToAdd = price.getPrice().multiply(price.getExchangeRate().getExchangeRate(baseCurrency))
+                        .setScale(DEFAULT_DECIMAL_PRECISION, RoundingMode.HALF_UP);
                 totalPrice = totalPrice.add(priceToAdd);
                 currencyForPriceToAdd = baseCurrency;
 
             } else {
                 // If not, let's just hope for the best with whatever we have to add
-                priceToAdd = price.getPrice();
+                priceToAdd = price.getPrice().setScale(DEFAULT_DECIMAL_PRECISION, RoundingMode.HALF_UP);
                 currencyForPriceToAdd = price.getCurrency();
                 areAllExchangeRatesValid = false;
             }
@@ -65,8 +64,8 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
             final BigDecimal priceForCurrency = currencyToPriceMap.containsKey(currencyForPriceToAdd) ? currencyToPriceMap.get(currencyForPriceToAdd).add(priceToAdd) : priceToAdd;
             currencyToPriceMap.put(currencyForPriceToAdd, priceForCurrency);
         }
-        this.totalPrice = totalPrice.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
-        this.possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
+        this.totalPrice = totalPrice;
+        this.possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice;
         this.areAllExchangeRatesValid = areAllExchangeRatesValid;
         this.exchangeRate = new ExchangeRateBuilderFactory().setBaseCurrency(baseCurrency).build();
     }
