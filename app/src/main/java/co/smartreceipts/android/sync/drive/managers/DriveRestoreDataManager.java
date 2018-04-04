@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 import co.smartreceipts.android.persistence.DatabaseHelper;
+import co.smartreceipts.android.persistence.database.restore.DatabaseRestorer;
 import co.smartreceipts.android.persistence.database.tables.AbstractSqlTable;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
@@ -32,20 +33,29 @@ public class DriveRestoreDataManager {
     private final DriveStreamsManager mDriveStreamsManager;
     private final DriveDatabaseManager mDriveDatabaseManager;
     private final DatabaseHelper mDatabaseHelper;
+    private final DatabaseRestorer databaseRestorer;
     private final File mStorageDirectory;
 
     @SuppressWarnings("ConstantConditions")
-    public DriveRestoreDataManager(@NonNull Context context, @NonNull DriveStreamsManager driveStreamsManager, @NonNull DatabaseHelper databaseHelper,
-                                   @NonNull DriveDatabaseManager driveDatabaseManager) {
-        this(context, driveStreamsManager, databaseHelper, driveDatabaseManager, context.getExternalFilesDir(null));
+    public DriveRestoreDataManager(@NonNull Context context,
+                                   @NonNull DriveStreamsManager driveStreamsManager,
+                                   @NonNull DatabaseHelper databaseHelper,
+                                   @NonNull DriveDatabaseManager driveDatabaseManager,
+                                   @NonNull DatabaseRestorer databaseRestorer) {
+        this(context, driveStreamsManager, databaseHelper, driveDatabaseManager, databaseRestorer, context.getExternalFilesDir(null));
     }
 
-    public DriveRestoreDataManager(@NonNull Context context, @NonNull DriveStreamsManager driveStreamsManager, @NonNull DatabaseHelper databaseHelper,
-                                   @NonNull DriveDatabaseManager driveDatabaseManager, @NonNull File storageDirectory) {
+    public DriveRestoreDataManager(@NonNull Context context,
+                                   @NonNull DriveStreamsManager driveStreamsManager,
+                                   @NonNull DatabaseHelper databaseHelper,
+                                   @NonNull DriveDatabaseManager driveDatabaseManager,
+                                   @NonNull DatabaseRestorer databaseRestorer,
+                                   @NonNull File storageDirectory) {
         mContext = Preconditions.checkNotNull(context.getApplicationContext());
         mDriveStreamsManager = Preconditions.checkNotNull(driveStreamsManager);
         mDatabaseHelper = Preconditions.checkNotNull(databaseHelper);
         mDriveDatabaseManager = Preconditions.checkNotNull(driveDatabaseManager);
+        this.databaseRestorer = Preconditions.checkNotNull(databaseRestorer);
         mStorageDirectory = Preconditions.checkNotNull(storageDirectory);
     }
 
@@ -57,7 +67,8 @@ public class DriveRestoreDataManager {
                 .flatMap(files -> {
                     Logger.debug(this, "Performing database merge");
                     final File tempDbFile = new File(mStorageDirectory, ManualBackupTask.DATABASE_EXPORT_NAME);
-                    return Single.just(mDatabaseHelper.merge(tempDbFile.getAbsolutePath(), mContext.getPackageName(), overwriteExistingData));
+                    return databaseRestorer.restoreDatabase(tempDbFile, overwriteExistingData)
+                            .toSingleDefault(true);
                 })
                 .doOnSuccess(aBoolean -> {
                     Logger.debug(this, "Syncing database following merge operation");

@@ -366,6 +366,12 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     }
 
     @Override
+    public synchronized void deleteAllTableRowsBlockiing() {
+        getWritableDatabase().execSQL("DELETE FROM " + getTableName());
+        clearCache();
+    }
+
+    @Override
     public synchronized void clearCache() {
         if (mCachedResults != null) {
             mCachedResults.clear();

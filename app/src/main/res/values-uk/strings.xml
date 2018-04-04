@@ -276,7 +276,7 @@
     <string name="dialog_export_text">Ви можете повторно імпортувати ваші дані, натиснувши на файл SmartReceipts.SMR, що генерується натисканням нижче.</string>
     <string name="dialog_export_positive">Експорт</string>
     <string name="dialog_import_positive">Імпорт</string>
-    <string name="dialog_import_text">Перезаписати існуючі дані</string>
+    <string name="dialog_import_text">Перезаписати всі існуючі дані</string>
     <string name="dialog_export_working">Експорт ваших чеків…</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->

@@ -8,9 +8,11 @@ import com.google.common.base.Preconditions;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
 
 import co.smartreceipts.android.date.DateUtils;
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
@@ -21,6 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.ReplaySubject;
 import wb.android.storage.StorageManager;
 
+@ApplicationScope
 public class ManualBackupTask {
 
     public static final String DATABASE_EXPORT_NAME = "receipts_backup.db";
@@ -35,6 +38,7 @@ public class ManualBackupTask {
     private final Scheduler subscribeOnScheduler;
     private ReplaySubject<File> backupBehaviorSubject;
 
+    @Inject
     ManualBackupTask(@NonNull Context context, @NonNull PersistenceManager persistenceManager) {
         this(context, new SmartReceiptsTemporaryFileCache(context), persistenceManager, Schedulers.io(), Schedulers.io());
     }
@@ -62,6 +66,10 @@ public class ManualBackupTask {
                     .subscribe(backupBehaviorSubject);
         }
         return backupBehaviorSubject;
+    }
+
+    public synchronized void markBackupAsComplete() {
+        backupBehaviorSubject = null;
     }
 
     @NonNull

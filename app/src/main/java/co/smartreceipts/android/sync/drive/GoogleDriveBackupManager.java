@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
+import co.smartreceipts.android.persistence.database.restore.DatabaseRestorer;
 import co.smartreceipts.android.sync.BackupProvider;
 import co.smartreceipts.android.sync.drive.device.GoogleDriveSyncMetadata;
 import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager;
@@ -67,11 +68,14 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
     private final BehaviorSubject<Optional<Throwable>> mSyncErrorStream;
 
     @Inject
-    public GoogleDriveBackupManager(@NonNull Context context, @NonNull DatabaseHelper databaseHelper,
+    public GoogleDriveBackupManager(@NonNull Context context,
+                                    @NonNull DatabaseHelper databaseHelper,
                                     @NonNull GoogleDriveTableManager googleDriveTableManager,
-                                    @NonNull NetworkManager networkManager, @NonNull Analytics analytics,
+                                    @NonNull NetworkManager networkManager,
+                                    @NonNull Analytics analytics,
                                     @NonNull ReceiptTableController receiptTableController,
-                                    @NonNull DriveUploadCompleteManager driveUploadCompleteManager) {
+                                    @NonNull DriveUploadCompleteManager driveUploadCompleteManager,
+                                    @NonNull DatabaseRestorer databaseRestorer) {
 
         mGoogleApiClient = new GoogleApiClient.Builder(context.getApplicationContext())
                 .addConnectionCallbacks(this)
@@ -91,7 +95,7 @@ public class GoogleDriveBackupManager implements BackupProvider, GoogleApiClient
                 mDriveTaskManager, mGoogleDriveSyncMetadata, mNetworkManager, analytics);
         mDriveReceiptsManager = new DriveReceiptsManager(receiptTableController, databaseHelper.getTripsTable(), databaseHelper.getReceiptsTable(),
                 mDriveTaskManager, driveDatabaseManager, mNetworkManager, analytics);
-        mDriveRestoreDataManager = new DriveRestoreDataManager(context, mDriveTaskManager, databaseHelper, driveDatabaseManager);
+        mDriveRestoreDataManager = new DriveRestoreDataManager(context, mDriveTaskManager, databaseHelper, driveDatabaseManager, databaseRestorer);
 
         mGoogleDriveTableManager = googleDriveTableManager;
         mGoogleDriveTableManager.initBackupListeners(driveDatabaseManager, mDriveReceiptsManager);

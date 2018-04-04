@@ -96,6 +96,11 @@ public interface Table<ModelType, PrimaryKeyType> {
     Single<ModelType> delete(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata);
 
     /**
+     * Deletes all row entries in this table
+     */
+    void deleteAllTableRowsBlockiing();
+
+    /**
      * Clears any cached data in our table
      */
     void clearCache();

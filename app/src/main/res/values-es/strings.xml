@@ -274,7 +274,7 @@
     <string name="dialog_export_text">Puedes importar de nuevo tus datos haciendo clic en el archivo SmartReceipts.SMR, que se genera haciendo clic a continuación.</string>
     <string name="dialog_export_positive">Exportar</string>
     <string name="dialog_import_positive">Importar</string>
-    <string name="dialog_import_text">Sobrescribir datos existentes</string>
+    <string name="dialog_import_text">Sobrescribir todos los datos existentes</string>
     <string name="dialog_export_working">Exportando tus recibos…</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->

@@ -1,5 +1,5 @@
 package co.smartreceipts.android.persistence.database.operations;
 
 public enum OperationFamilyType {
-    Default, Sync, Rollback
+    Default, Import, Sync, Rollback
 }

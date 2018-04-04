@@ -16,7 +16,7 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.persistence.PersistenceManager;
-import co.smartreceipts.android.sync.manual.ManualBackupAndRestoreTaskCache;
+import co.smartreceipts.android.sync.manual.ManualBackupTask;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
@@ -28,12 +28,16 @@ public class ExportBackupWorkerProgressDialogFragment extends DialogFragment {
 
     @Inject
     PersistenceManager persistenceManager;
+
     @Inject
     Analytics analytics;
+
     @Inject
     BackupReminderTooltipStorage backupReminderTooltipStorage;
 
-    private ManualBackupAndRestoreTaskCache manualBackupAndRestoreTaskCache;
+    @Inject
+    ManualBackupTask manualBackupTask;
+
     private Disposable disposable;
 
     @Override
@@ -59,19 +63,14 @@ public class ExportBackupWorkerProgressDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        manualBackupAndRestoreTaskCache = new ManualBackupAndRestoreTaskCache(getFragmentManager(), persistenceManager, getContext());
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        disposable = manualBackupAndRestoreTaskCache.getManualBackupTask().backupData().observeOn(AndroidSchedulers.mainThread())
+        disposable = manualBackupTask.backupData().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file -> {
                     final Intent intent = IntentUtils.getSendIntent(getContext(), file);
                     getActivity().startActivity(Intent.createChooser(intent, getString(R.string.export)));
                     backupReminderTooltipStorage.setLastManualBackupDate();
+                    manualBackupTask.markBackupAsComplete();
                 }, throwable -> {
                     analytics.record(new ErrorEvent(ExportBackupWorkerProgressDialogFragment.this, throwable));
                     Toast.makeText(getContext(), getString(R.string.EXPORT_ERROR), Toast.LENGTH_LONG).show();
