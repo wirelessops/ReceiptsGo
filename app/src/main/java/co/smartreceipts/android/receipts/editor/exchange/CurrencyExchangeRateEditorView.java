@@ -50,6 +50,12 @@ public interface CurrencyExchangeRateEditorView {
     Consumer<? super Optional<Price>> displayExchangedPriceInBaseCurrency();
 
     /**
+     * @return the current {@link String} text of selection
+     */
+    @NonNull
+    String getCurrencySelectionText();
+
+    /**
      * @return an {@link Observable} that will emit a {@link CharSequence} any time the user changes the value for
      * the exchange rate
      */

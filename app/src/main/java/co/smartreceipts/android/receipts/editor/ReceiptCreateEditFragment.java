@@ -35,6 +35,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -848,6 +849,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     @Override
     public Consumer<? super Optional<Price>> displayExchangedPriceInBaseCurrency() {
         return RxTextViewExtensions.priceOptional(exchangedPriceInBaseCurrencyBox);
+    }
+
+    @NonNull
+    @Override
+    public String getCurrencySelectionText() {
+        return currencySpinner.getSelectedItem() == null ? getParentTrip().getDefaultCurrencyCode() : currencySpinner.getSelectedItem().toString();
     }
 
     @NonNull

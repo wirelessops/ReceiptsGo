@@ -123,6 +123,7 @@ public class CurrencyExchangeRateEditorPresenterTest {
         when(currencyExchangeRateEditorView.getExchangedPriceInBaseCurrencyChanges()).thenReturn(exchangedPriceInBaseCurrencyChanges);
         when(currencyExchangeRateEditorView.getExchangedPriceInBaseCurrencyFocusChanges()).thenReturn(exchangedPriceInBaseCurrencyFocusChanges);
         when(currencyExchangeRateEditorView.getUserInitiatedExchangeRateRetries()).thenReturn(userInitiatedExchangeRateRetries);
+        when(currencyExchangeRateEditorView.getCurrencySelectionText()).thenReturn(TRIP_CURRENCY);
         when(receiptPricingView.getReceiptPriceChanges()).thenReturn(receiptPriceChanges);
         when(currencyListEditorView.currencyClicks()).thenReturn(currencyClicks);
         when(receiptDateView.getReceiptDateChanges()).thenReturn(receiptDateChanges);
@@ -162,13 +163,23 @@ public class CurrencyExchangeRateEditorPresenterTest {
     }
 
     @Test
-    public void subscribeTogglesExchangeRateVisibility() throws Exception {
+    public void subscribeAlwaysTogglesExchangeRateVisibility() throws Exception {
         presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, editableReceipt, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
         presenter.subscribe();
-        currencyClicks.onNext(0);
         verify(toggleExchangeRateFieldVisibilityConsumer).accept(false);
+    }
+
+    @Test
+    public void subscribeTogglesExchangeRateVisibilityAndListensToChangeEvents() throws Exception {
+        presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, editableReceipt, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
+        presenter.subscribe();
+
+        final InOrder inOrderVerifier = inOrder(toggleExchangeRateFieldVisibilityConsumer);
+        inOrderVerifier.verify(toggleExchangeRateFieldVisibilityConsumer).accept(false);
+        currencyClicks.onNext(0);
+        inOrderVerifier.verify(toggleExchangeRateFieldVisibilityConsumer).accept(false);
         currencyClicks.onNext(1);
-        verify(toggleExchangeRateFieldVisibilityConsumer).accept(true);
+        inOrderVerifier.verify(toggleExchangeRateFieldVisibilityConsumer).accept(true);
     }
 
     @Test

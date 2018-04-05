@@ -256,7 +256,9 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
 
         // Toggle the exchange rate field any time the user changes it
         compositeDisposable.add(selectedCurrencyConnectableObservable
-                .map(selectedCurrencyCode -> !trip.getDefaultCurrencyCode().equals(selectedCurrencyCode))
+                .map(selectedCurrencyCode -> {
+                    return !trip.getDefaultCurrencyCode().equals(selectedCurrencyCode);
+                })
                 .doOnNext(exchangeFieldsAreVisible -> Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Exchange rate field visibility -> {}", exchangeFieldsAreVisible))
                 .subscribe(view.toggleExchangeRateFieldVisibility()));
 
@@ -284,5 +286,10 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
                 .filter(exchangeRate -> exchangeRate.supportsExchangeRateFor(trip.getDefaultCurrencyCode()))
                 .map(UiIndicator::success)
                 .subscribe(view.displayExchangeRate()));
+
+        // Since we may navigate back to this screen, let's add a simple check to hide the exchange rates if the currency = trip currency
+        compositeDisposable.add(Observable.just(view.getCurrencySelectionText())
+                .map(editorCurrency -> !trip.getDefaultCurrencyCode().equals(editorCurrency))
+                .subscribe(view.toggleExchangeRateFieldVisibility()));
     }
 }
