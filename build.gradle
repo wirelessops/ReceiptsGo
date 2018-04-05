@@ -6,11 +6,14 @@ buildscript {
 	    jcenter()
         google()
         maven { url "https://jitpack.io" }
+        maven { url 'https://maven.fabric.io/public' }
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "io.fabric.tools:gradle:1.25.1"
     }
 }
 
@@ -28,5 +31,5 @@ ext {
     minSdkVersion = 21
     targetSdkVersion = 26
     compileSdkVersion = 26
-    buildToolsVersion = "26.0.2"
+    buildToolsVersion = "27.0.3"
 }
