@@ -119,7 +119,8 @@ android {
             exclude group: 'com.google.android', module: 'android'
         }
 
-        implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
+        // Note: Periodically check for updates here so we can stop using the FreeYourGadgetVersion
+        // implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
         implementation "com.github.Freeyourgadget:MPAndroidChart:$MP_ANDROID_CHART_FORK_WITH_FIXES_VERSION"
 
         implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar"){

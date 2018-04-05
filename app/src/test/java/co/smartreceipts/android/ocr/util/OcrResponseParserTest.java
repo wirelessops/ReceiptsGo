@@ -92,7 +92,6 @@ public class OcrResponseParserTest {
         TestTimezoneToggler.setDefaulTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
         ocrDate = new OcrResponseParser(new OcrResponse(null, null, null, new OcrResponseField<>(iso8601Date, 1.0), null, null, null, null)).getDate();
         assertNotNull(ocrDate);
-        System.out.println("Aussie: " + ocrDate.getTime());
         assertTrue(ocrDate.after(date_2016_12_22_at_midnight));
         assertTrue(ocrDate.before(date_2016_12_23_at_midnight));
         assertTrue(getDateAsIso8601String(ocrDate).startsWith("2016-12-22"));
