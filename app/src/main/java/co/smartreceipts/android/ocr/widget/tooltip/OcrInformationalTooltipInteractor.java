@@ -85,6 +85,7 @@ public class OcrInformationalTooltipInteractor {
 
     public void showOcrConfiguration() {
         Logger.info(this, "Displaying OCR Configuration Fragment");
+        stateTracker.setShouldShowOcrInfo(false);
         navigationHandler.navigateToOcrConfigurationFragment();
         analytics.record(Events.Ocr.OcrInfoTooltipOpen);
     }
