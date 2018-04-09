@@ -22,13 +22,4 @@ public class CategoryCodeColumn extends AbstractColumnImpl<SumCategoryGroupingRe
         return sumCategoryGroupingResult.getCategory().getCode();
     }
 
-    @NonNull
-    @Override
-    public String getFooter(@NonNull List<SumCategoryGroupingResult> rows) {
-        if (rows.isEmpty()) {
-            return "";
-        } else {
-            return getValue(rows.get(0));
-        }
-    }
 }
