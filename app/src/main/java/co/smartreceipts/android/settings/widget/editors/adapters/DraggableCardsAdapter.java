@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Draggable;
-import co.smartreceipts.android.persistence.database.controllers.TableController;
 
 public abstract class DraggableCardsAdapter<T extends Draggable> extends RecyclerView.Adapter<AbstractDraggableItemViewHolder>
         implements DraggableItemAdapter<AbstractDraggableItemViewHolder> {
@@ -75,5 +74,4 @@ public abstract class DraggableCardsAdapter<T extends Draggable> extends Recycle
     @Override
     public abstract boolean onCheckCanStartDrag(AbstractDraggableItemViewHolder holder, int position, int x, int y);
 
-    public abstract void saveNewOrder(TableController<T> tableController);
 }

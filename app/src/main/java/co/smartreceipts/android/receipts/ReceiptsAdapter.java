@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
@@ -22,11 +23,13 @@ import java.util.concurrent.TimeUnit;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.receipts.helper.ReceiptCustomOrderIdHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableCardsAdapter;
@@ -101,7 +104,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         if (getItemViewType(position) == ReceiptsListItem.TYPE_RECEIPT) {
             return ((ReceiptContentItem) listItems.get(position)).getReceipt().getId();
         } else {
-            return ((ReceiptHeaderItem)listItems.get(position)).getDateTime();
+            return ((ReceiptHeaderItem) listItems.get(position)).getDateTime();
         }
     }
 
@@ -109,10 +112,31 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     public void onMoveItem(int fromPosition, int toPosition) {
         if (fromPosition == toPosition) return;
 
-        saveOrderIdsAsDateIfNeeded();
-        if (updateDraggedItem(fromPosition, toPosition)) {
-            saveNewOrder(tableController);
+        int realFromPosition = items.indexOf(((ReceiptContentItem) listItems.get(fromPosition)).getReceipt());
+        int realToPosition = items.indexOf(((ReceiptContentItem) listItems.get(toPosition)).getReceipt());
+
+        Logger.debug(this, "Moving receipt from position {} to position {}", realFromPosition, realToPosition);
+
+        if (!orderingPreferencesManager.isReceiptsTableOrdered()) setDefaultOrderIds();
+
+        if (isOldCustomOrderIdFormatUsed()) {
+            setDefaultOrderIds();
+            writeUpdatedItems(items);
+
+            Toast.makeText(context, "Sorry, your receipts now are ordered by date.", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        List<Receipt> originalItemsList = new ArrayList<>(items);
+
+        final Receipt movedReceipt = items.remove(realFromPosition);
+        items.add(realToPosition, movedReceipt);
+        updateListItems();
+
+        final List<Receipt> changedReceipts = ReceiptCustomOrderIdHelper.INSTANCE
+                .updateReceiptsCustomOrderIds(originalItemsList, realFromPosition, realToPosition);
+
+        writeUpdatedItems(changedReceipts);
     }
 
     @Override
@@ -125,68 +149,51 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         return getItemViewType(draggingPosition) == ReceiptsListItem.TYPE_RECEIPT && getItemViewType(dropPosition) == ReceiptsListItem.TYPE_RECEIPT;
     }
 
-    private boolean updateDraggedItem(int oldPosition, int newPosition) {
-        Logger.debug(this, "Reordering, from position " + oldPosition + " to position " + newPosition);
+    private void setDefaultOrderIds() {
+        // saving order id's like a days * 1000 for all receipts at first before any reordering
+        Logger.debug(this, "Updating all receipts customOrderId's");
 
-        if (getItemViewType(oldPosition) == ReceiptsListItem.TYPE_RECEIPT && getItemViewType(newPosition) == ReceiptsListItem.TYPE_RECEIPT) {
+        List<Receipt> updatedItems = new ArrayList<>();
 
-            int oldPositionInItems = items.indexOf(((ReceiptContentItem) listItems.get(oldPosition)).getReceipt());
-            int newPositionInItems = items.indexOf(((ReceiptContentItem) listItems.get(newPosition)).getReceipt());
-
-            draggedReceiptNewPosition = newPositionInItems;
-
-            // update custom order id for dragged item
-            long newCustomOrderId;
-            if (oldPositionInItems < newPositionInItems) { // move down
-                newCustomOrderId = items.get(newPositionInItems).getCustomOrderId() - 1;
-            } else { // move up
-                newCustomOrderId = items.get(newPositionInItems).getCustomOrderId() + 1;
-            }
-
-            // updating local list
-            final Receipt draggedReceipt = new ReceiptBuilderFactory(items.remove(oldPositionInItems))
-                    .setCustomOrderId(newCustomOrderId)
+        for (Receipt item : items) {
+            final Receipt updatedReceipt = new ReceiptBuilderFactory(item)
+                    .setCustomOrderId(DateUtils.getDays(item.getDate()) * ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR)
                     .build();
-            items.add(newPositionInItems, draggedReceipt);
-            updateListItems();
+            tableController.update(item, updatedReceipt, new DatabaseOperationMetadata());
 
-            return true;
-        } else {
+            updatedItems.add(updatedReceipt);
+        }
+
+        items.clear();
+        items.addAll(updatedItems);
+        updateListItems();
+
+        orderingPreferencesManager.saveReceiptsTableOrdering();
+    }
+
+    // TODO: 11.04.2018 this method should be removed after some time
+    private boolean isOldCustomOrderIdFormatUsed() {
+        // Note: temporary code for users that are using old customOrderId format
+        // should be removed after their update
+        if (!orderingPreferencesManager.isReceiptsTableOrdered()) {
             return false;
         }
-    }
 
-
-    @Override
-    public void saveNewOrder(TableController<Receipt> tableController) {
-        if (draggedReceiptNewPosition != null) {
-            final Receipt draggedReceipt = items.get(draggedReceiptNewPosition);
-            tableController.update(draggedReceipt, draggedReceipt, new DatabaseOperationMetadata());
-            draggedReceiptNewPosition = null;
-        }
-    }
-
-    private void saveOrderIdsAsDateIfNeeded() {
-        // saving order id's like a time for all receipts at first before any order changes
-        if (!orderingPreferencesManager.isReceiptsTableOrdered()) {
-
-            List<Receipt> updatedItems = new ArrayList<>();
-
-            for (Receipt item : items) {
-                final Receipt updatedReceipt = new ReceiptBuilderFactory(item)
-                        .setCustomOrderId(item.getDate().getTime() + item.getIndex()) // hack to prevent mixing items with same date
-                        .build();
-                tableController.update(item, updatedReceipt,
-                        new DatabaseOperationMetadata());
-
-                updatedItems.add(updatedReceipt);
+        // old format is: customOrderId = receipt.getDate() + receipt.getIndex()
+        // new format is: customOrderId = receipt.getDate().toDays() * 1000
+        // for example, date 4/10/18: days = 17631
+        for (Receipt item : items) {
+            if (item.getCustomOrderId() / ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR > 20000) {
+                return true;
             }
+        }
 
-            items.clear();
-            items.addAll(updatedItems);
-            updateListItems();
+        return false;
+    }
 
-            orderingPreferencesManager.saveReceiptsTableOrdering();
+    private void writeUpdatedItems(List<Receipt> receipts) {
+        for (Receipt receipt : receipts) {
+            tableController.update(receipt, receipt, new DatabaseOperationMetadata());
         }
     }
 

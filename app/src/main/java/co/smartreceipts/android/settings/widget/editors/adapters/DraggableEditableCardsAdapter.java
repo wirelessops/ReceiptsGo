@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Draggable;
+import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 
 
@@ -32,4 +33,6 @@ public abstract class DraggableEditableCardsAdapter<T extends Draggable> extends
         isOnDragMode = isDraggable;
         notifyDataSetChanged();
     }
+
+    public abstract void saveNewOrder(TableController<T> tableController);
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
+import co.smartreceipts.android.utils.log.Logger;
 
 /**
  * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options
@@ -79,6 +80,14 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    /**
+     * super.saveTableOrdering must be called
+     */
+    protected void saveTableOrdering() {
+        Logger.debug(this, "saveTableOrdering");
+        ((DraggableEditableCardsAdapter)adapter).saveNewOrder(getTableController());
     }
 
     @Override

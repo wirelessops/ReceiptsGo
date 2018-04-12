@@ -70,4 +70,8 @@ public class DateUtils {
 
         return startTime <= testTime && testTime <= endTime;
     }
+
+    public static long getDays(@NonNull Date date) {
+        return date.getTime() / (1000 * 60 * 60 * 24);
+    }
 }

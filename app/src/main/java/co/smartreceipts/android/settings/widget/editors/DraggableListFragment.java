@@ -18,7 +18,6 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableCardsAdapter;
-import co.smartreceipts.android.utils.log.Logger;
 
 import static android.R.id.list;
 
@@ -90,14 +89,6 @@ public abstract class DraggableListFragment<T extends Draggable> extends WBFragm
 
     protected void scrollToStart() {
         positionToScroll = 0;
-    }
-
-    /**
-     * super.saveTableOrdering must be called
-     */
-    protected void saveTableOrdering() {
-        Logger.debug(this, "saveTableOrdering");
-        adapter.saveNewOrder(getTableController());
     }
 
     @Override
