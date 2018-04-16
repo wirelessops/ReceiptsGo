@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +73,6 @@ public class DateUtils {
     }
 
     public static long getDays(@NonNull Date date) {
-        return date.getTime() / (1000 * 60 * 60 * 24);
+        return TimeUnit.MILLISECONDS.toDays(date.getTime());
     }
 }

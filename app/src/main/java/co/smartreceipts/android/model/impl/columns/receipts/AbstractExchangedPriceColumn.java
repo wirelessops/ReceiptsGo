@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
-import co.smartreceipts.android.model.impl.ImmutableNetPriceImpl;
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -53,17 +52,7 @@ public abstract class AbstractExchangedPriceColumn extends AbstractColumnImpl<Re
                 prices.add(getPrice(receipt));
             }
             factory.setPrices(prices, rows.get(0).getTrip().getTripCurrency());
-            final Price netPrice = factory.build();
-            if (netPrice instanceof ImmutableNetPriceImpl) {
-                // TODO: This should be slightly less hacky
-                if (((ImmutableNetPriceImpl) netPrice).areAllExchangeRatesValid()) {
-                    return netPrice.getDecimalFormattedPrice();
-                } else {
-                    return netPrice.getCurrencyCodeFormattedPrice();
-                }
-            } else {
-                return netPrice.getDecimalFormattedPrice();
-            }
+            return factory.build().getDecimalFormattedPrice();
         } else {
             return "";
         }

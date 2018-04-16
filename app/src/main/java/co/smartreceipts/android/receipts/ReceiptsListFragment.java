@@ -233,7 +233,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         });
 
         showDateHeaders = preferenceManager.get(UserPreference.Layout.IncludeReceiptDateInLayout);
-        headerItemDecoration = new ReceiptsHeaderItemDecoration((ReceiptsAdapter) adapter, ReceiptsListItem.TYPE_HEADER);
+        headerItemDecoration = new ReceiptsHeaderItemDecoration(adapter, ReceiptsListItem.TYPE_HEADER);
         if (showDateHeaders) {
             recyclerView.addItemDecoration(headerItemDecoration);
         }
@@ -350,7 +350,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     activityFileResultImporter.markThatResultsWereConsumed();
                 }));
 
-        compositeDisposable.add(((ReceiptsAdapter) adapter).getItemClicks()
+        compositeDisposable.add(adapter.getItemClicks()
                 .subscribe(receipt -> {
                     if (!importIntentMode) {
                         analytics.record(Events.Receipts.ReceiptMenuEdit);
@@ -360,14 +360,14 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     }
                 }));
 
-        compositeDisposable.add(((ReceiptsAdapter) adapter).getMenuClicks()
+        compositeDisposable.add(adapter.getMenuClicks()
                 .subscribe(receipt -> {
                     if (!importIntentMode) {
                         showReceiptMenu(receipt);
                     }
                 }));
 
-        compositeDisposable.add(((ReceiptsAdapter) adapter).getImageClicks()
+        compositeDisposable.add(adapter.getImageClicks()
                 .subscribe(receipt -> {
                     if (!importIntentMode) {
                         if (receipt.hasImage()) {

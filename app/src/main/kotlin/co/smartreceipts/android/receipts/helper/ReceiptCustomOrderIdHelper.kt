@@ -7,10 +7,19 @@ object ReceiptCustomOrderIdHelper {
 
     const val DAYS_TO_ORDER_FACTOR = 1000
 
-    // Note: customOrderId = days * 1000; days could be fake for reordered item
-    // New receipt has customOrderId = days * 1000 + 999
-
-
+    /**
+     * Calculates changes that need to be applied to receipts after reordering.
+     * More detailed [Receipt.customOrderId] formation [scheme](https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
+     *
+     * Note: customOrderId = days * 1000; days could be fake for reordered item.
+     * New receipt has customOrderId = days * 1000 + 999
+     *
+     * @param receipts the list of all [Receipt]s before reordering.
+     * @param fromPosition previous position of the moved item.
+     * @param toPosition new position of the moved item.
+     *
+     * @return list of [Receipt]s that need to be updated.
+     */
     fun updateReceiptsCustomOrderIds(
         receipts: MutableList<Receipt>,
         fromPosition: Int,

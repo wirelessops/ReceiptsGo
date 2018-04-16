@@ -42,6 +42,7 @@ class ImmutableNetPriceImplTest {
     private lateinit var differentCurrenciesWithExchangeRatePrice: ImmutableNetPriceImpl
 
     @Before
+    @Throws(Exception::class)
     fun setUp() {
         TestLocaleToggler.setDefaultLocale(Locale.US)
         val usd1 = PriceBuilderFactory().setCurrency(USD_CURRENCY).setPrice(1.0)
@@ -104,7 +105,7 @@ class ImmutableNetPriceImplTest {
             "EUR1.00; USD2.00",
             differentCurrenciesNoExchangeRatePrice.currencyCodeFormattedPrice
         )
-        assertEquals("USD3.00", differentCurrenciesWithExchangeRatePrice.currencyCodeFormattedPrice)
+        assertEquals("EUR1.00; USD2.00", differentCurrenciesWithExchangeRatePrice.currencyCodeFormattedPrice)
     }
 
     @Test
@@ -125,20 +126,6 @@ class ImmutableNetPriceImplTest {
             String.format("%s; %s", EUR_CURRENCY.currencyCode, USD_CURRENCY.currencyCode),
             differentCurrenciesWithExchangeRatePrice.currencyCode
         )
-    }
-
-    @Test
-    fun getCurrencyCodeFormattedNotExchangedPriceTest() {
-        assertEquals("$3.00", sameCurrencyPrice.currencyCodeFormattedNotExchangedPrice)
-        assertEquals(
-            "EUR1.00; USD2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyCodeFormattedNotExchangedPrice
-        )
-        assertEquals(
-            "EUR1.00; USD2.00",
-            differentCurrenciesWithExchangeRatePrice.currencyCodeFormattedNotExchangedPrice
-        )
-
     }
 
     @Test

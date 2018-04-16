@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class ReceiptsFragment extends DraggableListFragment<Receipt> {
+public abstract class ReceiptsFragment extends DraggableListFragment<Receipt, ReceiptsAdapter> {
 
     public static final String TAG = "ReceiptsFragment";
 

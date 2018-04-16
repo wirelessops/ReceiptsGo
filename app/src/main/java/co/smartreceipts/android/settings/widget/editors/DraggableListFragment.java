@@ -24,11 +24,11 @@ import static android.R.id.list;
 /**
  * Basic fragment which contains recycler view with draggable items
  */
-public abstract class DraggableListFragment<T extends Draggable> extends WBFragment implements TableEventsListener<T> {
+public abstract class DraggableListFragment<T extends Draggable, E extends DraggableCardsAdapter<T>> extends WBFragment implements TableEventsListener<T> {
 
     protected RecyclerView recyclerView;
 
-    protected DraggableCardsAdapter<T> adapter;
+    protected E adapter;
 
     protected RecyclerViewDragDropManager recyclerViewDragDropManager = new RecyclerViewDragDropManager();
 

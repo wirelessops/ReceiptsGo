@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.utils.ModelUtils;
@@ -134,7 +134,7 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         if (areAllExchangeRatesValid) {
             return ModelUtils.getDecimalFormattedValue(totalPrice);
         } else {
-            return ModelUtils.getDecimalFormattedValue(possiblyIncorrectTotalPrice);
+            return getCurrencyCodeFormattedStringFromMap(currencyToPriceMap);
         }
     }
 
@@ -155,18 +155,10 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     @NonNull
     @Override
     public String getCurrencyCodeFormattedPrice() {
-        if (areAllExchangeRatesValid) {
-            return ModelUtils.getCurrencyCodeFormattedValue(totalPrice, currency);
-        } else {
-            return getCurrencyCodeFormattedStringFromMap(currencyToPriceMap);
-        }
-    }
-
-    public String getCurrencyCodeFormattedNotExchangedPrice() {
-        if (notExchangedPriceMap.keySet().size() > 1) {
+        if (notExchangedPriceMap.size() > 1) {
             return getCurrencyCodeFormattedStringFromMap(notExchangedPriceMap);
         } else {
-            return getCurrencyFormattedPrice();
+            return ModelUtils.getCurrencyCodeFormattedValue(totalPrice, currency);
         }
     }
 
@@ -203,11 +195,6 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     @Override
     public ExchangeRate getExchangeRate() {
         return exchangeRate;
-    }
-
-    public boolean areAllExchangeRatesValid() {
-        // TODO: Figure out how to expose this better
-        return areAllExchangeRatesValid;
     }
 
     @Override

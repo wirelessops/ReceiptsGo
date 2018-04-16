@@ -1,6 +1,7 @@
 package co.smartreceipts.android.settings.widget.editors;
 
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +19,8 @@ import co.smartreceipts.android.utils.log.Logger;
 /**
  * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options
  */
-public abstract class DraggableEditableListFragment<T extends Draggable> extends DraggableListFragment<T> implements EditableItemListener<T> {
+public abstract class DraggableEditableListFragment<T extends Draggable> extends DraggableListFragment<T, DraggableEditableCardsAdapter<T>>
+        implements EditableItemListener<T> {
 
     private Toolbar toolbar;
 
@@ -64,14 +66,14 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
             case R.id.menu_settings_drag:
                 isOnDragMode = true;
                 getActivity().invalidateOptionsMenu();
-                ((DraggableEditableCardsAdapter<Draggable>) adapter).switchMode(isOnDragMode);
+                adapter.switchMode(isOnDragMode);
                 Toast.makeText(getContext(), R.string.toast_reorder_hint, Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_settings_save_order:
                 saveTableOrdering();
                 isOnDragMode = false;
                 getActivity().invalidateOptionsMenu();
-                ((DraggableEditableCardsAdapter<Draggable>) adapter).switchMode(isOnDragMode);
+                adapter.switchMode(isOnDragMode);
                 break;
             case android.R.id.home:
                 getActivity().onBackPressed();
@@ -82,12 +84,10 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
         return true;
     }
 
-    /**
-     * super.saveTableOrdering must be called
-     */
+    @CallSuper
     protected void saveTableOrdering() {
         Logger.debug(this, "saveTableOrdering");
-        ((DraggableEditableCardsAdapter)adapter).saveNewOrder(getTableController());
+        adapter.saveNewOrder(getTableController());
     }
 
     @Override

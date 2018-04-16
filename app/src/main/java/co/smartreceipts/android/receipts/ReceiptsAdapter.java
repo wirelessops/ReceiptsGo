@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
@@ -122,8 +121,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         if (isOldCustomOrderIdFormatUsed()) {
             setDefaultOrderIds();
             writeUpdatedItems(items);
-
-            Toast.makeText(context, "Sorry, your receipts now are ordered by date.", Toast.LENGTH_SHORT).show();
             return;
         }
 
