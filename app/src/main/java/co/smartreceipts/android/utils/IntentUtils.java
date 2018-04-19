@@ -103,23 +103,29 @@ public class IntentUtils {
         Preconditions.checkNotNull(context);
         Preconditions.checkNotNull(files);
 
+        // need to use Intent.ACTION_SEND_MULTIPLE even if files.size == 1 because of Google Drive bug
+        // see: https://stackoverflow.com/questions/35382474/google-drive-changes-file-name-to-intent-extra-subject-when-sharing-a-file-via-i
+        final Intent sentIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+
         if (files.size() == 1) {
-            return getSendIntent(context, files.get(0));
-        } else {
-            final Intent sentIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            sentIntent.setType("application/octet-stream");
-
             final String authority = String.format(Locale.US, AUTHORITY_FORMAT, context.getPackageName());
-            final ArrayList<Uri> uris = new ArrayList<>();
-            for (final File file : files) {
-                final Uri uri = getUriFromFile(context, authority, file);
-                uris.add(uri);
-            }
-
-            sentIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            sentIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            return sentIntent;
+            final Uri uri = getUriFromFile(context, authority, files.get(0));
+            final String mimeType = UriUtils.getMimeType(uri, context.getContentResolver());
+            sentIntent.setType(!TextUtils.isEmpty(mimeType) ? mimeType : "application/octet-stream");
+        } else {
+            sentIntent.setType("application/octet-stream");
         }
+
+        final String authority = String.format(Locale.US, AUTHORITY_FORMAT, context.getPackageName());
+        final ArrayList<Uri> uris = new ArrayList<>();
+        for (final File file : files) {
+            final Uri uri = getUriFromFile(context, authority, file);
+            uris.add(uri);
+        }
+
+        sentIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        sentIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return sentIntent;
     }
 
     public static Intent getImageCaptureIntent(@NonNull Context context, @NonNull File file) {
@@ -175,11 +181,9 @@ public class IntentUtils {
 
         if (GOOGLE.equals(name)) {
             return new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
-        }
-        else if (AMAZON.equals(name)) {
+        } else if (AMAZON.equals(name)) {
             return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=" + packageName));
-        }
-        else {
+        } else {
             // Default to Google... May lead to a crash if user does not have this installed
             return new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
         }
