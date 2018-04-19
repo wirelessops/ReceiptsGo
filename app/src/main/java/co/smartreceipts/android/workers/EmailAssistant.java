@@ -88,7 +88,7 @@ public class EmailAssistant {
     private final Trip trip;
     private final PurchaseWallet purchaseWallet;
 
-    public static final Intent getEmailDeveloperIntent() {
+    private static Intent getEmailDeveloperIntent() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setType("text/plain");
         setEmailDeveloperRecipient(intent);
@@ -100,20 +100,20 @@ public class EmailAssistant {
         intent.setData(Uri.parse("mailto:" + DEVELOPER_EMAIL));
     }
 
-    public static final Intent getEmailDeveloperIntent(String subject) {
+    public static Intent getEmailDeveloperIntent(String subject) {
         Intent intent = getEmailDeveloperIntent();
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         return intent;
     }
 
 
-    public static final Intent getEmailDeveloperIntent(String subject, String body) {
+    public static Intent getEmailDeveloperIntent(String subject, String body) {
         Intent intent = getEmailDeveloperIntent(subject);
         intent.putExtra(Intent.EXTRA_TEXT, body);
         return intent;
     }
 
-    public static final Intent getEmailDeveloperIntent(Context context, String subject, String body, List<File> files) {
+    public static Intent getEmailDeveloperIntent(Context context, String subject, String body, List<File> files) {
         Intent intent = IntentUtils.getSendIntent(context, files);
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{DEVELOPER_EMAIL});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -138,7 +138,7 @@ public class EmailAssistant {
         attachmentWriter.execute(trip);
     }
 
-    public void onAttachmentsCreated(File[] attachments) {
+    private void onAttachmentsCreated(File[] attachments) {
         List<File> files = new ArrayList<>();
         StringBuilder bodyBuilder = new StringBuilder();
         String path = "";
@@ -225,7 +225,7 @@ public class EmailAssistant {
         public boolean didZIPFailCompletely = false;
         public boolean didZIPFailPartially = false;
 
-        public static final WriterResults getFullFailureInstance() {
+        public static WriterResults getFullFailureInstance() {
             WriterResults result = new WriterResults();
             result.didPDFFailCompletely = true;
             result.didPDFFailPartially = true;
