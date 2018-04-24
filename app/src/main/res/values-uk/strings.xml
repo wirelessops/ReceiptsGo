@@ -227,7 +227,8 @@
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Повний звіт у форматі PDF</string>
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF звіт - без таблиці</string>
     <string name="DIALOG_EMAIL_CHECKBOX_CSV">Файл CSV</string>
-    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP з JPG</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - файли чеків з метаданими</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - файли чеків</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Будь ласка, виберіть принаймні один звіт</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Цей звіт не містить чеків</string>
     <string name="generate_report_tooltip">Натисніть, щоб налаштувати зовнішній вигляд звіту</string>

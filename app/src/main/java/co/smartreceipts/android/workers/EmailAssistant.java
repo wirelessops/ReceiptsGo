@@ -68,7 +68,8 @@ public class EmailAssistant {
         PDF_FULL(0),
         PDF_IMAGES_ONLY(1),
         CSV(2),
-        ZIP_IMAGES_STAMPED(3);
+        ZIP(3),
+        ZIP_WITH_METADATA(4);
 
         private final int index;
 
@@ -166,12 +167,12 @@ public class EmailAssistant {
                 bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.CSV.getIndex()].getAbsolutePath()));
             }
         }
-        if (attachments[EmailOptions.ZIP_IMAGES_STAMPED.getIndex()] != null) {
-            path = attachments[EmailOptions.ZIP_IMAGES_STAMPED.getIndex()].getParentFile().getAbsolutePath();
-            files.add(attachments[EmailOptions.ZIP_IMAGES_STAMPED.getIndex()]);
-            if (attachments[EmailOptions.ZIP_IMAGES_STAMPED.getIndex()].length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
+        if (attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()] != null) {
+            path = attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()].getParentFile().getAbsolutePath();
+            files.add(attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()]);
+            if (attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()].length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
                 bodyBuilder.append("\n");
-                bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.ZIP_IMAGES_STAMPED.getIndex()].getAbsolutePath()));
+                bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()].getAbsolutePath()));
             }
         }
         Logger.info(this, "Built the following files [{}].", files);
@@ -258,7 +259,7 @@ public class EmailAssistant {
             mPreferenceManager = persistenceManager.getPreferenceManager();
             mProgressDialog = new WeakReference<>(dialog);
             mOptions = options;
-            mFiles = new File[]{null, null, null, null};
+            mFiles = new File[]{null, null, null, null, null};
             memoryErrorOccured = false;
         }
 
@@ -377,10 +378,14 @@ public class EmailAssistant {
                     results.didCSVFailCompletely = true;
                 }
             }
-            if (mOptions.contains(EmailOptions.ZIP_IMAGES_STAMPED)) {
+            if (mOptions.contains(EmailOptions.ZIP)) {
+                // TODO: 20.04.2018 add new zip
+            }
+            if (mOptions.contains(EmailOptions.ZIP_WITH_METADATA)) {
                 mStorageManager.delete(dir, dir.getName() + ".zip");
                 dir = mStorageManager.mkdir(trip.getDirectory(), trip.getName());
                 for (int i = 0; i < len; i++) {
+                    // TODO: 20.04.2018
                     if (!filterOutReceipt(mPreferenceManager, receipts.get(i)) && receipts.get(i).hasImage()) {
                         try {
                             Bitmap b = stampImage(trip, receipts.get(i), Bitmap.Config.ARGB_8888);
@@ -409,7 +414,7 @@ public class EmailAssistant {
                 }
                 File zip = mStorageManager.zipBuffered(dir, 2048);
                 mStorageManager.deleteRecursively(dir);
-                mFiles[EmailOptions.ZIP_IMAGES_STAMPED.getIndex()] = zip;
+                mFiles[EmailOptions.ZIP_WITH_METADATA.getIndex()] = zip;
             }
             return results;
         }

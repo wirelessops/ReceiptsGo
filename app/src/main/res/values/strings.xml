@@ -236,7 +236,8 @@
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Full PDF Report</string>
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF Report - No Table</string>
     <string name="DIALOG_EMAIL_CHECKBOX_CSV">CSV File</string>
-    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP - Stamped JPGs</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - Receipt Files with Metadata</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Receipts Files</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Please Check At Least One Report</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">There are No Receipts in this Report</string>
     <string name="generate_report_tooltip">Tap to configure the report layouts</string>

@@ -225,7 +225,8 @@
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Rapport PDF complet</string>
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">Rapport PDF - Aucun tableau</string>
     <string name="DIALOG_EMAIL_CHECKBOX_CSV">Fichier CSV</string>
-    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED">ZIP - JPGs indiqués</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - Fichiers de reçus avec métadonnées</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Fichiers de reçus</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Veuillez vérifier au moins un rapport</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Il n’y a aucun reçu dans ce rapport</string>
     <string name="generate_report_tooltip">Cliquez pour configurer la mise en page du rapport</string>

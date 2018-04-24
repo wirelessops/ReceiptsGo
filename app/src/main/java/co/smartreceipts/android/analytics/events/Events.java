@@ -65,7 +65,8 @@ public final class Events {
         public static final Event FullPdfReport = new DefaultEvent(Category.Generate, "FullPdfReport");
         public static final Event ImagesPdfReport = new DefaultEvent(Category.Generate, "ImagesPdfReport");
         public static final Event CsvReport = new DefaultEvent(Category.Generate, "CsvReport");
-        public static final Event StampedZipReport = new DefaultEvent(Category.Generate, "StampedZipReport");
+        public static final Event ZipWithMetadataReport = new DefaultEvent(Category.Generate, "ZipWithMetadataReport");
+        public static final Event ZipReport = new DefaultEvent(Category.Generate, "ZipReport");
         public static final Event ReportPdfRenderingError = new DefaultEvent(Category.Generate, "ReportPdfRenderingError");
     }
 

@@ -52,7 +52,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
     private CheckBox csvCheckbox;
-    private CheckBox zipStampedImagesCheckbox;
+    private CheckBox zipCheckbox;
+    private CheckBox zipWithMetadataCheckbox;
 
     private Trip trip;
 
@@ -71,10 +72,11 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.generate_report_layout, container, false);
-        pdfFullCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.DIALOG_EMAIL_CHECKBOX_PDF_FULL);
-        pdfImagesCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.DIALOG_EMAIL_CHECKBOX_PDF_IMAGES);
-        csvCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.DIALOG_EMAIL_CHECKBOX_CSV);
-        zipStampedImagesCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.DIALOG_EMAIL_CHECKBOX_ZIP_IMAGES_STAMPED);
+        pdfFullCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_pdf_full);
+        pdfImagesCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_pdf_images);
+        csvCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_csv);
+        zipWithMetadataCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_zip_with_metadata);
+        zipCheckbox = root.findViewById(R.id.dialog_email_checkbox_zip);
         root.findViewById(R.id.receipt_action_send).setOnClickListener(this);
         root.findViewById(R.id.generate_report_tooltip).setOnClickListener(v -> {
             analytics.record(Events.Informational.ConfigureReport);
@@ -112,7 +114,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (!pdfFullCheckbox.isChecked() && !pdfImagesCheckbox.isChecked() && !csvCheckbox.isChecked() && !zipStampedImagesCheckbox.isChecked()) {
+        if (!pdfFullCheckbox.isChecked() && !pdfImagesCheckbox.isChecked() && !csvCheckbox.isChecked() &&
+                !zipCheckbox.isChecked() && !zipWithMetadataCheckbox.isChecked()) {
             Toast.makeText(getActivity(), flex.getString(getActivity(), R.string.DIALOG_EMAIL_TOAST_NO_SELECTION), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -128,8 +131,11 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         if (csvCheckbox.isChecked()) {
             analytics.record(Events.Generate.CsvReport);
         }
-        if (zipStampedImagesCheckbox.isChecked()) {
-            analytics.record(Events.Generate.StampedZipReport);
+        if (zipWithMetadataCheckbox.isChecked()) {
+            analytics.record(Events.Generate.ZipWithMetadataReport);
+        }
+        if (zipCheckbox.isChecked()) {
+            analytics.record(Events.Generate.ZipReport);
         }
 
         // TODO: Off the UI thread :/
@@ -137,20 +143,21 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
 
             if (persistenceManager.getDatabase().getDistanceTable().getBlocking(trip, true).isEmpty() ||
                     !(pdfFullCheckbox.isChecked() || csvCheckbox.isChecked())) {
-                // Only allow report processing to continue with no reciepts if we're doing a full pdf or CSV report with distances
+                // Only allow report processing to continue with no receipts if we're doing a full pdf or CSV report with distances
                 Toast.makeText(getActivity(), flex.getString(getActivity(), R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS), Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 if (csvCheckbox.isChecked() && !preferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)) {
                     // user wants to create CSV report with just distances but this option is disabled
-                    Toast.makeText(getActivity(),getString(R.string.toast_csv_report_distances, getString(R.string.pref_distance_print_table_title)), Toast.LENGTH_LONG)
+                    Toast.makeText(getActivity(), getString(R.string.toast_csv_report_distances, getString(R.string.pref_distance_print_table_title)), Toast.LENGTH_LONG)
                             .show();
                     navigationHandler.navigateToSettingsScrollToDistanceSection();
                     return;
                 }
                 // Uncheck "Illegal" Items
                 pdfImagesCheckbox.setChecked(false);
-                zipStampedImagesCheckbox.setChecked(false);
+                zipWithMetadataCheckbox.setChecked(false);
+                zipCheckbox.setChecked(false);
             }
         }
 
@@ -164,8 +171,11 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         if (csvCheckbox.isChecked()) {
             options.add(EmailAssistant.EmailOptions.CSV);
         }
-        if (zipStampedImagesCheckbox.isChecked()) {
-            options.add(EmailAssistant.EmailOptions.ZIP_IMAGES_STAMPED);
+        if (zipWithMetadataCheckbox.isChecked()) {
+            options.add(EmailAssistant.EmailOptions.ZIP_WITH_METADATA);
+        }
+        if (zipCheckbox.isChecked()) {
+            options.add(EmailAssistant.EmailOptions.ZIP);
         }
 
         final EmailAssistant emailAssistant = new EmailAssistant(navigationHandler, getActivity(),
