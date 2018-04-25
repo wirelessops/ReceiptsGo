@@ -27,7 +27,8 @@ public class SmartReceiptsHostConfiguration implements HostConfiguration {
 
     @NonNull
     @Override
-    public final OkHttpClient getClient() {
+    public OkHttpClient getClient() {
+
         return okHttpBuilder().addInterceptor(new SmartReceiptsAuthenticatedRequestInterceptor(identityStore)).build();
     }
 
