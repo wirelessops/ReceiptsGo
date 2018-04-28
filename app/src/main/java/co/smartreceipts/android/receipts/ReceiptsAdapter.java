@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -160,6 +161,8 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
             updatedItems.add(updatedReceipt);
         }
+
+        Collections.sort(updatedItems);
 
         items.clear();
         items.addAll(updatedItems);
