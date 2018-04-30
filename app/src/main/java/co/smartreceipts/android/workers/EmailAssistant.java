@@ -107,7 +107,6 @@ public class EmailAssistant {
         return intent;
     }
 
-
     public static Intent getEmailDeveloperIntent(String subject, String body) {
         Intent intent = getEmailDeveloperIntent(subject);
         intent.putExtra(Intent.EXTRA_TEXT, body);
@@ -143,38 +142,18 @@ public class EmailAssistant {
         List<File> files = new ArrayList<>();
         StringBuilder bodyBuilder = new StringBuilder();
         String path = "";
-        if (attachments[EmailOptions.PDF_FULL.getIndex()] != null) {
-            path = attachments[EmailOptions.PDF_FULL.getIndex()].getParentFile().getAbsolutePath();
-            files.add(attachments[EmailOptions.PDF_FULL.getIndex()]);
-            if (attachments[EmailOptions.PDF_FULL.getIndex()].length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
-                bodyBuilder.append("\n");
-                bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.PDF_FULL.getIndex()].getAbsolutePath()));
+
+        for (File attachment : attachments) {
+            if (attachment != null) {
+                path = attachment.getParentFile().getAbsolutePath();
+                files.add(attachment);
+                if (attachment.length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
+                    bodyBuilder.append("\n");
+                    bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachment.getAbsolutePath()));
+                }
             }
         }
-        if (attachments[EmailOptions.PDF_IMAGES_ONLY.getIndex()] != null) {
-            path = attachments[EmailOptions.PDF_IMAGES_ONLY.getIndex()].getParentFile().getAbsolutePath();
-            files.add(attachments[EmailOptions.PDF_IMAGES_ONLY.getIndex()]);
-            if (attachments[EmailOptions.PDF_IMAGES_ONLY.getIndex()].length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
-                bodyBuilder.append("\n");
-                bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.PDF_IMAGES_ONLY.getIndex()].getAbsolutePath()));
-            }
-        }
-        if (attachments[EmailOptions.CSV.getIndex()] != null) {
-            path = attachments[EmailOptions.CSV.getIndex()].getParentFile().getAbsolutePath();
-            files.add(attachments[EmailOptions.CSV.getIndex()]);
-            if (attachments[EmailOptions.CSV.getIndex()].length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
-                bodyBuilder.append("\n");
-                bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.CSV.getIndex()].getAbsolutePath()));
-            }
-        }
-        if (attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()] != null) {
-            path = attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()].getParentFile().getAbsolutePath();
-            files.add(attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()]);
-            if (attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()].length() > 5000000) { //Technically, this should be 5,242,880 but I'd rather give a warning buffer
-                bodyBuilder.append("\n");
-                bodyBuilder.append(context.getString(R.string.email_body_subject_5mb_warning, attachments[EmailOptions.ZIP_WITH_METADATA.getIndex()].getAbsolutePath()));
-            }
-        }
+
         Logger.info(this, "Built the following files [{}].", files);
 
         String body = bodyBuilder.toString();
@@ -205,12 +184,7 @@ public class EmailAssistant {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.error_no_send_intent_dialog_title)
                     .setMessage(context.getString(R.string.error_no_send_intent_dialog_message, path))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    })
+                    .setPositiveButton(android.R.string.ok, (dialog, id) -> dialog.cancel())
                     .show();
         }
     }
@@ -286,6 +260,7 @@ public class EmailAssistant {
             }
 
             Logger.info(this, "Generating the following report types {}.", mOptions);
+
             if (mOptions.contains(EmailOptions.PDF_FULL)) {
                 final Report pdfFullReport = new PdfBoxFullPdfReport(context, mDB,
                         persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(),
@@ -299,6 +274,7 @@ public class EmailAssistant {
                     results.didPDFFailCompletely = true;
                 }
             }
+
             if (mOptions.contains(EmailOptions.PDF_IMAGES_ONLY)) {
                 final Report pdfimagesReport = new PdfBoxImagesOnlyReport(context, persistenceManager, flex);
                 try {
@@ -307,6 +283,7 @@ public class EmailAssistant {
                     results.didPDFFailCompletely = true;
                 }
             }
+
             if (mOptions.contains(EmailOptions.CSV)) {
                 mStorageManager.delete(dir, dir.getName() + ".csv");
 
@@ -378,44 +355,68 @@ public class EmailAssistant {
                     results.didCSVFailCompletely = true;
                 }
             }
+
             if (mOptions.contains(EmailOptions.ZIP)) {
-                // TODO: 20.04.2018 add new zip
-            }
-            if (mOptions.contains(EmailOptions.ZIP_WITH_METADATA)) {
                 mStorageManager.delete(dir, dir.getName() + ".zip");
                 dir = mStorageManager.mkdir(trip.getDirectory(), trip.getName());
+
                 for (int i = 0; i < len; i++) {
-                    // TODO: 20.04.2018
-                    if (!filterOutReceipt(mPreferenceManager, receipts.get(i)) && receipts.get(i).hasImage()) {
-                        try {
-                            Bitmap b = stampImage(trip, receipts.get(i), Bitmap.Config.ARGB_8888);
-                            if (b != null) {
-                                mStorageManager.writeBitmap(dir, b, receipts.get(i).getImage().getName(), CompressFormat.JPEG, 85);
-                                b.recycle();
-                                b = null;
-                            }
-                        } catch (OutOfMemoryError e) {
-                            Logger.error(this, "Trying to recover from OOM", e);
-                            System.gc();
-                            try {
-                                Bitmap b = stampImage(trip, receipts.get(i), Bitmap.Config.RGB_565);
-                                if (b != null) {
-                                    mStorageManager.writeBitmap(dir, b, receipts.get(i).getImage().getName(), CompressFormat.JPEG, 85);
-                                    b.recycle();
-                                }
-                            } catch (OutOfMemoryError e2) {
-                                Logger.error(this, "Failed to recover from OOM", e2);
-                                results.didZIPFailCompletely = true;
-                                memoryErrorOccured = true;
-                                break;
-                            }
-                        }
+                    final Receipt receipt = receipts.get(i);
+                    if (!filterOutReceipt(mPreferenceManager, receipt) && receipt.hasFile()) {
+                        final byte[] data = mStorageManager.read(receipt.getFile());
+                        if (data != null)
+                            mStorageManager.write(dir, receipt.getFile().getName(), data);
                     }
                 }
                 File zip = mStorageManager.zipBuffered(dir, 2048);
                 mStorageManager.deleteRecursively(dir);
-                mFiles[EmailOptions.ZIP_WITH_METADATA.getIndex()] = zip;
+                mFiles[EmailOptions.ZIP.getIndex()] = zip;
             }
+
+            if (mOptions.contains(EmailOptions.ZIP_WITH_METADATA)) {
+                mStorageManager.delete(dir, dir.getName() + ".zip");
+                dir = mStorageManager.mkdir(trip.getDirectory(), trip.getName());
+                for (int i = 0; i < len; i++) {
+                    final Receipt receipt = receipts.get(i);
+
+                    if (!filterOutReceipt(mPreferenceManager, receipt)) {
+                        if (receipt.hasImage()) {
+                            try {
+                                Bitmap b = stampImage(trip, receipt, Bitmap.Config.ARGB_8888);
+                                if (b != null) {
+                                    mStorageManager.writeBitmap(dir, b, receipt.getImage().getName(), CompressFormat.JPEG, 85);
+                                    b.recycle();
+                                    b = null;
+                                }
+                            } catch (OutOfMemoryError e) {
+                                Logger.error(this, "Trying to recover from OOM", e);
+                                System.gc();
+                                try {
+                                    Bitmap b = stampImage(trip, receipt, Bitmap.Config.RGB_565);
+                                    if (b != null) {
+                                        mStorageManager.writeBitmap(dir, b, receipt.getImage().getName(), CompressFormat.JPEG, 85);
+                                        b.recycle();
+                                    }
+                                } catch (OutOfMemoryError e2) {
+                                    Logger.error(this, "Failed to recover from OOM", e2);
+                                    results.didZIPFailCompletely = true;
+                                    memoryErrorOccured = true;
+                                    break;
+                                }
+                            }
+                        } else if (receipt.hasPDF()) {
+                            final byte[] data = mStorageManager.read(receipt.getFile());
+
+                            if (data != null)
+                                mStorageManager.write(dir, receipt.getFile().getName(), data);
+                        }
+                    }
+                }
+                File zipWithMetadata = mStorageManager.zipBuffered(dir, 2048);
+                mStorageManager.deleteRecursively(dir);
+                mFiles[EmailOptions.ZIP_WITH_METADATA.getIndex()] = zipWithMetadata;
+            }
+
             return results;
         }
 
