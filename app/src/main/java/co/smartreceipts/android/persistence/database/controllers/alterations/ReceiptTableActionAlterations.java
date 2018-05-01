@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.BuilderFactory1;
@@ -22,10 +23,10 @@ import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactoryFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
+import co.smartreceipts.android.receipts.helper.ReceiptCustomOrderIdHelper;
 import co.smartreceipts.android.utils.FileUtils;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 
@@ -165,28 +166,6 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     }
 
     @NonNull
-    public Observable<List<? extends Map.Entry<Receipt, Receipt>>> getReceiptsToSwapUp(@NonNull Receipt receiptToSwapUp, @NonNull List<Receipt> receipts) {
-        final int indexToSwapWith = receipts.indexOf(receiptToSwapUp) - 1;
-        if (indexToSwapWith < 0) {
-            return Observable.error(new RuntimeException("This receipt is at the start of the list already"));
-        } else {
-            final Receipt swappingWith = receipts.get(indexToSwapWith);
-            return Observable.<List<? extends Map.Entry<Receipt, Receipt>>>just(swapDates(receiptToSwapUp, swappingWith, true));
-        }
-    }
-
-    @NonNull
-    public Observable<List<? extends Map.Entry<Receipt, Receipt>>> getReceiptsToSwapDown(@NonNull Receipt receiptToSwapDown, @NonNull List<Receipt> receipts) {
-        final int indexToSwapWith = receipts.indexOf(receiptToSwapDown) + 1;
-        if (indexToSwapWith > (receipts.size() - 1)) {
-            return Observable.error(new RuntimeException("This receipt is at the end of the list already"));
-        } else {
-            final Receipt swappingWith = receipts.get(indexToSwapWith);
-            return Observable.<List<? extends Map.Entry<Receipt, Receipt>>>just(swapDates(receiptToSwapDown, swappingWith, false));
-        }
-    }
-
-    @NonNull
     private Receipt updateReceiptFileNameBlocking(@NonNull Receipt receipt) {
         final ReceiptBuilderFactory builder = mReceiptBuilderFactoryFactory.build(receipt);
         final StringBuilder stringBuilder = new StringBuilder(receipt.getIndex() + "_");
@@ -210,6 +189,12 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     private Receipt copyReceiptFileBlocking(@NonNull Receipt receipt, @NonNull Trip toTrip) throws IOException {
         final ReceiptBuilderFactory builder = mReceiptBuilderFactoryFactory.build(receipt);
         builder.setTrip(toTrip);
+
+        if (receipt.getCustomOrderId() != 0) {
+            builder.setCustomOrderId(DateUtils.getDays(receipt.getDate()) * ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR +
+                    ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR - 1);
+        }
+
         if (receipt.hasFile()) {
             final File destination = mStorageManager.getFile(toTrip.getDirectory(), System.currentTimeMillis() + receipt.getFileName());
             if (mStorageManager.copy(receipt.getFile(), destination, true)) {
@@ -219,6 +204,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                 throw new IOException("Failed to copy the receipt file to the new trip: " + toTrip.getName());
             }
         }
+
         builder.setIndex(getNextReceiptIndex(receipt));
         return updateReceiptFileNameBlocking(builder.build());
     }
