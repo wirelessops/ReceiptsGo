@@ -33,31 +33,31 @@ import wb.android.storage.StorageManager;
 public class ReceiptTableActionAlterations extends StubTableActionAlterations<Receipt> {
 
     private final Context context;
-    private final ReceiptsTable mReceiptsTable;
-    private final StorageManager mStorageManager;
-    private final BuilderFactory1<Receipt, ReceiptBuilderFactory> mReceiptBuilderFactoryFactory;
+    private final ReceiptsTable receiptsTable;
+    private final StorageManager storageManager;
+    private final BuilderFactory1<Receipt, ReceiptBuilderFactory> receiptBuilderFactoryFactory;
 
     public ReceiptTableActionAlterations(@NonNull Context context, @NonNull ReceiptsTable receiptsTable,
                                          @NonNull StorageManager storageManager) {
         this.context = Preconditions.checkNotNull(context);
-        mReceiptsTable = Preconditions.checkNotNull(receiptsTable);
-        mStorageManager = Preconditions.checkNotNull(storageManager);
-        mReceiptBuilderFactoryFactory = new ReceiptBuilderFactoryFactory();
+        this.receiptsTable = Preconditions.checkNotNull(receiptsTable);
+        this.storageManager = Preconditions.checkNotNull(storageManager);
+        receiptBuilderFactoryFactory = new ReceiptBuilderFactoryFactory();
     }
 
     ReceiptTableActionAlterations(@NonNull Context context, @NonNull ReceiptsTable receiptsTable,
                                   @NonNull StorageManager storageManager, @Nullable BuilderFactory1<Receipt, ReceiptBuilderFactory> receiptBuilderFactoryFactory) {
         this.context = Preconditions.checkNotNull(context);
-        mReceiptsTable = Preconditions.checkNotNull(receiptsTable);
-        mStorageManager = Preconditions.checkNotNull(storageManager);
-        mReceiptBuilderFactoryFactory = Preconditions.checkNotNull(receiptBuilderFactoryFactory);
+        this.receiptsTable = Preconditions.checkNotNull(receiptsTable);
+        this.storageManager = Preconditions.checkNotNull(storageManager);
+        this.receiptBuilderFactoryFactory = Preconditions.checkNotNull(receiptBuilderFactoryFactory);
     }
 
     @NonNull
     @Override
     public Single<Receipt> preInsert(@NonNull final Receipt receipt) {
         return Single.fromCallable(() ->
-                updateReceiptFileNameBlocking(mReceiptBuilderFactoryFactory.build(receipt).setIndex(getNextReceiptIndex(receipt)).build()));
+                updateReceiptFileNameBlocking(receiptBuilderFactoryFactory.build(receipt).setIndex(getNextReceiptIndex(receipt)).build()));
     }
 
     @NonNull
@@ -68,7 +68,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                 if (!newReceipt.getFile().equals(oldReceipt.getFile())) {
                     // If we changed the receipt file, replace the old file name
                     if (oldReceipt.getFile() != null) {
-                        final ReceiptBuilderFactory factory = mReceiptBuilderFactoryFactory.build(newReceipt);
+                        final ReceiptBuilderFactory factory = receiptBuilderFactoryFactory.build(newReceipt);
                         final String oldExtension = "." + UriUtils.getExtension(oldReceipt.getFile(), context);
                         final String newExtension = "." + UriUtils.getExtension(newReceipt.getFile(), context);
                         if (newExtension.equals(oldExtension)) {
@@ -112,7 +112,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                 // Delete old file if user removed or changed it
                 if (newReceipt.getFile() == null  || !newReceipt.getFile().equals(oldReceipt.getFile())) {
                     Picasso.with(context).invalidate(oldReceipt.getFile());
-                    mStorageManager.delete(oldReceipt.getFile());
+                    storageManager.delete(oldReceipt.getFile());
                 }
             }
 
@@ -129,7 +129,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             }
 
             if (receipt.getFile() != null) {
-                mStorageManager.delete(receipt.getFile());
+                storageManager.delete(receipt.getFile());
             }
             return receipt;
         });
@@ -153,9 +153,9 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     public void postMove(@NonNull Receipt oldReceipt, @Nullable Receipt newReceipt) throws Exception {
         if (newReceipt != null) { // i.e. - the move succeeded (delete the old data)
             Logger.info(this, "Completed the move procedure");
-            if (mReceiptsTable.delete(oldReceipt, new DatabaseOperationMetadata()).blockingGet() != null) {
+            if (receiptsTable.delete(oldReceipt, new DatabaseOperationMetadata()).blockingGet() != null) {
                 if (oldReceipt.hasFile()) {
-                    if (!mStorageManager.delete(oldReceipt.getFile())) {
+                    if (!storageManager.delete(oldReceipt.getFile())) {
                         Logger.error(this, "Failed to delete the moved receipt's file");
                     }
                 }
@@ -167,7 +167,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
 
     @NonNull
     private Receipt updateReceiptFileNameBlocking(@NonNull Receipt receipt) {
-        final ReceiptBuilderFactory builder = mReceiptBuilderFactoryFactory.build(receipt);
+        final ReceiptBuilderFactory builder = receiptBuilderFactoryFactory.build(receipt);
         final StringBuilder stringBuilder = new StringBuilder(receipt.getIndex() + "_");
         stringBuilder.append(FileUtils.omitIllegalCharactersFromFileName(receipt.getName().trim()));
         final File file = receipt.getFile();
@@ -175,10 +175,10 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             final String extension = UriUtils.getExtension(file, context);
             stringBuilder.append('.').append(extension);
             final String newName = stringBuilder.toString();
-            final File renamedFile = mStorageManager.getFile(receipt.getTrip().getDirectory(), newName);
+            final File renamedFile = storageManager.getFile(receipt.getTrip().getDirectory(), newName);
             if (!renamedFile.exists()) {
                 Logger.info(this, "Changing image name from: {} to: {}", file.getName(), newName);
-                builder.setFile(mStorageManager.rename(file, newName)); // Returns oldFile on failure
+                builder.setFile(storageManager.rename(file, newName)); // Returns oldFile on failure
             }
         }
 
@@ -187,7 +187,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
 
     @NonNull
     private Receipt copyReceiptFileBlocking(@NonNull Receipt receipt, @NonNull Trip toTrip) throws IOException {
-        final ReceiptBuilderFactory builder = mReceiptBuilderFactoryFactory.build(receipt);
+        final ReceiptBuilderFactory builder = receiptBuilderFactoryFactory.build(receipt);
         builder.setTrip(toTrip);
 
         if (receipt.getCustomOrderId() != 0) {
@@ -196,8 +196,8 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
         }
 
         if (receipt.hasFile()) {
-            final File destination = mStorageManager.getFile(toTrip.getDirectory(), System.currentTimeMillis() + receipt.getFileName());
-            if (mStorageManager.copy(receipt.getFile(), destination, true)) {
+            final File destination = storageManager.getFile(toTrip.getDirectory(), System.currentTimeMillis() + receipt.getFileName());
+            if (storageManager.copy(receipt.getFile(), destination, true)) {
                 Logger.info(this, "Successfully copied the receipt file to the new trip: {}", toTrip.getName());
                 builder.setFile(destination);
             } else {
@@ -211,8 +211,8 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
 
     @NonNull
     private List<? extends Map.Entry<Receipt, Receipt>> swapDates(@NonNull Receipt receipt1, @NonNull Receipt receipt2, boolean isSwappingUp) {
-        final ReceiptBuilderFactory builder1 = mReceiptBuilderFactoryFactory.build(receipt1);
-        final ReceiptBuilderFactory builder2 = mReceiptBuilderFactoryFactory.build(receipt2);
+        final ReceiptBuilderFactory builder1 = receiptBuilderFactoryFactory.build(receipt1);
+        final ReceiptBuilderFactory builder2 = receiptBuilderFactoryFactory.build(receipt2);
         long dateShift = 0;
         if (receipt1.getDate().equals(receipt2.getDate())) {
             // We shift this way to avoid possible issues wrt sorting order if these are identical
@@ -226,6 +226,6 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     }
 
     private int getNextReceiptIndex(@NonNull Receipt receipt) {
-        return mReceiptsTable.get(receipt.getTrip()).blockingGet().size() + 1;
+        return receiptsTable.get(receipt.getTrip()).blockingGet().size() + 1;
     }
 }
