@@ -117,7 +117,8 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
         Logger.debug(this, "Moving receipt from position {} to position {}", realFromPosition, realToPosition);
 
-        if (!orderingPreferencesManager.isReceiptsTableOrdered()) setDefaultOrderIds();
+        if (!orderingPreferencesManager.isReceiptsTableOrdered() || !isThisTripOrdered())
+            setDefaultOrderIds();
 
         if (isOldCustomOrderIdFormatUsed()) {
             setDefaultOrderIds();
@@ -189,6 +190,15 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         }
 
         return false;
+    }
+
+    private boolean isThisTripOrdered() {
+        for (Receipt item : items) {
+            if (item.getCustomOrderId() == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void writeUpdatedItems(List<Receipt> receipts) {
