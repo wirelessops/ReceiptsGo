@@ -30,7 +30,12 @@ public class SmartReceiptsAuthenticatedRequestInterceptor implements Interceptor
         final Request request = chain.request();
         final HttpUrl.Builder builder = request.url().newBuilder();
         if (identityStore.isLoggedIn()) {
-            builder.addQueryParameter("auth_params[email]", identityStore.getEmail().getId());
+            if (identityStore.getUserId() != null) {
+                builder.addQueryParameter("auth_params[id]", identityStore.getUserId().getId());
+            } else {
+                // Legacy route for authentication
+                builder.addQueryParameter("auth_params[email]", identityStore.getEmail().getId());
+            }
             builder.addQueryParameter("auth_params[token]", identityStore.getToken().getId());
         }
         return chain.proceed(request.newBuilder().url(builder.build()).build());

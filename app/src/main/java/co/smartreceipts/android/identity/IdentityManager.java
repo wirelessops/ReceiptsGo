@@ -32,6 +32,7 @@ import co.smartreceipts.android.identity.store.EmailAddress;
 import co.smartreceipts.android.identity.store.IdentityStore;
 import co.smartreceipts.android.identity.store.MutableIdentityStore;
 import co.smartreceipts.android.identity.store.Token;
+import co.smartreceipts.android.identity.store.UserId;
 import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
@@ -67,6 +68,12 @@ public class IdentityManager implements IdentityStore {
     @Override
     public EmailAddress getEmail() {
         return mutableIdentityStore.getEmail();
+    }
+
+    @Nullable
+    @Override
+    public UserId getUserId() {
+        return mutableIdentityStore.getUserId();
     }
 
     @Nullable
@@ -117,8 +124,8 @@ public class IdentityManager implements IdentityStore {
 
         return loginResponseObservable
                 .flatMap(loginResponse -> {
-                        if (loginResponse.getToken() != null) {
-                            mutableIdentityStore.setEmailAndToken(credentials.getEmail(), loginResponse.getToken());
+                        if (loginResponse.getToken() != null && loginResponse.getId() != null) {
+                            mutableIdentityStore.setCredentials(credentials.getEmail(), loginResponse.getId(), loginResponse.getToken());
                             return Observable.just(loginResponse);
                         } else {
                             return Observable.error(new ApiValidationException("The response did not contain a valid API token"));
@@ -153,7 +160,7 @@ public class IdentityManager implements IdentityStore {
         this.analytics.record(Events.Identity.UserLogout);
 
         return serviceManager.getService(LogoutService.class).logOut()
-                .doOnNext(logoutResponse -> mutableIdentityStore.setEmailAndToken(null, null))
+                .doOnNext(logoutResponse -> mutableIdentityStore.setCredentials(null, null, null))
                 .doOnError(throwable -> {
                     Logger.error(this, "Failed to complete the log-out request", throwable);
                     analytics.record(Events.Identity.UserLogoutFailure);

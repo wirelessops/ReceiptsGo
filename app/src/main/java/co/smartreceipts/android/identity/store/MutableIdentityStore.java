@@ -15,9 +15,10 @@ import co.smartreceipts.android.di.scopes.ApplicationScope;
 public final class MutableIdentityStore implements IdentityStore {
 
     private static final String KEY_EMAIL = "identity_email_address";
+    private static final String KEY_USER_ID = "identity_user_id";
     private static final String KEY_TOKEN = "identity_token";
 
-    private final SharedPreferences mSharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     @Inject
     public MutableIdentityStore(Context context) {
@@ -26,13 +27,13 @@ public final class MutableIdentityStore implements IdentityStore {
 
     @VisibleForTesting
     public MutableIdentityStore(@NonNull SharedPreferences sharedPreferences) {
-        mSharedPreferences = sharedPreferences;
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Nullable
     @Override
     public EmailAddress getEmail() {
-        final String email = mSharedPreferences.getString(KEY_EMAIL, null);
+        final String email = sharedPreferences.getString(KEY_EMAIL, null);
         if (email != null) {
             return new EmailAddress(email);
         } else {
@@ -42,8 +43,19 @@ public final class MutableIdentityStore implements IdentityStore {
 
     @Nullable
     @Override
+    public UserId getUserId() {
+        final String userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId != null) {
+            return new UserId(userId);
+        } else {
+            return null;
+        }
+    }
+
+    @Nullable
+    @Override
     public Token getToken() {
-        final String token = mSharedPreferences.getString(KEY_TOKEN, null);
+        final String token = sharedPreferences.getString(KEY_TOKEN, null);
         if (token != null) {
             return new Token(token);
         } else {
@@ -53,12 +65,13 @@ public final class MutableIdentityStore implements IdentityStore {
 
     @Override
     public boolean isLoggedIn() {
-        return getEmail() != null && getToken() != null;
+        return (getEmail() != null || getUserId() != null) && getToken() != null;
     }
 
-    public void setEmailAndToken(@Nullable String emailAddress, @Nullable String token) {
-        final SharedPreferences.Editor editor = mSharedPreferences.edit();
+    public void setCredentials(@Nullable String emailAddress, @Nullable String userId, @Nullable String token) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_EMAIL, emailAddress);
+        editor.putString(KEY_USER_ID, userId);
         editor.putString(KEY_TOKEN, token);
         editor.apply();
     }

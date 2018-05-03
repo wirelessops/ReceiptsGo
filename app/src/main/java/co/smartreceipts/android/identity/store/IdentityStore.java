@@ -11,6 +11,12 @@ public interface IdentityStore {
     EmailAddress getEmail();
 
     /**
+     * @return the user's {@link UserId} or {@code null} if the user is not currently signed in
+     */
+    @Nullable
+    UserId getUserId();
+
+    /**
      * @return the user's {@link Token} or {@code null} if the user is not currently signed in
      */
     @Nullable
