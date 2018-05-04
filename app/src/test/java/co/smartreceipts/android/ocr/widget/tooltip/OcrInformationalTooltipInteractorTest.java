@@ -9,11 +9,16 @@ import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.Schedulers;
 
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -24,9 +29,6 @@ public class OcrInformationalTooltipInteractorTest {
 
     // Class under test
     OcrInformationalTooltipInteractor interactor;
-
-    @Mock
-    NavigationHandler navigationHandler;
 
     @Mock
     Analytics analytics;
@@ -40,16 +42,61 @@ public class OcrInformationalTooltipInteractorTest {
     @Mock
     IdentityManager identityManager;
 
+    @Mock
+    ConfigurationManager configurationManager;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        interactor = new OcrInformationalTooltipInteractor(navigationHandler, analytics, stateTracker, ocrPurchaseTracker, identityManager);
+        when(configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)).thenReturn(true);
+        interactor = new OcrInformationalTooltipInteractor(analytics, stateTracker, ocrPurchaseTracker, identityManager, configurationManager, Schedulers.trampoline());
+    }
+
+    @Test
+    public void initializeWithNoScansRemaining() {
+        when(ocrPurchaseTracker.getRemainingScansStream()).thenReturn(Observable.just(0));
+        interactor.initialize();
+        verifyZeroInteractions(stateTracker);
+    }
+
+    @Test
+    public void initializeWithManyScansRemaining() {
+        when(ocrPurchaseTracker.getRemainingScansStream()).thenReturn(Observable.just(100));
+        interactor.initialize();
+        verifyZeroInteractions(stateTracker);
+    }
+
+    @Test
+    public void initializeWithMinimumScansRemainingToProvideHint() {
+        when(ocrPurchaseTracker.getRemainingScansStream()).thenReturn(Observable.just(OcrInformationalTooltipInteractor.SCANS_LEFT_TO_INFORM));
+        interactor.initialize();
+        verify(stateTracker).setShouldShowOcrInfo(true);
+    }
+
+    @Test
+    public void initializeWithOneThenZeroScansRemaining() {
+        when(ocrPurchaseTracker.getRemainingScansStream()).thenReturn(Observable.just(1, 0));
+        interactor.initialize();
+        verify(stateTracker).setShouldShowOcrInfo(true);
+    }
+
+    @Test
+    public void getShowOcrTooltipWhenOcrIsNotEnabled() {
+        when(stateTracker.shouldShowOcrInfo()).thenReturn(Single.just(true));
+        when(configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)).thenReturn(false);
+
+        TestObserver<OcrTooltipMessageType> testObserver = interactor.getShowOcrTooltip().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertNoValues();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
     public void getShowOcrTooltipForLotsOfPurchasesWhenSetToShowTooltip() {
         when(stateTracker.shouldShowOcrInfo()).thenReturn(Single.just(true));
-        when(ocrPurchaseTracker.getRemainingScans()).thenReturn(6);
+        when(ocrPurchaseTracker.getRemainingScans()).thenReturn(OcrInformationalTooltipInteractor.SCANS_LEFT_TO_INFORM + 1);
         when(ocrPurchaseTracker.hasAvailableScans()).thenReturn(true);
         when(identityManager.isLoggedIn()).thenReturn(true);
 
@@ -58,13 +105,13 @@ public class OcrInformationalTooltipInteractorTest {
         testObserver.assertNoValues();
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker, never()).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
     public void getShowOcrTooltipForLimitedPurchasesWhenSetToShowTooltip() {
         when(stateTracker.shouldShowOcrInfo()).thenReturn(Single.just(true));
-        when(ocrPurchaseTracker.getRemainingScans()).thenReturn(5);
+        when(ocrPurchaseTracker.getRemainingScans()).thenReturn(OcrInformationalTooltipInteractor.SCANS_LEFT_TO_INFORM);
         when(identityManager.isLoggedIn()).thenReturn(true);
 
         TestObserver<OcrTooltipMessageType> testObserver = interactor.getShowOcrTooltip().test();
@@ -72,21 +119,21 @@ public class OcrInformationalTooltipInteractorTest {
         testObserver.assertValue(OcrTooltipMessageType.LimitedScansRemaining);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
     public void getShowOcrTooltipForLimitedPurchasesWhenNotSetToShowTooltip() {
         when(stateTracker.shouldShowOcrInfo()).thenReturn(Single.just(false));
-        when(ocrPurchaseTracker.getRemainingScans()).thenReturn(5);
+        when(ocrPurchaseTracker.getRemainingScans()).thenReturn(OcrInformationalTooltipInteractor.SCANS_LEFT_TO_INFORM);
         when(identityManager.isLoggedIn()).thenReturn(true);
 
         TestObserver<OcrTooltipMessageType> testObserver = interactor.getShowOcrTooltip().test();
         testObserver.awaitTerminalEvent();
-        testObserver.assertValue(OcrTooltipMessageType.LimitedScansRemaining);
+        testObserver.assertNoValues();
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
@@ -98,7 +145,7 @@ public class OcrInformationalTooltipInteractorTest {
         testObserver.assertValue(OcrTooltipMessageType.NotConfigured);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker, never()).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
@@ -110,7 +157,7 @@ public class OcrInformationalTooltipInteractorTest {
         testObserver.assertNoValues();
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker, never()).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
@@ -124,7 +171,7 @@ public class OcrInformationalTooltipInteractorTest {
         testObserver.assertValue(OcrTooltipMessageType.NoScansRemaining);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker, never()).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
@@ -138,20 +185,18 @@ public class OcrInformationalTooltipInteractorTest {
         testObserver.assertNoValues();
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        verify(stateTracker, never()).setShouldShowOcrInfo(true);
+        verify(stateTracker, never()).setShouldShowOcrInfo(anyBoolean());
     }
 
     @Test
     public void dismissTooltip() {
-        interactor.dismissTooltip();
+        interactor.markTooltipDismissed();
         verify(stateTracker).setShouldShowOcrInfo(false);
-        verifyZeroInteractions(navigationHandler);
     }
 
     @Test
     public void showOcrInformation() {
-        interactor.showOcrConfiguration();
+        interactor.markTooltipShown();
         verify(stateTracker).setShouldShowOcrInfo(false);
-        verify(navigationHandler).navigateToOcrConfigurationFragment();
     }
 }

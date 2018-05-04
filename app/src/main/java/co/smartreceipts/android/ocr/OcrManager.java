@@ -26,6 +26,7 @@ import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.ocr.push.OcrPushMessageReceiver;
 import co.smartreceipts.android.ocr.push.OcrPushMessageReceiverFactory;
 import co.smartreceipts.android.ocr.widget.alert.OcrProcessingStatus;
+import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipInteractor;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -48,29 +49,44 @@ public class OcrManager {
     private final UserPreferenceManager userPreferenceManager;
     private final Analytics analytics;
     private final OcrPurchaseTracker ocrPurchaseTracker;
+    private final OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor;
     private final OcrPushMessageReceiverFactory pushMessageReceiverFactory;
     private final ConfigurationManager configurationManager;
     private final BehaviorSubject<OcrProcessingStatus> ocrProcessingStatusSubject = BehaviorSubject.createDefault(OcrProcessingStatus.Idle);
 
     @Inject
-    public OcrManager(@NonNull Context context, @NonNull S3Manager s3Manager, @NonNull IdentityManager identityManager,
-                      @NonNull ServiceManager serviceManager, @NonNull PushManager pushManager, @NonNull OcrPurchaseTracker ocrPurchaseTracker,
-                      @NonNull UserPreferenceManager userPreferenceManager, @NonNull Analytics analytics,
+    public OcrManager(@NonNull Context context,
+                      @NonNull S3Manager s3Manager,
+                      @NonNull IdentityManager identityManager,
+                      @NonNull ServiceManager serviceManager,
+                      @NonNull PushManager pushManager,
+                      @NonNull OcrPurchaseTracker ocrPurchaseTracker,
+                      @NonNull OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor,
+                      @NonNull UserPreferenceManager userPreferenceManager,
+                      @NonNull Analytics analytics,
                       @NonNull ConfigurationManager configurationManager) {
-        this(context, s3Manager, identityManager, serviceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
+        this(context, s3Manager, identityManager, serviceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
     }
 
     @VisibleForTesting
-    OcrManager(@NonNull Context context, @NonNull S3Manager s3Manager, @NonNull IdentityManager identityManager,
-               @NonNull ServiceManager serviceManager, @NonNull PushManager pushManager, @NonNull OcrPurchaseTracker ocrPurchaseTracker,
-               @NonNull UserPreferenceManager userPreferenceManager, @NonNull Analytics analytics,
-               @NonNull OcrPushMessageReceiverFactory pushMessageReceiverFactory, @NonNull ConfigurationManager configurationManager) {
+    OcrManager(@NonNull Context context,
+               @NonNull S3Manager s3Manager,
+               @NonNull IdentityManager identityManager,
+               @NonNull ServiceManager serviceManager,
+               @NonNull PushManager pushManager,
+               @NonNull OcrPurchaseTracker ocrPurchaseTracker,
+               @NonNull OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor,
+               @NonNull UserPreferenceManager userPreferenceManager,
+               @NonNull Analytics analytics,
+               @NonNull OcrPushMessageReceiverFactory pushMessageReceiverFactory,
+               @NonNull ConfigurationManager configurationManager) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.s3Manager = Preconditions.checkNotNull(s3Manager);
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.ocrServiceManager = Preconditions.checkNotNull(serviceManager);
         this.pushManager = Preconditions.checkNotNull(pushManager);
         this.ocrPurchaseTracker = Preconditions.checkNotNull(ocrPurchaseTracker);
+        this.ocrInformationalTooltipInteractor = Preconditions.checkNotNull(ocrInformationalTooltipInteractor);
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
         this.analytics = Preconditions.checkNotNull(analytics);
         this.pushMessageReceiverFactory = Preconditions.checkNotNull(pushMessageReceiverFactory);
@@ -79,6 +95,7 @@ public class OcrManager {
 
     public void initialize() {
         ocrPurchaseTracker.initialize();
+        ocrInformationalTooltipInteractor.initialize();
     }
 
     @NonNull

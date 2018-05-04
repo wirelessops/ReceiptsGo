@@ -28,9 +28,7 @@ public class OcrInformationalTooltipStateTracker {
     }
 
     public Single<Boolean> shouldShowOcrInfo() {
-        return Single.fromCallable(() -> {
-            return preferences.getBoolean(KEY_SHOW_OCR_RELEASE_INFO, true);
-        });
+        return Single.fromCallable(() -> preferences.getBoolean(KEY_SHOW_OCR_RELEASE_INFO, true));
     }
 
     public void setShouldShowOcrInfo(boolean shouldShow) {

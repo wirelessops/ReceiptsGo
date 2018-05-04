@@ -13,49 +13,90 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
-
-@FragmentScope
+@ApplicationScope
 public class OcrInformationalTooltipInteractor {
 
-    private static final int SCANS_LEFT_TO_INFORM = 5;
+    @VisibleForTesting
+    static final int SCANS_LEFT_TO_INFORM = 5;
 
-    private final NavigationHandler navigationHandler;
     private final Analytics analytics;
     private final OcrInformationalTooltipStateTracker stateTracker;
     private final OcrPurchaseTracker ocrPurchaseTracker;
     private final IdentityManager identityManager;
+    private final ConfigurationManager configurationManager;
+    private final Scheduler scheduler;
+
+    private int lastRemainingScans = 0;
 
     @Inject
-    public OcrInformationalTooltipInteractor(Context context, NavigationHandler navigationHandler, Analytics analytics,
-                                             OcrPurchaseTracker ocrPurchaseTracker, IdentityManager identityManager) {
-        this(navigationHandler, analytics, new OcrInformationalTooltipStateTracker(context), ocrPurchaseTracker, identityManager);
+    public OcrInformationalTooltipInteractor(@NonNull Context context,
+                                             @NonNull Analytics analytics,
+                                             @NonNull OcrPurchaseTracker ocrPurchaseTracker,
+                                             @NonNull IdentityManager identityManager,
+                                             @NonNull ConfigurationManager configurationManager) {
+        this(analytics, new OcrInformationalTooltipStateTracker(context), ocrPurchaseTracker, identityManager, configurationManager, Schedulers.computation());
     }
 
     @VisibleForTesting
-    OcrInformationalTooltipInteractor(@NonNull NavigationHandler navigationHandler, @NonNull Analytics analytics,
-                                      @NonNull OcrInformationalTooltipStateTracker stateTracker, @NonNull OcrPurchaseTracker ocrPurchaseTracker,
-                                      @NonNull IdentityManager identityManager) {
-        this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
+    OcrInformationalTooltipInteractor(@NonNull Analytics analytics,
+                                      @NonNull OcrInformationalTooltipStateTracker stateTracker,
+                                      @NonNull OcrPurchaseTracker ocrPurchaseTracker,
+                                      @NonNull IdentityManager identityManager,
+                                      @NonNull ConfigurationManager configurationManager,
+                                      @NonNull Scheduler scheduler) {
         this.analytics = Preconditions.checkNotNull(analytics);
         this.stateTracker = Preconditions.checkNotNull(stateTracker);
         this.ocrPurchaseTracker = Preconditions.checkNotNull(ocrPurchaseTracker);
         this.identityManager = Preconditions.checkNotNull(identityManager);
+        this.configurationManager = Preconditions.checkNotNull(configurationManager);
+        this.scheduler = Preconditions.checkNotNull(scheduler);
     }
 
+    /**
+     * Initializes the tooltip tracking logic, so it can begin monitoring the remaining count of OCR scans
+     */
+    public void initialize() {
+        ocrPurchaseTracker.getRemainingScansStream()
+                .subscribeOn(scheduler)
+                .subscribe(remainingScans -> {
+                    if (remainingScans == SCANS_LEFT_TO_INFORM) {
+                        Logger.info(OcrInformationalTooltipInteractor.this, "{} scans remaining. Re-enabling our few scans remaining tracker.", remainingScans);
+                        stateTracker.setShouldShowOcrInfo(true);
+                    }
+                    if (lastRemainingScans == 1 && remainingScans == 0) {
+                        Logger.info(OcrInformationalTooltipInteractor.this, "No scans. Re-enabling our few scans remaining tracker.");
+                        stateTracker.setShouldShowOcrInfo(true);
+                    }
+                    // Make this the last operation for this stream
+                    lastRemainingScans = remainingScans;
+                });
+    }
+
+    @NonNull
     public Observable<OcrTooltipMessageType> getShowOcrTooltip() {
+        // configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)
         return stateTracker.shouldShowOcrInfo()
                 .subscribeOn(Schedulers.computation())
                 .flatMapObservable(shouldShowTooltip -> {
-                    if (ocrPurchaseTracker.getRemainingScans() > 0 && ocrPurchaseTracker.getRemainingScans() <= SCANS_LEFT_TO_INFORM) {
-                        return Observable.just(OcrTooltipMessageType.LimitedScansRemaining);
-                    } else if (shouldShowTooltip) {
+                    if (shouldShowTooltip) {
+                        if (!configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)) {
+                            Logger.info(OcrInformationalTooltipInteractor.this, "OCR is not configured. Disabling the tooltip");
+                            return Observable.empty();
+                        }
+                        if (ocrPurchaseTracker.getRemainingScans() > 0 && ocrPurchaseTracker.getRemainingScans() <= SCANS_LEFT_TO_INFORM) {
+                            return Observable.just(OcrTooltipMessageType.LimitedScansRemaining);
+                        }
                         if (identityManager.isLoggedIn()) {
                             if (ocrPurchaseTracker.hasAvailableScans()) {
                                 return Observable.empty();
@@ -70,23 +111,20 @@ public class OcrInformationalTooltipInteractor {
                     }
                 })
                 .doOnNext(ocrTooltipMessageType -> {
-                        analytics.record(new DefaultDataPointEvent(Events.Ocr.OcrInfoTooltipShown).addDataPoint(new DataPoint("type", ocrTooltipMessageType)));
-                        if (ocrTooltipMessageType == OcrTooltipMessageType.LimitedScansRemaining) {
-                            stateTracker.setShouldShowOcrInfo(true);
-                        }
-                    });
+                    Logger.info(OcrInformationalTooltipInteractor.this, "Displaying OCR Tooltip: {}", ocrTooltipMessageType);
+                    analytics.record(new DefaultDataPointEvent(Events.Ocr.OcrInfoTooltipShown).addDataPoint(new DataPoint("type", ocrTooltipMessageType)));
+                });
     }
 
-    public void dismissTooltip() {
+    public void markTooltipDismissed() {
         Logger.info(this, "Dismissing OCR Tooltip");
         stateTracker.setShouldShowOcrInfo(false);
         analytics.record(Events.Ocr.OcrInfoTooltipDismiss);
     }
 
-    public void showOcrConfiguration() {
+    public void markTooltipShown() {
         Logger.info(this, "Displaying OCR Configuration Fragment");
         stateTracker.setShouldShowOcrInfo(false);
-        navigationHandler.navigateToOcrConfigurationFragment();
         analytics.record(Events.Ocr.OcrInfoTooltipOpen);
     }
 }

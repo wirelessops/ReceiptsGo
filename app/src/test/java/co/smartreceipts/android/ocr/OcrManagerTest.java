@@ -24,6 +24,7 @@ import co.smartreceipts.android.ocr.apis.model.RecongitionRequest;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.ocr.push.OcrPushMessageReceiver;
 import co.smartreceipts.android.ocr.push.OcrPushMessageReceiverFactory;
+import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipInteractor;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -63,6 +64,9 @@ public class OcrManagerTest {
 
     @Mock
     OcrPurchaseTracker ocrPurchaseTracker;
+
+    @Mock
+    OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor;
 
     @Mock
     OcrPushMessageReceiverFactory ocrPushMessageReceiverFactory;
@@ -121,7 +125,14 @@ public class OcrManagerTest {
         when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode)).thenReturn(false);
 
-        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrServiceManager, pushManager, ocrPurchaseTracker, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
+        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
+    }
+
+    @Test
+    public void initialize() {
+        ocrManager.initialize();
+        verify(ocrPurchaseTracker).initialize();
+        verify(ocrInformationalTooltipInteractor).initialize();
     }
 
     @Test
