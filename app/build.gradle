@@ -38,8 +38,7 @@ android {
             dimension "versionType"
         }
         fireDepartmentFlavor {
-            applicationId "wb.receiptspro"
-            // applicationId "co.smartreceipts.fire.department.tracker.android"
+            applicationId "co.smartreceipts.fire.department.tracker.android"
             dimension "versionType"
         }
     }
