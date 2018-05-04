@@ -13,6 +13,7 @@ import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -103,7 +104,9 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
                     categoryMap.put(importedCategory, result);
                 }
             }
-            
+
+            // Note: This attempts to map an "imported" trip to the inserted one
+            final Map<Trip, Trip> tripMap = new HashMap<>();
             final List<Trip> existingTrips = new ArrayList<>(currentDatabase.getTripsTable().getBlocking());
             final List<Trip> importedTrips = new ArrayList<>(importedBackupDatabase.getTripsTable().getBlocking());
             Logger.info(ByRowDatabaseMerger.this, "Importing {} trip entries", importedTrips.size());
@@ -113,12 +116,14 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
                     if (importedTrip.getName().equals(existingTrip.getName())) {
                         wasDuplicateFound = true;
                         Logger.debug(ByRowDatabaseMerger.this, "Found a situation in which both databases have a trip with the same attributes: {}. Ignoring import...", importedTrip);
+                        tripMap.put(importedTrip, existingTrip);
                         break; // To exit inner loop early
                     }
                 }
                 if (!wasDuplicateFound) {
                     Logger.debug(ByRowDatabaseMerger.this, "Importing trip: {}", importedTrip);
-                    currentDatabase.getTripsTable().insertBlocking(importedTrip, databaseOperationMetadata);
+                    final Trip result = currentDatabase.getTripsTable().insertBlocking(importedTrip, databaseOperationMetadata).get();
+                    tripMap.put(importedTrip, result);
                 }
             }
 
@@ -138,7 +143,8 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
                 }
                 if (!wasDuplicateFound) {
                     Logger.debug(ByRowDatabaseMerger.this, "Importing distance: {}", importedDistance);
-                    currentDatabase.getDistanceTable().insertBlocking(importedDistance, databaseOperationMetadata);
+                    final Distance distanceToInsert = new DistanceBuilderFactory(importedDistance).setTrip(tripMap.get(importedDistance.getTrip())).build();
+                    currentDatabase.getDistanceTable().insertBlocking(distanceToInsert, databaseOperationMetadata);
                 }
             }
 
@@ -159,7 +165,11 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
                 if (!wasDuplicateFound) {
                     Logger.debug(ByRowDatabaseMerger.this, "Importing receipt: {}", importedReceipt);
                     // Here we explicitly map these "mapped" values to the new result set before importing
-                    final Receipt receiptToInsert = new ReceiptBuilderFactory(importedReceipt).setCategory(categoryMap.get(importedReceipt.getCategory())).setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod())).build();
+                    final Receipt receiptToInsert = new ReceiptBuilderFactory(importedReceipt)
+                            .setTrip(tripMap.get(importedReceipt.getTrip()))
+                            .setCategory(categoryMap.get(importedReceipt.getCategory()))
+                            .setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod()))
+                            .build();
                     currentDatabase.getReceiptsTable().insertBlocking(receiptToInsert, databaseOperationMetadata);
                 }
             }
