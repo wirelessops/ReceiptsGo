@@ -75,8 +75,8 @@ public class FireDepartmentTableDefaultCustomizerImpl implements TableDefaultsCu
     public void insertPaymentMethodDefaults(@NonNull final PaymentMethodsTable paymentMethodsTable) {
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.fire_department_payment_method_charge)).build(), databaseOperationMetadata);
+        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.fire_department_payment_method_cash)).build(), databaseOperationMetadata);
         paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.fire_department_payment_method_department_credit_card)).build(), databaseOperationMetadata);
-        paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.fire_department_payment_method_cash_reimbursable)).build(), databaseOperationMetadata);
         paymentMethodsTable.insertBlocking(new PaymentMethodBuilderFactory().setMethod(context.getString(R.string.fire_department_payment_method_department_check)).build(), databaseOperationMetadata);
     }
 
