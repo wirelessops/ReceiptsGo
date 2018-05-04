@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/generate_report_item_separation"
             android:paddingStart="@dimen/generate_report_item_separation"
+            android:layout_marginBottom="@dimen/generate_report_item_separation"
             android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP"
             android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
 
@@ -64,6 +65,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/generate_report_item_separation"
             android:paddingStart="@dimen/generate_report_item_separation"
+            android:layout_marginBottom="@dimen/generate_report_item_separation"
             android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA"
             android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
     </LinearLayout>
