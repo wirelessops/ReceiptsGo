@@ -5,6 +5,6 @@
     <bool name="pref_receipt_use_payment_methods_defaultValue">true</bool>
 
     <!-- ================= Preference Pro ================== -->
-    <string name="pref_pro_pdf_footer_defaultValue">Report Generated using Fire Department Expense Tracker (powered by Smart Receipts)</string>
+    <string name="pref_pro_pdf_footer_defaultValue">Report Generated using Fire Department Expense Tracker, powered by Smart Receipts</string>
 
 </resources>
