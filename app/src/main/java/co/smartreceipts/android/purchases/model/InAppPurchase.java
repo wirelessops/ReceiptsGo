@@ -29,19 +29,32 @@ public enum InAppPurchase {
      * A test only {@link Subscription} for testing without a particular {@link PurchaseFamily}
      */
     @VisibleForTesting
-    TestSubscription(Subscription.class, "test_subscription", Collections.emptySet());
+    TestSubscription(Subscription.class, "test_subscription", Collections.singleton("test_legacy_subscription"), Collections.emptySet());
 
     private final Class<? extends ManagedProduct> type;
     private final String sku;
+    private final Set<String> legacySkus;
     private final Set<PurchaseFamily> purchaseFamilies;
 
-    InAppPurchase(@NonNull Class<? extends ManagedProduct> type, @NonNull String sku, PurchaseFamily purchaseFamily) {
+    InAppPurchase(@NonNull Class<? extends ManagedProduct> type,
+                  @NonNull String sku,
+                  @NonNull PurchaseFamily purchaseFamily) {
         this(type, sku, Collections.singleton(purchaseFamily));
     }
 
-    InAppPurchase(@NonNull Class<? extends ManagedProduct> type, @NonNull String sku, @NonNull Set<PurchaseFamily> purchaseFamilies) {
+    InAppPurchase(@NonNull Class<? extends ManagedProduct> type,
+                  @NonNull String sku,
+                  @NonNull Set<PurchaseFamily> purchaseFamilies) {
+        this(type, sku, Collections.emptySet(), purchaseFamilies);
+    }
+
+    InAppPurchase(@NonNull Class<? extends ManagedProduct> type,
+                  @NonNull String sku,
+                  @NonNull Set<String> legacySkus,
+                  @NonNull Set<PurchaseFamily> purchaseFamilies) {
         this.type = Preconditions.checkNotNull(type);
         this.sku = Preconditions.checkNotNull(sku);
+        this.legacySkus = Preconditions.checkNotNull(legacySkus);
         this.purchaseFamilies = Preconditions.checkNotNull(purchaseFamilies);
     }
 
@@ -51,6 +64,19 @@ public enum InAppPurchase {
     @NonNull
     public String getSku() {
         return sku;
+    }
+
+    /**
+     * For subscriptions, Google does not allow for price changes to occur. To better handle this,
+     * we allow "legacy" skus (ie stock keeping unit) to still properly map to our purchase type.
+     * Callers of this method will receive a full set of legacy skus that correspond to historical
+     * pricing paradigms
+     *
+     * @return a {@link Set} of {@link String} identifiers for this product.
+     */
+    @NonNull
+    public Set<String> getLegacySkus() {
+        return legacySkus;
     }
 
     /**
@@ -86,6 +112,11 @@ public enum InAppPurchase {
         for (final InAppPurchase inAppPurchase : values()) {
             if (inAppPurchase.getSku().equals(sku)) {
                 return inAppPurchase;
+            }
+            for (final String legacySku : inAppPurchase.getLegacySkus()) {
+                if (legacySku.equals(sku)) {
+                    return inAppPurchase;
+                }
             }
         }
         return null;

@@ -20,16 +20,19 @@ public class InAppPurchaseTest {
         assertEquals(InAppPurchase.SmartReceiptsPlus.getType(), Subscription.class);
         assertEquals(InAppPurchase.SmartReceiptsPlus.getProductType(), "subs");
         assertEquals(InAppPurchase.SmartReceiptsPlus.getPurchaseFamilies(), new HashSet<>(Arrays.asList(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr)));
+        assertEquals(InAppPurchase.SmartReceiptsPlus.getLegacySkus(), Collections.emptySet());
 
         assertEquals(InAppPurchase.OcrScans50.getSku(), "ocr_purchase_1");
         assertEquals(InAppPurchase.OcrScans50.getType(), ConsumablePurchase.class);
         assertEquals(InAppPurchase.OcrScans50.getProductType(), "inapp");
         assertEquals(InAppPurchase.OcrScans50.getPurchaseFamilies(), Collections.singleton(PurchaseFamily.Ocr));
+        assertEquals(InAppPurchase.OcrScans50.getLegacySkus(), Collections.emptySet());
 
         assertEquals(InAppPurchase.OcrScans10.getSku(), "ocr_purchase_10");
         assertEquals(InAppPurchase.OcrScans10.getType(), ConsumablePurchase.class);
         assertEquals(InAppPurchase.OcrScans10.getProductType(), "inapp");
         assertEquals(InAppPurchase.OcrScans10.getPurchaseFamilies(), Collections.singleton(PurchaseFamily.Ocr));
+        assertEquals(InAppPurchase.OcrScans10.getLegacySkus(), Collections.emptySet());
     }
 
     @Test
@@ -37,6 +40,10 @@ public class InAppPurchaseTest {
         assertEquals(InAppPurchase.SmartReceiptsPlus, InAppPurchase.from("pro_sku_3"));
         assertEquals(InAppPurchase.OcrScans50, InAppPurchase.from("ocr_purchase_1"));
         assertEquals(InAppPurchase.OcrScans10, InAppPurchase.from("ocr_purchase_10"));
+
+        // Test validation
+        assertEquals(InAppPurchase.TestSubscription, InAppPurchase.from("test_subscription"));
+        assertEquals(InAppPurchase.TestSubscription, InAppPurchase.from("test_legacy_subscription"));
     }
 
     @Test
