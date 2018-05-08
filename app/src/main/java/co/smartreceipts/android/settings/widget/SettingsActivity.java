@@ -440,6 +440,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     }
 
     private String getDebugScreen() {
+        final File[] filesDirs = getExternalFilesDirs(null);
+        final int directoryCount = filesDirs != null ? filesDirs.length : 0;
         final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
         return "Debug-information: \n" +
                 "Smart Receipts Version: " + getAppVersion() + "\n" +
@@ -451,6 +453,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
                 "Manufacturer: " + Build.MANUFACTURER + "\n" +
                 "Model (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")\n" +
                 "Locale: " + Locale.getDefault().toString() + "\n" +
+                "Directories: " + directoryCount + "\n" +
                 "Two-Paned: " + isUsingHeaders;
     }
 
