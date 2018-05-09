@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.android.analytics.crash.CrashReporter;
 import co.smartreceipts.android.aws.cognito.CognitoManager;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
@@ -70,6 +71,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     OcrManager ocrManager;
+
+    @Inject
+    CrashReporter crashReporter;
 
     @Inject
     AppRatingPreferencesStorage appRatingPreferencesStorage;
@@ -131,6 +135,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         purchaseManager.initialize(this);
         cognitoManager.initialize();
         ocrManager.initialize();
+        crashReporter.initialize();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 

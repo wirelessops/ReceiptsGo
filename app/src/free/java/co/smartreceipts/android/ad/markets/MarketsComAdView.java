@@ -22,6 +22,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 
 public class MarketsComAdView implements BannerAdView {
 
@@ -29,7 +30,7 @@ public class MarketsComAdView implements BannerAdView {
     private Button upsellButton;
 
     @Override
-    public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics) {
+    public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics, @NonNull UserPreferenceManager userPreferenceManager) {
         final ViewGroup container = (ViewGroup) activity.findViewById(R.id.adView_container);
         final LayoutInflater inflater = LayoutInflater.from(activity);
 

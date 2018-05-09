@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="@string/pref_privacy_header_key"
+        android:title="@string/pref_privacy_header" >
+        <Preference
+            android:key="@string/pref_about_privacy_policy_key"
+            android:title="@string/pref_about_privacy_policy_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_privacy_enable_analytics_defaultValue"
+            android:key="@string/pref_privacy_enable_analytics_key"
+            android:title="@string/pref_privacy_enable_analytics_title"
+            android:summary="@string/pref_privacy_enable_analytics_summary" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_privacy_enable_crash_tracking_defaultValue"
+            android:key="@string/pref_privacy_enable_crash_tracking_key"
+            android:title="@string/pref_privacy_enable_crash_tracking_title"
+            android:summary="@string/pref_privacy_enable_crash_tracking_summary" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_privacy_enable_ad_personalization_defaultValue"
+            android:key="@string/pref_privacy_enable_ad_personalization_key"
+            android:title="@string/pref_privacy_enable_ad_personalization_title"
+            android:summary="@string/pref_privacy_enable_ad_personalization_summary" />
+    </PreferenceCategory>
+</PreferenceScreen>

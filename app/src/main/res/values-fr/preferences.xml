@@ -14,6 +14,7 @@
     <string name="pref_pro_header">Recettes Intelligentes Plus</string>
     <string name="pref_help_header">Assistance</string>
     <string name="pref_about_header">À propos</string>
+    <string name="pref_privacy_header">Confidentialité</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -176,7 +177,15 @@
     <string name="pref_about_terms_title">Conditions d\'utilisation</string>
     <string name="pref_about_terms_dialogMessage">Ce programme est un logiciel gratuit : vous pouvez le redistribuer et/ou le modifier selon les termes de la Licence Publique Générale GNU publiée par la Free Software Foundation, soit la version 3 de la licence, ou (à votre choix) toute version ultérieure.\n\nCe programme est distribué dans l’espoir qu’il sera utile, mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de COMMERCIALISATION ou DE DISPOSITION À UN USAGE PARTICULIER. Voir la Licence Publique Générale GNU pour plus d’informations.\n\nVous pouvez consulter une copie de la Licence Publique Générale GNU ici : http://www.gnu.org/licenses/.</string>
 
+    <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Politique de confidentialité</string>
+    <string name="pref_privacy_enable_analytics_title">Analyses de partage</string>
+    <string name="pref_privacy_enable_analytics_summary">Avec Google / Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Partager l\'information sur l\'accident</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">Avec Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Autoriser la personnalisation de l\'annonce</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">Avec Google AdMob</string>
+
     <!-- =============== Preference Misc =================== -->
 
 </resources>

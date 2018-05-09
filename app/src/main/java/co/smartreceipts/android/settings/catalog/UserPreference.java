@@ -79,6 +79,12 @@ public final class UserPreference<T> {
         public static final UserPreference<Boolean> OmitDefaultTableInReports = new UserPreference<>(Boolean.class, R.string.pref_pro_omit_default_table_key, R.bool.pref_pro_omit_default_table_defaultValue);
     }
 
+    public static final class Privacy {
+        public static final UserPreference<Boolean> EnableAnalytics = new UserPreference<>(Boolean.class, R.string.pref_privacy_enable_analytics_key, R.bool.pref_privacy_enable_analytics_defaultValue);
+        public static final UserPreference<Boolean> EnableCrashTracking = new UserPreference<>(Boolean.class, R.string.pref_privacy_enable_crash_tracking_key, R.bool.pref_privacy_enable_crash_tracking_defaultValue);
+        public static final UserPreference<Boolean> EnableAdPersonalization = new UserPreference<>(Boolean.class, R.string.pref_privacy_enable_ad_personalization_key, R.bool.pref_privacy_enable_ad_personalization_defaultValue);
+    }
+
     public static final class Misc {
         public static final UserPreference<Boolean> AutoBackupOnWifiOnly = new UserPreference<>(Boolean.class, R.string.pref_no_category_auto_backup_wifi_only_key, R.bool.pref_no_category_auto_backup_wifi_only_defaultValue);
         public static final UserPreference<Boolean> OcrIncognitoMode = new UserPreference<>(Boolean.class, R.string.pref_no_category_ocr_incognito_mode_key, R.bool.pref_no_category_ocr_incognito_mode_defaultValue);

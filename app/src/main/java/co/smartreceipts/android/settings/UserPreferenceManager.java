@@ -50,6 +50,8 @@ public class UserPreferenceManager {
     }
 
     public void initialize() {
+        Logger.info(UserPreferenceManager.this, "Initializing the UserPreferenceManager...");
+
         getUserPreferencesObservable()
                 .subscribeOn(this.initializationScheduler)
                 .subscribe(userPreferences -> {

@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.ads.AdListener;
+import com.google.common.base.Preconditions;
 
 import java.lang.ref.WeakReference;
 import java.util.Random;
@@ -20,6 +21,7 @@ import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 
 public abstract class BaseAdPresenter implements AdPresenter {
@@ -34,19 +36,24 @@ public abstract class BaseAdPresenter implements AdPresenter {
     private final PurchaseWallet purchaseWallet;
     private final Analytics analytics;
     private final PurchaseManager purchaseManager;
+    private final UserPreferenceManager userPreferenceManager;
 
     private WeakReference<BannerAdView> adViewReference;
 
-    public BaseAdPresenter(PurchaseWallet purchaseWallet, Analytics analytics, PurchaseManager purchaseManager) {
-        this.purchaseWallet = purchaseWallet;
-        this.analytics = analytics;
-        this.purchaseManager = purchaseManager;
+    public BaseAdPresenter(@NonNull PurchaseWallet purchaseWallet,
+                           @NonNull Analytics analytics,
+                           @NonNull PurchaseManager purchaseManager,
+                           @NonNull UserPreferenceManager userPreferenceManager) {
+        this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
+        this.analytics = Preconditions.checkNotNull(analytics);
+        this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
+        this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
     }
 
 
     @Override
     public void onActivityCreated(@NonNull Activity activity) {
-        BannerAdView adView = initAdView(activity, analytics);
+        BannerAdView adView = initAdView(activity, analytics, userPreferenceManager);
 
         adViewReference = new WeakReference<>(adView);
 
@@ -120,7 +127,7 @@ public abstract class BaseAdPresenter implements AdPresenter {
         }
     }
 
-    public abstract BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics);
+    public abstract BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics, @NonNull UserPreferenceManager userPreferenceManager);
 
     private boolean shouldShowAds(@NonNull Context activityContext) {
         final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);

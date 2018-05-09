@@ -10,12 +10,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 
 public interface BannerAdView {
 
     int LOADING_DELAY = 50;
 
-    BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics);
+    BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics, @NonNull UserPreferenceManager userPreferenceManager);
 
     void resume();
 

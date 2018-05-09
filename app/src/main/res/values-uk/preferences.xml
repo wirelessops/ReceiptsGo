@@ -15,6 +15,7 @@
     <string name="pref_pro_header">Смарт Чеки Плюс</string>
     <string name="pref_help_header">Підтримка</string>
     <string name="pref_about_header">Про програму</string>
+    <string name="pref_privacy_header">конфіденційності</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -177,7 +178,15 @@
     <string name="pref_about_terms_title">Умови використання</string>
     <string name="pref_about_terms_dialogMessage">Ця програма є вільним програмним забезпеченням: ви можете розповсюджувати та / або змінювати її відповідно до умов GNU Affero General Public License, виданої Фондом вільного програмного забезпечення, версії 3, або (за вашим вибором) будь-якої наступної версії.\n\nЦя програма розповсюджується з надією, що вона буде корисною, однак БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ, і навіть без гарантій КОМЕРЦІЙНОЇ ЦІННОСТІ чи ПРИДАТНОСТІ ДЛЯ КОНКРЕТНИХ ЦІЛЕЙ. Дивіться GNU Affero General Public License для більш докладної інформації.\n\nКопія GNU Affero General Public License доступна за адресою http://www.gnu.org/licenses/.</string>
 
+    <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Політика конфіденційності</string>
+    <string name="pref_privacy_enable_analytics_title">Поделиться аналитикой</string>
+    <string name="pref_privacy_enable_analytics_summary">С Google / Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Поделиться неудачами приложений</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">С Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Разрешить персонализацию объявлений</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">С помощью Google AdMob</string>
+
     <!-- =============== Preference Misc =================== -->
 
 </resources>

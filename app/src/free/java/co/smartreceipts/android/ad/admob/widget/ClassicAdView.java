@@ -13,6 +13,7 @@ import com.google.android.gms.ads.AdView;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 
 import static co.smartreceipts.android.ad.admob.AdRequestHelper.getAdRequest;
@@ -21,11 +22,12 @@ public class ClassicAdView implements BannerAdView {
 
     private AdView adView;
     private Button upsellButton;
+    private UserPreferenceManager userPreferenceManager;
 
     @Override
-    public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics) {
-        final ViewGroup container = (ViewGroup) activity.findViewById(R.id.adView_container);
-        upsellButton = (Button) activity.findViewById(R.id.adView_upsell);
+    public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics, @NonNull UserPreferenceManager userPreferenceManager) {
+        final ViewGroup container = activity.findViewById(R.id.adView_container);
+        upsellButton = activity.findViewById(R.id.adView_upsell);
 
         adView = new AdView(activity);
         adView.setAdSize(AdSize.SMART_BANNER);
@@ -58,7 +60,7 @@ public class ClassicAdView implements BannerAdView {
             @Override
             public void run() {
                 try {
-                    adView.loadAd(getAdRequest());
+                    adView.loadAd(getAdRequest(userPreferenceManager));
                 } catch (Exception e) {
                     Logger.error(this, "Swallowing ad load exception... ", e);
                     // Swallowing all exception b/c I'm lazy and don't want to handle activity finishing states

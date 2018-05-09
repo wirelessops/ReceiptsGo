@@ -14,6 +14,7 @@
     <string name="pref_pro_header">Recibos Inteligentes Plus</string>
     <string name="pref_help_header">Soporte</string>
     <string name="pref_about_header">Acerca de</string>
+    <string name="pref_privacy_header">Privacidad</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -176,6 +177,15 @@
     <string name="pref_about_terms_title">Términos de uso</string>
     <string name="pref_about_terms_dialogMessage">Este programa es software gratuito: puedes redistribuirlo y/o modificarlo de conformidad con los términos de la licencia pública general de Affero como fue publicada por la Fundación para el Software Libre, ya sea en la versión 3 de la licencia, o a tu elección, cualquier versión posterior.\n\nEste programa se distribuye con la esperanza que sea útil, pero SIN GARANTÍA ALGUNA, ni siquiera garantía implícita de MERCANTIBILIDAD o IDONEIDAD PARA UN FIN EN PARTICULAR.  Consulta la licencia pública general de Affero para obtener más información.\n\nPuedes consultar una copia de la licencia pública general de Affero en http://www.gnu.org/licenses/.</string>
 
+    <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Política de Privacidad</string>
+    <string name="pref_privacy_enable_analytics_title">Compartir Analytics</string>
+    <string name="pref_privacy_enable_analytics_summary">Con Google / Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Compartir información de bloqueo</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">Con Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Permitir la personalización de anuncios</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">Con Google AdMob</string>
+
+    <!-- =============== Preference Misc =================== -->
 
 </resources>

@@ -59,6 +59,9 @@ public class UserPreferenceTest {
         Assert.assertTrue(userPreferences.contains(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports));
         Assert.assertTrue(userPreferences.contains(UserPreference.Distance.ShowDistanceAsPriceInSubtotal));
         Assert.assertTrue(userPreferences.contains(UserPreference.PlusSubscription.PdfFooterString));
+        Assert.assertTrue(userPreferences.contains(UserPreference.Privacy.EnableAnalytics));
+        Assert.assertTrue(userPreferences.contains(UserPreference.Privacy.EnableCrashTracking));
+        Assert.assertTrue(userPreferences.contains(UserPreference.Privacy.EnableAdPersonalization));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.AutoBackupOnWifiOnly));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.OcrIncognitoMode));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.OcrIsEnabled));
@@ -227,6 +230,21 @@ public class UserPreferenceTest {
         Assert.assertEquals(UserPreference.Distance.ShowDistanceAsPriceInSubtotal.getType(), Boolean.class);
         Assert.assertEquals(name(UserPreference.Distance.ShowDistanceAsPriceInSubtotal), "DistanceAsPrice");
         Assert.assertEquals(UserPreference.Distance.ShowDistanceAsPriceInSubtotal.getDefaultValue(), R.bool.pref_distance_as_price_defaultValue);
+    }
+
+    @Test
+    public void privacy() {
+        Assert.assertEquals(UserPreference.Privacy.EnableAnalytics.getType(), Boolean.class);
+        Assert.assertEquals(name(UserPreference.Privacy.EnableAnalytics), "EnableAnalytics");
+        Assert.assertEquals(UserPreference.Privacy.EnableAnalytics.getDefaultValue(), R.bool.pref_privacy_enable_analytics_defaultValue);
+
+        Assert.assertEquals(UserPreference.Privacy.EnableCrashTracking.getType(), Boolean.class);
+        Assert.assertEquals(name(UserPreference.Privacy.EnableCrashTracking), "EnableCrashTracking");
+        Assert.assertEquals(UserPreference.Privacy.EnableCrashTracking.getDefaultValue(), R.bool.pref_privacy_enable_crash_tracking_defaultValue);
+
+        Assert.assertEquals(UserPreference.Privacy.EnableAdPersonalization.getType(), Boolean.class);
+        Assert.assertEquals(name(UserPreference.Privacy.EnableAdPersonalization), "EnableAdPersonalization");
+        Assert.assertEquals(UserPreference.Privacy.EnableAdPersonalization.getDefaultValue(), R.bool.pref_privacy_enable_ad_personalization_defaultValue);
     }
 
     @Test

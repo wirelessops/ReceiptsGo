@@ -11,17 +11,18 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 
 @ActivityScope
 public class MarketsComAdPresenter extends BaseAdPresenter {
 
     @Inject
-    MarketsComAdPresenter(PurchaseWallet purchaseWallet, Analytics analytics, PurchaseManager purchaseManager) {
-        super(purchaseWallet, analytics, purchaseManager);
+    MarketsComAdPresenter(PurchaseWallet purchaseWallet, Analytics analytics, PurchaseManager purchaseManager, UserPreferenceManager userPreferenceManager) {
+        super(purchaseWallet, analytics, purchaseManager, userPreferenceManager);
     }
 
     @Override
-    public BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics) {
-        return new MarketsComAdView().init(activity, analytics);
+    public BannerAdView initAdView(@NonNull Activity activity, @NonNull Analytics analytics, @NonNull UserPreferenceManager userPreferenceManager) {
+        return new MarketsComAdView().init(activity, analytics, userPreferenceManager);
     }
 }

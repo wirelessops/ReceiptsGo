@@ -14,6 +14,7 @@
     <string name="pref_pro_header">Recibos Inteligentes Plus</string>
     <string name="pref_help_header">Suporte</string>
     <string name="pref_about_header">Sobre</string>
+    <string name="pref_privacy_header">Privacidade</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -176,7 +177,15 @@
     <string name="pref_about_terms_title">Termos de Uso</string>
     <string name="pref_about_terms_dialogMessage">Este programa é freeware: você pode redistribuí-lo e/ou modificá-lo nos termos da GNU Affero General Public License, conforme publicada pela Free Software Foundation, tanto a versão 3 da licença quanto (a seu critério) qualquer versão posterior.\n\nEste programa é distribuído no intuito de útil, mas SEM QUALQUER GARANTIA; mesmo a garantia implícita de COMERCIABILIDADE ou ADEQUAÇÃO A FIANLIDADE ESPECÍFICA. Consulte o GNU Affero General Public License para obter mais detalhes.\n\nVocê pode ver uma cópia da Licença Pública Geral GNU Affero em http://www.gnu.org/licenses/.</string>
 
+    <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Política de Privacidade</string>
+    <string name="pref_privacy_enable_analytics_title">Compartilhar o Analytics</string>
+    <string name="pref_privacy_enable_analytics_summary">Com o Google / Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Compartilhar informações sobre falhas</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">Com Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Permitir personalização de anúncios</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">Com o Google AdMob</string>
+
     <!-- =============== Preference Misc =================== -->
 
 </resources>

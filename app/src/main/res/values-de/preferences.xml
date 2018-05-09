@@ -14,6 +14,7 @@
     <string name="pref_pro_header">Smart-Plus-Receipts</string>
     <string name="pref_help_header">Unterstützung</string>
     <string name="pref_about_header">Über</string>
+    <string name="pref_privacy_header">Datenschutz</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -176,7 +177,15 @@
     <string name="pref_about_terms_title">Nutzungsbedingungen</string>
     <string name="pref_about_terms_dialogMessage">Dieses Programm  ist eine freie Software: Sie können es gemäß den Bedingungen GNU Affero General Public License as published by the Free Software Foundation, Version 3 der Lizenz oder (nach Ihrer Wahl) einer beliebigen späteren Version verteilen und/oder ändern.\nDieses Programm wird verteilt in der Hoffnung, dass es nützlich ist, doch OHNE JEDE GARANTIE; auch ohne jede implizierte Garantie für die MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.  Siehe die GNU Affero General Public License für mehr Einzlheiten\n\nEine Kopie der GNU Affero General Public License finden Sie unter  http://www.gnu.org/licenses/.</string>
 
+    <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Datenschutz-Bestimmungen</string>
+    <string name="pref_privacy_enable_analytics_title">Share Analysen</string>
+    <string name="pref_privacy_enable_analytics_summary">Mit Google / Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Teilen Absturzinformationen</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">Mit Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Erlaube Ad-Personalisierung</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">Mit Google AdMob</string>
+
     <!-- =============== Preference Misc =================== -->
 
 </resources>

@@ -61,12 +61,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
 
     @Inject
     Flex flex;
+
     @Inject
     PersistenceManager persistenceManager;
+
     @Inject
     PurchaseWallet purchaseWallet;
+
     @Inject
     Analytics analytics;
+
     @Inject
     PurchaseManager purchaseManager;
 
@@ -102,6 +106,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             configurePlusPreferences(this);
             configurePreferencesHelp(this);
             configurePreferencesAbout(this);
+            configurePreferencesPrivacy(this);
         }
 
         purchaseManager.addEventListener(this);
@@ -113,13 +118,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             // For some reason (http://stackoverflow.com/a/8167755)
             // getListView().setSelection() won't work in onCreate, onResume or even onPostResume
             // Only way I got it to work was by postDelaying it
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    int sectionHeader = getIntent().getIntExtra(EXTRA_GO_TO_CATEGORY, 0);
-                    if (sectionHeader > 0) {
-                        scrollToCategory(SettingsActivity.this, getString(sectionHeader));
-                    }
+            new Handler().postDelayed(() -> {
+                int sectionHeader = getIntent().getIntExtra(EXTRA_GO_TO_CATEGORY, 0);
+                if (sectionHeader > 0) {
+                    scrollToCategory(SettingsActivity.this, getString(sectionHeader));
                 }
             }, 10);
         }
@@ -135,12 +137,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             final Toolbar toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, root, false);
             root.addView(toolbar, 0); // insert at top
             setSupportActionBar(toolbar);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+            toolbar.setNavigationOnClickListener(v -> finish());
         }
     }
 
@@ -178,8 +175,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     @Override
     protected boolean isValidFragment(String fragmentName) {
         try {
-            return AbstractPreferenceHeaderFragment.class.isAssignableFrom(
-                    Class.forName(fragmentName));
+            return AbstractPreferenceHeaderFragment.class.isAssignableFrom(Class.forName(fragmentName));
         } catch (ClassNotFoundException e) {
             return false;
         }
@@ -192,11 +188,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         if (item.getItemId() == android.R.id.home) {
             final Intent upIntent = new Intent(this, SmartReceiptsActivity.class);
             if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                // This activity is NOT part of this app's task, so create a new task
-                // when navigating up, with a synthesized back stack.
-                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent) // Add all of this activity's
-                        // parents to the back stack
-                        .startActivities(); // Navigate up to the closest parent
+                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
             } else {
                 NavUtils.navigateUpTo(this, upIntent);
             }
@@ -225,10 +217,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         super.onDestroy();
     }
 
-    public boolean isUsingHeaders() {
-        return isUsingHeaders;
-    }
-
     public void setFragmentHeaderIsShowing(boolean isShowing) {
         isFragmentHeaderShowing = isShowing;
     }
@@ -241,7 +229,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
 
     public void configurePreferencesGeneral(UniversalPreferences universal) {
         // Get the currency list
-//        PersistenceManager persistenceManager = ((SmartReceiptsApplication) getApplication()).getPersistenceManager();
         List<CharSequence> currencyList = persistenceManager.getDatabase().getCurrenciesList();
         CharSequence[] currencyArray = new CharSequence[currencyList.size()];
         currencyList.toArray(currencyArray);
@@ -362,6 +349,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         universal.findPreference(R.string.pref_about_privacy_policy_key).setOnPreferenceClickListener(this);
     }
 
+    public void configurePreferencesPrivacy(UniversalPreferences universal) {
+        // Set up Privacy Policy
+        universal.findPreference(R.string.pref_about_privacy_policy_key).setOnPreferenceClickListener(this);
+
+        final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
+        if (hasProSubscription) {
+            final PreferenceCategory privacyCategory = (PreferenceCategory) universal.findPreference(R.string.pref_privacy_header_key);
+            final Preference enableAdPersonalizationPreference = universal.findPreference(R.string.pref_privacy_enable_ad_personalization_key);
+            privacyCategory.removePreference(enableAdPersonalizationPreference);
+        }
+    }
+
     @Override
     public boolean onPreferenceClick(Preference preference) {
         final String key = preference.getKey();
@@ -411,24 +410,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     @Override
     public void onPurchaseSuccess(@NonNull InAppPurchase inAppPurchase, @NonNull PurchaseSource purchaseSource) {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseSuccess).addDataPoint(new DataPoint("sku", inAppPurchase.getSku())).addDataPoint(new DataPoint("source", purchaseSource)));
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                invalidateOptionsMenu(); // To hide the subscription option
-                Toast.makeText(SettingsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
-            }
+        runOnUiThread(() -> {
+            invalidateOptionsMenu(); // To hide the subscription option
+            configurePlusPreferences(this);
+            configurePreferencesPrivacy(this); // To remove the ad setting
+            Toast.makeText(SettingsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
         });
     }
 
     @Override
     public void onPurchaseFailed(@NonNull PurchaseSource purchaseSource) {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseFailed).addDataPoint(new DataPoint("source", purchaseSource)));
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(SettingsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(SettingsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show());
     }
 
     private String getAppVersion() {

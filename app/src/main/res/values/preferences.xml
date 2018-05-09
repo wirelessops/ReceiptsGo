@@ -16,6 +16,8 @@
     <string name="pref_pro_header">Smart Receipts Plus</string>
     <string name="pref_help_header">Support</string>
     <string name="pref_about_header">About</string>
+    <string name="pref_privacy_header_key" translatable="false">pref_privacy_category_key</string>
+    <string name="pref_privacy_header">Privacy</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -175,7 +177,6 @@
     <string name="pref_pro_omit_default_table_key" translatable="false">OmitDefaultPDFTable</string>
     <string name="pref_pro_omit_default_table_title">Omit Default PDF Table</string>
 
-
     <!-- ============== Preference Support ================= -->
     <string name="pref_help_send_love_key" translatable="false">SendLove</string>
     <string name="pref_help_send_love_title">Send Love</string>
@@ -189,12 +190,23 @@
     <string name="pref_about_version_title">Version</string>
     <string name="pref_about_about_key" translatable="false">About</string>
     <string name="pref_about_about_title">About</string>
-    <string name="pref_about_about_dialogMessage">Smart Receipts was created and is maintained by Will Baumann. It is licensed under GNU Affero General Public License</string>
+    <string name="pref_about_about_dialogMessage">Smart Receipts was created and is maintained by Smart Receipts LLC. It is licensed under GNU Affero General Public License</string>
     <string name="pref_about_terms_key" translatable="false">TermsOfUse</string>
     <string name="pref_about_terms_title">Terms of Use</string>
     <string name="pref_about_terms_dialogMessage">This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.\n\nYou can view a copy of the GNU Affero General Public License at http://www.gnu.org/licenses/.</string>
+
+    <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_key" translatable="false">PrivacyPolicy</string>
     <string name="pref_about_privacy_policy_title">Privacy Policy</string>
+    <string name="pref_privacy_enable_analytics_key" translatable="false">EnableAnalytics</string>
+    <string name="pref_privacy_enable_analytics_title">Share Analytics</string>
+    <string name="pref_privacy_enable_analytics_summary">With Google/Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_key" translatable="false">EnableCrashTracking</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Share Crash Information</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">With Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_key" translatable="false">EnableAdPersonalization</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Allow Ad Personalization</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">With Google AdMob</string>
 
     <!-- =============== Preference Misc =================== -->
     <string name="pref_no_category_auto_backup_wifi_only_key" translatable="false">AutoBackupWifiOnly</string>
