@@ -285,69 +285,68 @@ public class EmailAssistant {
             }
 
             if (mOptions.contains(EmailOptions.CSV)) {
-                mStorageManager.delete(dir, dir.getName() + ".csv");
-
-                final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
-                final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<Receipt>(csvColumns, new LegacyReceiptFilter(mPreferenceManager), true, false);
-
-                String data;
-
-                final List<Distance> distances = new ArrayList<>(mDB.getDistanceTable().getBlocking(trip, false));
-                final List<Receipt> receiptsTableList = new ArrayList<>(receipts);
-
-                // Receipts table
-                if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
-                    receiptsTableList.addAll(new DistanceToReceiptsConverter(context, mPreferenceManager).convert(distances));
-                    Collections.sort(receiptsTableList, new ReceiptDateComparator());
-                }
-
-                data = csvTableGenerator.generate(receiptsTableList);
-
-                // Distance table
-                if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)) {
-                    if (!distances.isEmpty()) {
-                        Collections.reverse(distances); // Reverse the list, so we print the most recent one first
-
-                        // CSVs cannot print special characters
-                        final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(context, mDB, mPreferenceManager, flex, true);
-                        final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
-                        data += "\n\n";
-                        data += new CsvTableGenerator<>(distanceColumns, true, true).generate(distances);
-                    }
-                }
-
-                // Categorical summation table
-                if (mPreferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)) {
-                    final List<SumCategoryGroupingResult> sumCategoryGroupingResults = new GroupingController(mDB, context, mPreferenceManager)
-                            .getSummationByCategory(trip)
-                            .toList()
-                            .blockingGet();
-
-                    final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(context)
-                            .getAllColumns();
-
-                    data += "\n\n";
-                    data += new CsvTableGenerator<>(categoryColumns, true, true).generate(sumCategoryGroupingResults);
-                }
-
-                // Separated tables for each category
-                if (mPreferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)) {
-                    List<CategoryGroupingResult> groupingResults = new GroupingController(mDB, context, mPreferenceManager)
-                            .getReceiptsGroupedByCategory(trip)
-                            .toList()
-                            .blockingGet();
-
-                    for (CategoryGroupingResult groupingResult : groupingResults) {
-                        data += "\n\n";
-                        data += groupingResult.getCategory().getName() + "\n";
-                        data += new CsvTableGenerator<>(csvColumns, true, true).generate(groupingResult.getReceipts());
-                    }
-                }
-
-                String filename = dir.getName() + ".csv";
-                File csvFile = new File(dir, filename);
-
                 try {
+                    mStorageManager.delete(dir, dir.getName() + ".csv");
+
+                    final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
+                    final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<Receipt>(csvColumns, new LegacyReceiptFilter(mPreferenceManager), true, false);
+
+                    String data;
+
+                    final List<Distance> distances = new ArrayList<>(mDB.getDistanceTable().getBlocking(trip, false));
+                    final List<Receipt> receiptsTableList = new ArrayList<>(receipts);
+
+                    // Receipts table
+                    if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
+                        receiptsTableList.addAll(new DistanceToReceiptsConverter(context, mPreferenceManager).convert(distances));
+                        Collections.sort(receiptsTableList, new ReceiptDateComparator());
+                    }
+
+                    data = csvTableGenerator.generate(receiptsTableList);
+
+                    // Distance table
+                    if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceTableInReports)) {
+                        if (!distances.isEmpty()) {
+                            Collections.reverse(distances); // Reverse the list, so we print the most recent one first
+
+                            // CSVs cannot print special characters
+                            final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(context, mDB, mPreferenceManager, flex, true);
+                            final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
+                            data += "\n\n";
+                            data += new CsvTableGenerator<>(distanceColumns, true, true).generate(distances);
+                        }
+                    }
+
+                    // Categorical summation table
+                    if (mPreferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)) {
+                        final List<SumCategoryGroupingResult> sumCategoryGroupingResults = new GroupingController(mDB, context, mPreferenceManager)
+                                .getSummationByCategory(trip)
+                                .toList()
+                                .blockingGet();
+
+                        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(context)
+                                .getAllColumns();
+
+                        data += "\n\n";
+                        data += new CsvTableGenerator<>(categoryColumns, true, true).generate(sumCategoryGroupingResults);
+                    }
+
+                    // Separated tables for each category
+                    if (mPreferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)) {
+                        List<CategoryGroupingResult> groupingResults = new GroupingController(mDB, context, mPreferenceManager)
+                                .getReceiptsGroupedByCategory(trip)
+                                .toList()
+                                .blockingGet();
+
+                        for (CategoryGroupingResult groupingResult : groupingResults) {
+                            data += "\n\n";
+                            data += groupingResult.getCategory().getName() + "\n";
+                            data += new CsvTableGenerator<>(csvColumns, true, true).generate(groupingResult.getReceipts());
+                        }
+                    }
+
+                    String filename = dir.getName() + ".csv";
+                    File csvFile = new File(dir, filename);
                     mFiles[EmailOptions.CSV.getIndex()] = csvFile;
                     new CsvReportWriter(csvFile).write(data);
                 } catch (IOException e) {
