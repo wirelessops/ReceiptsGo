@@ -159,7 +159,6 @@ android {
         // Special dependencies for free flavor
         freeImplementation "com.google.android.gms:play-services-ads:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
         freeImplementation "com.google.android.gms:play-services-analytics:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        freeImplementation files('src/free/libs/bugsense-3.6.jar')
     }
 
     apply plugin: 'com.google.gms.google-services'
