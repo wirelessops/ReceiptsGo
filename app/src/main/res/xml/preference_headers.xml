@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <header
+        android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderProFragment"
+        android:title="@string/pref_pro_header">
+    </header>
 	<header
 	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderGeneralFragment"
 	    android:title="@string/pref_general_header">
@@ -28,10 +32,6 @@
     <header
         android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderDistanceFragment"
         android:title="@string/pref_distance_header">
-    </header>
-    <header
-        android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderProFragment"
-        android:title="@string/pref_pro_header">
     </header>
     <header
 	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderHelpFragment"
