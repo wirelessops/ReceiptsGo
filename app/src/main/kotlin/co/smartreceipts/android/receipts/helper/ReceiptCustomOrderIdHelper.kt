@@ -26,6 +26,7 @@ object ReceiptCustomOrderIdHelper {
         toPosition: Int
     ): List<Receipt> {
 
+        // This calculates the "fake" days at the position that we've moved this item to
         val toPositionFakeDays = receipts[toPosition].customOrderId / DAYS_TO_ORDER_FACTOR
 
         val movedReceipt = receipts.removeAt(fromPosition)

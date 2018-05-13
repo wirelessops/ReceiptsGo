@@ -117,8 +117,9 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
         Logger.debug(this, "Moving receipt from position {} to position {}", realFromPosition, realToPosition);
 
-        if (!orderingPreferencesManager.isReceiptsTableOrdered() || !isThisTripOrdered())
+        if (!orderingPreferencesManager.isReceiptsTableOrdered() || !isThisTripOrdered()) {
             setDefaultOrderIds();
+        }
 
         if (isOldCustomOrderIdFormatUsed()) {
             setDefaultOrderIds();
