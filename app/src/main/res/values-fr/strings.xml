@@ -484,6 +484,7 @@
     <string name="tooltip_no_backups_info_message">Rappel: sauvegarde périodiquement vos données</string>
     <string name="tooltip_backup_info_message">%d jours depuis votre dernière sauvegarde</string>
     <string name="tooltip_import_info_message">Veuillez choisir un reçu pour votre pièce jointe</string>
+    <string name="tooltip_review_privacy">Appuyez pour examiner vos paramètres de confidentialité</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Ajoutez vos premiers reçus pour voir les graphiques.</string>

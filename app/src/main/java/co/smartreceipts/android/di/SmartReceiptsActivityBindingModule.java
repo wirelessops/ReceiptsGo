@@ -23,6 +23,7 @@ import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragm
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
 import co.smartreceipts.android.trips.TripFragment;
+import co.smartreceipts.android.trips.di.TripFragmentModule;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import dagger.Module;
@@ -32,7 +33,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class SmartReceiptsActivityBindingModule {
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = TripFragmentModule.class)
     public abstract TripFragment tripFragment();
 
     @FragmentScope

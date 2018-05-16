@@ -17,7 +17,7 @@
         android:tint="@color/text_primary_color"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_error_outline_24dp"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
 
     <TextView
@@ -34,7 +34,7 @@
         android:paddingStart="@dimen/default_tooltip_horizontal_padding"
         android:paddingTop="@dimen/default_tooltip_vertical_padding"
         android:visibility="gone"
-        tools:text="Like Smart Receipts?"
+        tools:text="Tooltip Message"
         tools:visibility="visible" />
 
 
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no"
             android:visibility="gone"
-            tools:visibility="gone" />
+            />
 
         <Button
             android:id="@+id/tooltip_yes"
@@ -61,8 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yes"
-            android:visibility="gone"
-            tools:visibility="gone" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/tooltip_cancel"
@@ -71,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="@string/DIALOG_CANCEL"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <ImageView
             android:id="@+id/tooltip_close_icon"
@@ -80,11 +79,12 @@
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:focusable="true"
             android:padding="@dimen/default_tooltip_horizontal_padding"
             android:tint="@color/text_primary_color"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_clear_24dp"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
     </LinearLayout>
 

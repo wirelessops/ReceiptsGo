@@ -486,6 +486,7 @@
     <string name="tooltip_no_backups_info_message">Нагадування: періодично створюйте резервні копії ваших даних</string>
     <string name="tooltip_backup_info_message">%d днів з моменту останньої резервної копії</string>
     <string name="tooltip_import_info_message">Будь-ласка, оберіть чек для вашого вкладення</string>
+    <string name="tooltip_review_privacy">Торкніться, щоб переглянути налаштування конфіденційності</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Додайте свій перший чек щоб побачити графіки.</string>

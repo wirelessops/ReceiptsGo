@@ -21,6 +21,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,14 +44,19 @@ import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
+import co.smartreceipts.android.tooltip.StaticTooltipView;
+import co.smartreceipts.android.tooltip.TooltipPresenter;
+import co.smartreceipts.android.tooltip.model.StaticTooltip;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.Observable;
 import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
-public class TripFragment extends WBListFragment implements TableEventsListener<Trip>, AdapterView.OnItemLongClickListener {
+public class TripFragment extends WBListFragment implements TableEventsListener<Trip>,
+        AdapterView.OnItemLongClickListener, StaticTooltipView {
 
     public static final String ARG_NAVIGATE_TO_VIEW_LAST_TRIP = "arg_nav_to_last_trip";
     private static final String OUT_NAV_TO_LAST_TRIP = "out_nav_to_last_trip";
@@ -56,24 +64,26 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Inject
     Flex flex;
-    @Inject
-    Analytics analytics;
+
     @Inject
     TripTableController tripTableController;
+
     @Inject
     BackupProvidersManager backupProvidersManager;
+
     @Inject
     UserPreferenceManager preferenceManager;
+
     @Inject
     NavigationHandler navigationHandler;
 
     @Inject
-    TripFragmentPresenter presenter;
+    TooltipPresenter tooltipPresenter;
 
     private TripCardAdapter tripCardAdapter;
     private ProgressBar progressBar;
     private TextView noDataAlert;
-    private Tooltip tooltip;
+    private Tooltip tooltipView;
 
     private boolean navigateToLastTrip;
 
@@ -113,7 +123,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         final View rootView = inflater.inflate(R.layout.trip_fragment_layout, container, false);
         progressBar = rootView.findViewById(R.id.progress);
         noDataAlert = rootView.findViewById(R.id.no_data);
-        tooltip = rootView.findViewById(R.id.trip_tooltip);
+        tooltipView = rootView.findViewById(R.id.trip_tooltip);
         rootView.findViewById(R.id.trip_action_new).setOnClickListener(v -> tripMenu(null));
         return rootView;
     }
@@ -133,7 +143,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onStart() {
         super.onStart();
         Logger.debug(this, "onStart");
-        presenter.subscribe(); // Note: Keep this tied to onStart due to Android 7.x TransitionLibrary bugs
+        tooltipPresenter.subscribe(); // Note: Keep this tied to onStart due to Android 7.x TransitionLibrary bugs
     }
 
     @Override
@@ -151,7 +161,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Override
     public void onStop() {
         Logger.debug(this, "onStop");
-        presenter.unsubscribe();
+        tooltipPresenter.unsubscribe();
         super.onStop();
     }
 
@@ -170,11 +180,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     public final void tripMenu(final Trip trip) {
-        if (!presenter.isExternalStorage()) {
-            Toast.makeText(getActivity(), getFlexString(R.string.SD_ERROR), Toast.LENGTH_LONG).show();
-            return;
-        }
-
         if (trip == null) {
             navigationHandler.navigateToCreateTripFragment();
         } else {
@@ -322,30 +327,63 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         }
     }
 
+    @NotNull
+    @Override
+    public List<StaticTooltip> getSupportedTooltips() {
+        return Arrays.asList(StaticTooltip.PrivacyPolicy, StaticTooltip.RateThisApp);
+    }
+
+    @Override
+    public void display(@NotNull StaticTooltip tooltip) {
+        tooltipView.setTooltip(tooltip);
+        if (tooltipView.getVisibility() != View.VISIBLE) {
+            tooltipView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideTooltip() {
+        if (tooltipView.getVisibility() != View.GONE) {
+            tooltipView.setVisibility(View.GONE);
+        }
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getTooltipClickStream() {
+        return tooltipView.getTooltipClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getButtonNoClickStream() {
+        return tooltipView.getButtonNoClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getButtonYesClickStream() {
+        return tooltipView.getButtonYesClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getButtonCancelClickStream() {
+        return tooltipView.getButtonCancelClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getCloseIconClickStream() {
+        return tooltipView.getCloseIconClickStream();
+    }
+
     private void viewReceipts(Trip trip) {
         selectedTrip = trip;
         if (navigationHandler.isDualPane()) {
             tripCardAdapter.setSelectedItem(trip);
         }
         navigationHandler.navigateToReportInfoFragment(trip);
-    }
-
-    public void showRatingTooltip() {
-        Logger.debug(this, "showRatingTooltip");
-        tooltip.setQuestion(R.string.rating_tooltip_text, view -> {
-            analytics.record(Events.Ratings.UserDeclinedRatingPrompt);
-            navigationHandler.showDialog(new FeedbackDialogFragment());
-            tooltip.hideWithAnimation();
-            presenter.dontShowRatingPrompt();
-        }, view -> {
-            analytics.record(Events.Ratings.UserAcceptedRatingPrompt);
-            navigationHandler.showDialog(new RatingDialogFragment());
-            tooltip.hideWithAnimation();
-            presenter.dontShowRatingPrompt();
-        });
-
-        tooltip.showWithAnimation();
-        analytics.record(Events.Ratings.RatingPromptShown);
     }
 
     private String getFlexString(int id) {

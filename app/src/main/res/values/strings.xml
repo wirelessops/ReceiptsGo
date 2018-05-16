@@ -511,6 +511,7 @@
     <string name="tooltip_backup_info_message">%d days since your last backup</string>
     <string name="tooltip_no_backups_info_message">Reminder: Periodically back up your data</string>
     <string name="tooltip_import_info_message">Please, choose receipt for your attachment</string>
+    <string name="tooltip_review_privacy">Tap to review your privacy settings</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Add your first receipts to see graphs.</string>

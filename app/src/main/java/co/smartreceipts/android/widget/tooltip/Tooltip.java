@@ -15,8 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.tooltip.model.StaticTooltip;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 public class Tooltip extends RelativeLayout {
+
+    private final PublishSubject<Object> tooltipClickStream = PublishSubject.create();
+    private final PublishSubject<Object> buttonNoClickStream = PublishSubject.create();
+    private final PublishSubject<Object> buttonYesClickStream = PublishSubject.create();
+    private final PublishSubject<Object> buttonCancelClickStream = PublishSubject.create();
+    private final PublishSubject<Object> closeIconClickStream = PublishSubject.create();
 
     private Button buttonNo, buttonYes, buttonCancel;
     private TextView messageText;
@@ -49,6 +58,79 @@ public class Tooltip extends RelativeLayout {
         setVisibility(VISIBLE);
     }
 
+    @NonNull
+    public Observable<Object> getTooltipClickStream() {
+        return tooltipClickStream;
+    }
+
+    @NonNull
+    public Observable<Object> getButtonNoClickStream() {
+        return buttonNoClickStream;
+    }
+
+    @NonNull
+    public Observable<Object> getButtonYesClickStream() {
+        return buttonYesClickStream;
+    }
+
+    @NonNull
+    public Observable<Object> getButtonCancelClickStream() {
+        return buttonCancelClickStream;
+    }
+
+    @NonNull
+    public Observable<Object> getCloseIconClickStream() {
+        return closeIconClickStream;
+    }
+
+    public void setTooltip(@NonNull StaticTooltip tooltip) {
+        // Initially hide the "yes/no" question buttons
+        buttonNo.setVisibility(GONE);
+        buttonYes.setVisibility(GONE);
+
+        switch (tooltip.getType()) {
+            case Question:
+                // Display these again if and only if a question
+                buttonNo.setVisibility(VISIBLE);
+                buttonYes.setVisibility(VISIBLE);
+            case Informational:
+                setInfoBackground();
+                break;
+            case Error:
+                setErrorBackground();
+                break;
+        }
+
+        // All tooltips must have a message (otherwise there's no reason to show them)
+        messageText.setText(tooltip.getMessageResourceId());
+        messageText.setVisibility(VISIBLE);
+
+        if (tooltip.getShowWarningIcon()) {
+            errorIcon.setVisibility(VISIBLE);
+        } else {
+            errorIcon.setVisibility(GONE);
+        }
+
+        // Tooltips may either have a close icon (ie 'X') or cancel button (but not both)
+        if (tooltip.getShowCloseIcon()) {
+            buttonCancel.setVisibility(GONE);
+            closeIcon.setVisibility(VISIBLE);
+        } else if (tooltip.getShowCancelButton()) {
+            buttonCancel.setVisibility(VISIBLE);
+            closeIcon.setVisibility(GONE);
+        } else {
+            buttonCancel.setVisibility(GONE);
+            closeIcon.setVisibility(GONE);
+        }
+
+        // Configure all click streams
+        setOnClickListener(v -> tooltipClickStream.onNext(new Object()));
+        buttonNo.setOnClickListener(v -> buttonNoClickStream.onNext(new Object()));
+        buttonYes.setOnClickListener(v -> buttonYesClickStream.onNext(new Object()));
+        buttonCancel.setOnClickListener(v -> buttonCancelClickStream.onNext(new Object()));
+        closeIcon.setOnClickListener(v -> closeIconClickStream.onNext(new Object()));
+    }
+
     public void setError(@StringRes int messageStringId, @Nullable OnClickListener closeClickListener) {
         setViewStateError();
         messageText.setText(getContext().getText(messageStringId));
@@ -63,8 +145,8 @@ public class Tooltip extends RelativeLayout {
         setTooltipClickListener(tooltipClickListener);
     }
 
-    public void setInfoWithIcon(@StringRes int infoStringId, @Nullable OnClickListener tooltipClickListener,
-                        @Nullable OnClickListener closeClickListener, Object... formatArgs) {
+    public void setInfoWithCloseIcon(@StringRes int infoStringId, @Nullable OnClickListener tooltipClickListener,
+                                     @Nullable OnClickListener closeClickListener, Object... formatArgs) {
         setInfoMessage(getContext().getString(infoStringId, formatArgs));
         setTooltipClickListener(tooltipClickListener);
         showCloseIcon(closeClickListener);

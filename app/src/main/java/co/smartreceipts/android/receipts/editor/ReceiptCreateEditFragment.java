@@ -242,12 +242,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         categoriesList = emptyList();
         categoriesAdapter = new FooterButtonArrayAdapter<>(getActivity(), new ArrayList<Category>(),
                 R.string.manage_categories, v -> {
-            analytics.record(Events.Informational.ManageCategories);
+            analytics.record(Events.Informational.ClickedManageCategories);
             navigationHandler.navigateToCategoriesEditor();
         });
         paymentMethodsAdapter = new FooterButtonArrayAdapter<>(getActivity(), new ArrayList<PaymentMethod>(),
                 R.string.manage_payment_methods, v -> {
-            analytics.record(Events.Informational.ManagePaymentMethods);
+            analytics.record(Events.Informational.ClickedManagePaymentMethods);
             navigationHandler.navigateToPaymentMethodsEditor();
         });
 

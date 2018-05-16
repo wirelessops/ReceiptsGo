@@ -138,7 +138,7 @@ public class ReportTooltipFragment extends Fragment implements TooltipView {
     }
 
     private void presentBackupReminder(int days) {
-        tooltip.setInfoWithIcon( days > 0 ? R.string.tooltip_backup_info_message : R.string.tooltip_no_backups_info_message,
+        tooltip.setInfoWithCloseIcon( days > 0 ? R.string.tooltip_backup_info_message : R.string.tooltip_no_backups_info_message,
                 v -> {
                     tooltipClickStream.onNext(ReportTooltipUiIndicator.backupReminder(days));
                     ((BackupNavigator) this.getParentFragment()).navigateToBackup();

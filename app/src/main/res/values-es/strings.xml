@@ -484,6 +484,7 @@
     <string name="tooltip_no_backups_info_message">Recordatorio: Copia periódica de sus datos</string>
     <string name="tooltip_backup_info_message">%d días desde la última copia de seguridad</string>
     <string name="tooltip_import_info_message">Por favor, elija el recibo de su archivo adjunto</string>
+    <string name="tooltip_review_privacy">Toca para revisar tu configuración de privacidad</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Agregue sus primeros recibos para ver los gráficos.</string>

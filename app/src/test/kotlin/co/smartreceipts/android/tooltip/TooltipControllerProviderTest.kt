@@ -1,0 +1,46 @@
+package co.smartreceipts.android.tooltip
+
+import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
+import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
+import org.junit.Before
+
+import org.junit.Assert.*
+import org.junit.Ignore
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.robolectric.RobolectricTestRunner
+import javax.inject.Provider
+
+@RunWith(RobolectricTestRunner::class)
+@Ignore("We need to upgrade to Mockito 2.x before mocking Kotlin classes")
+class TooltipControllerProviderTest {
+
+    lateinit var tooltipControllerProvider: TooltipControllerProvider
+
+    @Mock
+    lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
+
+    @Mock
+    lateinit var appRatingTooltipController: AppRatingTooltipController
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.initMocks(this)
+        tooltipControllerProvider = TooltipControllerProvider(Provider { return@Provider privacyPolicyTooltipController },
+                                                              Provider { return@Provider appRatingTooltipController })
+    }
+
+    @Test
+    fun getPrivacyPolicyTooltipController() {
+        assertTrue(tooltipControllerProvider.get(StaticTooltip.PrivacyPolicy) is PrivacyPolicyTooltipController)
+    }
+
+    @Test
+    fun getAppRatingTooltipController() {
+        assertTrue(tooltipControllerProvider.get(StaticTooltip.RateThisApp) is AppRatingTooltipController)
+    }
+
+}

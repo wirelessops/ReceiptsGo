@@ -27,6 +27,8 @@ import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
+import co.smartreceipts.android.settings.widget.PreferenceHeaderDistanceFragment;
+import co.smartreceipts.android.settings.widget.PreferenceHeaderPrivacyFragment;
 import co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.SettingsViewerActivity;
@@ -187,9 +189,23 @@ public class NavigationHandler<T extends FragmentActivity> {
         if (activity != null) {
             final Intent intent = new Intent(activity, SettingsActivity.class);
             if (isDualPane) {
-                intent.putExtra(EXTRA_SHOW_FRAGMENT, PreferenceHeaderReportOutputFragment.class.getName());
+                intent.putExtra(EXTRA_SHOW_FRAGMENT, PreferenceHeaderDistanceFragment.class.getName());
             } else {
                 intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, R.string.pref_distance_header_key);
+            }
+
+            activity.startActivity(intent);
+        }
+    }
+
+    public void navigateToSettingsScrollToPrivacySection() {
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, SettingsActivity.class);
+            if (isDualPane) {
+                intent.putExtra(EXTRA_SHOW_FRAGMENT, PreferenceHeaderPrivacyFragment.class.getName());
+            } else {
+                intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, R.string.pref_privacy_header_key);
             }
 
             activity.startActivity(intent);
