@@ -6,7 +6,6 @@ import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
 import org.junit.Before
 
 import org.junit.Assert.*
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -15,7 +14,6 @@ import org.robolectric.RobolectricTestRunner
 import javax.inject.Provider
 
 @RunWith(RobolectricTestRunner::class)
-@Ignore("We need to upgrade to Mockito 2.x before mocking Kotlin classes")
 class TooltipControllerProviderTest {
 
     lateinit var tooltipControllerProvider: TooltipControllerProvider

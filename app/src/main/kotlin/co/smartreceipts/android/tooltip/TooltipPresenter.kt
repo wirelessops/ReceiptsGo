@@ -11,9 +11,11 @@ import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import co.smartreceipts.android.widget.mvp.Presenter
 import com.hadisatrio.optional.Optional
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
 import java.util.*
 import javax.inject.Inject
 
@@ -36,19 +38,24 @@ class TooltipPresenter @Inject constructor(view: StaticTooltipView,
                     }
                     return@fromCallable tooltipSingles
                 }.flatMap { tooltipSingles ->
-                    return@flatMap Single.zip(tooltipSingles, { optionalTooltipsArrayAsObjects ->
-                        var result = Optional.absent<StaticTooltip>()
-                        optionalTooltipsArrayAsObjects.forEach {
-                            @Suppress("UNCHECKED_CAST")
-                            val optionalTooltip: Optional<StaticTooltip> = it as Optional<StaticTooltip>
-                            if (optionalTooltip.isPresent) {
-                                if (!result.isPresent || optionalTooltip.get().priority > result.get().priority) {
-                                    result = optionalTooltip
+                    if (tooltipSingles.isNotEmpty()) {
+                        return@flatMap Single.zip(tooltipSingles, { optionalTooltipsArrayAsObjects ->
+                            var result = Optional.absent<StaticTooltip>()
+                            optionalTooltipsArrayAsObjects.forEach {
+                                @Suppress("UNCHECKED_CAST")
+                                val optionalTooltip: Optional<StaticTooltip> = it as Optional<StaticTooltip>
+                                if (optionalTooltip.isPresent) {
+                                    if (!result.isPresent || optionalTooltip.get().priority > result.get().priority) {
+                                        result = optionalTooltip
+                                    }
                                 }
                             }
-                        }
-                        return@zip result
-                    })
+                            return@zip result
+                        })
+                    } else {
+                        // Don't zip an empty list
+                        return@flatMap Single.just(Optional.absent<StaticTooltip>())
+                    }
                 }
                 .filter {
                     return@filter it.isPresent
@@ -81,10 +88,13 @@ class TooltipPresenter @Inject constructor(view: StaticTooltipView,
                     return@filter activeTooltipController != null
                 }
                 .flatMap {
-                    return@flatMap activeTooltipController!!.handleTooltipInteraction(it)
+                    return@flatMap activeTooltipController!!.handleTooltipInteraction(it).andThen(Observable.just(it))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(activeTooltipController!!.consumeTooltipInteraction())
+                .subscribe {
+                    // This consumer may be null here, so we use this as a safety mechanism
+                    activeTooltipController?.consumeTooltipInteraction()?.accept(it)
+                }
         )
 
     }

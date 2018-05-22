@@ -12,6 +12,7 @@ import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
@@ -24,24 +25,22 @@ import javax.inject.Inject
 @FragmentScope
 class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView: StaticTooltipView,
                                                          private val router: PrivacyPolicyRouter,
-                                                         private val store: PrivacyPolicyUserInterationStore,
+                                                         private val store: PrivacyPolicyUserInteractionStore,
                                                          private val analytics: Analytics) : TooltipController {
 
     @UiThread
     override fun shouldDisplayTooltip(): Single<Optional<StaticTooltip>> {
         return store.hasUserInteractionOccurred()
-                .map { shouldShow -> if (shouldShow) Optional.of(StaticTooltip.PrivacyPolicy) else Optional.absent() }
+                .map { hasUserInteractionOccurred -> if (!hasUserInteractionOccurred) Optional.of(StaticTooltip.PrivacyPolicy) else Optional.absent() }
     }
 
     @AnyThread
-    override fun handleTooltipInteraction(interaction: TooltipInteraction): Observable<TooltipInteraction> {
-        return Observable.just(interaction)
-                .subscribeOn(Schedulers.io())
-                .doOnNext { _ ->
-                    store.setUserHasInteractedWithPrivacyPolicy(true)
-                    analytics.record(Events.Informational.ClickedPrivacyPolicyTip)
-                    Logger.info(this@PrivacyPolicyTooltipController, "User interacted with the privacy policy settings information")
-                }
+    override fun handleTooltipInteraction(interaction: TooltipInteraction): Completable {
+        return Completable.fromCallable {
+            store.setUserHasInteractedWithPrivacyPolicy(true)
+            analytics.record(Events.Informational.ClickedPrivacyPolicyTip)
+            Logger.info(this@PrivacyPolicyTooltipController, "User interacted with the privacy policy settings information")
+        }.subscribeOn(Schedulers.io())
     }
 
     @UiThread

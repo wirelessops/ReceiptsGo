@@ -5,6 +5,7 @@ import android.support.annotation.UiThread
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import com.hadisatrio.optional.Optional
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
@@ -22,12 +23,13 @@ interface TooltipController {
     fun shouldDisplayTooltip(): Single<Optional<StaticTooltip>>
 
     /**
-     * @return an [Observable] that will handle and emit a specific type of [TooltipInteraction].
      * This method exists to allow implementers of this contract decide if background thread
      * operations are required before a call is made to [TooltipController.consumeTooltipInteraction]
+     *
+     * @return an [Completable] that will complete once interaction effects are handled
      */
     @AnyThread
-    fun handleTooltipInteraction(interaction: TooltipInteraction): Observable<TooltipInteraction>
+    fun handleTooltipInteraction(interaction: TooltipInteraction): Completable
 
     /**
      * @return a [Consumer] that will consume a specific type of [TooltipInteraction] on the Ui Thread

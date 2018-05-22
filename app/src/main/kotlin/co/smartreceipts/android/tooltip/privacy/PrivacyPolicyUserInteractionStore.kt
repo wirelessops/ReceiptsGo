@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @ApplicationScope
-class PrivacyPolicyUserInterationStore(private val preferences: SharedPreferences) {
+class PrivacyPolicyUserInteractionStore(private val preferences: SharedPreferences) {
 
     @Inject
     constructor(context: Context) : this(PreferenceManager.getDefaultSharedPreferences(context))

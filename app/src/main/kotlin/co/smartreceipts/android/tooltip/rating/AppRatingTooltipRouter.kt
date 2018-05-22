@@ -8,7 +8,7 @@ import co.smartreceipts.android.rating.RatingDialogFragment
 import javax.inject.Inject
 
 @FragmentScope
-class AppRatingTooltipRouter @Inject constructor(val navigationHandler: NavigationHandler<SmartReceiptsActivity>) {
+class AppRatingTooltipRouter @Inject constructor(private val navigationHandler: NavigationHandler<SmartReceiptsActivity>) {
 
     /**
      * Routes us to the feedback screen

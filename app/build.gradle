@@ -150,6 +150,7 @@ android {
         testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
         testImplementation "junit:junit:$JUNIT_VERSION"
         testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
+        testImplementation "com.nhaarman:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
 
         // Leak Canary
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"

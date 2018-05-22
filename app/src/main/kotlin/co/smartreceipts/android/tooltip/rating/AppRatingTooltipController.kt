@@ -12,6 +12,7 @@ import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
 import com.hadisatrio.optional.Optional
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
@@ -39,20 +40,18 @@ class AppRatingTooltipController @Inject constructor(private val tooltipView: St
     }
 
     @AnyThread
-    override fun handleTooltipInteraction(interaction: TooltipInteraction): Observable<TooltipInteraction> {
-        return Observable.just(interaction)
-                .subscribeOn(Schedulers.io())
-                .filter {
-                    return@filter it == TooltipInteraction.YesButtonClick || it == TooltipInteraction.NoButtonClick
-                }
-                .doOnNext {
-                    appRatingManager.dontShowRatingPromptAgain()
-                    if (it == TooltipInteraction.YesButtonClick) {
-                        analytics.record(Events.Ratings.UserAcceptedRatingPrompt)
-                    } else {
-                        analytics.record(Events.Ratings.UserDeclinedRatingPrompt)
-                    }
-                }
+    override fun handleTooltipInteraction(interaction: TooltipInteraction): Completable {
+        return Completable.fromCallable {
+            if (interaction == TooltipInteraction.YesButtonClick) {
+                appRatingManager.dontShowRatingPromptAgain()
+                analytics.record(Events.Ratings.UserAcceptedRatingPrompt)
+                Logger.info(this, "User clicked 'Yes' on the rating tooltip")
+            } else if (interaction == TooltipInteraction.NoButtonClick) {
+                appRatingManager.dontShowRatingPromptAgain()
+                analytics.record(Events.Ratings.UserDeclinedRatingPrompt)
+                Logger.info(this, "User clicked 'No' on the rating tooltip")
+            }
+        }.subscribeOn(Schedulers.io())
     }
 
     @UiThread
