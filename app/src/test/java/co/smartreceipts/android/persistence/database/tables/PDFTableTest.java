@@ -35,9 +35,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -187,7 +187,7 @@ public class PDFTableTest {
         mPDFTable.findByPrimaryKey(mColumn1.getId())
                 .test()
                 .assertNoErrors()
-                .assertResult(mColumn1);
+                .assertValue(mColumn1);
     }
 
     @Test
@@ -212,8 +212,10 @@ public class PDFTableTest {
     public void insertDefaultColumn() throws Exception {
         final Column<Receipt> column = mPDFTable.insertDefaultColumn().blockingGet();
 
+        // Note: We cannot do an 'equals' operation here, since the inserted column will receive a primary key
         assertNotNull(column);
-        assertEquals(column, mDefaultColumn);
+        assertTrue(column instanceof BlankColumn);
+        assertEquals(mDefaultColumn.getName(), column.getName());
 
         final List<Column<Receipt>> columns = mPDFTable.get().blockingGet();
         assertEquals(Arrays.asList(mColumn1, mColumn2, column), columns);

@@ -18,7 +18,7 @@ import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;

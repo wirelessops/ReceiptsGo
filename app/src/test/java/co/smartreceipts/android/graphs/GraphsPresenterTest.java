@@ -20,7 +20,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

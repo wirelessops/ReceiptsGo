@@ -7,8 +7,8 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
-import co.smartreceipts.android.model.UnknownColumnResolutionStrategory;
-import co.smartreceipts.android.model.impl.columns.resolution.ConstantColumnUnknownColumnResolutionStrategory;
+import co.smartreceipts.android.model.UnknownColumnResolutionStrategy;
+import co.smartreceipts.android.model.impl.columns.resolution.ConstantColumnUnknownColumnResolutionStrategy;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -19,19 +19,19 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> {
 
     private final ColumnDefinitions<T> mColumnDefinitions;
-    private final UnknownColumnResolutionStrategory<T> mUnknownColumnResolutionStrategory;
+    private final UnknownColumnResolutionStrategy<T> mUnknownColumnResolutionStrategy;
     private int mId;
     private String mColumnName;
     private SyncState mSyncState;
     private long mCustomOrderId;
 
     public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions) {
-        this(columnDefinitions, new ConstantColumnUnknownColumnResolutionStrategory<T>());
+        this(columnDefinitions, new ConstantColumnUnknownColumnResolutionStrategy<T>());
     }
 
-    public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions, @NonNull UnknownColumnResolutionStrategory<T> unknownColumnResolutionStrategory) {
+    public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions, @NonNull UnknownColumnResolutionStrategy<T> unknownColumnResolutionStrategy) {
         mColumnDefinitions = columnDefinitions;
-        mUnknownColumnResolutionStrategory = unknownColumnResolutionStrategory;
+        mUnknownColumnResolutionStrategy = unknownColumnResolutionStrategy;
         mId = Column.UNKNOWN_ID;
         mColumnName = "";
         mSyncState = new DefaultSyncState();
@@ -67,7 +67,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
     @Override
     public Column<T> build() {
         final Column<T> column = mColumnDefinitions.getColumn(mId, mColumnName, mSyncState, mCustomOrderId);
-        return (column != null) ? column : mUnknownColumnResolutionStrategory.resolve(mId, mColumnName);
+        return (column != null) ? column : mUnknownColumnResolutionStrategy.resolve(mId, mColumnName);
     }
 
 }

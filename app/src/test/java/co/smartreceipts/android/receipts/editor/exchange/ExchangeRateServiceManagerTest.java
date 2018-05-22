@@ -28,7 +28,7 @@ import co.smartreceipts.android.utils.TestTimezoneToggler;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Observable;
 
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;

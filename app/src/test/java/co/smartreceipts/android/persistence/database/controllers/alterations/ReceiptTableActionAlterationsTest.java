@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -27,9 +25,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -41,66 +39,51 @@ import static org.mockito.Mockito.when;
 public class ReceiptTableActionAlterationsTest {
 
     // Class under test
-    ReceiptTableActionAlterations mReceiptTableActionAlterations;
+    ReceiptTableActionAlterations receiptTableActionAlterations;
 
     File file1;
 
     File file2;
 
     @Mock
-    ReceiptsTable mReceiptsTable;
+    ReceiptsTable receiptsTable;
 
     @Mock
-    StorageManager mStorageManager;
+    StorageManager storageManager;
 
     @Mock
-    BuilderFactory1<Receipt, ReceiptBuilderFactory> mReceiptBuilderFactoryFactory;
+    BuilderFactory1<Receipt, ReceiptBuilderFactory> receiptBuilderFactoryFactory;
 
     @Mock
-    ReceiptBuilderFactory mReceiptBuilderFactory;
+    ReceiptBuilderFactory receiptBuilderFactory;
 
     @Mock
-    Receipt mReceipt;
+    Receipt receipt;
 
     @Mock
-    Trip mTrip;
+    Trip trip;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(mReceipt.getTrip()).thenReturn(mTrip);
-        when(mReceiptBuilderFactory.build()).thenReturn(mReceipt);
-        when(mReceiptBuilderFactoryFactory.build(mReceipt)).thenReturn(mReceiptBuilderFactory);
-        when(mReceiptBuilderFactory.setIndex(anyInt())).thenReturn(mReceiptBuilderFactory);
+        when(receipt.getTrip()).thenReturn(trip);
+        when(trip.getDirectory()).thenReturn(new File(System.getProperty("java.io.tmpdir")));
+        when(receiptBuilderFactory.build()).thenReturn(receipt);
+        when(receiptBuilderFactoryFactory.build(receipt)).thenReturn(receiptBuilderFactory);
+        when(receiptBuilderFactory.setIndex(anyInt())).thenReturn(receiptBuilderFactory);
 
-        doAnswer(new Answer() {
-            @Override
-            public File answer(InvocationOnMock invocation) throws Throwable {
-                return new File((String) invocation.getArguments()[1]);
-            }
-        }).when(mStorageManager).getFile(any(File.class), anyString());
-        doAnswer(new Answer() {
-            @Override
-            public File answer(InvocationOnMock invocation) throws Throwable {
-                return new File((String) invocation.getArguments()[1]);
-            }
-        }).when(mStorageManager).rename(any(File.class), anyString());
-        doAnswer(new Answer() {
-            @Override
-            public ReceiptBuilderFactory answer(InvocationOnMock invocation) throws Throwable {
-                when(mReceipt.getFile()).thenReturn((File) invocation.getArguments()[0]);
-                return mReceiptBuilderFactory;
-            }
-        }).when(mReceiptBuilderFactory).setFile(any(File.class));
-        doAnswer(new Answer() {
-            @Override
-            public ReceiptBuilderFactory answer(InvocationOnMock invocation) throws Throwable {
-                when(mReceipt.getIndex()).thenReturn((Integer) invocation.getArguments()[0]);
-                return mReceiptBuilderFactory;
-            }
-        }).when(mReceiptBuilderFactory).setIndex(anyInt());
+        doAnswer(invocation -> new File((String) invocation.getArgument(1))).when(storageManager).getFile(any(File.class), anyString());
+        doAnswer(invocation -> new File((String) invocation.getArgument(1))).when(storageManager).rename(any(File.class), anyString());
+        doAnswer(invocation -> {
+            when(receipt.getFile()).thenReturn(invocation.getArgument(0));
+            return receiptBuilderFactory;
+        }).when(receiptBuilderFactory).setFile(any(File.class));
+        doAnswer(invocation -> {
+            when(receipt.getIndex()).thenReturn((Integer) invocation.getArguments()[0]);
+            return receiptBuilderFactory;
+        }).when(receiptBuilderFactory).setIndex(anyInt());
 
-        mReceiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, mReceiptsTable, mStorageManager, mReceiptBuilderFactoryFactory);
+        receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -118,66 +101,66 @@ public class ReceiptTableActionAlterationsTest {
     public void preInsertWithoutFile() {
         final String name = "name";
         final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
-        when(mReceiptsTable.get(mTrip)).thenReturn(Single.just(receiptsInTrip));
-        when(mReceipt.hasFile()).thenReturn(false);
-        when(mReceipt.getName()).thenReturn(name);
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
+        when(receipt.hasFile()).thenReturn(false);
+        when(receipt.getName()).thenReturn(name);
 
-        mReceiptTableActionAlterations.preInsert(mReceipt)
+        receiptTableActionAlterations.preInsert(receipt)
                 .test()
-                .assertValue(mReceipt)
+                .assertValue(receipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        assertNull(mReceipt.getFile());
-        verify(mReceiptBuilderFactory).setIndex(4);
+        assertNull(receipt.getFile());
+        verify(receiptBuilderFactory).setIndex(4);
     }
 
     @Test
     public void preInsertWithFile() {
         final String name = "name";
         final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
-        when(mReceiptsTable.get(mTrip)).thenReturn(Single.just(receiptsInTrip));
-        when(mReceipt.hasFile()).thenReturn(true);
-        when(mReceipt.getName()).thenReturn(name);
-        when(mReceipt.getFile()).thenReturn(new File("12345.jpg"));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
+        when(receipt.hasFile()).thenReturn(true);
+        when(receipt.getName()).thenReturn(name);
+        when(receipt.getFile()).thenReturn(new File("12345.jpg"));
 
-        mReceiptTableActionAlterations.preInsert(mReceipt)
+        receiptTableActionAlterations.preInsert(receipt)
                 .test()
-                .assertValue(mReceipt)
+                .assertValue(receipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        assertEquals(new File("4_name.jpg"), mReceipt.getFile());
-        verify(mReceiptBuilderFactory).setIndex(4);
+        assertEquals(new File("4_name.jpg"), receipt.getFile());
+        verify(receiptBuilderFactory).setIndex(4);
     }
 
     @Test
     public void preInsertWithIllegalCharactersInName() {
         final String name = "before_|\\\\?*<\\:>+[]/'\n\r\t\0\f_after";
         final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
-        when(mReceiptsTable.get(mTrip)).thenReturn(Single.just(receiptsInTrip));
-        when(mReceipt.hasFile()).thenReturn(true);
-        when(mReceipt.getName()).thenReturn(name);
-        when(mReceipt.getFile()).thenReturn(new File("12345.jpg"));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
+        when(receipt.hasFile()).thenReturn(true);
+        when(receipt.getName()).thenReturn(name);
+        when(receipt.getFile()).thenReturn(new File("12345.jpg"));
 
-        mReceiptTableActionAlterations.preInsert(mReceipt)
+        receiptTableActionAlterations.preInsert(receipt)
                 .test()
-                .assertValue(mReceipt)
+                .assertValue(receipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        assertEquals(new File("4_before__after.jpg"), mReceipt.getFile());
-        verify(mReceiptBuilderFactory).setIndex(4);
+        assertEquals(new File("4_before__after.jpg"), receipt.getFile());
+        verify(receiptBuilderFactory).setIndex(4);
     }
 
     @Test
     public void preUpdateWithoutFile() {
         final Receipt oldReceipt = mock(Receipt.class);
-        when(mReceipt.getFile()).thenReturn(null);
+        when(receipt.getFile()).thenReturn(null);
 
-        mReceiptTableActionAlterations.preUpdate(oldReceipt, mReceipt)
+        receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
                 .test()
-                .assertValue(mReceipt)
+                .assertValue(receipt)
                 .assertComplete()
                 .assertNoErrors();
     }
@@ -187,11 +170,11 @@ public class ReceiptTableActionAlterationsTest {
         final String name = "name";
         final Receipt oldReceipt = mock(Receipt.class);
         when(oldReceipt.getFile()).thenReturn(null);
-        when(mReceipt.getIndex()).thenReturn(4);
-        when(mReceipt.getName()).thenReturn(name);
-        when(mReceipt.getFile()).thenReturn(new File("12345.jpg"));
+        when(receipt.getIndex()).thenReturn(4);
+        when(receipt.getName()).thenReturn(name);
+        when(receipt.getFile()).thenReturn(new File("12345.jpg"));
 
-        final List<Receipt> result = mReceiptTableActionAlterations.preUpdate(oldReceipt, mReceipt)
+        final List<Receipt> result = receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
                 .test()
                 .assertComplete()
                 .assertNoErrors()
@@ -206,8 +189,8 @@ public class ReceiptTableActionAlterationsTest {
 
     @Test
     public void preUpdateWithUpdatedFile() throws Exception {
-        this.file1 = new File("1_name.jpg");
-        this.file2 = new File("12345.jpg");
+        this.file1 = new File(System.getProperty("java.io.tmpdir"), "1_name.jpg");
+        this.file2 = new File(System.getProperty("java.io.tmpdir"), "12345.jpg");
         assertTrue(this.file1.createNewFile());
         assertTrue(this.file2.createNewFile());
 
@@ -216,12 +199,12 @@ public class ReceiptTableActionAlterationsTest {
         when(oldReceipt.getIndex()).thenReturn(1);
         when(oldReceipt.getName()).thenReturn(name);
         when(oldReceipt.getFile()).thenReturn(file1);
-        when(mReceipt.getIndex()).thenReturn(1);
-        when(mReceipt.getName()).thenReturn(name);
-        when(mReceipt.getFile()).thenReturn(file2);
+        when(receipt.getIndex()).thenReturn(1);
+        when(receipt.getName()).thenReturn(name);
+        when(receipt.getFile()).thenReturn(file2);
 
         final List<Receipt> onNextResults =
-                mReceiptTableActionAlterations.preUpdate(oldReceipt, mReceipt)
+                receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
                         .test()
                         .assertComplete()
                         .assertNoErrors()
@@ -246,12 +229,12 @@ public class ReceiptTableActionAlterationsTest {
         when(oldReceipt.getIndex()).thenReturn(1);
         when(oldReceipt.getName()).thenReturn(name);
         when(oldReceipt.getFile()).thenReturn(file1);
-        when(mReceipt.getIndex()).thenReturn(1);
-        when(mReceipt.getName()).thenReturn(name);
-        when(mReceipt.getFile()).thenReturn(file2);
+        when(receipt.getIndex()).thenReturn(1);
+        when(receipt.getName()).thenReturn(name);
+        when(receipt.getFile()).thenReturn(file2);
 
         final List<Receipt> onNextResults =
-                mReceiptTableActionAlterations.preUpdate(oldReceipt, mReceipt)
+                receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
                         .test()
                         .assertComplete()
                         .assertNoErrors()
@@ -272,12 +255,12 @@ public class ReceiptTableActionAlterationsTest {
         when(oldReceipt.getIndex()).thenReturn(1);
         when(oldReceipt.getName()).thenReturn(name);
         when(oldReceipt.getFile()).thenReturn(new File("1_name.jpg"));
-        when(mReceipt.getIndex()).thenReturn(4);
-        when(mReceipt.getName()).thenReturn(name);
-        when(mReceipt.getFile()).thenReturn(new File("1_name.jpg"));
+        when(receipt.getIndex()).thenReturn(4);
+        when(receipt.getName()).thenReturn(name);
+        when(receipt.getFile()).thenReturn(new File("1_name.jpg"));
 
         final List<Receipt> onNextResults =
-                mReceiptTableActionAlterations.preUpdate(oldReceipt, mReceipt)
+                receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
                         .test()
                         .assertComplete()
                         .assertNoErrors()
@@ -291,45 +274,45 @@ public class ReceiptTableActionAlterationsTest {
 
     @Test
     public void postUpdateNull() throws Exception {
-        mReceiptTableActionAlterations.postUpdate(mReceipt, null)
+        receiptTableActionAlterations.postUpdate(receipt, null)
                 .test()
                 .assertNoValues()
                 .assertNotComplete()
                 .assertError(Exception.class);
 
-        verifyZeroInteractions(mStorageManager);
+        verifyZeroInteractions(storageManager);
     }
 
     @Test
     public void postUpdateSuccessWithoutFile() throws Exception {
-        when(mReceipt.hasFile()).thenReturn(false);
+        when(receipt.hasFile()).thenReturn(false);
 
         final Receipt updatedReceipt = mock(Receipt.class);
-        mReceiptTableActionAlterations.postUpdate(mReceipt, updatedReceipt)
+        receiptTableActionAlterations.postUpdate(receipt, updatedReceipt)
                 .test()
                 .assertValue(updatedReceipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        verifyZeroInteractions(mStorageManager);
+        verifyZeroInteractions(storageManager);
     }
 
     @Test
     public void postUpdateSuccessWithSameFile() throws Exception {
         final Receipt updatedReceipt = mock(Receipt.class);
         final File file = new File("abc");
-        when(mReceipt.hasFile()).thenReturn(true);
+        when(receipt.hasFile()).thenReturn(true);
         when(updatedReceipt.hasFile()).thenReturn(true);
-        when(mReceipt.getFile()).thenReturn(file);
+        when(receipt.getFile()).thenReturn(file);
         when(updatedReceipt.getFile()).thenReturn(file);
 
-        mReceiptTableActionAlterations.postUpdate(mReceipt, updatedReceipt)
+        receiptTableActionAlterations.postUpdate(receipt, updatedReceipt)
                 .test()
                 .assertValue(updatedReceipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        verify(mStorageManager, never()).delete(file);
+        verify(storageManager, never()).delete(file);
     }
 
     @Test
@@ -337,57 +320,57 @@ public class ReceiptTableActionAlterationsTest {
         final Receipt updatedReceipt = mock(Receipt.class);
         final File file = new File("abc");
         final File newFile = new File("efg");
-        when(mReceipt.hasFile()).thenReturn(true);
+        when(receipt.hasFile()).thenReturn(true);
         when(updatedReceipt.hasFile()).thenReturn(true);
-        when(mReceipt.getFile()).thenReturn(file);
+        when(receipt.getFile()).thenReturn(file);
         when(updatedReceipt.getFile()).thenReturn(newFile);
 
-        mReceiptTableActionAlterations.postUpdate(mReceipt, updatedReceipt)
+        receiptTableActionAlterations.postUpdate(receipt, updatedReceipt)
                 .test()
                 .assertValue(updatedReceipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        verify(mStorageManager).delete(file);
+        verify(storageManager).delete(file);
     }
 
     @Test
     public void postDeleteNull() throws Exception {
-        mReceiptTableActionAlterations.postDelete(null)
+        receiptTableActionAlterations.postDelete(null)
                 .test()
                 .assertNoValues()
                 .assertNotComplete()
                 .assertError(Exception.class);
 
-        verifyZeroInteractions(mStorageManager);
+        verifyZeroInteractions(storageManager);
     }
 
     @Test
     public void postDeleteSuccessWithoutFile() throws Exception {
-        when(mReceipt.hasFile()).thenReturn(false);
+        when(receipt.hasFile()).thenReturn(false);
 
-        mReceiptTableActionAlterations.postDelete(mReceipt)
+        receiptTableActionAlterations.postDelete(receipt)
                 .test()
-                .assertValue(mReceipt)
+                .assertValue(receipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        verifyZeroInteractions(mStorageManager);
+        verifyZeroInteractions(storageManager);
     }
 
     @Test
     public void postDeleteSuccessWithFile() throws Exception {
         final File file = new File("abc");
-        when(mReceipt.hasFile()).thenReturn(true);
-        when(mReceipt.getFile()).thenReturn(file);
+        when(receipt.hasFile()).thenReturn(true);
+        when(receipt.getFile()).thenReturn(file);
 
-        mReceiptTableActionAlterations.postDelete(mReceipt)
+        receiptTableActionAlterations.postDelete(receipt)
                 .test()
-                .assertValue(mReceipt)
+                .assertValue(receipt)
                 .assertComplete()
                 .assertNoErrors();
 
-        verify(mStorageManager).delete(file);
+        verify(storageManager).delete(file);
     }
 
 

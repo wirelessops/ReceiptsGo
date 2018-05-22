@@ -20,8 +20,8 @@ import co.smartreceipts.android.imports.utils.PdfValidator;
 import co.smartreceipts.android.model.Trip;
 import wb.android.storage.StorageManager;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -45,9 +45,6 @@ public class GenericFileImportProcessorTest {
     InputStream inputStream;
 
     @Mock
-    Context context;
-
-    @Mock
     PdfValidator pdfValidator;
 
     Uri uri;
@@ -57,6 +54,7 @@ public class GenericFileImportProcessorTest {
         MockitoAnnotations.initMocks(this);
 
         uri = Uri.parse("content://some.pdf");
+        when(trip.getDirectory()).thenReturn(new File(System.getProperty("java.io.tmpdir")));
         when(contentResolver.getType(uri)).thenReturn("application/pdf");
         when(storageManner.getFile(any(File.class), anyString())).thenReturn(file);
         when(pdfValidator.isPdfValid(any(File.class))).thenReturn(true);

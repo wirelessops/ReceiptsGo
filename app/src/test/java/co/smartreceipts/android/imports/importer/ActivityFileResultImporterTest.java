@@ -19,7 +19,6 @@ import co.smartreceipts.android.imports.FileImportProcessor;
 import co.smartreceipts.android.imports.FileImportProcessorFactory;
 import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.model.impl.DefaultTripImpl;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import io.reactivex.Observable;
@@ -27,8 +26,8 @@ import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,12 +64,11 @@ public class ActivityFileResultImporterTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        when(factory.get(anyInt(), any(DefaultTripImpl.class))).thenReturn(processor);
+        when(factory.get(anyInt(), any(Trip.class))).thenReturn(processor);
         when(ocrManager.scan(any(File.class))).thenReturn(Observable.just(ocrResponse));
         when(uri.getScheme()).thenReturn(ContentResolver.SCHEME_CONTENT);
 
-        fileResultImporter = new ActivityFileResultImporter(analytics,
-                ocrManager, factory, Schedulers.trampoline(), Schedulers.trampoline());
+        fileResultImporter = new ActivityFileResultImporter(analytics, ocrManager, factory, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test

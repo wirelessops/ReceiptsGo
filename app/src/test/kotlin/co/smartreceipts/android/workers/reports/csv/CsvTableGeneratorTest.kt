@@ -13,8 +13,8 @@ import java.util.Collections
 import co.smartreceipts.android.model.Column
 
 import org.junit.Assert.*
-import org.mockito.Matchers.anyListOf
-import org.mockito.Matchers.anyString
+import org.mockito.ArgumentMatchers.anyListOf
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.`when`
 
 @RunWith(RobolectricTestRunner::class)

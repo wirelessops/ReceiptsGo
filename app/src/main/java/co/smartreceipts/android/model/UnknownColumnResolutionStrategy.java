@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
  * Defines what actions should be taken if we do not know how to generate a particular column
  * from a set of {@link ColumnDefinitions}.
  */
-public interface UnknownColumnResolutionStrategory<T> {
+public interface UnknownColumnResolutionStrategy<T> {
 
     /**
      * Resolves a conflict in some manner for a given string name
