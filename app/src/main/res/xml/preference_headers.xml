@@ -38,12 +38,12 @@
 	    android:title="@string/pref_help_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderAboutFragment"
-	    android:title="@string/pref_about_header">
-    </header>
-    <header
         android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderAboutFragment"
         android:title="@string/pref_privacy_header">
+    </header>
+    <header
+	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderAboutFragment"
+	    android:title="@string/pref_about_header">
     </header>
     
 </preference-headers>

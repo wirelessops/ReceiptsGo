@@ -288,24 +288,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_about_category_key"
-        android:title="@string/pref_about_header">
-        <Preference
-            android:key="@string/pref_about_version_key"
-            android:title="@string/pref_about_version_title" />
-        <wb.android.preferences.DialogPreference
-            android:dialogMessage="@string/pref_about_about_dialogMessage"
-            android:dialogTitle="@string/pref_about_about_title"
-            android:key="@string/pref_about_about_key"
-            android:title="@string/pref_about_about_title" />
-        <wb.android.preferences.DialogPreference
-            android:dialogMessage="@string/pref_about_terms_dialogMessage"
-            android:dialogTitle="@string/pref_about_terms_title"
-            android:key="@string/pref_about_terms_key"
-            android:title="@string/pref_about_terms_title" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="@string/pref_privacy_header_key"
         android:title="@string/pref_privacy_header" >
         <Preference
@@ -326,5 +308,23 @@
             android:key="@string/pref_privacy_enable_ad_personalization_key"
             android:title="@string/pref_privacy_enable_ad_personalization_title"
             android:summary="@string/pref_privacy_enable_ad_personalization_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_about_category_key"
+        android:title="@string/pref_about_header">
+        <Preference
+            android:key="@string/pref_about_version_key"
+            android:title="@string/pref_about_version_title" />
+        <wb.android.preferences.DialogPreference
+            android:dialogMessage="@string/pref_about_about_dialogMessage"
+            android:dialogTitle="@string/pref_about_about_title"
+            android:key="@string/pref_about_about_key"
+            android:title="@string/pref_about_about_title" />
+        <wb.android.preferences.DialogPreference
+            android:dialogMessage="@string/pref_about_terms_dialogMessage"
+            android:dialogTitle="@string/pref_about_terms_title"
+            android:key="@string/pref_about_terms_key"
+            android:title="@string/pref_about_terms_title" />
     </PreferenceCategory>
 </PreferenceScreen>
