@@ -124,7 +124,8 @@ public class IdentityManager implements IdentityStore {
 
         return loginResponseObservable
                 .flatMap(loginResponse -> {
-                        if (loginResponse.getToken() != null && loginResponse.getId() != null) {
+                        // Note - we should eventually validate and confirm loginResponse.getId() != null when this is pushed to prod
+                        if (loginResponse.getToken() != null) {
                             mutableIdentityStore.setCredentials(credentials.getEmail(), loginResponse.getId(), loginResponse.getToken());
                             return Observable.just(loginResponse);
                         } else {
