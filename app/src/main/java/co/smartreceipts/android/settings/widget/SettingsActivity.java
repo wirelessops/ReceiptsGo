@@ -95,7 +95,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         if (!isUsingHeaders) {
             // Load the legacy preferences headers
             getPreferenceManager().setSharedPreferencesName(UserPreferenceManager.PREFERENCES_FILE_NAME);
-            addPreferencesFromResource(R.xml.preference_legacy);
+            try {
+                addPreferencesFromResource(R.xml.preference_legacy);
+            } catch (ClassCastException e) {
+                Logger.error(this, "Swallowing cast exception due to type mismatch for the PDF Page Size");
+                getPreferenceManager().getSharedPreferences().edit().remove(getString(R.string.pref_output_pdf_page_size_key)).apply();
+
+                // Re-load now that we've removed the bad preference
+                addPreferencesFromResource(R.xml.preference_legacy);
+            }
             configurePreferencesGeneral(this);
             configurePreferencesReceipts(this);
             configurePreferencesOutput(this);
