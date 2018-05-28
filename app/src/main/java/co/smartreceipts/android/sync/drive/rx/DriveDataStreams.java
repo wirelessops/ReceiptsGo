@@ -114,46 +114,54 @@ class DriveDataStreams {
                         } else {
                             final Query databaseQuery = new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, DatabaseHelper.DATABASE_NAME)).build();
                             for (final Metadata metadata : folderMetadataList) {
-                                final Identifier driveFolderId = new Identifier(metadata.getDriveId().getResourceId());
-                                final Map<CustomPropertyKey, String> customPropertyMap = metadata.getCustomProperties();
-                                final Identifier syncDeviceIdentifier;
-                                if (customPropertyMap != null && customPropertyMap.containsKey(SMART_RECEIPTS_FOLDER_KEY)) {
-                                    syncDeviceIdentifier = new Identifier(customPropertyMap.get(SMART_RECEIPTS_FOLDER_KEY));
-                                    Logger.info(DriveDataStreams.this, "Found valid Smart Receipts folder a known device id");
-                                } else {
-                                    syncDeviceIdentifier = new Identifier("UnknownDevice");
-                                    Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder without a tagged device key");
-                                }
+                                final String validResourceId = metadata.getDriveId().getResourceId();
+                                if (validResourceId != null) {
+                                    final Identifier driveFolderId = new Identifier(validResourceId);
+                                    final Map<CustomPropertyKey, String> customPropertyMap = metadata.getCustomProperties();
+                                    final Identifier syncDeviceIdentifier;
+                                    if (customPropertyMap != null && customPropertyMap.containsKey(SMART_RECEIPTS_FOLDER_KEY)) {
+                                        syncDeviceIdentifier = new Identifier(customPropertyMap.get(SMART_RECEIPTS_FOLDER_KEY));
+                                        Logger.info(DriveDataStreams.this, "Found valid Smart Receipts folder a known device id");
+                                    } else {
+                                        syncDeviceIdentifier = new Identifier("UnknownDevice");
+                                        Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder without a tagged device key");
+                                    }
 
-                                Logger.debug(DriveDataStreams.this, "Found existing Smart Receipts folder with id: {}", driveFolderId);
-                                final String deviceName = metadata.getDescription() != null ? metadata.getDescription() : "";
-                                final Date parentFolderLastModifiedDate = metadata.getModifiedDate();
-                                metadata.getDriveId().asDriveFolder().queryChildren(mGoogleApiClient, databaseQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                                    @Override
-                                    public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                                        try {
-                                            Date lastModifiedDate = parentFolderLastModifiedDate;
-                                            for (final Metadata databaseMetadata : metadataBufferResult.getMetadataBuffer()) {
-                                                if (databaseMetadata.getModifiedDate().getTime() > lastModifiedDate.getTime()) {
-                                                    lastModifiedDate = databaseMetadata.getModifiedDate();
+                                    Logger.debug(DriveDataStreams.this, "Found existing Smart Receipts folder with id: {}", driveFolderId);
+                                    final String deviceName = metadata.getDescription() != null ? metadata.getDescription() : "";
+                                    final Date parentFolderLastModifiedDate = metadata.getModifiedDate();
+                                    metadata.getDriveId().asDriveFolder().queryChildren(mGoogleApiClient, databaseQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
+                                        @Override
+                                        public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                            try {
+                                                Date lastModifiedDate = parentFolderLastModifiedDate;
+                                                for (final Metadata databaseMetadata : metadataBufferResult.getMetadataBuffer()) {
+                                                    if (databaseMetadata.getModifiedDate().getTime() > lastModifiedDate.getTime()) {
+                                                        lastModifiedDate = databaseMetadata.getModifiedDate();
+                                                    }
+                                                }
+                                                resultsList.add(new DefaultRemoteBackupMetadata(driveFolderId, syncDeviceIdentifier, deviceName, lastModifiedDate));
+                                                Logger.debug(DriveDataStreams.this, "Successfully queried the backup metadata for the Smart Receipts folder with id: {}", driveFolderId);
+                                            } finally {
+                                                metadataBufferResult.getMetadataBuffer().release();
+                                                if (resultsCount.decrementAndGet() == 0) {
+                                                    emitter.onSuccess(resultsList);
                                                 }
                                             }
-                                            resultsList.add(new DefaultRemoteBackupMetadata(driveFolderId, syncDeviceIdentifier, deviceName, lastModifiedDate));
-                                            Logger.debug(DriveDataStreams.this, "Successfully queried the backup metadata for the Smart Receipts folder with id: {}", driveFolderId);
-                                        } finally {
-                                            metadataBufferResult.getMetadataBuffer().release();
-                                            if (resultsCount.decrementAndGet() == 0) {
-                                                emitter.onSuccess(resultsList);
-                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure(@NonNull Status status) {
-                                        Logger.error(DriveDataStreams.this, "Failed to query a database within the parent folder: {}", status);
-                                        emitter.onError(new IOException(status.getStatusMessage()));
+                                        @Override
+                                        public void onFailure(@NonNull Status status) {
+                                            Logger.error(DriveDataStreams.this, "Failed to query a database within the parent folder: {}", status);
+                                            emitter.onError(new IOException(status.getStatusMessage()));
+                                        }
+                                    });
+                                } else {
+                                    Logger.warn(DriveDataStreams.this, "Found resource without a valid drive id. Decrementing the remaining total");
+                                    if (resultsCount.decrementAndGet() == 0) {
+                                        emitter.onSuccess(resultsList);
                                     }
-                                });
+                                }
                             }
                         }
                     } finally {
