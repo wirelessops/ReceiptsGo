@@ -54,7 +54,7 @@ public final class ReceiptPriceMinusTaxColumn extends AbstractColumnImpl<Receipt
             for (final Receipt receipt : receipts) {
                 prices.add(getPrice(receipt));
             }
-            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getDecimalFormattedPrice();
+            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getCurrencyCodeFormattedPrice();
         } else {
             return "";
         }

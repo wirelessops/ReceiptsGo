@@ -40,8 +40,7 @@ public final class ReceiptPriceColumn extends AbstractColumnImpl<Receipt> {
                 prices.add(receipt.getPrice());
             }
 
-            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build()
-                    .getCurrencyCodeFormattedPrice();
+            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getCurrencyCodeFormattedPrice();
         } else {
             return "";
         }
