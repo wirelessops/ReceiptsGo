@@ -1,6 +1,7 @@
 package co.smartreceipts.android.model;
 
 import android.os.Parcelable;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import java.math.BigDecimal;
@@ -80,6 +81,15 @@ public interface Price extends Parcelable {
      */
     @NonNull
     String getCurrencyCode();
+
+    /**
+     * Gets the total number of currency codes that this price holds. For most, this will simply be '1' (eg USD),
+     * but others that support multiple currencies (eg exchanged totals) may contain more (eg USD; EUR)
+     *
+     * @return the total number of currency codes that this price contains in it's total representation
+     */
+    @IntRange(from = 1)
+    int getCurrencyCodeCount();
 
     /**
      * Gets the exchange rate associated with this particular price object, which we can use to attempt to convert this

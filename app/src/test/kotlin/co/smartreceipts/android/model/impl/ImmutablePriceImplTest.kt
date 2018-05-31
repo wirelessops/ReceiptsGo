@@ -40,60 +40,54 @@ class ImmutablePriceImplTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun getPriceAsFloat() {
         assertEquals(PRICE_FLOAT, price.priceAsFloat, TestUtils.EPSILON)
         assertEquals(PRICE_FLOAT, priceWith3DigitsOfPrecision.priceAsFloat, TestUtils.EPSILON)
     }
 
     @Test
-    @Throws(Exception::class)
     fun getPrice() {
         assertEquals(PRICE.toDouble(), price.price.toDouble(), TestUtils.EPSILON.toDouble())
-        assertEquals(
-            PRICE.toDouble(),
-            priceWith3DigitsOfPrecision.price.toDouble(),
-            TestUtils.EPSILON.toDouble()
-        )
+        assertEquals(PRICE.toDouble(), priceWith3DigitsOfPrecision.price.toDouble(), TestUtils.EPSILON.toDouble())
     }
 
     @Test
-    @Throws(Exception::class)
     fun getDecimalFormattedPrice() {
         assertEquals("1.25", price.decimalFormattedPrice)
         assertEquals("1.251", priceWith3DigitsOfPrecision.decimalFormattedPrice)
     }
 
     @Test
-    @Throws(Exception::class)
     fun getCurrencyFormattedPrice() {
         assertEquals("$1.25", price.currencyFormattedPrice)
         assertEquals("$1.251", priceWith3DigitsOfPrecision.currencyFormattedPrice)
     }
 
     @Test
-    @Throws(Exception::class)
     fun getCurrencyCodeFormattedPrice() {
         assertEquals("USD1.25", price.currencyCodeFormattedPrice)
         assertEquals("USD1.251", priceWith3DigitsOfPrecision.currencyCodeFormattedPrice)
     }
 
     @Test
-    @Throws(Exception::class)
     fun getCurrency() {
         assertEquals(CURRENCY, price.currency)
         assertEquals(CURRENCY, priceWith3DigitsOfPrecision.currency)
     }
 
     @Test
-    @Throws(Exception::class)
     fun getCurrencyCode() {
         assertEquals("USD", price.currencyCode)
         assertEquals("USD", priceWith3DigitsOfPrecision.currencyCode)
     }
 
     @Test
-    @Throws(Exception::class)
+    fun getCurrencyCodeCount() {
+        assertEquals(1, price.currencyCodeCount)
+        assertEquals(1, priceWith3DigitsOfPrecision.currencyCodeCount)
+    }
+
+    @Test
     fun getExchangeRate() {
         assertEquals(EXCHANGE_RATE, price.exchangeRate)
         assertEquals(EXCHANGE_RATE, priceWith3DigitsOfPrecision.exchangeRate)
@@ -106,7 +100,6 @@ class ImmutablePriceImplTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun parcel() {
         val parcel = Parcel.obtain()
         price.writeToParcel(parcel, 0)

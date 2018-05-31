@@ -91,63 +91,43 @@ class ImmutableLegacyNetPriceImplTest {
     @Test
     fun getCurrencyFormattedPrice() {
         assertEquals("$3.00", sameCurrencyPrice.currencyFormattedPrice)
-        assertEquals(
-            "EUR1.00; $2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice
-        )
-        assertEquals(
-            "EUR1.00; $2.00",
-            differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice
-        )
+        assertEquals("EUR1.00; $2.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
+        assertEquals("EUR1.00; $2.00", differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice)
     }
 
     @Test
     fun getCurrencyCodeFormattedPrice() {
         assertEquals("USD3.00", sameCurrencyPrice.currencyCodeFormattedPrice)
-        assertEquals(
-            "EUR1.00; USD2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyCodeFormattedPrice
-        )
-        assertEquals(
-            "EUR1.00; USD2.00",
-            differentCurrenciesWithExchangeRatePrice.currencyCodeFormattedPrice
-        )
+        assertEquals("EUR1.00; USD2.00", differentCurrenciesNoExchangeRatePrice.currencyCodeFormattedPrice)
+        assertEquals("EUR1.00; USD2.00", differentCurrenciesWithExchangeRatePrice.currencyCodeFormattedPrice)
     }
 
     @Test
     fun getCurrency() {
         assertEquals(USD_CURRENCY, sameCurrencyPrice.currency)
         assertEquals(PriceCurrency.MIXED_CURRENCY, differentCurrenciesNoExchangeRatePrice.currency)
-        assertEquals(
-            PriceCurrency.MIXED_CURRENCY,
-            differentCurrenciesWithExchangeRatePrice.currency
-        )
+        assertEquals(PriceCurrency.MIXED_CURRENCY, differentCurrenciesWithExchangeRatePrice.currency)
     }
 
     @Test
     fun getCurrencyCode() {
         assertEquals(USD_CURRENCY.currencyCode, sameCurrencyPrice.currencyCode)
-        assertEquals(
-            PriceCurrency.MIXED_CURRENCY.currencyCode,
-            differentCurrenciesNoExchangeRatePrice.currencyCode
-        )
-        assertEquals(
-            PriceCurrency.MIXED_CURRENCY.currencyCode,
-            differentCurrenciesWithExchangeRatePrice.currencyCode
-        )
+        assertEquals(PriceCurrency.MIXED_CURRENCY.currencyCode, differentCurrenciesNoExchangeRatePrice.currencyCode)
+        assertEquals(PriceCurrency.MIXED_CURRENCY.currencyCode, differentCurrenciesWithExchangeRatePrice.currencyCode)
+    }
+
+    @Test
+    fun getCurrencyCodeCount() {
+        assertEquals(1, sameCurrencyPrice.currencyCodeCount)
+        assertEquals(2, differentCurrenciesNoExchangeRatePrice.currencyCodeCount)
+        assertEquals(2, differentCurrenciesWithExchangeRatePrice.currencyCodeCount)
     }
 
     @Test
     fun testToString() {
         assertEquals("$3.00", sameCurrencyPrice.currencyFormattedPrice)
-        assertEquals(
-            "EUR1.00; $2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice
-        )
-        assertEquals(
-            "EUR1.00; $2.00",
-            differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice
-        )
+        assertEquals("EUR1.00; $2.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
+        assertEquals("EUR1.00; $2.00", differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice)
     }
 
     @Test
@@ -182,25 +162,17 @@ class ImmutableLegacyNetPriceImplTest {
 
     @Test
     fun equals() {
-        val usd1 = PriceBuilderFactory().setCurrency(USD_CURRENCY).setPrice(1.0)
-            .setExchangeRate(USD_EXCHANGE_RATE).build()
-        val usd2 = PriceBuilderFactory().setCurrency(USD_CURRENCY).setPrice(2.0)
-            .setExchangeRate(USD_EXCHANGE_RATE).build()
+        val usd1 = PriceBuilderFactory().setCurrency(USD_CURRENCY).setPrice(1.0).setExchangeRate(USD_EXCHANGE_RATE).build()
+        val usd2 = PriceBuilderFactory().setCurrency(USD_CURRENCY).setPrice(2.0).setExchangeRate(USD_EXCHANGE_RATE).build()
         val equalPrice = ImmutableNetPriceImpl(USD_CURRENCY, Arrays.asList(usd1, usd2))
 
         Assert.assertEquals(sameCurrencyPrice, sameCurrencyPrice)
         Assert.assertEquals(sameCurrencyPrice, equalPrice)
-        Assert.assertEquals(
-            sameCurrencyPrice,
-            ImmutablePriceImpl(BigDecimal(3), USD_CURRENCY, USD_EXCHANGE_RATE)
-        )
+        Assert.assertEquals(sameCurrencyPrice, ImmutablePriceImpl(BigDecimal(3), USD_CURRENCY, USD_EXCHANGE_RATE))
         assertThat(sameCurrencyPrice, not(equalTo(differentCurrenciesNoExchangeRatePrice)))
         assertThat(sameCurrencyPrice, not(equalTo(differentCurrenciesWithExchangeRatePrice)))
         assertThat(sameCurrencyPrice, not(equalTo(Any())))
-        assertThat<Parcelable>(
-            sameCurrencyPrice,
-            not<Parcelable>(equalTo<Parcelable>(mock(Distance::class.java)))
-        )
+        assertThat<Parcelable>(sameCurrencyPrice, not<Parcelable>(equalTo<Parcelable>(mock(Distance::class.java))))
         assertThat(
             sameCurrencyPrice,
             not(

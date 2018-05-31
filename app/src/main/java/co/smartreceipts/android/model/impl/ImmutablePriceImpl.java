@@ -83,6 +83,11 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
         return currency.getCurrencyCode();
     }
 
+    @Override
+    public int getCurrencyCodeCount() {
+        return 1;
+    }
+
     @NonNull
     @Override
     public ExchangeRate getExchangeRate() {
