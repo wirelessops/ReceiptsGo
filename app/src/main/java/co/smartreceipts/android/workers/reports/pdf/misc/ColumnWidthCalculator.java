@@ -185,19 +185,24 @@ public class ColumnWidthCalculator<DataType> {
                 }
             }
 
-            // Finally, test out the footer value to see if that changes things
-            final String value = HeavyHandedReplaceIllegalCharacters.getSafeString(mColumns.get(i).getFooter(list));
-            float vWidth = PdfBoxUtils.getStringWidth(value, mFontContent);
-            float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(value, mFontContent);
+            // For the footer, we measure the max length of the largest string without a space
+            // We do this as a means of preferring that the footer has page breaks in it's text (especially for currency lists)
+            // rather than performing breaks on the main content
+            final String footer = HeavyHandedReplaceIllegalCharacters.getSafeString(mColumns.get(i).getFooter(list));
+            final String[] footerSplitByWords = footer.trim().split("\\s+");
+            for (String footerSplitByWord : footerSplitByWords) {
+                float vWidth = PdfBoxUtils.getStringWidth(footerSplitByWord, mFontContent);
+                float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(footerSplitByWord, mFontContent);
 
-            if (vWidth > maxOfAllStringWidths) {
-                maxOfAllStringWidths = vWidth;
-            }
-            if (vWidth < minOfAllStringWidths) {
-                minOfAllStringWidths = vWidth;
-            }
-            if (vMaxWordWidth > maxOfMaxWordWidths) {
-                maxOfMaxWordWidths = vMaxWordWidth;
+                if (vWidth > maxOfAllStringWidths) {
+                    maxOfAllStringWidths = vWidth;
+                }
+                if (vWidth < minOfAllStringWidths) {
+                    minOfAllStringWidths = vWidth;
+                }
+                if (vMaxWordWidth > maxOfMaxWordWidths) {
+                    maxOfMaxWordWidths = vMaxWordWidth;
+                }
             }
 
             mContentMaxWidth = maxOfAllStringWidths;
