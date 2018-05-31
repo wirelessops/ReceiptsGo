@@ -105,6 +105,11 @@ public class LegacyTripPriceImpl extends AbstractPriceImpl {
         }
     }
 
+    @Override
+    public int getCurrencyCodeCount() {
+        return 1;
+    }
+
     @NonNull
     @Override
     public ExchangeRate getExchangeRate() {

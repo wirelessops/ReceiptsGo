@@ -191,6 +191,11 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         }
     }
 
+    @Override
+    public int getCurrencyCodeCount() {
+        return notExchangedPriceMap.size();
+    }
+
     @NonNull
     @Override
     public ExchangeRate getExchangeRate() {

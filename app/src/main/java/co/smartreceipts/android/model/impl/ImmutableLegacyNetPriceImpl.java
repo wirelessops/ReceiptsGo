@@ -132,6 +132,11 @@ public final class ImmutableLegacyNetPriceImpl extends AbstractPriceImpl {
         return currency.getCurrencyCode();
     }
 
+    @Override
+    public int getCurrencyCodeCount() {
+        return currencyToPriceMap.size();
+    }
+
     @NonNull
     @Override
     public ExchangeRate getExchangeRate() {

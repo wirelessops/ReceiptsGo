@@ -75,11 +75,7 @@ class ImmutableNetPriceImplTest {
     @Test
     fun getPrice() {
         assertEquals(3.0, sameCurrencyPrice.price.toDouble(), TestUtils.EPSILON.toDouble())
-        assertEquals(
-            3.0,
-            differentCurrenciesWithExchangeRatePrice.price.toDouble(),
-            TestUtils.EPSILON.toDouble()
-        )
+        assertEquals(3.0, differentCurrenciesWithExchangeRatePrice.price.toDouble(), TestUtils.EPSILON.toDouble())
     }
 
     @Test
@@ -91,20 +87,14 @@ class ImmutableNetPriceImplTest {
     @Test
     fun getCurrencyFormattedPrice() {
         assertEquals("$3.00", sameCurrencyPrice.currencyFormattedPrice)
-        assertEquals(
-            "EUR1.00; $2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice
-        )
+        assertEquals("EUR1.00; $2.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
         assertEquals("$3.00", differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice)
     }
 
     @Test
     fun getCurrencyCodeFormattedPrice() {
         assertEquals("USD3.00", sameCurrencyPrice.currencyCodeFormattedPrice)
-        assertEquals(
-            "EUR1.00; USD2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyCodeFormattedPrice
-        )
+        assertEquals("EUR1.00; USD2.00", differentCurrenciesNoExchangeRatePrice.currencyCodeFormattedPrice)
         assertEquals("EUR1.00; USD2.00", differentCurrenciesWithExchangeRatePrice.currencyCodeFormattedPrice)
     }
 
@@ -118,23 +108,21 @@ class ImmutableNetPriceImplTest {
     @Test
     fun getCurrencyCode() {
         assertEquals(USD_CURRENCY.currencyCode, sameCurrencyPrice.currencyCode)
-        assertEquals(
-            String.format("%s; %s", EUR_CURRENCY.currencyCode, USD_CURRENCY.currencyCode),
-            differentCurrenciesNoExchangeRatePrice.currencyCode
-        )
-        assertEquals(
-            String.format("%s; %s", EUR_CURRENCY.currencyCode, USD_CURRENCY.currencyCode),
-            differentCurrenciesWithExchangeRatePrice.currencyCode
-        )
+        assertEquals(String.format("%s; %s", EUR_CURRENCY.currencyCode, USD_CURRENCY.currencyCode), differentCurrenciesNoExchangeRatePrice.currencyCode)
+        assertEquals(String.format("%s; %s", EUR_CURRENCY.currencyCode, USD_CURRENCY.currencyCode), differentCurrenciesWithExchangeRatePrice.currencyCode)
+    }
+
+    @Test
+    fun getCurrencyCodeCount() {
+        assertEquals(1, sameCurrencyPrice.currencyCodeCount)
+        assertEquals(2, differentCurrenciesNoExchangeRatePrice.currencyCodeCount)
+        assertEquals(2, differentCurrenciesWithExchangeRatePrice.currencyCodeCount)
     }
 
     @Test
     fun testToString() {
         assertEquals("$3.00", sameCurrencyPrice.currencyFormattedPrice)
-        assertEquals(
-            "EUR1.00; $2.00",
-            differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice
-        )
+        assertEquals("EUR1.00; $2.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
         assertEquals("$3.00", differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice)
     }
 
