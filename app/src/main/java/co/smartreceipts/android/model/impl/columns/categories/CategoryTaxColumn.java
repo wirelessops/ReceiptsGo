@@ -35,7 +35,13 @@ public class CategoryTaxColumn extends AbstractColumnImpl<SumCategoryGroupingRes
             for (final SumCategoryGroupingResult row : rows) {
                 prices.add(row.getTax());
             }
-            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getDecimalFormattedPrice();
+
+            final Price total =  new PriceBuilderFactory().setPrices(prices, tripCurrency).build();
+            if (total.getCurrencyCodeCount() == 1) {
+                return total.getDecimalFormattedPrice();
+            } else {
+                return total.getCurrencyCodeFormattedPrice();
+            }
         } else {
             return "";
         }

@@ -40,7 +40,12 @@ public final class ReceiptPriceColumn extends AbstractColumnImpl<Receipt> {
                 prices.add(receipt.getPrice());
             }
 
-            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getCurrencyCodeFormattedPrice();
+            final Price total =  new PriceBuilderFactory().setPrices(prices, tripCurrency).build();
+            if (total.getCurrencyCodeCount() == 1) {
+                return total.getDecimalFormattedPrice();
+            } else {
+                return total.getCurrencyCodeFormattedPrice();
+            }
         } else {
             return "";
         }
