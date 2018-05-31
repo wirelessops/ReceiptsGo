@@ -36,7 +36,13 @@ public class CategoryPriceColumn extends AbstractColumnImpl<SumCategoryGroupingR
             for (final SumCategoryGroupingResult row : rows) {
                 prices.add(row.getPrice());
             }
-            return new PriceBuilderFactory().setPrices(prices, tripCurrency).build().getDecimalFormattedPrice();
+            
+            final Price total =  new PriceBuilderFactory().setPrices(prices, tripCurrency).build();
+            if (total.getCurrencyCodeCount() == 1) {
+                return total.getDecimalFormattedPrice();
+            } else {
+                return total.getCurrencyCodeFormattedPrice();
+            }
         } else {
             return "";
         }
