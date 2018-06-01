@@ -15,7 +15,7 @@ import java.util.Set;
 public enum InAppPurchase {
 
     // Note: Smart Receipts Plus users also get some free OCR scans
-    SmartReceiptsPlus(Subscription.class, "pro_sku_3", new HashSet<>(Arrays.asList(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr))),
+    SmartReceiptsPlus(Subscription.class, "plus_sku_4", Collections.singleton("pro_sku_3"), new HashSet<>(Arrays.asList(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr))),
     OcrScans10(ConsumablePurchase.class, "ocr_purchase_10", PurchaseFamily.Ocr),
     OcrScans50(ConsumablePurchase.class, "ocr_purchase_1", PurchaseFamily.Ocr),
 
