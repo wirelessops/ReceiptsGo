@@ -28,6 +28,7 @@ public class ClassicAdView implements BannerAdView {
     public BannerAdView init(@NonNull Activity activity, @NonNull Analytics analytics, @NonNull UserPreferenceManager userPreferenceManager) {
         final ViewGroup container = activity.findViewById(R.id.adView_container);
         upsellButton = activity.findViewById(R.id.adView_upsell);
+        this.userPreferenceManager = userPreferenceManager;
 
         adView = new AdView(activity);
         adView.setAdSize(AdSize.SMART_BANNER);
