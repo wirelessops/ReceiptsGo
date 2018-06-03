@@ -40,8 +40,8 @@
     <string name="no">לא</string>
     <string name="pdf">PDF</string>
     <string name="report">דו״ח</string>
-    <string name="report_attached">דו״ח 1 מצ״ב</string>
-    <string name="reports_attached">דו״חות מצורפים %s</string>
+    <string name="report_attached">דו״\ח 1 מצ״ב</string>
+    <string name="reports_attached">דו״\חות מצורפים %s</string>
     <string name="save">שמור</string>
     <string name="send_email">&#8230;שלח קובץ</string>
     <string name="submit">שלח</string>
@@ -78,12 +78,12 @@
     <string name="report_header_receipts_total_reimbursable">%s :סה״כ (זכאי להחזרים)</string>
     <string name="report_header_grand_total">%s :סה״כ</string>
     <string name="report_header_cost_center">%s :מרכז מחיר</string>
-    <string name="report_header_comment">%s :הערה לדו״ח</string>
-    <string name="report_pdf_generation_error">שגיאה בייצור הדו״ח</string>
+    <string name="report_header_comment">%s :הערה לדו״\ח</string>
+    <string name="report_pdf_generation_error">שגיאה בייצור הדו״\ח</string>
     <string name="report_pdf_error_too_many_columns_title">יותר מדי עמודות</string>
-	<string name="report_pdf_error_too_many_columns_message">.אין מספיק מקום ע״מ להכיל את כל העמודות בדו״ח. אנא נסה להגביל את מספר העמודות בהגדרות</string>
+	<string name="report_pdf_error_too_many_columns_message">.אין מספיק מקום ע״מ להכיל את כל העמודות בדו״\ח. אנא נסה להגביל את מספר העמודות בהגדרות</string>
 
-	<string name="report_pdf_error_too_many_columns_message_landscape">.אין מספיק מקום ע״מ להכיל את כל העמודות בדו״ח. אנא נסה להגביל את מספר העמודות בהגדרות או עבור למצב מסך מאוזן</string>
+	<string name="report_pdf_error_too_many_columns_message_landscape">.אין מספיק מקום ע״מ להכיל את כל העמודות בדו״\ח. אנא נסה להגביל את מספר העמודות בהגדרות או עבור למצב מסך מאוזן</string>
 	
     <string name="report_pdf_error_go_to_settings">עבור להגדרות</string>
 
@@ -170,39 +170,39 @@
 
     <!-- ============== Progress Messages ================= -->
     <string name="progress_import">מעלה את הקבצים שלך&#8230;</string>
-    <string name="progress_building_reports">...בונה דו״חות</string>
+    <string name="progress_building_reports">...בונה דו״\חות</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">Error: Please make sure that your SD Card is available and not mounted to your computer.</string>
-    <string name="SD_WARNING">Warning: Your SD Card is not available or is mounted to your computer. Some images may be inaccessible. Switching to internal storage&#8230;</string>
-    <string name="database_error">Error: Failed to save your receipt</string>
-    <string name="database_get_error">Error: Failed to fetch your data. Try re-launching the app.</string>
-    <string name="IMG_OPEN_ERROR">Error: The image is currently inaccessible or corrupted. Your SD Card may be unavailable or mounted to your computer. If not, click the menu button to retake the photo.</string>
-    <string name="IMG_SAVE_ERROR">Error: The Image Failed to Save Properly</string>
-    <string name="FILE_SAVE_ERROR">Error: The File Failed to Save Properly</string>
-    <string name="ILLEGAL_CHAR_ERROR">Error: The name contains an illegal character</string>
-    <string name="SPACE_ERROR">Error: The name cannot begin with a space</string>
-    <string name="CALENDAR_TAB_ERROR">Error: Please Touch the Date TextBox to set the Date</string>
-    <string name="DURATION_ERROR">Error: The Start Date Must Occur Prior To The End Date</string>
-    <string name="EXPORT_ERROR">Error: Failed to properly export your data.</string>
-    <string name="IMPORT_ERROR">Error: Failed to recognize the file as importable</string>
-    <string name="MOVE_ERROR">Error: Failed to move the receipt</string>
-    <string name="COPY_ERROR">Error: Failed to copy the receipt</string>
-    <string name="toast_warning_reset_exchange_rate">Warning: Changing the currency will reset ALL exchange rates</string>
-    <string name="toast_error_trip_exists">Error: An expense report with that name already exists</string>
-    <string name="toast_error_category_exists">Error: An category with that name already exists</string>
+	    <string name="SD_ERROR">.תקלה: אנא וודא שכרטיס הזכרון שלך זמין ולא מחובר למחשב שלך</string>
+	    <string name="SD_WARNING">אזהרה: כרטיס הזכרון שלך לא זמין או מחובר למחשב שלך. חלק מהתמונות עלולות להיות בלתי נגישות. מחליף לזכרון פנימי&#8230;</string>
+    <string name="database_error">תקלה: שמירת קבלה נכשלה</string>
+    <string name="database_get_error">.תקלה: בלתי אפשרי לגשת למידע שלך. אנא הפעל מחדש את האפליקציה</string>
+	    <string name="IMG_OPEN_ERROR">.תקלה: התמונה כרגע בלתי נגישה או פגומה. כרטיס הזכרון שלך עלול להיות בלתי זמין או מחובר למחשב שלך. אם הוא לא, אנא לחץ על כפתור התפריט על מנת לצלם את התמונה מחדש.</string>
+	    <string name="IMG_SAVE_ERROR">תקלה: התמונה לא נשמרה כראוי</string>
+    <string name="FILE_SAVE_ERROR">תקלה: הקובץ לא נשמר כראוי</string>
+    <string name="ILLEGAL_CHAR_ERROR">תקלה: שם הקובץ מכיל תו בלתי חורי</string>
+    <string name="SPACE_ERROR">תקלה: השם לא יכול להתחיל עם רווח</string>
+    <string name="CALENDAR_TAB_ERROR">תקלה: אנא לחץ על תיבת הטקסט של התאריך על מנת לקבוע את התאריך</string>
+    <string name="DURATION_ERROR">תקלה: תאריך ההתחלה חייב להיות לפני תאריך הסיום</string>
+    <string name="EXPORT_ERROR">.תקלה: לא ניתן לייצא את המידע שלך כראוי</string>
+    <string name="IMPORT_ERROR">.תקלה: לא ניתן לזהות את הקובץ כבר-ייבוא</string>
+    <string name="MOVE_ERROR">תקלה: לא ניתן להזיז את הקבלה</string>
+    <string name="COPY_ERROR">תקלה: לא ניתן להעתיק את הקבלה</string>
+    <string name="toast_warning_reset_exchange_rate">אזהרה: שינוי המטבע יאתחל את כל המטבעות ושערי החליפין</string>
+    <string name="toast_error_trip_exists">תקלה: דו״\ח בשם הזה קיים כבר</string>
+    <string name="toast_error_category_exists">תקלה: קטגוריה בשם הזה קיימת כבר</string>
 
     <!-- ============== Toast Messages ================= -->
-    <string name="toast_receipt_copy">Successfully copied the receipt</string>
-    <string name="toast_receipt_move">Successfully moved the receipt</string>
-    <string name="toast_receipt_image_added">Successfully added a new image to %s</string>
-    <string name="toast_receipt_image_replaced">Successfully replaced a new image for %s</string>
-    <string name="toast_receipt_pdf_added">Successfully added a new PDF to %s</string>
-    <string name="toast_receipt_pdf_replaced">Successfully replaced a new PDF for %s</string>
-    <string name="toast_no_storage_permissions">Cannot import file without storage permissions</string>
-    <string name="toast_import_complete">Successfully imported all files. Please re-launch the app.</string>
-    <string name="toast_reorder_hint"><![CDATA[Long press item to initiate dragging]]></string>
-    <string name="toast_csv_report_distances">To create CSV report please check option %s</string>
+    <string name="toast_receipt_copy">הקבלה הועתקה בהצלחה</string>
+    <string name="toast_receipt_move">הקבלה הועברה בהצלחה</string>
+    <string name="toast_receipt_image_added">%s :נוספה תמונה חדשה בהצלחה ל</string>
+    <string name="toast_receipt_image_replaced">%s :הוחלפה בהצלחה התמונה של</string>
+    <string name="toast_receipt_pdf_added">%s :נוסף בהצלחה קובץ פידיאף ל</string>
+    <string name="toast_receipt_pdf_replaced">%s :הוחלף בהצלחה קובץ פידיאף ל</string>
+    <string name="toast_no_storage_permissions">לא ניתן לייבא קובץ בלי הרשאות לאחסון של הטלפון</string>
+    <string name="toast_import_complete">.יובאו כל הקבצים בהצלחה. אנא אתחל את האפליקציה.</string>
+    <string name="toast_reorder_hint"><![CDATA[לחץ לחיצה ארוכה על הפריט על מנת להתחיל גרירה]]></string>
+    <string name="toast_csv_report_distances">%s :על מנת ליצור דו״\ח אקסל אנא לחץ על</string>
     <string name="attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
