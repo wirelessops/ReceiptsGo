@@ -14,57 +14,49 @@ public class PdfBoxImageUtils {
      * inside it, maintaining its aspect ration. Returns a {@link PDRectangle} with the dimensions
      * that the scaled image should have, and positions on the top of the containing
      * <code>rectangle</code>, centered horizontally.
-     * @param ximage
-     * @param rectangle
-     * @return
+     *
+     * @param ximage the {@link PDImageXObject}, which contains our graphic
+     * @param boundingRectangle the max bounding {@link PDRectangle}
+     * @return a new {@link PDRectangle}, which contains the correct bounds for the image
      */
     @NonNull
-    public static PDRectangle scaleImageInsideRectangle(@NonNull PDImageXObject ximage,
-                                                 @NonNull PDRectangle rectangle) {
+    public static PDRectangle scaleImageInsideRectangle(@NonNull PDImageXObject ximage, @NonNull PDRectangle boundingRectangle) {
 
-        float imageRatio = ((float) ximage.getWidth())/((float) ximage.getHeight());
-        float rectRatio = rectangle.getWidth()/rectangle.getHeight();
+        final float imageWidthToHeightRatio = ((float) ximage.getWidth())/((float) ximage.getHeight());
+        final float rectBoundsWithToHeightRatio = boundingRectangle.getWidth()/boundingRectangle.getHeight();
+        float scalingFactor;
 
-        float factor;
-        if (ximage.getHeight() < rectangle.getHeight()) {
-            if (ximage.getWidth() < rectangle.getWidth()) {
-                // Scale up both
-
-                if (imageRatio > rectRatio) {
-                    factor = rectangle.getWidth() / ximage.getWidth();
+        if (ximage.getHeight() < boundingRectangle.getHeight()) {
+            if (ximage.getWidth() < boundingRectangle.getWidth()) {
+                // In this case, the image is fully smaller (ie both width and height) than the bounding box. As such, we should scale it up
+                if (imageWidthToHeightRatio > rectBoundsWithToHeightRatio) {
+                    scalingFactor = boundingRectangle.getWidth() / ximage.getWidth();
                 } else {
-                    factor = rectangle.getHeight() / ximage.getHeight();
+                    scalingFactor = boundingRectangle.getHeight() / ximage.getHeight();
                 }
             } else {
-
-                // scale down width
-                factor = rectangle.getWidth() / ximage.getWidth();
+                // In this case, the image height < the bounds, but the width > bounds. As such, we should scale down the width
+                scalingFactor = boundingRectangle.getWidth() / ximage.getWidth();
             }
         } else { // ximage.getHeight() > rectangle.getHeight
-            if (ximage.getWidth() > rectangle.getWidth()) {
-                // scale down both
-                if (imageRatio > rectRatio) {
-                    // scale first width
-                    factor = rectangle.getWidth() / ximage.getWidth();
+            if (ximage.getWidth() > boundingRectangle.getWidth()) {
+                // In this case, the image is fully larger (ie both width and height) than the bounding box. As such, we should scale it down
+                if (imageWidthToHeightRatio > rectBoundsWithToHeightRatio) {
+                    scalingFactor = boundingRectangle.getWidth() / ximage.getWidth();
                 } else {
-                    factor = rectangle.getHeight() / ximage.getHeight();
+                    scalingFactor = boundingRectangle.getHeight() / ximage.getHeight();
                 }
             } else {
-                // scale down width
-                factor = rectangle.getWidth()/ ximage.getWidth();
+                // In this case, the image height > the bounds, but the width M bounds. As such, we should scale down the height
+                scalingFactor = boundingRectangle.getHeight() / ximage.getHeight();
             }
         }
 
 
-        float scaledImageWidth = ximage.getWidth() * factor;
-        float scaledImageHeight = ximage.getHeight() * factor;
+        float scaledImageWidth = ximage.getWidth() * scalingFactor;
+        float scaledImageHeight = ximage.getHeight() * scalingFactor;
 
-        float unusedWidth = (rectangle.getWidth() - scaledImageWidth) / 2.0f;
-        float unusedHeight = rectangle.getHeight() - scaledImageHeight;
-
-
-        return new PDRectangle(rectangle.getLowerLeftX() + unusedWidth,
-                rectangle.getLowerLeftY(), scaledImageWidth, scaledImageHeight);
-
+        float unusedWidth = (boundingRectangle.getWidth() - scaledImageWidth) / 2.0f;
+        return new PDRectangle(boundingRectangle.getLowerLeftX() + unusedWidth, boundingRectangle.getLowerLeftY(), scaledImageWidth, scaledImageHeight);
     }
 }
