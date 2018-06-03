@@ -121,56 +121,56 @@
     <string name="category_dinner_code">DINN</string>
     <string name="category_entertainment">בידור</string>
     <string name="category_entertainment_code">ENT</string>
-    <string name="category_gasoline">Gasoline</string>
+    <string name="category_gasoline">דלק</string>
     <string name="category_gasoline_code">GAS</string>
-    <string name="category_gift">Gift</string>
+    <string name="category_gift">מתנה</string>
     <string name="category_gift_code">GIFT</string>
-    <string name="category_hotel">Hotel</string>
+    <string name="category_hotel">מלון</string>
     <string name="category_hotel_code">HTL</string>
-    <string name="category_laundry">Laundry</string>
+    <string name="category_laundry">כביסה</string>
     <string name="category_laundry_code">LAUN</string>
-    <string name="category_lunch">Lunch</string>
+    <string name="category_lunch">ארוחת צהריים</string>
     <string name="category_lunch_code">LNCH</string>
-    <string name="category_other">Other</string>
+    <string name="category_other">שונות</string>
     <string name="category_other_code">MISC</string>
-    <string name="category_parking_tolls">Parking/Tolls</string>
+    <string name="category_parking_tolls">חנייה/עמלות</string>
     <string name="category_parking_tolls_code">PARK</string>
-    <string name="category_postage_shipping">Postage/Shipping</string>
+    <string name="category_postage_shipping">דואר/משלוחים</string>
     <string name="category_postage_shipping_code">POST</string>
-    <string name="category_car_rental">Car Rental</string>
+    <string name="category_car_rental">שכירת רכב</string>
     <string name="category_car_rental_code">RCAR</string>
-    <string name="category_taxi_bus">Taxi/Bus</string>
+    <string name="category_taxi_bus">מונית/אוטובוס</string>
     <string name="category_taxi_bus_code">TAXI</string>
-    <string name="category_telephone_fax">Telephone/Fax</string>
+    <string name="category_telephone_fax">טלפון/פקס</string>
     <string name="category_telephone_fax_code">TELE</string>
-    <string name="category_tip">Tip</string>
+    <string name="category_tip">טיפ</string>
     <string name="category_tip_code">TIP</string>
-    <string name="category_train">Train</string>
+    <string name="category_train">רכבת</string>
     <string name="category_train_code">TRN</string>
-    <string name="category_books_periodicals">Books/Periodicals</string>
+    <string name="category_books_periodicals">ספרים/מגזינים</string>
     <string name="category_books_periodicals_code">ZBKP</string>
-    <string name="category_cell_phone">Cell Phone</string>
+    <string name="category_cell_phone">סלולרי</string>
     <string name="category_cell_phone_code">ZCEL</string>
-    <string name="category_dues_subscriptions">Dues/Subscriptions</string>
+    <string name="category_dues_subscriptions">מנויים/הוראות קבע</string>
     <string name="category_dues_subscriptions_code">ZDUE</string>
-    <string name="category_meals_justified">Meals (Justified)</string>
+    <string name="category_meals_justified">ארוחות (בר-החזר)</string>
     <string name="category_meals_justified_code">ZMEO</string>
-    <string name="category_stationery_stations">Stations</string>
+    <string name="category_stationery_stations">תחנות</string>
     <string name="category_stationery_stations_code">ZSTS</string>
-    <string name="category_training_fees">Training Fees</string>
+    <string name="category_training_fees">עמלות אימון</string>
     <string name="category_training_fees_code">ZTRN</string>
 
     <!-- ================ Img Menu Options =================== -->
-    <string name="menu_receiptimage_retake">Retake Photo</string>
-    <string name="menu_receiptimage_rotate_ccw">Rotate CCW</string>
-    <string name="menu_receiptimage_rotate_cw">Rotate CW</string>
+    <string name="menu_receiptimage_retake">צלם מחדש</string>
+    <string name="menu_receiptimage_rotate_ccw">סובב נגד כיוון השעון</string>
+    <string name="menu_receiptimage_rotate_cw">סובב עם כיוון השעון</string>
 
     <!-- ===================== Email ====================== -->
-    <string name="email_body_subject_5mb_warning">The following attachment is over 5MB in size and may not properly attach: %s</string>
+    <string name="email_body_subject_5mb_warning">%s :הקובץ המצ״ב גדול מ-5 מגהבייט, ולכן ייתכן שלא יוצמד כראוי</string>
 
     <!-- ============== Progress Messages ================= -->
-    <string name="progress_import">Importing your files&#8230;</string>
-    <string name="progress_building_reports">Building Reports…</string>
+    <string name="progress_import">מעלה את הקבצים שלך&#8230;</string>
+    <string name="progress_building_reports">...בונה דו״חות</string>
 
     <!-- ============== Start Error Messages ================= -->
     <string name="SD_ERROR">Error: Please make sure that your SD Card is available and not mounted to your computer.</string>
