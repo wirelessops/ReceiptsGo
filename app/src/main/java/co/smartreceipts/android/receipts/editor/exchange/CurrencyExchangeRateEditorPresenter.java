@@ -126,10 +126,14 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
                         return savedInstanceState != null && skipCount++ > 0;
                     }
                 })
-                .filter(currencyDatePair -> !trip.getDefaultCurrencyCode().equals(currencyDatePair.first))
                 .switchMap(currencyDatePair -> {
-                    //noinspection ConstantConditions
-                    return exchangeRateServiceManager.getExchangeRate(currencyDatePair.second, currencyDatePair.first, trip.getDefaultCurrencyCode());
+                    if (!trip.getDefaultCurrencyCode().equals(currencyDatePair.first)) {
+                        //noinspection ConstantConditions
+                        return exchangeRateServiceManager.getExchangeRate(currencyDatePair.second, currencyDatePair.first, trip.getDefaultCurrencyCode());
+                    } else {
+                        // When the currency is the same as the trip currency, let's clear out the current value (ie set to empty)
+                        return Observable.just(UiIndicator.<ExchangeRate>success());
+                    }
                 })
                 .observeOn(mainThreadScheduler)
                 .subscribe(view.displayExchangeRate()));
@@ -256,9 +260,7 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
 
         // Toggle the exchange rate field any time the user changes it
         compositeDisposable.add(selectedCurrencyConnectableObservable
-                .map(selectedCurrencyCode -> {
-                    return !trip.getDefaultCurrencyCode().equals(selectedCurrencyCode);
-                })
+                .map(selectedCurrencyCode -> !trip.getDefaultCurrencyCode().equals(selectedCurrencyCode))
                 .doOnNext(exchangeFieldsAreVisible -> Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Exchange rate field visibility -> {}", exchangeFieldsAreVisible))
                 .subscribe(view.toggleExchangeRateFieldVisibility()));
 

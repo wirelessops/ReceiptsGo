@@ -806,10 +806,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public Consumer<? super Boolean> toggleExchangeRateFieldVisibility() {
         return (Consumer<Boolean>) isVisible -> {
             ButterKnife.apply(exchangeRateViewsList, ButterKnifeActions.setVisibility(isVisible ? View.VISIBLE : View.GONE));
-            if (!isVisible) {
-                // Clear out if we're hiding the box
-                exchangeRateBox.setText("");
-            }
         };
     }
 

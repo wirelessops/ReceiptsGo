@@ -183,6 +183,16 @@ public class CurrencyExchangeRateEditorPresenterTest {
     }
 
     @Test
+    public void changingCurrencyToTripCurrencyClearsTheExchangeRate() throws Exception {
+        presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
+        presenter.subscribe();
+        currencyClicks.onNext(0); // Call twice, since the real code uses an initial value observable
+        receiptDateChanges.onNext(new Date(100L));
+        verify(displayExchangeRateConsumer).accept(UiIndicator.success());
+        verify(exchangeRateServiceManager, never()).getExchangeRate(any(Date.class), anyString(), anyString());
+    }
+
+    @Test
     public void changingCurrencyGetsExchangeRate() throws Exception {
         presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
         presenter.subscribe();
