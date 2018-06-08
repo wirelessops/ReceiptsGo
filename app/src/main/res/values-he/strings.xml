@@ -40,8 +40,8 @@
     <string name="no">לא</string>
     <string name="pdf">PDF</string>
     <string name="report">דו״ח</string>
-    <string name="report_attached">דו״\ח 1 מצ״ב</string>
-    <string name="reports_attached">דו״\חות מצורפים %s</string>
+    <string name="report_attached">דוח 1 מצורף</string>
+    <string name="reports_attached">דוחות מצורפים %s</string>
     <string name="save">שמור</string>
     <string name="send_email">&#8230;שלח קובץ</string>
     <string name="submit">שלח</string>
@@ -78,12 +78,12 @@
     <string name="report_header_receipts_total_reimbursable">%s :סה״כ (זכאי להחזרים)</string>
     <string name="report_header_grand_total">%s :סה״כ</string>
     <string name="report_header_cost_center">%s :מרכז מחיר</string>
-    <string name="report_header_comment">%s :הערה לדו״\ח</string>
-    <string name="report_pdf_generation_error">שגיאה בייצור הדו״\ח</string>
+    <string name="report_header_comment">%s :הערה לדוח</string>
+    <string name="report_pdf_generation_error">שגיאה בייצור הדוח</string>
     <string name="report_pdf_error_too_many_columns_title">יותר מדי עמודות</string>
-	<string name="report_pdf_error_too_many_columns_message">.אין מספיק מקום ע״מ להכיל את כל העמודות בדו״\ח. אנא נסה להגביל את מספר העמודות בהגדרות</string>
+	<string name="report_pdf_error_too_many_columns_message">.אין מספיק מקום ע״מ להכיל את כל העמודות בדוח. אנא נסה להגביל את מספר העמודות בהגדרות</string>
 
-	<string name="report_pdf_error_too_many_columns_message_landscape">.אין מספיק מקום ע״מ להכיל את כל העמודות בדו״\ח. אנא נסה להגביל את מספר העמודות בהגדרות או עבור למצב מסך מאוזן</string>
+	<string name="report_pdf_error_too_many_columns_message_landscape">.אין מספיק מקום ע״מ להכיל את כל העמודות בדוח. אנא נסה להגביל את מספר העמודות בהגדרות או עבור למצב מסך מאוזן</string>
 	
     <string name="report_pdf_error_go_to_settings">עבור להגדרות</string>
 
@@ -166,11 +166,11 @@
     <string name="menu_receiptimage_rotate_cw">סובב עם כיוון השעון</string>
 
     <!-- ===================== Email ====================== -->
-    <string name="email_body_subject_5mb_warning">%s :הקובץ המצ״ב גדול מ-5 מגהבייט, ולכן ייתכן שלא יוצמד כראוי</string>
+    <string name="email_body_subject_5mb_warning">%s :הקובץ המצ\״ב גדול מ-5 מגהבייט, ולכן ייתכן שלא יוצמד כראוי</string>
 
     <!-- ============== Progress Messages ================= -->
     <string name="progress_import">מעלה את הקבצים שלך&#8230;</string>
-    <string name="progress_building_reports">...בונה דו״\חות</string>
+    <string name="progress_building_reports">...בונה דוחות</string>
 
     <!-- ============== Start Error Messages ================= -->
 	    <string name="SD_ERROR">.תקלה: אנא וודא שכרטיס הזכרון שלך זמין ולא מחובר למחשב שלך</string>
@@ -189,7 +189,7 @@
     <string name="MOVE_ERROR">תקלה: לא ניתן להזיז את הקבלה</string>
     <string name="COPY_ERROR">תקלה: לא ניתן להעתיק את הקבלה</string>
     <string name="toast_warning_reset_exchange_rate">אזהרה: שינוי המטבע יאתחל את כל המטבעות ושערי החליפין</string>
-    <string name="toast_error_trip_exists">תקלה: דו״\ח בשם הזה קיים כבר</string>
+    <string name="toast_error_trip_exists">תקלה: דוח בשם הזה קיים כבר</string>
     <string name="toast_error_category_exists">תקלה: קטגוריה בשם הזה קיימת כבר</string>
 
     <!-- ============== Toast Messages ================= -->
@@ -202,12 +202,14 @@
     <string name="toast_no_storage_permissions">לא ניתן לייבא קובץ בלי הרשאות לאחסון של הטלפון</string>
     <string name="toast_import_complete">.יובאו כל הקבצים בהצלחה. אנא אתחל את האפליקציה.</string>
     <string name="toast_reorder_hint"><![CDATA[לחץ לחיצה ארוכה על הפריט על מנת להתחיל גרירה]]></string>
-    <string name="toast_csv_report_distances">%s :על מנת ליצור דו״\ח אקסל אנא לחץ על</string>
+    <string name="toast_csv_report_distances">%s :על מנת ליצור דוח אקסל אנא לחץ על</string>
     <string name="attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">\u0020to\u0020</string>
     <string name="trip_no_data">You don\'t seem to have any reports defined at the moment. Try clicking the "+" (plus) button to get started.\n\nSmart Receipts lets you create Expense reports, track receipts within each, and quickly generate PDF &amp; CSV reports for your receipt totals. It\'s quick and easy! Also, be sure to check out the menu to customize the categories, reports, and other settings to best suit for your needs.</string>
+	<string name="trip_no_data">אין לך דו״ֿ\חות מוגדרים כרגע - נסה ללחוץ על כפתור ה״+״ ע״מ להוסיף ד/״.</string>
+	
 
     <!-- ================= Receipt Adapter =================== -->
     <string name="receipt_no_data">You don\'t seem to have any receipts yet. Try tapping the "+" (plus) button to get started&#8230;</string>
