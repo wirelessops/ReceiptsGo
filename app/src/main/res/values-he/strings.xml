@@ -317,81 +317,80 @@
     <!-- ===================== backup menu ======================== -->
     <string name="backups">גיבויים</string>
     <string name="manual_backup_title">גיבויים ידניים:</string>
-    <string name="manual_backup_description">Back up your data to keep your receipts safe! You can restore your data by importing the SmartReceipts.SMR backup file, which is generated via the "Backup" button below.</string>
-    <string name="manual_backup_export">Backup</string>
-    <string name="manual_backup_import">Import</string>
-    <string name="auto_backup_title">Automatic Backups [BETA]:</string>
-    <string name="auto_backup_wifi_only">Use Wi-Fi Only</string>
-    <string name="auto_backup_warning_none">Warning: Automatic backups are not configured!\nYou may be at risk of losing your data.</string>
-    <string name="auto_backup_warning_drive">Warning: Standard charges may apply for automatic backups over a mobile network.</string>
-    <string name="auto_backup_configure">Tap to Configure</string>
-    <string name="auto_backup_source_none">None</string>
+	<string name="manual_backup_description">גבה את המידע שלך על מנת לשמור על הקבולות שלך. אתה יכול לשחזר את המידע שלך על ידי ייבוא של קובץ הגיבוי, שנוצר על ידי כפתור ״\"גיבוי\" למטה.</string>
+    <string name="manual_backup_export">גיבוי</string>
+    <string name="manual_backup_import">ייבוא</string>
+    <string name="auto_backup_title">:גיבוי אוטומטי (ביטא)</string>
+    <string name="auto_backup_wifi_only">השתמש בווייפיי בלבד</string>
+    <string name="auto_backup_warning_none">זהירות: גיבויים אוטומטיים לא הוגדרו! אתה עלול לאבד את המידע שלך.</string>
+	    <string name="auto_backup_warning_drive">זהירות: אתה עלול להיות מחויב על ידי מפעיל הסלולר שלך על ידי יצירת גיבויים אוטומטיים ברשת הסלולרית.</string>
+    <string name="auto_backup_configure">לחץ להגדרות</string>
+    <string name="auto_backup_source_none">כלום</string>
     <string name="auto_backup_source_google_drive">Google Drive</string>
-    <string name="existing_backups_title">Existing Backups:</string>
-    <string name="existing_remote_backup_current_device">%s (Your Current Backup)</string>
-    <string name="remote_backups_list_item_menu_restore">Restore</string>
-    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
-    <string name="remote_backups_list_item_menu_download_images">Download to ZIP</string>
-    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Download</string>
-
-    <string name="dialog_remote_backup_delete_title">@string/delete</string>
+    <string name="existing_backups_title">גיבויים קיימים</string>
+    <string name="existing_remote_backup_current_device">%s (הגיבוי הנוכחי שלך)</string>
+    <string name="remote_backups_list_item_menu_restore">שחזר</string>
+    <string name="remote_backups_list_item_menu_delete">@string/מחק</string>
+    <string name="remote_backups_list_item_menu_download_images">הורד כקובץ זיפ</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] הורד</string>
+    <string name="dialog_remote_backup_delete_title">@string/מחק</string>
     <string name="dialog_remote_backup_delete_message">Are you sure you wish to delete your backup from the %s device? This operation cannot be undone.</string>
-    <string name="dialog_remote_backup_delete_message_this_device">Are you sure you wish to delete your backup of this device? This operation cannot be undone. Please note that you may wish to turn off automatic backups after this operation completes or all local data may be re-synced.</string>
-    <string name="dialog_remote_backup_delete_positive">@string/delete</string>
-    <string name="dialog_remote_backup_delete_progress">Deleting your backup from the %s device&#8230;</string>
-    <string name="dialog_remote_backup_delete_toast_success">Successfully deleted this backup</string>
-    <string name="dialog_remote_backup_delete_toast_failure">Failed to delete this backup</string>
-    <string name="dialog_remote_backup_download_progress">Downloading images to ZIP File&#8230;</string>
+	  <string name="dialog_remote_backup_delete_message">אתה בטוח שאתה רוצה למחוק את הגיבויים שלך ממכשיר %s? פעולה זו הינה בלתי הפיכה.  </string>
+	    <string name="dialog_remote_backup_delete_message_this_device">אתה בטוח שאתה רוצה למחוק את הגיבוי שלך מהמכשיר הזה? הפעולה הינה בלתי הפיכה. אנא שים לב שרצוי לכבות את פונקציית הגיבויים האוטומטיים אחרי שהפעולה הזו הושלמה או שכל המידע המקומי עלול להיות מסונכרן שוב.</string>
+    <string name="dialog_remote_backup_delete_positive">@string/מחק</string>
+    <string name="dialog_remote_backup_delete_progress">מחק את הגיבוי שלך ממכשיר %s &#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">הגיבוי נמחק בהצלחה</string>
+    <string name="dialog_remote_backup_delete_toast_failure">מחיקת הגיבוי נכשלה</string>
+    <string name="dialog_remote_backup_download_progress">מוריד קבצים לקובץ זיפ&#8230;</string>
+    <string name="dialog_remote_backup_drive_restore_title">שחזור דרייב</string>
+	    <string name="dialog_remote_backup_drive_restore_message">יש לנו בעיה עם סנכון המידע שלך. על מנת לטפל בנושא, נרצה למחוק את גיבוי הדרייב שלך ולסנכרן מחדש. אם אתה רואה את ההודעה הזו באופן קבוע, אנא צור קשר עם מפתח האפליקציה לתמיכה נוספת.</string>
+    <string name="dialog_remote_backup_restore_progress">מוחק את הגיבוי על מנת להתכונן לסנכרון מחדש&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">גיבוי נמחק בהצלחה. מסכנרן מחדש&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_failure">נכשל בסנכרון מחדש של הגיבוי</string>
 
-    <string name="dialog_remote_backup_drive_restore_title">Drive Restoration</string>
-    <string name="dialog_remote_backup_drive_restore_message">We\'re having trouble syncing your data. To recover, we\'d like to clear your Drive backup and re-sync. If you\'re seeing this message often, please reach out to us for further support.</string>
-    <string name="dialog_remote_backup_restore_progress">Clearing your backup to prepare for re-sync&#8230;</string>
-    <string name="dialog_remote_backup_restore_toast_success">Successfully cleared the backup. Re-syncing&#8230;</string>
-    <string name="dialog_remote_backup_restore_toast_failure">Failed to re-sync this backup</string>
+    <string name="automatic_backups_info_dialog_message">גיבויים אוטומטיים אינם מופעלים כרגע.</string>
+    <string name="automatic_backups_info_dialog_positive">לחץ להגדרות</string>
 
-    <string name="automatic_backups_info_dialog_message">Automatic backups are not currently enabled.</string>
-    <string name="automatic_backups_info_dialog_positive">Tap to Configure</string>
-
-    <string name="drive_sync_error_no_space">No Available Drive Storage Space</string>
-    <string name="drive_sync_error_no_permissions">Tap to Restore Drive Permissions</string>
-    <string name="drive_sync_error_lost_data">Drive Configuration Error - Tap to Fix</string>
+    <string name="drive_sync_error_no_space">אין מקום אחסון פנוי בדרייב</string>
+    <string name="drive_sync_error_no_permissions">לחץ לשחזור הרשאות בדרייב</string>
+    <string name="drive_sync_error_lost_data">טעות קונפיגורציה עם גוגל דרייב - לחץ לתיקון</string>
 
     <!-- ==============-========== Login ========================== -->
-    <string name="login_toolbar_title">Log In / Sign Up</string>
-    <string name="login_title">Log In with your Smart Receipts Account to start using Automatic Scans (OCR)</string>
-    <string name="login_field_email_hint">Email Address</string>
-    <string name="login_field_password_hint">Password</string>
-    <string name="sign_up_button_text">Sign Up</string>
-    <string name="login_button_text">Log In</string>
-    <string name="login_fields_hint_email">Please enter a valid email address:</string>
-    <string name="login_fields_hint_password">Passwords must be at least 8 characters:</string>
-    <string name="login_fields_hint_valid">Tap below to log in or sign up:</string>
-    <string name="login_success_toast">Login Success</string>
-    <string name="sign_up_success_toast">Sign Up Success</string>
-    <string name="login_failure_toast">Login Failed</string>
-    <string name="sign_up_failure_toast">Sign Up Failed</string>
-    <string name="login_failure_credentials_toast">Error: Incorrect Username or Password</string>
-    <string name="sign_up_failure_account_exists_toast">Error: This Email Already Exists - Try Logging In</string>
+    <string name="login_toolbar_title">התחבר / הירשם</string>
+    <string name="login_title">התחבר עם החשבון שלך על מנת להתחיל בסריקות אוטומטיות</string>
+    <string name="login_field_email_hint">דואר אלקטרוני</string>
+    <string name="login_field_password_hint">סיסמא</string>
+    <string name="sign_up_button_text">הירשם</string>
+    <string name="login_button_text">התחבר</string>
+    <string name="login_fields_hint_email">אנא הכנס כתובת דואר אלקטרוני תקינה:</string>
+    <string name="login_fields_hint_password">סיסמאות חייבות להיות בעלות 8 תווים לפחות:</string>
+    <string name="login_fields_hint_valid">לחץ למטה על מנת להתחבר או להירשם:</string>
+    <string name="login_success_toast">התחברות התבצעה בהצלחה</string>
+    <string name="sign_up_success_toast">הרשמה התבצעה בהצלחה</string>
+    <string name="login_failure_toast">התחברות נכשלה</string>
+    <string name="sign_up_failure_toast">הרשמה נכשלה</string>
+    <string name="login_failure_credentials_toast">שגיאה: שם משתמש או סיסמא לא נכונים</string>
+    <string name="sign_up_failure_account_exists_toast">שגיאה - כתובת הדואר האלקטורני קיימת כבר, נסה להתחבר</string>
 
     <!-- ==================== dialog filter ======================= -->
-    <string name="dialog_filter_positive_button">Add Filter</string>
-    <string name="dialog_filter_negative_button">Remove Filter</string>
+    <string name="dialog_filter_positive_button">הוסף פילור</string>
+    <string name="dialog_filter_negative_button">הסר פילטר</string>
 
     <!-- ==================== dialog miles ======================== -->
-    <string name="dialog_mileage_title_create">Add Distance</string>
-    <string name="dialog_mileage_title_update">Update Distance</string>
-    <string name="dialog_mileage_positive_create">Add</string>
-    <string name="dialog_mileage_positive_update">Update</string>
-    <string name="dialog_mileage_neutral_delete">Delete</string>
+    <string name="dialog_mileage_title_create">הוסף מרחק</string>
+    <string name="dialog_mileage_title_update">עדכן מרחק</string>
+    <string name="dialog_mileage_positive_create">הוסף</string>
+    <string name="dialog_mileage_positive_update">עדכן</string>
+    <string name="dialog_mileage_neutral_delete">מחק</string>
 
     <!-- ================= RECEIPTMENU_FIELDS =================== -->
-    <string name="RECEIPTMENU_FIELD_NAME">Name</string>
-    <string name="RECEIPTMENU_FIELD_PRICE">Price</string>
-    <string name="RECEIPTMENU_FIELD_TAX">Tax</string>
-    <string name="RECEIPTMENU_FIELD_CURRENCY">Currency</string>
-    <string name="RECEIPTMENU_FIELD_DATE">Date</string>
-    <string name="RECEIPTMENU_FIELD_CATEGORY">Category</string>
-    <string name="RECEIPTMENU_FIELD_COMMENT">Comment</string>
+    <string name="RECEIPTMENU_FIELD_NAME">שם</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">מחיר</string>
+    <string name="RECEIPTMENU_FIELD_TAX">מס</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">מטבע</string>
+    <string name="RECEIPTMENU_FIELD_DATE">תאריך</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">קטגוריה</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">הערה</string>
     <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
     <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
     <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
@@ -403,8 +402,8 @@
 
     <!-- ============== Start String Arrays ================== -->
     <string-array name="EDIT_TRIP_ITEMS">
-        <item>Edit Report</item>
-        <item>Delete Report</item>
+        <item>ערוך דוח</item>
+        <item>מחק דוח</item>
     </string-array>
 
     <!-- ============== CSV/PDF Columns ================== -->
