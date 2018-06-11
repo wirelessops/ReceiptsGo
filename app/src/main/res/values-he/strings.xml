@@ -407,51 +407,51 @@
     </string-array>
 
     <!-- ============== CSV/PDF Columns ================== -->
-    <string name="column_item_blank">Blank Column</string>
-    <string name="column_item_category_code">Category Code</string>
-    <string name="column_item_category_name">Category Name</string>
-    <string name="column_item_user_id">User ID</string>
-    <string name="column_item_report_name">Report Name</string>
-    <string name="column_item_report_start_date">Report Start Date</string>
-    <string name="column_item_report_end_date">Report End Date</string>
-    <string name="column_item_report_comment">Report Comment</string>
-    <string name="column_item_report_cost_center">Report Cost Center</string>
-    <string name="column_item_image_file_name">Image Name</string>
-    <string name="column_item_image_path">Image Path</string>
+    <string name="column_item_blank">עמודה ריקה</string>
+    <string name="column_item_category_code">קוד קטגוריה</string>
+    <string name="column_item_category_name">שם קטגוריה</string>
+    <string name="column_item_user_id">מזהה משתמש</string>
+    <string name="column_item_report_name">שם דוח</string>
+    <string name="column_item_report_start_date">תאריך תחילת דוח</string>
+    <string name="column_item_report_end_date">תאריך סוף דוח</string>
+    <string name="column_item_report_comment">הערת דוח</string>
+    <string name="column_item_report_cost_center">מרכז עלות דוח</string>
+    <string name="column_item_image_file_name">שם תמונה</string>
+    <string name="column_item_image_path">נתיב לתמונה</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
-    <string name="column_item_receipt_price_minus_tax">Price Minus Tax</string>
-    <string name="column_item_converted_price_exchange_rate">Price (Exchanged)</string>
-    <string name="column_item_converted_tax_exchange_rate">Tax (Exchanged)</string>
-    <string name="column_item_converted_price_plus_tax_exchange_rate">Price Plus Tax (Exchanged)</string>
-    <string name="column_item_converted_price_minus_tax_exchange_rate">Price Minus Tax (Exchanged)</string>
-    <string name="column_item_exchange_rate">Exchange Rate</string>
-    <string name="column_item_pictured">Pictured</string>
-    <string name="column_item_reimbursable">Reimbursable</string>
+    <string name="column_item_receipt_price_minus_tax">מחיר פחות מס</string>
+    <string name="column_item_converted_price_exchange_rate">מחיר לאחר המרה</string>
+    <string name="column_item_converted_tax_exchange_rate">מס לאחר המרה</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">מחיר פלוס מס לאחר המרה</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">מחיר פחות לאחר המרה</string>
+    <string name="column_item_exchange_rate">שער חליפין</string>
+    <string name="column_item_pictured">בתמונה</string>
+    <string name="column_item_reimbursable">בר-החזר</string>
     <string name="column_item_deprecated_expensable" translatable="false">Expensable</string>
-    <string name="column_item_index">Receipt Index</string>
-    <string name="column_item_id">Receipt ID</string>
-    <string name="column_item_payment_method">Payment Method</string>
+    <string name="column_item_index">אינדקס קבלה</string>
+    <string name="column_item_id">מזהה קבלה</string>
+    <string name="column_item_payment_method">אמצעי תשלום</string>
 
-    <string name="receipt_dialog_action_edit">Edit Receipt</string>
-    <string name="receipt_dialog_action_view">View Receipt %s</string>
-    <string name="receipt_dialog_action_delete">Delete Receipt</string>
-    <string name="receipt_dialog_action_move_copy">Move/Copy</string>
-    <string name="receipt_dialog_action_remove_attachment">Remove Attachment</string>
+    <string name="receipt_dialog_action_edit">ערוך קבלה</string>
+    <string name="receipt_dialog_action_view">הראה קבלה %s</string>
+    <string name="receipt_dialog_action_delete">מחק קבלה</string>
+    <string name="receipt_dialog_action_move_copy">העבר/העתק</string>
+    <string name="receipt_dialog_action_remove_attachment">מחק קובץ מצורף</string>
 
-    <string name="dialog_attachment_text">Tap on an existing receipt to add this %s to it</string>
-    <string name="receipt_dialog_remove_attachment">Do you want to remove attachment?</string>
+    <string name="dialog_attachment_text">לחץ על קבלה קיימת כדי להוסיף אליה את %s </string>
+    <string name="receipt_dialog_remove_attachment">האם אתה רוצה למחוק את הקובץ המצורף?</string>
 
     <!-- ================== Preference Dialog ==================== -->
-    <string name="dialog_custom_csv_spinner">Column Type</string>
-    <string name="dialog_category_add">Add Category</string>
-    <string name="dialog_category_edit">Edit Category</string>
+    <string name="dialog_custom_csv_spinner">סוג עמודה</string>
+    <string name="dialog_category_add">הוסף קטגוריה</string>
+    <string name="dialog_category_edit">ערוך קטגוריה</string>
 
     <!-- ================ Error Feedback ==================== -->
-    <string name="error_no_pdf_activity_viewer">Failed to find a PDF Viewer Application</string>
-    <string name="error_no_send_intent_dialog_title">No Send App Found</string>
-    <string name="error_no_send_intent_dialog_message">We could not find an email application (or equivalent) on your phone. You can find your files in the following directory: %s</string>
-    <string name="error_no_file_intent_dialog_title">Error: Unable to find an "import" installed app on your device</string>
-    <string name="error_no_wifi">Error: Not connected to WiFi</string>
+    <string name="error_no_pdf_activity_viewer">לא קיימת אפליקציה לצפייה בקבצי PDF</string>
+    <string name="error_no_send_intent_dialog_title">לא קיימת אפליקציה לשליחה</string>
+    <string name="error_no_send_intent_dialog_message">לא יכולנו למצוא אפליקציה של דואר אלקטרוני (או אפליקציה דומה) על מכשיר הטלפון שלך. תוכל למצוא את הקבצים בתיקייה הבאה: %s</string>
+	<string name="error_no_file_intent_dialog_title">שגיאה: לא נמצאה אפליקצית גיבוי על הטלפון שלך</string>
+    <string name="error_no_wifi">שגיאה: לא מחובר לווייפיי</string>
 
     <!-- ================== ActionBar ===================== -->
 
@@ -460,54 +460,56 @@
     <!-- ================== Legacy Camera ==================== -->
 
     <!-- ================== SQL Corrpution ==================== -->
-    <string name="dialog_sql_corrupt_title">Oh No!</string>
+    <string name="dialog_sql_corrupt_title">הו לא!</string>
     <string name="dialog_sql_corrupt_message">Your database was corrupted. This often occurs if you have a task killer app, but it can be caused by a few different things. Don\'t worry, we should be able to restore most of your data.</string>
-    <string name="dialog_sql_corrupt_positive">Email the Developer for Help</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Corrupted Database</string>
+	    <string name="dialog_sql_corrupt_message">מסד הנתונים שלך פגום. מצב זה קורה לרוב אם יש לך אפליקצית ״הריגת״ מטלות ברקע, אבל הוא יכול להיגרם מכל מיני סיבות. אל תדאג, נוכל לשחזר את המידע שלך.</string>
+    <string name="dialog_sql_corrupt_positive">שלח דואר אלקטרוני למפתח על מנת לבקש סיוע</string>
+    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - מסדי נתונים פגומים</string>
     <string name="dialog_sql_corrupt_intent_text">Help - my database was corrupted. How can you help me restore things?</string>
-    <string name="dialog_sql_corrupt_chooser">Send Email&#8230;</string>
+    <string name="dialog_sql_corrupt_intent_text">עזרה - מסד הנתונים שלי פגום. כיצד תוכל לעזור לי לשחזר את המידע שלי?</string>
+    <string name="dialog_sql_corrupt_chooser">שלח דואר אלקטרוני&#8230;</string>
 
     <!-- ======================= Filters ====================== -->
-    <string name="filter_name_and">And</string>
-    <string name="filter_name_not">Not</string>
-    <string name="filter_name_or">Or</string>
-    <string name="filter_name_receipt_category">Category</string>
-    <string name="filter_name_receipt_reimbursable">Is Reimbursable</string>
-    <string name="filter_name_receipt_max_price">Max Price</string>
-    <string name="filter_name_receipt_min_price">Min Price</string>
-    <string name="filter_name_receipt_on_or_after">On Or After</string>
-    <string name="filter_name_receipt_on_or_before">On Or Before</string>
-    <string name="filter_name_receipt_selected">Is Selected</string>
-    <string name="filter_name_trip_ends_on_or_after">Ends On Or After</string>
-    <string name="filter_name_trip_ends_on_or_before">Ends On Or Before</string>
-    <string name="filter_name_trip_max_price">Max Price</string>
-    <string name="filter_name_trip_min_price">Min Price</string>
-    <string name="filter_name_trip_starts_on_or_after">Starts On Or After</string>
-    <string name="filter_name_trip_starts_on_or_before">Starts On Or Before</string>
+    <string name="filter_name_and">ו</string>
+    <string name="filter_name_not">גם</string>
+    <string name="filter_name_or">או</string>
+    <string name="filter_name_receipt_category">קטגרוריה</string>
+    <string name="filter_name_receipt_reimbursable">בר החזר</string>
+    <string name="filter_name_receipt_max_price">מחיר מקסימלי</string>
+    <string name="filter_name_receipt_min_price">מחיר מינימלי</string>
+    <string name="filter_name_receipt_on_or_after">בזמן או אחרי הזמן</string>
+    <string name="filter_name_receipt_on_or_before">בזמן או לפני הזמן</string>
+    <string name="filter_name_receipt_selected">מסומן</string>
+    <string name="filter_name_trip_ends_on_or_after">נגמר ב או אחרי</string>
+    <string name="filter_name_trip_ends_on_or_before">נגמר ב או לפני</string>
+    <string name="filter_name_trip_max_price">מחיר מקסימלי</string>
+    <string name="filter_name_trip_min_price">מחיר מינימלי</string>
+    <string name="filter_name_trip_starts_on_or_after">מתחיל ב או אחרי</string>
+    <string name="filter_name_trip_starts_on_or_before">מתחיל ב או לפני</string>
 
     <!-- =================== Payment Methods =====+============= -->
-    <string name="payment_method">Payment Method</string>
-    <string name="payment_methods">Payment Methods</string>
-    <string name="payment_method_add">Add Payment Method</string>
-    <string name="payment_method_edit">Edit Payment Method</string>
-    <string name="payment_method_default_cash">Cash</string>
-    <string name="payment_method_default_check">Check</string>
-    <string name="payment_method_default_personal_card">Personal Card</string>
-    <string name="payment_method_default_corporate_card">Corporate Card</string>
+    <string name="payment_method">אמצעי תשלום</string>
+    <string name="payment_methods">אמצי תשלום</string>
+    <string name="payment_method_add">הוסף אמצעי תשלום</string>
+    <string name="payment_method_edit">ערוך אמצעי תשלום</string>
+    <string name="payment_method_default_cash">מזומן</string>
+    <string name="payment_method_default_check">צ׳ק</string>
+    <string name="payment_method_default_personal_card">כרטיס אשראי אישי</string>
+    <string name="payment_method_default_corporate_card">כרטיס אשראי חברה</string>
 
     <!-- =================== Payment Methods =================== -->
-    <string name="purchase_succeeded">Successfully completed the purchase</string>
-    <string name="purchase_unavailable">Unable to retrieve purchase information</string>
-    <string name="purchase_failed">Failed to complete the purchase</string>
+    <string name="purchase_succeeded">הרכישה בוצעה בהצלחה</string>
+    <string name="purchase_unavailable">משיכת מידע לגבי הרכישה נכשלה</string>
+    <string name="purchase_failed">השלמת הרכישה נכשלה</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Like Smart Receipts?</string>
-    <string name="leave_feedback_text">Would you like to leave us feedback?</string>
-    <string name="apprating_dialog_title">Like %s?</string>
-    <string name="apprating_dialog_message">Please consider leaving a review about it. As an independent developer, your reviews are my primary source of exposure and really help to encourage me to keep adding new features. Thanks!</string>
-    <string name="apprating_dialog_negative">No Thanks</string>
-    <string name="apprating_dialog_neutral">Maybe Later</string>
-    <string name="apprating_dialog_positive">Rate It Now!</string>
+    <string name="rating_tooltip_text">אוהב את Smart Receipts?</string>
+    <string name="leave_feedback_text">תרצה להשאיר לנו פידבק?</string>
+    <string name="apprating_dialog_title">אוהב את %s?</string>
+	    <string name="apprating_dialog_message">אנא שקול להשאיר ביקורת בחנות האפליקציות. בתור מפתח עצמאי, הביקורות שלך הן אמצעי החשיפה העיקרי שלי ויכולות מאוד לעזור לי לפתח פונקציונאליות נוספת. תודה!</string>
+    <string name="apprating_dialog_negative">לא תודה</string>
+    <string name="apprating_dialog_neutral">אולי אחר כך</string>
+    <string name="apprating_dialog_positive">דרג עכשיו!</string>
 
     <!-- ================== Tooltip messages ==================== -->
     <string name="tooltip_generate_info_message">Use the \'Generate\' tab to create your reports</string>
