@@ -515,17 +515,17 @@
     <string name="tooltip_generate_info_message">השתמש בטאב הייצור על מנת ליצור את הדוחות שלך</string>
     <string name="tooltip_backup_info_message">%d ימים מאז הגיבוי האחרון שלך</string>
     <string name="tooltip_no_backups_info_message">תזכורת: גבה את המידע שלך באופן קבוע</string>
-    <string name="tooltip_import_info_message">Please, choose receipt for your attachment</string>
-    <string name="tooltip_review_privacy">Tap to review your privacy settings</string>
+    <string name="tooltip_import_info_message">אנא בחר קבלה עבור הקובץ המצורף שלך</string>
+    <string name="tooltip_review_privacy">לחץ לעיון של הגדרות הפרטיות שלך</string>
 
     <!-- ================== Graph titles ==================== -->
-    <string name="graphs_no_data">Add your first receipts to see graphs.</string>
-    <string name="graphs_expenditure_by_dates_title">Daily expenses</string>
-    <string name="graphs_expenditure_by_categories_title">Expenditure by categories</string>
-    <string name="graphs_expenditure_by_reimbursable_title">Reimbursable vs Non-reimbursable</string>
-    <string name="graphs_expenditure_by_payment_methods_title">Expenditure by payment methods</string>
-    <string name="graphs_label_reimbursable">Reimbursable</string>
-    <string name="graphs_label_non_reimbursable">Non-reimbursable</string>
-    <string name="graphs_label_others">Others</string>
+    <string name="graphs_no_data">הוסף קבלות ראשונות על מנת לצפות בגרפים</string>
+    <string name="graphs_expenditure_by_dates_title">הוצאות יומיות</string>
+    <string name="graphs_expenditure_by_categories_title">הוצאה לפי קטגוריה</string>
+    <string name="graphs_expenditure_by_reimbursable_title">בר-החזר לעומת לא בר-החזר</string>
+    <string name="graphs_expenditure_by_payment_methods_title">הוצאה לפי אמצעי תשלום</string>
+    <string name="graphs_label_reimbursable">בר-החזר</string>
+    <string name="graphs_label_non_reimbursable">לא בר-החזר</string>
+    <string name="graphs_label_others">אחרים</string>
 
 </resources>
