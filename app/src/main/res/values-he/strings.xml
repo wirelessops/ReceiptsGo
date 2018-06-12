@@ -512,9 +512,9 @@
     <string name="apprating_dialog_positive">דרג עכשיו!</string>
 
     <!-- ================== Tooltip messages ==================== -->
-    <string name="tooltip_generate_info_message">Use the \'Generate\' tab to create your reports</string>
-    <string name="tooltip_backup_info_message">%d days since your last backup</string>
-    <string name="tooltip_no_backups_info_message">Reminder: Periodically back up your data</string>
+    <string name="tooltip_generate_info_message">השתמש בטאב הייצור על מנת ליצור את הדוחות שלך</string>
+    <string name="tooltip_backup_info_message">%d ימים מאז הגיבוי האחרון שלך</string>
+    <string name="tooltip_no_backups_info_message">תזכורת: גבה את המידע שלך באופן קבוע</string>
     <string name="tooltip_import_info_message">Please, choose receipt for your attachment</string>
     <string name="tooltip_review_privacy">Tap to review your privacy settings</string>
 
