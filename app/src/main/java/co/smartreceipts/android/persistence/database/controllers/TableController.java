@@ -6,12 +6,15 @@ import com.hadisatrio.optional.Optional;
 
 import org.reactivestreams.Subscriber;
 
+import java.util.List;
+
 import co.smartreceipts.android.persistence.database.controllers.results.DeleteResult;
 import co.smartreceipts.android.persistence.database.controllers.results.GetResult;
 import co.smartreceipts.android.persistence.database.controllers.results.InsertResult;
 import co.smartreceipts.android.persistence.database.controllers.results.UpdateResult;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Provides an asynchronous way for us to easily interact with our database layer
@@ -33,8 +36,8 @@ public interface TableController<ModelType> {
     /**
      * Retrieves list of all objects that are stored within this table.
      */
-    // TODO: 11.04.2017 return type is void
-    /*Single<List<ModelType>>*/void get();
+    @NonNull
+    Single<List<ModelType>> get();
 
     /**
      * Returns a stream of all get requests submitted to {@link #get()}

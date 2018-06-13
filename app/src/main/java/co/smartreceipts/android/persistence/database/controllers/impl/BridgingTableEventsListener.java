@@ -1,5 +1,6 @@
 package co.smartreceipts.android.persistence.database.controllers.impl;
 
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -13,13 +14,12 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * A temporary class to bridge our refactoring work and avoid breaking changes while we get this all in place
  */
-@Deprecated
 public class BridgingTableEventsListener<ModelType> {
 
     private final TableController<ModelType> tableController;
     private final TableEventsListener<ModelType> listener;
-    private final Scheduler observeOnScheduler;
-    private CompositeDisposable compositeDisposable;
+    protected final Scheduler observeOnScheduler;
+    protected final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public BridgingTableEventsListener(@NonNull TableController<ModelType> tableController, @NonNull TableEventsListener<ModelType> listener,
                                        @NonNull Scheduler observeOnScheduler) {
@@ -28,12 +28,13 @@ public class BridgingTableEventsListener<ModelType> {
         this.observeOnScheduler = Preconditions.checkNotNull(observeOnScheduler);
     }
 
-    public final void subscribe() {
-        compositeDisposable = new CompositeDisposable();
+    @CallSuper
+    public void subscribe() {
         compositeDisposable.add(this.tableController.getStream()
                 .observeOn(observeOnScheduler)
                 .subscribe(modelTypeGetResult -> {
                     if (modelTypeGetResult.getThrowable() == null) {
+                        //noinspection ConstantConditions
                         listener.onGetSuccess(modelTypeGetResult.get());
                     } else {
                         listener.onGetFailure(modelTypeGetResult.getThrowable());
@@ -54,6 +55,7 @@ public class BridgingTableEventsListener<ModelType> {
                 .observeOn(observeOnScheduler)
                 .subscribe(modelTypeUpdateResult -> {
                     if (modelTypeUpdateResult.getThrowable() == null) {
+                        //noinspection ConstantConditions
                         listener.onUpdateSuccess(modelTypeUpdateResult.getOld(), modelTypeUpdateResult.getNew(), modelTypeUpdateResult.getDatabaseOperationMetadata());
                     } else {
                         listener.onUpdateFailure(modelTypeUpdateResult.getOld(), modelTypeUpdateResult.getThrowable(), modelTypeUpdateResult.getDatabaseOperationMetadata());
@@ -71,10 +73,8 @@ public class BridgingTableEventsListener<ModelType> {
                 }));
     }
 
+    @CallSuper
     public void unsubscribe() {
-        if (compositeDisposable != null) {
-            compositeDisposable.clear();
-        }
-        compositeDisposable = null;
+        compositeDisposable.clear();
     }
 }

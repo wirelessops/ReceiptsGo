@@ -6,6 +6,7 @@ import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
@@ -27,11 +28,13 @@ import co.smartreceipts.android.utils.PreFixedThreadFactory;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.SingleSubject;
 import io.reactivex.subjects.Subject;
 
 
@@ -60,7 +63,7 @@ abstract class AbstractTableController<ModelType> implements TableController<Mod
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public AbstractTableController(@NonNull Table<ModelType, ?> table, @NonNull Analytics analytics) {
-        this(table, new StubTableActionAlterations<ModelType>(), analytics);
+        this(table, new StubTableActionAlterations<>(), analytics);
     }
 
     public AbstractTableController(@NonNull Table<ModelType, ?> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics) {
@@ -98,9 +101,11 @@ abstract class AbstractTableController<ModelType> implements TableController<Mod
     }
 
     @Override
-    public void get() {
+    @NonNull
+    public Single<List<ModelType>> get() {
         Logger.info(this, "#get");
 
+        final SingleSubject<List<ModelType>> getSubject = SingleSubject.create();
         mTableActionAlterations.preGet()
                 .subscribeOn(mSubscribeOnScheduler)
                 .andThen(mTable.get())
@@ -115,7 +120,9 @@ abstract class AbstractTableController<ModelType> implements TableController<Mod
                     getStreamSubject.onNext(new GetResult<>(throwable));
                 })
                 .onErrorReturnItem(Collections.emptyList())
-                .subscribe();
+                .subscribe(getSubject);
+
+        return getSubject;
     }
 
     @NonNull
