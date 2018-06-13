@@ -1,5 +1,6 @@
 package co.smartreceipts.android.persistence.database.tables;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
@@ -61,15 +62,60 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
             customizer.insertPaymentMethodDefaults(this);
         }
 
-        if (oldVersion <= 14) {
+        if (oldVersion <= 14) { // v14 => v15. adding sync info
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
         }
 
-        if (oldVersion <= 15) { // adding custom_order_id column
-            final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
+        if (oldVersion <= 15) { // v15 => v16. adding custom_order_id column
+            final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0",
                     getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
             Logger.debug(this, addCustomOrderColumn);
             db.execSQL(addCustomOrderColumn);
+        }
+
+        if (oldVersion <= 16) { // v16 => 17. add the custom_order_id column to iOS (which was forgotten)
+            if (!hasCustomOrderIdColumn(db)) {
+                final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0", getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
+                final String updateDefaultCustomOrder = String.format("UPDATE %s SET %s = ROWID", getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
+                Logger.debug(this, addCustomOrderColumn);
+                Logger.debug(this, updateDefaultCustomOrder);
+                db.execSQL(addCustomOrderColumn);
+                db.execSQL(updateDefaultCustomOrder);
+            }
+        }
+    }
+
+    /**
+     * When upgrading our database to version 16 on iOS, we unfortunately forgot to add the `custom_order_id` column
+     * to the Payment methods table. This method is responsible for executing a SQLite PRAGMA command to check if
+     * this column is present or not in the table. If not, we can add it in database version 17 (or higher) to ensure
+     * parity between the two platforms.
+     *
+     * @param db the current database
+     * @return {@code true} if the `custom_order_id` column is present, {@code false} otherwise
+     * @see <a href="https://www.sqlite.org/pragma.html#pragma_table_info">PRAGMA table_info</a>
+     */
+    private boolean hasCustomOrderIdColumn(@NonNull SQLiteDatabase db) {
+        Cursor cursor = null;
+        try {
+            final String pragmaTableInfo = String.format("PRAGMA table_info(%s)", getTableName());
+            cursor = db.rawQuery(pragmaTableInfo, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int columnNameIndex = cursor.getColumnIndex("name");
+                if (columnNameIndex >= 0) {
+                    do {
+                        if (AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID.equals(cursor.getString(columnNameIndex))) {
+                            return true;
+                        }
+                    }
+                    while (cursor.moveToNext());
+                }
+            }
+            return false;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 

@@ -1,7 +1,9 @@
 package co.smartreceipts.android.persistence.database.tables;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +34,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class PaymentMethodsTableTest {
@@ -118,6 +121,7 @@ public class PaymentMethodsTableTest {
         assertEquals(mSqlCaptor.getAllValues().get(2), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(3), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(4), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD last_local_modification_time DATE");
+        assertEquals(mSqlCaptor.getAllValues().get(5), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0");
     }
 
     @Test
@@ -134,6 +138,7 @@ public class PaymentMethodsTableTest {
         assertEquals(mSqlCaptor.getAllValues().get(1), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(2), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
         assertEquals(mSqlCaptor.getAllValues().get(3), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD last_local_modification_time DATE");
+        assertEquals(mSqlCaptor.getAllValues().get(4), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0");
     }
 
     @Test
@@ -145,6 +150,51 @@ public class PaymentMethodsTableTest {
         mPaymentMethodsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
         verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
         verify(customizer, never()).insertPaymentMethodDefaults(mPaymentMethodsTable);
+
+        assertEquals(mSqlCaptor.getAllValues().get(0), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0");
+    }
+
+    @Test
+    public void onUpgradeFromV16WhenCustomOrderIdColumnIsPresent() {
+        final int oldVersion = 16;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        final Cursor cursor = mock(Cursor.class);
+        final String pragmaTableInfo = "PRAGMA table_info(" + mPaymentMethodsTable.getTableName() + ")";
+        final int columnNameIndex = 0;
+        when(mSQLiteDatabase.rawQuery(pragmaTableInfo, null)).thenReturn(cursor);
+        when(cursor.moveToFirst()).thenReturn(true);
+        when(cursor.getColumnIndex("name")).thenReturn(columnNameIndex);
+        when(cursor.getString(columnNameIndex)).thenReturn("id", "method", "drive_sync_id", "drive_is_synced", "drive_marked_for_deletion", "last_local_modification_time", "custom_order_id");
+        when(cursor.moveToNext()).thenReturn(true, true, true, true, true, true, false);
+
+        mPaymentMethodsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase, never()).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertPaymentMethodDefaults(mPaymentMethodsTable);
+    }
+
+    @Test
+    public void onUpgradeFromV16WhenCustomOrderIdColumnIsMissing() {
+        final int oldVersion = 16;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        final Cursor cursor = mock(Cursor.class);
+        final String pragmaTableInfo = "PRAGMA table_info(" + mPaymentMethodsTable.getTableName() + ")";
+        final int columnNameIndex = 0;
+        when(mSQLiteDatabase.rawQuery(pragmaTableInfo, null)).thenReturn(cursor);
+        when(cursor.moveToFirst()).thenReturn(true);
+        when(cursor.getColumnIndex("name")).thenReturn(columnNameIndex);
+        when(cursor.getString(columnNameIndex)).thenReturn("id", "method", "drive_sync_id", "drive_is_synced", "drive_marked_for_deletion", "last_local_modification_time");
+        when(cursor.moveToNext()).thenReturn(true, true, true, true, true, false);
+
+        mPaymentMethodsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertPaymentMethodDefaults(mPaymentMethodsTable);
+
+        assertEquals(mSqlCaptor.getAllValues().get(0), "ALTER TABLE " + mPaymentMethodsTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0");
+        assertEquals(mSqlCaptor.getAllValues().get(1), "UPDATE " + mPaymentMethodsTable.getTableName() + " SET custom_order_id = ROWID");
     }
 
     @Test
