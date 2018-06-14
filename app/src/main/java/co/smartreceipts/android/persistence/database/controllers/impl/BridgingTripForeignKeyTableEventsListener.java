@@ -32,9 +32,9 @@ public class BridgingTripForeignKeyTableEventsListener<ModelType> extends Bridgi
                 .subscribe(foreignKeyGetResult -> {
                     if (foreignKeyGetResult.getThrowable() == null) {
                         //noinspection ConstantConditions
-                        tripForeignKeyTableEventsListener.onGetSuccess(foreignKeyGetResult.get());
+                        tripForeignKeyTableEventsListener.onGetSuccess(foreignKeyGetResult.get(), foreignKeyGetResult.getTrip());
                     } else {
-                        tripForeignKeyTableEventsListener.onGetFailure(foreignKeyGetResult.getThrowable());
+                        tripForeignKeyTableEventsListener.onGetFailure(foreignKeyGetResult.getThrowable(), foreignKeyGetResult.getTrip());
                     }
                 }));
     }
