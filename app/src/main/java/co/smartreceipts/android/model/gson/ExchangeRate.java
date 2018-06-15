@@ -112,7 +112,7 @@ public class ExchangeRate implements Serializable {
     public BigDecimal getExchangeRate(@NonNull String exchangeCurrencyCode) {
         if (exchangeCurrencyCode.equalsIgnoreCase(base)) {
             // We always support same currency exchange (i.e. "USD" -> "USD")
-            return new BigDecimal(1);
+            return BigDecimal.ONE;
         }
         if (supportsExchangeRateFor(exchangeCurrencyCode)) {
             return new BigDecimal(rates.get(exchangeCurrencyCode));
@@ -144,7 +144,7 @@ public class ExchangeRate implements Serializable {
     public String getDecimalFormattedExchangeRate(@NonNull String exchangeCurrencyCode) {
         if (exchangeCurrencyCode.equalsIgnoreCase(base)) {
             // We always support same currency exchange (i.e. "USD" -> "USD")
-            return ModelUtils.getDecimalFormattedValue(new BigDecimal(1), PRECISION);
+            return ModelUtils.getDecimalFormattedValue(BigDecimal.ONE, PRECISION);
         }
         if (supportsExchangeRateFor(exchangeCurrencyCode)) {
             return ModelUtils.getDecimalFormattedValue(new BigDecimal(rates.get(exchangeCurrencyCode)), PRECISION);

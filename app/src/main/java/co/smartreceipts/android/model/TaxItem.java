@@ -53,7 +53,7 @@ public class TaxItem {
 	
 	public void setPrice(String price) {
 		if (TextUtils.isEmpty(price)) {
-			mPrice = new BigDecimal(0);
+			mPrice = BigDecimal.ZERO;
 			getTax();
 		}
 		try {

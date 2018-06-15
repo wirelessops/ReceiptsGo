@@ -40,8 +40,8 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         this.currency = baseCurrency;
         this.currencyToPriceMap = new HashMap<>();
         this.notExchangedPriceMap = new HashMap<>();
-        BigDecimal possiblyIncorrectTotalPrice = new BigDecimal(0);
-        BigDecimal totalPrice = new BigDecimal(0);
+        BigDecimal possiblyIncorrectTotalPrice = BigDecimal.ZERO;
+        BigDecimal totalPrice = BigDecimal.ZERO;
         boolean areAllExchangeRatesValid = true;
         for (final Price price : prices) {
 

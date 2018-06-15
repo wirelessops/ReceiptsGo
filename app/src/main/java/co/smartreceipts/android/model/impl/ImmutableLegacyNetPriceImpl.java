@@ -32,7 +32,7 @@ public final class ImmutableLegacyNetPriceImpl extends AbstractPriceImpl {
 
     public ImmutableLegacyNetPriceImpl(@NonNull List<Price> prices) {
         this.currencyToPriceMap = new HashMap<>();
-        BigDecimal possiblyIncorrectTotalPrice = new BigDecimal(0);
+        BigDecimal possiblyIncorrectTotalPrice = BigDecimal.ZERO;
         PriceCurrency currency = null;
         for (final Price price : prices) {
             possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice.add(price.getPrice());

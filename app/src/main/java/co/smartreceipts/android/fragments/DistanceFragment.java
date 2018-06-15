@@ -154,7 +154,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
                     final Price total = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
                     getSupportActionBar().setSubtitle(getString(R.string.distance_total_item, total.getCurrencyFormattedPrice()));
                 } else {
-                    BigDecimal distanceTotal = new BigDecimal(0);
+                    BigDecimal distanceTotal = BigDecimal.ZERO;
                     for (final Distance distance : distances) {
                         distanceTotal = distanceTotal.add(distance.getDistance());
                     }

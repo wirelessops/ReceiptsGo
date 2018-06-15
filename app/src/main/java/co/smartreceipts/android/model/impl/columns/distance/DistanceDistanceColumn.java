@@ -24,7 +24,7 @@ public final class DistanceDistanceColumn extends AbstractColumnImpl<Distance> {
     @Override
     @NonNull
     public String getFooter(@NonNull List<Distance> distances) {
-        BigDecimal distance = new BigDecimal(0);
+        BigDecimal distance = BigDecimal.ZERO;
         for (int i = 0; i < distances.size(); i++) {
             distance = distance.add(distances.get(i).getDistance());
         }
