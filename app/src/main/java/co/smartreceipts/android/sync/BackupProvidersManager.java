@@ -38,16 +38,18 @@ public class BackupProvidersManager implements BackupProvider {
     private final SyncProviderFactory syncProviderFactory;
     private final SyncProviderStore syncProviderStore;
     private final NetworkManager networkManager;
+
     private final Set<BackupProviderChangeListener> backupProviderChangeListeners = new CopyOnWriteArraySet<>();
     private BackupProvider backupProvider;
 
     @Inject
-    public BackupProvidersManager(SyncProviderFactory syncProviderFactory, SyncProviderStore syncProviderStore,
-                                  NetworkManager networkManager) {
-        this.syncProviderFactory = syncProviderFactory;
-        this.syncProviderStore = syncProviderStore;
-        this.networkManager = networkManager;
-        backupProvider = syncProviderFactory.get(this.syncProviderStore.getProvider());
+    public BackupProvidersManager(@NonNull SyncProviderFactory syncProviderFactory,
+                                  @NonNull SyncProviderStore syncProviderStore,
+                                  @NonNull NetworkManager networkManager) {
+        this.syncProviderFactory = Preconditions.checkNotNull(syncProviderFactory);
+        this.syncProviderStore = Preconditions.checkNotNull(syncProviderStore);
+        this.networkManager = Preconditions.checkNotNull(networkManager);
+        this.backupProvider = syncProviderFactory.get(this.syncProviderStore.getProvider());
     }
 
     public void registerChangeListener(@NonNull BackupProviderChangeListener backupProviderChangeListener) {

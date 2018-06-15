@@ -9,6 +9,9 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.android.di.scopes.ApplicationScope;
+
+@ApplicationScope
 public class SyncProviderStore {
 
     private static final String KEY_SYNC_PROVIDER = "key_sync_provider_1";
@@ -17,7 +20,7 @@ public class SyncProviderStore {
     private SyncProvider syncProvider;
 
     @Inject
-    public SyncProviderStore(Context context) {
+    public SyncProviderStore(@NonNull Context context) {
         this(PreferenceManager.getDefaultSharedPreferences(context));
     }
 

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -119,8 +121,39 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     }
 
     @NonNull
+    @Override
     public Single<List<ModelType>> get() {
         return Single.fromCallable(this::getBlocking);
+    }
+
+    /**
+     * This method aims to fetch all entities that have been marked for deletion but are not yet delete
+     *
+     * @param syncProvider the provided {@link SyncProvider} to check for
+     * @return a {@link Single} containing a {@link List} all items assigned for deletion
+     */
+    @NonNull
+    public synchronized Single<List<ModelType>> getAllMarkedForDeletionItems(@NonNull final SyncProvider syncProvider) {
+        Preconditions.checkArgument(syncProvider == SyncProvider.GoogleDrive, "Google Drive is the only supported provider at the moment");
+
+        return Single.fromCallable(() -> {
+                    Cursor cursor = null;
+                    try {
+                        final List<ModelType> results = new ArrayList<>();
+                        cursor = getReadableDatabase().query(getTableName(), null, COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(1)}, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            do {
+                                results.add(mDatabaseAdapter.read(cursor));
+                            }
+                            while (cursor.moveToNext());
+                        }
+                        return results;
+                    } finally {
+                        if (cursor != null) {
+                            cursor.close();
+                        }
+                    }
+                });
     }
 
     @NonNull
@@ -205,6 +238,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     }
 
     @SuppressWarnings("unchecked")
+    @NonNull
     public synchronized Optional<ModelType> insertBlocking(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         final ContentValues values = mDatabaseAdapter.write(modelType, databaseOperationMetadata);
         if (getWritableDatabase().insertOrThrow(getTableName(), null, values) != -1) {

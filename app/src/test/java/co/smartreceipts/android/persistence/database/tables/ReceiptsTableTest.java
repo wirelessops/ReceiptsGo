@@ -587,6 +587,21 @@ public class ReceiptsTableTest {
     }
 
     @Test
+    public void getAllMarkedReceipts() {
+        final SyncState syncState = new DefaultSyncState(new IdentifierMap(Collections.singletonMap(SyncProvider.GoogleDrive, new Identifier("id"))),
+                new SyncStatusMap(Collections.singletonMap(SyncProvider.GoogleDrive, false)),
+                new MarkedForDeletionMap(Collections.singletonMap(SyncProvider.GoogleDrive, false)),
+                new Date(System.currentTimeMillis()));
+        final Receipt receipt = mReceiptsTable.insert(mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).setSyncState(syncState).build(), new DatabaseOperationMetadata()).blockingGet();
+        assertNotNull(receipt);
+
+        assertEquals(receipt, mReceiptsTable.delete(receipt, new DatabaseOperationMetadata()).blockingGet());
+
+        final List<Receipt> markedForDeletionReceipts = mReceiptsTable.getAllMarkedForDeletionItems(SyncProvider.GoogleDrive).blockingGet();
+        assertEquals(markedForDeletionReceipts, Collections.singletonList(new ReceiptBuilderFactory(receipt).setIndex(1).build()));
+    }
+
+    @Test
     public void deleteUnmarkedReceipt() {
         assertEquals(mReceipt1, mReceiptsTable.delete(mReceipt1, new DatabaseOperationMetadata()).blockingGet());
 

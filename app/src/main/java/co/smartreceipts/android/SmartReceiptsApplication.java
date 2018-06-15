@@ -31,6 +31,7 @@ import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.versions.AppVersionManager;
 import co.smartreceipts.android.settings.versions.VersionUpgradedListener;
+import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
 import co.smartreceipts.android.utils.log.Logger;
@@ -85,6 +86,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     ReceiptsOrderer receiptsOrderer;
+
+    @Inject
+    MarkedForDeletionCleaner markedForDeletionCleaner;
 
     private AppComponent appComponent;
 
@@ -142,6 +146,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         ocrManager.initialize();
         crashReporter.initialize();
         receiptsOrderer.initialize();
+        markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 
