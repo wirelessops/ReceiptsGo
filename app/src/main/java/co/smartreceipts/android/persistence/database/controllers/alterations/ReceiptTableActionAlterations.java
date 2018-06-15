@@ -71,7 +71,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                         final String oldExtension = "." + UriUtils.getExtension(oldReceipt.getFile(), context);
                         final String newExtension = "." + UriUtils.getExtension(newReceipt.getFile(), context);
                         if (newExtension.equals(oldExtension)) {
-                            Picasso.with(context).invalidate(oldReceipt.getFile());
+                            Picasso.get().invalidate(oldReceipt.getFile());
                             if (newReceipt.getFile().renameTo(oldReceipt.getFile())) {
                                 // Note: Keep 'oldReceipt' here, since File is immutable (and renamedTo doesn't change it)
                                 factory.setFile(oldReceipt.getFile());
@@ -110,7 +110,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             if (oldReceipt.getFile() != null) {
                 // Delete old file if user removed or changed it
                 if (newReceipt.getFile() == null  || !newReceipt.getFile().equals(oldReceipt.getFile())) {
-                    Picasso.with(context).invalidate(oldReceipt.getFile());
+                    Picasso.get().invalidate(oldReceipt.getFile());
                     storageManager.delete(oldReceipt.getFile());
                 }
             }

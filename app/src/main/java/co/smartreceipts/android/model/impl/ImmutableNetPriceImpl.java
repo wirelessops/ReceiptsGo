@@ -32,6 +32,9 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     private final boolean areAllExchangeRatesValid;
     private final Map<PriceCurrency, BigDecimal> currencyToPriceMap;
     private final Map<PriceCurrency, BigDecimal> notExchangedPriceMap;
+    private final String decimalFormattedPrice; // Note: We create/cache this as it's common, slower operation
+    private final String currencyFormattedPrice; // Note: We create/cache this as it's common, slower operation
+    private final String currencyCodeFormattedPrice; // Note: We create/cache this as it's common, slower operation
 
     public ImmutableNetPriceImpl(@NonNull PriceCurrency baseCurrency, @NonNull List<Price> prices) {
         this.currency = baseCurrency;
@@ -68,6 +71,11 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         this.possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice;
         this.areAllExchangeRatesValid = areAllExchangeRatesValid;
         this.exchangeRate = new ExchangeRateBuilderFactory().setBaseCurrency(baseCurrency).build();
+
+        // Note: The actual model utils stuff is somewhat slow due to the NumberFormats behind the scenes. We pre-cache here
+        this.decimalFormattedPrice = calculateDecimalFormattedPrice();
+        this.currencyFormattedPrice = calculateCurrencyFormattedPrice();
+        this.currencyCodeFormattedPrice = calculateCurrencyCodeFormattedPrice();
     }
 
     @SuppressWarnings("unchecked")
@@ -95,6 +103,11 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         this.areAllExchangeRatesValid = areAllExchangeRatesValid;
         this.currencyToPriceMap = Preconditions.checkNotNull(currencyToPriceMap);
         this.notExchangedPriceMap = Preconditions.checkNotNull(notExchangedPrices);
+
+        // Note: The actual model utils stuff is somewhat slow due to the NumberFormats behind the scenes. We pre-cache here
+        this.decimalFormattedPrice = calculateDecimalFormattedPrice();
+        this.currencyFormattedPrice = calculateCurrencyFormattedPrice();
+        this.currencyCodeFormattedPrice = calculateCurrencyCodeFormattedPrice();
     }
 
     @NonNull
@@ -141,15 +154,7 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     @NonNull
     @Override
     public String getCurrencyFormattedPrice() {
-        if (areAllExchangeRatesValid) {
-            return ModelUtils.getCurrencyFormattedValue(totalPrice, currency);
-        } else {
-            final List<String> currencyStrings = new ArrayList<>();
-            for (PriceCurrency currency : currencyToPriceMap.keySet()) {
-                currencyStrings.add(ModelUtils.getCurrencyFormattedValue(currencyToPriceMap.get(currency), currency));
-            }
-            return TextUtils.join("; ", currencyStrings);
-        }
+        return this.currencyFormattedPrice;
     }
 
     @NonNull
@@ -223,6 +228,37 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         // Finally, write maps
         writeMapToParcel(dest, currencyToPriceMap);
         writeMapToParcel(dest, notExchangedPriceMap);
+    }
+
+    @NonNull
+    public String calculateDecimalFormattedPrice() {
+        if (areAllExchangeRatesValid) {
+            return ModelUtils.getDecimalFormattedValue(totalPrice);
+        } else {
+            return getCurrencyCodeFormattedStringFromMap(currencyToPriceMap);
+        }
+    }
+
+    @NonNull
+    private String calculateCurrencyFormattedPrice() {
+        if (areAllExchangeRatesValid) {
+            return ModelUtils.getCurrencyFormattedValue(totalPrice, currency);
+        } else {
+            final List<String> currencyStrings = new ArrayList<>();
+            for (PriceCurrency currency : currencyToPriceMap.keySet()) {
+                currencyStrings.add(ModelUtils.getCurrencyFormattedValue(currencyToPriceMap.get(currency), currency));
+            }
+            return TextUtils.join("; ", currencyStrings);
+        }
+    }
+
+    @NonNull
+    public String calculateCurrencyCodeFormattedPrice() {
+        if (notExchangedPriceMap.size() > 1) {
+            return getCurrencyCodeFormattedStringFromMap(notExchangedPriceMap);
+        } else {
+            return ModelUtils.getCurrencyCodeFormattedValue(totalPrice, currency);
+        }
     }
 
     private void writeMapToParcel(@NonNull Parcel dest, @NonNull Map<PriceCurrency, BigDecimal> map) {

@@ -257,22 +257,24 @@ public class ReceiptImageFragment extends WBFragment {
     }
 
     private void loadImage() {
-        Picasso.with(getContext()).load(receipt.getImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside().into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                progress.setVisibility(View.GONE);
-                imageView.setVisibility(View.VISIBLE);
-                footer.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onError() {
-                progress.setVisibility(View.GONE);
-                if (getActivity() != null) {
-                    Toast.makeText(getActivity(), getFlexString(R.string.IMG_OPEN_ERROR), Toast.LENGTH_SHORT).show();
+        if (receipt.getImage() != null) {
+            Picasso.get().load(receipt.getImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside().into(imageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    progress.setVisibility(View.GONE);
+                    imageView.setVisibility(View.VISIBLE);
+                    footer.setVisibility(View.VISIBLE);
                 }
-            }
-        });
+
+                @Override
+                public void onError(Exception e) {
+                    progress.setVisibility(View.GONE);
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), getFlexString(R.string.IMG_OPEN_ERROR), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     private void rotate(int orientation) {

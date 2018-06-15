@@ -65,15 +65,9 @@ public class CardAdapter<T> extends BaseAdapter {
         this.data = new ArrayList<>(data);
         this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-            notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-            syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
-        } else {
-            cloudDisabledDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-            notSyncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-            syncedDrawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
-        }
+        cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+        notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+        syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
 
         cardPriceTextSize = this.context.getResources().getDimension(getCardPriceTextSizeResource());
     }
@@ -210,15 +204,15 @@ public class CardAdapter<T> extends BaseAdapter {
                 final Syncable syncableData = (Syncable) data;
                 if (backupProvidersManager.getLastDatabaseSyncTime().getTime() >= syncableData.getSyncState().getLastLocalModificationTime().getTime()
                         && syncableData.getSyncState().getLastLocalModificationTime().getTime() >= 0) {
-                    Picasso.with(getContext()).load(Uri.EMPTY).placeholder(syncedDrawable).into(image);
+                    Picasso.get().load(Uri.EMPTY).placeholder(syncedDrawable).into(image);
                 } else {
-                    Picasso.with(getContext()).load(Uri.EMPTY).placeholder(notSyncedDrawable).into(image);
+                    Picasso.get().load(Uri.EMPTY).placeholder(notSyncedDrawable).into(image);
                 }
             } else {
                 image.setVisibility(View.GONE);
             }
         } else {
-            Picasso.with(getContext()).load(Uri.EMPTY).placeholder(cloudDisabledDrawable).into(image);
+            Picasso.get().load(Uri.EMPTY).placeholder(cloudDisabledDrawable).into(image);
         }
     }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Draggable;
+import co.smartreceipts.android.utils.log.Logger;
 
 public abstract class DraggableCardsAdapter<T extends Draggable> extends RecyclerView.Adapter<AbstractDraggableItemViewHolder>
         implements DraggableItemAdapter<AbstractDraggableItemViewHolder> {

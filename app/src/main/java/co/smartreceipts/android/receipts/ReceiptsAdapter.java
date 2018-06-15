@@ -2,6 +2,7 @@ package co.smartreceipts.android.receipts;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
@@ -48,10 +49,15 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     private final NavigationHandler navigationHandler;
     private final Context context;
     private final ReceiptsOrderer receiptsOrderer;
+    private final ShowAutomaticBackupsInformationOnClickListener showAutomaticBackupsInformationOnClickListener = new ShowAutomaticBackupsInformationOnClickListener();
 
     private final PublishSubject<Receipt> itemClickSubject = PublishSubject.create();
     private final PublishSubject<Receipt> menuClickSubject = PublishSubject.create();
     private final PublishSubject<Receipt> imageClickSubject = PublishSubject.create();
+
+    private final Drawable cloudDisabledDrawable;
+    private final Drawable notSyncedDrawable;
+    private final Drawable syncedDrawable;
 
 
     public ReceiptsAdapter(@NonNull Context context,
@@ -65,7 +71,11 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
         this.receiptsOrderer = Preconditions.checkNotNull(receiptsOrderer);
 
-        listItems = new ArrayList<>();
+        this.cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
+        this.notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
+        this.syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
+
+        this.listItems = new ArrayList<>();
     }
 
     @Override
@@ -254,21 +264,27 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
             syncState = itemView.findViewById(R.id.card_sync_state);
             menuButton = itemView.findViewById(R.id.card_menu);
             image = itemView.findViewById(R.id.card_image);
+
+            // We use tags here to ensure that we don't need to new an onClickListener for each bind operation
+            itemView.setOnClickListener(v -> itemClickSubject.onNext((Receipt) v.getTag()));
+            menuButton.setOnClickListener(v -> menuClickSubject.onNext((Receipt) v.getTag()));
+            image.setOnClickListener(v -> imageClickSubject.onNext((Receipt) v.getTag()));
         }
 
         @Override
         public void bindType(ReceiptsListItem item) {
             Receipt receipt = ((ReceiptContentItem) item).getReceipt();
 
-            itemView.setOnClickListener(v -> itemClickSubject.onNext(receipt));
-            menuButton.setOnClickListener(v -> menuClickSubject.onNext(receipt));
-            image.setOnClickListener(v -> imageClickSubject.onNext(receipt));
+            // Assign the tags to each, so our onclick listeners will respond properly
+            itemView.setTag(receipt);
+            menuButton.setTag(receipt);
+            image.setTag(receipt);
 
             if (receipt.hasPDF()) {
                 setIcon(image, R.drawable.ic_file_black_24dp);
-            } else if (receipt.hasImage()) {
+            } else if (receipt.getImage() != null) {
                 image.setPadding(0, 0, 0, 0);
-                Picasso.with(context)
+                Picasso.get()
                         .load(receipt.getImage())
                         .fit()
                         .centerCrop()
@@ -287,20 +303,17 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
                 category.setVisibility(View.GONE);
             }
 
-            Drawable cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
-            Drawable notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
-            Drawable syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
-
             if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
                 syncState.setClickable(false);
-                syncState.setImageDrawable(receipt.getSyncState().isSynced(SyncProvider.GoogleDrive) ? syncedDrawable : notSyncedDrawable);
+                if (receipt.getSyncState().isSynced(SyncProvider.GoogleDrive)) {
+                    Picasso.get().load(Uri.EMPTY).placeholder(syncedDrawable).into(syncState);
+                } else {
+                    Picasso.get().load(Uri.EMPTY).placeholder(notSyncedDrawable).into(syncState);
+                }
                 syncState.setOnClickListener(null);
             } else {
-                syncState.setClickable(true);
-                syncState.setImageDrawable(cloudDisabledDrawable);
-                syncState.setOnClickListener(view -> navigationHandler.showDialog(new AutomaticBackupsInfoDialogFragment()));
+                syncState.setOnClickListener(showAutomaticBackupsInformationOnClickListener);
             }
-
         }
 
     }
@@ -317,6 +330,14 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         @Override
         public void bindType(ReceiptsListItem item) {
             date.setText(((ReceiptHeaderItem) item).getHeaderText());
+        }
+    }
+
+    private final class ShowAutomaticBackupsInformationOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            navigationHandler.showDialog(new AutomaticBackupsInfoDialogFragment());
         }
     }
 }

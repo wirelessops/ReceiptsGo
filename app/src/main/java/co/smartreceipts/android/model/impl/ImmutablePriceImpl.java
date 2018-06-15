@@ -22,6 +22,9 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
     private final PriceCurrency currency;
     private final ExchangeRate exchangeRate;
     private final int decimalPrecision;
+    private final String decimalFormattedPrice; // Note: We create/cache this as it's common, slower operation
+    private final String currencyFormattedPrice; // Note: We create/cache this as it's common, slower operation
+    private final String currencyCodeFormattedPrice; // Note: We create/cache this as it's common, slower operation
 
     public ImmutablePriceImpl(@NonNull BigDecimal price, @NonNull PriceCurrency currency, @NonNull ExchangeRate exchangeRate) {
         this(price, currency, exchangeRate, Price.DEFAULT_DECIMAL_PRECISION);
@@ -33,6 +36,11 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
         this.currency = currency;
         this.exchangeRate = exchangeRate;
         this.decimalPrecision = decimalPrecision;
+
+        // Note: The actual model utils stuff is somewhat slow due to the NumberFormats behind the scenes. We pre-cache here
+        this.decimalFormattedPrice = ModelUtils.getDecimalFormattedValue(price, decimalPrecision);
+        this.currencyFormattedPrice = ModelUtils.getCurrencyFormattedValue(price, currency, decimalPrecision);
+        this.currencyCodeFormattedPrice = ModelUtils.getCurrencyCodeFormattedValue(price, currency, decimalPrecision);
     }
 
     private ImmutablePriceImpl(@NonNull Parcel in) {
@@ -40,6 +48,11 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
         this.currency = PriceCurrency.getInstance(in.readString());
         this.exchangeRate = (ExchangeRate) in.readSerializable();
         this.decimalPrecision = in.readInt();
+
+        // Note: The actual model utils stuff is somewhat slow due to the NumberFormats behind the scenes. We pre-cache here
+        this.decimalFormattedPrice = ModelUtils.getDecimalFormattedValue(price, decimalPrecision);
+        this.currencyFormattedPrice = ModelUtils.getCurrencyFormattedValue(price, currency, decimalPrecision);
+        this.currencyCodeFormattedPrice = ModelUtils.getCurrencyCodeFormattedValue(price, currency, decimalPrecision);
     }
 
     @Override
@@ -56,19 +69,19 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
     @Override
     @NonNull
     public String getDecimalFormattedPrice() {
-        return ModelUtils.getDecimalFormattedValue(price, decimalPrecision);
+        return decimalFormattedPrice;
     }
 
     @Override
     @NonNull
     public String getCurrencyFormattedPrice() {
-        return ModelUtils.getCurrencyFormattedValue(price, currency, decimalPrecision);
+        return currencyFormattedPrice;
     }
 
     @NonNull
     @Override
     public String getCurrencyCodeFormattedPrice() {
-        return ModelUtils.getCurrencyCodeFormattedValue(price, currency, decimalPrecision);
+        return currencyCodeFormattedPrice;
     }
 
     @Override
