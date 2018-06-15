@@ -51,7 +51,7 @@ public class OcrResponseParser {
     @Nullable
     public String getTotalAmount() {
         if (ocrResponse != null && ocrResponse.getTotalAmount() != null && ocrResponse.getTotalAmount().getData() != null) {
-            return ModelUtils.getDecimalFormattedValue(new BigDecimal(ocrResponse.getTotalAmount().getData()));
+            return ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(ocrResponse.getTotalAmount().getData()));
         } else {
             return null;
         }
@@ -63,7 +63,7 @@ public class OcrResponseParser {
     @Nullable
     public String getTaxAmount() {
         if (ocrResponse != null && ocrResponse.getTaxAmount() != null && ocrResponse.getTaxAmount().getData() != null) {
-            return ModelUtils.getDecimalFormattedValue(new BigDecimal(ocrResponse.getTaxAmount().getData()));
+            return ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(ocrResponse.getTaxAmount().getData()));
         } else {
             return null;
         }

@@ -41,10 +41,10 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     public DistanceBuilderFactory(int id) {
         _id = id;
         _location = "";
-        _distance = new BigDecimal(0);
+        _distance = BigDecimal.ZERO;
         _date = new Date(System.currentTimeMillis());
         _timezone = TimeZone.getDefault();
-        _rate = new BigDecimal(0);
+        _rate = BigDecimal.ZERO;
         _comment = "";
         _syncState = new DefaultSyncState();
     }
@@ -82,7 +82,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     }
 
     public DistanceBuilderFactory setDistance(double distance) {
-        _distance = new BigDecimal(distance);
+        _distance = BigDecimal.valueOf(distance);
         return this;
     }
 
@@ -115,7 +115,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     }
 
     public DistanceBuilderFactory setRate(double rate) {
-        _rate = new BigDecimal(rate);
+        _rate = BigDecimal.valueOf(rate);
         return this;
     }
 

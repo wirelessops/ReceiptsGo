@@ -67,7 +67,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
     @Override
     public Column<T> build() {
         final Column<T> column = mColumnDefinitions.getColumn(mId, mColumnName, mSyncState, mCustomOrderId);
-        return (column != null) ? column : mUnknownColumnResolutionStrategy.resolve(mId, mColumnName);
+        return (column != null) ? column : mUnknownColumnResolutionStrategy.resolve(mId, mColumnName, mSyncState, mCustomOrderId);
     }
 
 }

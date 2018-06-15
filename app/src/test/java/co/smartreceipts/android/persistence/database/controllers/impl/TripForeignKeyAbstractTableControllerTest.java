@@ -158,8 +158,8 @@ public class TripForeignKeyAbstractTableControllerTest {
         mAbstractTableController.unsubscribe(mListener2);
         mAbstractTableController.get(mTrip);
 
-        verify(mListener1).onGetSuccess(objects);
-        verify(mListener3).onGetSuccess(objects);
+        verify(mListener1).onGetSuccess(objects, mTrip);
+        verify(mListener3).onGetSuccess(objects, mTrip);
         verifyZeroInteractions(mListener2);
     }
 
@@ -175,8 +175,8 @@ public class TripForeignKeyAbstractTableControllerTest {
         mAbstractTableController.get(mTrip);
 
         verify(mAnalytics).record(any(ErrorEvent.class));
-        verify(mListener1).onGetFailure(e);
-        verify(mListener3).onGetFailure(e);
+        verify(mListener1).onGetFailure(e, mTrip);
+        verify(mListener3).onGetFailure(e, mTrip);
         verifyZeroInteractions(mListener2);
     }
 
@@ -192,8 +192,8 @@ public class TripForeignKeyAbstractTableControllerTest {
         mAbstractTableController.get(mTrip);
 
         verify(mAnalytics).record(any(ErrorEvent.class));
-        verify(mListener1).onGetFailure(e);
-        verify(mListener3).onGetFailure(e);
+        verify(mListener1).onGetFailure(e, mTrip);
+        verify(mListener3).onGetFailure(e, mTrip);
         verifyZeroInteractions(mListener2);
     }
 
@@ -208,8 +208,8 @@ public class TripForeignKeyAbstractTableControllerTest {
         mAbstractTableController.get(mTrip);
 
         verify(mAnalytics).record(any(ErrorEvent.class));
-        verify(mListener1).onGetFailure(any(Exception.class));
-        verify(mListener3).onGetFailure(any(Exception.class));
+        verify(mListener1).onGetFailure(any(Exception.class), eq(mTrip));
+        verify(mListener3).onGetFailure(any(Exception.class), eq(mTrip));
         verifyZeroInteractions(mListener2);
     }
 

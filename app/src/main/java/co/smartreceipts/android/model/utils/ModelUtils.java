@@ -59,7 +59,7 @@ public class ModelUtils {
      * @return the decimal formatted price {@link String}
      */
     public static String getDecimalFormattedValue(float number) {
-        return getDecimalFormattedValue(new BigDecimal(number));
+        return getDecimalFormattedValue(BigDecimal.valueOf(number));
     }
 
     /**
@@ -178,7 +178,7 @@ public class ModelUtils {
      */
     @NonNull
     public static BigDecimal tryParse(@Nullable String number) {
-        return tryParse(number, new BigDecimal(0));
+        return tryParse(number, BigDecimal.ZERO);
     }
 
     /**

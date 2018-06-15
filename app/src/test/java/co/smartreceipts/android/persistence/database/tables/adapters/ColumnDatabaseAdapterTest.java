@@ -30,10 +30,12 @@ public class ColumnDatabaseAdapterTest {
 
     private static final String ID_COLUMN = "id_column";
     private static final String NAME_COLUMN = "name_column";
+    private static final String CUSTOM_ORDER_ID_COLUMN = "custom_order_id";
 
     private static final int ID = 5;
     private static final int PRIMARY_KEY_ID = 11;
     private static final String NAME = "abcd";
+    private static final long CUSTOM_ORDER_ID = 10;
 
     // Class under test
     ColumnDatabaseAdapter mColumnDatabaseAdapter;
@@ -66,17 +68,20 @@ public class ColumnDatabaseAdapterTest {
 
         final int idIndex = 1;
         final int nameIndex = 2;
+        final int customOrderIdIndex = 3;
         when(mCursor.getColumnIndex(ID_COLUMN)).thenReturn(idIndex);
         when(mCursor.getColumnIndex(NAME_COLUMN)).thenReturn(nameIndex);
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
+        when(mCursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
 
         when(mColumn.getId()).thenReturn(ID);
         when(mColumn.getName()).thenReturn(NAME);
         when(mColumn.getSyncState()).thenReturn(mSyncState);
+        when(mColumn.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
 
-        mIdColumn = new ConstantColumn<>(ID, NAME, mSyncState);
-        mPrimaryKeyIdColumn = new ConstantColumn<>(PRIMARY_KEY_ID, NAME, mGetSyncState);
+        mIdColumn = new ConstantColumn<>(ID, NAME, mSyncState, CUSTOM_ORDER_ID);
+        mPrimaryKeyIdColumn = new ConstantColumn<>(PRIMARY_KEY_ID, NAME, mGetSyncState, CUSTOM_ORDER_ID);
         when(mReceiptColumnDefinitions.getColumn(ID, NAME, mSyncState, 0)).thenReturn(mIdColumn);
         when(mReceiptColumnDefinitions.getColumn(PRIMARY_KEY_ID, NAME, mGetSyncState, 0)).thenReturn(mPrimaryKeyIdColumn);
 
@@ -104,6 +109,7 @@ public class ColumnDatabaseAdapterTest {
         assertEquals(NAME, contentValues.getAsString(NAME_COLUMN));
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey(ID_COLUMN));
+        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong(CUSTOM_ORDER_ID_COLUMN));
     }
 
     @Test
@@ -117,6 +123,7 @@ public class ColumnDatabaseAdapterTest {
         assertEquals(NAME, contentValues.getAsString(NAME_COLUMN));
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey(ID_COLUMN));
+        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong(CUSTOM_ORDER_ID_COLUMN));
     }
 
     @Test

@@ -66,7 +66,7 @@ public class OcrConfigurationInteractor {
         return purchaseManager.getAllAvailablePurchases()
                 .flatMapIterable(availablePurchases -> availablePurchases)
                 .filter(availablePurchase -> availablePurchase.getInAppPurchase() != null && availablePurchase.getInAppPurchase().getType() == ConsumablePurchase.class && availablePurchase.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr))
-                .toSortedList((purchase1, purchase2) -> new BigDecimal(purchase1.getPriceAmountMicros()).compareTo(new BigDecimal(purchase2.getPriceAmountMicros())))
+                .toSortedList((purchase1, purchase2) -> BigDecimal.valueOf(purchase1.getPriceAmountMicros()).compareTo(BigDecimal.valueOf(purchase2.getPriceAmountMicros())))
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

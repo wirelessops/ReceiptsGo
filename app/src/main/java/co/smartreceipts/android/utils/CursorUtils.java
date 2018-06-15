@@ -72,7 +72,7 @@ public class CursorUtils {
      * @see "https://code.google.com/p/android/issues/detail?id=22219."
      */
     public static BigDecimal getDecimal(@NonNull Cursor cursor, int columnIndex) {
-        return getDecimal(cursor, columnIndex, new BigDecimal(0));
+        return getDecimal(cursor, columnIndex, BigDecimal.ZERO);
     }
 
     public static BigDecimal getDecimal(@NonNull Cursor cursor, int columnIndex, @Nullable BigDecimal defaultValue) {
@@ -83,10 +83,10 @@ public class CursorUtils {
                 try {
                     return new BigDecimal(decimalString.replace(",", "."));
                 } catch (NumberFormatException e) {
-                    return new BigDecimal(decimalDouble);
+                    return BigDecimal.valueOf(decimalDouble);
                 }
             } else {
-                return new BigDecimal(decimalDouble);
+                return BigDecimal.valueOf(decimalDouble);
             }
         } else {
             return defaultValue;

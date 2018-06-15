@@ -195,7 +195,7 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             dateEditText.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
             final float distanceRate = userPreferenceManager.get(UserPreference.Distance.DefaultDistanceRate);
             if (distanceRate > 0) {
-                rateEditText.setText(ModelUtils.getDecimalFormattedValue(new BigDecimal(distanceRate), Distance.RATE_PRECISION));
+                rateEditText.setText(ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(distanceRate), Distance.RATE_PRECISION));
             }
             if (locationAutoCompleteAdapter == null) {
                 locationAutoCompleteAdapter = AutoCompleteAdapter.getInstance(getActivity(),
@@ -262,8 +262,8 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
 
             if (updateableDistance == null) {
                 // We're inserting a new one
-                final BigDecimal distance = getBigDecimalFromString(this.distanceEditText.getText().toString(), new BigDecimal(0));
-                final BigDecimal rate = getBigDecimalFromString(this.rateEditText.getText().toString(), new BigDecimal(0));
+                final BigDecimal distance = getBigDecimalFromString(this.distanceEditText.getText().toString(), BigDecimal.ZERO);
+                final BigDecimal rate = getBigDecimalFromString(this.rateEditText.getText().toString(), BigDecimal.ZERO);
                 final DistanceBuilderFactory builder = new DistanceBuilderFactory();
                 builder.setTrip(trip);
                 builder.setLocation(location);

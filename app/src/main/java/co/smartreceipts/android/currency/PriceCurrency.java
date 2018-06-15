@@ -85,7 +85,7 @@ public final class PriceCurrency {
                     numberFormat.setGroupingUsed(false);
                     numberFormatCache.put(decimalPrecision, numberFormat);
                 }
-                return numberFormat.format(price.doubleValue());
+                return numberFormat.format(price);
             } else {
                 return mCurrencyCode + ModelUtils.getDecimalFormattedValue(price);
             }

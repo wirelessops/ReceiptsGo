@@ -7,6 +7,7 @@ import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.UnknownColumnResolutionStrategy;
 import co.smartreceipts.android.model.impl.columns.BlankColumn;
 import co.smartreceipts.android.model.impl.columns.ConstantColumn;
+import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
 /**
@@ -18,11 +19,11 @@ public final class ConstantColumnUnknownColumnResolutionStrategy<T> implements U
 
     @NonNull
     @Override
-    public Column<T> resolve(int id, @NonNull String columnName) {
+    public Column<T> resolve(int id, @NonNull String columnName, @NonNull SyncState syncState, long customOrderId) {
         if (TextUtils.isEmpty(columnName)) {
-            return new BlankColumn<>(id, columnName, new DefaultSyncState());
+            return new BlankColumn<>(id, columnName, syncState, customOrderId);
         } else {
-            return new ConstantColumn<>(id, columnName, new DefaultSyncState());
+            return new ConstantColumn<>(id, columnName, syncState, customOrderId);
         }
     }
 }

@@ -33,7 +33,7 @@ public class TaxItem {
 	}
 	
 	public TaxItem(float percent, boolean usePreTaxPrice) {
-		mPercent = new BigDecimal(percent);
+		mPercent = BigDecimal.valueOf(percent);
 		mUsePreTaxPrice = usePreTaxPrice;
 	}
 	
@@ -77,10 +77,10 @@ public class TaxItem {
 		else {
 			Logger.debug(this, mPrice.toString());
 			if (mUsePreTaxPrice) {
-				mTax = mPrice.multiply(mPercent).divide(new BigDecimal(100), SCALE, ROUNDING_MODE);
+				mTax = mPrice.multiply(mPercent).divide(BigDecimal.valueOf(100), SCALE, ROUNDING_MODE);
 			}
 			else {
-				mTax = mPrice.subtract(mPrice.divide(mPercent.divide(new BigDecimal(100), 10, ROUNDING_MODE).add(new BigDecimal(1)), SCALE, ROUNDING_MODE));
+				mTax = mPrice.subtract(mPrice.divide(mPercent.divide(BigDecimal.valueOf(100), 10, ROUNDING_MODE).add(BigDecimal.ONE), SCALE, ROUNDING_MODE));
 			}
 		}
 		return mTax;

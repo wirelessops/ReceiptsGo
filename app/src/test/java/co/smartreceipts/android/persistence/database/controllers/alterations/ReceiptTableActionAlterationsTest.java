@@ -1,5 +1,7 @@
 package co.smartreceipts.android.persistence.database.controllers.alterations;
 
+import com.squareup.picasso.Picasso;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +60,9 @@ public class ReceiptTableActionAlterationsTest {
     ReceiptBuilderFactory receiptBuilderFactory;
 
     @Mock
+    Picasso picasso;
+
+    @Mock
     Receipt receipt;
 
     @Mock
@@ -83,7 +88,7 @@ public class ReceiptTableActionAlterationsTest {
             return receiptBuilderFactory;
         }).when(receiptBuilderFactory).setIndex(anyInt());
 
-        receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory);
+        receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory, picasso);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -203,8 +208,7 @@ public class ReceiptTableActionAlterationsTest {
         when(receipt.getName()).thenReturn(name);
         when(receipt.getFile()).thenReturn(file2);
 
-        final List<Receipt> onNextResults =
-                receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
+        final List<Receipt> onNextResults = receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
                         .test()
                         .assertComplete()
                         .assertNoErrors()
@@ -215,6 +219,7 @@ public class ReceiptTableActionAlterationsTest {
         final Receipt result = onNextResults.get(0);
         assertNotNull(result.getFile());
         assertEquals("1_name.jpg", result.getFile().getName());
+        verify(picasso).invalidate(file1);
     }
 
     @Test
@@ -332,6 +337,7 @@ public class ReceiptTableActionAlterationsTest {
                 .assertNoErrors();
 
         verify(storageManager).delete(file);
+        verify(picasso).invalidate(file);
     }
 
     @Test

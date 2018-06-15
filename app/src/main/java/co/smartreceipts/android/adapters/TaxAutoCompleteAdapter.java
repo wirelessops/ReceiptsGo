@@ -21,9 +21,9 @@ import co.smartreceipts.android.model.TaxItem;
 public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements TextWatcher, View.OnFocusChangeListener {
 
     private static final BigDecimal VAT_0 = BigDecimal.ZERO;
-	private static final BigDecimal VAT_5_5 = new BigDecimal(5.5f);
-	private static final BigDecimal VAT_10 = new BigDecimal(10);
-	private static final BigDecimal VAT_20 = new BigDecimal(20);
+	private static final BigDecimal VAT_5_5 = BigDecimal.valueOf(5.5f);
+	private static final BigDecimal VAT_10 = BigDecimal.valueOf(10);
+	private static final BigDecimal VAT_20 = BigDecimal.valueOf(20);
 	
 	private final LayoutInflater mInflater;
 	private final int mListItemId;

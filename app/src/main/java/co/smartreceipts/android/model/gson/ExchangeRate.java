@@ -115,7 +115,7 @@ public class ExchangeRate implements Serializable {
             return BigDecimal.ONE;
         }
         if (supportsExchangeRateFor(exchangeCurrencyCode)) {
-            return new BigDecimal(rates.get(exchangeCurrencyCode));
+            return BigDecimal.valueOf(rates.get(exchangeCurrencyCode));
         } else {
             return null;
         }
@@ -147,7 +147,7 @@ public class ExchangeRate implements Serializable {
             return ModelUtils.getDecimalFormattedValue(BigDecimal.ONE, PRECISION);
         }
         if (supportsExchangeRateFor(exchangeCurrencyCode)) {
-            return ModelUtils.getDecimalFormattedValue(new BigDecimal(rates.get(exchangeCurrencyCode)), PRECISION);
+            return ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(rates.get(exchangeCurrencyCode)), PRECISION);
         } else {
             return "";
         }

@@ -56,7 +56,7 @@ public final class PriceBuilderFactory implements BuilderFactory<Price> {
 
     @NonNull
     public PriceBuilderFactory setPrice(double price) {
-        priceDecimal = new BigDecimal(price);
+        priceDecimal = BigDecimal.valueOf(price);
         return this;
     }
 
@@ -127,7 +127,7 @@ public final class PriceBuilderFactory implements BuilderFactory<Price> {
             }
         }
         else {
-            final BigDecimal price = priceDecimal != null ? priceDecimal : new BigDecimal(0);
+            final BigDecimal price = priceDecimal != null ? priceDecimal : BigDecimal.ZERO;
             if (currency != null) {
                 if (exchangeRate != null) {
                     return new ImmutablePriceImpl(price, currency, exchangeRate, decimalPrecision);

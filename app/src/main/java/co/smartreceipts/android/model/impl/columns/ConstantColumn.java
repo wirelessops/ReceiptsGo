@@ -11,8 +11,13 @@ import co.smartreceipts.android.sync.model.SyncState;
  */
 public final class ConstantColumn<T> extends AbstractColumnImpl<T> {
 
+    @Deprecated
     public ConstantColumn(int id, @NonNull String name, @NonNull SyncState syncState) {
         super(id, name, syncState);
+    }
+
+    public ConstantColumn(int id, @NonNull String name, @NonNull SyncState syncState, long customOrderId) {
+        super(id, name, syncState, customOrderId);
     }
 
     @Override

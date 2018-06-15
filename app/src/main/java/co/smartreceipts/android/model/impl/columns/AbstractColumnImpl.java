@@ -17,6 +17,7 @@ public abstract class AbstractColumnImpl<T> implements Column<T> {
     private final SyncState mSyncState;
     private final long mCustomOrderId;
 
+    @Deprecated
     public AbstractColumnImpl(int id, @NonNull String name, @NonNull SyncState syncState) {
         this(id, name, syncState, 0);
     }

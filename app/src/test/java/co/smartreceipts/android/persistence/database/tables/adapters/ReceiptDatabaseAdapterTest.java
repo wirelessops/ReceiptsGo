@@ -31,6 +31,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.sync.model.SyncState;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
@@ -59,6 +60,7 @@ public class ReceiptDatabaseAdapterTest {
     private static final double EXCHANGE_RATE_FOR_USD = 1.00d;
     private static final ExchangeRate EXCHANGE_RATE = new ExchangeRate(CURRENCY_CODE, Collections.singletonMap(CURRENCY_CODE, EXCHANGE_RATE_FOR_USD));
     private static final long DATE = 1409703721000L;
+    private static final long CUSTOM_ORDER_ID = 16316000L;
     private static final String TIMEZONE = TimeZone.getDefault().getID();
     private static final String COMMENT = "Comment";
     private static final boolean REIMBURSABLE = true;
@@ -131,6 +133,7 @@ public class ReceiptDatabaseAdapterTest {
         final int extraEdittext1Index = 17;
         final int extraEdittext2Index = 18;
         final int extraEdittext3Index = 19;
+        final int customOrderIdIndex = 20;
 
         when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
         when(mCursor.getColumnIndex("path")).thenReturn(pathIndex);
@@ -150,6 +153,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getColumnIndex("extra_edittext_1")).thenReturn(extraEdittext1Index);
         when(mCursor.getColumnIndex("extra_edittext_2")).thenReturn(extraEdittext2Index);
         when(mCursor.getColumnIndex("extra_edittext_3")).thenReturn(extraEdittext3Index);
+        when(mCursor.getColumnIndex("custom_order_id")).thenReturn(customOrderIdIndex);
 
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(pathIndex)).thenReturn(PATH);
@@ -169,6 +173,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getString(extraEdittext1Index)).thenReturn(EXTRA1);
         when(mCursor.getString(extraEdittext2Index)).thenReturn(EXTRA2);
         when(mCursor.getString(extraEdittext3Index)).thenReturn(EXTRA3);
+        when(mCursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
         when(mCursor.getCount()).thenReturn(CURSOR_COUNT);
         when(mCursor.getPosition()).thenReturn(ASCENDING_INDEX - 1);
 
@@ -180,6 +185,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mReceipt.getPrice()).thenReturn(mPrice);
         when(mReceipt.getTax()).thenReturn(mTax);
         when(mReceipt.getDate()).thenReturn(new Date(DATE));
+        when(mReceipt.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
         when(mReceipt.getTimeZone()).thenReturn(TimeZone.getTimeZone(TIMEZONE));
         when(mReceipt.getComment()).thenReturn(COMMENT);
         when(mReceipt.isReimbursable()).thenReturn(REIMBURSABLE);
@@ -231,6 +237,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setCategory(CATEGORY)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment(COMMENT)
                 .setIsReimbursable(REIMBURSABLE)
@@ -243,6 +250,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setExtraEditText3(EXTRA3)
                 .setSyncState(mSyncState)
                 .build();
+        long val = ReceiptsOrderer.Companion.getDefaultCustomOrderId(new Date(DATE));
         assertEquals(receipt, mReceiptDatabaseAdapter.read(mCursor));
     }
 
@@ -258,6 +266,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setCategory(CATEGORY)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment(COMMENT)
                 .setIsReimbursable(REIMBURSABLE)
@@ -285,6 +294,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setCategory(CATEGORY)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment(COMMENT)
                 .setIsReimbursable(REIMBURSABLE)
@@ -313,6 +323,8 @@ public class ReceiptDatabaseAdapterTest {
                 .setExchangeRate(EXCHANGE_RATE)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment(COMMENT)
                 .setIsReimbursable(REIMBURSABLE)
@@ -342,6 +354,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setCategory(CATEGORY)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment(COMMENT)
                 .setIsReimbursable(REIMBURSABLE)
@@ -372,6 +385,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setCategory(CATEGORY)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment("")
                 .setIsReimbursable(REIMBURSABLE)
@@ -414,6 +428,7 @@ public class ReceiptDatabaseAdapterTest {
         assertEquals(EXTRA1, contentValues.getAsString("extra_edittext_1"));
         assertEquals(EXTRA2, contentValues.getAsString("extra_edittext_2"));
         assertEquals(EXTRA3, contentValues.getAsString("extra_edittext_3"));
+        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong("custom_order_id"));
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey("id"));
     }
@@ -445,6 +460,7 @@ public class ReceiptDatabaseAdapterTest {
         assertEquals(EXTRA1, contentValues.getAsString("extra_edittext_1"));
         assertEquals(EXTRA2, contentValues.getAsString("extra_edittext_2"));
         assertEquals(EXTRA3, contentValues.getAsString("extra_edittext_3"));
+        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong("custom_order_id"));
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey("id"));
     }
@@ -460,6 +476,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setCategory(CATEGORY)
                 .setFile(new File(PATH))
                 .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
                 .setComment(COMMENT)
                 .setIsReimbursable(REIMBURSABLE)
