@@ -93,6 +93,7 @@ public abstract class DraggableListFragment<T extends Draggable, E extends Dragg
 
     @Override
     public void onGetSuccess(@NonNull List<T> list) {
+        // Note: The receipts #onGetSuccess(list, trip) calls this super method
         adapter.update(list);
         if (positionToScroll != null) {
             recyclerView.smoothScrollToPosition(positionToScroll);

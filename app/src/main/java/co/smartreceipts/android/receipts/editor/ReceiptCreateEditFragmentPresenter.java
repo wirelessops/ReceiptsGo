@@ -5,7 +5,6 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -20,7 +19,7 @@ import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
-import co.smartreceipts.android.receipts.helper.ReceiptCustomOrderIdHelper;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
@@ -150,8 +149,7 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setExtraEditText1(extraText1)
                 .setExtraEditText2(extraText2)
                 .setExtraEditText3(extraText3)
-                .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ?
-                        DateUtils.getDays(date) * ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR + ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR - 1 : 0);
+                .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? ReceiptsOrderer.Companion.getDefaultCustomOrderId(date) : 0);
         
         if (receipt == null) {
             receiptTableController.insert(builderFactory.setFile(fragment.getFile()).build(), new DatabaseOperationMetadata());

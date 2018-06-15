@@ -14,6 +14,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableEventsList
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.alterations.TableActionAlterations;
 import co.smartreceipts.android.persistence.database.controllers.results.ForeignKeyGetResult;
+import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.TripForeignKeyAbstractSqlTable;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;

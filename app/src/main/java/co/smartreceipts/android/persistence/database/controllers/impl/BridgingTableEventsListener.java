@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
+import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -45,7 +46,9 @@ public class BridgingTableEventsListener<ModelType> {
                 .observeOn(observeOnScheduler)
                 .subscribe(modelTypeInsertResult -> {
                     if (modelTypeInsertResult.getThrowable() == null) {
-                        listener.onInsertSuccess(modelTypeInsertResult.get(), modelTypeInsertResult.getDatabaseOperationMetadata());
+                        if (modelTypeInsertResult.getDatabaseOperationMetadata().getOperationFamilyType() != OperationFamilyType.Silent) {
+                            listener.onInsertSuccess(modelTypeInsertResult.get(), modelTypeInsertResult.getDatabaseOperationMetadata());
+                        }
                     } else {
                         listener.onInsertFailure(modelTypeInsertResult.get(), modelTypeInsertResult.getThrowable(), modelTypeInsertResult.getDatabaseOperationMetadata());
                     }
@@ -55,8 +58,10 @@ public class BridgingTableEventsListener<ModelType> {
                 .observeOn(observeOnScheduler)
                 .subscribe(modelTypeUpdateResult -> {
                     if (modelTypeUpdateResult.getThrowable() == null) {
-                        //noinspection ConstantConditions
-                        listener.onUpdateSuccess(modelTypeUpdateResult.getOld(), modelTypeUpdateResult.getNew(), modelTypeUpdateResult.getDatabaseOperationMetadata());
+                        if (modelTypeUpdateResult.getDatabaseOperationMetadata().getOperationFamilyType() != OperationFamilyType.Silent) {
+                            //noinspection ConstantConditions
+                            listener.onUpdateSuccess(modelTypeUpdateResult.getOld(), modelTypeUpdateResult.getNew(), modelTypeUpdateResult.getDatabaseOperationMetadata());
+                        }
                     } else {
                         listener.onUpdateFailure(modelTypeUpdateResult.getOld(), modelTypeUpdateResult.getThrowable(), modelTypeUpdateResult.getDatabaseOperationMetadata());
                     }

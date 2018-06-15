@@ -27,6 +27,7 @@ import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.versions.AppVersionManager;
 import co.smartreceipts.android.settings.versions.VersionUpgradedListener;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
@@ -80,6 +81,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     Analytics analytics;
+
+    @Inject
+    ReceiptsOrderer receiptsOrderer;
 
     private AppComponent appComponent;
 
@@ -136,6 +140,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         cognitoManager.initialize();
         ocrManager.initialize();
         crashReporter.initialize();
+        receiptsOrderer.initialize();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 

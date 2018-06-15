@@ -70,6 +70,7 @@ import co.smartreceipts.android.receipts.attacher.ReceiptRemoveAttachmentDialogF
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter;
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
@@ -147,6 +148,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     OrderingPreferencesManager orderingPreferencesManager;
 
     @Inject
+    ReceiptsOrderer receiptsOrderer;
+
+    @Inject
     ReceiptAttachmentManager receiptAttachmentManager;
 
     @BindView(R.id.progress)
@@ -198,8 +202,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onCreate(Bundle savedInstanceState) {
         Logger.debug(this, "onCreate");
         super.onCreate(savedInstanceState);
-        adapter = new ReceiptsAdapter(getContext(), getTableController(), preferenceManager,
-                backupProvidersManager, navigationHandler, orderingPreferencesManager);
+        adapter = new ReceiptsAdapter(getContext(), preferenceManager, backupProvidersManager, navigationHandler, receiptsOrderer);
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
@@ -207,7 +210,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
 
         // Create our OCR drop-down alerter
@@ -575,7 +578,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                             .subscribe(ignored -> {
                                 if (getActivity() != null) {
                                     intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
-//                                    getActivity().finish();
                                 }
                             });
                 }

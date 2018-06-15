@@ -3,6 +3,7 @@ package co.smartreceipts.android.receipts;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
@@ -17,19 +18,13 @@ import com.squareup.picasso.Picasso;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.model.Receipt;
-import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
-import co.smartreceipts.android.persistence.database.controllers.TableController;
-import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.android.receipts.helper.ReceiptCustomOrderIdHelper;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableCardsAdapter;
@@ -38,6 +33,7 @@ import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.widget.backups.AutomaticBackupsInfoDialogFragment;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements ReceiptsHeaderItemDecoration.StickyHeaderInterface {
@@ -51,26 +47,23 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     private final BackupProvidersManager backupProvidersManager;
     private final NavigationHandler navigationHandler;
     private final Context context;
-    private final TableController<Receipt> tableController;
-    private final OrderingPreferencesManager orderingPreferencesManager;
-
-    private Integer draggedReceiptNewPosition = null;
+    private final ReceiptsOrderer receiptsOrderer;
 
     private final PublishSubject<Receipt> itemClickSubject = PublishSubject.create();
     private final PublishSubject<Receipt> menuClickSubject = PublishSubject.create();
     private final PublishSubject<Receipt> imageClickSubject = PublishSubject.create();
 
 
-    public ReceiptsAdapter(Context context, TableController<Receipt> tableController, UserPreferenceManager preferenceManager,
-                           BackupProvidersManager backupProvidersManager, NavigationHandler navigationHandler,
-                           OrderingPreferencesManager orderingPreferencesManager) {
-        super();
+    public ReceiptsAdapter(@NonNull Context context,
+                           @NonNull UserPreferenceManager preferenceManager,
+                           @NonNull BackupProvidersManager backupProvidersManager,
+                           @NonNull NavigationHandler navigationHandler,
+                           @NonNull ReceiptsOrderer receiptsOrderer) {
         this.preferences = Preconditions.checkNotNull(preferenceManager);
         this.context = Preconditions.checkNotNull(context);
         this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
-        this.tableController = Preconditions.checkNotNull(tableController);
-        this.orderingPreferencesManager = Preconditions.checkNotNull(orderingPreferencesManager);
+        this.receiptsOrderer = Preconditions.checkNotNull(receiptsOrderer);
 
         listItems = new ArrayList<>();
     }
@@ -85,17 +78,15 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         return listItems.size();
     }
 
+    @NonNull
     @Override
-    public AbstractDraggableItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(viewType, parent, false);
-
-        return viewType == ReceiptsListItem.TYPE_HEADER ? new ReceiptHeaderReceiptsListViewHolder(inflatedView)
-                : new ReceiptReceiptsListViewHolder(inflatedView);
+    public AbstractDraggableItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View inflatedView = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+        return viewType == ReceiptsListItem.TYPE_HEADER ? new ReceiptHeaderReceiptsListViewHolder(inflatedView) : new ReceiptReceiptsListViewHolder(inflatedView);
     }
 
     @Override
-    public void onBindViewHolder(AbstractDraggableItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AbstractDraggableItemViewHolder holder, int position) {
         ((ReceiptsListViewHolder) holder).bindType(listItems.get(position));
     }
 
@@ -117,26 +108,17 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
         Logger.debug(this, "Moving receipt from position {} to position {}", realFromPosition, realToPosition);
 
-        if (!orderingPreferencesManager.isReceiptsTableOrdered() || !isThisTripOrdered()) {
-            setDefaultOrderIds();
-        }
-
-        if (isOldCustomOrderIdFormatUsed()) {
-            setDefaultOrderIds();
-            writeUpdatedItems(items);
-            return;
-        }
-
         List<Receipt> originalItemsList = new ArrayList<>(items);
 
+        // Note: We do this to quick update the UI while the work happens in the background
         final Receipt movedReceipt = items.remove(realFromPosition);
         items.add(realToPosition, movedReceipt);
         updateListItems();
 
-        final List<Receipt> changedReceipts = ReceiptCustomOrderIdHelper.INSTANCE
-                .updateReceiptsCustomOrderIds(originalItemsList, realFromPosition, realToPosition);
-
-        writeUpdatedItems(changedReceipts);
+        // TODO: Re-structure to cancel memory-leaks that can happen here
+        receiptsOrderer.reorderReceiptsInList(originalItemsList, realFromPosition, realToPosition)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::update, e -> Logger.error(this, "Failed to update receipts list", e));
     }
 
     @Override
@@ -149,86 +131,30 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         return getItemViewType(draggingPosition) == ReceiptsListItem.TYPE_RECEIPT && getItemViewType(dropPosition) == ReceiptsListItem.TYPE_RECEIPT;
     }
 
-    private void setDefaultOrderIds() {
-        // saving order id's like a days * 1000 for all receipts at first before any reordering
-        Logger.debug(this, "Updating all receipts customOrderId's");
-
-        List<Receipt> updatedItems = new ArrayList<>();
-
-        for (Receipt item : items) {
-            final Receipt updatedReceipt = new ReceiptBuilderFactory(item)
-                    .setCustomOrderId(DateUtils.getDays(item.getDate()) * ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR)
-                    .build();
-            tableController.update(item, updatedReceipt, new DatabaseOperationMetadata());
-
-            updatedItems.add(updatedReceipt);
-        }
-
-        Collections.sort(updatedItems);
-
-        items.clear();
-        items.addAll(updatedItems);
-        updateListItems();
-
-        orderingPreferencesManager.saveReceiptsTableOrdering();
-    }
-
-    // TODO: 11.04.2018 this method should be removed after some time
-    private boolean isOldCustomOrderIdFormatUsed() {
-        // Note: temporary code for users that are using old customOrderId format
-        // should be removed after their update
-        if (!orderingPreferencesManager.isReceiptsTableOrdered()) {
-            return false;
-        }
-
-        // old format is: customOrderId = receipt.getDate() + receipt.getIndex()
-        // new format is: customOrderId = receipt.getDate().toDays() * 1000
-        // for example, date 4/10/18: days = 17631
-        for (Receipt item : items) {
-            if (item.getCustomOrderId() / ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR > 20000) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean isThisTripOrdered() {
-        for (Receipt item : items) {
-            if (item.getCustomOrderId() == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void writeUpdatedItems(List<Receipt> receipts) {
-        for (Receipt receipt : receipts) {
-            tableController.update(receipt, receipt, new DatabaseOperationMetadata());
-        }
-    }
-
+    @NonNull
     Observable<Receipt> getItemClicks() {
         return itemClickSubject;
     }
 
+    @NonNull
     Observable<Receipt> getMenuClicks() {
         return menuClickSubject;
     }
 
+    @NonNull
     Observable<Receipt> getImageClicks() {
         return imageClickSubject;
     }
 
     private void setIcon(ImageView view, @DrawableRes int drawableRes) {
         final Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), drawableRes, context.getTheme());
-
-        drawable.mutate(); // hack to prevent fab icon tinting (fab has drawable with the same src)
-        DrawableCompat.setTint(drawable, ResourcesCompat.getColor(context.getResources(), R.color.card_image_tint, null));
-        final int pixelPadding = context.getResources().getDimensionPixelOffset(R.dimen.card_image_padding);
-
-        view.setImageDrawable(drawable);
-        view.setPadding(pixelPadding, pixelPadding, pixelPadding, pixelPadding);
+        if (drawable != null) {
+            drawable.mutate(); // hack to prevent fab icon tinting (fab has drawable with the same src)
+            DrawableCompat.setTint(drawable, ResourcesCompat.getColor(context.getResources(), R.color.card_image_tint, null));
+            final int pixelPadding = context.getResources().getDimensionPixelOffset(R.dimen.card_image_padding);
+            view.setImageDrawable(drawable);
+            view.setPadding(pixelPadding, pixelPadding, pixelPadding, pixelPadding);
+        }
     }
 
     @Override

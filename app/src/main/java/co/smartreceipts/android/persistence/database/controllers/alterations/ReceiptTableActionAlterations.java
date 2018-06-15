@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.BuilderFactory1;
@@ -23,7 +22,7 @@ import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactoryFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
-import co.smartreceipts.android.receipts.helper.ReceiptCustomOrderIdHelper;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.utils.FileUtils;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
@@ -191,8 +190,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
         builder.setTrip(toTrip);
 
         if (receipt.getCustomOrderId() != 0) {
-            builder.setCustomOrderId(DateUtils.getDays(receipt.getDate()) * ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR +
-                    ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR - 1);
+            ReceiptsOrderer.Companion.getDefaultCustomOrderId(receipt.getDate());
         }
 
         if (receipt.hasFile()) {

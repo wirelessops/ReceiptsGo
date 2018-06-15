@@ -1,12 +1,16 @@
 package co.smartreceipts.android.receipts.ordering
 
 import co.smartreceipts.android.date.DateUtils
+import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
+import co.smartreceipts.android.model.TaxItem
+import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
-import co.smartreceipts.android.receipts.helper.ReceiptCustomOrderIdHelper
+import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer.OrderingType.*
 import co.smartreceipts.android.utils.log.Logger
 import io.reactivex.Completable
@@ -14,6 +18,7 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.sql.Date
 import javax.inject.Inject
 
 /**
@@ -27,96 +32,67 @@ import javax.inject.Inject
  *
  * More detailed [Receipt.customOrderId] formation [scheme](https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
  */
+@ApplicationScope
 class ReceiptsOrderer constructor(private val tripTableController: TripTableController,
                                   private val receiptTableController: ReceiptTableController,
                                   private val orderingMigrationStore: ReceiptsOrderingMigrationStore,
+                                  private val orderingPreferencesManager: OrderingPreferencesManager,
                                   private val backgroundScheduler: Scheduler) {
 
     @Inject
-    constructor(tripTableController: TripTableController, receiptTableController: ReceiptTableController, orderingMigrationStore: ReceiptsOrderingMigrationStore)
-            : this(tripTableController, receiptTableController, orderingMigrationStore, Schedulers.io())
+    constructor(tripTableController: TripTableController,
+                receiptTableController: ReceiptTableController,
+                orderingMigrationStore: ReceiptsOrderingMigrationStore,
+                orderingPreferencesManager: OrderingPreferencesManager)
+            : this(tripTableController, receiptTableController, orderingMigrationStore, orderingPreferencesManager, Schedulers.io())
 
     companion object {
         const val DAYS_TO_ORDER_FACTOR = 1000
+
+        /**
+         * Creates the default custom order id for a given date. In this case, it builds this by using the number of days
+         * since the unix epoch multiplied by [DAYS_TO_ORDER_FACTOR] and then added to [DAYS_TO_ORDER_FACTOR] - 1
+         */
+        fun getDefaultCustomOrderId(date: Date) : Long {
+            return DateUtils.getDays(date) * ReceiptsOrderer.DAYS_TO_ORDER_FACTOR + ReceiptsOrderer.DAYS_TO_ORDER_FACTOR - 1
+        }
     }
 
     fun initialize() {
         orderingMigrationStore.hasOrderingMigrationOccurred()
-                .filter { it -> !it }
-                .doOnSuccess { _ ->
-                    Logger.info(this, "Migrating all receipts to use the correct custom_order_id")
-                }
-                .flatMapSingle { _ ->
-                    return@flatMapSingle tripTableController.get()
-                }
-                .flatMapObservable {
-                    return@flatMapObservable Observable.fromIterable(it)
-                }
-                .flatMap { trip ->
-                    return@flatMap receiptTableController.get(trip)
-                            .flatMapObservable { receipts ->
-                                val orderingType = getOrderingType(receipts)
-                                when (orderingType) {
-                                    OrderingType.None, OrderingType.Legacy -> return@flatMapObservable reorderReceiptsByDate(receipts)
-                                    else -> return@flatMapObservable Observable.just(Any())
-                                }
-                            }
-                }
                 .subscribeOn(backgroundScheduler)
+                .flatMapObservable { hasOrderingMigrationOccurred ->
+                    if (hasOrderingMigrationOccurred) {
+                        Logger.info(this, "Ordering migration previously occurred. Ignoring...")
+                        return@flatMapObservable Observable.empty<List<Trip>>()
+                    } else {
+                        return@flatMapObservable tripTableController.get().toObservable()
+                                .doOnNext { _ ->
+                                    Logger.info(this, "Migrating all receipts to use the correct custom_order_id")
+                                }
+                                .flatMap {
+                                    return@flatMap Observable.fromIterable(it)
+                                }
+                                .flatMap { trip ->
+                                    return@flatMap receiptTableController.get(trip)
+                                            .flatMapObservable { receipts ->
+                                                val orderingType = getOrderingType(receipts)
+                                                when (orderingType) {
+                                                    OrderingType.None, OrderingType.Legacy -> reorderReceiptsByDate(receipts)
+                                                    else -> Observable.empty()
+                                                }
+                                            }
+                                }
+                                .doOnComplete {
+                                    Logger.info(this, "Successfully migrated all receipts to the correct custom_order_id")
+                                    orderingMigrationStore.setOrderingMigrationOccurred(true)
+                                    orderingPreferencesManager.saveReceiptsTableOrdering()
+                                }
+                    }
+                }
                 .subscribe({}, {
                     Logger.error(this, "Failed to migrate our receipts to use the correct date", it)
-                }, {
-                    Logger.info(this, "Successfully migrated all receipts to the correct custom_order_id")
-                    orderingMigrationStore.setOrderingMigrationOccurred(true)
                 })
-    }
-
-    /**
-     * Attempts to reorder a given [List] or [Receipt] entities based on the current value of the
-     * [Receipt.getDate] field. When complete, all items will follow the [OrderingType.Ordered]
-     * methodology
-     *
-     * @param receipts the [List] of [Receipt] to reorder by their dates
-     * @return a [Completable], which will emit success or failure based on the result of this operation
-     */
-    fun reorderReceiptsByDate(receipts: List<Receipt>): Observable<Receipt> {
-        return Observable.fromCallable {
-                    var receiptCountForCurrentDay = 0
-                    var dayNumber = -1L
-
-                    val receiptPairs = mutableListOf<Pair<Receipt, Receipt>>()
-                    receipts.forEach {
-                        val receiptDayNumber = DateUtils.getDays(it.date)
-                        if (dayNumber == receiptDayNumber) {
-                            receiptCountForCurrentDay += 1
-                        } else {
-                            dayNumber = receiptDayNumber
-                            receiptCountForCurrentDay = 0
-                        }
-                        val updatedReceipt = ReceiptBuilderFactory(it).setCustomOrderId(dayNumber * DAYS_TO_ORDER_FACTOR + receiptCountForCurrentDay).build()
-                        receiptPairs.add(Pair(it, updatedReceipt))
-                    }
-                    return@fromCallable receiptPairs
-                }
-                .flatMap {
-                    return@flatMap Observable.fromIterable(it)
-                }
-                .flatMap {
-                    return@flatMap receiptTableController.update(it.first, it.second, DatabaseOperationMetadata())
-                            .flatMap {
-                                if (it.isPresent) {
-                                    Observable.just(it.get())
-                                } else {
-                                    Observable.error<Receipt>(Exception("Failed to update the receipt custom_order_id"))
-                                }
-                            }
-                }
-                .doOnError {
-                    Logger.info(this, "Failed re-ordered this receipts list by date", it)
-                }
-                .doOnComplete {
-                    Logger.info(this, "Successfully re-ordered this receipts list by date")
-                }
     }
 
     /**
@@ -137,7 +113,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                     val mutableReceiptsList = originalReceiptsList.toMutableList()
 
                     // This calculates the "fake" days at the position that we've moved this item to
-                    val toPositionFakeDays = mutableReceiptsList[toPosition].customOrderId / ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR
+                    val toPositionFakeDays = mutableReceiptsList[toPosition].customOrderId / DAYS_TO_ORDER_FACTOR
 
                     // Next, remove this item
                     val movedReceipt = mutableReceiptsList.removeAt(fromPosition)
@@ -152,8 +128,8 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                     for (i in mutableReceiptsList.indices.reversed()) {
                         val receipt = mutableReceiptsList[i]
                         // Whenever the receipt matches the "fake days" of the to position, update it's custom_order_id
-                        if (receipt.customOrderId / ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR == toPositionFakeDays) {
-                            val updated = ReceiptBuilderFactory(receipt).setCustomOrderId(toPositionFakeDays * ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR + sameFakeDaysNumber).build()
+                        if (receipt.customOrderId / DAYS_TO_ORDER_FACTOR == toPositionFakeDays) {
+                            val updated = ReceiptBuilderFactory(receipt).setCustomOrderId(toPositionFakeDays * DAYS_TO_ORDER_FACTOR + sameFakeDaysNumber).build()
                             sameFakeDaysNumber++
                             receiptsToUpdateList.add(Pair(receipt, updated))
                         } else {
@@ -162,23 +138,24 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                     }
                     return@fromCallable receiptsToUpdateList
                 }
+                .subscribeOn(backgroundScheduler)
                 .flatMap {receiptsToUpdateList ->
                     return@flatMap Observable.fromIterable(receiptsToUpdateList)
-                }
-                .concatMap {
-                    // Note: We use concatMap to preserve the list ordering
-                    if (it.second != null) {
-                        return@concatMap Observable.just(it.first)
-                    } else {
-                        return@concatMap receiptTableController.update(it.first, it.second!!, DatabaseOperationMetadata())
-                                .flatMap {
-                                    if (it.isPresent) {
-                                        Observable.just(it.get())
-                                    } else {
-                                        Observable.error<Receipt>(Exception("Failed to update the receipt custom_order_id"))
-                                    }
+                            .concatMap {
+                                // Note: We use concatMap to preserve the list ordering
+                                if (it.second != null) {
+                                    return@concatMap Observable.just(it.first)
+                                } else {
+                                    return@concatMap receiptTableController.update(it.first, it.second!!, getDatabaseOperationMetadata(receiptsToUpdateList, it))
+                                            .flatMap {
+                                                if (it.isPresent) {
+                                                    Observable.just(it.get())
+                                                } else {
+                                                    Observable.error<Receipt>(Exception("Failed to update the receipt custom_order_id"))
+                                                }
+                                            }
                                 }
-                    }
+                            }
                 }
                 .toList()
                 .doOnSuccess {
@@ -187,6 +164,73 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                 .doOnError {
                     Logger.info(this, "Failed re-ordered this receipts list by moving a receipt from {} to {}", fromPosition, toPosition, it)
                 }
+    }
+
+    /**
+     * Attempts to reorder a given [List] or [Receipt] entities based on the current value of the
+     * [Receipt.getDate] field. When complete, all items will follow the [OrderingType.Ordered]
+     * methodology
+     *
+     * @param receipts the [List] of [Receipt] to reorder by their dates
+     * @return a [Completable], which will emit success or failure based on the result of this operation
+     */
+    private fun reorderReceiptsByDate(receipts: List<Receipt>): Observable<Receipt> {
+        return Observable.fromCallable {
+                    var receiptCountForCurrentDay = 0
+                    var dayNumber = -1L
+
+                    val receiptPairs = mutableListOf<Pair<Receipt, Receipt>>()
+                    receipts.forEach {
+                        val receiptDayNumber = DateUtils.getDays(it.date)
+                        if (dayNumber == receiptDayNumber) {
+                            receiptCountForCurrentDay += 1
+                        } else {
+                            dayNumber = receiptDayNumber
+                            receiptCountForCurrentDay = 0
+                        }
+                        val updatedReceipt = ReceiptBuilderFactory(it).setCustomOrderId(dayNumber * DAYS_TO_ORDER_FACTOR + receiptCountForCurrentDay).build()
+                        receiptPairs.add(Pair(it, updatedReceipt))
+                    }
+                    return@fromCallable receiptPairs
+                }
+                .flatMap { list ->
+                    Observable.fromIterable(list)
+                            .flatMap {
+                                receiptTableController.update(it.first, it.second, getDatabaseOperationMetadata(list, it))
+                                        .flatMap {
+                                            if (it.isPresent) {
+                                                Observable.just(it.get())
+                                            } else {
+                                                Observable.error<Receipt>(Exception("Failed to update the receipt custom_order_id"))
+                                            }
+                                        }
+                            }
+                }
+                .doOnError {
+                    Logger.info(this, "Failed re-ordered this receipts list by date to custom order id", it)
+                }
+                .doOnComplete {
+                    Logger.info(this, "Successfully re-ordered {} receipts by date to custom order id", receipts.size)
+                }
+    }
+
+    /**
+     * To help speed along the results, we don't want to update the UI when a single item is changed. To help manage this,
+     * we use this helper function to determine if this should be a "silent" operation or not. We use normal operations if
+     * this is the last item in a particular trip and a "silent" operation if it's any other one
+     *
+     * @param list a [List] of items
+     * @param item the item to check if it's the last one
+     * @return the appropriate [DatabaseOperationMetadata], usually [OperationFamilyType.Silent] but [OperationFamilyType.Default]
+     * if it's the last
+     */
+    private fun getDatabaseOperationMetadata(list: List<Any>, item: Any) : DatabaseOperationMetadata {
+        return if (list.last() == item) {
+            // As the last item to update in this list, we'll update all listeners when it's done (ie non-Silent operation)
+            DatabaseOperationMetadata()
+        } else {
+            DatabaseOperationMetadata(OperationFamilyType.Silent)
+        }
     }
 
     /**
@@ -203,7 +247,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         receipts.forEach {receipt ->
             if (receipt.customOrderId == 0L) {
                 return OrderingType.None
-            } else if (receipt.customOrderId / ReceiptCustomOrderIdHelper.DAYS_TO_ORDER_FACTOR > 20000) {
+            } else if (receipt.customOrderId / DAYS_TO_ORDER_FACTOR > 20000) {
                 return OrderingType.Legacy
             }
         }

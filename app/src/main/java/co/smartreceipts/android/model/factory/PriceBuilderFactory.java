@@ -30,7 +30,8 @@ public final class PriceBuilderFactory implements BuilderFactory<Price> {
     private int decimalPrecision = Price.DEFAULT_DECIMAL_PRECISION;
 
     public PriceBuilderFactory() {
-
+        currency = PriceCurrency.getDefaultCurrency();
+        priceDecimal = BigDecimal.ZERO;
     }
 
     public PriceBuilderFactory(@NonNull Price price) {

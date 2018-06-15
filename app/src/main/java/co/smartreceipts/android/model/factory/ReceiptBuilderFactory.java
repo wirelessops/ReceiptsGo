@@ -20,6 +20,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.impl.DefaultReceiptImpl;
 import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
+import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -65,7 +66,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         _index = -1;
         _source = Source.Undefined;
         _syncState = new DefaultSyncState();
-        _order_id = 0;
+        _order_id = ReceiptsOrderer.Companion.getDefaultCustomOrderId(_date);
     }
 
     public ReceiptBuilderFactory(@NonNull Receipt receipt) {
