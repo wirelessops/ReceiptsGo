@@ -103,6 +103,8 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         super.onCreate();
         configureLog();
 
+        // TODO: The whole dagger process here takes ~1s to initialize
+        // TODO: Investigate when addressed: https://github.com/frogermcs/AndroidDevMetrics/issues/49
         appComponent = DaggerAppComponent.builder()
                 .baseAppModule(new BaseAppModule(this))
                 .build();
