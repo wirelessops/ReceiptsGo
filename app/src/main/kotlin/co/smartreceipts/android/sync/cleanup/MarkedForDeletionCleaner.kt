@@ -2,6 +2,7 @@ package co.smartreceipts.android.sync.cleanup
 
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
+import co.smartreceipts.android.persistence.PersistenceManager
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
@@ -21,14 +22,15 @@ import javax.inject.Inject
  * clean up these entities
  */
 @ApplicationScope
-class MarkedForDeletionCleaner @Inject constructor(private val receiptsTable: ReceiptsTable,
-                                                   private val receiptTableController: ReceiptTableController,
-                                                   private val syncProviderStore: SyncProviderStore,
-                                                   private val backgroundScheduler: Scheduler) {
+class MarkedForDeletionCleaner constructor(private val receiptsTable: ReceiptsTable,
+                                           private val receiptTableController: ReceiptTableController,
+                                           private val syncProviderStore: SyncProviderStore,
+                                           private val backgroundScheduler: Scheduler) {
 
-    constructor(receiptsTable: ReceiptsTable,
+    @Inject
+    constructor(persistenceManager: PersistenceManager,
                 receiptTableController: ReceiptTableController,
-                syncProviderStore: SyncProviderStore) : this(receiptsTable, receiptTableController, syncProviderStore, Schedulers.io())
+                syncProviderStore: SyncProviderStore) : this(persistenceManager.database.receiptsTable, receiptTableController, syncProviderStore, Schedulers.io())
 
     /**
      * In situations in which no [SyncProvider.None] is designated as the desired sync provider, we can
