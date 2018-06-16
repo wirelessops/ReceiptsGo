@@ -11,22 +11,22 @@ import java.util.Locale;
 
 public class DayAxisValueFormatter implements IAxisValueFormatter {
 
+    private final SimpleDateFormat dateFormat;
+    private final Calendar calendar;
+
     public DayAxisValueFormatter() {
+        final String pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), "MMdd");
+        this.dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
+        this.calendar = Calendar.getInstance();
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
 
         try { // Hack for sometimes appearing IndexOutOfBoundsException from MPAndroidCharts lib
-            int days = (int) value;
-
-            Calendar calendar = Calendar.getInstance();
+            final int days = (int) value;
             calendar.set(Calendar.DAY_OF_YEAR, days);
-
-            String pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), "MMdd");
-
-            return new SimpleDateFormat(pattern, Locale.getDefault()).format(calendar.getTime());
-
+            return dateFormat.format(calendar.getTime());
         } catch (IndexOutOfBoundsException e) {
             return "";
         }

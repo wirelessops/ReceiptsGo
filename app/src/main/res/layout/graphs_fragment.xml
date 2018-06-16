@@ -10,10 +10,14 @@
         style="@style/Widget.SmartReceipts.TextView.NoData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/graphs_no_data"
         android:visibility="gone"
         tools:visibility="visible" />
+
+    <ProgressBar style="@style/Widget.SmartReceipts.ProgressBar.Loading"
+        android:id="@+id/progress"
+        android:layout_gravity="center" />
 
     <ScrollView
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -66,9 +67,11 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     private static final float EXTRA_TOP_OFFSET_NORMAL = 25f;
     private static final float EXTRA_TOP_OFFSET_SMALL = 10f;
 
-
     @BindView(R.id.empty_text)
     TextView emptyText;
+
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     @BindView(R.id.dates_line_chart)
     LineChart datesLineChart;
@@ -86,6 +89,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     GraphsPresenter presenter;
 
     private Unbinder unbinder;
+    private boolean isGraphPresenterSubscribed = false;
     private final IValueFormatter valueFormatter = new DefaultValueFormatter(1);
 
     @NonNull
@@ -101,12 +105,12 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.graphs_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind(this, view);
 
@@ -122,14 +126,22 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.subscribe(getTrip());
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (presenter != null) {
+            if (isVisibleToUser && isResumed() && !isGraphPresenterSubscribed) {
+                // Unlike normal situations, we only subscribe this one when it's actually visible
+                // Since the graphs are somewhat slow to load. This speeds up the rendering process
+                isGraphPresenterSubscribed = true;
+                presenter.subscribe(getTrip());
+            }
+        }
     }
 
     @Override
     public void onPause() {
         presenter.unsubscribe();
+        isGraphPresenterSubscribed = false;
         super.onPause();
     }
 
@@ -142,11 +154,15 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     @Override
     public void showEmptyText(boolean visible) {
         emptyText.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (visible) {
+            progress.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void present(GraphUiIndicator uiIndicator) {
         emptyText.setVisibility(View.GONE);
+        progress.setVisibility(View.GONE);
 
         switch (uiIndicator.getGraphType()) {
             case SummationByDate:
@@ -223,7 +239,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
         categoriesPieChart.setData(new PieData(dataSet));
 
-        categoriesPieChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
+        categoriesPieChart.animateY(ANIMATION_DURATION, Easing.EaseOutBack);
     }
 
     private void showSummationByReimbursment(List<? extends BaseEntry> entries) {
@@ -251,7 +267,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
         reimbursableBarChart.setData(new BarData(dataSet));
 
-        reimbursableBarChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
+        reimbursableBarChart.animateY(ANIMATION_DURATION, Easing.EaseOutBack);
     }
 
     private void showPaymentMethodsBarChart(List<? extends BaseEntry> entries) {
@@ -273,7 +289,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
         paymentMethodsBarChart.setData(new BarData(sets));
 
-        paymentMethodsBarChart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseOutBack);
+        paymentMethodsBarChart.animateY(ANIMATION_DURATION, Easing.EaseOutBack);
     }
 
     private void initDatesLineChart() {

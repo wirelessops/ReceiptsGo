@@ -98,8 +98,9 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             new ChildFragmentNavigationHandler(this).addChild(ReportTooltipFragment.newInstance(), R.id.top_tooltip);
         }
 
-        viewPager = (ViewPager) view.findViewById(R.id.pager);
-        pagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
+        viewPager = view.findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(2); // Set this to 2, since we're always two away from the receipts page
+        pagerSlidingTabStrip = view.findViewById(R.id.tabs);
 
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
@@ -110,7 +111,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
