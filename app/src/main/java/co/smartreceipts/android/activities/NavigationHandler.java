@@ -18,6 +18,7 @@ import com.google.common.base.Preconditions;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -94,11 +95,11 @@ public class NavigationHandler<T extends FragmentActivity> {
         }
     }
 
-    public void navigateToCreateTripFragment() {
+    public void navigateToCreateTripFragment(@NonNull ArrayList<Trip> existingTrips) {
         if (isDualPane) {
-            replaceFragmentWithAnimation(fragmentProvider.newCreateTripFragment(), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
+            replaceFragmentWithAnimation(fragmentProvider.newCreateTripFragment(existingTrips), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
         } else {
-            replaceFragmentWithAnimation(fragmentProvider.newCreateTripFragment(), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
+            replaceFragmentWithAnimation(fragmentProvider.newCreateTripFragment(existingTrips), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
         }
     }
 

@@ -31,16 +31,12 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripCardAdapter;
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.fragments.WBListFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.LastTripController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.rating.FeedbackDialogFragment;
-import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
@@ -181,7 +177,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     public final void tripMenu(final Trip trip) {
         if (trip == null) {
-            navigationHandler.navigateToCreateTripFragment();
+            navigationHandler.navigateToCreateTripFragment(tripCardAdapter.getData());
         } else {
             navigationHandler.navigateToEditTripFragment(trip);
         }

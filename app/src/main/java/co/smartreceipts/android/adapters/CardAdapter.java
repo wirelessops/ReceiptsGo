@@ -5,10 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
@@ -87,6 +85,15 @@ public class CardAdapter<T> extends BaseAdapter {
             return null;
         } else {
             return data.get(i);
+        }
+    }
+
+    @NonNull
+    public ArrayList<T> getData() {
+        if (data == null) {
+            return new ArrayList<>();
+        } else {
+            return new ArrayList<>(data);
         }
     }
 

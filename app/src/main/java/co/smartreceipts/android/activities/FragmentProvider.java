@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -144,8 +145,10 @@ public class FragmentProvider {
      * @return the new instance of this fragment
      */
     @NonNull
-    public TripCreateEditFragment newCreateTripFragment() {
-        return TripCreateEditFragment.newInstance();
+    public TripCreateEditFragment newCreateTripFragment(@NonNull ArrayList<Trip> existingTrips) {
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(TripCreateEditFragment.ARG_EXISTING_TRIPS, existingTrips);
+        return attachArguments(TripCreateEditFragment.newInstance(), args);
     }
 
     /**
@@ -156,6 +159,7 @@ public class FragmentProvider {
      */
     @NonNull
     public TripCreateEditFragment newEditTripFragment(@NonNull Trip tripToEdit) {
+        // Note: Don't pass the list of existing trips here, since we can have a conflict on the same name when editing
         Bundle args = new Bundle();
         args.putParcelable(Trip.PARCEL_KEY, tripToEdit);
         return attachArguments(TripCreateEditFragment.newInstance(), args);

@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +53,9 @@ import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
 
 public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, CurrencyListEditorView, TripDateView {
-    
+
+    public static final String ARG_EXISTING_TRIPS = "arg_existing_trips";
+
     @Inject
     Flex flex;
 
@@ -108,6 +112,16 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Nullable
     public Trip getTrip() {
         return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;
+    }
+
+    @NonNull
+    public List<Trip> getExistingTrips() {
+        final List<Trip> existingTrips = getArguments() != null ? getArguments().getParcelableArrayList(ARG_EXISTING_TRIPS) : Collections.emptyList();
+        if (existingTrips != null) {
+            return existingTrips;
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Nullable
@@ -316,6 +330,9 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
                 break;
             case ILLEGAL_CHAR_ERROR:
                 Toast.makeText(getActivity(), getFlexString(R.string.ILLEGAL_CHAR_ERROR), Toast.LENGTH_LONG).show();
+                break;
+            case NON_UNIQUE_NAME:
+                Toast.makeText(getActivity(), R.string.toast_error_trip_exists, Toast.LENGTH_LONG).show();
                 break;
         }
     }

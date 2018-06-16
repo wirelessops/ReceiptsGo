@@ -1,5 +1,9 @@
 package co.smartreceipts.android.trips.editor;
 
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
@@ -22,17 +26,20 @@ import co.smartreceipts.android.utils.FileUtils;
 @FragmentScope
 public class TripCreateEditFragmentPresenter {
 
-    @Inject
-    TripCreateEditFragment fragment;
-    @Inject
-    Analytics analytics;
-    @Inject
-    TripTableController tripTableController;
-    @Inject
-    PersistenceManager persistenceManager;
+    private final TripCreateEditFragment fragment;
+    private final Analytics analytics;
+    private final TripTableController tripTableController;
+    private final PersistenceManager persistenceManager;
 
     @Inject
-    public TripCreateEditFragmentPresenter() {
+    public TripCreateEditFragmentPresenter(@NonNull TripCreateEditFragment fragment,
+                                           @NonNull Analytics analytics,
+                                           @NonNull TripTableController tripTableController,
+                                           @NonNull PersistenceManager persistenceManager) {
+        this.fragment = Preconditions.checkNotNull(fragment);
+        this.analytics = Preconditions.checkNotNull(analytics);
+        this.tripTableController = Preconditions.checkNotNull(tripTableController);
+        this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
     }
 
     public boolean checkTrip(String name, String startDateText, Date startDate,
@@ -57,6 +64,14 @@ public class TripCreateEditFragmentPresenter {
         if (FileUtils.filenameContainsIllegalCharacter(name)) {
             fragment.showError(TripEditorErrors.ILLEGAL_CHAR_ERROR);
             return false;
+        }
+
+        final String trimmedName = name.trim();
+        for (final Trip trip : fragment.getExistingTrips()) {
+            if (trip.getName().equals(trimmedName)) {
+                fragment.showError(TripEditorErrors.NON_UNIQUE_NAME);
+                return false;
+            }
         }
 
         return true;
