@@ -328,16 +328,20 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                                 break;
                             case RequestCodes.ATTACH_GALLERY_IMAGE:
                             case RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST:
-                                final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt)
-                                        .setFile(response.getFile())
-                                        .build();
-                                receiptTableController.update(highlightedReceipt, updatedReceipt, new DatabaseOperationMetadata());
+                                if (highlightedReceipt != null) {
+                                    final Receipt updatedReceipt = new ReceiptBuilderFactory(highlightedReceipt)
+                                            .setFile(response.getFile())
+                                            .build();
+                                    receiptTableController.update(highlightedReceipt, updatedReceipt, new DatabaseOperationMetadata());
+                                }
                                 break;
                             case RequestCodes.ATTACH_GALLERY_PDF:
-                                final Receipt updatedReceiptWithFile = new ReceiptBuilderFactory(highlightedReceipt)
-                                        .setFile(response.getFile())
-                                        .build();
-                                receiptTableController.update(highlightedReceipt, updatedReceiptWithFile, new DatabaseOperationMetadata());
+                                if (highlightedReceipt != null) {
+                                    final Receipt updatedReceiptWithFile = new ReceiptBuilderFactory(highlightedReceipt)
+                                            .setFile(response.getFile())
+                                            .build();
+                                    receiptTableController.update(highlightedReceipt, updatedReceiptWithFile, new DatabaseOperationMetadata());
+                                }
                                 break;
                         }
                     } else {
