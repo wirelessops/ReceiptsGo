@@ -13,7 +13,7 @@ import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCusto
 import co.smartreceipts.android.persistence.database.tables.adapters.SyncStateAdapter;
 import co.smartreceipts.android.persistence.database.tables.adapters.TripDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.TripPrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import wb.android.storage.StorageManager;
@@ -39,7 +39,7 @@ public class TripsTable extends AbstractSqlTable<Trip, String> {
 
     public TripsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull StorageManager storageManager, @NonNull UserPreferenceManager preferences) {
         super(sqLiteOpenHelper, TABLE_NAME, new TripDatabaseAdapter(storageManager, preferences, new SyncStateAdapter()),
-                new TripPrimaryKey(), new OrderBy(TripsTable.COLUMN_TO, true));
+                new TripPrimaryKey(), new OrderByColumn(TripsTable.COLUMN_TO, true));
     }
 
     @Override

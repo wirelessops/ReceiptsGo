@@ -19,6 +19,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.tables.adapters.SelectionBackedDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.log.Logger;
@@ -37,14 +38,18 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
     private final HashMap<Trip, List<ModelType>> mPerTripCache = new HashMap<>();
     private final SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> mSelectionBackedDatabaseAdapter;
     private final String mTripForeignKeyReferenceColumnName;
-    private final String mSortingOrderColumn;
+    private final OrderBy mOrderBy;
 
-    public TripForeignKeyAbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName, @NonNull SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> databaseAdapter,
-                                          @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey, @NonNull String tripForeignKeyReferenceColumnName, @NonNull String sortingOrderColumn) {
-        super(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, new OrderBy(sortingOrderColumn, true));
-        mSelectionBackedDatabaseAdapter = databaseAdapter;
+    public TripForeignKeyAbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                                          @NonNull String tableName,
+                                          @NonNull SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> databaseAdapter,
+                                          @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey,
+                                          @NonNull String tripForeignKeyReferenceColumnName,
+                                          @NonNull OrderBy orderBy) {
+        super(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, orderBy);
+        mSelectionBackedDatabaseAdapter = Preconditions.checkNotNull(databaseAdapter);
         mTripForeignKeyReferenceColumnName = Preconditions.checkNotNull(tripForeignKeyReferenceColumnName);
-        mSortingOrderColumn = Preconditions.checkNotNull(sortingOrderColumn);
+        mOrderBy = Preconditions.checkNotNull(orderBy);
     }
 
     /**
@@ -111,7 +116,7 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
         Cursor cursor = null;
         try {
             final List<ModelType> results = new ArrayList<>();
-            cursor = getReadableDatabase().query(getTableName(), null, mTripForeignKeyReferenceColumnName + "= ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{ trip.getName(), Integer.toString(0) }, null, null, new OrderBy(mSortingOrderColumn, isDescending).getOrderByPredicate());
+            cursor = getReadableDatabase().query(getTableName(), null, mTripForeignKeyReferenceColumnName + "= ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{ trip.getName(), Integer.toString(0) }, null, null, new OrderByColumn(mOrderBy.getOrderByColumn(), isDescending).getOrderByPredicate());
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     results.add(mSelectionBackedDatabaseAdapter.readForSelection(cursor, trip, isDescending));

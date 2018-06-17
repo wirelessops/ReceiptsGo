@@ -23,6 +23,9 @@ import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCusto
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.ReceiptDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.ReceiptPrimaryKey;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -69,10 +72,10 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
                          @NonNull Table<Category, Integer> categoryTable,
                          @NonNull StorageManager storageManager,
                          @NonNull UserPreferenceManager preferences,
-                         boolean isTableOrdered) {
+                         @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         super(sqLiteOpenHelper, TABLE_NAME, new ReceiptDatabaseAdapter(tripsTable, paymentMethodTable,
                 categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT,
-                isTableOrdered ? COLUMN_CUSTOM_ORDER_ID : COLUMN_DATE);
+                new OrderByOrderingPreference(orderingPreferencesManager, ReceiptsTable.class, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, true), new OrderByColumn(COLUMN_DATE, true)));
 
         this.userPreferenceManager = Preconditions.checkNotNull(preferences);
     }

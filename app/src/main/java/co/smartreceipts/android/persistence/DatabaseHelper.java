@@ -113,12 +113,11 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         mTables = new ArrayList<>();
         mTripsTable = new TripsTable(this, storageManager, preferences);
         mDistanceTable = new DistanceTable(this, mTripsTable, preferences);
-        mCategoriesTable = new CategoriesTable(this, orderingPreferencesManager.isCategoriesTableOrdered());
-        mCSVTable = new CSVTable(this, mReceiptColumnDefinitions, orderingPreferencesManager.isCsvColumnsOrdered());
-        mPDFTable = new PDFTable(this, mReceiptColumnDefinitions, orderingPreferencesManager.isPdfColumnsOrdered());
-        mPaymentMethodsTable = new PaymentMethodsTable(this, orderingPreferencesManager.isPaymentMethodsTableOrdered());
-        mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable,
-                storageManager, preferences, orderingPreferencesManager.isReceiptsTableOrdered());
+        mCategoriesTable = new CategoriesTable(this, orderingPreferencesManager);
+        mCSVTable = new CSVTable(this, mReceiptColumnDefinitions, orderingPreferencesManager);
+        mPDFTable = new PDFTable(this, mReceiptColumnDefinitions, orderingPreferencesManager);
+        mPaymentMethodsTable = new PaymentMethodsTable(this, orderingPreferencesManager);
+        mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable, storageManager, preferences, orderingPreferencesManager);
         mTables.add(mTripsTable);
         mTables.add(mDistanceTable);
         mTables.add(mCategoriesTable);

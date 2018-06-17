@@ -8,14 +8,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
-public class OrderByTest {
+public class OrderByColumnTest {
 
     @Test
     public void getOrderByPredicate() {
         final String column = "column";
-        final OrderBy descending = new OrderBy(column, true);
-        final OrderBy ascending = new OrderBy(column, false);
-        final OrderBy defaultOrder = new OrderBy(null, true);
+        final OrderByColumn descending = new OrderByColumn(column, true);
+        final OrderByColumn ascending = new OrderByColumn(column, false);
+        final OrderByColumn defaultOrder = new OrderByColumn(null, true);
 
         assertEquals(column + " DESC", descending.getOrderByPredicate());
         assertEquals(column + " ASC", ascending.getOrderByPredicate());

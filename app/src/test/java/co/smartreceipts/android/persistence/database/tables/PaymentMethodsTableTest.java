@@ -25,6 +25,7 @@ import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -54,6 +55,9 @@ public class PaymentMethodsTableTest {
     @Mock
     TableDefaultsCustomizer mTableDefaultsCustomizer;
 
+    @Mock
+    OrderingPreferencesManager orderingPreferencesManager;
+
     @Captor
     ArgumentCaptor<String> mSqlCaptor;
 
@@ -68,7 +72,7 @@ public class PaymentMethodsTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mPaymentMethodsTable = new PaymentMethodsTable(mSQLiteOpenHelper, false);
+        mPaymentMethodsTable = new PaymentMethodsTable(mSQLiteOpenHelper, orderingPreferencesManager);
 
         // Now create the table and insert some defaults
         mPaymentMethodsTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);

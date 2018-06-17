@@ -9,8 +9,10 @@ import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.PaymentMethodDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.PaymentMethodPrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrderBy;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.utils.log.Logger;
 
 /**
@@ -23,10 +25,11 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_METHOD = "method";
 
+    public PaymentMethodsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                               @NonNull OrderingPreferencesManager orderingPreferencesManager) {
 
-    public PaymentMethodsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, boolean isOrdered) {
         super(sqLiteOpenHelper, TABLE_NAME, new PaymentMethodDatabaseAdapter(), new PaymentMethodPrimaryKey(),
-                isOrdered ? new OrderBy(COLUMN_CUSTOM_ORDER_ID, false) : new DefaultOrderBy());
+                new OrderByOrderingPreference(orderingPreferencesManager, PaymentMethodsTable.class, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
     }
 
     @Override

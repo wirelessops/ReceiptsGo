@@ -28,6 +28,7 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptPriceColumn;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -59,6 +60,9 @@ public class CSVTableTest {
     @Mock
     TableDefaultsCustomizer mTableDefaultsCustomizer;
 
+    @Mock
+    OrderingPreferencesManager orderingPreferencesManager;
+
     SQLiteOpenHelper mSQLiteOpenHelper;
 
     @Captor
@@ -75,7 +79,7 @@ public class CSVTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mCSVTable = new CSVTable(mSQLiteOpenHelper, mReceiptColumnDefinitions, false);
+        mCSVTable = new CSVTable(mSQLiteOpenHelper, mReceiptColumnDefinitions, orderingPreferencesManager);
         mDefaultColumn = new BlankColumn<>(-1, "", new DefaultSyncState());
 
         when(mReceiptColumnDefinitions.getDefaultInsertColumn()).thenReturn(mDefaultColumn);

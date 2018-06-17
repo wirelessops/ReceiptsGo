@@ -1,8 +1,8 @@
 package co.smartreceipts.android.persistence.database.tables.ordering;
 
-public final class DefaultOrderBy extends OrderBy {
+public final class OrderByDatabaseDefault extends OrderByColumn {
 
-    public DefaultOrderBy() {
+    public OrderByDatabaseDefault() {
         super(null, true);
     }
 }

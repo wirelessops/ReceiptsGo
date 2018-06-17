@@ -8,13 +8,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
-public class DefaultOrderByTest {
+public class DatabaseDefaultOrderByTest {
 
     @Test
     public void getOrderByPredicate() {
-        final DefaultOrderBy defaultOrderBy = new DefaultOrderBy();
-        assertNull(defaultOrderBy.getOrderByPredicate());
-        assertEquals(defaultOrderBy.toString(), defaultOrderBy.getOrderByPredicate());
+        final OrderByDatabaseDefault databaseDefaultOrderBy = new OrderByDatabaseDefault();
+        assertNull(databaseDefaultOrderBy.getOrderByPredicate());
+        assertEquals(databaseDefaultOrderBy.toString(), databaseDefaultOrderBy.getOrderByPredicate());
     }
 
 }

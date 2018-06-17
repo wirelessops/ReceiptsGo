@@ -33,6 +33,7 @@ import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -97,6 +98,9 @@ public class ReceiptsTableTest {
     PersistenceManager mPersistenceManager;
 
     @Mock
+    OrderingPreferencesManager orderingPreferencesManager;
+
+    @Mock
     StorageManager mStorageManager;
 
     @Mock
@@ -155,7 +159,7 @@ public class ReceiptsTableTest {
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
         mReceiptsTable = new ReceiptsTable(mSQLiteOpenHelper, mTripsTable, mPaymentMethodTable, mCategoryTable,
-                mPersistenceManager.getStorageManager(), mPersistenceManager.getPreferenceManager(), false);
+                mPersistenceManager.getStorageManager(), mPersistenceManager.getPreferenceManager(), orderingPreferencesManager);
 
         // Now create the table and insert some defaults
         mReceiptsTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);

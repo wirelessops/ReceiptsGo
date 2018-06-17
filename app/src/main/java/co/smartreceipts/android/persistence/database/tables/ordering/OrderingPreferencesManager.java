@@ -10,6 +10,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.android.persistence.database.tables.CSVTable;
+import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
+import co.smartreceipts.android.persistence.database.tables.PDFTable;
+import co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable;
+import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
+import co.smartreceipts.android.persistence.database.tables.Table;
 import dagger.Lazy;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
@@ -89,6 +95,22 @@ public class OrderingPreferencesManager {
         getPreferencesEditor()
                 .putBoolean(Keys.ORDERING_RECEIPTS, true)
                 .apply();
+    }
+
+    public boolean isOrdered(Class<? extends Table<?, ?>> tableClass) {
+        if (CategoriesTable.class.equals(tableClass)) {
+            return isCategoriesTableOrdered();
+        } else if (PaymentMethodsTable.class.equals(tableClass)) {
+            return isPaymentMethodsTableOrdered();
+        } else if (CSVTable.class.equals(tableClass)) {
+            return isCsvColumnsOrdered();
+        } else if (PDFTable.class.equals(tableClass)) {
+            return isPdfColumnsOrdered();
+        } else if (ReceiptsTable.class.equals(tableClass)) {
+            return isReceiptsTableOrdered();
+        } else {
+            return false;
+        }
     }
 
     public boolean isCategoriesTableOrdered() {

@@ -3,29 +3,21 @@ package co.smartreceipts.android.persistence.database.tables.ordering;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-public class OrderBy {
+public interface OrderBy {
 
-    private final String mSortByColumn;
-    private final boolean mIsDescending;
-
-    public OrderBy(@Nullable String sortByColumn, boolean isDescending) {
-        mSortByColumn = sortByColumn;
-        mIsDescending = isDescending;
-    }
-
+    /**
+     * Gets the column that we attempt to order things by
+     *
+     * @return this column or {@code null} if we should use the default one
+     */
     @Nullable
-    public final String getOrderByPredicate() {
-        if (!TextUtils.isEmpty(mSortByColumn)) {
-            return mSortByColumn + ((mIsDescending) ? " DESC" : " ASC");
-        } else {
-            return null;
-        }
-    }
+    String getOrderByColumn();
 
-    @Override
+    /**
+     * Generates a predicate to define the SQL OrderBy statement
+     *
+     * @return this predicate or {@code null} if we should use the default one
+     */
     @Nullable
-    public String toString() {
-        return getOrderByPredicate();
-    }
-
+    String getOrderByPredicate();
 }

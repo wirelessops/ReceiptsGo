@@ -8,7 +8,10 @@ import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.CategoryDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.CategoryPrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.utils.log.Logger;
 
 /**
@@ -24,9 +27,10 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
     public static final String COLUMN_BREAKDOWN = "breakdown";
 
 
-    public CategoriesTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, boolean isOrdered) {
+    public CategoriesTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                           @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         super(sqLiteOpenHelper, TABLE_NAME, new CategoryDatabaseAdapter(), new CategoryPrimaryKey(),
-                isOrdered ? new OrderBy(COLUMN_CUSTOM_ORDER_ID, false) : new OrderBy(COLUMN_NAME, false));
+                new OrderByOrderingPreference(orderingPreferencesManager, CategoriesTable.class, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByColumn(COLUMN_NAME, false)));
     }
 
     @Override

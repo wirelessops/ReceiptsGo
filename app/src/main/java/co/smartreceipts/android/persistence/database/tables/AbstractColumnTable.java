@@ -16,8 +16,10 @@ import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCusto
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.ColumnDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.ColumnPrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrderBy;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.utils.ListUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Single;
@@ -33,11 +35,16 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
     private final String mIdColumnName;
     private final String mTypeColumnName;
 
-    public AbstractColumnTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName,
-                               int tableExistsSinceDatabaseVersion, @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
-                               @NonNull String idColumnName, @NonNull String typeColumnName, boolean isOrdered) {
+    public AbstractColumnTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                               @NonNull String tableName,
+                               int tableExistsSinceDatabaseVersion,
+                               @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
+                               @NonNull String idColumnName,
+                               @NonNull String typeColumnName,
+                               @NonNull OrderingPreferencesManager orderingPreferencesManager,
+                               @NonNull Class<? extends Table<?, ?>> tableClass) {
         super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(receiptColumnDefinitions, idColumnName, typeColumnName),
-                new ColumnPrimaryKey(idColumnName), isOrdered ? new OrderBy(COLUMN_CUSTOM_ORDER_ID, false) : new DefaultOrderBy());
+                new ColumnPrimaryKey(idColumnName), new OrderByOrderingPreference(orderingPreferencesManager, tableClass, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
         mTableExistsSinceDatabaseVersion = tableExistsSinceDatabaseVersion;
         mReceiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
         mIdColumnName = Preconditions.checkNotNull(idColumnName);

@@ -11,6 +11,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.DistanceDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.DistancePrimaryKey;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
@@ -35,7 +36,7 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
     private final UserPreferenceManager userPreferenceManager;
 
     public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, String> tripsTable, @NonNull UserPreferenceManager userPreferenceManager) {
-        super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable), new DistancePrimaryKey(), COLUMN_PARENT, COLUMN_DATE);
+        super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable), new DistancePrimaryKey(), COLUMN_PARENT, new OrderByColumn(COLUMN_DATE, true));
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
     }
 

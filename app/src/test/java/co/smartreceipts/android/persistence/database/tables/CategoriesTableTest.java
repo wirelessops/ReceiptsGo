@@ -22,6 +22,7 @@ import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 
 import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID;
 import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED;
@@ -40,6 +41,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class CategoriesTableTest {
@@ -60,6 +62,9 @@ public class CategoriesTableTest {
     @Mock
     TableDefaultsCustomizer mTableDefaultsCustomizer;
 
+    @Mock
+    OrderingPreferencesManager orderingPreferencesManager;
+
     @Captor
     ArgumentCaptor<String> mSqlCaptor;
 
@@ -74,7 +79,7 @@ public class CategoriesTableTest {
         MockitoAnnotations.initMocks(this);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mCategoriesTable = new CategoriesTable(mSQLiteOpenHelper, false);
+        mCategoriesTable = new CategoriesTable(mSQLiteOpenHelper, orderingPreferencesManager);
 
         // Now create the table and insert some defaults
         mCategoriesTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);

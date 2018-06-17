@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import co.smartreceipts.android.model.Receipt;
-import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -22,7 +20,7 @@ import co.smartreceipts.android.persistence.database.tables.adapters.DatabaseAda
 import co.smartreceipts.android.persistence.database.tables.adapters.SyncStateAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.AutoIncrementIdPrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.ordering.DefaultOrderBy;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
@@ -54,13 +52,18 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     private SQLiteDatabase initialNonRecursivelyCalledDatabase;
     private List<ModelType> mCachedResults;
 
-    public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName, @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
+    public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                            @NonNull String tableName,
+                            @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
                             @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey) {
-        this(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, new DefaultOrderBy());
+        this(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, new OrderByDatabaseDefault());
     }
 
-    public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName, @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
-                            @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey, @NonNull OrderBy orderBy) {
+    public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                            @NonNull String tableName,
+                            @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
+                            @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey,
+                            @NonNull OrderBy orderBy) {
         mSQLiteOpenHelper = Preconditions.checkNotNull(sqLiteOpenHelper);
         mTableName = Preconditions.checkNotNull(tableName);
         mDatabaseAdapter = Preconditions.checkNotNull(databaseAdapter);
