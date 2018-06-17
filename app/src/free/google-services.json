@@ -1,0 +1,137 @@
+{
+  "project_info": {
+    "project_number": "718869294394",
+    "firebase_url": "https://smart-receipts.firebaseio.com",
+    "project_id": "smart-receipts",
+    "storage_bucket": "smart-receipts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718869294394:android:b8536df9a7c145eb",
+        "android_client_info": {
+          "package_name": "wb.receipts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718869294394-9bf984gss60nbbr8801m7tltq1k946pm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "wb.receipts",
+            "certificate_hash": "BA268E8D51471608D4D9A75A2C9E2632C20A7E91"
+          }
+        },
+        {
+          "client_id": "718869294394-cueob54egdr3uu1qtisp4n04e621enmj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "wb.receipts",
+            "certificate_hash": "3334DE0988A58DEB20951EE5BD53876456DD4AF3"
+          }
+        },
+        {
+          "client_id": "718869294394-cbpurdbqblp7mho2n65kvhq6qs8947j9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "718869294394-qtqhck2ked4r281eeln0htkrr7flgr40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWUcr0VcFCiSrcVDy3aSbgk8Fmo2vpLFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718869294394-6p4ic33brhs8nd4rgvu72q76o5mfvft2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.smartreceipts.ios"
+              }
+            },
+            {
+              "client_id": "718869294394-cbpurdbqblp7mho2n65kvhq6qs8947j9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718869294394:android:11d46f03fb108536",
+        "android_client_info": {
+          "package_name": "wb.receiptspro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718869294394-bgmbdr90o2svrohqmbpccqioc1tf8mhi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "wb.receiptspro",
+            "certificate_hash": "3334DE0988A58DEB20951EE5BD53876456DD4AF3"
+          }
+        },
+        {
+          "client_id": "718869294394-1tkfql11t8f313rmlbo2sub3gin31kbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "wb.receiptspro",
+            "certificate_hash": "BA268E8D51471608D4D9A75A2C9E2632C20A7E91"
+          }
+        },
+        {
+          "client_id": "718869294394-cbpurdbqblp7mho2n65kvhq6qs8947j9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "718869294394-qtqhck2ked4r281eeln0htkrr7flgr40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWUcr0VcFCiSrcVDy3aSbgk8Fmo2vpLFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718869294394-6p4ic33brhs8nd4rgvu72q76o5mfvft2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.smartreceipts.ios"
+              }
+            },
+            {
+              "client_id": "718869294394-cbpurdbqblp7mho2n65kvhq6qs8947j9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
