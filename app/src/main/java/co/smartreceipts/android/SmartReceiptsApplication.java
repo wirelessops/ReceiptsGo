@@ -103,6 +103,18 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         super.onCreate();
         configureLog();
 
+        if (BuildConfig.DEBUG) {
+            Logger.debug(this, "Enabling strict mode");
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+        }
+
         // TODO: The whole dagger process here takes ~1s to initialize
         // TODO: Investigate when addressed: https://github.com/frogermcs/AndroidDevMetrics/issues/49
         appComponent = DaggerAppComponent.builder()
@@ -166,18 +178,6 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
             Logger.debug(this, "Ignoring this process as it's the LeakCanary analyzer one...");
         } else {
             LeakCanary.install(this);
-        }
-
-        if (BuildConfig.DEBUG) {
-            Logger.debug(this, "Enabling strict mode");
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
         }
 
         extraInitializer.init();
