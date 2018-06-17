@@ -1,6 +1,7 @@
 <configuration>
 
     <include resource="assets/logback_logcat_appender.xml"/>
+    <include resource="assets/logback_root_rules.xml" />
 
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/log.txt</file>
@@ -16,8 +17,4 @@
         </triggeringPolicy>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="logcat" />
-        <appender-ref ref="file" />
-    </root>
 </configuration>

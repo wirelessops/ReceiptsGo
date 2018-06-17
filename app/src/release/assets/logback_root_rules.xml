@@ -1,0 +1,6 @@
+<included>
+    <!-- Write INFO (and higher-level) messages to the log file -->
+    <root level="INFO">
+        <appender-ref ref="file" />
+    </root>
+</included>
