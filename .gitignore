@@ -12,7 +12,6 @@ google-services.json
 *.iml
 .idea/
 .gradle/
-gradle/wrapper/
 build/
 
 smartReceiptsLibrary/*.pdf
