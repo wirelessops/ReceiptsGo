@@ -578,9 +578,12 @@ public class EmailAssistant {
             } else {
 
                 EmailAssistant.this.onAttachmentsCreated(mFiles);
-                if (dialog != null) {
-                    dialog.dismiss();
-                    dialog = null;
+                try {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                } catch (IllegalArgumentException e) {
+                    Logger.warn(this, "Swallowing an exception in which the dialog fails to dismiss");
                 }
             }
         }
