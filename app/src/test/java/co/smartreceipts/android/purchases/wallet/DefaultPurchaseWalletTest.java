@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -17,12 +18,14 @@ import java.util.Collections;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.Subscription;
+import dagger.Lazy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class DefaultPurchaseWalletTest {
@@ -38,6 +41,9 @@ public class DefaultPurchaseWalletTest {
     SharedPreferences preferences;
 
     ManagedProduct managedProduct;
+
+    @Mock
+    Lazy<SharedPreferences> sharedPreferencesLazy;
 
     @Before
     public void setUp() throws Exception {
@@ -59,7 +65,10 @@ public class DefaultPurchaseWalletTest {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
         preferences.edit().putString(TEST, TEST).apply();
-        defaultPurchaseWallet = new DefaultPurchaseWallet(preferences);
+
+        when(sharedPreferencesLazy.get()).thenReturn(preferences);
+
+        defaultPurchaseWallet = new DefaultPurchaseWallet(sharedPreferencesLazy);
     }
 
     @After
@@ -115,7 +124,7 @@ public class DefaultPurchaseWalletTest {
     @Test
     public void ensureAddedPurchaseIsPersisted() {
         defaultPurchaseWallet.addPurchaseToWallet(managedProduct);
-        final PurchaseWallet newWallet = new DefaultPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new DefaultPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertTrue(defaultPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
@@ -135,7 +144,7 @@ public class DefaultPurchaseWalletTest {
 
         // Then revoke it
         defaultPurchaseWallet.updatePurchasesInWallet(Collections.<ManagedProduct>emptySet());
-        final PurchaseWallet newWallet = new DefaultPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new DefaultPurchaseWallet(sharedPreferencesLazy);
 
         assertFalse(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertFalse(defaultPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
@@ -153,7 +162,7 @@ public class DefaultPurchaseWalletTest {
         defaultPurchaseWallet.addPurchaseToWallet(managedProduct);
         defaultPurchaseWallet.removePurchaseFromWallet(InAppPurchase.SmartReceiptsPlus);
 
-        final PurchaseWallet newWallet = new DefaultPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new DefaultPurchaseWallet(sharedPreferencesLazy);
 
         assertFalse(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertFalse(defaultPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
@@ -170,7 +179,7 @@ public class DefaultPurchaseWalletTest {
     public void upgradeFrom_V_4_2_0_249_WhenWeDidNotPersistDataOrSignature() {
         // Historically, we only used to save the sku set and not the token or signature
         preferences.edit().putStringSet("key_sku_set", Collections.singleton(InAppPurchase.SmartReceiptsPlus.getSku())).apply();
-        final PurchaseWallet newWallet = new DefaultPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new DefaultPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         final ManagedProduct partialManagedProduct = newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus);

@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -20,11 +21,13 @@ import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.Subscription;
+import dagger.Lazy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class PlusPurchaseWalletTest {
@@ -42,6 +45,9 @@ public class PlusPurchaseWalletTest {
     ManagedProduct managedProduct;
 
     ManagedProduct plusManagedProduct;
+
+    @Mock
+    Lazy<SharedPreferences> sharedPreferencesLazy;
 
     @Before
     public void setUp() throws Exception {
@@ -64,7 +70,10 @@ public class PlusPurchaseWalletTest {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
         preferences.edit().putString(TEST, TEST).apply();
-        plusPurchaseWallet = new PlusPurchaseWallet(preferences);
+
+        when(sharedPreferencesLazy.get()).thenReturn(preferences);
+
+        plusPurchaseWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
     }
 
     @After
@@ -129,7 +138,7 @@ public class PlusPurchaseWalletTest {
     @Test
     public void ensureAddedPurchaseIsPersistedAndPlusRemains() {
         plusPurchaseWallet.addPurchaseToWallet(managedProduct);
-        final PurchaseWallet newWallet = new PlusPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertEquals(plusManagedProduct, newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
@@ -155,7 +164,7 @@ public class PlusPurchaseWalletTest {
 
         // Then revoke it
         plusPurchaseWallet.updatePurchasesInWallet(Collections.<ManagedProduct>emptySet());
-        final PurchaseWallet newWallet = new PlusPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertEquals(plusManagedProduct, newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
@@ -180,7 +189,7 @@ public class PlusPurchaseWalletTest {
         plusPurchaseWallet.addPurchaseToWallet(managedProduct);
         plusPurchaseWallet.removePurchaseFromWallet(InAppPurchase.OcrScans50);
 
-        final PurchaseWallet newWallet = new PlusPurchaseWallet(preferences);
+        final PurchaseWallet newWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertEquals(plusManagedProduct, newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));

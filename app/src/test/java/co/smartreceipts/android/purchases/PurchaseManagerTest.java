@@ -46,6 +46,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySetOf;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -143,7 +144,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verifyZeroInteractions(purchaseWallet);
+        verify(purchaseWallet).getActivePurchases();
     }
 
     @Test
@@ -162,7 +163,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verifyZeroInteractions(purchaseWallet);
+        verify(purchaseWallet).getActivePurchases();
     }
 
     @Test
@@ -183,7 +184,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verifyZeroInteractions(purchaseWallet);
+        verify(purchaseWallet).getActivePurchases();
     }
 
     @Test
@@ -204,7 +205,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verifyZeroInteractions(purchaseWallet);
+        verify(purchaseWallet).getActivePurchases();
     }
 
     @Test
@@ -230,7 +231,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -257,7 +258,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -284,7 +285,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -311,7 +312,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -338,7 +339,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -366,7 +367,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.singleton(consumablePurchase), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -394,7 +395,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.singleton(subscription), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -423,7 +424,7 @@ public class PurchaseManagerTest {
         verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
         when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(new HashSet<>(Arrays.asList(subscription, consumablePurchase)), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActivePurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
