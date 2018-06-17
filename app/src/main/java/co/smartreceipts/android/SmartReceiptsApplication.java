@@ -29,6 +29,7 @@ import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.versions.AppVersionManager;
 import co.smartreceipts.android.settings.versions.VersionUpgradedListener;
 import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
@@ -42,6 +43,7 @@ import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.plugins.RxJavaPlugins;
+import wb.android.flex.Flex;
 import wb.android.storage.SDCardStateException;
 import wb.android.storage.StorageManager;
 
@@ -59,6 +61,12 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     PersistenceManager persistenceManager;
+
+    @Inject
+    Flex flex;
+
+    @Inject
+    UserPreferenceManager userPreferenceManager;
 
     @Inject
     ExtraInitializer extraInitializer;
@@ -154,6 +162,8 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         // To handle RxJava exceptions
         RxJavaPlugins.setErrorHandler(new DefaultRxErrorHandler(analytics));
 
+        flex.initialize();
+        userPreferenceManager.initialize();
         pushManager.initialize();
         purchaseManager.initialize(this);
         cognitoManager.initialize();

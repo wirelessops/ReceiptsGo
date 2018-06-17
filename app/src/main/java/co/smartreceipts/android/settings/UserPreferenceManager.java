@@ -1,5 +1,6 @@
 package co.smartreceipts.android.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -14,41 +15,44 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.persistence.SharedPreferenceDefinitions;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.Lazy;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
-
 @ApplicationScope
 public class UserPreferenceManager {
 
-    public static final String PREFERENCES_FILE_NAME = SharedPreferenceDefinitions.SmartReceiptsCoreSettings.toString();
+    public static final String PREFERENCES_FILE_NAME = "SmartReceiptsPrefFile";
 
     private final Context context;
 
-    private final SharedPreferences preferences;
+    private final Lazy<SharedPreferences> preferences;
     private final Scheduler initializationScheduler;
 
     @Inject
-    UserPreferenceManager(Context context) {
-        this(context.getApplicationContext(), context.getSharedPreferences(PREFERENCES_FILE_NAME, 0), Schedulers.io());
+    UserPreferenceManager(@NonNull Context context,
+                          @NonNull @Named(PREFERENCES_FILE_NAME) Lazy<SharedPreferences> preferences) {
+        this(context.getApplicationContext(), preferences, Schedulers.io());
     }
 
     @VisibleForTesting
-    UserPreferenceManager(Context context, SharedPreferences preferences, Scheduler initializationScheduler) {
+    UserPreferenceManager(@NonNull Context context,
+                          @NonNull Lazy<SharedPreferences> preferences,
+                          @NonNull Scheduler initializationScheduler) {
         this.context = context;
         this.preferences = preferences;
         this.initializationScheduler = Preconditions.checkNotNull(initializationScheduler);
-
-        initialize();
     }
 
+    @SuppressLint("CheckResult")
     public void initialize() {
         Logger.info(UserPreferenceManager.this, "Initializing the UserPreferenceManager...");
 
@@ -57,14 +61,14 @@ public class UserPreferenceManager {
                 .subscribe(userPreferences -> {
                     for (final UserPreference<?> userPreference : userPreferences) {
                         final String preferenceName = name(userPreference);
-                        if (!preferences.contains(preferenceName)) {
-                            // In here - we assign values that don't allow for preference_defaults.xml definitions (e.g. Locale Based Setings)
+                        if (!preferences.get().contains(preferenceName)) {
+                            // In here - we assign values that don't allow for preference_defaults.xml definitions (e.g. Locale Based Settings)
                             // Additionally, we set all float fields, which don't don't allow for 'android:defaultValue' settings
                             if (UserPreference.General.DateSeparator.equals(userPreference)) {
                                 final String assignedDateSeparator = context.getString(UserPreference.General.DateSeparator.getDefaultValue());
                                 if (TextUtils.isEmpty(assignedDateSeparator)) {
                                     final String localeDefaultDateSeparator = DateUtils.getDateSeparator(context);
-                                    preferences.edit().putString(preferenceName, localeDefaultDateSeparator).apply();
+                                    preferences.get().edit().putString(preferenceName, localeDefaultDateSeparator).apply();
                                     Logger.debug(UserPreferenceManager.this, "Assigned locale default date separator {}", localeDefaultDateSeparator);
                                 }
                             } else if (UserPreference.General.DefaultCurrency.equals(userPreference)) {
@@ -72,10 +76,10 @@ public class UserPreferenceManager {
                                 if (TextUtils.isEmpty(assignedCurrencyCode)) {
                                     try {
                                         final String currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
-                                        preferences.edit().putString(preferenceName, currencyCode).apply();
+                                        preferences.get().edit().putString(preferenceName, currencyCode).apply();
                                         Logger.debug(UserPreferenceManager.this, "Assigned locale default currency code {}", currencyCode);
                                     } catch (IllegalArgumentException e) {
-                                        preferences.edit().putString(preferenceName, "USD").apply();
+                                        preferences.get().edit().putString(preferenceName, "USD").apply();
                                         Logger.warn(UserPreferenceManager.this, "Failed to find this Locale's currency code. Defaulting to USD", e);
                                     }
                                 }
@@ -84,13 +88,13 @@ public class UserPreferenceManager {
                                 context.getResources().getValue(userPreference.getDefaultValue(), typedValue, true);
                                 if (typedValue.getFloat() < 0) {
                                     final float defaultMinimumReceiptPrice = -Float.MAX_VALUE;
-                                    preferences.edit().putFloat(preferenceName, defaultMinimumReceiptPrice).apply();
+                                    preferences.get().edit().putFloat(preferenceName, defaultMinimumReceiptPrice).apply();
                                     Logger.debug(UserPreferenceManager.this, "Assigned default float value for {} as {}", preferenceName, defaultMinimumReceiptPrice);
                                 }
                             } else if (Float.class.equals(userPreference.getType())) {
                                 final TypedValue typedValue = new TypedValue();
                                 context.getResources().getValue(userPreference.getDefaultValue(), typedValue, true);
-                                preferences.edit().putFloat(preferenceName, typedValue.getFloat()).apply();
+                                preferences.get().edit().putFloat(preferenceName, typedValue.getFloat()).apply();
                                 Logger.debug(UserPreferenceManager.this, "Assigned default float value for {} as {}", preferenceName, typedValue.getFloat());
                             }
                         }
@@ -101,10 +105,7 @@ public class UserPreferenceManager {
 
     @NonNull
     public <T> Observable<T> getObservable(final UserPreference<T> preference) {
-        return Observable.create(emitter -> {
-            emitter.onNext(get(preference));
-            emitter.onComplete();
-        });
+        return Observable.fromCallable(() -> get(preference));
     }
 
     @NonNull
@@ -112,15 +113,15 @@ public class UserPreferenceManager {
     public <T> T get(UserPreference<T> preference) {
         final String name = context.getString(preference.getName());
         if (Boolean.class.equals(preference.getType())) {
-            return (T) Boolean.valueOf(preferences.getBoolean(name, context.getResources().getBoolean(preference.getDefaultValue())));
+            return (T) Boolean.valueOf(preferences.get().getBoolean(name, context.getResources().getBoolean(preference.getDefaultValue())));
         } else if (String.class.equals(preference.getType())) {
-            return (T) preferences.getString(name, context.getString(preference.getDefaultValue()));
+            return (T) preferences.get().getString(name, context.getString(preference.getDefaultValue()));
         } else if (Float.class.equals(preference.getType())) {
             final TypedValue typedValue = new TypedValue();
             context.getResources().getValue(preference.getDefaultValue(), typedValue, true);
-            return (T) Float.valueOf(preferences.getFloat(name, typedValue.getFloat()));
+            return (T) Float.valueOf(preferences.get().getFloat(name, typedValue.getFloat()));
         } else if (Integer.class.equals(preference.getType())) {
-            return (T) Integer.valueOf(preferences.getInt(name, context.getResources().getInteger(preference.getDefaultValue())));
+            return (T) Integer.valueOf(preferences.get().getInt(name, context.getResources().getInteger(preference.getDefaultValue())));
         }  else {
             throw new IllegalArgumentException("Unsupported preference type: " + preference.getType());
         }
@@ -138,13 +139,13 @@ public class UserPreferenceManager {
     public <T> void set(UserPreference<T> preference, T t) {
         final String name = context.getString(preference.getName());
         if (Boolean.class.equals(preference.getType())) {
-            preferences.edit().putBoolean(name, (Boolean) t).apply();
+            preferences.get().edit().putBoolean(name, (Boolean) t).apply();
         } else if (String.class.equals(preference.getType())) {
-            preferences.edit().putString(name, (String) t).apply();
+            preferences.get().edit().putString(name, (String) t).apply();
         } else if (Float.class.equals(preference.getType())) {
-            preferences.edit().putFloat(name, (Float) t).apply();
+            preferences.get().edit().putFloat(name, (Float) t).apply();
         } else if (Integer.class.equals(preference.getType())) {
-            preferences.edit().putInt(name, (Integer) t).apply();
+            preferences.get().edit().putInt(name, (Integer) t).apply();
         }  else {
             throw new IllegalArgumentException("Unsupported preference type: " + preference.getType());
         }
@@ -170,7 +171,7 @@ public class UserPreferenceManager {
     @NonNull
     @Deprecated
     public SharedPreferences getSharedPreferences() {
-        return preferences;
+        return preferences.get();
     }
 
 }

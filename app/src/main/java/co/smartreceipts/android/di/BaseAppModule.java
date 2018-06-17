@@ -10,6 +10,7 @@ import dagger.Provides;
 @Module(includes = {TooltipStorageModule.class,
                     NetworkingModule.class,
                     LocalRepositoryModule.class,
+                    SharedPreferencesModule.class,
                     ConfigurationModule.class})
 public class BaseAppModule {
 

@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -15,10 +17,12 @@ import java.util.Locale;
 
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.TestUtils;
+import dagger.Lazy;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class UserPreferenceManagerTest {
@@ -30,11 +34,16 @@ public class UserPreferenceManagerTest {
 
     Locale defaultLocale;
 
+    @Mock
+    Lazy<SharedPreferences> sharedPreferencesLazy;
+
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         defaultLocale = Locale.getDefault();
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
-        userPreferenceManager = new UserPreferenceManager(RuntimeEnvironment.application, preferences, Schedulers.trampoline());
+        when(sharedPreferencesLazy.get()).thenReturn(preferences);
+        userPreferenceManager = new UserPreferenceManager(RuntimeEnvironment.application, sharedPreferencesLazy, Schedulers.trampoline());
     }
 
     @After

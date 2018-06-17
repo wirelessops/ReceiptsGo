@@ -29,6 +29,11 @@ public enum SharedPreferenceDefinitions {
         this.clearOnPartialWipe = clearOnPartialWipe;
 	}
 
+	@NonNull
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public String toString() {
 		return name;
