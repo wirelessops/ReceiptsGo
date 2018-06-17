@@ -2,6 +2,7 @@ package co.smartreceipts.android.sync.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -25,7 +26,12 @@ public class MobileNetworkProviderImpl extends AbstractNetworkProvider {
 
     @Override
 	public boolean isNetworkAvailable() {
-		return mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected();
+	    final NetworkInfo networkInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+	    if (networkInfo != null) {
+	        return networkInfo.isConnected();
+        } else {
+	        return false;
+        }
 	}
 
 }
