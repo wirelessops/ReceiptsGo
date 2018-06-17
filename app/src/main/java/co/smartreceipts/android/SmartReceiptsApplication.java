@@ -25,6 +25,7 @@ import co.smartreceipts.android.di.DaggerAppComponent;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
@@ -85,6 +86,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     CrashReporter crashReporter;
+
+    @Inject
+    OrderingPreferencesManager orderingPreferencesManager;
 
     @Inject
     AppRatingPreferencesStorage appRatingPreferencesStorage;
@@ -168,6 +172,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         purchaseManager.initialize(this);
         cognitoManager.initialize();
         ocrManager.initialize();
+        orderingPreferencesManager.initialize();
         crashReporter.initialize();
         receiptsOrderer.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();

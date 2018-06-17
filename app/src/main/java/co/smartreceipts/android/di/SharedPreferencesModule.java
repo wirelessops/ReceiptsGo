@@ -24,6 +24,13 @@ public class SharedPreferencesModule {
     @ApplicationScope
     @Named(UserPreferenceManager.PREFERENCES_FILE_NAME)
     public static SharedPreferences providesCoreSettingsPreferences(Context context) {
-        return context.getSharedPreferences(UserPreferenceManager.PREFERENCES_FILE_NAME, 0);
+        return context.getSharedPreferences(UserPreferenceManager.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @ApplicationScope
+    @Named(OrderingPreferencesManager.ORDERING_PREFERENCES)
+    public static SharedPreferences providesOrderingPreferences(Context context) {
+        return context.getSharedPreferences(OrderingPreferencesManager.ORDERING_PREFERENCES, Context.MODE_PRIVATE);
     }
 }

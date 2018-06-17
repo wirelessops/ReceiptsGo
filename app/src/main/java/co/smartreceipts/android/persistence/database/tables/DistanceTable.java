@@ -11,6 +11,8 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.DistanceDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.DistancePrimaryKey;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
 
 /**
@@ -30,12 +32,11 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
     public static final String COLUMN_RATE = "rate";
     public static final String COLUMN_RATE_CURRENCY = "rate_currency";
 
+    private final UserPreferenceManager userPreferenceManager;
 
-    private final String mDefaultCurrencyCode;
-
-    public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, String> tripsTable, @NonNull String defaultCurrencyCode) {
+    public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, String> tripsTable, @NonNull UserPreferenceManager userPreferenceManager) {
         super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable), new DistancePrimaryKey(), COLUMN_PARENT, COLUMN_DATE);
-        mDefaultCurrencyCode = Preconditions.checkNotNull(defaultCurrencyCode);
+        this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
             final String distanceMigrateBase = "INSERT INTO " + DistanceTable.TABLE_NAME + "(" + DistanceTable.COLUMN_PARENT + ", " + DistanceTable.COLUMN_DISTANCE + ", " + DistanceTable.COLUMN_LOCATION + ", " + DistanceTable.COLUMN_DATE + ", " + DistanceTable.COLUMN_TIMEZONE + ", " + DistanceTable.COLUMN_COMMENT + ", " + DistanceTable.COLUMN_RATE_CURRENCY + ")"
                     + " SELECT " + TripsTable.COLUMN_NAME + ", " + TripsTable.COLUMN_MILEAGE + " , \"\" as " + DistanceTable.COLUMN_LOCATION + ", " + TripsTable.COLUMN_FROM + ", " + TripsTable.COLUMN_FROM_TIMEZONE + " , \"\" as " + DistanceTable.COLUMN_COMMENT + ", ";
             final String distanceMigrateNotNullCurrency = distanceMigrateBase + TripsTable.COLUMN_DEFAULT_CURRENCY + " FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable.COLUMN_DEFAULT_CURRENCY + " IS NOT NULL AND " + TripsTable.COLUMN_MILEAGE + " > 0;";
-            final String distanceMigrateNullCurrency = distanceMigrateBase + "\"" + mDefaultCurrencyCode + "\" as " + DistanceTable.COLUMN_RATE_CURRENCY + " FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable.COLUMN_DEFAULT_CURRENCY + " IS NULL AND " + TripsTable.COLUMN_MILEAGE + " > 0;";
+            final String distanceMigrateNullCurrency = distanceMigrateBase + "\"" + userPreferenceManager.get(UserPreference.General.DefaultCurrency) + "\" as " + DistanceTable.COLUMN_RATE_CURRENCY + " FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable.COLUMN_DEFAULT_CURRENCY + " IS NULL AND " + TripsTable.COLUMN_MILEAGE + " > 0;";
 
             Logger.debug(this, distanceMigrateNotNullCurrency);
             Logger.debug(this, distanceMigrateNullCurrency);

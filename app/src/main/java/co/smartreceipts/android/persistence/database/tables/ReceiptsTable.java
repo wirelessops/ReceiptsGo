@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
 import java.io.File;
@@ -60,18 +61,20 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
     public static final String COLUMN_EXTRA_EDITTEXT_2 = "extra_edittext_2";
     public static final String COLUMN_EXTRA_EDITTEXT_3 = "extra_edittext_3";
 
-    private final String mDefaultCurrencyCode;
+    private final UserPreferenceManager userPreferenceManager;
 
-    public ReceiptsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, String> tripsTable,
+    public ReceiptsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                         @NonNull Table<Trip, String> tripsTable,
                          @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
                          @NonNull Table<Category, Integer> categoryTable,
-                         @NonNull StorageManager storageManager, @NonNull UserPreferenceManager preferences,
+                         @NonNull StorageManager storageManager,
+                         @NonNull UserPreferenceManager preferences,
                          boolean isTableOrdered) {
         super(sqLiteOpenHelper, TABLE_NAME, new ReceiptDatabaseAdapter(tripsTable, paymentMethodTable,
                 categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT,
                 isTableOrdered ? COLUMN_CUSTOM_ORDER_ID : COLUMN_DATE);
 
-        mDefaultCurrencyCode = preferences.get(UserPreference.General.DefaultCurrency);
+        this.userPreferenceManager = Preconditions.checkNotNull(preferences);
     }
 
     @Override
@@ -113,7 +116,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
         super.onUpgrade(db, oldVersion, newVersion, customizer);
 
         if (oldVersion <= 1) { // Add mCurrency column to receipts table
-            final String alterReceipts = "ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_ISO4217 + " TEXT NOT NULL " + "DEFAULT " + mDefaultCurrencyCode;
+            final String alterReceipts = "ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_ISO4217 + " TEXT NOT NULL " + "DEFAULT " + userPreferenceManager.get(UserPreference.General.DefaultCurrency);
 
             Logger.debug(this, alterReceipts);
 

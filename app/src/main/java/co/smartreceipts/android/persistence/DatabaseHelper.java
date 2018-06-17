@@ -1,22 +1,16 @@
 package co.smartreceipts.android.persistence;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.TimeZone;
 
 import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.date.DateUtils;
@@ -29,8 +23,6 @@ import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.model.utils.CurrencyUtils;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
-import co.smartreceipts.android.persistence.database.defaults.WhiteLabelFriendlyTableDefaultsCustomizer;
-import co.smartreceipts.android.persistence.database.tables.AbstractSqlTable;
 import co.smartreceipts.android.persistence.database.tables.CSVTable;
 import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
 import co.smartreceipts.android.persistence.database.tables.DistanceTable;
@@ -42,7 +34,6 @@ import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.CursorUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.utils.sorting.AlphabeticalCaseInsensitiveCharSequenceComparator;
 import io.reactivex.Single;
@@ -121,7 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         // Tables:
         mTables = new ArrayList<>();
         mTripsTable = new TripsTable(this, storageManager, preferences);
-        mDistanceTable = new DistanceTable(this, mTripsTable, preferences.get(UserPreference.General.DefaultCurrency));
+        mDistanceTable = new DistanceTable(this, mTripsTable, preferences);
         mCategoriesTable = new CategoriesTable(this, orderingPreferencesManager.isCategoriesTableOrdered());
         mCSVTable = new CSVTable(this, mReceiptColumnDefinitions, orderingPreferencesManager.isCsvColumnsOrdered());
         mPDFTable = new PDFTable(this, mReceiptColumnDefinitions, orderingPreferencesManager.isPdfColumnsOrdered());

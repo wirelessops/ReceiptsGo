@@ -2,21 +2,26 @@ package co.smartreceipts.android.persistence.database.tables.ordering;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import co.smartreceipts.android.di.scopes.ApplicationScope;
+import dagger.Lazy;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 
 @ApplicationScope
 public class OrderingPreferencesManager {
 
-    private final Context appContext;
+    public static final String ORDERING_PREFERENCES = "Smart Receipts ordering preferences";
+
+    private final Lazy<SharedPreferences> sharedPreferencesLazy;
 
     private static final class Keys {
-        /**
-         * Key to get ordering preferences
-         */
-        private static final String ORDERING_PREFERENCES = "Smart Receipts ordering preferences";
 
         /**
          * Key to track if the user has already opened "Manage categories" screen.
@@ -45,8 +50,15 @@ public class OrderingPreferencesManager {
     }
 
     @Inject
-    public OrderingPreferencesManager(Context context) {
-        this.appContext = context;
+    public OrderingPreferencesManager(@NonNull @Named(ORDERING_PREFERENCES) Lazy<SharedPreferences> sharedPreferences) {
+        this.sharedPreferencesLazy = Preconditions.checkNotNull(sharedPreferences);
+    }
+
+    public void initialize() {
+        // Load the shared preferences in a background thread
+        Completable.fromCallable(this::getSharedPreferences)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     public void saveCategoriesTableOrdering() {
@@ -105,6 +117,6 @@ public class OrderingPreferencesManager {
     }
 
     private SharedPreferences getSharedPreferences() {
-        return appContext.getSharedPreferences(Keys.ORDERING_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferencesLazy.get();
     }
 }

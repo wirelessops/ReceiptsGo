@@ -27,6 +27,8 @@ import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import io.reactivex.Single;
 
 import static org.junit.Assert.assertEquals;
@@ -72,6 +74,9 @@ public class DistanceTableTest {
     Table<Trip, String> mTripsTable;
 
     @Mock
+    UserPreferenceManager userPreferenceManager;
+
+    @Mock
     Trip mTrip1;
 
     @Mock
@@ -102,9 +107,10 @@ public class DistanceTableTest {
         when(mTripsTable.findByPrimaryKey(TRIP_1)).thenReturn(Single.just(mTrip1));
         when(mTripsTable.findByPrimaryKey(TRIP_2)).thenReturn(Single.just(mTrip2));
         when(mTripsTable.findByPrimaryKey(TRIP_3)).thenReturn(Single.just(mTrip3));
+        when(userPreferenceManager.get(UserPreference.General.DefaultCurrency)).thenReturn(CURRENCY_CODE);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mDistanceTable = new DistanceTable(mSQLiteOpenHelper, mTripsTable, CURRENCY_CODE);
+        mDistanceTable = new DistanceTable(mSQLiteOpenHelper, mTripsTable, userPreferenceManager);
 
         // Now create the table and insert some defaults
         mDistanceTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);
