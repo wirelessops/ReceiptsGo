@@ -20,7 +20,9 @@ public class LocalRepositoryModule {
     @Provides
     @ApplicationScope
     public static StorageManager provideStorageManager(Context context) {
-        return StorageManager.getInstance(context);
+        final StorageManager storageManager = StorageManager.getInstance(context);
+        storageManager.initialize(); // TODO: Move all database calls off the UI thread to remove this requirement
+        return storageManager;
     }
 
     @Provides

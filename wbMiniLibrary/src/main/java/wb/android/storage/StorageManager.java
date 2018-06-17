@@ -6,30 +6,27 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -40,44 +37,27 @@ public class StorageManager {
 
 	private static final String TAG = "StorageManager";
 
-	protected File _root;
+	protected final DirectoryRoot root;
 
 	private static SDCardFileManager _externalInstance = null;
 	private static InternalStorageManager _internalInstance = null;
 
-	protected StorageManager(File root) {
-		_root = root;
+	protected StorageManager(DirectoryRoot root) {
+		this.root = root;
 	}
-
 
 	public static StorageManager getInstance(Context context) {
 		if (_externalInstance != null)
 			return _externalInstance;
-		try {
-			_externalInstance = new SDCardFileManager(context);
-			return _externalInstance;
-		}
-		catch (SDCardStateException e) {
-			if (_internalInstance != null)
-				return _internalInstance;
-			else {
-				_internalInstance = new InternalStorageManager(context);
-				return _internalInstance;
-			}
-		}
+
+		_externalInstance = new SDCardFileManager(context);
+		return _externalInstance;
 	}
 
 	public static final SDCardFileManager getExternalInstance(Context context) throws SDCardStateException {
 		if (_externalInstance != null)
 			return _externalInstance;
 		_externalInstance = new SDCardFileManager(context);
-		return _externalInstance;
-	}
-
-	public static final SDCardFileManager getExternalInstance(Context context, String[] allowedStates) throws SDCardStateException {
-		if (_externalInstance != null)
-			return _externalInstance;
-		_externalInstance = new SDCardFileManager(context, allowedStates);
 		return _externalInstance;
 	}
 
@@ -88,34 +68,32 @@ public class StorageManager {
 		return _internalInstance;
 	}
 
-	public static final File getDownloadsFolder() {
-		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-	}
-
 	public static String GetRootPath() {
 		if (_externalInstance != null)
-			return _externalInstance._root.getAbsolutePath();
+			return _externalInstance.root.get().getAbsolutePath();
 		else if (_internalInstance != null)
-			return _internalInstance._root.getAbsolutePath();
+			return _internalInstance.root.get().getAbsolutePath();
 		else
 			return "";
 	}
 
+	public void initialize() {
+		// Attempt to pre-fetch our root
+		Executors.newSingleThreadExecutor().execute(new Runnable() {
+			@Override
+			public void run() {
+				root.get();
+			}
+		});
+	}
+
 	public File getRoot() {
-		return new File(_root.getAbsolutePath());
-	}
-
-	public String getRootPath() {
-		return _root.getAbsolutePath();
-	}
-
-	public boolean isRoot(final File dir) {
-		return dir.equals(_root);
+		return new File(root.get().getAbsolutePath());
 	}
 
 	// Returns the directory if successfully built. Returns null otherwise
 	public File mkdir(final String name) {
-		return mkdirHelper(_root, name);
+		return mkdirHelper(root.get(), name);
 	}
 
 	public File mkdir(final File root, final String name) {
@@ -133,7 +111,7 @@ public class StorageManager {
 	}
 
 	public File getFile(final String filename) {
-		return new File(_root, filename);
+		return new File(root.get(), filename);
 	}
 
 	public File getFile(final File root, final String filename) {
@@ -172,7 +150,7 @@ public class StorageManager {
 	}
 
 	public boolean delete(final String filename) {
-		return deleteHelper(new File(_root, filename));
+		return deleteHelper(new File(root.get(), filename));
 	}
 
 	public boolean delete(final File dir, final String filename) {
@@ -226,16 +204,8 @@ public class StorageManager {
 		return renamedFiled.delete();
 	}
 
-	public boolean deleteAll() {
-		final File[] files = _root.listFiles();
-		final int len = files.length;
-		for (int i = 0; i < len; i++)
-			deleteRecursively(files[i]);
-		return (_root.listFiles().length == 0);
-	}
-
 	public boolean write(final String filename, final byte[] data) {
-		return writeHelper(_root, filename, data);
+		return writeHelper(root.get(), filename, data);
 	}
 
 	public boolean write(final File dir, final String filename, final byte[] data) {
@@ -269,7 +239,7 @@ public class StorageManager {
 	}
 
 	public boolean write(final String filename, final String data) {
-		return writeHelper(_root, filename, data);
+		return writeHelper(root.get(), filename, data);
 	}
 
 	public boolean write(final File dir, final String filename, final String data) {
@@ -298,49 +268,6 @@ public class StorageManager {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Appends a string to the end of an existing file
-	 * 
-	 * @param filename
-	 *            - the {@link String} representing the file name (in the root directory)
-	 * @param string
-	 *            - the {@link String} to add to the end
-	 * @return {@code true} if the append succeeded. {@code false} otherwise
-	 */
-	public boolean appendTo(final String filename, final String string) {
-		PrintWriter appendWriter = null;
-		try {
-			appendWriter = new PrintWriter(new BufferedWriter(new FileWriter(getFile(filename), true)));
-			appendWriter.println(string);
-			return true;
-		}
-		catch (IOException e) {
-			Log.e(TAG, "Caught IOException in appendTo", e);
-			return false;
-		}
-		finally {
-			if (appendWriter != null) {
-				appendWriter.close();
-			}
-		}
-	}
-
-	public boolean createFile(final File file) {
-		try {
-			if (!file.exists()) {
-				return file.createNewFile();
-			}
-			return true;
-		}
-		catch (IOException e) {
-			return false;
-		}
-	}
-
-	public boolean writeBitmap(final Bitmap bitmap, final String filename, final CompressFormat format, int quality) {
-		return writeBitmapHelper(_root, bitmap, filename, format, quality);
 	}
 
 	public boolean writeBitmap(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality) {
@@ -480,7 +407,7 @@ public class StorageManager {
 	}
 
 	public boolean copy(File destination, boolean overwrite) throws IOException {
-		return copyHelper(_root, destination, overwrite);
+		return copyHelper(root.get(), destination, overwrite);
 	}
 
 	public boolean copy(File source, File destination, boolean overwrite) throws IOException {
@@ -600,7 +527,7 @@ public class StorageManager {
 	}
 
 	public File[] listFilesAndDirectories() {
-		return _root.listFiles();
+		return root.get().listFiles();
 	}
 
 	public File[] listFilesAndDirectories(final File root) {
@@ -608,7 +535,7 @@ public class StorageManager {
 	}
 
 	public File[] listFiles() {
-		return listFilesHelper(_root);
+		return listFilesHelper(root.get());
 	}
 
 	public File[] listFiles(final File root) {
@@ -625,7 +552,7 @@ public class StorageManager {
 	}
 
 	public File[] listDirs() {
-		return listDirsHelper(_root);
+		return listDirsHelper(root.get());
 	}
 
 	public File[] listDirs(final File root) {
@@ -642,7 +569,7 @@ public class StorageManager {
 	}
 
 	public File[] list(final FileFilter filter) {
-		return _root.listFiles(filter);
+		return root.get().listFiles(filter);
 	}
 
 	public File[] list(final File root, final FileFilter filter) {
@@ -650,7 +577,7 @@ public class StorageManager {
 	}
 
 	public File[] list(final String extension) {
-		return listHelper(_root, extension);
+		return listHelper(root.get(), extension);
 	}
 
 	public File[] list(final File root, final String extension) {
@@ -671,10 +598,6 @@ public class StorageManager {
 		return list(root, ff);
 	}
 
-	public Bitmap getBitmap(final String filename) {
-		return getBitmapHelper(_root, filename);
-	}
-
 	public Bitmap getBitmap(final File root, final String filename) {
 		return getBitmapHelper(root, filename);
 	}
@@ -691,18 +614,6 @@ public class StorageManager {
 
 	public Bitmap getMutableMemoryEfficientBitmap(File file) {
 		return getMutableMemoryEfficientBitmapHelper(file, Bitmap.Config.RGB_565, 1024);
-	}
-
-	public Bitmap getMutableMemoryEfficientBitmap(File file, Bitmap.Config config) {
-		return getMutableMemoryEfficientBitmapHelper(file, config, 1024);
-	}
-
-	public Bitmap getMutableMemoryEfficientBitmap(File file, int maxDimension) {
-		return getMutableMemoryEfficientBitmapHelper(file, Bitmap.Config.RGB_565, 1024);
-	}
-
-	public Bitmap getMutableMemoryEfficientBitmap(File file, Bitmap.Config config, int maxDimension) {
-		return getMutableMemoryEfficientBitmapHelper(file, config, maxDimension);
 	}
 
 	private final Bitmap getMutableMemoryEfficientBitmapHelper(File file, Bitmap.Config config, int maxDimension) {
@@ -741,7 +652,7 @@ public class StorageManager {
 	}
 
 	public FileOutputStream getFOS(String filename) throws FileNotFoundException {
-		return getFOSHelper(_root, filename);
+		return getFOSHelper(root.get(), filename);
 	}
 
 	public FileOutputStream getFOS(File dir, String filename) throws FileNotFoundException {
@@ -755,20 +666,12 @@ public class StorageManager {
 		return new FileOutputStream(path + filename);
 	}
 
-	public File zipBuffered(int buffer) {
-		return zipBufferedHelper(_root, buffer, null);
-	}
-
 	public File zipBuffered(int buffer, FileFilter filter) {
-		return zipBufferedHelper(_root, buffer, filter);
+		return zipBufferedHelper(root.get(), buffer, filter);
 	}
 
 	public File zipBuffered(File inputDir, int buffer) {
 		return zipBufferedHelper(inputDir, buffer, null);
-	}
-
-	public File zipBuffered(File inputDir, int buffer, FileFilter filter) {
-		return zipBufferedHelper(inputDir, buffer, filter);
 	}
 
 	// Uses a buffer to conserver memory
@@ -831,19 +734,7 @@ public class StorageManager {
 	}
 
 	public boolean unzip(File zip, boolean overwrite) {
-		return unzipHelper(zip, _root, 8192, overwrite);
-	}
-
-	public boolean unzip(File zip, int buffer, boolean overwrite) {
-		return unzipHelper(zip, _root, buffer, overwrite);
-	}
-
-	public boolean unzip(File zip, File extractTo, boolean overwrite) {
-		return unzipHelper(zip, extractTo, 8192, overwrite);
-	}
-
-	public boolean unzip(File zip, File extractTo, int buffer, boolean overwrite) {
-		return unzipHelper(zip, extractTo, buffer, overwrite);
+		return unzipHelper(zip, root.get(), 8192, overwrite);
 	}
 
 	private boolean unzipHelper(File zip, File extractTo, int buffer, boolean overwrite) {
@@ -975,7 +866,7 @@ public class StorageManager {
 	}
 
 	public void print() {
-		printHelper(_root, "> ");
+		printHelper(root.get(), "> ");
 	}
 
 	private void printHelper(File file, String indent) {
@@ -994,7 +885,7 @@ public class StorageManager {
 	 * 
 	 * @param file
 	 *            - the file to get the extension from
-     * @deprecated in favor of {@link UriUtils}
+     * @deprecated in favor of {UriUtils}
 	 * @return the extension as a string
 	 */
     @Nullable

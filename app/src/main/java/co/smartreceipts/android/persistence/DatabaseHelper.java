@@ -136,11 +136,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
                                                    OrderingPreferencesManager orderingPreferencesManager) {
         if (INSTANCE == null || !INSTANCE.isOpen()) { // If we don't have an instance or it's closed
             String databasePath = StorageManager.GetRootPath();
-            if (BuildConfig.DEBUG) {
-                if (databasePath.equals("")) {
-                    throw new RuntimeException("The SDCard must be created before GetRootPath is called in DBHelper");
-                }
-            }
             if (!databasePath.endsWith(File.separator)) {
                 databasePath = databasePath + File.separator;
             }
