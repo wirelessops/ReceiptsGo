@@ -126,7 +126,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         mTables.add(mPaymentMethodsTable);
         mTables.add(mReceiptsTable);
 
-        this.getReadableDatabase(); // Called here, so onCreate gets called on the UI thread
     }
 
     public static synchronized DatabaseHelper getInstance(Context context, StorageManager storageManager,
