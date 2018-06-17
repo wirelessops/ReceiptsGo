@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -94,8 +95,12 @@ public class PurchaseManager {
         this(context, purchaseWallet, analytics, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
-    public PurchaseManager(@NonNull Context context, @NonNull PurchaseWallet purchaseWallet, @NonNull Analytics analytics,
-                           @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
+    @VisibleForTesting
+    PurchaseManager(@NonNull Context context,
+                    @NonNull PurchaseWallet purchaseWallet,
+                    @NonNull Analytics analytics,
+                    @NonNull Scheduler subscribeOnScheduler,
+                    @NonNull Scheduler observeOnScheduler) {
         this.context = context.getApplicationContext();
         this.purchaseWallet = purchaseWallet;
         this.analytics = analytics;
@@ -421,6 +426,7 @@ public class PurchaseManager {
     @NonNull
     private Observable<Set<AvailablePurchase>> getAvailablePurchases(@NonNull final ArrayList<String> skus, @NonNull final String googleProductType) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
+                .subscribeOn(subscribeOnScheduler)
                 .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
                     try {
                         // Next, let's figure out what is available for purchase
