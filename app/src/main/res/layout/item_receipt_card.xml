@@ -8,7 +8,7 @@
     android:layout_marginEnd="@dimen/margin_tiny"
     android:layout_marginStart="@dimen/margin_tiny"
     android:layout_marginTop="@dimen/margin_tiniest"
-    android:background="@color/selected_card_background"
+    android:background="@drawable/card_selector"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <android.support.constraint.ConstraintLayout
