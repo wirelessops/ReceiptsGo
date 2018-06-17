@@ -11,6 +11,12 @@ import android.support.annotation.NonNull;
 public enum ConfigurableStaticFeature implements Feature {
 
     /**
+     * Determines if we automatically open the UI screen for our last trip. Currently set to false
+     * while we generally improve app start times and screen performance
+     */
+    AutomaticallyLaunchLastTrip(false),
+
+    /**
      * Since Android has a bug on pre-O devices for PDF rendering, this enables "Compat" PDF rendering
      * in which we use our local '.so' libraries for PDF generation
      */

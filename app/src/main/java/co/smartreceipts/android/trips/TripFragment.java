@@ -43,6 +43,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.tooltip.StaticTooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.model.StaticTooltip;
+import co.smartreceipts.android.utils.ConfigurableStaticFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
@@ -233,7 +234,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             }
             tripCardAdapter.notifyDataSetChanged(trips);
 
-            if (!trips.isEmpty() && navigateToLastTrip) {
+            if (!trips.isEmpty() && navigateToLastTrip && ConfigurableStaticFeature.AutomaticallyLaunchLastTrip.isEnabled(getContext())) {
                 navigateToLastTrip = false;
                 // If we have trips, open up whatever one was last used
                 final LastTripController lastTripController = new LastTripController(getActivity());
