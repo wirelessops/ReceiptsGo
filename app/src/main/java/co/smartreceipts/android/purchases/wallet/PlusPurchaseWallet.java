@@ -1,10 +1,8 @@
 package co.smartreceipts.android.purchases.wallet;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 
 import org.json.JSONException;
 
@@ -15,16 +13,12 @@ import javax.inject.Inject;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.ManagedProductFactory;
+import dagger.Lazy;
 
 public final class PlusPurchaseWallet extends DefaultPurchaseWallet {
 
     @Inject
-    public PlusPurchaseWallet(@NonNull Context context) {
-        super(context);
-    }
-
-    @VisibleForTesting
-    protected PlusPurchaseWallet(@NonNull SharedPreferences preferences) {
+    public PlusPurchaseWallet(@NonNull Lazy<SharedPreferences> preferences) {
         super(preferences);
     }
 

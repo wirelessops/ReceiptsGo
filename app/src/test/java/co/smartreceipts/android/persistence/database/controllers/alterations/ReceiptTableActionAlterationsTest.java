@@ -20,6 +20,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.BuilderFactory1;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
+import dagger.Lazy;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 
@@ -60,6 +61,9 @@ public class ReceiptTableActionAlterationsTest {
     ReceiptBuilderFactory receiptBuilderFactory;
 
     @Mock
+    Lazy<Picasso> picassoLazy;
+
+    @Mock
     Picasso picasso;
 
     @Mock
@@ -76,6 +80,7 @@ public class ReceiptTableActionAlterationsTest {
         when(receiptBuilderFactory.build()).thenReturn(receipt);
         when(receiptBuilderFactoryFactory.build(receipt)).thenReturn(receiptBuilderFactory);
         when(receiptBuilderFactory.setIndex(anyInt())).thenReturn(receiptBuilderFactory);
+        when(picassoLazy.get()).thenReturn(picasso);
 
         doAnswer(invocation -> new File((String) invocation.getArgument(1))).when(storageManager).getFile(any(File.class), anyString());
         doAnswer(invocation -> new File((String) invocation.getArgument(1))).when(storageManager).rename(any(File.class), anyString());
@@ -88,7 +93,7 @@ public class ReceiptTableActionAlterationsTest {
             return receiptBuilderFactory;
         }).when(receiptBuilderFactory).setIndex(anyInt());
 
-        receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory, picasso);
+        receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory, picassoLazy);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

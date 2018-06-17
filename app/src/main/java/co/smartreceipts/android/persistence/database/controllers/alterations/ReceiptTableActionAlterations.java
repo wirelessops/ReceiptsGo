@@ -26,6 +26,7 @@ import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.utils.FileUtils;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.Lazy;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 
@@ -35,19 +36,20 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     private final ReceiptsTable receiptsTable;
     private final StorageManager storageManager;
     private final BuilderFactory1<Receipt, ReceiptBuilderFactory> receiptBuilderFactoryFactory;
-    private final Picasso picasso;
+    private final Lazy<Picasso> picasso;
 
     public ReceiptTableActionAlterations(@NonNull Context context,
                                          @NonNull ReceiptsTable receiptsTable,
-                                         @NonNull StorageManager storageManager) {
-        this(context, receiptsTable, storageManager, new ReceiptBuilderFactoryFactory(), Picasso.get());
+                                         @NonNull StorageManager storageManager,
+                                         @NonNull Lazy<Picasso> picasso) {
+        this(context, receiptsTable, storageManager, new ReceiptBuilderFactoryFactory(), picasso);
     }
 
     ReceiptTableActionAlterations(@NonNull Context context,
                                   @NonNull ReceiptsTable receiptsTable,
                                   @NonNull StorageManager storageManager,
                                   @NonNull BuilderFactory1<Receipt, ReceiptBuilderFactory> receiptBuilderFactoryFactory,
-                                  @NonNull Picasso picasso) {
+                                  @NonNull Lazy<Picasso> picasso) {
         this.context = Preconditions.checkNotNull(context);
         this.receiptsTable = Preconditions.checkNotNull(receiptsTable);
         this.storageManager = Preconditions.checkNotNull(storageManager);
@@ -74,7 +76,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                         final String oldExtension = "." + UriUtils.getExtension(oldReceipt.getFile(), context);
                         final String newExtension = "." + UriUtils.getExtension(newReceipt.getFile(), context);
                         if (newExtension.equals(oldExtension)) {
-                            picasso.invalidate(oldReceipt.getFile());
+                            picasso.get().invalidate(oldReceipt.getFile());
                             if (newReceipt.getFile().renameTo(oldReceipt.getFile())) {
                                 // Note: Keep 'oldReceipt' here, since File is immutable (and renamedTo doesn't change it)
                                 factory.setFile(oldReceipt.getFile());
@@ -113,7 +115,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             if (oldReceipt.getFile() != null) {
                 // Delete old file if user removed or changed it
                 if (newReceipt.getFile() == null  || !newReceipt.getFile().equals(oldReceipt.getFile())) {
-                    picasso.invalidate(oldReceipt.getFile());
+                    picasso.get().invalidate(oldReceipt.getFile());
                     storageManager.delete(oldReceipt.getFile());
                 }
             }

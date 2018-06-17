@@ -44,6 +44,7 @@ import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.plugins.RxJavaPlugins;
+import wb.android.BuildConfig;
 import wb.android.flex.Flex;
 import wb.android.storage.SDCardStateException;
 import wb.android.storage.StorageManager;
@@ -102,6 +103,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
     @Inject
     MarkedForDeletionCleaner markedForDeletionCleaner;
 
+
     private AppComponent appComponent;
 
     @Override
@@ -127,8 +129,6 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
                     .build());
         }
 
-        // TODO: The whole dagger process here takes ~1s to initialize
-        // TODO: Investigate when addressed: https://github.com/frogermcs/AndroidDevMetrics/issues/49
         appComponent = DaggerAppComponent.builder()
                 .baseAppModule(new BaseAppModule(this))
                 .build();

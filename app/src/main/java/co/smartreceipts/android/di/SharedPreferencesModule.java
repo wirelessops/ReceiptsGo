@@ -2,6 +2,7 @@ package co.smartreceipts.android.di;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import javax.inject.Named;
 
@@ -19,6 +20,12 @@ import wb.android.storage.StorageManager;
 
 @Module
 public class SharedPreferencesModule {
+
+    @Provides
+    @ApplicationScope
+    public static SharedPreferences providesDefaultPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
 
     @Provides
     @ApplicationScope

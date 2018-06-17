@@ -11,6 +11,7 @@ import dagger.Provides;
                     NetworkingModule.class,
                     LocalRepositoryModule.class,
                     SharedPreferencesModule.class,
+                    ImageLoadingModule.class,
                     ConfigurationModule.class})
 public class BaseAppModule {
 

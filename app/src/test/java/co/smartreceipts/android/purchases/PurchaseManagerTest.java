@@ -124,6 +124,7 @@ public class PurchaseManagerTest {
     public void onCreate() {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
+        verify(purchaseWallet).getActivePurchases();
     }
 
     @Test

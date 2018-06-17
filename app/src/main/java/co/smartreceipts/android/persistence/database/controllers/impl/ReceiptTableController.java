@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,6 +23,7 @@ import co.smartreceipts.android.persistence.database.controllers.alterations.Rec
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
@@ -34,14 +36,17 @@ public class ReceiptTableController extends TripForeignKeyAbstractTableControlle
     private final CopyOnWriteArrayList<ReceiptTableEventsListener> mReceiptTableEventsListeners = new CopyOnWriteArrayList<>();
 
     @Inject
-    public ReceiptTableController(Context context, PersistenceManager persistenceManager, Analytics analytics,
-                                  TripTableController tripTableController) {
+    public ReceiptTableController(@NonNull Context context,
+                                  @NonNull PersistenceManager persistenceManager,
+                                  @NonNull Analytics analytics,
+                                  @NonNull TripTableController tripTableController,
+                                  @NonNull Lazy<Picasso> picassoLazy) {
         this(context, persistenceManager.getDatabase().getReceiptsTable(), persistenceManager.getStorageManager(),
-                analytics, tripTableController);
+                analytics, tripTableController, picassoLazy);
     }
 
-    private ReceiptTableController(@NonNull Context context, @NonNull ReceiptsTable receiptsTable, @NonNull StorageManager storageManager, @NonNull Analytics analytics, @NonNull TripTableController tripTableController) {
-        this(receiptsTable, new ReceiptTableActionAlterations(context, receiptsTable, storageManager), analytics, tripTableController);
+    private ReceiptTableController(@NonNull Context context, @NonNull ReceiptsTable receiptsTable, @NonNull StorageManager storageManager, @NonNull Analytics analytics, @NonNull TripTableController tripTableController, @NonNull Lazy<Picasso> picassoLazy) {
+        this(receiptsTable, new ReceiptTableActionAlterations(context, receiptsTable, storageManager, picassoLazy), analytics, tripTableController);
     }
 
     private ReceiptTableController(@NonNull ReceiptsTable receiptsTable, @NonNull ReceiptTableActionAlterations receiptTableActionAlterations, @NonNull Analytics analytics, @NonNull TripTableController tripTableController) {

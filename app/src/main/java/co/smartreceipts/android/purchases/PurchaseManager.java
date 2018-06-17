@@ -1,5 +1,6 @@
 package co.smartreceipts.android.purchases;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -136,6 +137,7 @@ public class PurchaseManager {
      * Initializes this class by binding to Google's {@link IInAppBillingService}, fetching a complete
      * list of all entities that we own, and finally persisting all changes to our {@link PurchaseWallet}.
      */
+    @SuppressLint("CheckResult")
     public void initialize(@NonNull Application application) {
         Logger.debug(PurchaseManager.this, "Initializing the purchase manager");
         application.registerActivityLifecycleCallbacks(new PurchaseManagerActivityLifecycleCallbacks(this));
@@ -143,6 +145,11 @@ public class PurchaseManager {
                 .subscribeOn(subscribeOnScheduler)
                 .subscribe(managedProducts -> Logger.debug(PurchaseManager.this, "Successfully initialized all user owned purchases {}.", managedProducts),
                         throwable -> Logger.error(PurchaseManager.this, "Failed to initialize all user owned purchases.", throwable));
+
+        // Pre-load all of our purchases into memory
+        Observable.fromCallable(purchaseWallet::getActivePurchases)
+                .subscribeOn(subscribeOnScheduler)
+                .subscribe();
     }
 
     /**
