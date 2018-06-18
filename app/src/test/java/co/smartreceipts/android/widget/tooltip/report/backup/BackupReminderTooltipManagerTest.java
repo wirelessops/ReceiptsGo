@@ -2,8 +2,10 @@ package co.smartreceipts.android.widget.tooltip.report.backup;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 
 import java.sql.Date;
 import java.util.concurrent.TimeUnit;
@@ -11,16 +13,18 @@ import java.util.concurrent.TimeUnit;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
+import io.reactivex.observers.TestObserver;
 
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
 public class BackupReminderTooltipManagerTest {
 
     private final static int RECEIPTS_FEW = 10;
     private final static int RECEIPTS_LOT = 20;
     private final static int DAYS_FEW = 7;
     private final static int DAYS_LOT = 12;
-    public static final int NO_PREVIOUS_BACKUPS = -1;
+    private static final int NO_PREVIOUS_BACKUPS = -1;
 
 
     private BackupReminderTooltipManager manager;
@@ -44,8 +48,9 @@ public class BackupReminderTooltipManagerTest {
     public void getEmptyIfAutoBackupsEnabled() {
         when(backupProvidersManager.getSyncProvider()).thenReturn(SyncProvider.GoogleDrive);
 
-        manager.needToShowBackupReminder().test()
-                .assertComplete()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertNoErrors()
                 .assertNoValues();
     }
@@ -55,7 +60,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getReceiptsCountWithoutBackup()).thenReturn(RECEIPTS_FEW);
         when(storage.getLastManualBackupDate()).thenReturn(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(DAYS_FEW)));
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertNoValues();
@@ -66,7 +73,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getReceiptsCountWithoutBackup()).thenReturn(RECEIPTS_FEW);
         when(storage.getLastManualBackupDate()).thenReturn(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(DAYS_LOT)));
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertNoValues();
@@ -77,7 +86,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getReceiptsCountWithoutBackup()).thenReturn(RECEIPTS_LOT);
         when(storage.getLastManualBackupDate()).thenReturn(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(DAYS_FEW)));
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertNoValues();
@@ -88,7 +99,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getReceiptsCountWithoutBackup()).thenReturn(RECEIPTS_LOT);
         when(storage.getLastManualBackupDate()).thenReturn(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(DAYS_LOT)));
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertValue(days -> days == DAYS_LOT);
@@ -100,7 +113,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getLastManualBackupDate()).thenReturn(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(DAYS_LOT)));
         when(storage.getProlongationsCount()).thenReturn(1);
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertNoValues();
@@ -112,7 +127,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getLastManualBackupDate()).thenReturn(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(DAYS_LOT) * 2));
         when(storage.getProlongationsCount()).thenReturn(1);
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertValue(days -> days == DAYS_LOT * 2);
@@ -123,7 +140,9 @@ public class BackupReminderTooltipManagerTest {
         when(storage.getReceiptsCountWithoutBackup()).thenReturn(RECEIPTS_LOT);
         when(storage.getLastManualBackupDate()).thenReturn(new Date(0));
 
-        manager.needToShowBackupReminder().test()
+        final TestObserver<Integer> testObserver = manager.needToShowBackupReminder().test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete()
                 .assertComplete()
                 .assertNoErrors()
                 .assertValue(days -> days == NO_PREVIOUS_BACKUPS);

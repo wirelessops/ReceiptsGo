@@ -16,22 +16,39 @@ import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.TooltipView;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 @FragmentScope
 public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, ReportTooltipInteractor<? extends FragmentActivity>> implements BackupProviderChangeListener {
 
     private final BackupProvidersManager backupProvidersManager;
     private final Analytics analytics;
+    private final Scheduler subscribeOnScheduler;
+    private final Scheduler observeOnScheduler;
 
     @SuppressWarnings("unchecked")
     @Inject
-    public ReportTooltipPresenter(@NonNull TooltipView view, @NonNull ReportTooltipInteractor interactor,
+    public ReportTooltipPresenter(@NonNull TooltipView view,
+                                  @NonNull ReportTooltipInteractor interactor,
                                   @NonNull BackupProvidersManager backupProvidersManager,
                                   @NonNull Analytics analytics) {
-        super(view, interactor);
+        this(view, interactor, backupProvidersManager, analytics, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
 
+    @SuppressWarnings("unchecked")
+    public ReportTooltipPresenter(@NonNull TooltipView view,
+                                  @NonNull ReportTooltipInteractor interactor,
+                                  @NonNull BackupProvidersManager backupProvidersManager,
+                                  @NonNull Analytics analytics,
+                                  @NonNull Scheduler subscribeOnScheduler,
+                                  @NonNull Scheduler observeOnScheduler) {
+        super(view, interactor);
         this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
         this.analytics = Preconditions.checkNotNull(analytics);
+        this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
+        this.observeOnScheduler = Preconditions.checkNotNull(observeOnScheduler);
     }
 
     @Override
@@ -40,6 +57,8 @@ public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, Repo
         updateProvider(backupProvidersManager.getSyncProvider());
 
         compositeDisposable.add(interactor.checkTooltipCauses()
+                .subscribeOn(subscribeOnScheduler)
+                .observeOn(observeOnScheduler)
                 .subscribe(view::present));
 
         compositeDisposable.add(view.getTooltipsClicks()

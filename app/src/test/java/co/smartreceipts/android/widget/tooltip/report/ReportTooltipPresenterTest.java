@@ -14,6 +14,7 @@ import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.widget.tooltip.TooltipView;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -24,7 +25,6 @@ public class ReportTooltipPresenterTest {
 
     private static final int DAYS = 15;
 
-    @InjectMocks
     ReportTooltipPresenter presenter;
 
     @Mock
@@ -49,6 +49,7 @@ public class ReportTooltipPresenterTest {
         when(tooltipView.getCloseButtonClicks()).thenReturn(Observable.never());
         when(tooltipView.getTooltipsClicks()).thenReturn(Observable.never());
 
+        presenter = new ReportTooltipPresenter(tooltipView, interactor, backupProvidersManager, analytics, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test
