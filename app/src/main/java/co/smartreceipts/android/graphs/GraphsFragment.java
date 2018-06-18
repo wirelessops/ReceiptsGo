@@ -98,11 +98,8 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         return new GraphsFragment();
     }
 
-    private long start;
-
     @Override
     public void onAttach(Context context) {
-        start = System.currentTimeMillis();
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -140,12 +137,6 @@ public class GraphsFragment extends WBFragment implements GraphsView {
                 presenter.subscribe(getTrip());
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Logger.debug(this, "Will: GraphFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override

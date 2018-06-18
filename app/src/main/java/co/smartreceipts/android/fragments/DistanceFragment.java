@@ -56,11 +56,8 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     }
 
 
-    private long start;
-
     @Override
     public void onAttach(Context context) {
-        start = System.currentTimeMillis();
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -106,7 +103,6 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
         Logger.debug(this, "onResume");
         distanceTableController.subscribe(this);
         distanceTableController.get(trip);
-        Logger.debug(this, "Will: DistanceFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override

@@ -193,11 +193,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private boolean importIntentMode;
 
-    private long start;
-
     @Override
     public void onAttach(Context context) {
-        start = System.currentTimeMillis();
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -400,7 +397,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                         (intentImportResultOptional.get().getFileType() == FileType.Image || intentImportResultOptional.get().getFileType() == FileType.Pdf))
                 .subscribe(importIntentPresent -> importIntentMode = importIntentPresent));
 
-        Logger.debug(this, "Will: ReceiptsListFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override
