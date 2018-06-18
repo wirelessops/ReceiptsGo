@@ -36,16 +36,22 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
 
     @Inject
     Flex flex;
+
     @Inject
     PersistenceManager persistenceManager;
+
     @Inject
     Analytics analytics;
+
     @Inject
     NavigationHandler navigationHandler;
+
     @Inject
     GenerateInfoTooltipManager generateInfoTooltipManager;
+
     @Inject
     PurchaseWallet purchaseWallet;
+
     @Inject
     UserPreferenceManager preferenceManager;
 
@@ -62,26 +68,37 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         return new GenerateReportFragment();
     }
 
+    private long start;
+
     @Override
     public void onAttach(Context context) {
+        start = System.currentTimeMillis();
         AndroidSupportInjection.inject(this);
+        Logger.debug(this, "Will: 1. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         super.onAttach(context);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.generate_report_layout, container, false);
+        Logger.debug(this, "Will: 2a. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         pdfFullCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_pdf_full);
+        Logger.debug(this, "Will: 2b. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         pdfImagesCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_pdf_images);
+        Logger.debug(this, "Will: 2c. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         csvCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_csv);
+        Logger.debug(this, "Will: 2d. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         zipWithMetadataCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_zip_with_metadata);
+        Logger.debug(this, "Will: 2e. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         zipCheckbox = root.findViewById(R.id.dialog_email_checkbox_zip);
+        Logger.debug(this, "Will: 2f. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         root.findViewById(R.id.receipt_action_send).setOnClickListener(this);
         root.findViewById(R.id.generate_report_tooltip).setOnClickListener(v -> {
             analytics.record(Events.Informational.ConfigureReport);
             navigationHandler.navigateToSettingsScrollToReportSection();
         });
+        Logger.debug(this, "Will: 2. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
         return root;
     }
 
@@ -92,6 +109,7 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         Logger.debug(this, "onActivityCreated");
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
+        Logger.debug(this, "Will: 3. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override
@@ -103,6 +121,12 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
                 actionBar.setSubtitle(null);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Logger.debug(this, "Will: 4. GenerateReportFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override

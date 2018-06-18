@@ -22,7 +22,6 @@ import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
-import wb.android.storage.StorageManager;
 
 /**
  * A mostly immutable implementation of the {@link co.smartreceipts.android.model.Receipt} interface that
@@ -141,21 +140,9 @@ public final class DefaultReceiptImpl implements Receipt {
     }
 
     @Override
-    public boolean hasFile() {
-        return (mFile != null && mFile.exists());
-    }
-
-    @Override
     public boolean hasImage() {
-        if (mFile != null && mFile.exists()) {
-            final String extension = StorageManager.getExtension(mFile);
-            if (extension != null
-                    && (extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("jpeg") || extension
-                    .equalsIgnoreCase("png"))) {
-                return true;
-            } else {
-                return false;
-            }
+        if (mFile != null) {
+            return mFile.getName().endsWith(".jpg") || mFile.getName().endsWith(".jpeg") || mFile.getName().endsWith(".png");
         } else {
             return false;
         }
@@ -163,13 +150,8 @@ public final class DefaultReceiptImpl implements Receipt {
 
     @Override
     public boolean hasPDF() {
-        if (mFile != null && mFile.exists()) {
-            final String extension = StorageManager.getExtension(mFile);
-            if (extension != null && extension.equalsIgnoreCase("pdf")) {
-                return true;
-            } else {
-                return false;
-            }
+        if (mFile != null) {
+            return mFile.getName().endsWith(".pdf");
         } else {
             return false;
         }
@@ -196,7 +178,7 @@ public final class DefaultReceiptImpl implements Receipt {
     @NonNull
     @Override
     public String getFilePath() {
-        if (hasFile()) {
+        if (mFile != null) {
             return mFile.getAbsolutePath();
         } else {
             return "";
@@ -206,7 +188,7 @@ public final class DefaultReceiptImpl implements Receipt {
     @NonNull
     @Override
     public String getFileName() {
-        if (hasFile()) {
+        if (mFile != null) {
             return mFile.getName();
         } else {
             return "";

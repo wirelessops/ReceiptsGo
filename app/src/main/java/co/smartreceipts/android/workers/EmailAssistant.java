@@ -361,7 +361,7 @@ public class EmailAssistant {
 
                 for (int i = 0; i < len; i++) {
                     final Receipt receipt = receipts.get(i);
-                    if (!filterOutReceipt(mPreferenceManager, receipt) && receipt.hasFile()) {
+                    if (!filterOutReceipt(mPreferenceManager, receipt) && receipt.getFile() != null && receipt.getFile().exists()) {
                         final byte[] data = mStorageManager.read(receipt.getFile());
                         if (data != null)
                             mStorageManager.write(dir, receipt.getFile().getName(), data);

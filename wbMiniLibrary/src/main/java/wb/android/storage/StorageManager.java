@@ -891,7 +891,7 @@ public class StorageManager {
     @Nullable
     @Deprecated
 	public static String getExtension(File file) {
-		if (file == null || TextUtils.isEmpty(file.getName()) || file.isDirectory()) {
+		if (file == null || TextUtils.isEmpty(file.getName())) {
 			return null;
 		}
 		String name = file.getName();

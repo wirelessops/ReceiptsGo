@@ -117,18 +117,6 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         super.onCreate();
         configureLog();
 
-        if (BuildConfig.DEBUG) {
-            Logger.debug(this, "Enabling strict mode");
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
-        }
-
         appComponent = DaggerAppComponent.builder()
                 .baseAppModule(new BaseAppModule(this))
                 .build();

@@ -51,6 +51,7 @@ import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 
 public class GraphsFragment extends WBFragment implements GraphsView {
@@ -97,8 +98,11 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         return new GraphsFragment();
     }
 
+    private long start;
+
     @Override
     public void onAttach(Context context) {
+        start = System.currentTimeMillis();
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -136,6 +140,12 @@ public class GraphsFragment extends WBFragment implements GraphsView {
                 presenter.subscribe(getTrip());
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Logger.debug(this, "Will: GraphFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override

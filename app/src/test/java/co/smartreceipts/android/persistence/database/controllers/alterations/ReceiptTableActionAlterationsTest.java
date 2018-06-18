@@ -112,7 +112,6 @@ public class ReceiptTableActionAlterationsTest {
         final String name = "name";
         final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
         when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
-        when(receipt.hasFile()).thenReturn(false);
         when(receipt.getName()).thenReturn(name);
 
         receiptTableActionAlterations.preInsert(receipt)
@@ -130,7 +129,6 @@ public class ReceiptTableActionAlterationsTest {
         final String name = "name";
         final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
         when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
-        when(receipt.hasFile()).thenReturn(true);
         when(receipt.getName()).thenReturn(name);
         when(receipt.getFile()).thenReturn(new File("12345.jpg"));
 
@@ -149,7 +147,6 @@ public class ReceiptTableActionAlterationsTest {
         final String name = "before_|\\\\?*<\\:>+[]/'\n\r\t\0\f_after";
         final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
         when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
-        when(receipt.hasFile()).thenReturn(true);
         when(receipt.getName()).thenReturn(name);
         when(receipt.getFile()).thenReturn(new File("12345.jpg"));
 
@@ -295,8 +292,6 @@ public class ReceiptTableActionAlterationsTest {
 
     @Test
     public void postUpdateSuccessWithoutFile() throws Exception {
-        when(receipt.hasFile()).thenReturn(false);
-
         final Receipt updatedReceipt = mock(Receipt.class);
         receiptTableActionAlterations.postUpdate(receipt, updatedReceipt)
                 .test()
@@ -311,8 +306,6 @@ public class ReceiptTableActionAlterationsTest {
     public void postUpdateSuccessWithSameFile() throws Exception {
         final Receipt updatedReceipt = mock(Receipt.class);
         final File file = new File("abc");
-        when(receipt.hasFile()).thenReturn(true);
-        when(updatedReceipt.hasFile()).thenReturn(true);
         when(receipt.getFile()).thenReturn(file);
         when(updatedReceipt.getFile()).thenReturn(file);
 
@@ -330,8 +323,6 @@ public class ReceiptTableActionAlterationsTest {
         final Receipt updatedReceipt = mock(Receipt.class);
         final File file = new File("abc");
         final File newFile = new File("efg");
-        when(receipt.hasFile()).thenReturn(true);
-        when(updatedReceipt.hasFile()).thenReturn(true);
         when(receipt.getFile()).thenReturn(file);
         when(updatedReceipt.getFile()).thenReturn(newFile);
 
@@ -358,8 +349,6 @@ public class ReceiptTableActionAlterationsTest {
 
     @Test
     public void postDeleteSuccessWithoutFile() throws Exception {
-        when(receipt.hasFile()).thenReturn(false);
-
         receiptTableActionAlterations.postDelete(receipt)
                 .test()
                 .assertValue(receipt)
@@ -372,7 +361,6 @@ public class ReceiptTableActionAlterationsTest {
     @Test
     public void postDeleteSuccessWithFile() throws Exception {
         final File file = new File("abc");
-        when(receipt.hasFile()).thenReturn(true);
         when(receipt.getFile()).thenReturn(file);
 
         receiptTableActionAlterations.postDelete(receipt)

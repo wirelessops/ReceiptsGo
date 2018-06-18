@@ -110,6 +110,9 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         File file = null;
         if (!TextUtils.isEmpty(path) && !DatabaseHelper.NO_DATA.equals(path)) {
             file = mStorageManager.getFile(trip.getDirectory(), path);
+            if (!file.exists()) {
+                file = null;
+            }
         }
         final SyncState syncState = mSyncStateAdapter.read(cursor);
 

@@ -3,6 +3,7 @@ package co.smartreceipts.android.persistence.database.tables.adapters;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +32,13 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
-import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.sync.model.SyncState;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,9 +49,9 @@ public class ReceiptDatabaseAdapterTest {
     private static final int ID = 5;
     private static final int PRIMARY_KEY_ID = 11;
 
-    private static final String PATH = "Image.jpg";
+    private static final File PARENT_DIR = new File(System.getProperty("java.io.tmpdir"), "Trip");
+    private static final File RECEIPT_FILE = new File(PARENT_DIR, "Image.jpg");
     private static final String NAME = "Name";
-    private static final String PARENT = "Trip";
     private static final int CATEGORY_ID = 15;
     private static final String CATEGORY_NAME = "Category";
     private static final Category CATEGORY = new ImmutableCategoryImpl(CATEGORY_ID, CATEGORY_NAME, "code");
@@ -115,6 +116,9 @@ public class ReceiptDatabaseAdapterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
+        assertTrue(PARENT_DIR.exists() || PARENT_DIR.mkdirs());
+        assertTrue(RECEIPT_FILE.exists() || RECEIPT_FILE.createNewFile());
+
         final int idIndex = 1;
         final int pathIndex = 2;
         final int nameIndex = 3;
@@ -156,9 +160,9 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getColumnIndex("custom_order_id")).thenReturn(customOrderIdIndex);
 
         when(mCursor.getInt(idIndex)).thenReturn(ID);
-        when(mCursor.getString(pathIndex)).thenReturn(PATH);
+        when(mCursor.getString(pathIndex)).thenReturn(RECEIPT_FILE.getName());
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
-        when(mCursor.getString(parentIndex)).thenReturn(PARENT);
+        when(mCursor.getString(parentIndex)).thenReturn(PARENT_DIR.getName());
         when(mCursor.getInt(categoryIdIndex)).thenReturn(CATEGORY_ID);
         when(mCursor.getDouble(priceIndex)).thenReturn(PRICE);
         when(mCursor.getDouble(taxIndex)).thenReturn(TAX);
@@ -178,7 +182,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getPosition()).thenReturn(ASCENDING_INDEX - 1);
 
         when(mReceipt.getId()).thenReturn(ID);
-        when(mReceipt.getFile()).thenReturn(new File(PATH));
+        when(mReceipt.getFile()).thenReturn(RECEIPT_FILE);
         when(mReceipt.getName()).thenReturn(NAME);
         when(mReceipt.getTrip()).thenReturn(mTrip);
         when(mReceipt.getCategory()).thenReturn(CATEGORY);
@@ -198,8 +202,8 @@ public class ReceiptDatabaseAdapterTest {
         when(mReceipt.getSource()).thenReturn(Source.Undefined);
         when(mReceipt.getSyncState()).thenReturn(mSyncState);
 
-        when(mTrip.getName()).thenReturn(PARENT);
-        when(mTrip.getDirectory()).thenReturn(new File(PARENT));
+        when(mTrip.getName()).thenReturn(PARENT_DIR.getName());
+        when(mTrip.getDirectory()).thenReturn(PARENT_DIR);
         when(mTrip.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
         when(mTrip.getTripCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
 
@@ -212,17 +216,23 @@ public class ReceiptDatabaseAdapterTest {
         when(mTax.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
         when(mTax.getExchangeRate()).thenReturn(EXCHANGE_RATE);
 
-        when(mTripsTable.findByPrimaryKey(PARENT)).thenReturn(Single.just(mTrip));
+        when(mTripsTable.findByPrimaryKey(PARENT_DIR.getName())).thenReturn(Single.just(mTrip));
         when(mPaymentMethodsTable.findByPrimaryKey(PAYMENT_METHOD_ID)).thenReturn(Single.just(PAYMENT_METHOD));
         when(mCategoriesTable.findByPrimaryKey(CATEGORY_ID)).thenReturn(Single.just(CATEGORY));
 
         when(mPrimaryKey.getPrimaryKeyValue(mReceipt)).thenReturn(PRIMARY_KEY_ID);
-        when(mStorageManager.getFile(new File(PARENT), PATH)).thenReturn(new File(PATH));
+        when(mStorageManager.getFile(PARENT_DIR, RECEIPT_FILE.getName())).thenReturn(RECEIPT_FILE);
 
         when(mSyncStateAdapter.read(mCursor)).thenReturn(mSyncState);
         when(mSyncStateAdapter.get(any(SyncState.class), any(DatabaseOperationMetadata.class))).thenReturn(mGetSyncState);
 
         mReceiptDatabaseAdapter = new ReceiptDatabaseAdapter(mTripsTable, mPaymentMethodsTable, mCategoriesTable, mStorageManager, mSyncStateAdapter);
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @After
+    public void tearDown() throws Exception {
+        RECEIPT_FILE.delete();
     }
 
     @Test
@@ -235,7 +245,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
@@ -250,7 +260,37 @@ public class ReceiptDatabaseAdapterTest {
                 .setExtraEditText3(EXTRA3)
                 .setSyncState(mSyncState)
                 .build();
-        long val = ReceiptsOrderer.Companion.getDefaultCustomOrderId(new Date(DATE));
+        assertEquals(receipt, mReceiptDatabaseAdapter.read(mCursor));
+    }
+
+    @Test
+    public void readFileThatDoesNotExist() throws Exception {
+        // Delete the receipt file
+        assertTrue(RECEIPT_FILE.delete());
+
+        // Note: Full page is backwards in the database
+        final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setTrip(mTrip)
+                .setName(NAME)
+                .setPrice(PRICE)
+                .setTax(TAX)
+                .setExchangeRate(EXCHANGE_RATE)
+                .setCategory(CATEGORY)
+                .setFile(null)
+                .setDate(DATE)
+                .setCustomOrderId(CUSTOM_ORDER_ID)
+                .setTimeZone(TIMEZONE)
+                .setComment(COMMENT)
+                .setIsReimbursable(REIMBURSABLE)
+                .setCurrency(CURRENCY_CODE)
+                .setIsFullPage(!FULL_PAGE)
+                .setIndex(DESCENDING_INDEX)
+                .setPaymentMethod(PAYMENT_METHOD)
+                .setExtraEditText1(EXTRA1)
+                .setExtraEditText2(EXTRA2)
+                .setExtraEditText3(EXTRA3)
+                .setSyncState(mSyncState)
+                .build();
         assertEquals(receipt, mReceiptDatabaseAdapter.read(mCursor));
     }
 
@@ -264,7 +304,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
@@ -292,7 +332,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
@@ -321,7 +361,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setPrice(PRICE)
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
@@ -352,7 +392,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
@@ -383,7 +423,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)
@@ -411,9 +451,9 @@ public class ReceiptDatabaseAdapterTest {
         final ContentValues contentValues = mReceiptDatabaseAdapter.write(mReceipt, new DatabaseOperationMetadata());
 
         // Note: Full page is backwards in the database
-        assertEquals(PATH, contentValues.getAsString("path"));
+        assertEquals(RECEIPT_FILE.getName(), contentValues.getAsString("path"));
         assertEquals(NAME, contentValues.getAsString("name"));
-        assertEquals(PARENT, contentValues.getAsString("parent"));
+        assertEquals(PARENT_DIR.getName(), contentValues.getAsString("parent"));
         assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger("categoryKey"));
         assertEquals(PRICE, contentValues.getAsDouble("price"), 0.0001d);
         assertEquals(TAX, contentValues.getAsDouble("tax"), 0.0001d);
@@ -443,9 +483,9 @@ public class ReceiptDatabaseAdapterTest {
         final ContentValues contentValues = mReceiptDatabaseAdapter.write(mReceipt, new DatabaseOperationMetadata(OperationFamilyType.Sync));
 
         // Note: Full page is backwards in the database
-        assertEquals(PATH, contentValues.getAsString("path"));
+        assertEquals(RECEIPT_FILE.getName(), contentValues.getAsString("path"));
         assertEquals(NAME, contentValues.getAsString("name"));
-        assertEquals(PARENT, contentValues.getAsString("parent"));
+        assertEquals(PARENT_DIR.getName(), contentValues.getAsString("parent"));
         assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger("categoryKey"));
         assertEquals(PRICE, contentValues.getAsDouble("price"), 0.0001d);
         assertEquals(TAX, contentValues.getAsDouble("tax"), 0.0001d);
@@ -474,7 +514,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setTax(TAX)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
-                .setFile(new File(PATH))
+                .setFile(RECEIPT_FILE)
                 .setDate(DATE)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .setTimeZone(TIMEZONE)

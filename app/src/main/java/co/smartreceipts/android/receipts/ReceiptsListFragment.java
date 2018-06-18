@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,8 +193,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     private boolean importIntentMode;
 
+    private long start;
+
     @Override
     public void onAttach(Context context) {
+        start = System.currentTimeMillis();
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -395,6 +399,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 .map(intentImportResultOptional -> intentImportResultOptional.isPresent() &&
                         (intentImportResultOptional.get().getFileType() == FileType.Image || intentImportResultOptional.get().getFileType() == FileType.Pdf))
                 .subscribe(importIntentPresent -> importIntentMode = importIntentPresent));
+
+        Logger.debug(this, "Will: ReceiptsListFragment {}ms", System.currentTimeMillis() - start);
     }
 
     @Override
@@ -482,7 +488,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
         final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
         final String[] receiptActions;
-        if (!receipt.hasFile()) {
+        if (receipt.getFile() != null) {
             receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
         } else {
             receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};

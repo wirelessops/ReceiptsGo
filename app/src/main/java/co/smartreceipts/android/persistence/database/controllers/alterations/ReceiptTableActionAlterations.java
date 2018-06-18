@@ -158,7 +158,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
         if (newReceipt != null) { // i.e. - the move succeeded (delete the old data)
             Logger.info(this, "Completed the move procedure");
             if (receiptsTable.delete(oldReceipt, new DatabaseOperationMetadata()).blockingGet() != null) {
-                if (oldReceipt.hasFile()) {
+                if (oldReceipt.getFile() != null) {
                     if (!storageManager.delete(oldReceipt.getFile())) {
                         Logger.error(this, "Failed to delete the moved receipt's file");
                     }
@@ -198,7 +198,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
             ReceiptsOrderer.Companion.getDefaultCustomOrderId(receipt.getDate());
         }
 
-        if (receipt.hasFile()) {
+        if (receipt.getFile() != null && receipt.getFile().exists()) {
             final File destination = storageManager.getFile(toTrip.getDirectory(), System.currentTimeMillis() + receipt.getFileName());
             if (storageManager.copy(receipt.getFile(), destination, true)) {
                 Logger.info(this, "Successfully copied the receipt file to the new trip: {}", toTrip.getName());

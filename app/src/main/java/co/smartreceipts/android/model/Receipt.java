@@ -48,13 +48,6 @@ public interface Receipt extends Parcelable, Priceable, Draggable<Receipt>, Sync
     String getName();
 
     /**
-     * Checks if this receipt is connected with a file (e.g. a PDF or Image file)
-     *
-     * @return {@code true} if it has a file, {@code false} otherwise
-     */
-    boolean hasFile();
-
-    /**
      * Checks if this receipt is connected to an image file
      *
      * @return {@code true} if it has an image file, {@code false} otherwise
