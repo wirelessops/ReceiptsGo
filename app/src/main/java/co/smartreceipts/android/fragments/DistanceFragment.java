@@ -98,31 +98,22 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Logger.debug(this, "onResume");
-        distanceTableController.subscribe(this);
+    public void onStart() {
+        super.onStart();
+        Logger.debug(this, "onStart");
         distanceTableController.get(trip);
+        distanceTableController.subscribe(this);
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (getView() != null && isVisibleToUser) {
-            // Refresh as soon as we're visible
-            distanceTableController.get(trip);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Logger.debug(this, "onPause");
+    public void onStop() {
         distanceTableController.unsubscribe(this);
+        Logger.debug(this, "onStop");
+        super.onStop();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
     }

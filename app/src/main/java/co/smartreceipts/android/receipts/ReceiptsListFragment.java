@@ -254,8 +254,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    protected TableController<Receipt> getTableController() {
-        return receiptTableController;
+    public void onStart() {
+        super.onStart();
+        Logger.debug(this, "onStart");
+        receiptTableController.get(trip);
+        receiptTableController.subscribe(this);
     }
 
     @Override
@@ -273,8 +276,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         }
 
         tripTableController.subscribe(actionBarSubtitleUpdatesListener);
-        receiptTableController.subscribe(this);
-        receiptTableController.get(trip);
 
         ocrStatusAlerterPresenter.subscribe();
         receiptCreateActionPresenter.subscribe();
@@ -400,28 +401,24 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (getView() != null && isVisibleToUser) {
-            // Refresh as soon as we're visible
-            receiptTableController.get(trip);
-        }
-    }
-
-    @Override
     public void onPause() {
         compositeDisposable.clear();
         receiptCreateActionPresenter.unsubscribe();
         ocrStatusAlerterPresenter.unsubscribe();
         floatingActionMenu.close(false);
-        receiptTableController.unsubscribe(this);
         tripTableController.unsubscribe(actionBarSubtitleUpdatesListener);
 
         super.onPause();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onStop() {
+        receiptTableController.unsubscribe(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(OUT_IMAGE_URI, imageUri);
         outState.putParcelable(OUT_HIGHLIGHTED_RECEIPT, highlightedReceipt);
@@ -509,6 +506,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
             dialog.cancel();
         });
         builder.show();
+    }
+
+    @Override
+    protected TableController<Receipt> getTableController() {
+        return receiptTableController;
     }
 
     @Override
