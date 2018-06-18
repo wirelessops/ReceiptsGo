@@ -11,6 +11,8 @@ before_install:
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
   - chmod +x gradlew
+  - rm -f app/src/main/res/values/secrets.xml
+  - rm -f app/src/main/res/xml/analytics.xml
   - echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <string name=\"exchange_rate_key\" translatable=\"false\">SAMPLE_KEY</string>\n    <string name=\"classicAdUnitId\">SAMPLE_ID</string>\n</resources>" >> app/src/main/res/values/secrets.xml
   - echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n</resources>" >> app/src/main/res/xml/analytics.xml
 script:
