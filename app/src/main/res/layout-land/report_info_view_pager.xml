@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -16,12 +17,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/title_paging_layout_separator" >
-            <com.astuetz.PagerSlidingTabStrip
+            android:paddingStart="@dimen/title_paging_layout_separator"
+            android:paddingEnd="@dimen/title_paging_layout_separator" >
+            <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary" />
+                android:background="?attr/colorPrimary"
+                app:tabGravity="center"
+                app:tabMode="scrollable" />
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>

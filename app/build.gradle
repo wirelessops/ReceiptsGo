@@ -113,7 +113,6 @@ android {
         annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
         implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
-        implementation "com.jpardogo.materialtabstrip:library:$MATERIAL_TAB_STRIP_VERSION"
         implementation "com.github.clans:fab:$FAB_MENU_VERSION"
 
         implementation "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"

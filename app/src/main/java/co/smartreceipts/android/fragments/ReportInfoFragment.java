@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.google.common.base.Preconditions;
 
 import java.util.List;
@@ -43,8 +43,10 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
 
     @Inject
     ConfigurationManager configurationManager;
+
     @Inject
     TripTableController tripTableController;
+
     @Inject
     NavigationHandler navigationHandler;
     
@@ -54,7 +56,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     private ActionBarTitleUpdatesListener actionBarTitleUpdatesListener;
 
     private ViewPager viewPager;
-    private PagerSlidingTabStrip pagerSlidingTabStrip;
+    private TabLayout tabLayout;
 
     @NonNull
     public static ReportInfoFragment newInstance() {
@@ -79,14 +81,13 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
         }
         Preconditions.checkNotNull(trip, "A valid trip is required");
         lastTripController = new LastTripController(getActivity());
-        fragmentPagerAdapter = new TripFragmentPagerAdapter(getResources(), getChildFragmentManager(),
-                configurationManager);
+        fragmentPagerAdapter = new TripFragmentPagerAdapter(getResources(), getChildFragmentManager(), configurationManager);
         actionBarTitleUpdatesListener = new ActionBarTitleUpdatesListener();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.report_info_view_pager, container, false);
     }
 
@@ -100,12 +101,12 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
 
         viewPager = view.findViewById(R.id.pager);
         viewPager.setOffscreenPageLimit(2); // Set this to 2, since we're always two away from the receipts page
-        pagerSlidingTabStrip = view.findViewById(R.id.tabs);
+        tabLayout = view.findViewById(R.id.tabs);
 
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
         
-        pagerSlidingTabStrip.setViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
