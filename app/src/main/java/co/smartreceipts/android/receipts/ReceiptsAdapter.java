@@ -44,11 +44,12 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
      */
     private List<ReceiptsListItem> listItems;
 
+    private final Context context;
     private final UserPreferenceManager preferences;
     private final BackupProvidersManager backupProvidersManager;
     private final NavigationHandler navigationHandler;
-    private final Context context;
     private final ReceiptsOrderer receiptsOrderer;
+    private final Picasso picasso;
     private final ShowAutomaticBackupsInformationOnClickListener showAutomaticBackupsInformationOnClickListener = new ShowAutomaticBackupsInformationOnClickListener();
 
     private final PublishSubject<Receipt> itemClickSubject = PublishSubject.create();
@@ -64,12 +65,14 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
                            @NonNull UserPreferenceManager preferenceManager,
                            @NonNull BackupProvidersManager backupProvidersManager,
                            @NonNull NavigationHandler navigationHandler,
-                           @NonNull ReceiptsOrderer receiptsOrderer) {
+                           @NonNull ReceiptsOrderer receiptsOrderer,
+                           @NonNull Picasso picasso) {
         this.preferences = Preconditions.checkNotNull(preferenceManager);
         this.context = Preconditions.checkNotNull(context);
         this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
         this.receiptsOrderer = Preconditions.checkNotNull(receiptsOrderer);
+        this.picasso = Preconditions.checkNotNull(picasso);
 
         this.cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
         this.notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
@@ -284,7 +287,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
                 setIcon(image, R.drawable.ic_file_black_24dp);
             } else if (receipt.getImage() != null) {
                 image.setPadding(0, 0, 0, 0);
-                Picasso.get()
+                picasso
                         .load(receipt.getImage())
                         .fit()
                         .centerCrop()
@@ -306,9 +309,9 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
             if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
                 syncState.setClickable(false);
                 if (receipt.getSyncState().isSynced(SyncProvider.GoogleDrive)) {
-                    Picasso.get().load(Uri.EMPTY).placeholder(syncedDrawable).into(syncState);
+                    picasso.load(Uri.EMPTY).placeholder(syncedDrawable).into(syncState);
                 } else {
-                    Picasso.get().load(Uri.EMPTY).placeholder(notSyncedDrawable).into(syncState);
+                    picasso.load(Uri.EMPTY).placeholder(notSyncedDrawable).into(syncState);
                 }
                 syncState.setOnClickListener(null);
             } else {

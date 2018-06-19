@@ -22,6 +22,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.squareup.picasso.Picasso;
 import com.tapadoo.alerter.Alert;
 import com.tapadoo.alerter.Alerter;
 
@@ -154,6 +155,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     @Inject
     ReceiptAttachmentManager receiptAttachmentManager;
 
+    @Inject
+    Picasso picasso;
+
     @BindView(R.id.progress)
     ProgressBar loadingProgress;
 
@@ -203,7 +207,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onCreate(Bundle savedInstanceState) {
         Logger.debug(this, "onCreate");
         super.onCreate(savedInstanceState);
-        adapter = new ReceiptsAdapter(getContext(), preferenceManager, backupProvidersManager, navigationHandler, receiptsOrderer);
+        adapter = new ReceiptsAdapter(getContext(), preferenceManager, backupProvidersManager, navigationHandler, receiptsOrderer, picasso);
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
@@ -257,8 +261,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onStart() {
         super.onStart();
         Logger.debug(this, "onStart");
-        receiptTableController.get(trip);
         receiptTableController.subscribe(this);
+        receiptTableController.get(trip);
     }
 
     @Override
@@ -407,7 +411,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         ocrStatusAlerterPresenter.unsubscribe();
         floatingActionMenu.close(false);
         tripTableController.unsubscribe(actionBarSubtitleUpdatesListener);
-
         super.onPause();
     }
 
@@ -547,7 +550,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Override
     public void onInsertSuccess(@NonNull Receipt receipt, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        if (isResumed()) {
+        if (isAdded()) {
             receiptTableController.get(trip);
         }
     }

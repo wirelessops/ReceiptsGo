@@ -1,6 +1,7 @@
 package co.smartreceipts.android.analytics.crash
 
 import android.content.Context
+import co.smartreceipts.android.BuildConfig
 
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -21,7 +22,7 @@ class CrashReporter @Inject constructor(private val context: Context, private va
     fun initialize() {
         // Set up Crashlytics, disabling it when the user has elected to disable the functionality
         val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(userPreferenceManager.get(UserPreference.Privacy.EnableCrashTracking)).build())
+                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG || userPreferenceManager.get(UserPreference.Privacy.EnableCrashTracking)).build())
                 .build()
 
         // Initialize Fabric with the custom crashlytics instance

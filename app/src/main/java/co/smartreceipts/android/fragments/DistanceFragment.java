@@ -101,8 +101,8 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     public void onStart() {
         super.onStart();
         Logger.debug(this, "onStart");
-        distanceTableController.get(trip);
         distanceTableController.subscribe(this);
+        distanceTableController.get(trip);
     }
 
     @Override

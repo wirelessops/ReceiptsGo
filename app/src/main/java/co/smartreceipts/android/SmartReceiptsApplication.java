@@ -22,6 +22,7 @@ import co.smartreceipts.android.aws.cognito.CognitoManager;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
 import co.smartreceipts.android.di.DaggerAppComponent;
+import co.smartreceipts.android.images.PicassoInitializer;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -103,6 +104,8 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
     @Inject
     MarkedForDeletionCleaner markedForDeletionCleaner;
 
+    @Inject
+    PicassoInitializer picassoInitializer;
 
     private AppComponent appComponent;
 
@@ -164,6 +167,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         crashReporter.initialize();
         receiptsOrderer.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
+        picassoInitializer.initialize();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 

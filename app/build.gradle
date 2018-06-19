@@ -48,6 +48,12 @@ android {
         }
     }
 
+    buildTypes {
+        debug {
+            ext.enableCrashlytics = false
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file("../keystore/debug.keystore")
