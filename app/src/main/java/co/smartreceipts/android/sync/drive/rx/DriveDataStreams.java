@@ -23,6 +23,8 @@ import com.google.android.gms.drive.metadata.CustomPropertyKey;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
+import com.google.android.gms.drive.query.SortOrder;
+import com.google.android.gms.drive.query.SortableField;
 import com.google.common.base.Preconditions;
 
 import java.io.File;
@@ -43,6 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.sync.drive.device.DeviceMetadata;
 import co.smartreceipts.android.sync.drive.device.GoogleDriveSyncMetadata;
+import co.smartreceipts.android.sync.drive.rx.debug.DriveFilesAndFoldersPrinter;
 import co.smartreceipts.android.sync.drive.services.DriveIdUploadCompleteCallback;
 import co.smartreceipts.android.sync.drive.services.DriveIdUploadMetadata;
 import co.smartreceipts.android.sync.drive.services.DriveUploadCompleteManager;
@@ -254,6 +257,36 @@ class DriveDataStreams {
                 emitter.onError(new IOException(status.getStatusMessage()));
             }
         }));
+    }
+
+    public synchronized Observable<DriveId> getAllFiles() {
+        return Observable.create(emitter -> {
+            final SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.MODIFIED_DATE).build();
+            final Query query = new Query.Builder().setSortOrder(sortOrder).build();
+            Drive.DriveApi.query(mGoogleApiClient, query).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
+
+                @Override
+                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                    try {
+                        for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
+                            final boolean isFolder = metadata.isFolder();
+                            if (!isFolder) {
+                                emitter.onNext(metadata.getDriveId());
+                            }
+                        }
+                    } finally {
+                        metadataBufferResult.getMetadataBuffer().release();
+                        emitter.onComplete();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Status status) {
+                    Logger.error(DriveFilesAndFoldersPrinter.class, "Failed to query with status: " + status);
+                    emitter.onError(new IOException(status.getStatusMessage()));
+                }
+            });
+        });
     }
 
     @NonNull

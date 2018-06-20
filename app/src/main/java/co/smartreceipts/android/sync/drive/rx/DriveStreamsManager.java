@@ -86,6 +86,13 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
     }
 
     @NonNull
+    public synchronized Observable<DriveId> getAllFiles() {
+        return newBlockUntilConnectedCompletable()
+                .andThen(driveDataStreams.getAllFiles())
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
+    }
+
+    @NonNull
     public synchronized Observable<DriveId> getFilesInFolder(@NonNull final DriveFolder driveFolder) {
         Preconditions.checkNotNull(driveFolder);
 

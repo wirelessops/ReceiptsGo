@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.google.android.gms.drive.DriveId;
@@ -12,8 +13,12 @@ import com.hadisatrio.optional.Optional;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
+import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.restore.DatabaseRestorer;
 import co.smartreceipts.android.persistence.database.tables.AbstractSqlTable;
@@ -98,6 +103,46 @@ public class DriveRestoreDataManager {
                         .flatMap(filename -> mDriveStreamsManager.download(driveFile, new File(downloadLocation, filename))))
                 .toList();
     }
+
+    @VisibleForTesting
+    @NonNull
+    public Single<List<File>> downloadFilesAfterDate(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final File downloadLocation) {
+        Preconditions.checkNotNull(remoteBackupMetadata);
+        Preconditions.checkNotNull(downloadLocation);
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(2018, 03, 01);
+        final Date date = calendar.getTime();
+        return mDriveStreamsManager.getAllFiles()
+                .map(DriveId::asDriveFile)
+                .flatMapMaybe(driveFile -> {
+                    return mDriveStreamsManager.getMetadata(driveFile)
+                            .map(Optional::of)
+                            .onErrorReturnItem(Optional.absent())
+                            .flatMapObservable(metadata -> {
+                                if (metadata.isPresent()) {
+                                    return Observable.just(metadata.get());
+                                } else {
+                                    return Observable.empty();
+                                }
+                            })
+                            .flatMap(metadata -> {
+                                if (metadata.getModifiedDate().after(date)) {
+                                    return Observable.just(metadata);
+                                } else {
+                                    return Observable.empty();
+                                }
+                            })
+                            .map(metadata -> {
+                                return ModelUtils.getFormattedDate(metadata.getModifiedDate(), TimeZone.getDefault(), mContext, "-") + "_" + metadata.getOriginalFilename();
+                            })
+                            .flatMapSingle(filename -> mDriveStreamsManager.download(driveFile, new File(downloadLocation, filename)))
+                            .firstElement();
+                })
+                .toList();
+
+    }
+
 
     @NonNull
     private Single<List<File>> downloadBackupMetadataImages(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean overwriteExistingData,
