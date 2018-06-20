@@ -115,7 +115,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             }
         }
         tripTableController.subscribe(this);
-        tripTableController.get();
     }
 
     @Override
@@ -145,6 +144,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onStart();
         Logger.debug(this, "onStart");
         tooltipPresenter.subscribe();
+        tripTableController.get();
     }
 
     @Override
@@ -236,6 +236,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Override
     public void onGetSuccess(@NonNull List<Trip> trips) {
         if (isAdded()) {
+            updateViewVisibilities(trips);
             hasResults = true;
             tripCardAdapter.notifyDataSetChanged(trips);
         }
