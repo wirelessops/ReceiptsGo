@@ -461,7 +461,7 @@ public class PurchaseManager {
                             throw new RemoteException("Failed to get available skus for purchase");
                         }
                     } catch (RemoteException e) {
-                        Logger.error(PurchaseManager.this, "Failed to get available skus for purchase", e);
+                        Logger.error(PurchaseManager.this, "Failed to get available skus for purchase");
                         throw e;
                     }
                 }));

@@ -74,17 +74,6 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG) {
-            Logger.debug(this, "Enabling strict mode");
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
-        }
         Logger.debug(this, "onCreate");
         setHasOptionsMenu(true);
         if (savedInstanceState == null) {
@@ -105,7 +94,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState == null) {

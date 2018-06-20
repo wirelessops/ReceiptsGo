@@ -45,7 +45,6 @@ import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.plugins.RxJavaPlugins;
-import wb.android.BuildConfig;
 import wb.android.flex.Flex;
 import wb.android.storage.SDCardStateException;
 import wb.android.storage.StorageManager;
@@ -118,6 +117,19 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (BuildConfig.DEBUG) {
+            Logger.debug(this, "Enabling strict mode");
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+        }
+
         configureLog();
 
         appComponent = DaggerAppComponent.builder()
