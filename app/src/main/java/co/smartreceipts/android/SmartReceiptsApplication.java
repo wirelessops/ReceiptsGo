@@ -23,9 +23,11 @@ import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
 import co.smartreceipts.android.di.DaggerAppComponent;
 import co.smartreceipts.android.images.PicassoInitializer;
+import co.smartreceipts.android.launch.OnLaunchDataPreFetcher;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
+import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.push.PushManager;
@@ -71,6 +73,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     UserPreferenceManager userPreferenceManager;
+
+    @Inject
+    OnLaunchDataPreFetcher onLaunchDataPreFetcher;
 
     @Inject
     ExtraInitializer extraInitializer;
@@ -173,11 +178,12 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
         flex.initialize();
         userPreferenceManager.initialize();
+        orderingPreferencesManager.initialize();
+        onLaunchDataPreFetcher.loadUserData();
         pushManager.initialize();
         purchaseManager.initialize(this);
         cognitoManager.initialize();
         ocrManager.initialize();
-        orderingPreferencesManager.initialize();
         crashReporter.initialize();
         receiptsOrderer.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
