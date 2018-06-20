@@ -90,6 +90,8 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     private Trip selectedTrip;
 
+    private boolean hasResults = false;
+
 
     public static TripFragment newInstance() {
         return new TripFragment();
@@ -113,6 +115,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             }
         }
         tripTableController.subscribe(this);
+        tripTableController.get();
     }
 
     @Override
@@ -142,7 +145,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onStart();
         Logger.debug(this, "onStart");
         tooltipPresenter.subscribe();
-        tripTableController.get();
     }
 
     @Override
@@ -155,6 +157,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             getSupportActionBar().setSubtitle(null);
         }
         lastTripAutoNavigationController.subscribe();
+        if (hasResults) {
+            updateViewVisibilities(tripCardAdapter.getData());
+        }
     }
 
     @Override
@@ -230,14 +235,8 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Override
     public void onGetSuccess(@NonNull List<Trip> trips) {
-        if (isResumed()) {
-            progressBar.setVisibility(View.GONE);
-            getListView().setVisibility(View.VISIBLE);
-            if (trips.isEmpty()) {
-                noDataAlert.setVisibility(View.VISIBLE);
-            } else {
-                noDataAlert.setVisibility(View.INVISIBLE);
-            }
+        if (isAdded()) {
+            hasResults = true;
             tripCardAdapter.notifyDataSetChanged(trips);
         }
     }
@@ -379,6 +378,16 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         }
         lastTripMonitor.setLastTrip(trip);
         navigationHandler.navigateToReportInfoFragment(trip);
+    }
+
+    private void updateViewVisibilities(List<Trip> trips) {
+        progressBar.setVisibility(View.GONE);
+        getListView().setVisibility(View.VISIBLE);
+        if (trips.isEmpty()) {
+            noDataAlert.setVisibility(View.VISIBLE);
+        } else {
+            noDataAlert.setVisibility(View.INVISIBLE);
+        }
     }
 
     private String getFlexString(int id) {
