@@ -44,7 +44,9 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.reactivex.Completable;
 import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import wb.android.flex.Flex;
 import wb.android.storage.SDCardStateException;
 import wb.android.storage.StorageManager;
@@ -184,7 +186,11 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         PDFBoxResourceLoader.init(getApplicationContext());
 
         // Clear our cache
-        new SmartReceiptsTemporaryFileCache(this).resetCache();
+        Completable.fromAction(() -> {
+                    new SmartReceiptsTemporaryFileCache(this).resetCache();
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
 
         // Check if a new version is available
         new AppVersionManager(this, persistenceManager.getPreferenceManager()).onLaunch(this);
