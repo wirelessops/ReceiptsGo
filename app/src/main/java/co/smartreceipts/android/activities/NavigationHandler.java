@@ -58,11 +58,11 @@ public class NavigationHandler<T extends FragmentActivity> {
     }
 
     public void navigateToHomeTripsFragment() {
-        replaceFragment(fragmentProvider.newTripFragmentInstance(true), R.id.content_list);
+        replaceFragment(fragmentProvider.newTripFragmentInstance(), R.id.content_list);
     }
 
     public void navigateUpToTripsFragment() {
-        replaceFragment(fragmentProvider.newTripFragmentInstance(false), R.id.content_list);
+        replaceFragment(fragmentProvider.newTripFragmentInstance(), R.id.content_list);
     }
 
     public void navigateToReportInfoFragment(@NonNull Trip trip) {

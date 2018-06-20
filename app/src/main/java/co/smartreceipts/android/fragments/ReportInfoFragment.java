@@ -26,7 +26,7 @@ import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripFragmentPagerAdapter;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.persistence.LastTripController;
+import co.smartreceipts.android.persistence.LastTripMonitor;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -52,7 +52,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Inject
     NavigationHandler navigationHandler;
     
-    private LastTripController lastTripController;
+    private LastTripMonitor lastTripMonitor;
     private TripFragmentPagerAdapter fragmentPagerAdapter;
     private Trip trip;
     private ActionBarTitleUpdatesListener actionBarTitleUpdatesListener;
@@ -93,7 +93,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             trip = savedInstanceState.getParcelable(KEY_OUT_TRIP);
         }
         Preconditions.checkNotNull(trip, "A valid trip is required");
-        lastTripController = new LastTripController(getActivity());
+        lastTripMonitor = new LastTripMonitor(getActivity());
         fragmentPagerAdapter = new TripFragmentPagerAdapter(getResources(), getChildFragmentManager(), configurationManager);
         actionBarTitleUpdatesListener = new ActionBarTitleUpdatesListener();
     }
@@ -159,7 +159,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public void onPause() {
         tripTableController.unsubscribe(actionBarTitleUpdatesListener);
-        lastTripController.setLastTrip(trip);
+        lastTripMonitor.setLastTrip(trip);
         super.onPause();
     }
 

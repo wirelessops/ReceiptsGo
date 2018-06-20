@@ -2,14 +2,22 @@ package co.smartreceipts.android.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.AnyThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 
 import java.util.List;
 
-import co.smartreceipts.android.model.Trip;
+import javax.inject.Inject;
 
-public class LastTripController {
+import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.android.model.Trip;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
+
+@ApplicationScope
+public class LastTripMonitor {
 
     private static final String PREFERENCES_FILENAME = SharedPreferenceDefinitions.LastTripTracker.toString();
     private static final String PREFERENCE_TRIP_NAME = "tripName";
@@ -18,7 +26,8 @@ public class LastTripController {
 
     private Trip mTrip;
 
-    public LastTripController(@NonNull Context context) {
+    @Inject
+    public LastTripMonitor(@NonNull Context context) {
         mContext = context.getApplicationContext();
     }
 
@@ -29,6 +38,7 @@ public class LastTripController {
      * @return the last {@link Trip} or {@code null} if none was ever saved
      */
     @Nullable
+    @WorkerThread
     public synchronized Trip getLastTrip(@NonNull List<Trip> trips) {
         if (mTrip == null) {
             final SharedPreferences preferences = mContext.getSharedPreferences(PREFERENCES_FILENAME, 0);
@@ -48,12 +58,19 @@ public class LastTripController {
      *
      * @param trip the last {@link Trip} to persist
      */
+    @AnyThread
     public synchronized void setLastTrip(@NonNull Trip trip) {
-        final SharedPreferences preferences = mContext.getSharedPreferences(PREFERENCES_FILENAME, 0);
-        final SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PREFERENCE_TRIP_NAME, trip.getName());
-        editor.apply();
         mTrip = trip;
+
+        // Run this function in the background
+        Completable.fromAction(() -> {
+                    final SharedPreferences preferences = mContext.getSharedPreferences(PREFERENCES_FILENAME, 0);
+                    final SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(PREFERENCE_TRIP_NAME, trip.getName());
+                    editor.apply();
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
 }

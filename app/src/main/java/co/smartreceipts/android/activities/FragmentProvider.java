@@ -24,7 +24,6 @@ import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 
 import static co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_FILE;
 import static co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_OCR;
-import static co.smartreceipts.android.trips.TripFragment.ARG_NAVIGATE_TO_VIEW_LAST_TRIP;
 
 public class FragmentProvider {
 
@@ -38,11 +37,8 @@ public class FragmentProvider {
      * @return a new trip fragment
      */
     @NonNull
-    public TripFragment newTripFragmentInstance(boolean navigateToViewLastTrip) {
-        final Bundle args = new Bundle();
-        args.putBoolean(ARG_NAVIGATE_TO_VIEW_LAST_TRIP, navigateToViewLastTrip);
-
-        return attachArguments(TripFragment.newInstance(), args);
+    public TripFragment newTripFragmentInstance() {
+        return TripFragment.newInstance();
     }
 
     /**

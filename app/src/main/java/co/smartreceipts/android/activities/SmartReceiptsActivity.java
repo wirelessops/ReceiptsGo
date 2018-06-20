@@ -127,7 +127,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
                     Logger.info(this, "The following purchases are available: {}", availablePurchases);
                     availablePurchases = inAppPurchases;
                     invalidateOptionsMenu(); // To show the subscription option
-                }, throwable -> Logger.warn(SmartReceiptsActivity.this, "Failed to retrieve purchases for this session.", throwable)));
+                }, throwable -> Logger.warn(SmartReceiptsActivity.this, "Failed to retrieve purchases for this session.")));
     }
 
     @Override
