@@ -18,6 +18,7 @@ class PicassoInitializer @Inject constructor(private val picasso: Lazy<Picasso>)
                     return@fromCallable picasso.get()
                 }
                 .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .subscribe()
     }
 }
