@@ -41,9 +41,6 @@ public class DriveDatabaseManagerTest {
     GoogleDriveSyncMetadata mGoogleDriveSyncMetadata;
 
     @Mock
-    NetworkManager mNetworkManager;
-
-    @Mock
     Analytics mAnalytics;
 
     @Before
@@ -55,25 +52,13 @@ public class DriveDatabaseManagerTest {
             throw new RuntimeException("Failed to create database file... Failing this test");
         }
 
-        when(mNetworkManager.isNetworkAvailable()).thenReturn(true);
-
-        mDriveDatabaseManager = new DriveDatabaseManager(RuntimeEnvironment.application, mDriveStreamsManager, mGoogleDriveSyncMetadata, mNetworkManager, mAnalytics, Schedulers.trampoline(), Schedulers.trampoline());
+        mDriveDatabaseManager = new DriveDatabaseManager(RuntimeEnvironment.application, mDriveStreamsManager, mGoogleDriveSyncMetadata, mAnalytics, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @After
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void tearDown() throws Exception {
         mDatabaseFile.delete();
-    }
-
-    @Test
-    public void syncDatabaseWithoutNetwork() {
-        when(mNetworkManager.isNetworkAvailable()).thenReturn(false);
-        final Identifier identifier = new Identifier("newId");
-        when(mDriveStreamsManager.uploadFileToDrive(mDatabaseFile)).thenReturn(Single.just(identifier));
-
-        mDriveDatabaseManager.syncDatabase();
-        verify(mGoogleDriveSyncMetadata, never()).setDatabaseSyncIdentifier(identifier);
     }
 
     @Test
