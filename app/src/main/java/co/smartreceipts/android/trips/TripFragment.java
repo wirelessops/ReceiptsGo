@@ -44,6 +44,7 @@ import co.smartreceipts.android.tooltip.StaticTooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.model.StaticTooltip;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
+import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
 import co.smartreceipts.android.utils.ConfigurableStaticFeature;
 import co.smartreceipts.android.utils.log.Logger;
@@ -82,6 +83,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Inject
     LastTripMonitor lastTripMonitor;
+
+    @Inject
+    LastTripAutoNavigationTracker lastTripAutoNavigationTracker;
 
     private TripCardAdapter tripCardAdapter;
     private ProgressBar progressBar;
@@ -378,6 +382,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             tripCardAdapter.setSelectedItem(trip);
         }
         lastTripMonitor.setLastTrip(trip);
+        lastTripAutoNavigationTracker.setHasNavigatedToLastTrip(true);
         navigationHandler.navigateToReportInfoFragment(trip);
     }
 
