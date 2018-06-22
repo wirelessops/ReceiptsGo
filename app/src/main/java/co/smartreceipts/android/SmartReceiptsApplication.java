@@ -137,8 +137,6 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
                     .build());
         }
 
-        configureLog();
-
         appComponent = DaggerAppComponent.builder()
                 .baseAppModule(new BaseAppModule(this))
                 .build();
@@ -147,7 +145,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
         WBUncaughtExceptionHandler.initialize();
 
-        Logger.debug(this, "\n\n\n\n Launching App...");
+        Logger.info(this, "\n\n\n\n Launching App...");
 
         init();
     }
@@ -212,11 +210,6 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         }
 
         extraInitializer.init();
-    }
-
-    private void configureLog() {
-        final String logDirPath = getFilesDir().getPath();
-        System.setProperty("LOG_DIR", logDirPath);
     }
 
     // This is called after _sdCard is available but before _db is

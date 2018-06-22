@@ -1,0 +1,11 @@
+<configuration>
+
+    <include resource="assets/logback_logcat_appender.xml"/>
+    <include resource="assets/logback_file_appender.xml" />
+
+    <!-- Write INFO (and higher-level) messages to the log file -->
+    <root level="INFO">
+        <appender-ref ref="file" />
+    </root>
+
+</configuration>
