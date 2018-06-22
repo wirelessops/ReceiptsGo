@@ -31,30 +31,23 @@ class LastTripAutoNavigationController @Inject constructor(private val context: 
                 .subscribeOn(Schedulers.io())
                 .filter { it -> !it }
                 .flatMap {
-                    tripTableController.stream.firstElement()
-                }
-                .flatMap {
-                    if (it.throwable == null) {
-                        Maybe.just(it.get())
-                    } else {
-                        Maybe.error(it.throwable)
-                    }
-                }
-                .flatMap {
-                    val lastTrip = lastTripMonitor.getLastTrip(it)
-                    if (lastTrip != null) {
-                        Maybe.just(lastTrip)
-                    } else {
-                        Maybe.empty()
-                    }
+                    tripTableController.get()
+                            .flatMapMaybe {
+                                val lastTrip = lastTripMonitor.getLastTrip(it)
+                                if (lastTrip != null) {
+                                    Maybe.just(lastTrip)
+                                } else {
+                                    Maybe.empty()
+                                }
+                            }
                 }
                 .doOnSuccess {
+                    Logger.info(this, "Automatically navigating to trip: ${it.name}")
                     lastTripAutoNavigationTracker.hasNavigatedToLastTrip = true
                     lastTripMonitor.setLastTrip(it)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
-                    Logger.info(this, "Automatically navigating to trip: ${it.name}")
                     viewReceiptsInTripRouter.routeToViewReceipts(it)
                 }, {
                     Logger.error(this, "Failed to find a suitable last trip to automatically navigate to")
