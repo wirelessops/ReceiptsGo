@@ -102,6 +102,12 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
         intentImportInformationPresenter.subscribe();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        intentImportInformationPresenter.subscribe();
+    }
 
     @Override
     protected void onStart() {
