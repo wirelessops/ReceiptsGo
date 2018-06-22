@@ -1,7 +1,12 @@
-<included>
+<configuration>
+
+    <include resource="assets/logback_logcat_appender.xml"/>
+    <include resource="assets/logback_file_appender.xml" />
+
     <!-- Write DEBUG (and higher-level) messages to logcat and the log file -->
     <root level="DEBUG">
         <appender-ref ref="logcat" />
         <appender-ref ref="file" />
     </root>
-</included>
+
+</configuration>

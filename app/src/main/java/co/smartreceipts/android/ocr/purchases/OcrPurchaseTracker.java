@@ -75,7 +75,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     }
 
     public void initialize() {
-        Logger.info(this, "Initializing...");
+        Logger.debug(this, "Initializing...");
         this.purchaseManager.addEventListener(this);
 
         this.identityManager.isLoggedInStream()
