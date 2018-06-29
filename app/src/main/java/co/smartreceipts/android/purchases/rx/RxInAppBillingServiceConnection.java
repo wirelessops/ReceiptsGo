@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
 import com.android.vending.billing.IInAppBillingService;
@@ -13,45 +14,60 @@ import com.hadisatrio.optional.Optional;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.BehaviorSubject;
 
 
-public class RxInAppBillingServiceConnection implements ServiceConnection {
+public class RxInAppBillingServiceConnection {
 
     private final Context context;
     private final Scheduler subscribeOnScheduler;
-    private final AtomicBoolean isBound = new AtomicBoolean(false);
-    private final BehaviorSubject<Optional<IInAppBillingService>> inAppBillingServiceSubject = BehaviorSubject.create();
 
     public RxInAppBillingServiceConnection(@NonNull Context context, @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
     }
 
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        inAppBillingServiceSubject.onNext(Optional.of(IInAppBillingService.Stub.asInterface(service)));
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
-        inAppBillingServiceSubject.onNext(Optional.absent());
-    }
-
     @NonNull
-    public Observable<IInAppBillingService> bindToInAppBillingService() {
-        if (!isBound.getAndSet(true)) {
+    public Single<IInAppBillingService> bindToInAppBillingService() {
+        return Single.create((SingleOnSubscribe<IInAppBillingService>) emitter -> {
+            final ServiceConnection serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    if (!emitter.isDisposed()) {
+                        emitter.onSuccess(IInAppBillingService.Stub.asInterface(service));
+                    }
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    // Intentional no-op
+                }
+            };
             final Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
             serviceIntent.setPackage("com.android.vending");
-            context.bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
-        }
-
-        return inAppBillingServiceSubject
-                .take(1)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .subscribeOn(subscribeOnScheduler);
+            try {
+                final boolean wasBound = context.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                if (wasBound) {
+                    emitter.setCancellable(() -> context.unbindService(serviceConnection));
+                } else {
+                    // As per the Android docs, we should always unbind to release the connection, even if the expected object was not returned
+                    context.unbindService(serviceConnection);
+                    if (!emitter.isDisposed()) {
+                        emitter.onError(new RemoteException("Failed to bind to the InAppBillingService"));
+                    }
+                }
+            } catch (SecurityException e) {
+                if (!emitter.isDisposed()) {
+                    emitter.onError(e);
+                }
+            }
+        }).subscribeOn(subscribeOnScheduler);
     }
 }

@@ -327,41 +327,42 @@ public class PurchaseManager {
         Logger.info(PurchaseManager.this, "Consuming the purchase of {}", consumablePurchase.getInAppPurchase());
 
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMapCompletable(inAppBillingService -> Completable.fromAction(() -> {
+                .flatMapCompletable(inAppBillingService -> {
                     try {
                         final int responseCode = inAppBillingService.consumePurchase(API_VERSION, context.getPackageName(), consumablePurchase.getPurchaseToken());
                         if (BILLING_RESPONSE_CODE_OK == responseCode) {
                             Logger.info(PurchaseManager.this, "Successfully consumed the purchase of {}", consumablePurchase.getInAppPurchase());
+                            return Completable.complete();
                         } else {
                             Logger.warn(PurchaseManager.this, "Received an unexpected response code, {}, for the consumption of this product.", responseCode);
-                            throw new Exception("Received an unexpected response code for the consumption of this product.");
+                            return Completable.error(new Exception("Received an unexpected response code for the consumption of this product."));
                         }
                     } catch (RemoteException e) {
                         Logger.error(PurchaseManager.this, "Failed to consume this purchase", e);
-                        throw e;
+                        return Completable.error(e);
                     }
-                }));
+                });
     }
 
     @VisibleForTesting
     Observable<PendingIntent> getPurchaseIntent(@NonNull final InAppPurchase inAppPurchase, @NonNull final PurchaseSource purchaseSource) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
+                .flatMapObservable(inAppBillingService -> {
                     try {
                         final Bundle buyIntentBundle = inAppBillingService.getBuyIntent(API_VERSION, context.getPackageName(), inAppPurchase.getSku(), inAppPurchase.getProductType(), sessionDeveloperPayload);
                         final PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
                         if (buyIntentBundle.getInt("RESPONSE_CODE") == BILLING_RESPONSE_CODE_OK && pendingIntent != null) {
                             mPurchaseSource = purchaseSource;
-                            return pendingIntent;
+                            return Observable.just(pendingIntent);
                         } else {
                             Logger.warn(PurchaseManager.this, "Received an unexpected response code, {}, for the buy intent.", buyIntentBundle.getInt("RESPONSE_CODE"));
-                            throw new RemoteException("Received an unexpected response code for the buy intent.");
+                            return Observable.error(new RemoteException("Received an unexpected response code for the buy intent."));
                         }
                     } catch (RemoteException e) {
                         Logger.error(PurchaseManager.this, "Failed to get purchase intent", e);
-                        throw e;
+                        return Observable.error(e);
                     }
-                }));
+                });
     }
 
     @NonNull
@@ -391,7 +392,7 @@ public class PurchaseManager {
     @NonNull
     private Observable<Set<ManagedProduct>> getOwnedManagedProductType(@NonNull final String googleProductType) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
-                .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
+                .flatMapObservable(inAppBillingService -> {
                     try {
                         final Bundle ownedItems = inAppBillingService.getPurchases(API_VERSION, context.getPackageName(), googleProductType, null);
                         if (ownedItems.getInt("RESPONSE_CODE") == BILLING_RESPONSE_CODE_OK) {
@@ -418,23 +419,23 @@ public class PurchaseManager {
                                 }
                             }
 
-                            return purchasedProducts;
+                            return Observable.just(purchasedProducts);
                         } else {
                             Logger.error(PurchaseManager.this, "Failed to retrieve " + googleProductType + " due to response code error");
-                            throw new RemoteException("Failed to retrieve " + googleProductType + " due to response code error");
+                            return Observable.error(new RemoteException("Failed to retrieve " + googleProductType + " due to response code error"));
                         }
                     } catch (RemoteException | JSONException e) {
                         Logger.error(PurchaseManager.this, "Failed to retrieve the user's owned InAppPurchases", e);
-                        throw e;
+                        return Observable.error(e);
                     }
-                }));
+                });
     }
 
     @NonNull
     private Observable<Set<AvailablePurchase>> getAvailablePurchases(@NonNull final ArrayList<String> skus, @NonNull final String googleProductType) {
         return rxInAppBillingServiceConnection.bindToInAppBillingService()
                 .subscribeOn(subscribeOnScheduler)
-                .flatMap(inAppBillingService -> Observable.fromCallable(() -> {
+                .flatMapObservable(inAppBillingService -> {
                     try {
                         // Next, let's figure out what is available for purchase
                         final Set<AvailablePurchase> availablePurchases = new HashSet<>();
@@ -455,16 +456,16 @@ public class PurchaseManager {
                                     }
                                 }
                             }
-                            return availablePurchases;
+                            return Observable.just(availablePurchases);
                         } else {
                             Logger.error(PurchaseManager.this, "Failed to get available skus for purchase");
-                            throw new RemoteException("Failed to get available skus for purchase");
+                            return Observable.error(new RemoteException("Failed to get available skus for purchase"));
                         }
                     } catch (RemoteException e) {
                         Logger.error(PurchaseManager.this, "Failed to get available skus for purchase");
-                        throw e;
+                        return Observable.error(e);
                     }
-                }));
+                });
     }
 
 }
