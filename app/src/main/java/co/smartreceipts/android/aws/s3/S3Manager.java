@@ -48,16 +48,10 @@ public class S3Manager {
                 .flatMap(amazonS3 -> {
                     if (amazonS3.isPresent()) {
                         return s3KeyGeneratorFactory.get()
-                                .flatMap(s3KeyGenerator -> Observable.create(emitter -> {
-                                    try {
-                                        final String key = subDirectoryPath + s3KeyGenerator.getS3Key() + file.getName();
-                                        amazonS3.get().putObject(BUCKET, key, file);
-                                        emitter.onNext(amazonS3.get().getResourceUrl(BUCKET, key));
-                                        emitter.onComplete();
-                                    } catch (Exception e) {
-                                        Logger.error(S3Manager.this, "Failed to upload to S3 with error.", e);
-                                        emitter.onError(e);
-                                    }
+                                .flatMap(s3KeyGenerator -> Observable.fromCallable(() -> {
+                                    final String key = subDirectoryPath + s3KeyGenerator.getS3Key() + file.getName();
+                                    amazonS3.get().putObject(BUCKET, key, file);
+                                    return amazonS3.get().getResourceUrl(BUCKET, key);
                                 }));
                     } else {
                         return Observable.error(new Exception("Failed to initialize the S3 client"));
