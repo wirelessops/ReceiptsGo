@@ -42,6 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySetOf;
 import static org.mockito.ArgumentMatchers.eq;
@@ -676,8 +677,7 @@ public class PurchaseManagerTest {
         final Intent intent = shadowApplication.getNextStartedService();
         assertNotNull(intent);
         assertEquals(intent.getAction(), "com.android.vending.billing.InAppBillingService.BIND");
-        assertFalse(shadowApplication.getBoundServiceConnections().isEmpty());
-        // TODO: Verify activity life-cycle callbacks are working with custom shadow
+        assertTrue(shadowApplication.getBoundServiceConnections().isEmpty());
     }
 
     @NonNull
