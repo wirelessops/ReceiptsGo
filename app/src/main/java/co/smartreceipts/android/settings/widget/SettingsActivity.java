@@ -354,7 +354,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         // Set up Version Summary
         Preference versionPreference = universal.findPreference(R.string.pref_about_version_key);
         versionPreference.setSummary(getAppVersion());
-        universal.findPreference(R.string.pref_about_privacy_policy_key).setOnPreferenceClickListener(this);
     }
 
     public void configurePreferencesPrivacy(UniversalPreferences universal) {
