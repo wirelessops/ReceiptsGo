@@ -4,21 +4,27 @@
     <!-- ============== Preference Headers ================= -->
     <string name="pref_header_key" translatable="false">HeaderKey</string>
     <string name="pref_general_header">General</string>
+    <string name="pref_general_header_key" translatable="false">pref_general_category_key</string>
     <string name="pref_receipt_header">Receipts</string>
+    <string name="pref_receipt_header_key" translatable="false">pref_receipt_category_key</string>
     <string name="pref_output_header">Report Output</string>
     <string name="pref_output_header_key" translatable="false">pref_output_category_key</string>
     <string name="pref_email_header">Email</string>
+    <string name="pref_email_header_key" translatable="false">pref_email_category_key</string>
     <string name="pref_camera_header">Camera</string>
     <string name="pref_camera_header_key" translatable="false">pref_camera_category_key</string>
     <string name="pref_layout_header">Layout Customizations</string>
+    <string name="pref_layout_header_key">pref_layout_category_key</string>
     <string name="pref_distance_header">Distance</string>
     <string name="pref_distance_header_key" translatable="false">pref_distance_category_key</string>
     <string name="pref_pro_header">Smart Receipts Plus</string>
+    <string name="pref_pro_header_key" translatable="false">pref_pro_category_key</string>
     <string name="pref_help_header">Support</string>
+    <string name="pref_help_header_key" translatable="false">pref_help_category_key</string>
     <string name="pref_about_header">About</string>
-    <string name="pref_privacy_header_key" translatable="false">pref_privacy_category_key</string>
+    <string name="pref_about_header_key" translatable="false">pref_about_category_key</string>
     <string name="pref_privacy_header">Privacy</string>
-
+    <string name="pref_privacy_header_key" translatable="false">pref_privacy_category_key</string>
 
     <!-- ============== Preference General ================= -->
     <string name="pref_general_trip_duration_key" translatable="false">TripDuration</string>

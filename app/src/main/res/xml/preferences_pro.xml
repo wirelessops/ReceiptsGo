@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:key="pref_pro_category_key"
+        android:key="@string/pref_pro_header_key"
         android:title="@string/pref_pro_header">
         <wb.android.preferences.SummaryEditTextPreference
             android:defaultValue="@string/pref_pro_pdf_footer_defaultValue"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<PreferenceCategory
-	    android:title="@string/pref_layout_header"
-	    android:key="pref_layout_category_key">
+		android:key="@string/pref_layout_header_key"
+	    android:title="@string/pref_layout_header" >
 	    <CheckBoxPreference
 	        android:key="@string/pref_layout_display_date_key"
 	        android:title="@string/pref_layout_display_date_title"
