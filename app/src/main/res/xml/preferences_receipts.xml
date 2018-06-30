@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<PreferenceCategory
-	    android:title="@string/pref_receipt_header"
-	    android:key="pref_receipt_category_key">
+		android:key="@string/pref_receipt_header_key"
+	    android:title="@string/pref_receipt_header" >
 		<Preference 
 	    	android:key="@string/pref_receipt_customize_categories_key" 
 			android:title="@string/pref_receipt_customize_categories_title"

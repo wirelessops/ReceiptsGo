@@ -12,7 +12,7 @@
     *********************************************	    
      -->
     <PreferenceCategory
-        android:key="pref_pro_category_key"
+        android:key="@string/pref_pro_header_key"
         android:title="@string/pref_pro_header">
         <wb.android.preferences.SummaryEditTextPreference
             android:defaultValue="@string/pref_pro_pdf_footer_defaultValue"
@@ -38,8 +38,8 @@
     </PreferenceCategory>
     
     <PreferenceCategory
-        android:key="pref_general_category_key"
-        android:title="@string/pref_general_header">
+        android:key="@string/pref_general_header_key"
+        android:title="@string/pref_general_header" >
         <co.smartreceipts.android.settings.widget.DefaultDurationEditTextPreference
             android:defaultValue="@integer/pref_general_trip_duration_defaultValue"
             android:inputType="number"
@@ -62,8 +62,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_receipt_category_key"
-        android:title="@string/pref_receipt_header">
+        android:key="@string/pref_receipt_header_key"
+        android:title="@string/pref_receipt_header" >
         <Preference
             android:key="@string/pref_receipt_customize_categories_key"
             android:summary="@string/pref_receipt_customize_categories_summary"
@@ -182,7 +182,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_email_category_key"
+        android:key="@string/pref_email_header_key"
         android:title="@string/pref_email_header">
         <wb.android.preferences.EmptyValueSummaryEditTextPreference
             android:defaultValue="@string/pref_email_default_email_to_defaultValue"
@@ -226,7 +226,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_layout_category_key"
+        android:key="@string/pref_layout_header_key"
         android:title="@string/pref_layout_header">
         <CheckBoxPreference
             android:defaultValue="@bool/pref_layout_display_date_defaultValue"
@@ -274,7 +274,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_help_category_key"
+        android:key="@string/pref_help_header_key"
         android:title="@string/pref_help_header">
         <Preference
             android:key="@string/pref_help_send_love_key"
@@ -311,7 +311,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_about_category_key"
+        android:key="@string/pref_about_header_key"
         android:title="@string/pref_about_header">
         <Preference
             android:key="@string/pref_about_version_key"

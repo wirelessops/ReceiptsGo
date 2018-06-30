@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory 
-        android:title="@string/pref_general_header"
-        android:key="pref_general_category_key">
+    <PreferenceCategory
+        android:key="@string/pref_general_header_key"
+        android:title="@string/pref_general_header" >
         <co.smartreceipts.android.settings.widget.DefaultDurationEditTextPreference
             android:key="@string/pref_general_trip_duration_key"
             android:title="@string/pref_general_trip_duration_title"

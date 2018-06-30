@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:wb="http://schemas.android.com/apk/res-auto" >
 	<PreferenceCategory
-	    android:title="@string/pref_email_header"
-	    android:key="pref_email_category_key">
-	    <wb.android.preferences.EmptyValueSummaryEditTextPreference  
+	    android:key="@string/pref_email_header_key"
+		android:title="@string/pref_email_header" >
+	    <wb.android.preferences.EmptyValueSummaryEditTextPreference
 	        android:key="@string/pref_email_default_email_to_key"
 	        android:title="@string/pref_email_default_email_to_title"
 	        android:inputType="textEmailAddress"
 			android:defaultValue="@string/pref_email_default_email_to_defaultValue"
 	        wb:emptyValue="@string/pref_email_default_email_emptyValue" />
-	    <wb.android.preferences.EmptyValueSummaryEditTextPreference  
+	    <wb.android.preferences.EmptyValueSummaryEditTextPreference
 	        android:key="@string/pref_email_default_email_cc_key"
 	        android:title="@string/pref_email_default_email_cc_title"
 	        android:inputType="textEmailAddress"
             android:defaultValue="@string/pref_email_default_email_cc_defaultValue"
 	        wb:emptyValue="@string/pref_email_default_email_emptyValue" />
-	    <wb.android.preferences.EmptyValueSummaryEditTextPreference  
+	    <wb.android.preferences.EmptyValueSummaryEditTextPreference
 	        android:key="@string/pref_email_default_email_bcc_key"
 	        android:title="@string/pref_email_default_email_bcc_title"
 	        android:inputType="textEmailAddress"
             android:defaultValue="@string/pref_email_default_email_bcc_defaultValue"
 	        wb:emptyValue="@string/pref_email_default_email_emptyValue" />
-	    <wb.android.preferences.SummaryEditTextPreference  
+	    <wb.android.preferences.SummaryEditTextPreference
 	        android:key="@string/pref_email_default_email_subject_key"
 	        android:title="@string/pref_email_default_email_subject_title"
 	        android:inputType="text"
