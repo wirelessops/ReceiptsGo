@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import co.smartreceipts.android.ad.AdPresenter;
-import co.smartreceipts.android.ad.admob.presenter.ClassicBannerAdPresenter;
+import co.smartreceipts.android.ad.admob.ClassicBannerAdPresenter;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 
 @ActivityScope

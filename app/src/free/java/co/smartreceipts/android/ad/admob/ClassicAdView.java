@@ -1,4 +1,4 @@
-package co.smartreceipts.android.ad.admob.widget;
+package co.smartreceipts.android.ad.admob;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.ad.BannerAdView;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
