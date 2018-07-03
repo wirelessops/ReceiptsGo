@@ -68,6 +68,8 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += 'src/free/kotlin'
+        main.java.srcDirs += 'src/plusFlavor/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
 
