@@ -1,5 +1,6 @@
 package co.smartreceipts.android.ad
 
+import co.smartreceipts.android.ad.adincube.AdinCubeAdView
 import co.smartreceipts.android.ad.admob.AdMobAdView
 import co.smartreceipts.android.ad.upsell.UpsellAdView
 import co.smartreceipts.android.di.scopes.ActivityScope
@@ -9,7 +10,8 @@ import javax.inject.Provider
 
 @ActivityScope
 class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provider<UpsellAdView>,
-                                              private val adMobProvider: Provider<AdMobAdView>) {
+                                              private val adMobProvider: Provider<AdMobAdView>,
+                                              private val adinCubeProvider: Provider<AdinCubeAdView>) {
 
     private val random = Random()
 
@@ -17,7 +19,11 @@ class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provid
      * Fetches a the appropriate [BannerAdView] for this user session
      */
     fun get(): BannerAdView {
-        return adMobProvider.get()
+        if (shouldShowAd(ADINCUBE_DISPLAY_FREQUENCY)) {
+            return adinCubeProvider.get()
+        } else {
+            return adMobProvider.get()
+        }
     }
 
     /**
@@ -30,13 +36,14 @@ class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provid
     /**
      * Checks if should show a given ad type, based out of a random frequency check out of 100
      */
-    private fun showShowAd(adTypeDisplayFrequency: Int): Boolean {
+    private fun shouldShowAd(adTypeDisplayFrequency: Int): Boolean {
         return adTypeDisplayFrequency >= random.nextInt(RANDOM_MAX + 1)
     }
 
     companion object {
 
         private const val RANDOM_MAX = 100
+        private const val ADINCUBE_DISPLAY_FREQUENCY = 33
 
     }
 }

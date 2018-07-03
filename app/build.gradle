@@ -159,8 +159,13 @@ android {
         testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
 
         // Special dependencies for free flavor
-        freeImplementation "com.google.android.gms:play-services-ads:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
         freeImplementation "com.google.android.gms:play-services-analytics:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+
+        // Free ads
+        freeImplementation "com.google.android.gms:play-services-ads:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        freeImplementation ("com.adincube.sdk:AdinCube-Java-1626ebe:$ADS_ADINCUBE_VERSION@aar") {
+            transitive = true
+        }
     }
 
     apply plugin: 'com.google.gms.google-services'

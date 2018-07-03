@@ -29,9 +29,9 @@ class AdMobAdView @Inject constructor() : BannerAdView {
         this.adView = AdView(activity)
 
         val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        adView!!.layoutParams = params
         adView!!.adSize = AdSize.SMART_BANNER
         adView!!.adUnitId = activity.resources.getString(R.string.classicAdUnitId)
-        adView!!.layoutParams = params
         adView!!.adListener = object: AdListener() {
             override fun onAdLoaded() {
                 adLoadListener?.onAdLoadSuccess()
