@@ -2,6 +2,7 @@ package co.smartreceipts.android.ad
 
 import co.smartreceipts.android.ad.adincube.AdinCubeAdView
 import co.smartreceipts.android.ad.admob.AdMobAdView
+import co.smartreceipts.android.ad.aerserv.AerServAdView
 import co.smartreceipts.android.ad.upsell.UpsellAdView
 import co.smartreceipts.android.di.scopes.ActivityScope
 import java.util.*
@@ -11,7 +12,8 @@ import javax.inject.Provider
 @ActivityScope
 class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provider<UpsellAdView>,
                                               private val adMobProvider: Provider<AdMobAdView>,
-                                              private val adinCubeProvider: Provider<AdinCubeAdView>) {
+                                              private val adinCubeProvider: Provider<AdinCubeAdView>,
+                                              private val aerServProvider: Provider<AerServAdView>) {
 
     private val random = Random()
 
@@ -19,10 +21,16 @@ class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provid
      * Fetches a the appropriate [BannerAdView] for this user session
      */
     fun get(): BannerAdView {
-        if (shouldShowAd(ADINCUBE_DISPLAY_FREQUENCY)) {
-            return adinCubeProvider.get()
+        if (false) {
+            if (shouldShowAd(ADINCUBE_DISPLAY_FREQUENCY)) {
+                return adinCubeProvider.get()
+            } else if (shouldShowAd(AERSERV_DISPLAY_FREQUENCY)) {
+                return aerServProvider.get()
+            } else {
+                return adMobProvider.get()
+            }
         } else {
-            return adMobProvider.get()
+            return aerServProvider.get()
         }
     }
 
@@ -44,6 +52,7 @@ class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provid
 
         private const val RANDOM_MAX = 100
         private const val ADINCUBE_DISPLAY_FREQUENCY = 33
+        private const val AERSERV_DISPLAY_FREQUENCY = 33
 
     }
 }

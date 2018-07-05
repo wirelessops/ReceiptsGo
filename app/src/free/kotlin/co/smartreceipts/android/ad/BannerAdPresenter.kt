@@ -17,6 +17,7 @@ import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
+import co.smartreceipts.android.utils.UiThread
 import co.smartreceipts.android.utils.log.Logger
 import javax.inject.Inject
 
@@ -27,6 +28,8 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
                                             private val userPreferenceManager: UserPreferenceManager,
                                             private val bannerAdViewFactory: BannerAdViewFactory,
                                             private val analytics: Analytics) : AdPresenter {
+
+
 
     private var adView: BannerAdView? = null
     private var upsellAdView: UpsellAdView? = null
@@ -42,13 +45,18 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
             adView?.onActivityCreated(activity)
             adView?.setAdLoadListener(object : AdLoadListener {
                 override fun onAdLoadSuccess() {
-                    adView?.makeVisible()
+                    UiThread.run {
+                        adView?.makeVisible()
+                    }
                     analytics.record(DefaultDataPointEvent(Events.Ads.AdShown).addDataPoint(DataPoint("ad", adView?.javaClass!!.simpleName)))
                 }
 
                 override fun onAdLoadFailure() {
                     // If we fail to load, hide it and show the upsell
-                    upsellAdView?.makeVisible()
+                    UiThread.run {
+                        upsellAdView?.makeVisible()
+                    }
+                    Logger.error(this, "Failed to load the desired ad")
                     analytics.record(DefaultDataPointEvent(Events.Purchases.AdUpsellShownOnFailure).addDataPoint(DataPoint("ad", adView?.javaClass!!.simpleName)))
                 }
             })
