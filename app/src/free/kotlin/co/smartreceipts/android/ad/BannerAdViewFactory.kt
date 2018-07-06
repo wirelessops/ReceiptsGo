@@ -1,5 +1,6 @@
 package co.smartreceipts.android.ad
 
+import android.support.annotation.IntDef
 import co.smartreceipts.android.ad.adincube.AdinCubeAdView
 import co.smartreceipts.android.ad.admob.AdMobAdView
 import co.smartreceipts.android.ad.aerserv.AerServAdView
@@ -21,16 +22,11 @@ class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provid
      * Fetches a the appropriate [BannerAdView] for this user session
      */
     fun get(): BannerAdView {
-        if (false) {
-            if (shouldShowAd(ADINCUBE_DISPLAY_FREQUENCY)) {
-                return adinCubeProvider.get()
-            } else if (shouldShowAd(AERSERV_DISPLAY_FREQUENCY)) {
-                return aerServProvider.get()
-            } else {
-                return adMobProvider.get()
-            }
-        } else {
-            return aerServProvider.get()
+        return when (getAdProviderId()) {
+            ADMOB_DISPLAY_ID -> adMobProvider.get()
+            ADINCUBE_DISPLAY_ID -> adinCubeProvider.get()
+            AERSERV_DISPLAY_ID -> aerServProvider.get()
+            else -> throw IllegalArgumentException("Unknown ad provider id: $0")
         }
     }
 
@@ -42,17 +38,23 @@ class BannerAdViewFactory @Inject constructor(private val upsellProvider: Provid
     }
 
     /**
-     * Checks if should show a given ad type, based out of a random frequency check out of 100
+     * Returns the desired [AdProviderId] to display
      */
-    private fun shouldShowAd(adTypeDisplayFrequency: Int): Boolean {
-        return adTypeDisplayFrequency >= random.nextInt(RANDOM_MAX + 1)
+    @AdProviderId
+    private fun getAdProviderId(): Int {
+        return random.nextInt(AD_PROVIDERS)
     }
 
     companion object {
 
-        private const val RANDOM_MAX = 100
-        private const val ADINCUBE_DISPLAY_FREQUENCY = 33
-        private const val AERSERV_DISPLAY_FREQUENCY = 33
+        private const val AD_PROVIDERS = 3
+        private const val ADMOB_DISPLAY_ID = 0
+        private const val ADINCUBE_DISPLAY_ID = 1
+        private const val AERSERV_DISPLAY_ID = 2
+
+        @IntDef(ADMOB_DISPLAY_ID, ADINCUBE_DISPLAY_ID, AERSERV_DISPLAY_ID)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class AdProviderId
 
     }
 }
