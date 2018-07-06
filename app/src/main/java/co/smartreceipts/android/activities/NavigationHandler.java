@@ -42,7 +42,7 @@ import static android.preference.PreferenceActivity.EXTRA_SHOW_FRAGMENT;
 public class NavigationHandler<T extends FragmentActivity> {
 
     private static final int DO_NOT_ANIM = 0;
-    private static final int MISSING_RES_ID = -1;
+    private static final int MISSING_RES_ID = 0;
 
     private final FragmentManager fragmentManager;
     private final FragmentProvider fragmentProvider;
@@ -282,13 +282,18 @@ public class NavigationHandler<T extends FragmentActivity> {
         }
         if (!wasFragmentPopped) {
             final FragmentTransaction transaction = fragmentManager.beginTransaction();
-            if (enterAnimId >= 0 && exitAnimId >= 0) {
+            if (enterAnimId != MISSING_RES_ID && exitAnimId != MISSING_RES_ID) {
                 transaction.setCustomAnimations(enterAnimId, exitAnimId);
             }
-            transaction.replace(layoutResId, fragment, tag)
-                    .addToBackStack(tag)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
+            try {
+                transaction.replace(layoutResId, fragment, tag)
+                        .addToBackStack(tag)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            } catch (IllegalStateException e) {
+                // Note: We avoid crashes here in favor of failing. All of our core app interactions are designed to be stateful anyway
+                Logger.error(this, "Failed to perform fragment transition to {}", fragment.getClass().getName());
+            }
         }
     }
 }
