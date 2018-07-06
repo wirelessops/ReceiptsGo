@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =================== App Details ===================== -->
+    <string name="app_name">Smart Receipts</string>
+
+
+    <!-- ================ Main Menu Options ================== -->
+    <string name="menu_main_settings">הגדרות</string>
+    <string name="menu_main_categories">קטגוריות</string>
+    <string name="menu_main_csv">CSV התאם אישית פלט </string>
+    <string name="menu_main_pdf">PDF התאם אישית פלט </string>
+    <string name="menu_main_ocr_configuration">(OCR) סריקות אוטומטיות</string>
+    <string name="menu_main_export">גיבוי</string>
+
+    <!-- ================ General Strings ================== -->
+    <string name="add">הוסף</string>
+    <string name="reorder">שנה סדר</string>
+    <string name="column_item">%s עמודה</string>
+    <string name="copy">העתק</string>
+    <string name="daily_total">%s :סה״כ יומי</string>
+    <string name="day">יום %s</string>
+    <string name="days">ימים %s</string>
+    <string name="delete">מחק</string>
+    <string name="delete_item">?%s מחק</string>
+    <string name="delete_sync_information">כל מידע מסונכרן לענן על הפריט הזה יימחק גם הוא.</string>
+    <string name="distance">מרחק</string>
+    <string name="distance_total_item">%s :סה״כ מרחק</string>
+    <string name="edit">ערוך</string>
+    <string name="export">ייצא</string>
+    <string name="feedback">משוב - %s</string>
+    <string name="image">תמונה</string>
+    <string name="import_string">ייבא</string>
+    <string name="import_string_item">%s ייבא</string>
+    <string name="item_code">:קוד</string>
+    <string name="item_name">:שם</string>
+    <string name="move">הזז</string>
+    <string name="move_copy_item">?%s הזז/העתק את</string>
+    <string name="next_id">%s :המזהה הבא</string>
+    <string name="no">לא</string>
+    <string name="pdf">PDF</string>
+    <string name="report">דו״ח</string>
+    <string name="report_attached">דוח 1 מצורף</string>
+    <string name="reports_attached">דוחות מצורפים %s</string>
+    <string name="save">שמור</string>
+    <string name="send_email">&#8230;שלח קובץ</string>
+    <string name="submit">שלח</string>
+    <string name="support">תמיכה - %s</string>
+    <string name="total">סה״כ</string>
+    <string name="undefined">לא מוגדר</string>
+    <string name="update">עדכן</string>
+    <string name="yes">כן</string>
+    <string name="yes_as_pdf">PDF כן - בתור</string>
+    <string name="share">שתף</string>
+
+    <!-- =============== Subscriptions ================ -->
+    <string name="pro_subscription">Smart Receipts Plus</string>
+
+    <!-- ============= Subscription Info ============== -->
+
+    <!-- ================ No More Ads ================= -->
+    <string name="missing_ad_suggest_removal_upsell">נמאס לך מפרסומות? לחץ להתחלת תקופת נסיון ללא פרסומות</string>
+
+    <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">גרפים</string>
+    <string name="report_info_receipts">קבלות</string>
+    <string name="report_info_distance">מרחק</string>
+    <string name="report_info_generate">ייצר</string>
+
+    <!-- ============= Report Generation ============== -->
+    <string name="report_header_from">%s :מאת</string>
+    <string name="report_header_to">%s :אל</string>
+    <string name="report_header_receipts_total">%s :סה״כ קבלות</string>
+    <string name="report_header_receipts_total_tax">%s :סה״כ מס</string>
+    <string name="report_header_receipts_total_no_tax">%s :סה״כ קבלות (ללא מס)</string>
+    <string name="report_header_receipts_total_with_tax">%s :סה״כ קבלות (עם מס)</string>
+    <string name="report_header_distance_total">%s :סה״כ מרחק</string>
+    <string name="report_header_receipts_total_reimbursable">%s :סה״כ (זכאי להחזרים)</string>
+    <string name="report_header_grand_total">%s :סה״כ</string>
+    <string name="report_header_cost_center">%s :מרכז מחיר</string>
+    <string name="report_header_comment">%s :הערה לדוח</string>
+    <string name="report_pdf_generation_error">שגיאה בייצור הדוח</string>
+    <string name="report_pdf_error_too_many_columns_title">יותר מדי עמודות</string>
+	<string name="report_pdf_error_too_many_columns_message">.אין מספיק מקום ע״מ להכיל את כל העמודות בדוח. אנא נסה להגביל את מספר העמודות בהגדרות</string>
+
+	<string name="report_pdf_error_too_many_columns_message_landscape">.אין מספיק מקום ע״מ להכיל את כל העמודות בדוח. אנא נסה להגביל את מספר העמודות בהגדרות או עבור למצב מסך מאוזן</string>
+	
+    <string name="report_pdf_error_go_to_settings">עבור להגדרות</string>
+
+    <!-- ===================== ocr ======================== -->
+    <string name="ocr_informational_tooltip_configure_text">(רשות) רוצה להגדיר סריקות אוטומטיות? לחץ כאן</string>
+    <plurals name="ocr_informational_tooltip_limited_scans_text">
+        <item quantity="one">.סריקה נותרה. לחץ ליותר %d</item>
+        <item quantity="other">.סריקות נותרו. לחץ ליותר %d</item>
+    </plurals>
+    <string name="ocr_status_title">:OCR מבצע סריקת</string>
+    <string name="ocr_status_message_uploading_image">&#8230;מעלה קבלה</string>
+    <string name="ocr_status_message_performing_scan">סורק עבור מטא-דאטה של קבלה&#8230;</string>
+    <string name="ocr_status_message_fetching_results">מביא תוצאות&#8230;</string>
+    <string name="ocr_configuration_title">(OCR) סריקות אוטומטיות</string>
+    <string name="ocr_configuration_scans_remaining">%d :שנותרו (OCR) סריקות אוטומטיות</string>
+    <string name="ocr_configuration_my_account">%s</string>
+    <string name="ocr_configuration_welcome">(OCR) סריקות אוטומטיות</string>
+	    <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
+    <string name="ocr_configuration_information_line2">We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</string>
+    <string name="ocr_is_enabled">?(OCR) הפעל סריקות אוטומטיות</string>
+    <string name="ocr_save_scans_to_improve_results">?אפשר לנו לשמור תמונות על מנת לשפר את התוצאות</string>
+    <string name="ocr_configuration_available_purchases">:רכישות אפשריות - לחץ לקנות</string>
+    <string name="ocr_configuration_information_line3">To try OCR, all new users get 2 free scans! Please remember that OCR is an optional feature and can be disabled at any time.</string>
+
+    <!-- ================ Categories ================== -->
+    <string name="category_name"> :שם</string>
+    <string name="category_code"> :קוד</string>
+    <string name="category_null">&lt;קטגוריה&gt;</string>
+    <string name="category_null_code">NUL</string>
+    <string name="category_airfare">טיסות</string>
+    <string name="category_airfare_code">AIRP</string>
+    <string name="category_breakfast">ארוחת בוקר</string>
+    <string name="category_breakfast_code">BRFT</string>
+    <string name="category_dinner">ארוחת ערב</string>
+    <string name="category_dinner_code">DINN</string>
+    <string name="category_entertainment">בידור</string>
+    <string name="category_entertainment_code">ENT</string>
+    <string name="category_gasoline">דלק</string>
+    <string name="category_gasoline_code">GAS</string>
+    <string name="category_gift">מתנה</string>
+    <string name="category_gift_code">GIFT</string>
+    <string name="category_hotel">מלון</string>
+    <string name="category_hotel_code">HTL</string>
+    <string name="category_laundry">כביסה</string>
+    <string name="category_laundry_code">LAUN</string>
+    <string name="category_lunch">ארוחת צהריים</string>
+    <string name="category_lunch_code">LNCH</string>
+    <string name="category_other">שונות</string>
+    <string name="category_other_code">MISC</string>
+    <string name="category_parking_tolls">חנייה/עמלות</string>
+    <string name="category_parking_tolls_code">PARK</string>
+    <string name="category_postage_shipping">דואר/משלוחים</string>
+    <string name="category_postage_shipping_code">POST</string>
+    <string name="category_car_rental">שכירת רכב</string>
+    <string name="category_car_rental_code">RCAR</string>
+    <string name="category_taxi_bus">מונית/אוטובוס</string>
+    <string name="category_taxi_bus_code">TAXI</string>
+    <string name="category_telephone_fax">טלפון/פקס</string>
+    <string name="category_telephone_fax_code">TELE</string>
+    <string name="category_tip">טיפ</string>
+    <string name="category_tip_code">TIP</string>
+    <string name="category_train">רכבת</string>
+    <string name="category_train_code">TRN</string>
+    <string name="category_books_periodicals">ספרים/מגזינים</string>
+    <string name="category_books_periodicals_code">ZBKP</string>
+    <string name="category_cell_phone">סלולרי</string>
+    <string name="category_cell_phone_code">ZCEL</string>
+    <string name="category_dues_subscriptions">מנויים/הוראות קבע</string>
+    <string name="category_dues_subscriptions_code">ZDUE</string>
+    <string name="category_meals_justified">ארוחות (בר-החזר)</string>
+    <string name="category_meals_justified_code">ZMEO</string>
+    <string name="category_stationery_stations">תחנות</string>
+    <string name="category_stationery_stations_code">ZSTS</string>
+    <string name="category_training_fees">עמלות אימון</string>
+    <string name="category_training_fees_code">ZTRN</string>
+
+    <!-- ================ Img Menu Options =================== -->
+    <string name="menu_receiptimage_retake">צלם מחדש</string>
+    <string name="menu_receiptimage_rotate_ccw">סובב נגד כיוון השעון</string>
+    <string name="menu_receiptimage_rotate_cw">סובב עם כיוון השעון</string>
+
+    <!-- ===================== Email ====================== -->
+    <string name="email_body_subject_5mb_warning">%s :הקובץ המצ\״ב גדול מ-5 מגהבייט, ולכן ייתכן שלא יוצמד כראוי</string>
+
+    <!-- ============== Progress Messages ================= -->
+    <string name="progress_import">מעלה את הקבצים שלך&#8230;</string>
+    <string name="progress_building_reports">...בונה דוחות</string>
+
+    <!-- ============== Start Error Messages ================= -->
+	    <string name="SD_ERROR">.תקלה: אנא וודא שכרטיס הזכרון שלך זמין ולא מחובר למחשב שלך</string>
+	    <string name="SD_WARNING">אזהרה: כרטיס הזכרון שלך לא זמין או מחובר למחשב שלך. חלק מהתמונות עלולות להיות בלתי נגישות. מחליף לזכרון פנימי&#8230;</string>
+    <string name="database_error">תקלה: שמירת קבלה נכשלה</string>
+    <string name="database_get_error">.תקלה: בלתי אפשרי לגשת למידע שלך. אנא הפעל מחדש את האפליקציה</string>
+	    <string name="IMG_OPEN_ERROR">.תקלה: התמונה כרגע בלתי נגישה או פגומה. כרטיס הזכרון שלך עלול להיות בלתי זמין או מחובר למחשב שלך. אם הוא לא, אנא לחץ על כפתור התפריט על מנת לצלם את התמונה מחדש.</string>
+	    <string name="IMG_SAVE_ERROR">תקלה: התמונה לא נשמרה כראוי</string>
+    <string name="FILE_SAVE_ERROR">תקלה: הקובץ לא נשמר כראוי</string>
+    <string name="ILLEGAL_CHAR_ERROR">תקלה: שם הקובץ מכיל תו בלתי חורי</string>
+    <string name="SPACE_ERROR">תקלה: השם לא יכול להתחיל עם רווח</string>
+    <string name="CALENDAR_TAB_ERROR">תקלה: אנא לחץ על תיבת הטקסט של התאריך על מנת לקבוע את התאריך</string>
+    <string name="DURATION_ERROR">תקלה: תאריך ההתחלה חייב להיות לפני תאריך הסיום</string>
+    <string name="EXPORT_ERROR">.תקלה: לא ניתן לייצא את המידע שלך כראוי</string>
+    <string name="IMPORT_ERROR">.תקלה: לא ניתן לזהות את הקובץ כבר-ייבוא</string>
+    <string name="MOVE_ERROR">תקלה: לא ניתן להזיז את הקבלה</string>
+    <string name="COPY_ERROR">תקלה: לא ניתן להעתיק את הקבלה</string>
+    <string name="toast_warning_reset_exchange_rate">אזהרה: שינוי המטבע יאתחל את כל המטבעות ושערי החליפין</string>
+    <string name="toast_error_trip_exists">תקלה: דוח בשם הזה קיים כבר</string>
+    <string name="toast_error_category_exists">תקלה: קטגוריה בשם הזה קיימת כבר</string>
+
+    <!-- ============== Toast Messages ================= -->
+    <string name="toast_receipt_copy">הקבלה הועתקה בהצלחה</string>
+    <string name="toast_receipt_move">הקבלה הועברה בהצלחה</string>
+    <string name="toast_receipt_image_added">%s :נוספה תמונה חדשה בהצלחה ל</string>
+    <string name="toast_receipt_image_replaced">%s :הוחלפה בהצלחה התמונה של</string>
+    <string name="toast_receipt_pdf_added">%s :נוסף בהצלחה קובץ פידיאף ל</string>
+    <string name="toast_receipt_pdf_replaced">%s :הוחלף בהצלחה קובץ פידיאף ל</string>
+    <string name="toast_no_storage_permissions">לא ניתן לייבא קובץ בלי הרשאות לאחסון של הטלפון</string>
+    <string name="toast_import_complete">.יובאו כל הקבצים בהצלחה. אנא אתחל את האפליקציה.</string>
+    <string name="toast_reorder_hint"><![CDATA[לחץ לחיצה ארוכה על הפריט על מנת להתחיל גרירה]]></string>
+    <string name="toast_csv_report_distances">%s :על מנת ליצור דוח אקסל אנא לחץ על</string>
+    <string name="attachment_error">Unable to attach this file.</string>
+
+    <!-- ================== Trip Adapter ===================== -->
+    <string name="trip_adapter_list_item_to">\u0020אל\u0020</string>
+	<string name="trip_no_data">אין לך דוחות מוגדרים כרגע. נסה ללחוץ על + על מנת להתחיל. \n\n האפליקציה מאפשר לך ליצור דוחות הוצאה, לעקוב אחרי קבלות בכל אחד מהדוחות, ולייצר דוחות PDF וCSV להוצאות שלך. זה קל ופשוט! בנוסף, ניתן לבצע התאמה אישית לקטגוריות, דוחות ושאר הגדרות בתפריט ההגדרות על מנת להתאים את התוכנה לצרכיך.</string>
+	
+
+    <!-- ================= Receipt Adapter =================== -->
+    <string name="receipt_no_data">נראה שאין לך קבלות. לחץ על + על מנת להתחיל.&#8230;</string>
+	
+
+    <!-- ================= Distance Adapter ================== -->
+	<string name="distance_no_data">לא תיעדת מרחק עדיין. נסה ללחוץ על + על מנת להתחיל.</string>
+    <string name="distance_insert_failed">תקלה: יצירת פריט המרחק נכשלה. אנא וודא שהמכשיר שלך לא מחובר למחשב.</string>
+    <string name="distance_update_failed">תקלה: עדכון פריט המרחק נכשל. אנא וודא שהמכשיר שלך לא מחובר למחשב.</string>
+    <string name="distance_delete_failed">תקלה: מחיקת פירט המרחק נכשלה. אנא וודא שהמכשיר שלך לא מחובר למחשב.</string>
+
+    <!-- ================= Trip Actions =================== -->
+
+    <!-- ================= Receipt Actions =================== -->
+    <string name="receipt_action_camera">צלם</string>
+    <string name="receipt_action_text">טקסט</string>
+    <string name="receipt_action_import">ייבא</string>
+
+    <!-- ==================== Cards ========================= -->
+
+    <!-- ================ DIALOG (GENERAL) =================== -->
+    <string name="DIALOG_CANCEL">ביטול</string>
+
+    <!-- ================= DIALOG_WELCOME ==================== -->
+
+    <!-- ================== DIALOG_EMAIL ===================== -->
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">דוח PDF מלא</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">דוח PDF ללא טבלה</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_CSV">קובץ CSV</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">קובץ ZIP - קבצי קבלות עם מטא-דאטה</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">קובץ Zip - קבצי קבלות</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">אנא סמן לפחות קבלה אחת</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">אין קבלות בדוח הזה</string>
+    <string name="generate_report_tooltip">לחץ להגדרת תצוגת הדוח</string>
+
+
+    <!-- ================= DIALOG_SETTINGS =================== -->
+
+
+    <!-- ================= DIALOG_TRIPMENU =================== -->
+    <string name="DIALOG_TRIPMENU_HINT_NAME">שם</string>
+    <string name="DIALOG_TRIPMENU_HINT_START">תאריך התחלה</string>
+    <string name="DIALOG_TRIPMENU_HINT_END">תאריך סיום</string>
+    <string name="DIALOG_TRIPMENU_TITLE_NEW">דוח הוצאות חדש</string>
+    <string name="DIALOG_TRIPMENU_TITLE_EDIT">עריכת דוח</string>
+    <string name="DIALOG_TRIPMENU_TOAST_MISSING_FIELD">אנא מלא את כל השדות</string>
+
+    <!-- =============== DIALOG_TRIP_DELETE ================== -->
+    <string name="DIALOG_TRIP_DELETE_POSITIVE_BUTTON">מחק</string>
+
+    <!-- ================= DIALOG_RECEIPTMENU =================== -->
+    <string name="DIALOG_RECEIPTMENU_HINT_NAME">שם</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">מחיר (למשל 150.00)</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">מחיר</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_TAX">מס</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">מטבע</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">שער חליפין</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">שער חליפין נכשל. נסה שוב?</string>
+    <string name="receipt_input_exchanged_result_hint">מחיר מטבע בסיסי</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_DATE">תאריך</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">קטגוריה</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">הערה</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">מרכז עלות</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">בר החזר?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">תמונה בדף מלא?</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW">קבלה חדשה</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">קבלה חדשה - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">עריכת קבלה</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">עריכת קבלה -  %s</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">אזהרה: תאריך הקבלה הזו נופל מחוץ לטווח התאריכים של דוח ההוצאות הנוכחי</string>
+    <string name="manage_categories">נהל קטגוריות</string>
+    <string name="manage_payment_methods">נהל אמצעי תשלום</string>
+
+    <!-- ================= DIALOG_RECEIPT_ATTACHMENT =================== -->
+    <string name="receipt_attach_photo">צלם תמונה</string>
+    <string name="receipt_attach_image">בחר תמונה</string>
+    <string name="receipt_attach_file">צרף קובץ</string>
+
+
+    <!-- ==================== dialog export / import ====================== -->
+    <string name="dialog_export_title">ייצא את הקבלות שלך?</string>
+    <string name="dialog_export_text">אתה יכול לייבא את המידע שלך מחדש על ידי לחיצה על קובץ SmartReceipts.SMR file , המיוצר על ידי לחיצה על הכפתור מטה.</string>
+    <string name="dialog_export_positive">ייצוא</string>
+    <string name="dialog_import_positive">ייבוא</string>
+    <string name="dialog_import_text">דריסת כל המידע הקיים</string>
+    <string name="dialog_export_working">ייצוא הקבלות שלך&#8230;</string>
+
+    <!-- ==================== DIALOG_ABOUT ====================== -->
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">מרחק</string>
+    <string name="distance_price_field">מחיר</string>
+    <string name="distance_distance_field">מרחק</string>
+    <string name="distance_rate_field">תעריף</string>
+    <string name="dialog_currency_field">מטבע</string>
+    <string name="distance_date_field">תאריך</string>
+    <string name="distance_comment_field">הערה</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">קטגוקיה</string>
+    <string name="category_code_field">קוד קטגוריה</string>
+    <string name="category_price_field">מחיר</string>
+    <string name="category_tax_field">מס</string>
+    <string name="category_currency_field">מטבע</string>
+
+    <!-- ===================== backup menu ======================== -->
+    <string name="backups">גיבויים</string>
+    <string name="manual_backup_title">גיבויים ידניים:</string>
+	<string name="manual_backup_description">גבה את המידע שלך על מנת לשמור על הקבולות שלך. אתה יכול לשחזר את המידע שלך על ידי ייבוא של קובץ הגיבוי, שנוצר על ידי כפתור ״\"גיבוי\" למטה.</string>
+    <string name="manual_backup_export">גיבוי</string>
+    <string name="manual_backup_import">ייבוא</string>
+    <string name="auto_backup_title">:גיבוי אוטומטי (ביטא)</string>
+    <string name="auto_backup_wifi_only">השתמש בווייפיי בלבד</string>
+    <string name="auto_backup_warning_none">זהירות: גיבויים אוטומטיים לא הוגדרו! אתה עלול לאבד את המידע שלך.</string>
+	    <string name="auto_backup_warning_drive">זהירות: אתה עלול להיות מחויב על ידי מפעיל הסלולר שלך על ידי יצירת גיבויים אוטומטיים ברשת הסלולרית.</string>
+    <string name="auto_backup_configure">לחץ להגדרות</string>
+    <string name="auto_backup_source_none">כלום</string>
+    <string name="auto_backup_source_google_drive">Google Drive</string>
+    <string name="existing_backups_title">גיבויים קיימים</string>
+    <string name="existing_remote_backup_current_device">%s (הגיבוי הנוכחי שלך)</string>
+    <string name="remote_backups_list_item_menu_restore">שחזר</string>
+    <string name="remote_backups_list_item_menu_delete">@string/מחק</string>
+    <string name="remote_backups_list_item_menu_download_images">הורד כקובץ זיפ</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] הורד</string>
+    <string name="dialog_remote_backup_delete_title">@string/מחק</string>
+    <string name="dialog_remote_backup_delete_message">Are you sure you wish to delete your backup from the %s device? This operation cannot be undone.</string>
+	  <string name="dialog_remote_backup_delete_message">אתה בטוח שאתה רוצה למחוק את הגיבויים שלך ממכשיר %s? פעולה זו הינה בלתי הפיכה.  </string>
+	    <string name="dialog_remote_backup_delete_message_this_device">אתה בטוח שאתה רוצה למחוק את הגיבוי שלך מהמכשיר הזה? הפעולה הינה בלתי הפיכה. אנא שים לב שרצוי לכבות את פונקציית הגיבויים האוטומטיים אחרי שהפעולה הזו הושלמה או שכל המידע המקומי עלול להיות מסונכרן שוב.</string>
+    <string name="dialog_remote_backup_delete_positive">@string/מחק</string>
+    <string name="dialog_remote_backup_delete_progress">מחק את הגיבוי שלך ממכשיר %s &#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">הגיבוי נמחק בהצלחה</string>
+    <string name="dialog_remote_backup_delete_toast_failure">מחיקת הגיבוי נכשלה</string>
+    <string name="dialog_remote_backup_download_progress">מוריד קבצים לקובץ זיפ&#8230;</string>
+    <string name="dialog_remote_backup_drive_restore_title">שחזור דרייב</string>
+	    <string name="dialog_remote_backup_drive_restore_message">יש לנו בעיה עם סנכון המידע שלך. על מנת לטפל בנושא, נרצה למחוק את גיבוי הדרייב שלך ולסנכרן מחדש. אם אתה רואה את ההודעה הזו באופן קבוע, אנא צור קשר עם מפתח האפליקציה לתמיכה נוספת.</string>
+    <string name="dialog_remote_backup_restore_progress">מוחק את הגיבוי על מנת להתכונן לסנכרון מחדש&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">גיבוי נמחק בהצלחה. מסכנרן מחדש&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_failure">נכשל בסנכרון מחדש של הגיבוי</string>
+
+    <string name="automatic_backups_info_dialog_message">גיבויים אוטומטיים אינם מופעלים כרגע.</string>
+    <string name="automatic_backups_info_dialog_positive">לחץ להגדרות</string>
+
+    <string name="drive_sync_error_no_space">אין מקום אחסון פנוי בדרייב</string>
+    <string name="drive_sync_error_no_permissions">לחץ לשחזור הרשאות בדרייב</string>
+    <string name="drive_sync_error_lost_data">טעות קונפיגורציה עם גוגל דרייב - לחץ לתיקון</string>
+
+    <!-- ==============-========== Login ========================== -->
+    <string name="login_toolbar_title">התחבר / הירשם</string>
+    <string name="login_title">התחבר עם החשבון שלך על מנת להתחיל בסריקות אוטומטיות</string>
+    <string name="login_field_email_hint">דואר אלקטרוני</string>
+    <string name="login_field_password_hint">סיסמא</string>
+    <string name="sign_up_button_text">הירשם</string>
+    <string name="login_button_text">התחבר</string>
+    <string name="login_fields_hint_email">אנא הכנס כתובת דואר אלקטרוני תקינה:</string>
+    <string name="login_fields_hint_password">סיסמאות חייבות להיות בעלות 8 תווים לפחות:</string>
+    <string name="login_fields_hint_valid">לחץ למטה על מנת להתחבר או להירשם:</string>
+    <string name="login_success_toast">התחברות התבצעה בהצלחה</string>
+    <string name="sign_up_success_toast">הרשמה התבצעה בהצלחה</string>
+    <string name="login_failure_toast">התחברות נכשלה</string>
+    <string name="sign_up_failure_toast">הרשמה נכשלה</string>
+    <string name="login_failure_credentials_toast">שגיאה: שם משתמש או סיסמא לא נכונים</string>
+    <string name="sign_up_failure_account_exists_toast">שגיאה - כתובת הדואר האלקטורני קיימת כבר, נסה להתחבר</string>
+
+    <!-- ==================== dialog filter ======================= -->
+    <string name="dialog_filter_positive_button">הוסף פילור</string>
+    <string name="dialog_filter_negative_button">הסר פילטר</string>
+
+    <!-- ==================== dialog miles ======================== -->
+    <string name="dialog_mileage_title_create">הוסף מרחק</string>
+    <string name="dialog_mileage_title_update">עדכן מרחק</string>
+    <string name="dialog_mileage_positive_create">הוסף</string>
+    <string name="dialog_mileage_positive_update">עדכן</string>
+    <string name="dialog_mileage_neutral_delete">מחק</string>
+
+    <!-- ================= RECEIPTMENU_FIELDS =================== -->
+    <string name="RECEIPTMENU_FIELD_NAME">שם</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">מחיר</string>
+    <string name="RECEIPTMENU_FIELD_TAX">מס</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">מטבע</string>
+    <string name="RECEIPTMENU_FIELD_DATE">תאריך</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">קטגוריה</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">הערה</string>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
+
+    <!-- ================== RECEIPTMENU_TAGS ==================== -->
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
+
+    <!-- ============== Start String Arrays ================== -->
+    <string-array name="EDIT_TRIP_ITEMS">
+        <item>ערוך דוח</item>
+        <item>מחק דוח</item>
+    </string-array>
+
+    <!-- ============== CSV/PDF Columns ================== -->
+    <string name="column_item_blank">עמודה ריקה</string>
+    <string name="column_item_category_code">קוד קטגוריה</string>
+    <string name="column_item_category_name">שם קטגוריה</string>
+    <string name="column_item_user_id">מזהה משתמש</string>
+    <string name="column_item_report_name">שם דוח</string>
+    <string name="column_item_report_start_date">תאריך תחילת דוח</string>
+    <string name="column_item_report_end_date">תאריך סוף דוח</string>
+    <string name="column_item_report_comment">הערת דוח</string>
+    <string name="column_item_report_cost_center">מרכז עלות דוח</string>
+    <string name="column_item_image_file_name">שם תמונה</string>
+    <string name="column_item_image_path">נתיב לתמונה</string>
+    <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">מחיר פחות מס</string>
+    <string name="column_item_converted_price_exchange_rate">מחיר לאחר המרה</string>
+    <string name="column_item_converted_tax_exchange_rate">מס לאחר המרה</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">מחיר פלוס מס לאחר המרה</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">מחיר פחות לאחר המרה</string>
+    <string name="column_item_exchange_rate">שער חליפין</string>
+    <string name="column_item_pictured">בתמונה</string>
+    <string name="column_item_reimbursable">בר-החזר</string>
+    <string name="column_item_deprecated_expensable" translatable="false">Expensable</string>
+    <string name="column_item_index">אינדקס קבלה</string>
+    <string name="column_item_id">מזהה קבלה</string>
+    <string name="column_item_payment_method">אמצעי תשלום</string>
+
+    <string name="receipt_dialog_action_edit">ערוך קבלה</string>
+    <string name="receipt_dialog_action_view">הראה קבלה %s</string>
+    <string name="receipt_dialog_action_delete">מחק קבלה</string>
+    <string name="receipt_dialog_action_move_copy">העבר/העתק</string>
+    <string name="receipt_dialog_action_remove_attachment">מחק קובץ מצורף</string>
+
+    <string name="dialog_attachment_text">לחץ על קבלה קיימת כדי להוסיף אליה את %s </string>
+    <string name="receipt_dialog_remove_attachment">האם אתה רוצה למחוק את הקובץ המצורף?</string>
+
+    <!-- ================== Preference Dialog ==================== -->
+    <string name="dialog_custom_csv_spinner">סוג עמודה</string>
+    <string name="dialog_category_add">הוסף קטגוריה</string>
+    <string name="dialog_category_edit">ערוך קטגוריה</string>
+
+    <!-- ================ Error Feedback ==================== -->
+    <string name="error_no_pdf_activity_viewer">לא קיימת אפליקציה לצפייה בקבצי PDF</string>
+    <string name="error_no_send_intent_dialog_title">לא קיימת אפליקציה לשליחה</string>
+    <string name="error_no_send_intent_dialog_message">לא יכולנו למצוא אפליקציה של דואר אלקטרוני (או אפליקציה דומה) על מכשיר הטלפון שלך. תוכל למצוא את הקבצים בתיקייה הבאה: %s</string>
+	<string name="error_no_file_intent_dialog_title">שגיאה: לא נמצאה אפליקצית גיבוי על הטלפון שלך</string>
+    <string name="error_no_wifi">שגיאה: לא מחובר לווייפיי</string>
+
+    <!-- ================== ActionBar ===================== -->
+
+    <!-- ================== CSV Table ===================== -->
+
+    <!-- ================== Legacy Camera ==================== -->
+
+    <!-- ================== SQL Corrpution ==================== -->
+    <string name="dialog_sql_corrupt_title">הו לא!</string>
+    <string name="dialog_sql_corrupt_message">Your database was corrupted. This often occurs if you have a task killer app, but it can be caused by a few different things. Don\'t worry, we should be able to restore most of your data.</string>
+	    <string name="dialog_sql_corrupt_message">מסד הנתונים שלך פגום. מצב זה קורה לרוב אם יש לך אפליקצית ״הריגת״ מטלות ברקע, אבל הוא יכול להיגרם מכל מיני סיבות. אל תדאג, נוכל לשחזר את המידע שלך.</string>
+    <string name="dialog_sql_corrupt_positive">שלח דואר אלקטרוני למפתח על מנת לבקש סיוע</string>
+    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - מסדי נתונים פגומים</string>
+    <string name="dialog_sql_corrupt_intent_text">Help - my database was corrupted. How can you help me restore things?</string>
+    <string name="dialog_sql_corrupt_intent_text">עזרה - מסד הנתונים שלי פגום. כיצד תוכל לעזור לי לשחזר את המידע שלי?</string>
+    <string name="dialog_sql_corrupt_chooser">שלח דואר אלקטרוני&#8230;</string>
+
+    <!-- ======================= Filters ====================== -->
+    <string name="filter_name_and">ו</string>
+    <string name="filter_name_not">גם</string>
+    <string name="filter_name_or">או</string>
+    <string name="filter_name_receipt_category">קטגרוריה</string>
+    <string name="filter_name_receipt_reimbursable">בר החזר</string>
+    <string name="filter_name_receipt_max_price">מחיר מקסימלי</string>
+    <string name="filter_name_receipt_min_price">מחיר מינימלי</string>
+    <string name="filter_name_receipt_on_or_after">בזמן או אחרי הזמן</string>
+    <string name="filter_name_receipt_on_or_before">בזמן או לפני הזמן</string>
+    <string name="filter_name_receipt_selected">מסומן</string>
+    <string name="filter_name_trip_ends_on_or_after">נגמר ב או אחרי</string>
+    <string name="filter_name_trip_ends_on_or_before">נגמר ב או לפני</string>
+    <string name="filter_name_trip_max_price">מחיר מקסימלי</string>
+    <string name="filter_name_trip_min_price">מחיר מינימלי</string>
+    <string name="filter_name_trip_starts_on_or_after">מתחיל ב או אחרי</string>
+    <string name="filter_name_trip_starts_on_or_before">מתחיל ב או לפני</string>
+
+    <!-- =================== Payment Methods =====+============= -->
+    <string name="payment_method">אמצעי תשלום</string>
+    <string name="payment_methods">אמצי תשלום</string>
+    <string name="payment_method_add">הוסף אמצעי תשלום</string>
+    <string name="payment_method_edit">ערוך אמצעי תשלום</string>
+    <string name="payment_method_default_cash">מזומן</string>
+    <string name="payment_method_default_check">צ׳ק</string>
+    <string name="payment_method_default_personal_card">כרטיס אשראי אישי</string>
+    <string name="payment_method_default_corporate_card">כרטיס אשראי חברה</string>
+
+    <!-- =================== Payment Methods =================== -->
+    <string name="purchase_succeeded">הרכישה בוצעה בהצלחה</string>
+    <string name="purchase_unavailable">משיכת מידע לגבי הרכישה נכשלה</string>
+    <string name="purchase_failed">השלמת הרכישה נכשלה</string>
+
+    <!-- ================== App Rating ==================== -->
+    <string name="rating_tooltip_text">אוהב את Smart Receipts?</string>
+    <string name="leave_feedback_text">תרצה להשאיר לנו פידבק?</string>
+    <string name="apprating_dialog_title">אוהב את %s?</string>
+	    <string name="apprating_dialog_message">אנא שקול להשאיר ביקורת בחנות האפליקציות. בתור מפתח עצמאי, הביקורות שלך הן אמצעי החשיפה העיקרי שלי ויכולות מאוד לעזור לי לפתח פונקציונאליות נוספת. תודה!</string>
+    <string name="apprating_dialog_negative">לא תודה</string>
+    <string name="apprating_dialog_neutral">אולי אחר כך</string>
+    <string name="apprating_dialog_positive">דרג עכשיו!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">השתמש בטאב הייצור על מנת ליצור את הדוחות שלך</string>
+    <string name="tooltip_backup_info_message">%d ימים מאז הגיבוי האחרון שלך</string>
+    <string name="tooltip_no_backups_info_message">תזכורת: גבה את המידע שלך באופן קבוע</string>
+    <string name="tooltip_import_info_message">אנא בחר קבלה עבור הקובץ המצורף שלך</string>
+    <string name="tooltip_review_privacy">לחץ לעיון של הגדרות הפרטיות שלך</string>
+
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">הוסף קבלות ראשונות על מנת לצפות בגרפים</string>
+    <string name="graphs_expenditure_by_dates_title">הוצאות יומיות</string>
+    <string name="graphs_expenditure_by_categories_title">הוצאה לפי קטגוריה</string>
+    <string name="graphs_expenditure_by_reimbursable_title">בר-החזר לעומת לא בר-החזר</string>
+    <string name="graphs_expenditure_by_payment_methods_title">הוצאה לפי אמצעי תשלום</string>
+    <string name="graphs_label_reimbursable">בר-החזר</string>
+    <string name="graphs_label_non_reimbursable">לא בר-החזר</string>
+    <string name="graphs_label_others">אחרים</string>
+
+</resources>
