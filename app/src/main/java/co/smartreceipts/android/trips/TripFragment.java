@@ -377,13 +377,15 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Override
     public void routeToViewReceipts(@NotNull Trip trip) {
-        selectedTrip = trip;
-        if (navigationHandler.isDualPane()) {
-            tripCardAdapter.setSelectedItem(trip);
+        if (isResumed()) {
+            selectedTrip = trip;
+            if (navigationHandler.isDualPane()) {
+                tripCardAdapter.setSelectedItem(trip);
+            }
+            lastTripMonitor.setLastTrip(trip);
+            lastTripAutoNavigationTracker.setHasNavigatedToLastTrip(true);
+            navigationHandler.navigateToReportInfoFragment(trip);
         }
-        lastTripMonitor.setLastTrip(trip);
-        lastTripAutoNavigationTracker.setHasNavigatedToLastTrip(true);
-        navigationHandler.navigateToReportInfoFragment(trip);
     }
 
     private void updateViewVisibilities(List<Trip> trips) {
