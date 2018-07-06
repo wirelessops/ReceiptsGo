@@ -40,6 +40,7 @@ public class RxInAppBillingServiceConnection {
             final ServiceConnection serviceConnection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
+                    // Note: This callback occurs on the Ui Thread
                     if (!emitter.isDisposed()) {
                         emitter.onSuccess(IInAppBillingService.Stub.asInterface(service));
                     }
@@ -47,6 +48,7 @@ public class RxInAppBillingServiceConnection {
 
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
+                    // Note: This callback occurs on the Ui Thread
                     // Intentional no-op
                 }
             };
@@ -68,6 +70,11 @@ public class RxInAppBillingServiceConnection {
                     emitter.onError(e);
                 }
             }
+        }).flatMap(service -> {
+            // Since our #emitter methods happen on the UiThread, we use this flatMap to switch back to our subscribe on thread
+            //noinspection LambdaParameterTypeCanBeSpecified
+            return Single.just(service)
+                    .subscribeOn(subscribeOnScheduler);
         }).subscribeOn(subscribeOnScheduler);
     }
 }
