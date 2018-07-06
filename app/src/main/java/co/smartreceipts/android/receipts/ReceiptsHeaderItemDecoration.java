@@ -40,7 +40,12 @@ public class ReceiptsHeaderItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        if (listener.isHeader(parent.getChildAdapterPosition(childInContact))) {
+        final int childPosition = parent.getChildAdapterPosition(childInContact);
+        if (childPosition < 0) {
+            return;
+        }
+
+        if (listener.isHeader(childPosition)) {
             moveHeader(c, currentHeader, childInContact);
             return;
         }
