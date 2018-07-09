@@ -16,11 +16,11 @@ public class InAppPurchaseTest {
 
     @Test
     public void getters() {
-        assertEquals(InAppPurchase.SmartReceiptsPlus.getSku(), "plus_sku_4");
+        assertEquals(InAppPurchase.SmartReceiptsPlus.getSku(), "plus_sku_5");
         assertEquals(InAppPurchase.SmartReceiptsPlus.getType(), Subscription.class);
         assertEquals(InAppPurchase.SmartReceiptsPlus.getProductType(), "subs");
         assertEquals(InAppPurchase.SmartReceiptsPlus.getPurchaseFamilies(), new HashSet<>(Arrays.asList(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr)));
-        assertEquals(InAppPurchase.SmartReceiptsPlus.getLegacySkus(), Collections.singleton("pro_sku_3"));
+        assertEquals(InAppPurchase.SmartReceiptsPlus.getLegacySkus(), new HashSet<>(Arrays.asList("pro_sku_3", "plus_sku_4")));
 
         assertEquals(InAppPurchase.OcrScans50.getSku(), "ocr_purchase_1");
         assertEquals(InAppPurchase.OcrScans50.getType(), ConsumablePurchase.class);
@@ -37,6 +37,7 @@ public class InAppPurchaseTest {
 
     @Test
     public void from() {
+        assertEquals(InAppPurchase.SmartReceiptsPlus, InAppPurchase.from("plus_sku_5"));
         assertEquals(InAppPurchase.SmartReceiptsPlus, InAppPurchase.from("plus_sku_4"));
         assertEquals(InAppPurchase.SmartReceiptsPlus, InAppPurchase.from("pro_sku_3"));
         assertEquals(InAppPurchase.OcrScans50, InAppPurchase.from("ocr_purchase_1"));
@@ -55,7 +56,7 @@ public class InAppPurchaseTest {
 
     @Test
     public void getSubscriptionSkus() {
-        final List<String> purchases = Collections.singletonList("plus_sku_4");
+        final List<String> purchases = Collections.singletonList("plus_sku_5");
         assertEquals(InAppPurchase.getSubscriptionSkus(), purchases);
     }
 
