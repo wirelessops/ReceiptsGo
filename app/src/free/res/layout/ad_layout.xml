@@ -8,6 +8,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/remove_ad_hint_height"
         android:id="@+id/adView_container">
         <!-- NativeExpressAdView is added programmatically here -->
         <Button style="@style/Widget.SmartReceipts.Button"
