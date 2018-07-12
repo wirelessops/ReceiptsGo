@@ -37,6 +37,7 @@ import co.smartreceipts.android.persistence.LastTripMonitor;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.purchases.plus.SmartReceiptsTitle;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
@@ -62,6 +63,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Inject
     Flex flex;
+
+    @Inject
+    SmartReceiptsTitle smartReceiptsTitle;
 
     @Inject
     TripTableController tripTableController;
@@ -155,7 +159,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onResume() {
         super.onResume();
         Logger.debug(this, "onResume");
-        getActivity().setTitle(getFlexString(R.string.sr_app_name));
+        requireActivity().setTitle(smartReceiptsTitle.get());
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             getSupportActionBar().setSubtitle(null);
@@ -310,7 +314,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
                 getFragmentManager().beginTransaction().remove(detailsFragment).commit();
                 final ActionBar actionBar = getSupportActionBar();
                 if (actionBar != null) {
-                    actionBar.setTitle(getFlexString(R.string.sr_app_name));
+                    actionBar.setTitle(smartReceiptsTitle.get());
                 }
             }
         }

@@ -17,7 +17,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -40,6 +39,7 @@ import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
+import co.smartreceipts.android.purchases.plus.SmartReceiptsTitle;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -58,6 +58,9 @@ import wb.android.preferences.SummaryEditTextPreference;
 public class SettingsActivity extends AppCompatPreferenceActivity implements OnPreferenceClickListener, UniversalPreferences, PurchaseEventsListener {
 
     public static final String EXTRA_GO_TO_CATEGORY = "GO_TO_CATEGORY";
+
+    @Inject
+    SmartReceiptsTitle smartReceiptsTitle;
 
     @Inject
     Flex flex;
@@ -383,9 +386,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         } else if (key.equals(getString(R.string.pref_help_send_feedback_key)) || key.equals(getString(R.string.pref_help_support_email_key))) {
             final String emailSubject;
             if (key.equals(getString(R.string.pref_help_send_feedback_key))) {
-                emailSubject = getString(R.string.feedback, getString(R.string.sr_app_name));
+                emailSubject = getString(R.string.feedback, smartReceiptsTitle.get());
             } else {
-                emailSubject = getString(R.string.support, getString(R.string.sr_app_name));
+                emailSubject = getString(R.string.support, smartReceiptsTitle.get());
             }
 
             final List<File> files = new ArrayList<>();
