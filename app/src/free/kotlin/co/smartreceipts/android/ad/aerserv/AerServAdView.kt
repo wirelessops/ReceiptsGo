@@ -1,8 +1,10 @@
 package co.smartreceipts.android.ad.aerserv
 
 import android.app.Activity
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 
 import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.AdLoadListener
@@ -25,7 +27,8 @@ class AerServAdView @Inject constructor() : BannerAdView {
         this.container = activity.findViewById(R.id.adView_container)
         this.adView = AerServBanner(activity)
 
-        val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        params.gravity = Gravity.CENTER_HORIZONTAL
         adView!!.layoutParams = params
 
         container!!.addView(adView)

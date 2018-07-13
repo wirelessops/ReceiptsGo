@@ -1,8 +1,10 @@
 package co.smartreceipts.android.ad.adincube
 
 import android.app.Activity
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 
 import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.AdLoadListener
@@ -27,7 +29,8 @@ class AdinCubeAdView @Inject constructor() : BannerAdView {
         this.container = activity.findViewById(R.id.adView_container)
         this.adView = AdinCube.Banner.createView(activity, AdinCube.Banner.Size.BANNER_AUTO)
 
-        val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        params.gravity = Gravity.CENTER_HORIZONTAL
         adView!!.layoutParams = params
         adView!!.setEventListener(object : AdinCubeBannerEventListener {
             override fun onAdClicked(view: BannerView?) {
