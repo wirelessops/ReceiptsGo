@@ -11,6 +11,7 @@
     <string name="menu_main_pdf">Passen Sie die PDF-Ausgabe an</string>
     <string name="menu_main_ocr_configuration">Automatische Scans (OCR)</string>
     <string name="menu_main_export">Sicherungskopie</string>
+    <string name="menu_main_usage_guide">Gebrauchsanleitung</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">Hinzufügen</string>

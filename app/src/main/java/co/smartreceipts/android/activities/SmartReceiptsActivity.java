@@ -1,6 +1,7 @@
 package co.smartreceipts.android.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -186,6 +187,10 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
         } else if (item.getItemId() == R.id.menu_main_ocr_configuration) {
             navigationHandler.navigateToOcrConfigurationFragment();
             analytics.record(Events.Navigation.OcrConfiguration);
+            return true;
+        } else if (item.getItemId() == R.id.menu_main_usage_guide) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
+            analytics.record(Events.Navigation.UsageGuideOverflow);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

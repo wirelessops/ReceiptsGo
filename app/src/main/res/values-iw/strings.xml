@@ -12,6 +12,7 @@
     <string name="menu_main_pdf">PDF התאם אישית פלט </string>
     <string name="menu_main_ocr_configuration">(OCR) סריקות אוטומטיות</string>
     <string name="menu_main_export">גיבוי</string>
+    <string name="menu_main_usage_guide">מדריך שימוש</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">הוסף</string>

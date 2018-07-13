@@ -20,6 +20,7 @@ public final class Events {
         public static final Event BackupOverflow = new DefaultEvent(Category.Navigation, "BackupOverflow");
         public static final Event OcrConfiguration = new DefaultEvent(Category.Navigation, "OcrConfiguration");
         public static final Event SmartReceiptsPlusOverflow = new DefaultEvent(Category.Navigation, "SmartReceiptsPlusOverflow");
+        public static final Event UsageGuideOverflow = new DefaultEvent(Category.Navigation, "UsageGuideOverflow");
     }
 
     public static final class Reports {
