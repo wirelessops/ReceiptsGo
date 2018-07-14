@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Column;
-import co.smartreceipts.android.workers.reports.pdf.utils.PdfBoxUtils;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontSpec;
+import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontStyle;
+import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxContext;
 import co.smartreceipts.android.workers.reports.pdf.utils.HeavyHandedReplaceIllegalCharacters;
+import co.smartreceipts.android.workers.reports.pdf.utils.PdfBoxUtils;
 
 
 public class ColumnWidthCalculator<DataType> {
@@ -18,29 +20,25 @@ public class ColumnWidthCalculator<DataType> {
     private final List<Column<DataType>> mColumns;
     private final float mAvailableWidth;
     private final float mCellPadding;
-    private final PdfFontSpec mFontHeader;
-    private final PdfFontSpec mFontContent;
-
+    private final PdfBoxContext pdfBoxContext;
 
     /**
+     * @param pdfBoxContext
      * @param list
      * @param columns
      * @param availableWidth
-     * @param fontHeader
-     * @param fontContent
+     * @param cellPadding
      */
-    public ColumnWidthCalculator(List<DataType> list,
+    public ColumnWidthCalculator(PdfBoxContext pdfBoxContext,
+                                 List<DataType> list,
                                  List<Column<DataType>> columns,
                                  float availableWidth,
-                                 float cellPadding,
-                                 PdfFontSpec fontHeader,
-                                 PdfFontSpec fontContent) {
+                                 float cellPadding) {
 
+        this.pdfBoxContext = pdfBoxContext;
         mList = list;
         mColumns = columns;
         mAvailableWidth = availableWidth;
-        mFontHeader = fontHeader;
-        mFontContent = fontContent;
         mCellPadding = cellPadding;
     }
 
@@ -53,7 +51,7 @@ public class ColumnWidthCalculator<DataType> {
         ArrayList<ColumnAttributes> attrs = new ArrayList<ColumnAttributes>(mColumns.size());
 
         for (int i = 0; i < mColumns.size(); i++) {
-            attrs.add(new ColumnAttributes(mColumns.get(i).getHeader(), mList, i));
+            attrs.add(new ColumnAttributes(pdfBoxContext.getString(mColumns.get(i).getHeaderStringResId()), mList, i));
         }
 
         // TOO MANY COLUMNS CHECK
@@ -159,8 +157,12 @@ public class ColumnWidthCalculator<DataType> {
         boolean mHeaderBreakable;
 
         public ColumnAttributes(String header, List<DataType> list, int i) throws IOException {
-            mHeaderMaxWidth = PdfBoxUtils.getStringWidth(header, mFontHeader);
-            mHeaderMinWidth = PdfBoxUtils.getMaxWordWidth(header, mFontHeader);
+
+            final PdfFontSpec headerFont = pdfBoxContext.getFontManager().getFont(PdfFontStyle.TableHeader);
+            final PdfFontSpec contentFont = pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default);
+
+            mHeaderMaxWidth = PdfBoxUtils.getStringWidth(header, headerFont);
+            mHeaderMinWidth = PdfBoxUtils.getMaxWordWidth(header, headerFont);
 
             float maxOfAllStringWidths = 0.0f;  // the max string mWidth of all values (without breaking up the string)
             float minOfAllStringWidths = Float.MAX_VALUE;  // the min string mWidth of all values (without breaking up the string)
@@ -170,8 +172,8 @@ public class ColumnWidthCalculator<DataType> {
             for (DataType dataType : list) {
                 final String value = HeavyHandedReplaceIllegalCharacters.getSafeString(mColumns.get(i).getValue(dataType));
 
-                float vWidth = PdfBoxUtils.getStringWidth(value, mFontContent);
-                float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(value, mFontContent);
+                float vWidth = PdfBoxUtils.getStringWidth(value, contentFont);
+                float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(value, contentFont);
 
                 if (vWidth > maxOfAllStringWidths) {
                     maxOfAllStringWidths = vWidth;
@@ -191,8 +193,8 @@ public class ColumnWidthCalculator<DataType> {
             final String footer = HeavyHandedReplaceIllegalCharacters.getSafeString(mColumns.get(i).getFooter(list));
             final String[] footerSplitByWords = footer.trim().split("\\s+");
             for (String footerSplitByWord : footerSplitByWords) {
-                float vWidth = PdfBoxUtils.getStringWidth(footerSplitByWord, mFontContent);
-                float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(footerSplitByWord, mFontContent);
+                float vWidth = PdfBoxUtils.getStringWidth(footerSplitByWord, contentFont);
+                float vMaxWordWidth = PdfBoxUtils.getMaxWordWidth(footerSplitByWord, contentFont);
 
                 if (vWidth > maxOfAllStringWidths) {
                     maxOfAllStringWidths = vWidth;

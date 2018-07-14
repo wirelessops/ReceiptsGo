@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,22 +20,23 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
 public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt>> {
 
-    private ArrayAdapter<Column<Receipt>> spinnerAdapter;
+    private ColumnsSpinnerAdapter<Receipt> spinnerAdapter;
     private Context context;
     private ReceiptColumnDefinitions receiptColumnDefinitions;
 
 
-    ColumnsAdapter(EditableItemListener<Column<Receipt>> listener, ReceiptColumnDefinitions columnDefinitions, Context context) {
+    ColumnsAdapter(Context context, ReceiptColumnDefinitions columnDefinitions, ReportResourcesManager reportResourcesManager,
+                   EditableItemListener<Column<Receipt>> listener) {
         super(listener);
 
         this.context = context;
         this.receiptColumnDefinitions = columnDefinitions;
 
-        spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, columnDefinitions.getAllColumns());
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAdapter = new ColumnsSpinnerAdapter<>(reportResourcesManager, columnDefinitions.getAllColumns());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
         columnHolder.spinner.setAdapter(spinnerAdapter);
 
         columnHolder.column.setText(context.getString(R.string.column_item, Integer.toString(position + 1))); //Add +1 to make it not 0-th index
-        final int selectedPosition = getSpinnerPositionByColumnName(position);
+        final int selectedPosition = getSpinnerPositionByColumnType(position);
         if (selectedPosition >= 0) {
             columnHolder.spinner.setSelection(selectedPosition);
         }
@@ -81,7 +81,7 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
             if (column.getCustomOrderId() != items.indexOf(column)) {
                 tableController.update(column, new ColumnBuilderFactory<>(receiptColumnDefinitions)
                         .setColumnId(column.getId())
-                        .setColumnName(column.getName())
+                        .setColumnType(column.getType())
                         .setSyncState(column.getSyncState())
                         .setCustomOrderId(items.indexOf(column))
                         .build(), new DatabaseOperationMetadata());
@@ -90,17 +90,17 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
     }
 
     /**
-     * Attempts to get the position in the spinner based on the column name. Since column "equals"
+     * Attempts to get the position in the spinner based on the column type. Since column "equals"
      * also takes into account the actual position in the database, we do a pseudo equals here by
-     * name
+     * type
      *
      * @param itemPosition the position of the column
      * @return the position in the spinner or -1 if unknown
      */
-    private int getSpinnerPositionByColumnName(int itemPosition) {
-        final String columnName = items.get(itemPosition).getName();
+    private int getSpinnerPositionByColumnType(int itemPosition) {
+        final int columnType = items.get(itemPosition).getType();
         for (int i = 0; i < spinnerAdapter.getCount(); i++) {
-            if (columnName.equals(spinnerAdapter.getItem(i).getName())) {
+            if (columnType == spinnerAdapter.getItem(i).getType()) {
                 return i;
             }
         }
@@ -136,7 +136,7 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
             final Column<Receipt> newColumn = spinnerAdapter.getItem(position);
 
             listener.onEditItem(oldColumn, new ColumnBuilderFactory<>(receiptColumnDefinitions)
-                    .setColumnName(newColumn.getName())
+                    .setColumnType(newColumn.getType())
                     .setColumnId(oldColumn.getId())
                     .setSyncState(oldColumn.getSyncState())
                     .setCustomOrderId(oldColumn.getCustomOrderId())

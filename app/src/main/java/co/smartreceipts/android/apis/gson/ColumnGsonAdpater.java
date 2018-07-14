@@ -24,7 +24,7 @@ public class ColumnGsonAdpater implements GsonAdapter<Column<Receipt>> {
 
     @Override
     public Column<Receipt> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final String name = json.getAsString();
-        return new ColumnBuilderFactory<>(mReceiptColumnDefinitions).setColumnName(name).build();
+        final int type = json.getAsInt();
+        return new ColumnBuilderFactory<>(mReceiptColumnDefinitions).setColumnType(type).build();
     }
 }

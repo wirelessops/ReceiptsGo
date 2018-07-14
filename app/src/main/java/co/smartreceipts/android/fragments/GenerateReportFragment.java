@@ -29,6 +29,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import co.smartreceipts.android.workers.EmailAssistant;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.flex.Flex;
 
@@ -54,6 +55,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
 
     @Inject
     UserPreferenceManager preferenceManager;
+    @Inject
+    ReportResourcesManager reportResourcesManager;
 
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
@@ -184,8 +187,8 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
             options.add(EmailAssistant.EmailOptions.ZIP);
         }
 
-        final EmailAssistant emailAssistant = new EmailAssistant(navigationHandler, getActivity(),
-                flex, persistenceManager, trip, purchaseWallet);
+        final EmailAssistant emailAssistant = new EmailAssistant(getActivity(), navigationHandler,
+                reportResourcesManager, persistenceManager, trip, purchaseWallet);
         emailAssistant.emailTrip(options);
     }
 }

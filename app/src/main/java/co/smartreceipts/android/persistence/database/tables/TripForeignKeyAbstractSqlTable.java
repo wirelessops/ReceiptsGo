@@ -185,10 +185,10 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
                 boolean wasCachedResultRemoved = perTripResults.remove(oldModelType);
                 if (!wasCachedResultRemoved) {
                     // If our cache is wrong, let's use the actual primary key to see if we can find it
-                    final PrimaryKeyType primaryKeyValue = mPrimaryKey.getPrimaryKeyValue(newModelType);
+                    final PrimaryKeyType primaryKeyValue = primaryKey.getPrimaryKeyValue(newModelType);
                     Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
                     for (final ModelType cachedResult : perTripResults) {
-                        if (primaryKeyValue.equals(mPrimaryKey.getPrimaryKeyValue(cachedResult))) {
+                        if (primaryKeyValue.equals(primaryKey.getPrimaryKeyValue(cachedResult))) {
                             wasCachedResultRemoved = perTripResults.remove(cachedResult);
                             if (wasCachedResultRemoved) {
                                 break;
@@ -264,7 +264,7 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
     public synchronized Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
         for (final Map.Entry<Trip, List<ModelType>> tripListEntry : mPerTripCache.entrySet()) {
             for (final ModelType cachedResult : tripListEntry.getValue()) {
-                if (mPrimaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                if (primaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
                     return Optional.of(cachedResult);
                 }
             }
@@ -272,12 +272,12 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
 
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().query(getTableName(), null, mPrimaryKey.getPrimaryKeyColumn() + " = ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{primaryKeyType.toString(), Integer.toString(0)}, null, null, null);
+            cursor = getReadableDatabase().query(getTableName(), null, primaryKey.getPrimaryKeyColumn() + " = ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{primaryKeyType.toString(), Integer.toString(0)}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                final ModelType foundModel = mDatabaseAdapter.read(cursor);
+                final ModelType foundModel = databaseAdapter.read(cursor);
                 final List<ModelType> cachedResultsList = getBlocking(getTripFor(foundModel), true); // Note: We do this b/c of issues with the receipt index field
                 for (final ModelType cachedResult : cachedResultsList) {
-                    if (mPrimaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                    if (primaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
                         return Optional.of(cachedResult);
                     }
                 }

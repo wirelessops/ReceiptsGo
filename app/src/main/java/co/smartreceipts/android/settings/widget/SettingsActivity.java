@@ -245,7 +245,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         currencyList.toArray(currencyArray);
 
         // Get the date separator list
-        final String defaultSepartor = persistenceManager.getPreferenceManager().get(UserPreference.General.DateSeparator);
+        final String defaultSeparator = persistenceManager.getPreferenceManager().get(UserPreference.General.DateSeparator);
         final CharSequence[] dateSeparators = getDateSeparatorOptions(persistenceManager.getPreferenceManager());
 
         // Set up the ListPreference data
@@ -256,7 +256,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         ListPreference dateSeparatorPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_date_separator_key);
         dateSeparatorPreference.setEntries(dateSeparators);
         dateSeparatorPreference.setEntryValues(dateSeparators);
-        dateSeparatorPreference.setValue(defaultSepartor);
+        dateSeparatorPreference.setValue(defaultSeparator);
     }
 
     private CharSequence[] getDateSeparatorOptions(UserPreferenceManager preferences) {
@@ -293,6 +293,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         // Set on Preference Click Listeners for all that require it
         universal.findPreference(R.string.pref_output_custom_csv_key).setOnPreferenceClickListener(this);
         universal.findPreference(R.string.pref_output_custom_pdf_key).setOnPreferenceClickListener(this);
+
+        // Set up preferred report language data
+        ListPreference preferredLanguagePreference = (ListPreference) universal.findPreference(R.string.pref_output_preferred_language_key);
+        final CharSequence[] locales = preferredLanguagePreference.getEntryValues();
+        String[] languagesArray = new String[locales.length];
+        for (int i = 0; i < locales.length; i++) {
+            Locale locale = new Locale(locales[i].toString());
+            languagesArray[i] = locale.getDisplayLanguage();
+        }
+        preferredLanguagePreference.setEntries(languagesArray);
     }
 
     private void scrollToCategory(UniversalPreferences universal, String sectionHeader) {

@@ -98,6 +98,8 @@
     <string name="pref_output_receipts_landscape_on">Le tableau des reçus est imprimé en mode paysage</string>
     <string name="pref_output_receipts_landscape_off">Le tableau des reçus est imprimé en mode portrait</string>
 
+    <string name="pref_output_preferred_language_title">Langue du rapport préféré</string>
+
     <!-- ============== Preference Email ================= -->
 
     <string name="pref_email_default_email_to_title">E-mail par défaut au destinataire</string>

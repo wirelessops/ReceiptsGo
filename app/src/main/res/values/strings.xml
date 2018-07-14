@@ -293,24 +293,6 @@
     <string name="dialog_import_text">Overwrite All Existing Data</string>
     <string name="dialog_export_working">Exporting your receipts&#8230;</string>
 
-    <!-- ==================== DIALOG_ABOUT ====================== -->
-
-    <!-- ====================== Distance Report ======================== -->
-    <string name="distance_location_field">Location</string>
-    <string name="distance_price_field">Price</string>
-    <string name="distance_distance_field">Distance</string>
-    <string name="distance_rate_field">Rate</string>
-    <string name="dialog_currency_field">Currency</string>
-    <string name="distance_date_field">Date</string>
-    <string name="distance_comment_field">Comment</string>
-
-    <!-- ====================== Categories Summation Report ======================== -->
-    <string name="category_name_field">Category</string>
-    <string name="category_code_field">Category Code</string>
-    <string name="category_price_field">Price</string>
-    <string name="category_tax_field">Tax</string>
-    <string name="category_currency_field">Currency</string>
-
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
     <string name="manual_backup_title">Manual Backups:</string>
@@ -429,6 +411,22 @@
     <string name="column_item_index">Receipt Index</string>
     <string name="column_item_id">Receipt ID</string>
     <string name="column_item_payment_method">Payment Method</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Location</string>
+    <string name="distance_price_field">Price</string>
+    <string name="distance_distance_field">Distance</string>
+    <string name="distance_rate_field">Rate</string>
+    <string name="dialog_currency_field">Currency</string>
+    <string name="distance_date_field">Date</string>
+    <string name="distance_comment_field">Comment</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Category</string>
+    <string name="category_code_field">Category Code</string>
+    <string name="category_price_field">Price</string>
+    <string name="category_tax_field">Tax</string>
+    <string name="category_currency_field">Currency</string>
 
     <string name="receipt_dialog_action_edit">Edit Receipt</string>
     <string name="receipt_dialog_action_view">View Receipt %s</string>

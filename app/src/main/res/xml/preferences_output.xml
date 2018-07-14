@@ -1,42 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
-    xmlns:wb="http://schemas.android.com/apk/res-auto" >
-	<PreferenceCategory
-	    android:title="@string/pref_output_header"
-	    android:key="pref_output_category_key">
-		<Preference 
-		    android:key="@string/pref_output_custom_csv_key" 
-			android:title="@string/pref_output_custom_csv_title" />
-		<Preference 
-		    android:key="@string/pref_output_custom_pdf_key" 
-			android:title="@string/pref_output_custom_pdf_title" />
-		<CheckBoxPreference
-			android:key="@string/pref_output_receipts_landscape_key"
-			android:title="@string/pref_output_receipts_landscape_title"
-			android:summaryOn="@string/pref_output_receipts_landscape_on"
-			android:summaryOff="@string/pref_output_receipts_landscape_off"
-			android:defaultValue="@bool/pref_output_receipts_landscape_defaultValue" />
-		<wb.android.preferences.SummaryListPreference
-			android:key="@string/pref_output_pdf_page_size_key"
-			android:title="@string/pref_output_pdf_page_size_title"
-			android:entries="@array/pref_output_pdf_page_size_value_entries"
-			android:entryValues="@array/pref_output_pdf_page_size_value_entryValues"
-			android:defaultValue="@string/pref_output_pdf_page_size_defaultValue" />
-	   <wb.android.preferences.EmptyValueSummaryEditTextPreference
-	       android:key="@string/pref_output_username_key"
-	       android:title="@string/pref_output_username_title"
-           android:defaultValue="@string/pref_output_username_defaultValue"
-	       wb:emptyValue="@string/pref_output_username_emptyValue" />
-		<CheckBoxPreference
-            android:key="@string/pref_output_print_receipt_id_by_photo_key"
-            android:title="@string/pref_output_print_receipt_id_by_photo_title"
-            android:summary="@string/pref_output_print_receipt_id_by_photo_summary"
-            android:defaultValue="@bool/pref_output_print_receipt_id_by_photo_defaultValue"/>
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wb="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:key="pref_output_category_key"
+        android:title="@string/pref_output_header">
+        <Preference
+            android:key="@string/pref_output_custom_csv_key"
+            android:title="@string/pref_output_custom_csv_title" />
+        <Preference
+            android:key="@string/pref_output_custom_pdf_key"
+            android:title="@string/pref_output_custom_pdf_title" />
         <CheckBoxPreference
+            android:defaultValue="@bool/pref_output_receipts_landscape_defaultValue"
+            android:key="@string/pref_output_receipts_landscape_key"
+            android:summaryOff="@string/pref_output_receipts_landscape_off"
+            android:summaryOn="@string/pref_output_receipts_landscape_on"
+            android:title="@string/pref_output_receipts_landscape_title" />
+        <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_output_pdf_page_size_defaultValue"
+            android:entries="@array/pref_output_pdf_page_size_value_entries"
+            android:entryValues="@array/pref_output_pdf_page_size_value_entryValues"
+            android:key="@string/pref_output_pdf_page_size_key"
+            android:title="@string/pref_output_pdf_page_size_title" />
+        <wb.android.preferences.EmptyValueSummaryEditTextPreference
+            android:defaultValue="@string/pref_output_username_defaultValue"
+            android:key="@string/pref_output_username_key"
+            android:title="@string/pref_output_username_title"
+            wb:emptyValue="@string/pref_output_username_emptyValue" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_output_print_receipt_id_by_photo_defaultValue"
+            android:key="@string/pref_output_print_receipt_id_by_photo_key"
+            android:summary="@string/pref_output_print_receipt_id_by_photo_summary"
+            android:title="@string/pref_output_print_receipt_id_by_photo_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_output_print_receipt_comment_by_photo_defaultValue"
             android:key="@string/pref_output_print_receipt_comment_by_photo_key"
-            android:title="@string/pref_output_print_receipt_comment_by_photo_title"
-            android:summaryOn="@string/pref_output_print_receipt_comment_by_photo_summaryOn"
             android:summaryOff="@string/pref_output_print_receipt_comment_by_photo_summaryOff"
-            android:defaultValue="@bool/pref_output_print_receipt_comment_by_photo_defaultValue"/>
-	</PreferenceCategory>
+            android:summaryOn="@string/pref_output_print_receipt_comment_by_photo_summaryOn"
+            android:title="@string/pref_output_print_receipt_comment_by_photo_title" />
+        <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_output_preferred_language_defaultValue"
+            android:entryValues="@array/pref_output_preferred_language_entryValues"
+            android:key="@string/pref_output_preferred_language_key"
+            android:title="@string/pref_output_preferred_language_title" />
+    </PreferenceCategory>
 </PreferenceScreen>

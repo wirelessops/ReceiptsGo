@@ -1,6 +1,5 @@
 package co.smartreceipts.android.workers.reports.pdf;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.io.File;
@@ -14,24 +13,22 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.AbstractReport;
 import co.smartreceipts.android.workers.reports.ReportGenerationException;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
-import wb.android.flex.Flex;
 import wb.android.storage.StorageManager;
 
 public abstract class PdfBoxAbstractReport extends AbstractReport {
 
-    public PdfBoxAbstractReport(@NonNull Context context,
-                                @NonNull PersistenceManager persistenceManager,
-                                @NonNull Flex flex) {
-        super(context, persistenceManager, flex);
+    public PdfBoxAbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
+                                @NonNull PersistenceManager persistenceManager) {
+        super(reportResourcesManager, persistenceManager);
     }
 
-    public PdfBoxAbstractReport(@NonNull Context context,
+    public PdfBoxAbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
                                 @NonNull DatabaseHelper db,
                                 @NonNull UserPreferenceManager preferences,
-                                @NonNull StorageManager storageManager,
-                                @NonNull Flex flex) {
-        super(context, db, preferences, storageManager, flex);
+                                @NonNull StorageManager storageManager) {
+        super(reportResourcesManager, db, preferences, storageManager);
     }
 
     @NonNull
@@ -45,7 +42,7 @@ public abstract class PdfBoxAbstractReport extends AbstractReport {
 
             pdfStream = getStorageManager().getFOS(trip.getDirectory(), outputFileName);
 
-            PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(getContext(), getPreferences());
+            PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(getReportResourcesManager(), getPreferences());
 
             createSections(trip, pdfBoxReportFile);
 

@@ -32,4 +32,14 @@
     <string name="original_column_item_id_en_us_name" translatable="false">Receipt ID</string>
     <string name="original_column_item_payment_method_en_us_name" translatable="false">Payment Method</string>
 
+    <!--Supported languages-->
+    <string name="language_en_entry" translatable="false">en</string>
+    <string name="language_de_entry" translatable="false">de</string>
+    <string name="language_es_entry" translatable="false">es</string>
+    <string name="language_fr_entry" translatable="false">fr</string>
+    <string name="language_pt_entry" translatable="false">pt</string>
+    <string name="language_ru_entry" translatable="false">ru</string>
+    <string name="language_uk_entry" translatable="false">uk</string>
+    <string name="language_iw_entry" translatable="false">iw</string>
+
 </resources>

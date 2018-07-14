@@ -1,22 +1,21 @@
 package co.smartreceipts.android.workers.reports.csv
 
-import java.util.ArrayList
-
 import co.smartreceipts.android.filters.Filter
 import co.smartreceipts.android.model.Column
+import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import co.smartreceipts.android.workers.reports.TableGenerator
+import java.util.*
 
 /**
  * Implements the [TableGenerator] contract to generate a CSV file as a [String]
  */
-class CsvTableGenerator<DataType>(private val columns: List<Column<DataType>>,
-                                  private val filter: Filter<DataType>?,
-                                  private val printHeaders: Boolean,
-                                  private val printFooters: Boolean) : TableGenerator<String, DataType> {
-
-    constructor(columns: List<Column<DataType>>,
-                printHeaders: Boolean,
-                printFooters: Boolean) : this(columns, null, printHeaders, printFooters)
+class CsvTableGenerator<DataType> @JvmOverloads constructor(
+    private val reportResourceManager: ReportResourcesManager,
+    private val columns: List<Column<DataType>>,
+    private val printHeaders: Boolean,
+    private val printFooters: Boolean,
+    private val filter: Filter<DataType>? = null
+) : TableGenerator<String, DataType> {
 
     override fun generate(list: List<DataType>): String {
         if (!list.isEmpty()) {
@@ -26,7 +25,11 @@ class CsvTableGenerator<DataType>(private val columns: List<Column<DataType>>,
             // Add the header
             if (printHeaders) {
                 for (i in 0 until columnCount) {
-                    addCell(csvBuilder, columns[i].header, i == columnCount - 1)
+                    addCell(
+                        csvBuilder,
+                        reportResourceManager.getFlexString(columns[i].headerStringResId),
+                        i == columnCount - 1
+                    )
                 }
                 csvBuilder.append("\n")
             }

@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
     // Database Info
     public static final String DATABASE_NAME = "receipts.db";
-    public static final int DATABASE_VERSION = 17;
+    public static final int DATABASE_VERSION = 18;
 
     @Deprecated
     public static final String NO_DATA = "null"; // TODO: Just set to null

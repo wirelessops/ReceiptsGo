@@ -279,17 +279,6 @@
     <string name="dialog_import_text">Substituir todos os dados existentes</string>
     <string name="dialog_export_working">Exportando seus recibos…</string>
 
-    <!-- ==================== DIALOG_ABOUT ====================== -->
-
-    <!-- ====================== Distance Report ======================== -->
-    <string name="distance_location_field">Local</string>
-    <string name="distance_price_field">Preço</string>
-    <string name="distance_distance_field">Distância</string>
-    <string name="distance_rate_field">Taxa</string>
-    <string name="dialog_currency_field">Moeda</string>
-    <string name="distance_date_field">Data</string>
-    <string name="distance_comment_field">Observação</string>
-
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
     <string name="manual_backup_title">Backups manuais</string>
@@ -407,6 +396,22 @@
     <string name="column_item_index">Índice do recibo</string>
     <string name="column_item_id">ID do recibo</string>
     <string name="column_item_payment_method">Forma de pagamento</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Local</string>
+    <string name="distance_price_field">Preço</string>
+    <string name="distance_distance_field">Distância</string>
+    <string name="distance_rate_field">Taxa</string>
+    <string name="dialog_currency_field">Moeda</string>
+    <string name="distance_date_field">Data</string>
+    <string name="distance_comment_field">Observação</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Nome da categoria</string>
+    <string name="category_code_field">Código da categoria</string>
+    <string name="category_price_field">Preço</string>
+    <string name="category_tax_field">Impostos</string>
+    <string name="category_currency_field">Moeda</string>
 
     <string name="receipt_dialog_action_edit">Editar recibo</string>
     <string name="receipt_dialog_action_view">Visualizar recibo %s</string>

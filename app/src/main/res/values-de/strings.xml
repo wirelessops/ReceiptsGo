@@ -279,17 +279,6 @@
     <string name="dialog_import_text">Überschreiben Sie alle vorhandenen Daten</string>
     <string name="dialog_export_working">Export Ihrer Belege …</string>
 
-    <!-- ==================== DIALOG_ABOUT ====================== -->
-
-    <!-- ====================== Distance Report ======================== -->
-    <string name="distance_location_field">Ort</string>
-    <string name="distance_price_field">Preis</string>
-    <string name="distance_distance_field">Entfernung</string>
-    <string name="distance_rate_field">Preis</string>
-    <string name="dialog_currency_field">Währung</string>
-    <string name="distance_date_field">Datum</string>
-    <string name="distance_comment_field">Kommentar</string>
-
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
     <string name="manual_backup_title">Manuelle Backups:</string>
@@ -407,6 +396,22 @@
     <string name="column_item_index">Beleg-Index</string>
     <string name="column_item_id">Beleg ID</string>
     <string name="column_item_payment_method">Zahlungsmethode</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Ort</string>
+    <string name="distance_price_field">Preis</string>
+    <string name="distance_distance_field">Entfernung</string>
+    <string name="distance_rate_field">Preis</string>
+    <string name="dialog_currency_field">Währung</string>
+    <string name="distance_date_field">Datum</string>
+    <string name="distance_comment_field">Kommentar</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Kategorie</string>
+    <string name="category_code_field">Kategorie-Code</string>
+    <string name="category_price_field">Preis</string>
+    <string name="category_tax_field">Steuer</string>
+    <string name="category_currency_field">Währung</string>
 
     <string name="receipt_dialog_action_edit">Beleg bearbeiten</string>
     <string name="receipt_dialog_action_view">Ansicht Beleg %s</string>

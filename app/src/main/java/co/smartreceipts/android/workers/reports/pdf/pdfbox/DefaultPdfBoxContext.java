@@ -15,32 +15,27 @@ import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontManager;
 
 public class DefaultPdfBoxContext implements PdfBoxContext {
 
-    private final Context context;
+    private final Context localizedContext;
     private final PdfFontManager fontManager;
     private final PdfColorManager colorManager;
     private final UserPreferenceManager preferences;
 
     private PDRectangle pageSize;
 
-    public DefaultPdfBoxContext(@NonNull Context context,
+    public DefaultPdfBoxContext(@NonNull Context localizedContext,
                                 @NonNull PdfFontManager fontManager,
                                 @NonNull PdfColorManager colorManager,
                                 @NonNull UserPreferenceManager preferences) {
-        this.context = Preconditions.checkNotNull(context);
+        this.localizedContext = Preconditions.checkNotNull(localizedContext);
         this.fontManager = Preconditions.checkNotNull(fontManager);
         this.colorManager = Preconditions.checkNotNull(colorManager);
         this.preferences = Preconditions.checkNotNull(preferences);
 
-        if (preferences.get(UserPreference.ReportOutput.DefaultPdfPageSize).equals(context.getString(R.string.pref_output_pdf_page_size_letter_entryValue))) {
+        if (preferences.get(UserPreference.ReportOutput.DefaultPdfPageSize).equals(localizedContext.getString(R.string.pref_output_pdf_page_size_letter_entryValue))) {
             pageSize = PDRectangle.LETTER;
         } else {
             pageSize = PDRectangle.A4;
         }
-    }
-
-    @Override
-    public int getLineSpacing() {
-        return 8;
     }
 
     @Override
@@ -56,7 +51,7 @@ public class DefaultPdfBoxContext implements PdfBoxContext {
     @NonNull
     @Override
     public String getString(@StringRes int resId, Object... args) {
-        return context.getString(resId, args);
+        return localizedContext.getString(resId, args);
     }
 
     @Override
@@ -67,7 +62,7 @@ public class DefaultPdfBoxContext implements PdfBoxContext {
     @NonNull
     @Override
     public Context getAndroidContext() {
-        return context;
+        return localizedContext;
     }
 
     @NonNull

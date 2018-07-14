@@ -19,105 +19,100 @@ import java.util.Collections;
 import java.util.List;
 
 import co.smartreceipts.android.model.Column;
-import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;
-import co.smartreceipts.android.model.impl.columns.BlankColumn;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryNameColumn;
+import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptNameColumn;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptPriceColumn;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
+import static co.smartreceipts.android.persistence.database.tables.AbstractColumnTable.COLUMN_ID;
+import static co.smartreceipts.android.persistence.database.tables.AbstractColumnTable.COLUMN_TYPE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class CSVTableTest {
 
     // Class Under Test
-    CSVTable mCSVTable;
+    CSVTable csvTable;
 
     @Mock
-    ColumnDefinitions<Receipt> mReceiptColumnDefinitions;
+    ReportResourcesManager reportResourcesManager;
+    
+    @Mock
+    UserPreferenceManager preferences;
 
     @Mock
-    SQLiteDatabase mSQLiteDatabase;
+    SQLiteDatabase database;
 
     @Mock
-    TableDefaultsCustomizer mTableDefaultsCustomizer;
+    TableDefaultsCustomizer tableDefaultsCustomizer;
 
     @Mock
     OrderingPreferencesManager orderingPreferencesManager;
 
-    SQLiteOpenHelper mSQLiteOpenHelper;
+    SQLiteOpenHelper sqliteOpenHelper;
 
     @Captor
-    ArgumentCaptor<String> mSqlCaptor;
+    ArgumentCaptor<String> sqlCaptor;
 
-    Column<Receipt> mColumn1;
-
-    Column<Receipt> mColumn2;
-
-    Column<Receipt> mDefaultColumn;
+    Column<Receipt> receiptNameColumn;
+    Column<Receipt> receiptPriceColumn;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        mCSVTable = new CSVTable(mSQLiteOpenHelper, mReceiptColumnDefinitions, orderingPreferencesManager);
-        mDefaultColumn = new BlankColumn<>(-1, "", new DefaultSyncState());
-
-        when(mReceiptColumnDefinitions.getDefaultInsertColumn()).thenReturn(mDefaultColumn);
-        when(mReceiptColumnDefinitions.getColumn(anyInt(), eq(""), any(SyncState.class), anyInt())).thenReturn(mDefaultColumn);
+        sqliteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
+        final ReceiptColumnDefinitions receiptColumnDefinitions = new ReceiptColumnDefinitions(reportResourcesManager, preferences);
+        csvTable = new CSVTable(sqliteOpenHelper, receiptColumnDefinitions, orderingPreferencesManager);
 
         // Now create the table and insert some defaults
-        mCSVTable.onCreate(mSQLiteOpenHelper.getWritableDatabase(), mTableDefaultsCustomizer);
-        mColumn1 = mCSVTable.insert(new ReceiptNameColumn(-1, "Name", new DefaultSyncState()), new DatabaseOperationMetadata()).blockingGet();
-        mColumn2 = mCSVTable.insert(new ReceiptPriceColumn(-1, "Price", new DefaultSyncState()), new DatabaseOperationMetadata()).blockingGet();
-        assertNotNull(mColumn1);
-        assertNotNull(mColumn2);
+        csvTable.onCreate(sqliteOpenHelper.getWritableDatabase(), tableDefaultsCustomizer);
+        receiptNameColumn = csvTable.insert(new ReceiptNameColumn(-1, new DefaultSyncState(), 0), new DatabaseOperationMetadata()).blockingGet();
+        receiptPriceColumn = csvTable.insert(new ReceiptPriceColumn(-1, new DefaultSyncState(), 0), new DatabaseOperationMetadata()).blockingGet();
+        assertNotNull(receiptNameColumn);
+        assertNotNull(receiptPriceColumn);
     }
 
     @After
     public void tearDown() {
-        mSQLiteOpenHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + mCSVTable.getTableName());
+        sqliteOpenHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + csvTable.getTableName());
     }
 
     @Test
     public void getTableName() {
-        assertEquals("csvcolumns", mCSVTable.getTableName());
+        assertEquals("csvcolumns", csvTable.getTableName());
     }
 
     @Test
     public void onCreate() {
         final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
-        mCSVTable.onCreate(mSQLiteDatabase, customizer);
-        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
-        verify(customizer).insertCSVDefaults(mCSVTable);
+        csvTable.onCreate(database, customizer);
+        verify(database).execSQL(sqlCaptor.capture());
+        verify(customizer).insertCSVDefaults(csvTable);
 
-        assertTrue(mSqlCaptor.getValue().contains("CREATE TABLE csvcolumns"));
-        assertTrue(mSqlCaptor.getValue().contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
-        assertTrue(mSqlCaptor.getValue().contains("type TEXT"));
-        assertTrue(mSqlCaptor.getValue().contains("drive_sync_id TEXT"));
-        assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN"));
-        assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN"));
-        assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
-        assertTrue(mSqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
+        assertTrue(sqlCaptor.getValue().contains("CREATE TABLE csvcolumns"));
+        assertTrue(sqlCaptor.getValue().contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
+        assertTrue(sqlCaptor.getValue().contains("column_type INTEGER DEFAULT 0"));
+        assertTrue(sqlCaptor.getValue().contains("drive_sync_id TEXT"));
+        assertTrue(sqlCaptor.getValue().contains("drive_is_synced BOOLEAN"));
+        assertTrue(sqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN"));
+        assertTrue(sqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        assertTrue(sqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
     }
 
     @Test
@@ -126,18 +121,18 @@ public class CSVTableTest {
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
 
         final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
-        mCSVTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
-        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
-        verify(customizer).insertCSVDefaults(mCSVTable);
+        csvTable.onUpgrade(database, oldVersion, newVersion, customizer);
+        verify(database, atLeastOnce()).execSQL(sqlCaptor.capture());
+        verify(customizer).insertCSVDefaults(csvTable);
 
-        assertTrue(mSqlCaptor.getAllValues().get(0).contains(CSVTable.TABLE_NAME));
-        assertTrue(mSqlCaptor.getAllValues().get(0).contains(CSVTable.COLUMN_ID));
-        assertTrue(mSqlCaptor.getAllValues().get(0).contains(CSVTable.COLUMN_TYPE));
-        assertEquals(mSqlCaptor.getAllValues().get(0), "CREATE TABLE csvcolumns (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT);");
-        assertEquals(mSqlCaptor.getAllValues().get(1), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_sync_id TEXT");
-        assertEquals(mSqlCaptor.getAllValues().get(2), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
-        assertEquals(mSqlCaptor.getAllValues().get(3), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
-        assertEquals(mSqlCaptor.getAllValues().get(4), "ALTER TABLE " + mCSVTable.getTableName() + " ADD last_local_modification_time DATE");
+        assertTrue(sqlCaptor.getAllValues().get(0).contains(CSVTable.TABLE_NAME));
+        assertTrue(sqlCaptor.getAllValues().get(0).contains(CSVTable.DEPRECATED_COLUMN_ID_AS_NAME));
+        assertTrue(sqlCaptor.getAllValues().get(0).contains(CSVTable.DEPRECATED_COLUMN_TYPE_AS_NAME));
+        assertEquals(sqlCaptor.getAllValues().get(0), "CREATE TABLE csvcolumns (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT);");
+        assertEquals(sqlCaptor.getAllValues().get(1), "ALTER TABLE " + csvTable.getTableName() + " ADD drive_sync_id TEXT");
+        assertEquals(sqlCaptor.getAllValues().get(2), "ALTER TABLE " + csvTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
+        assertEquals(sqlCaptor.getAllValues().get(3), "ALTER TABLE " + csvTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
+        assertEquals(sqlCaptor.getAllValues().get(4), "ALTER TABLE " + csvTable.getTableName() + " ADD last_local_modification_time DATE");
     }
 
     @Test
@@ -146,14 +141,14 @@ public class CSVTableTest {
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
 
         final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
-        mCSVTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
-        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
-        verify(customizer, never()).insertCSVDefaults(mCSVTable);
+        csvTable.onUpgrade(database, oldVersion, newVersion, customizer);
+        verify(database, atLeastOnce()).execSQL(sqlCaptor.capture());
+        verify(customizer, never()).insertCSVDefaults(csvTable);
 
-        assertEquals(mSqlCaptor.getAllValues().get(0), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_sync_id TEXT");
-        assertEquals(mSqlCaptor.getAllValues().get(1), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
-        assertEquals(mSqlCaptor.getAllValues().get(2), "ALTER TABLE " + mCSVTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
-        assertEquals(mSqlCaptor.getAllValues().get(3), "ALTER TABLE " + mCSVTable.getTableName() + " ADD last_local_modification_time DATE");
+        assertEquals(sqlCaptor.getAllValues().get(0), "ALTER TABLE " + csvTable.getTableName() + " ADD drive_sync_id TEXT");
+        assertEquals(sqlCaptor.getAllValues().get(1), "ALTER TABLE " + csvTable.getTableName() + " ADD drive_is_synced BOOLEAN DEFAULT 0");
+        assertEquals(sqlCaptor.getAllValues().get(2), "ALTER TABLE " + csvTable.getTableName() + " ADD drive_marked_for_deletion BOOLEAN DEFAULT 0");
+        assertEquals(sqlCaptor.getAllValues().get(3), "ALTER TABLE " + csvTable.getTableName() + " ADD last_local_modification_time DATE");
     }
 
     @Test
@@ -162,11 +157,49 @@ public class CSVTableTest {
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
 
         final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
-        mCSVTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
-        verify(mSQLiteDatabase).execSQL(mSqlCaptor.capture());
-        verify(customizer, never()).insertCSVDefaults(mCSVTable);
+        csvTable.onUpgrade(database, oldVersion, newVersion, customizer);
+        verify(database, atLeastOnce()).execSQL(sqlCaptor.capture());
+        verify(customizer, never()).insertCSVDefaults(csvTable);
 
-        assertEquals(mSqlCaptor.getValue(), "ALTER TABLE " + mCSVTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0;");
+        assertEquals(sqlCaptor.getAllValues().get(0), "ALTER TABLE " + csvTable.getTableName() + " ADD COLUMN custom_order_id INTEGER DEFAULT 0;");
+    }
+
+    @Test
+    public void onUpgradeFromV17() {
+        final int oldVersion = 17;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        csvTable.onUpgrade(database, oldVersion, newVersion, customizer);
+        verify(database, atLeastOnce()).execSQL(sqlCaptor.capture());
+        verify(customizer, never()).insertCSVDefaults(csvTable);
+
+        assertEquals(sqlCaptor.getAllValues().get(0), String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;", csvTable.getTableName(), AbstractColumnTable.COLUMN_TYPE));
+
+        assertEquals(sqlCaptor.getAllValues().get(1), String.format("ALTER TABLE %s RENAME TO %s;", csvTable.getTableName(), csvTable.getTableName() + "_tmp"));
+
+        final String createNewTable = "CREATE TABLE " + csvTable.getTableName() + " ("
+                + AbstractColumnTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + AbstractColumnTable.COLUMN_TYPE + " INTEGER DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + ");";
+        assertEquals(sqlCaptor.getAllValues().get(2), createNewTable);
+
+        final String baseColumns = String.format("%s, %s, %s, %s, %s, %s", COLUMN_TYPE, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID,
+                AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION,
+                AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME,
+                AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID);
+        final String insertData = "INSERT INTO " + csvTable.getTableName()
+                + " (" + COLUMN_ID + ", " + baseColumns + ") "
+                + "SELECT " + AbstractColumnTable.DEPRECATED_COLUMN_ID_AS_NAME + ", " + baseColumns
+                + " FROM " + csvTable.getTableName() + "_tmp"+ ";";
+        assertEquals(sqlCaptor.getAllValues().get(3), insertData);
+
+        assertEquals(sqlCaptor.getAllValues().get(4), "DROP TABLE " + csvTable.getTableName() + "_tmp" + ";");
     }
 
     @Test
@@ -175,84 +208,63 @@ public class CSVTableTest {
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
 
         final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
-        mCSVTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
-        verify(mSQLiteDatabase, never()).execSQL(mSqlCaptor.capture());
-        verify(customizer, never()).insertCSVDefaults(mCSVTable);
+        csvTable.onUpgrade(database, oldVersion, newVersion, customizer);
+        verify(database, never()).execSQL(sqlCaptor.capture());
+        verify(customizer, never()).insertCSVDefaults(csvTable);
     }
 
     @Test
     public void get() {
-        final List<Column<Receipt>> columns = mCSVTable.get().blockingGet();
-        assertEquals(columns, Arrays.asList(mColumn1, mColumn2));
+        final List<Column<Receipt>> columns = csvTable.get().blockingGet();
+        assertEquals(columns, Arrays.asList(receiptNameColumn, receiptPriceColumn));
     }
 
     @Test
     public void findByPrimaryKey() {
-        mCSVTable.findByPrimaryKey(mColumn1.getId())
+        csvTable.findByPrimaryKey(receiptNameColumn.getId())
                 .test()
                 .assertNoErrors()
-                .assertValue(mColumn1);
+                .assertValue(receiptNameColumn);
     }
 
     @Test
     public void findByPrimaryMissingKey() {
-        mCSVTable.findByPrimaryKey(-1)
+        csvTable.findByPrimaryKey(-1)
                 .test()
                 .assertError(Exception.class);
     }
 
     @Test
     public void insert() {
-        final String name = "Code";
-        final Column<Receipt> column = mCSVTable.insert(new ReceiptCategoryNameColumn(-1, name, new DefaultSyncState()), new DatabaseOperationMetadata()).blockingGet();
+        final Column<Receipt> column = csvTable.insert(new ReceiptCategoryNameColumn(-1,
+                new DefaultSyncState()), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(column);
-        assertEquals(name, column.getName());
 
-        final List<Column<Receipt>> columns = mCSVTable.get().blockingGet();
-        assertEquals(columns, Arrays.asList(mColumn1, mColumn2, column));
-    }
+        assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnType(), column.getType());
+        assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnHeaderId(), column.getHeaderStringResId());
 
-    @Test
-    public void insertDefaultColumn() {
-        final Column<Receipt> column = mCSVTable.insertDefaultColumn().blockingGet();
-
-        // Note: We cannot do an 'equals' operation here, since the inserted column will receive a primary key
-        assertNotNull(column);
-        assertTrue(column instanceof BlankColumn);
-        assertEquals(mDefaultColumn.getName(), column.getName());
-
-        final List<Column<Receipt>> columns = mCSVTable.get().blockingGet();
-        assertEquals(Arrays.asList(mColumn1, mColumn2, column), columns);
+        final List<Column<Receipt>> columns = csvTable.get().blockingGet();
+        assertEquals(columns, Arrays.asList(receiptNameColumn, receiptPriceColumn, column));
     }
 
     @Test
     public void update() {
-        final String name = "Code";
-        final Column<Receipt> column = mCSVTable.update(mColumn1,
-                new ReceiptCategoryNameColumn(-1, name, new DefaultSyncState()),
+        final Column<Receipt> column = csvTable.update(receiptNameColumn,
+                new ReceiptCategoryNameColumn(-1, new DefaultSyncState()),
                 new DatabaseOperationMetadata())
                 .blockingGet();
         assertNotNull(column);
-        assertEquals(name, column.getName());
+        assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnType(), column.getType());
 
-        final List<Column<Receipt>> columns = mCSVTable.get().blockingGet();
-        assertEquals(columns, Arrays.asList(column, mColumn2));
+        final List<Column<Receipt>> columns = csvTable.get().blockingGet();
+        assertEquals(columns, Arrays.asList(column, receiptPriceColumn));
     }
 
     @Test
     public void delete() {
-        assertEquals(mColumn1, mCSVTable.delete(mColumn1, new DatabaseOperationMetadata()).blockingGet());
-        assertEquals(mCSVTable.get().blockingGet(), Collections.singletonList(mColumn2));
-    }
-
-    @Test
-    public void deleteLast() {
-        final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
-        assertTrue(mCSVTable.deleteLast(databaseOperationMetadata).blockingGet());
-        assertEquals(mCSVTable.get().blockingGet(), Collections.singletonList(mColumn1));
-        assertTrue(mCSVTable.deleteLast(databaseOperationMetadata).blockingGet());
-        assertEquals(mCSVTable.get().blockingGet(), Collections.emptyList());
-        assertFalse(mCSVTable.deleteLast(databaseOperationMetadata).blockingGet());
+        final Column<Receipt> deletedColumn = csvTable.delete(receiptNameColumn, new DatabaseOperationMetadata()).blockingGet();
+        assertEquals(receiptNameColumn, deletedColumn);
+        assertEquals(csvTable.get().blockingGet(), Collections.singletonList(receiptPriceColumn));
     }
 
 }

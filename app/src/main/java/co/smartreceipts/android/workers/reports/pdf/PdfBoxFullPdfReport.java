@@ -1,6 +1,5 @@
 package co.smartreceipts.android.workers.reports.pdf;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
-import wb.android.flex.Flex;
 import wb.android.storage.StorageManager;
 
 public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
@@ -28,13 +27,12 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
     private final GroupingController groupingController;
     private final PurchaseWallet purchaseWallet;
 
-    public PdfBoxFullPdfReport(Context context, DatabaseHelper db,
+    public PdfBoxFullPdfReport(ReportResourcesManager reportResourcesManager, DatabaseHelper db,
                                UserPreferenceManager preferences,
-                               StorageManager storageManager, Flex flex, PurchaseWallet purchaseWallet) {
-        super(context, db, preferences, storageManager, flex);
-        this.groupingController = new GroupingController(db, context, preferences);
+                               StorageManager storageManager, PurchaseWallet purchaseWallet) {
+        super(reportResourcesManager, db, preferences, storageManager);
+        this.groupingController = new GroupingController(db, reportResourcesManager.getLocalizedContext(), preferences);
         this.purchaseWallet = purchaseWallet;
-
     }
 
     @Override
@@ -44,12 +42,12 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
         final List<Column<Receipt>> columns = getDatabase().getPDFTable().get().blockingGet();
 
         // Distance Table
-        final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(getContext(), getDatabase(), getPreferences(), getFlex(), true);
+        final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(getReportResourcesManager(), getPreferences(), true);
         final List<Distance> distances = new ArrayList<>(getDatabase().getDistanceTable().getBlocking(trip, false));
         final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
 
         // Categories Summation Table
-        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getContext())
+        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getReportResourcesManager())
                 .getAllColumns();
         final List<SumCategoryGroupingResult> categories = groupingController.getSummationByCategory(trip).toList().blockingGet();
 

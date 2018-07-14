@@ -281,17 +281,6 @@
     <string name="dialog_import_text">Перезаписать все существующие данные</string>
     <string name="dialog_export_working">Экспорт ваших чеков…</string>
 
-    <!-- ==================== DIALOG_ABOUT ====================== -->
-
-    <!-- ====================== Distance Report ======================== -->
-    <string name="distance_location_field">Местоположение</string>
-    <string name="distance_price_field">Цена</string>
-    <string name="distance_distance_field">Расстояние</string>
-    <string name="distance_rate_field">Курс</string>
-    <string name="dialog_currency_field">Валюта</string>
-    <string name="distance_date_field">Дата</string>
-    <string name="distance_comment_field">Комментарий</string>
-
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Резервные копии</string>
     <string name="manual_backup_title">Ручное резервное копирование:</string>
@@ -409,6 +398,22 @@
     <string name="column_item_index">Индекс чека</string>
     <string name="column_item_id">ID чека</string>
     <string name="column_item_payment_method">Способ оплаты</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Местоположение</string>
+    <string name="distance_price_field">Цена</string>
+    <string name="distance_distance_field">Расстояние</string>
+    <string name="distance_rate_field">Курс</string>
+    <string name="dialog_currency_field">Валюта</string>
+    <string name="distance_date_field">Дата</string>
+    <string name="distance_comment_field">Комментарий</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Категория</string>
+    <string name="category_code_field">Код категории</string>
+    <string name="category_price_field">Цена</string>
+    <string name="category_tax_field">Налог</string>
+    <string name="category_currency_field">Валюта</string>
 
     <string name="receipt_dialog_action_edit">Редактировать чек</string>
     <string name="receipt_dialog_action_view">Просмотреть чек %s</string>

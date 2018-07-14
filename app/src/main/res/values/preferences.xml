@@ -91,22 +91,28 @@
     <!-- ============= Preference Output ================= -->
     <string name="pref_output_custom_csv_key" translatable="false">CustomizeCSVOutput</string>
     <string name="pref_output_custom_csv_title">Customize CSV Output</string>
+
     <string name="pref_output_custom_pdf_key" translatable="false">CustomizePDFOutput</string>
     <string name="pref_output_custom_pdf_title">Customize PDF Output</string>
+
     <string name="pref_output_username_key" translatable="false">UserName</string>
     <string name="pref_output_username_title">User ID</string>
     <string name="pref_output_username_emptyValue">Used as a Custom Output Field</string>
+
     <string name="pref_output_print_receipt_id_by_photo_key" translatable="false">PrintByIDPhotoKey</string>
     <string name="pref_output_print_receipt_id_by_photo_title">Print ID By Photo</string>
     <string name="pref_output_print_receipt_id_by_photo_summary">Shows the Receipt ID instead of Index</string>
+
     <string name="pref_output_print_receipt_comment_by_photo_key" translatable="false">PrintCommentByPhoto</string>
     <string name="pref_output_print_receipt_comment_by_photo_title">Print Receipt Comment By Photo</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Shows the Receipt comment above PDF photos</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Hide the Receipt comment above PDF photos</string>
+
     <string name="pref_output_receipts_landscape_key" translatable="false">ReceiptsTableLandscape</string>
     <string name="pref_output_receipts_landscape_title">Print receipts table in landscape mode</string>
     <string name="pref_output_receipts_landscape_on">Receipts table is printed in landscape mode</string>
     <string name="pref_output_receipts_landscape_off">Receipts table is printed in portrait mode</string>
+
     <string name="pref_output_pdf_page_size_key" translatable="false">PdfPageSize</string>
     <string name="pref_output_pdf_page_size_a4_entryValue" translatable="false">A4</string>
     <string name="pref_output_pdf_page_size_letter_entryValue" translatable="false">Letter</string>
@@ -117,6 +123,18 @@
     <string-array name="pref_output_pdf_page_size_value_entries">
         <item>@string/pref_output_pdf_page_size_a4_entry</item>
         <item>@string/pref_output_pdf_page_size_letter_entry</item>
+    </string-array>
+
+    <string name="pref_output_preferred_language_title">Preferred Report Language</string>
+    <string name="pref_output_preferred_language_key" translatable="false">PreferredReportLanguage</string>
+    <string-array name="pref_output_preferred_language_entryValues">
+        <item>@string/language_en_entry</item>
+        <item>@string/language_de_entry</item>
+        <item>@string/language_es_entry</item>
+        <item>@string/language_fr_entry</item>
+        <item>@string/language_pt_entry</item>
+        <item>@string/language_ru_entry</item>
+        <item>@string/language_uk_entry</item>
     </string-array>
 
     <!-- ============== Preference Email ================= -->

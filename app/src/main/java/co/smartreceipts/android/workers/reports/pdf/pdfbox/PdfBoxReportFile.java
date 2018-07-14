@@ -1,8 +1,8 @@
 package co.smartreceipts.android.workers.reports.pdf.pdfbox;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.PdfReportFile;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorManager;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontManager;
@@ -26,19 +27,25 @@ import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontManager;
 public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
 
     private final DefaultPdfBoxContext pdfBoxContext;
+    private final ReportResourcesManager reportResourcesManager;
     private final PDDocument pdDocument;
     private final List<PdfBoxSection> sections;
 
 
-    public PdfBoxReportFile(@NonNull Context androidContext, @NonNull UserPreferenceManager preferences) throws IOException {
+    public PdfBoxReportFile(@NonNull ReportResourcesManager reportResourcesManager,
+                            @NonNull UserPreferenceManager preferences) throws IOException {
+
+        this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
+
         pdDocument = new PDDocument();
         sections = new ArrayList<>();
 
         final PdfColorManager colorManager = new PdfColorManager();
-        final PdfFontManager fontManager = new PdfFontManager(androidContext, pdDocument);
+        final PdfFontManager fontManager = new PdfFontManager(reportResourcesManager.getLocalizedContext(), pdDocument);
         fontManager.initialize();
 
-        pdfBoxContext = new DefaultPdfBoxContext(androidContext, fontManager, colorManager, preferences);
+        pdfBoxContext = new DefaultPdfBoxContext(reportResourcesManager.getLocalizedContext(),
+                fontManager, colorManager, preferences);
     }
 
 
@@ -75,8 +82,8 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
             @NonNull List<CategoryGroupingResult> groupingResults,
             @NonNull PurchaseWallet purchaseWallet) {
 
-        return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, trip, receipts, columns,
-                distances, distanceColumns, categpries, categoryColumns,
+        return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, reportResourcesManager, trip,
+                receipts, columns, distances, distanceColumns, categpries, categoryColumns,
                 groupingResults, purchaseWallet);
     }
 

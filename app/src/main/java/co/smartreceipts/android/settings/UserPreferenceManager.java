@@ -17,9 +17,9 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.persistence.SharedPreferenceDefinitions;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.Lazy;
@@ -96,6 +96,15 @@ public class UserPreferenceManager {
                                 context.getResources().getValue(userPreference.getDefaultValue(), typedValue, true);
                                 preferences.get().edit().putFloat(preferenceName, typedValue.getFloat()).apply();
                                 Logger.debug(UserPreferenceManager.this, "Assigned default float value for {} as {}", preferenceName, typedValue.getFloat());
+                            } else if (UserPreference.ReportOutput.PreferredReportLanguage.equals(userPreference)) {
+                                final Locale currentLocale = Locale.getDefault();
+                                final String[] supportedLanguages = context.getResources().getStringArray(R.array.pref_output_preferred_language_entryValues);
+                                for (String supportedLanguage : supportedLanguages) {
+                                    if (currentLocale.getLanguage().equals(supportedLanguage)) {
+                                        preferences.get().edit().putString(preferenceName, currentLocale.getLanguage()).apply();
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }

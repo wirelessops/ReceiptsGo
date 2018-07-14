@@ -36,7 +36,7 @@
             android:key="@string/pref_pro_omit_default_table_key"
             android:title="@string/pref_pro_omit_default_table_title" />
     </PreferenceCategory>
-    
+
     <PreferenceCategory
         android:key="@string/pref_general_header_key"
         android:title="@string/pref_general_header" >
@@ -158,11 +158,11 @@
             android:summaryOn="@string/pref_output_receipts_landscape_on"
             android:title="@string/pref_output_receipts_landscape_title" />
         <wb.android.preferences.SummaryListPreference
-            android:key="@string/pref_output_pdf_page_size_key"
-            android:title="@string/pref_output_pdf_page_size_title"
+            android:defaultValue="@string/pref_output_pdf_page_size_defaultValue"
             android:entries="@array/pref_output_pdf_page_size_value_entries"
             android:entryValues="@array/pref_output_pdf_page_size_value_entryValues"
-            android:defaultValue="@string/pref_output_pdf_page_size_defaultValue" />
+            android:key="@string/pref_output_pdf_page_size_key"
+            android:title="@string/pref_output_pdf_page_size_title" />
         <wb.android.preferences.EmptyValueSummaryEditTextPreference
             android:defaultValue="@string/pref_output_username_defaultValue"
             android:key="@string/pref_output_username_key"
@@ -179,6 +179,11 @@
             android:summaryOff="@string/pref_output_print_receipt_comment_by_photo_summaryOff"
             android:summaryOn="@string/pref_output_print_receipt_comment_by_photo_summaryOn"
             android:title="@string/pref_output_print_receipt_comment_by_photo_title" />
+        <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_output_preferred_language_defaultValue"
+            android:entryValues="@array/pref_output_preferred_language_entryValues"
+            android:key="@string/pref_output_preferred_language_key"
+            android:title="@string/pref_output_preferred_language_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -289,25 +294,25 @@
 
     <PreferenceCategory
         android:key="@string/pref_privacy_header_key"
-        android:title="@string/pref_privacy_header" >
+        android:title="@string/pref_privacy_header">
         <Preference
             android:key="@string/pref_about_privacy_policy_key"
             android:title="@string/pref_about_privacy_policy_title" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_privacy_enable_analytics_defaultValue"
             android:key="@string/pref_privacy_enable_analytics_key"
-            android:title="@string/pref_privacy_enable_analytics_title"
-            android:summary="@string/pref_privacy_enable_analytics_summary" />
+            android:summary="@string/pref_privacy_enable_analytics_summary"
+            android:title="@string/pref_privacy_enable_analytics_title" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_privacy_enable_crash_tracking_defaultValue"
             android:key="@string/pref_privacy_enable_crash_tracking_key"
-            android:title="@string/pref_privacy_enable_crash_tracking_title"
-            android:summary="@string/pref_privacy_enable_crash_tracking_summary" />
+            android:summary="@string/pref_privacy_enable_crash_tracking_summary"
+            android:title="@string/pref_privacy_enable_crash_tracking_title" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_privacy_enable_ad_personalization_defaultValue"
             android:key="@string/pref_privacy_enable_ad_personalization_key"
-            android:title="@string/pref_privacy_enable_ad_personalization_title"
-            android:summary="@string/pref_privacy_enable_ad_personalization_summary" />
+            android:summary="@string/pref_privacy_enable_ad_personalization_summary"
+            android:title="@string/pref_privacy_enable_ad_personalization_title" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -39,8 +39,6 @@ public interface PdfBoxContext {
     @NonNull
     PdfColorManager getColorManager();
 
-    int getLineSpacing();
-
     float getPageMarginHorizontal();
 
     float getPageMarginVertical();

@@ -12,6 +12,7 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinit
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.CSVTableController;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import dagger.android.support.AndroidSupportInjection;
 
 public class CSVColumnsListFragment extends ColumnsListFragment {
@@ -24,6 +25,8 @@ public class CSVColumnsListFragment extends ColumnsListFragment {
     CSVTableController csvTableController;
     @Inject
     OrderingPreferencesManager orderingPreferencesManager;
+    @Inject
+    ReportResourcesManager reportResourcesManager;
 
     public static CSVColumnsListFragment newInstance() {
         return new CSVColumnsListFragment();
@@ -58,5 +61,10 @@ public class CSVColumnsListFragment extends ColumnsListFragment {
     protected void saveTableOrdering() {
         super.saveTableOrdering();
         orderingPreferencesManager.saveCsvColumnsTableOrdering();
+    }
+
+    @Override
+    protected ReportResourcesManager getReportResourcesManager() {
+        return reportResourcesManager;
     }
 }

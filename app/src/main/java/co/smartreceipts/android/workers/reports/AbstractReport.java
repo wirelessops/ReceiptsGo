@@ -1,6 +1,5 @@
 package co.smartreceipts.android.workers.reports;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -8,7 +7,6 @@ import com.google.common.base.Preconditions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import wb.android.flex.Flex;
 import wb.android.storage.StorageManager;
 
 /**
@@ -16,28 +14,29 @@ import wb.android.storage.StorageManager;
  */
 public abstract class AbstractReport implements Report {
 
-    private final Context context;
+    private final ReportResourcesManager reportResourcesManager;
     private final DatabaseHelper databaseHelper;
     private final UserPreferenceManager userPreferenceManager;
     private final StorageManager storageManager;
-    private final Flex flex;
 
-    protected AbstractReport(@NonNull Context context, @NonNull PersistenceManager persistenceManager, @NonNull Flex flex) {
-        this(context, persistenceManager.getDatabase(), persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(), flex);
+    protected AbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
+                             @NonNull PersistenceManager persistenceManager) {
+        this(reportResourcesManager, persistenceManager.getDatabase(),
+                persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager());
     }
 
-    protected AbstractReport(@NonNull Context context, @NonNull DatabaseHelper db, @NonNull UserPreferenceManager preferences,
-                             @NonNull StorageManager storageManager, @NonNull Flex flex) {
-        this.context = Preconditions.checkNotNull(context);
+    protected AbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
+                             @NonNull DatabaseHelper db, @NonNull UserPreferenceManager preferences,
+                             @NonNull StorageManager storageManager) {
+        this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
         this.databaseHelper = Preconditions.checkNotNull(db);
         this.userPreferenceManager = Preconditions.checkNotNull(preferences);
         this.storageManager = Preconditions.checkNotNull(storageManager);
-        this.flex = Preconditions.checkNotNull(flex);
     }
 
     @NonNull
-    protected final Context getContext() {
-        return context;
+    protected final ReportResourcesManager getReportResourcesManager() {
+        return reportResourcesManager;
     }
 
     @NonNull
@@ -54,10 +53,4 @@ public abstract class AbstractReport implements Report {
     protected final StorageManager getStorageManager() {
         return storageManager;
     }
-
-    @NonNull
-    protected final Flex getFlex() {
-        return flex;
-    }
-
 }

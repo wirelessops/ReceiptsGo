@@ -12,16 +12,17 @@ import java.util.List;
 
 import co.smartreceipts.android.filters.Filter;
 import co.smartreceipts.android.model.Column;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.TableGenerator;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorStyle;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontStyle;
+import co.smartreceipts.android.workers.reports.pdf.misc.ColumnWidthCalculator;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxContext;
 import co.smartreceipts.android.workers.reports.pdf.renderer.constraints.WidthConstraint;
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.BackgroundColor;
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Padding;
 import co.smartreceipts.android.workers.reports.pdf.renderer.grid.GridRowRenderer;
 import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
-import co.smartreceipts.android.workers.reports.pdf.misc.ColumnWidthCalculator;
 import co.smartreceipts.android.workers.reports.pdf.utils.HeavyHandedReplaceIllegalCharacters;
 
 
@@ -30,6 +31,7 @@ public class PdfTableGenerator<DataType> implements TableGenerator<List<GridRowR
     private static final Padding DEFAULT_PADDING = new Padding(4f);
 
     private final PdfBoxContext pdfBoxContext;
+    private final ReportResourcesManager reportResourcesManager;
     private final List<Column<DataType>> columns;
     private final PDDocument pdDocument;
     private final Filter<DataType> filter;
@@ -37,12 +39,14 @@ public class PdfTableGenerator<DataType> implements TableGenerator<List<GridRowR
     private final boolean printFooters;
 
     public PdfTableGenerator(@NonNull PdfBoxContext context,
+                             @NonNull ReportResourcesManager reportResourcesManager,
                              @NonNull List<Column<DataType>> columns,
                              @NonNull PDDocument pdDocument,
                              @Nullable Filter<DataType> receiptFilter,
                              boolean printHeaders,
                              boolean printFooters) {
         this.pdfBoxContext = Preconditions.checkNotNull(context);
+        this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
         this.columns = Preconditions.checkNotNull(columns);
         this.pdDocument = Preconditions.checkNotNull(pdDocument);
         this.filter = receiptFilter;
@@ -62,9 +66,8 @@ public class PdfTableGenerator<DataType> implements TableGenerator<List<GridRowR
         // calculate column widths
         // TODO: Include this as part of the measure pass
         float[] colWidths;
-        ColumnWidthCalculator columnWidthCalculator = new ColumnWidthCalculator<>(
-                list, columns, availableWidth, DEFAULT_PADDING.value(), pdfBoxContext.getFontManager().getFont(PdfFontStyle.TableHeader),
-                pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default));
+        ColumnWidthCalculator columnWidthCalculator = new ColumnWidthCalculator<>(pdfBoxContext,
+                list, columns, availableWidth, DEFAULT_PADDING.value());
         colWidths = columnWidthCalculator.calculate();
 
         // Add the header
@@ -75,7 +78,7 @@ public class PdfTableGenerator<DataType> implements TableGenerator<List<GridRowR
                 final TextRenderer textRenderer = new TextRenderer(
                         pdfBoxContext.getAndroidContext(),
                         pdDocument,
-                        columns.get(i).getHeader(),
+                        reportResourcesManager.getFlexString(columns.get(i).getHeaderStringResId()),
                         pdfBoxContext.getColorManager().getColor(PdfColorStyle.Outline),
                         pdfBoxContext.getFontManager().getFont(PdfFontStyle.TableHeader));
                 textRenderer.getRenderingFormatting().addFormatting(DEFAULT_PADDING);

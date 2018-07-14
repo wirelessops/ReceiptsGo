@@ -63,10 +63,12 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 import co.smartreceipts.android.utils.ReceiptUtils;
 import co.smartreceipts.android.utils.TripUtils;
 import co.smartreceipts.android.utils.shadows.ShadowFontFileFinder;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import co.smartreceipts.android.workers.reports.pdf.renderer.text.FallbackTextRenderer;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 /**
@@ -97,6 +99,9 @@ public class InteractivePdfBoxTest {
 
     @Mock
     PurchaseWallet purchaseWallet;
+
+    @Mock
+    ReportResourcesManager reportResourcesManager;
 
     /**
      * Base method, to be overridden by subclasses. The subclass must annotate the method
@@ -130,6 +135,9 @@ public class InteractivePdfBoxTest {
         when(userPreferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)).thenReturn(false);
 
         when(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true);
+
+        when(reportResourcesManager.getLocalizedContext()).thenReturn(context);
+        when(reportResourcesManager.getFlexString(anyInt())).thenReturn("header");
 
         FallbackTextRenderer.setHeightMeasureSpec(View.MeasureSpec.makeMeasureSpec(25, View.MeasureSpec.EXACTLY));
     }
@@ -470,29 +478,29 @@ public class InteractivePdfBoxTest {
     }
 
     private void writeFullReport(@NonNull Trip trip, @NonNull List<Receipt> receipts) throws Exception {
-        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(context, userPreferenceManager);
+        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager);
 
         final ArrayList<Column<Receipt>> receiptColumns = new ArrayList<>();
-        receiptColumns.add(new ReceiptNameColumn(1, "Name", new DefaultSyncState()));
-        receiptColumns.add(new ReceiptPriceColumn(2, "Price", new DefaultSyncState()));
-        receiptColumns.add(new ReceiptDateColumn(3, "Date", new DefaultSyncState(), context, userPreferenceManager));
-        receiptColumns.add(new ReceiptCategoryNameColumn(4, "Category name", new DefaultSyncState()));
+        receiptColumns.add(new ReceiptNameColumn(1, new DefaultSyncState(), 0));
+        receiptColumns.add(new ReceiptPriceColumn(2, new DefaultSyncState(), 0));
+        receiptColumns.add(new ReceiptDateColumn(3, new DefaultSyncState(), context, userPreferenceManager, 0));
+        receiptColumns.add(new ReceiptCategoryNameColumn(4, new DefaultSyncState()));
 
         final List<Column<Distance>> distanceColumns = new ArrayList<>();
-        distanceColumns.add(new DistanceLocationColumn(1, "Location", new DefaultSyncState(), context));
-        distanceColumns.add(new DistancePriceColumn(2, "Price", new DefaultSyncState(), false));
-        distanceColumns.add(new DistanceDistanceColumn(3, "Distance", new DefaultSyncState()));
-        distanceColumns.add(new DistanceCurrencyColumn(4, "Currency", new DefaultSyncState()));
-        distanceColumns.add(new DistanceRateColumn(5, "Rate", new DefaultSyncState()));
-        distanceColumns.add(new DistanceDateColumn(6, "Date", new DefaultSyncState(), context, userPreferenceManager));
-        distanceColumns.add(new DistanceCommentColumn(7, "Comment", new DefaultSyncState()));
+        distanceColumns.add(new DistanceLocationColumn(1, new DefaultSyncState(), context));
+        distanceColumns.add(new DistancePriceColumn(2, new DefaultSyncState(), false));
+        distanceColumns.add(new DistanceDistanceColumn(3, new DefaultSyncState()));
+        distanceColumns.add(new DistanceCurrencyColumn(4, new DefaultSyncState()));
+        distanceColumns.add(new DistanceRateColumn(5, new DefaultSyncState()));
+        distanceColumns.add(new DistanceDateColumn(6, new DefaultSyncState(), context, userPreferenceManager));
+        distanceColumns.add(new DistanceCommentColumn(7, new DefaultSyncState()));
 
         final List<Column<SumCategoryGroupingResult>> summationColumns = new ArrayList<>();
-        summationColumns.add(new CategoryNameColumn(1, "Category", new DefaultSyncState()));
-        summationColumns.add(new CategoryCodeColumn(2, "Category Code", new DefaultSyncState()));
-        summationColumns.add(new CategoryPriceColumn(3, "Price", new DefaultSyncState()));
-        summationColumns.add(new CategoryTaxColumn(4, "Tax", new DefaultSyncState()));
-        summationColumns.add(new CategoryCurrencyColumn(5, "Currency", new DefaultSyncState()));
+        summationColumns.add(new CategoryNameColumn(1, new DefaultSyncState()));
+        summationColumns.add(new CategoryCodeColumn(2, new DefaultSyncState()));
+        summationColumns.add(new CategoryPriceColumn(3, new DefaultSyncState()));
+        summationColumns.add(new CategoryTaxColumn(4, new DefaultSyncState()));
+        summationColumns.add(new CategoryCurrencyColumn(5, new DefaultSyncState()));
 
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts,
                 receiptColumns, Collections.<Distance>emptyList(), distanceColumns,
@@ -510,7 +518,7 @@ public class InteractivePdfBoxTest {
     }
 
     private void writeImagesOnlyReport(@NonNull Trip trip, @NonNull List<Receipt> receipts) throws Exception {
-        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(context, userPreferenceManager);
+        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager);
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
         OutputStream outputStream = null;

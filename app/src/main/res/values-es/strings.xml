@@ -279,17 +279,6 @@
     <string name="dialog_import_text">Sobrescribir todos los datos existentes</string>
     <string name="dialog_export_working">Exportando tus recibos…</string>
 
-    <!-- ==================== DIALOG_ABOUT ====================== -->
-
-    <!-- ====================== Distance Report ======================== -->
-    <string name="distance_location_field">Ubicación</string>
-    <string name="distance_price_field">Precio</string>
-    <string name="distance_distance_field">Distancia</string>
-    <string name="distance_rate_field">Tarifa</string>
-    <string name="dialog_currency_field">Moneda</string>
-    <string name="distance_date_field">Fecha</string>
-    <string name="distance_comment_field">Comentario</string>
-
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Copias de seguridad</string>
     <string name="manual_backup_title">Copia de seguridad manual:</string>
@@ -407,6 +396,22 @@
     <string name="column_item_index">Índice del recibo</string>
     <string name="column_item_id">Id. del recibo</string>
     <string name="column_item_payment_method">Método de pago</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Ubicación</string>
+    <string name="distance_price_field">Precio</string>
+    <string name="distance_distance_field">Distancia</string>
+    <string name="distance_rate_field">Tarifa</string>
+    <string name="dialog_currency_field">Moneda</string>
+    <string name="distance_date_field">Fecha</string>
+    <string name="distance_comment_field">Comentario</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Nombre de la categoría</string>
+    <string name="category_code_field">Código de la categoría</string>
+    <string name="category_price_field">Precio</string>
+    <string name="category_tax_field">Impuesto</string>
+    <string name="category_currency_field">Moneda</string>
 
     <string name="receipt_dialog_action_edit">Editar recibo</string>
     <string name="receipt_dialog_action_view">Ver recibo %s</string>

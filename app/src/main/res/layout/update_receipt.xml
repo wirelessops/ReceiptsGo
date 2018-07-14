@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal|numberSigned"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"/>
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -100,19 +100,19 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
-                app:layout_constraintStart_toEndOf="@id/receipt_input_price_wrapper"
-                app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
-                app:layout_constraintEnd_toStartOf="@id/decimalSeparatorButton" >
+                app:layout_constraintEnd_toStartOf="@id/decimalSeparatorButton"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_price_wrapper"
+                app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper">
 
                 <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/DIALOG_RECEIPTMENU_TAX"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:completionThreshold="1"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal|numberSigned"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
-                    android:completionThreshold="1" />
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -215,6 +215,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_DATE"
+                android:maxLines="1"
                 android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_date"

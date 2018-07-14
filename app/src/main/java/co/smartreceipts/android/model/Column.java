@@ -2,6 +2,7 @@ package co.smartreceipts.android.model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 
 import java.util.List;
 
@@ -22,20 +23,19 @@ public interface Column<T> extends Syncable, Draggable<Column<T>> {
     int getId();
 
     /**
-     * Gets the column name of this particular column
+     * Gets the column type of this particular column
      *
-     * @return the {@link String} representation of the name for this particular column
+     * @return int enum type from {@link ColumnDefinitions}
      */
-    @NonNull
-    String getName();
+    int getType();
 
     /**
-     * Gets the column header (generally the same of {@link #getName()}) of this particular column
+     * Gets the column header resource id of this particular column
      *
-     * @return the {@link String} representation of the header for this particular column
+     * @return the {@link StringRes} of the header for this particular column
      */
-    @NonNull
-    String getHeader();
+    @StringRes
+    int getHeaderStringResId();
 
     /**
      * Gets the value of a particular row item as determined by this column. If this column

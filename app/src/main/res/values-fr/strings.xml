@@ -279,17 +279,6 @@
     <string name="dialog_import_text">Remplacer toutes les données existantes</string>
     <string name="dialog_export_working">Exportation de vos reçus…</string>
 
-    <!-- ==================== DIALOG_ABOUT ====================== -->
-
-    <!-- ====================== Distance Report ======================== -->
-    <string name="distance_location_field">Emplacement</string>
-    <string name="distance_price_field">Prix</string>
-    <string name="distance_distance_field">Distance</string>
-    <string name="distance_rate_field">Taux</string>
-    <string name="dialog_currency_field">Devise</string>
-    <string name="distance_date_field">Date</string>
-    <string name="distance_comment_field">Commentaire</string>
-
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Sauvegardes</string>
     <string name="manual_backup_title">Sauvegardes manuelles :</string>
@@ -407,6 +396,22 @@
     <string name="column_item_index">Indice du reçu</string>
     <string name="column_item_id">ID du reçu</string>
     <string name="column_item_payment_method">Mode de paiement</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Emplacement</string>
+    <string name="distance_price_field">Prix</string>
+    <string name="distance_distance_field">Distance</string>
+    <string name="distance_rate_field">Taux</string>
+    <string name="dialog_currency_field">Devise</string>
+    <string name="distance_date_field">Date</string>
+    <string name="distance_comment_field">Commentaire</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Nom de la catégorie</string>
+    <string name="category_code_field">Code de la catégorie</string>
+    <string name="category_price_field">Prix</string>
+    <string name="category_tax_field">Taxe</string>
+    <string name="category_currency_field">Devise</string>
 
     <string name="receipt_dialog_action_edit">Modifier le reçu</string>
     <string name="receipt_dialog_action_view">Afficher le reçu %s</string>

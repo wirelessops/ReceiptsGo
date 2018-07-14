@@ -16,16 +16,12 @@ public final class CSVTable extends AbstractColumnTable {
 
     // SQL Definitions:
     public static final String TABLE_NAME = "csvcolumns";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_TYPE = "type";
-
 
     private static final int TABLE_EXISTS_SINCE = 2;
 
-    public CSVTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
-                    @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
+    public CSVTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
                     @NonNull OrderingPreferencesManager orderingPreferencesManager) {
-        super(sqLiteOpenHelper, TABLE_NAME, TABLE_EXISTS_SINCE, receiptColumnDefinitions, COLUMN_ID, COLUMN_TYPE, orderingPreferencesManager, CSVTable.class);
+        super(sqLiteOpenHelper, TABLE_NAME, TABLE_EXISTS_SINCE, receiptColumnDefinitions, orderingPreferencesManager, CSVTable.class);
     }
 
     @Override

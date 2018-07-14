@@ -11,6 +11,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ColumnTabl
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.DraggableEditableListFragment;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
 public abstract class ColumnsListFragment extends DraggableEditableListFragment<Column<Receipt>> {
 
@@ -26,7 +27,7 @@ public abstract class ColumnsListFragment extends DraggableEditableListFragment<
     @Override
     public void onDeleteItem(Column<Receipt> item) {
         final AlertDialog.Builder innerBuilder = new AlertDialog.Builder(getActivity());
-        innerBuilder.setTitle(getString(R.string.delete_item, item.getName()))
+        innerBuilder.setTitle(getString(R.string.delete_item, getReportResourcesManager().getFlexString(item.getHeaderStringResId())))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.delete), (dialog, which) -> getTableController().delete(item, new DatabaseOperationMetadata()))
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
@@ -35,7 +36,7 @@ public abstract class ColumnsListFragment extends DraggableEditableListFragment<
 
     @Override
     protected DraggableEditableCardsAdapter<Column<Receipt>> getAdapter() {
-        return new ColumnsAdapter(this, getReceiptColumnDefinitions(), getContext());
+        return new ColumnsAdapter(getContext(), getReceiptColumnDefinitions(), getReportResourcesManager(), this);
     }
 
     @Override
@@ -45,5 +46,7 @@ public abstract class ColumnsListFragment extends DraggableEditableListFragment<
     }
 
     protected abstract ReceiptColumnDefinitions getReceiptColumnDefinitions();
+
+    protected abstract ReportResourcesManager getReportResourcesManager();
 
 }

@@ -42,15 +42,16 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     public static final String COLUMN_LAST_LOCAL_MODIFICATION_TIME = "last_local_modification_time";
     public static final String COLUMN_CUSTOM_ORDER_ID = "custom_order_id";
 
-    private final SQLiteOpenHelper mSQLiteOpenHelper;
-    private final String mTableName;
+    private final SQLiteOpenHelper sqLiteOpenHelper;
+    private final String tableName;
 
-    protected final DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> mDatabaseAdapter;
-    protected final PrimaryKey<ModelType, PrimaryKeyType> mPrimaryKey;
-    private final OrderBy mOrderBy;
+    protected final DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter;
+    protected final PrimaryKey<ModelType, PrimaryKeyType> primaryKey;
+    private final OrderBy orderBy;
 
     private SQLiteDatabase initialNonRecursivelyCalledDatabase;
-    private List<ModelType> mCachedResults;
+    private List<ModelType> cachedResults;
+
 
     public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                             @NonNull String tableName,
@@ -59,21 +60,19 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
         this(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, new OrderByDatabaseDefault());
     }
 
-    public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
-                            @NonNull String tableName,
+    public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName,
                             @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
-                            @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey,
-                            @NonNull OrderBy orderBy) {
-        mSQLiteOpenHelper = Preconditions.checkNotNull(sqLiteOpenHelper);
-        mTableName = Preconditions.checkNotNull(tableName);
-        mDatabaseAdapter = Preconditions.checkNotNull(databaseAdapter);
-        mPrimaryKey = Preconditions.checkNotNull(primaryKey);
-        mOrderBy = Preconditions.checkNotNull(orderBy);
+                            @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey, @NonNull OrderBy orderBy) {
+        this.sqLiteOpenHelper = Preconditions.checkNotNull(sqLiteOpenHelper);
+        this.tableName = Preconditions.checkNotNull(tableName);
+        this.databaseAdapter = Preconditions.checkNotNull(databaseAdapter);
+        this.primaryKey = Preconditions.checkNotNull(primaryKey);
+        this.orderBy = Preconditions.checkNotNull(orderBy);
     }
 
     public final SQLiteDatabase getReadableDatabase() {
         if (initialNonRecursivelyCalledDatabase == null) {
-            return mSQLiteOpenHelper.getReadableDatabase();
+            return sqLiteOpenHelper.getReadableDatabase();
         } else {
             return initialNonRecursivelyCalledDatabase;
         }
@@ -81,7 +80,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     public final SQLiteDatabase getWritableDatabase() {
         if (initialNonRecursivelyCalledDatabase == null) {
-            return mSQLiteOpenHelper.getWritableDatabase();
+            return sqLiteOpenHelper.getWritableDatabase();
         } else {
             return initialNonRecursivelyCalledDatabase;
         }
@@ -90,7 +89,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     @Override
     @NonNull
     public final String getTableName() {
-        return mTableName;
+        return tableName;
     }
 
     @Override
@@ -146,7 +145,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
                         cursor = getReadableDatabase().query(getTableName(), null, COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(1)}, null, null, null);
                         if (cursor != null && cursor.moveToFirst()) {
                             do {
-                                results.add(mDatabaseAdapter.read(cursor));
+                                results.add(databaseAdapter.read(cursor));
                             }
                             while (cursor.moveToNext());
                         }
@@ -218,21 +217,21 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     @NonNull
     public synchronized List<ModelType> getBlocking() {
-        if (mCachedResults != null) {
-            return mCachedResults;
+        if (cachedResults != null) {
+            return cachedResults;
         }
 
         Cursor cursor = null;
         try {
-            mCachedResults = new ArrayList<>();
-            cursor = getReadableDatabase().query(getTableName(), null, COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, mOrderBy.getOrderByPredicate());
+            cachedResults = new ArrayList<>();
+            cursor = getReadableDatabase().query(getTableName(), null, COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, orderBy.getOrderByPredicate());
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    mCachedResults.add(mDatabaseAdapter.read(cursor));
+                    cachedResults.add(databaseAdapter.read(cursor));
                 }
                 while (cursor.moveToNext());
             }
-            return new ArrayList<>(mCachedResults);
+            return new ArrayList<>(cachedResults);
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -243,9 +242,9 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     @SuppressWarnings("unchecked")
     @NonNull
     public synchronized Optional<ModelType> insertBlocking(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        final ContentValues values = mDatabaseAdapter.write(modelType, databaseOperationMetadata);
+        final ContentValues values = databaseAdapter.write(modelType, databaseOperationMetadata);
         if (getWritableDatabase().insertOrThrow(getTableName(), null, values) != -1) {
-            if (Integer.class.equals(mPrimaryKey.getPrimaryKeyClass())) {
+            if (Integer.class.equals(primaryKey.getPrimaryKeyClass())) {
                 Cursor cursor = null;
                 try {
                     cursor = getReadableDatabase().rawQuery("SELECT last_insert_rowid()", null);
@@ -258,13 +257,13 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
                     }
 
                     // Note: We do some quick hacks around generics here to ensure the types are consistent
-                    final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) mPrimaryKey, id);
+                    final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) primaryKey, id);
 
-                    final ModelType insertedItem = mDatabaseAdapter.build(modelType, autoIncrementPrimaryKey, databaseOperationMetadata);
-                    if (mCachedResults != null) {
-                        mCachedResults.add(insertedItem);
+                    final ModelType insertedItem = databaseAdapter.build(modelType, autoIncrementPrimaryKey, databaseOperationMetadata);
+                    if (cachedResults != null) {
+                        cachedResults.add(insertedItem);
                         if (insertedItem instanceof Comparable<?>) {
-                            Collections.sort((List<? extends Comparable>) mCachedResults);
+                            Collections.sort((List<? extends Comparable>) cachedResults);
                         }
                     }
                     return Optional.of(insertedItem);
@@ -275,11 +274,11 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
                 }
             } else {
                 // If it's not an auto-increment id, just grab whatever the definition is...
-                final ModelType insertedItem = mDatabaseAdapter.build(modelType, mPrimaryKey, databaseOperationMetadata);
-                if (mCachedResults != null) {
-                    mCachedResults.add(insertedItem);
+                final ModelType insertedItem = databaseAdapter.build(modelType, primaryKey, databaseOperationMetadata);
+                if (cachedResults != null) {
+                    cachedResults.add(insertedItem);
                     if (insertedItem instanceof Comparable<?>) {
-                        Collections.sort((List<? extends Comparable>) mCachedResults);
+                        Collections.sort((List<? extends Comparable>) cachedResults);
                     }
                 }
                 return Optional.of(insertedItem);
@@ -291,37 +290,37 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     @SuppressWarnings("unchecked")
     public synchronized Optional<ModelType> updateBlocking(@NonNull ModelType oldModelType, @NonNull ModelType newModelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        final ContentValues values = mDatabaseAdapter.write(newModelType, databaseOperationMetadata);
-        final String oldPrimaryKeyValue = mPrimaryKey.getPrimaryKeyValue(oldModelType).toString();
+        final ContentValues values = databaseAdapter.write(newModelType, databaseOperationMetadata);
+        final String oldPrimaryKeyValue = primaryKey.getPrimaryKeyValue(oldModelType).toString();
 
         final boolean updateSuccess;
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync && oldModelType instanceof Syncable) {
             // For sync operations, ensure that this only succeeds if we haven't already updated this item more recently
             final Syncable syncableOldModel = (Syncable) oldModelType;
-            updateSuccess = getWritableDatabase().update(getTableName(), values, mPrimaryKey.getPrimaryKeyColumn() + " = ? AND " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " >= ?", new String[]{ oldPrimaryKeyValue, Long.toString(syncableOldModel.getSyncState().getLastLocalModificationTime().getTime()) }) > 0;
+            updateSuccess = getWritableDatabase().update(getTableName(), values, primaryKey.getPrimaryKeyColumn() + " = ? AND " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " >= ?", new String[]{ oldPrimaryKeyValue, Long.toString(syncableOldModel.getSyncState().getLastLocalModificationTime().getTime()) }) > 0;
         } else {
-            updateSuccess = getWritableDatabase().update(getTableName(), values, mPrimaryKey.getPrimaryKeyColumn() + " = ?", new String[]{ oldPrimaryKeyValue }) > 0;
+            updateSuccess = getWritableDatabase().update(getTableName(), values, primaryKey.getPrimaryKeyColumn() + " = ?", new String[]{ oldPrimaryKeyValue }) > 0;
         }
 
         if (updateSuccess) {
             final ModelType updatedItem;
-            if (Integer.class.equals(mPrimaryKey.getPrimaryKeyClass())) {
+            if (Integer.class.equals(primaryKey.getPrimaryKeyClass())) {
                 // If it's an auto-increment key, ensure we're re-using the same id as the old key
-                final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) mPrimaryKey, (Integer) mPrimaryKey.getPrimaryKeyValue(oldModelType));
-                updatedItem = mDatabaseAdapter.build(newModelType, autoIncrementPrimaryKey, databaseOperationMetadata);
+                final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) primaryKey, (Integer) primaryKey.getPrimaryKeyValue(oldModelType));
+                updatedItem = databaseAdapter.build(newModelType, autoIncrementPrimaryKey, databaseOperationMetadata);
             } else {
                 // Otherwise, we'll use whatever the user defined...
-                updatedItem = mDatabaseAdapter.build(newModelType, mPrimaryKey, databaseOperationMetadata);
+                updatedItem = databaseAdapter.build(newModelType, primaryKey, databaseOperationMetadata);
             }
-            if (mCachedResults != null) {
-                boolean wasCachedResultRemoved = mCachedResults.remove(oldModelType);
+            if (cachedResults != null) {
+                boolean wasCachedResultRemoved = cachedResults.remove(oldModelType);
                 if (!wasCachedResultRemoved) {
                     // If our cache is wrong, let's use the actual primary key to see if we can find it
-                    final PrimaryKeyType primaryKeyValue = mPrimaryKey.getPrimaryKeyValue(newModelType);
+                    final PrimaryKeyType primaryKeyValue = primaryKey.getPrimaryKeyValue(newModelType);
                     Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
-                    for (final ModelType cachedResult : mCachedResults) {
-                        if (primaryKeyValue.equals(mPrimaryKey.getPrimaryKeyValue(cachedResult))) {
-                            wasCachedResultRemoved = mCachedResults.remove(cachedResult);
+                    for (final ModelType cachedResult : cachedResults) {
+                        if (primaryKeyValue.equals(primaryKey.getPrimaryKeyValue(cachedResult))) {
+                            wasCachedResultRemoved = cachedResults.remove(cachedResult);
                             if (wasCachedResultRemoved) {
                                 break;
                             }
@@ -334,13 +333,13 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
                 if (newModelType instanceof Syncable) {
                     final Syncable syncable = (Syncable) newModelType;
                     if (!syncable.getSyncState().isMarkedForDeletion(SyncProvider.GoogleDrive)) {
-                        mCachedResults.add(updatedItem);
+                        cachedResults.add(updatedItem);
                     }
                 } else {
-                    mCachedResults.add(updatedItem);
+                    cachedResults.add(updatedItem);
                 }
                 if (updatedItem instanceof Comparable<?>) {
-                    Collections.sort((List<? extends Comparable>) mCachedResults);
+                    Collections.sort((List<? extends Comparable>) cachedResults);
                 }
             }
             return Optional.of(updatedItem);
@@ -351,10 +350,10 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
     }
 
     public synchronized Optional<ModelType> deleteBlocking(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        final String primaryKeyValue = mPrimaryKey.getPrimaryKeyValue(modelType).toString();
-        if (getWritableDatabase().delete(getTableName(), mPrimaryKey.getPrimaryKeyColumn() + " = ?", new String[]{primaryKeyValue}) > 0) {
-            if (mCachedResults != null) {
-                mCachedResults.remove(modelType);
+        final String primaryKeyValue = primaryKey.getPrimaryKeyValue(modelType).toString();
+        if (getWritableDatabase().delete(getTableName(), primaryKey.getPrimaryKeyColumn() + " = ?", new String[]{primaryKeyValue}) > 0) {
+            if (cachedResults != null) {
+                cachedResults.remove(modelType);
             }
             return Optional.of(modelType);
         } else {
@@ -373,8 +372,8 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
         getWritableDatabase().update(getTableName(), contentValues, null, null);
 
         // Lastly - let's clear out all cached data
-        if (mCachedResults != null) {
-            mCachedResults.clear();
+        if (cachedResults != null) {
+            cachedResults.clear();
         }
 
         return true;
@@ -382,9 +381,9 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     @NonNull
     public synchronized Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
-        if (mCachedResults != null) {
-            for (final ModelType cachedResult : mCachedResults) {
-                if (mPrimaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+        if (cachedResults != null) {
+            for (final ModelType cachedResult : cachedResults) {
+                if (primaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
                     return Optional.of(cachedResult);
                 }
             }
@@ -394,7 +393,7 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
             final int size = entries.size();
             for (int i = 0; i < size; i++) {
                 final ModelType modelType = entries.get(i);
-                if (mPrimaryKey.getPrimaryKeyValue(modelType).equals(primaryKeyType)) {
+                if (primaryKey.getPrimaryKeyValue(modelType).equals(primaryKeyType)) {
                     return Optional.of(modelType);
                 }
             }
@@ -410,9 +409,9 @@ public abstract class AbstractSqlTable<ModelType, PrimaryKeyType> implements Tab
 
     @Override
     public synchronized void clearCache() {
-        if (mCachedResults != null) {
-            mCachedResults.clear();
-            mCachedResults = null;
+        if (cachedResults != null) {
+            cachedResults.clear();
+            cachedResults = null;
         }
     }
 

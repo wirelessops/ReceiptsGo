@@ -37,10 +37,8 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -718,24 +716,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     private void saveReceipt() {
-
-        // Note: we're saving date that was picked by user (without time information) + currentSecondsElapsedToday to create ordering
-        final Calendar calendar = Calendar.getInstance();
-        final long currentSecondsElapsedToday =
-                TimeUnit.HOURS.toSeconds(calendar.get(Calendar.HOUR_OF_DAY)) +
-                        TimeUnit.MINUTES.toSeconds(calendar.get(Calendar.MINUTE)) +
-                        calendar.get(Calendar.SECOND);
-        calendar.setTime(dateBox.getDate());
-        calendar.setTimeZone(TimeZone.getDefault());
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        final Date newReceiptDate = new Date(calendar.getTimeInMillis() + currentSecondsElapsedToday);
-
-
-        if (presenter.checkReceipt(newReceiptDate)) {
+        if (presenter.checkReceipt(dateBox.getDate())) {
             final String name = TextUtils.isEmpty(nameBox.getText().toString()) ? "" : nameBox.getText().toString();
             final Category category = categoriesAdapter.getItem(categoriesSpinner.getSelectedItemPosition());
             final String currency = currencySpinner.getSelectedItem().toString();
@@ -754,7 +735,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             if (getReceipt() != null && getReceipt().getDate().equals(dateBox.getDate())) {
                 receiptDate = getReceipt().getDate();
             } else {
-                receiptDate = newReceiptDate;
+                receiptDate = dateBox.getDate();
             }
 
             receiptInputCache.setCachedDate((Date) dateBox.getDate().clone());

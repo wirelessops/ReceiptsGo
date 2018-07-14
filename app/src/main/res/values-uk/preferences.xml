@@ -15,7 +15,7 @@
     <string name="pref_pro_header">Смарт Чеки Плюс</string>
     <string name="pref_help_header">Підтримка</string>
     <string name="pref_about_header">Про програму</string>
-    <string name="pref_privacy_header">конфіденційності</string>
+    <string name="pref_privacy_header">Конфіденційність</string>
 
 
     <!-- ============== Preference General ================= -->
@@ -98,6 +98,8 @@
     <string name="pref_output_receipts_landscape_title">Друк таблиці чеків в ландшафтному режимі</string>
     <string name="pref_output_receipts_landscape_on">Таблиця чеків друкується в ландшафтному режимі</string>
     <string name="pref_output_receipts_landscape_off">Таблиця чеків друкується в портретному режимі</string>
+
+    <string name="pref_output_preferred_language_title">Бажана мова звітів</string>
 
     <!-- ============== Preference Email ================= -->
 

@@ -1,12 +1,12 @@
 package co.smartreceipts.android.model.comparators
 
 import co.smartreceipts.android.model.Receipt
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.sql.Date
@@ -32,8 +32,8 @@ class ReceiptDateComparatorTest {
         defaultComparator = ReceiptDateComparator() // same as ascendingComparator
 
         val now = System.currentTimeMillis()
-        `when`(first!!.date).thenReturn(Date(now))
-        `when`(second!!.date).thenReturn(Date(now + 10000L))
+        whenever(first!!.date).thenReturn(Date(now))
+        whenever(second!!.date).thenReturn(Date(now + 10000L))
     }
 
     @Test

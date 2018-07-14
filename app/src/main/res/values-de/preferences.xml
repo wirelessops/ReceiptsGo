@@ -98,6 +98,8 @@
     <string name="pref_output_receipts_landscape_on">Belegtabelle ist im Querformat gedruckt</string>
     <string name="pref_output_receipts_landscape_off">Belegtabelle wird im Hochformat gedruckt</string>
 
+    <string name="pref_output_preferred_language_title">Bevorzugte Berichtssprache</string>
+
     <!-- ============== Preference Email ================= -->
 
     <string name="pref_email_default_email_to_title">Standard E-Mail zum Empfänger</string>

@@ -1,28 +1,25 @@
 package co.smartreceipts.android.persistence.database.tables;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
-import java.util.List;
-
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
+import co.smartreceipts.android.model.ColumnFinder;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
-import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.ColumnDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.ColumnPrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
+import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.android.utils.ListUtils;
 import co.smartreceipts.android.utils.log.Logger;
-import io.reactivex.Single;
 
 /**
  * Since our CSV and PDF tables share almost all of the same logic, this class purely acts as a wrapper around
@@ -30,33 +27,38 @@ import io.reactivex.Single;
  */
 public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receipt>, Integer> {
 
-    private final int mTableExistsSinceDatabaseVersion;
-    private final ColumnDefinitions<Receipt> mReceiptColumnDefinitions;
-    private final String mIdColumnName;
-    private final String mTypeColumnName;
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_TYPE = "column_type";
+
+    private final int tableExistsSinceDatabaseVersion;
+    private final ColumnDefinitions<Receipt> receiptColumnDefinitions;
+    private final ColumnFinder columnFinder;
+
+    @Deprecated
+    public static final String DEPRECATED_COLUMN_ID_AS_NAME = "id";
+    @Deprecated
+    public static final String DEPRECATED_COLUMN_TYPE_AS_NAME = "type";
+
 
     public AbstractColumnTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                                @NonNull String tableName,
                                int tableExistsSinceDatabaseVersion,
-                               @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
-                               @NonNull String idColumnName,
-                               @NonNull String typeColumnName,
+                               @NonNull ColumnDefinitions<Receipt> columnDefinitions,
                                @NonNull OrderingPreferencesManager orderingPreferencesManager,
                                @NonNull Class<? extends Table<?, ?>> tableClass) {
-        super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(receiptColumnDefinitions, idColumnName, typeColumnName),
-                new ColumnPrimaryKey(idColumnName), new OrderByOrderingPreference(orderingPreferencesManager, tableClass, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
-        mTableExistsSinceDatabaseVersion = tableExistsSinceDatabaseVersion;
-        mReceiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
-        mIdColumnName = Preconditions.checkNotNull(idColumnName);
-        mTypeColumnName = Preconditions.checkNotNull(typeColumnName);
+        super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(columnDefinitions),
+                new ColumnPrimaryKey(COLUMN_ID), new OrderByOrderingPreference(orderingPreferencesManager, tableClass, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
+        this.tableExistsSinceDatabaseVersion = tableExistsSinceDatabaseVersion;
+        receiptColumnDefinitions = Preconditions.checkNotNull(columnDefinitions);
+        columnFinder = (ColumnFinder) columnDefinitions;
     }
 
     @Override
     public synchronized void onCreate(@NonNull SQLiteDatabase db, @NonNull TableDefaultsCustomizer customizer) {
         super.onCreate(db, customizer);
         final String columnsTable = "CREATE TABLE " + getTableName() + " ("
-                + mIdColumnName + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + mTypeColumnName + " TEXT, "
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_TYPE + " INTEGER DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
@@ -72,10 +74,10 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
     @Override
     public synchronized void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion, @NonNull TableDefaultsCustomizer customizer) {
         super.onUpgrade(db, oldVersion, newVersion, customizer);
-        if (oldVersion <= mTableExistsSinceDatabaseVersion) {
+        if (oldVersion <= tableExistsSinceDatabaseVersion) {
             final String columnsTable = "CREATE TABLE " + getTableName() + " ("
-                    + mIdColumnName + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + mTypeColumnName + " TEXT"
+                    + DEPRECATED_COLUMN_ID_AS_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + DEPRECATED_COLUMN_TYPE_AS_NAME + " TEXT"
                     + ");";
             Logger.debug(this, columnsTable);
 
@@ -91,28 +93,83 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
             Logger.debug(this, addCustomOrderColumn);
             db.execSQL(addCustomOrderColumn);
         }
-    }
+        if (oldVersion <= 17) { // removing unused DEPRECATED_COLUMN_TYPE_AS_NAME column, adding COLUMN_TYPE column
+            // adding new column column_type
+            final String addNewColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
+                    getTableName(), AbstractColumnTable.COLUMN_TYPE);
+            Logger.debug(this, addNewColumn);
+            db.execSQL(addNewColumn);
 
-    /**
-     * Inserts the default column as defined by {@link ColumnDefinitions#getDefaultInsertColumn()}
-     *
-     * @return {@link Single} with the inserted {@link Column} or {@link Exception} if the insert failed
-     */
-    @NonNull
-    @VisibleForTesting
-    public final Single<Column<Receipt>> insertDefaultColumn() {
-        return insert(mReceiptColumnDefinitions.getDefaultInsertColumn(), new DatabaseOperationMetadata());
-    }
+            // finding new column types for old values (adding default column if correct type wasn't found)
+            Cursor columnsCursor = null;
+            try {
+                columnsCursor = db.query(getTableName(), new String[]{DEPRECATED_COLUMN_ID_AS_NAME, DEPRECATED_COLUMN_TYPE_AS_NAME, COLUMN_TYPE}, null, null, null, null, null);
+                if (columnsCursor != null && columnsCursor.moveToFirst()) {
+                    final int idIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_ID_AS_NAME);
+                    final int typeIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_TYPE_AS_NAME);
 
-    /**
-     * Attempts to delete the last column in the list
-     *
-     * @return {@code true} if it could be delete. {@code false} otherwise (e.g. there are no more columns)
-     */
-    @NonNull
-    @VisibleForTesting
-    public final Single<Boolean> deleteLast(@NonNull final DatabaseOperationMetadata databaseOperationMetadata) {
-        return get().flatMap(columns -> AbstractColumnTable.this.removeLastColumnIfPresent(columns, databaseOperationMetadata));
+                    do {
+                        final int id = columnsCursor.getInt(idIndex);
+                        final String oldColumnType = columnsCursor.getString(typeIndex);
+
+                        int newColumnType = receiptColumnDefinitions.getDefaultInsertColumn().getType();
+
+                        final int columnTypeByHeaderValue = columnFinder.getColumnTypeByHeaderValue(oldColumnType);
+                        if (columnTypeByHeaderValue >= 0) {
+                            newColumnType = columnTypeByHeaderValue;
+                        }
+
+                        final ContentValues columnValues = new ContentValues(1);
+                        columnValues.put(COLUMN_TYPE, newColumnType);
+                        Logger.debug(this, "Updating old column header value: {} to new column type {}", oldColumnType, newColumnType);
+
+                        if (db.update(getTableName(), columnValues, COLUMN_ID + "= ?", new String[]{Integer.toString(id)}) == 0) {
+                            Logger.error(this, "Column update error happened");
+                            throw new RuntimeException("Column update error happened");
+                        }
+
+
+                    } while (columnsCursor.moveToNext());
+                }
+            } finally {
+                if (columnsCursor != null) {
+                    columnsCursor.close();
+                }
+            }
+
+            // removing old column type column (rename old table, create new correct table, insert data, drop old table)
+            final String baseColumns = String.format("%s, %s, %s, %s, %s, %s", COLUMN_TYPE, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID,
+                    AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION,
+                    AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME,
+                    AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID);
+
+            final String renameTable = String.format("ALTER TABLE %s RENAME TO %s;", getTableName(), getTableName() + "_tmp");
+            Logger.debug(this, renameTable);
+            db.execSQL(renameTable);
+
+            final String createNewTable = "CREATE TABLE " + getTableName() + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + COLUMN_TYPE + " INTEGER DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                    + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                    + ");";
+            Logger.debug(this, createNewTable);
+            db.execSQL(createNewTable);
+
+            final String insertData = "INSERT INTO " + getTableName()
+                    + " (" + COLUMN_ID + ", " + baseColumns + ") "
+                    + "SELECT " + DEPRECATED_COLUMN_ID_AS_NAME + ", " + baseColumns
+                    + " FROM " + getTableName() + "_tmp" + ";";
+            Logger.debug(this, insertData);
+            db.execSQL(insertData);
+
+            final String dropOldTable = "DROP TABLE " + getTableName() + "_tmp" + ";";
+            Logger.debug(this, dropOldTable);
+            db.execSQL(dropOldTable);
+        }
     }
 
     /**
@@ -121,15 +178,5 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
      * @param customizer the {@link TableDefaultsCustomizer} implementation
      */
     protected abstract void insertDefaults(@NonNull TableDefaultsCustomizer customizer);
-
-    @NonNull
-    private Single<Boolean> removeLastColumnIfPresent(@NonNull List<Column<Receipt>> columns, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        final Column<Receipt> lastColumn = ListUtils.removeLast(columns);
-        if (lastColumn != null) {
-            return Single.just(deleteBlocking(lastColumn, databaseOperationMetadata) != null);
-        } else {
-            return Single.just(false);
-        }
-    }
 
 }

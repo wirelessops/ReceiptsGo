@@ -23,35 +23,31 @@ import co.smartreceipts.android.sync.model.SyncState;
 public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Receipt>, PrimaryKey<Column<Receipt>, Integer>> {
 
     private final ColumnDefinitions<Receipt> mReceiptColumnDefinitions;
-    private final String mIdColumnName;
-    private final String mTypeColumnName;
     private final SyncStateAdapter mSyncStateAdapter;
 
-    public ColumnDatabaseAdapter(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions, @NonNull String idColumnName, @NonNull String typeColumnName) {
-        this(receiptColumnDefinitions, idColumnName, typeColumnName, new SyncStateAdapter());
+    public ColumnDatabaseAdapter(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions) {
+        this(receiptColumnDefinitions, new SyncStateAdapter());
     }
 
-    public ColumnDatabaseAdapter(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions, @NonNull String idColumnName, @NonNull String typeColumnName, @NonNull SyncStateAdapter syncStateAdapter) {
+    public ColumnDatabaseAdapter(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions, @NonNull SyncStateAdapter syncStateAdapter) {
         mReceiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
-        mIdColumnName = Preconditions.checkNotNull(idColumnName);
-        mTypeColumnName = Preconditions.checkNotNull(typeColumnName);
         mSyncStateAdapter = Preconditions.checkNotNull(syncStateAdapter);
     }
 
     @NonNull
     @Override
     public Column<Receipt> read(@NonNull Cursor cursor) {
-        final int idIndex = cursor.getColumnIndex(mIdColumnName);
-        final int typeIndex = cursor.getColumnIndex(mTypeColumnName);
+        final int idIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_ID);
+        final int typeIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_TYPE);
         final int customOrderIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
-        final String type = cursor.getString(typeIndex);
+        final int type = cursor.getInt(typeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
         final long customOrderId = cursor.getLong(customOrderIndex);
         return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
                 .setColumnId(id)
-                .setColumnName(type)
+                .setColumnType(type)
                 .setSyncState(syncState)
                 .setCustomOrderId(customOrderId)
                 .build();
@@ -61,7 +57,7 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
     @Override
     public ContentValues write(@NonNull Column<Receipt> column, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         final ContentValues values = new ContentValues();
-        values.put(mTypeColumnName, column.getName());
+        values.put(AbstractColumnTable.COLUMN_TYPE, column.getType());
         values.put(AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID, column.getCustomOrderId());
 
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
@@ -74,10 +70,11 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
 
     @NonNull
     @Override
-    public Column<Receipt> build(@NonNull Column<Receipt> column, @NonNull PrimaryKey<Column<Receipt>, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
+    public Column<Receipt> build(@NonNull Column<Receipt> column, @NonNull PrimaryKey<Column<Receipt>,
+            Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
                 .setColumnId(primaryKey.getPrimaryKeyValue(column))
-                .setColumnName(column.getName())
+                .setColumnType(column.getType())
                 .setSyncState(mSyncStateAdapter.get(column.getSyncState(), databaseOperationMetadata))
                 .setCustomOrderId(column.getCustomOrderId())
                 .build();

@@ -19,15 +19,13 @@ public final class PDFTable extends AbstractColumnTable {
 
     // SQL Definitions:
     public static final String TABLE_NAME = "pdfcolumns";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_TYPE = "type";
 
     private static final int TABLE_EXISTS_SINCE = 9;
 
     public PDFTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                     @NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions,
                     @NonNull OrderingPreferencesManager orderingPreferencesManager) {
-        super(sqLiteOpenHelper, TABLE_NAME, TABLE_EXISTS_SINCE, receiptColumnDefinitions, COLUMN_ID, COLUMN_TYPE, orderingPreferencesManager, PDFTable.class);
+        super(sqLiteOpenHelper, TABLE_NAME, TABLE_EXISTS_SINCE, receiptColumnDefinitions, orderingPreferencesManager, PDFTable.class);
     }
 
     @Override

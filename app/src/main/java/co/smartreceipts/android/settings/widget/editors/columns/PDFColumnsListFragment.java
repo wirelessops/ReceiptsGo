@@ -12,6 +12,7 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinit
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.PDFTableController;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
+import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import dagger.android.support.AndroidSupportInjection;
 
 public class PDFColumnsListFragment extends ColumnsListFragment {
@@ -24,6 +25,8 @@ public class PDFColumnsListFragment extends ColumnsListFragment {
     PDFTableController pdfTableController;
     @Inject
     OrderingPreferencesManager orderingPreferencesManager;
+    @Inject
+    ReportResourcesManager reportResourcesManager;
 
     public static PDFColumnsListFragment newInstance() {
         return new PDFColumnsListFragment();
@@ -52,6 +55,11 @@ public class PDFColumnsListFragment extends ColumnsListFragment {
     @Override
     protected ReceiptColumnDefinitions getReceiptColumnDefinitions() {
         return receiptColumnDefinitions;
+    }
+
+    @Override
+    protected ReportResourcesManager getReportResourcesManager() {
+        return reportResourcesManager;
     }
 
     @Override
