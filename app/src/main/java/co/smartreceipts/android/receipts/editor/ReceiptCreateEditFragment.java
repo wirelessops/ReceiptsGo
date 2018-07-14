@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,6 +30,8 @@ import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -57,6 +61,8 @@ import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
 import co.smartreceipts.android.fragments.ReceiptInputCache;
 import co.smartreceipts.android.fragments.WBFragment;
+import co.smartreceipts.android.keyboard.decimal.SamsungDecimalInputPresenter;
+import co.smartreceipts.android.keyboard.decimal.SamsungDecimalInputView;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
@@ -104,7 +110,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         DatabaseHelper.ReceiptAutoCompleteListener,
         EditableReceiptPricingView,
         ReceiptDateView,
-        CurrencyExchangeRateEditorView {
+        CurrencyExchangeRateEditorView,
+        SamsungDecimalInputView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -138,6 +145,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     @Inject
     ReceiptCreateEditFragmentPresenter presenter;
+
+    @Inject
+    SamsungDecimalInputPresenter samsungDecimalInputPresenter;
 
     // Butterknife Fields
     @BindView(R.id.toolbar)
@@ -181,6 +191,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
     @BindView(R.id.DIALOG_RECEIPTMENU_FULLPAGE)
     CheckBox fullpageCheckbox;
+
+    @BindView(R.id.decimalSeparatorButton)
+    Button decimalSeparatorButton;
 
     @BindView(R.id.receipt_input_tax_wrapper)
     View taxInputWrapper;
@@ -282,6 +295,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind(this, view);
+
         if (savedInstanceState == null) {
             if (isNewReceipt()) {
                 new ChildFragmentNavigationHandler(this).addChild(new OcrInformationalTooltipFragment(), R.id.update_receipt_tooltip);
@@ -321,6 +335,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         this.dateBox.setOnFocusChangeListener(this);
         this.commentBox.setOnFocusChangeListener(this);
         this.paymentMethodsSpinner.setOnFocusChangeListener(this);
+        this.exchangeRateBox.setOnFocusChangeListener(this);
+        this.exchangedPriceInBaseCurrencyBox.setOnFocusChangeListener(this);
 
         // Configure our custom view properties
         exchangeRateBox.setFailedHint(R.string.DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED);
@@ -511,6 +527,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        samsungDecimalInputPresenter.subscribe();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Logger.debug(this, "onResume");
@@ -601,11 +623,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        focusedView = hasFocus ? v : null;
+    public void onFocusChange(View view, boolean hasFocus) {
+        focusedView = hasFocus ? view : null;
         if (isNewReceipt() && hasFocus) {
             // Only launch if we have focus and it's a new receipt
-            SoftKeyboardManager.showKeyboard(v);
+            SoftKeyboardManager.showKeyboard(view);
         }
     }
 
@@ -665,6 +687,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
 
         // Presenters
         currencyListEditorPresenter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStop() {
+        samsungDecimalInputPresenter.unsubscribe();
+        super.onStop();
     }
 
     @Override
@@ -887,6 +915,31 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                         exchangedPriceInBaseCurrencyBox.clearFocus();
                     }
                 });
+    }
+
+    @Override
+    public void showSamsungDecimalInputView(@NotNull String separator) {
+        decimalSeparatorButton.setText(separator);
+        decimalSeparatorButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSamsungDecimalInputView() {
+        decimalSeparatorButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void appendDecimalSeparatorToFocusedVied(@NotNull String separator) {
+        if (focusedView instanceof EditText) {
+            final EditText editor = (EditText) focusedView;
+            editor.append(separator);
+        }
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getClickStream() {
+        return RxView.clicks(decimalSeparatorButton);
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {

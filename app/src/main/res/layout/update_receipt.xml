@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,17 +8,30 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/update_receipt_tooltip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ScrollView
+        android:id="@+id/update_receipt_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:isScrollContainer="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/update_receipt_tooltip"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
@@ -36,7 +49,7 @@
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_NAME"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" >
 
                 <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/DIALOG_RECEIPTMENU_NAME"
@@ -90,7 +103,7 @@
                 app:layout_constraintStart_toEndOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
-                app:layout_constraintEnd_toStartOf="@id/DIALOG_RECEIPTMENU_CURRENCY" >
+                app:layout_constraintEnd_toStartOf="@id/decimalSeparatorButton" >
 
                 <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/DIALOG_RECEIPTMENU_TAX"
@@ -103,6 +116,20 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <Button
+                android:id="@+id/decimalSeparatorButton"
+                style="@style/Widget.SmartReceipts.Button.Secondary"
+                android:layout_width="@dimen/samsung_decimal_separator_button_dimens"
+                android:layout_height="@dimen/samsung_decimal_separator_button_dimens"
+                android:visibility="gone"
+                android:layout_margin="@dimen/padding_small"
+                app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
+                app:layout_constraintEnd_toStartOf="@id/DIALOG_RECEIPTMENU_CURRENCY"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_tax_wrapper"
+                app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper"
+                tools:visibility="visible"
+                tools:text="." />
+
             <Spinner
                 android:id="@+id/DIALOG_RECEIPTMENU_CURRENCY"
                 android:layout_width="0dp"
@@ -110,10 +137,10 @@
                 android:drawSelectorOnTop="true"
                 android:prompt="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
                 android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
-                app:layout_constraintBottom_toBottomOf="@+id/receipt_input_price_wrapper"
+                app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/receipt_input_tax_wrapper"
-                app:layout_constraintTop_toTopOf="@+id/receipt_input_price_wrapper" />
+                app:layout_constraintStart_toEndOf="@id/decimalSeparatorButton"
+                app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper" />
 
             <ImageView
                 android:id="@+id/receipt_input_guide_image_exchange_rate"
@@ -301,4 +328,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

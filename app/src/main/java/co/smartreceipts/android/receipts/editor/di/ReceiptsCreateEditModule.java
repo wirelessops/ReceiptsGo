@@ -1,5 +1,6 @@
 package co.smartreceipts.android.receipts.editor.di;
 
+import co.smartreceipts.android.keyboard.decimal.SamsungDecimalInputView;
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorView;
@@ -18,5 +19,8 @@ public abstract class ReceiptsCreateEditModule {
 
     @Binds
     abstract CurrencyExchangeRateEditorView provideCurrencyExchangeRateEditorView(ReceiptCreateEditFragment fragment);
+
+    @Binds
+    abstract SamsungDecimalInputView provideSamsungDecimalInputView(ReceiptCreateEditFragment fragment);
 
 }

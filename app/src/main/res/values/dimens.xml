@@ -21,8 +21,6 @@
     <dimen name="card_image_size">80dp</dimen>
     <dimen name="card_image_padding">8dp</dimen>
 
-    <!-- Charts -->
-
     <!-- Action Bar -->
     <dimen name="action_bar_border_stroke_inverted">-2dp</dimen>
     <dimen name="action_bar_border_stroke">2dp</dimen>
@@ -71,5 +69,8 @@
     <dimen name="font_subhead">16sp</dimen>
     <dimen name="font_title">20sp</dimen>
     <dimen name="font_headline">24sp</dimen>
+
+    <!-- Samsung Decimal Button -->
+    <dimen name="samsung_decimal_separator_button_dimens">32dp</dimen>
 
 </resources>
