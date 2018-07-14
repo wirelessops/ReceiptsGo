@@ -1,6 +1,6 @@
 # Smart Receipts
 
-> A Better Receipt Scanner
+> Save time tracking expenses and get back to what matters
 
 ![SmartReceipts](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
@@ -75,7 +75,7 @@ Contributions are always welcome! Please [open an issue](https://github.com/wbau
 ```
 The GNU Affero General Public License (AGPL)
 
-Copyright (c) 2012-2017 Smart Receipts LLC (Will Baumann)
+Copyright (c) 2012-2018 Smart Receipts LLC (Will Baumann)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
