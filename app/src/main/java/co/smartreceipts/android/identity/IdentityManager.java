@@ -1,7 +1,9 @@
 package co.smartreceipts.android.identity;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 
 import com.google.common.base.Preconditions;
 
@@ -37,6 +39,8 @@ import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 
 
@@ -48,6 +52,7 @@ public class IdentityManager implements IdentityStore {
     private final MutableIdentityStore mutableIdentityStore;
     private final OrganizationManager organizationManager;
     private final BehaviorSubject<Boolean> isLoggedInBehaviorSubject;
+    private final Scheduler initializationScheduler;
 
     @Inject
     public IdentityManager(@NonNull Analytics analytics,
@@ -55,13 +60,28 @@ public class IdentityManager implements IdentityStore {
                            @NonNull MutableIdentityStore mutableIdentityStore,
                            @NonNull ServiceManager serviceManager,
                            @NonNull ConfigurationManager configurationManager) {
+        this(analytics, mutableIdentityStore, serviceManager, new OrganizationManager(serviceManager, mutableIdentityStore, userPreferenceManager, configurationManager), Schedulers.io());
 
+    }
+
+    public IdentityManager(@NonNull Analytics analytics,
+                           @NonNull MutableIdentityStore mutableIdentityStore,
+                           @NonNull ServiceManager serviceManager,
+                           @NonNull OrganizationManager organizationManager,
+                           @NonNull Scheduler initializationScheduler) {
         this.serviceManager = serviceManager;
         this.analytics = analytics;
         this.mutableIdentityStore = mutableIdentityStore;
-        this.organizationManager = new OrganizationManager(serviceManager, mutableIdentityStore, userPreferenceManager, configurationManager);
-        this.isLoggedInBehaviorSubject = BehaviorSubject.createDefault(isLoggedIn());
+        this.organizationManager = organizationManager;
+        this.initializationScheduler = initializationScheduler;
+        this.isLoggedInBehaviorSubject = BehaviorSubject.create();
+    }
 
+    @SuppressLint("CheckResult")
+    public void initialize() {
+        Observable.fromCallable(mutableIdentityStore::isLoggedIn)
+                .subscribeOn(initializationScheduler)
+                .subscribe(isLoggedInBehaviorSubject::onNext);
     }
 
     @Nullable
@@ -83,6 +103,7 @@ public class IdentityManager implements IdentityStore {
     }
 
     @Override
+    @WorkerThread
     public boolean isLoggedIn() {
         return mutableIdentityStore.isLoggedIn();
     }

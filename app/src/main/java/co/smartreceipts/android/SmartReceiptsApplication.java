@@ -22,12 +22,12 @@ import co.smartreceipts.android.aws.cognito.CognitoManager;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
 import co.smartreceipts.android.di.DaggerAppComponent;
+import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.images.PicassoInitializer;
 import co.smartreceipts.android.launch.OnLaunchDataPreFetcher;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
-import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.push.PushManager;
@@ -79,6 +79,9 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
 
     @Inject
     ExtraInitializer extraInitializer;
+
+    @Inject
+    IdentityManager identityManager;
 
     @Inject
     PurchaseManager purchaseManager;
@@ -178,6 +181,7 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         userPreferenceManager.initialize();
         orderingPreferencesManager.initialize();
         onLaunchDataPreFetcher.loadUserData();
+        identityManager.initialize();
         pushManager.initialize();
         purchaseManager.initialize(this);
         cognitoManager.initialize();
