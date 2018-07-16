@@ -1,9 +1,14 @@
 package co.smartreceipts.android.di;
 
+import android.content.Context;
+
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.Arrays;
 
 import co.smartreceipts.android.ExtraInitializer;
 import co.smartreceipts.android.ExtraInitializerFreeImpl;
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.AnalyticsManager;
 import co.smartreceipts.android.analytics.GoogleAnalytics;
@@ -21,13 +26,13 @@ public class FlavorModule {
 
     @Provides
     @ApplicationScope
-    public static PurchaseWallet providePurchaseWallet (DefaultPurchaseWallet defaultPurchaseWallet) {
+    public static PurchaseWallet providePurchaseWallet(DefaultPurchaseWallet defaultPurchaseWallet) {
         return defaultPurchaseWallet;
     }
 
     @Provides
     @ApplicationScope
-    public static ExtraInitializer provideExtraInitializer (ExtraInitializerFreeImpl freeInitializer) {
+    public static ExtraInitializer provideExtraInitializer(ExtraInitializerFreeImpl freeInitializer) {
         return freeInitializer;
     }
 
@@ -35,5 +40,11 @@ public class FlavorModule {
     @ApplicationScope
     public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, FirebaseAnalytics firebaseAnalytics, GoogleAnalytics googleAnalytics) {
         return new AnalyticsManager(Arrays.asList(new AnalyticsLogger(), firebaseAnalytics, googleAnalytics), userPreferenceManager);
+    }
+
+    @Provides
+    @ApplicationScope
+    public static Tracker provideGoogleAnalyticsTracker(Context context) {
+        return com.google.android.gms.analytics.GoogleAnalytics.getInstance(context).newTracker(R.xml.analytics);
     }
 }

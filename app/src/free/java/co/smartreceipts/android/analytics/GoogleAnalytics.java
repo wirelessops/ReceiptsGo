@@ -1,6 +1,5 @@
 package co.smartreceipts.android.analytics;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -11,28 +10,26 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.Event;
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.Lazy;
 
+@ApplicationScope
 public class GoogleAnalytics implements Analytics {
 
-    private final Tracker mTracker;
+    private final Lazy<Tracker> tracker;
 
     @Inject
-    public GoogleAnalytics(Context context) {
-        this(com.google.android.gms.analytics.GoogleAnalytics.getInstance(context).newTracker(R.xml.analytics));
-    }
-
-    private GoogleAnalytics(@NonNull Tracker tracker) {
-        mTracker = Preconditions.checkNotNull(tracker);
+    public GoogleAnalytics(@NonNull Lazy<Tracker> tracker) {
+        this.tracker = Preconditions.checkNotNull(tracker);
     }
 
     @Override
     public synchronized void record(@NonNull Event event) {
         try {
-            mTracker.send(new HitBuilders.EventBuilder(event.category().name(), event.name().name()).setLabel(getLabelString(event.getDataPoints())).build());
+            tracker.get().send(new HitBuilders.EventBuilder(event.category().name(), event.name().name()).setLabel(getLabelString(event.getDataPoints())).build());
         } catch (Exception e) {
             Logger.error(this, "Swallowing GA Exception", e);
         }
