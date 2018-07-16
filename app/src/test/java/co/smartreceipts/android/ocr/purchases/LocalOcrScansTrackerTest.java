@@ -14,6 +14,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import dagger.Lazy;
 import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -35,7 +36,7 @@ public class LocalOcrScansTrackerTest {
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
 
         when(lazy.get()).thenReturn(preferences);
-        localOcrScansTracker = new LocalOcrScansTracker(lazy);
+        localOcrScansTracker = new LocalOcrScansTracker(lazy, Schedulers.trampoline());
     }
 
     @After

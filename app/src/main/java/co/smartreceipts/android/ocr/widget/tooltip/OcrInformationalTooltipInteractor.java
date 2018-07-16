@@ -1,5 +1,6 @@
 package co.smartreceipts.android.ocr.widget.tooltip;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
@@ -63,6 +64,7 @@ public class OcrInformationalTooltipInteractor {
     /**
      * Initializes the tooltip tracking logic, so it can begin monitoring the remaining count of OCR scans
      */
+    @SuppressLint("CheckResult")
     public void initialize() {
         ocrPurchaseTracker.getRemainingScansStream()
                 .subscribeOn(scheduler)
