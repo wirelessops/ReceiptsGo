@@ -15,6 +15,7 @@ import org.robolectric.RuntimeEnvironment;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.model.Subscription;
+import dagger.Lazy;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +30,9 @@ public class SubscriptionInAppPurchaseConsumerTest {
     SharedPreferences preferences;
 
     @Mock
+    Lazy<SharedPreferences> lazy;
+
+    @Mock
     Subscription subscription;
 
     @Before
@@ -36,9 +40,10 @@ public class SubscriptionInAppPurchaseConsumerTest {
         MockitoAnnotations.initMocks(this);
 
         when(subscription.getInAppPurchase()).thenReturn(InAppPurchase.SmartReceiptsPlus);
+        when(lazy.get()).thenReturn(preferences);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
-        subscriptionInAppPurchaseConsumer = new SubscriptionInAppPurchaseConsumer(preferences);
+        subscriptionInAppPurchaseConsumer = new SubscriptionInAppPurchaseConsumer(lazy);
     }
 
     @After

@@ -7,12 +7,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import dagger.Lazy;
 import io.reactivex.observers.TestObserver;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class LocalOcrScansTrackerTest {
@@ -22,10 +26,16 @@ public class LocalOcrScansTrackerTest {
 
     SharedPreferences preferences;
 
+    @Mock
+    Lazy<SharedPreferences> lazy;
+
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
-        localOcrScansTracker = new LocalOcrScansTracker(preferences);
+
+        when(lazy.get()).thenReturn(preferences);
+        localOcrScansTracker = new LocalOcrScansTracker(lazy);
     }
 
     @After

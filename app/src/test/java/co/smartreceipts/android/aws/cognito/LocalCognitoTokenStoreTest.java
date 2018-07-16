@@ -7,12 +7,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.identity.apis.me.Cognito;
+import dagger.Lazy;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class LocalCognitoTokenStoreTest {
@@ -26,9 +30,15 @@ public class LocalCognitoTokenStoreTest {
 
     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
 
+    @Mock
+    Lazy<SharedPreferences> lazy;
+
     @Before
     public void setUp() {
-        localCognitoTokenStore = new LocalCognitoTokenStore(preferences);
+        MockitoAnnotations.initMocks(this);
+        when(lazy.get()).thenReturn(preferences);
+
+        localCognitoTokenStore = new LocalCognitoTokenStore(lazy);
     }
 
     @After

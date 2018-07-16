@@ -37,13 +37,19 @@ public class PushManager {
     private final CopyOnWriteArrayList<PushMessageReceiver> pushMessageReceivers = new CopyOnWriteArrayList<>();
 
     @Inject
-    public PushManager(@NonNull Context context, @NonNull IdentityManager identityManager, @NonNull Analytics analytics) {
-        this(identityManager, analytics, new FcmTokenRetriever(), new PushDataStore(context), Schedulers.io());
+    public PushManager(@NonNull Context context,
+                       @NonNull IdentityManager identityManager,
+                       @NonNull Analytics analytics,
+                       @NonNull PushDataStore pushDataStore) {
+        this(identityManager, analytics, new FcmTokenRetriever(), pushDataStore, Schedulers.io());
     }
 
     @VisibleForTesting
-    public PushManager(@NonNull IdentityManager identityManager, @NonNull Analytics analytics, @NonNull FcmTokenRetriever fcmTokenRetriever,
-                       @NonNull PushDataStore pushDataStore, @NonNull Scheduler subscribeOnScheduler) {
+    public PushManager(@NonNull IdentityManager identityManager,
+                       @NonNull Analytics analytics,
+                       @NonNull FcmTokenRetriever fcmTokenRetriever,
+                       @NonNull PushDataStore pushDataStore,
+                       @NonNull Scheduler subscribeOnScheduler) {
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.analytics = Preconditions.checkNotNull(analytics);
         this.fcmTokenRetriever = Preconditions.checkNotNull(fcmTokenRetriever);

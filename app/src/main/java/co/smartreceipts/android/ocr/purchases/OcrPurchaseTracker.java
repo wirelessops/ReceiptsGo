@@ -53,8 +53,9 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
                               @NonNull ServiceManager serviceManager,
                               @NonNull PurchaseManager purchaseManager,
                               @NonNull PurchaseWallet purchaseWallet,
-                              @NonNull DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer) {
-        this(identityManager, serviceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, new LocalOcrScansTracker(context), Schedulers.io());
+                              @NonNull DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer,
+                              @NonNull LocalOcrScansTracker localOcrScansTracker) {
+        this(identityManager, serviceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, localOcrScansTracker, Schedulers.io());
     }
 
     @VisibleForTesting

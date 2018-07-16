@@ -1,26 +1,25 @@
 package co.smartreceipts.android.push.store;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import javax.inject.Inject;
+
+import co.smartreceipts.android.di.scopes.ApplicationScope;
+import dagger.Lazy;
 import io.reactivex.Single;
 
-
+@ApplicationScope
 public class PushDataStore {
 
     private static final String KEY_BOOL_REMOTE_REFRESH_REQUIRED = "key_bool_remote_refresh_required";
 
-    private final SharedPreferences sharedPreferences;
+    private final Lazy<SharedPreferences> sharedPreferences;
 
-    public PushDataStore(@NonNull Context context) {
-        this(PreferenceManager.getDefaultSharedPreferences(context));
-    }
-
-    public PushDataStore(@NonNull SharedPreferences sharedPreferences) {
+    @Inject
+    public PushDataStore(@NonNull Lazy<SharedPreferences> sharedPreferences) {
         this.sharedPreferences = Preconditions.checkNotNull(sharedPreferences);
     }
 
@@ -34,10 +33,10 @@ public class PushDataStore {
     }
 
     public boolean isRemoteRefreshRequired() {
-        return sharedPreferences.getBoolean(KEY_BOOL_REMOTE_REFRESH_REQUIRED, true);
+        return sharedPreferences.get().getBoolean(KEY_BOOL_REMOTE_REFRESH_REQUIRED, true);
     }
 
     public void setRemoteRefreshRequired(boolean refreshRequired) {
-        sharedPreferences.edit().putBoolean(KEY_BOOL_REMOTE_REFRESH_REQUIRED, refreshRequired).apply();
+        sharedPreferences.get().edit().putBoolean(KEY_BOOL_REMOTE_REFRESH_REQUIRED, refreshRequired).apply();
     }
 }

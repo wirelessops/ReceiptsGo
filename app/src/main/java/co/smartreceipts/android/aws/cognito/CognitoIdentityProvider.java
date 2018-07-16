@@ -1,31 +1,29 @@
 package co.smartreceipts.android.aws.cognito;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
+import javax.inject.Inject;
+
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.apis.me.Cognito;
 import co.smartreceipts.android.identity.apis.me.User;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Single;
 
-
+@ApplicationScope
 class CognitoIdentityProvider {
 
     private final IdentityManager identityManager;
     private final LocalCognitoTokenStore localCognitoTokenStore;
 
-    public CognitoIdentityProvider(@NonNull IdentityManager identityManager, @NonNull Context context) {
-        this(identityManager, new LocalCognitoTokenStore(context));
-    }
-
-    @VisibleForTesting
-    CognitoIdentityProvider(@NonNull IdentityManager identityManager, @NonNull LocalCognitoTokenStore localCognitoTokenStore) {
+    @Inject
+    public CognitoIdentityProvider(@NonNull IdentityManager identityManager,
+                                   @NonNull LocalCognitoTokenStore localCognitoTokenStore) {
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.localCognitoTokenStore = Preconditions.checkNotNull(localCognitoTokenStore);
     }

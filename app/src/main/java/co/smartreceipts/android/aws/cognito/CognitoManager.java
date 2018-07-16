@@ -34,13 +34,17 @@ public class CognitoManager {
     private Disposable cachingCredentialsProviderDisposable;
 
     @Inject
-    public CognitoManager(Context context, IdentityManager identityManager) {
-        this(context, identityManager, new CognitoIdentityProvider(identityManager, context), Schedulers.io());
+    public CognitoManager(@NonNull Context context,
+                          @NonNull IdentityManager identityManager,
+                          @NonNull CognitoIdentityProvider cognitoIdentityProvider) {
+        this(context, identityManager, cognitoIdentityProvider, Schedulers.io());
     }
 
     @VisibleForTesting
-    CognitoManager(@NonNull Context context, @NonNull IdentityManager identityManager,
-                   @NonNull CognitoIdentityProvider cognitoIdentityProvider, @NonNull Scheduler subscribeOnScheduler) {
+    CognitoManager(@NonNull Context context,
+                   @NonNull IdentityManager identityManager,
+                   @NonNull CognitoIdentityProvider cognitoIdentityProvider,
+                   @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context);
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.cognitoIdentityProvider = Preconditions.checkNotNull(cognitoIdentityProvider);
