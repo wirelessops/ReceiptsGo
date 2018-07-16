@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.net.TrafficStats;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
@@ -135,10 +136,23 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
                     .detectAll()
                     .penaltyLog()
                     .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
+
+
+            final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder();
+            vmPolicyBuilder.detectActivityLeaks();
+            vmPolicyBuilder.detectFileUriExposure();
+            vmPolicyBuilder.detectLeakedClosableObjects();
+            vmPolicyBuilder.detectLeakedRegistrationObjects();
+            vmPolicyBuilder.detectLeakedSqlLiteObjects();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                vmPolicyBuilder.detectCleartextNetwork();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vmPolicyBuilder.detectContentUriWithoutPermission();
+            }
+            // vmPolicyBuilder.detectUntaggedSockets(); Note: We exclude this one as many of our 3p libraries fail it
+            vmPolicyBuilder.penaltyLog();
+            StrictMode.setVmPolicy(vmPolicyBuilder.build());
         }
 
         appComponent = DaggerAppComponent.builder()
