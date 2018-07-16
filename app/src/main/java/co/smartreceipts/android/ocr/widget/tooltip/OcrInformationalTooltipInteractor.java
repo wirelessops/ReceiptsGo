@@ -1,6 +1,5 @@
 package co.smartreceipts.android.ocr.widget.tooltip;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
@@ -8,14 +7,12 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
@@ -40,12 +37,12 @@ public class OcrInformationalTooltipInteractor {
     private int lastRemainingScans = 0;
 
     @Inject
-    public OcrInformationalTooltipInteractor(@NonNull Context context,
-                                             @NonNull Analytics analytics,
+    public OcrInformationalTooltipInteractor(@NonNull Analytics analytics,
+                                             @NonNull OcrInformationalTooltipStateTracker stateTracker,
                                              @NonNull OcrPurchaseTracker ocrPurchaseTracker,
                                              @NonNull IdentityManager identityManager,
                                              @NonNull ConfigurationManager configurationManager) {
-        this(analytics, new OcrInformationalTooltipStateTracker(context), ocrPurchaseTracker, identityManager, configurationManager, Schedulers.computation());
+        this(analytics, stateTracker, ocrPurchaseTracker, identityManager, configurationManager, Schedulers.computation());
     }
 
     @VisibleForTesting

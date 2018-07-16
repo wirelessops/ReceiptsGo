@@ -1,9 +1,8 @@
 package co.smartreceipts.android.receipts.ordering
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import co.smartreceipts.android.di.scopes.ApplicationScope
+import dagger.Lazy
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -13,20 +12,17 @@ import javax.inject.Inject
  * custom order ids to the modern set
  */
 @ApplicationScope
-class ReceiptsOrderingMigrationStore(private val preferences: SharedPreferences) {
-
-    @Inject
-    constructor(context: Context) : this(PreferenceManager.getDefaultSharedPreferences(context))
+class ReceiptsOrderingMigrationStore @Inject constructor(private val preferences: Lazy<SharedPreferences>) {
 
     fun hasOrderingMigrationOccurred(): Single<Boolean> {
         return Single.fromCallable {
-                    preferences.getBoolean(KEY, false)
+                    preferences.get().getBoolean(KEY, false)
                 }
                 .subscribeOn(Schedulers.io())
     }
 
     fun setOrderingMigrationOccurred(hasOccurred: Boolean) {
-        preferences.edit().putBoolean(KEY, hasOccurred).apply()
+        preferences.get().edit().putBoolean(KEY, hasOccurred).apply()
     }
 
     companion object {
