@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import java.io.File;
 
+import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
@@ -21,20 +23,20 @@ import wb.android.storage.StorageManager;
  */
 class ImportedDatabaseFetcher {
 
-    private final Context context;
+    private final DatabaseContext context;
     private final StorageManager storageManager;
     private final UserPreferenceManager preferences;
     private final ReceiptColumnDefinitions receiptColumnDefinitions;
     private final TableDefaultsCustomizer tableDefaultsCustomizer;
     private final OrderingPreferencesManager orderingPreferencesManager;
 
-    public ImportedDatabaseFetcher(@NonNull Context context,
+    public ImportedDatabaseFetcher(@NonNull DatabaseContext context,
                                    @NonNull StorageManager storageManager,
                                    @NonNull UserPreferenceManager preferences,
                                    @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
                                    @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
                                    @NonNull OrderingPreferencesManager orderingPreferencesManager) {
-        this.context = Preconditions.checkNotNull(context.getApplicationContext());
+        this.context = Preconditions.checkNotNull(context);
         this.storageManager = Preconditions.checkNotNull(storageManager);
         this.preferences = Preconditions.checkNotNull(preferences);
         this.receiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
@@ -52,7 +54,7 @@ class ImportedDatabaseFetcher {
     public Single<DatabaseHelper> getDatabase(@NonNull File databaseFile) {
         return Single.fromCallable(() -> {
             Logger.debug(ImportedDatabaseFetcher.this, "Attempting to acquire a handle to (and possibly update) our import database");
-            final DatabaseHelper databaseHelper = new DatabaseHelper(context, storageManager, preferences, databaseFile.getAbsolutePath(), receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager);
+            final DatabaseHelper databaseHelper = new DatabaseHelper(context, storageManager, preferences, receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager, Optional.of(databaseFile.getAbsolutePath()));
             Logger.debug(ImportedDatabaseFetcher.this, "Successfully acquired a handle to the import database");
             return databaseHelper;
         });

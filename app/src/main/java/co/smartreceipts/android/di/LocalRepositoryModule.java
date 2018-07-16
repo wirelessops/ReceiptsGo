@@ -2,6 +2,7 @@ package co.smartreceipts.android.di;
 
 import android.content.Context;
 
+import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;
@@ -27,7 +28,8 @@ public class LocalRepositoryModule {
 
     @Provides
     @ApplicationScope
-    public static DatabaseHelper provideDatabaseHelper(Context context, StorageManager storageManager,
+    public static DatabaseHelper provideDatabaseHelper(DatabaseContext context,
+                                                       StorageManager storageManager,
                                                        UserPreferenceManager preferences,
                                                        ReceiptColumnDefinitions receiptColumnDefinitions,
                                                        TableDefaultsCustomizer tableDefaultsCustomizer,

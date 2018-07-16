@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.io.File;
+import com.hadisatrio.optional.Optional;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import co.smartreceipts.android.BuildConfig;
+import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.date.DateUtils;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Distance;
@@ -67,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     private final ReceiptColumnDefinitions mReceiptColumnDefinitions;
 
     // Other vars
-    private final Context mContext;
+    private final DatabaseContext mContext;
     private final TableDefaultsCustomizer mCustomizations;
     private final UserPreferenceManager mPreferences;
     private final OrderingPreferencesManager mOrderingPreferencesManager;
@@ -96,12 +97,14 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         void onReceiptRowAutoCompleteQueryResult(@Nullable String name, @Nullable String price, @Nullable Integer categoryId);
     }
 
-    public DatabaseHelper(@NonNull Context context, @NonNull StorageManager storageManager,
+    public DatabaseHelper(@NonNull DatabaseContext context,
+                          @NonNull StorageManager storageManager,
                           @NonNull UserPreferenceManager preferences,
-                          @NonNull String databasePath, ReceiptColumnDefinitions receiptColumnDefinitions,
+                          @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
                           @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
-                          @NonNull OrderingPreferencesManager orderingPreferencesManager) {
-        super(context, databasePath, null, DATABASE_VERSION); // Requests the default cursor
+                          @NonNull OrderingPreferencesManager orderingPreferencesManager,
+                          @NonNull Optional<String> databasePathOptional) {
+        super(context, databasePathOptional.or(DATABASE_NAME), null, DATABASE_VERSION); // Requests the default cursor
 
         mContext = context;
         mPreferences = preferences;
@@ -128,19 +131,16 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
     }
 
-    public static synchronized DatabaseHelper getInstance(Context context, StorageManager storageManager,
-                                                   UserPreferenceManager preferences,
-                                                   ReceiptColumnDefinitions receiptColumnDefinitions,
-                                                   TableDefaultsCustomizer tableDefaultsCustomizer,
-                                                   OrderingPreferencesManager orderingPreferencesManager) {
-        if (INSTANCE == null || !INSTANCE.isOpen()) { // If we don't have an instance or it's closed
-            String databasePath = StorageManager.GetRootPath();
-            if (!databasePath.endsWith(File.separator)) {
-                databasePath = databasePath + File.separator;
-            }
-            databasePath = databasePath + DATABASE_NAME;
-            INSTANCE = new DatabaseHelper(context, storageManager, preferences, databasePath,
-                    receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager);
+    @NonNull
+    public static synchronized DatabaseHelper getInstance(@NonNull DatabaseContext context,
+                                                          @NonNull StorageManager storageManager,
+                                                          @NonNull UserPreferenceManager preferences,
+                                                          @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
+                                                          @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
+                                                          @NonNull OrderingPreferencesManager orderingPreferencesManager) {
+        // If we don't have an instance or it's closed
+        if (INSTANCE == null || !INSTANCE.isOpen()) {
+            INSTANCE = new DatabaseHelper(context, storageManager, preferences, receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager, Optional.absent());
         }
         return INSTANCE;
     }

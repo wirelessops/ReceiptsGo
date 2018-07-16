@@ -231,9 +231,16 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
         extraInitializer.init();
     }
 
-    // This is called after _sdCard is available but before _db is
-    // This was added after version 78 (version 79 is the first "new" one)
-    // Make this a listener
+    /**
+     * Called when upgrading our application version. We currently have the following rules in place:
+     * <ul>
+     * <li>From 78: We migrate the database from internal to external storage to assist with data
+     * recovery if a user breaks his/her screen (or equivalent).</li>
+     * </ul>
+     *
+     * @param oldVersion the old application version
+     * @param newVersion the new application version
+     */
     @Override
     public void onVersionUpgrade(int oldVersion, int newVersion) {
         Logger.debug(this, "Upgrading the app from version {} to {}", oldVersion, newVersion);
@@ -243,9 +250,6 @@ public class SmartReceiptsApplication extends Application implements VersionUpgr
                 File db = this.getDatabasePath(DatabaseHelper.DATABASE_NAME); // Internal db file
                 if (db != null && db.exists()) {
                     File sdDB = external.getFile("receipts.db");
-                    if (sdDB.exists()) {
-                        sdDB.delete();
-                    }
                     Logger.debug(this, "Copying the database file from {} to {}", db.getAbsolutePath(), sdDB.getAbsolutePath());
                     try {
                         external.copy(db, sdDB, true);

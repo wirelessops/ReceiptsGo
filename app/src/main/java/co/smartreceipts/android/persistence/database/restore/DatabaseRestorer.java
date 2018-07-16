@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -35,7 +36,7 @@ public class DatabaseRestorer {
     private final DatabaseMergerFactory databaseMergerFactory;
 
     @Inject
-    public DatabaseRestorer(@NonNull Context context,
+    public DatabaseRestorer(@NonNull DatabaseContext context,
                             @NonNull DatabaseHelper databaseHelper,
                             @NonNull StorageManager storageManager,
                             @NonNull UserPreferenceManager preferences,
