@@ -401,7 +401,12 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 .map(intentImportResultOptional -> intentImportResultOptional.isPresent() &&
                         (intentImportResultOptional.get().getFileType() == FileType.Image || intentImportResultOptional.get().getFileType() == FileType.Pdf))
                 .subscribe(importIntentPresent -> importIntentMode = importIntentPresent));
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        updateActionBarTitle(true);
     }
 
     @Override
@@ -732,7 +737,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .flatMapSingle(intentImportResult -> {
-                    final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(getActivity(), trip, persistenceManager, receiptTableController, analytics);
+                    final AttachmentSendFileImporter importer = new AttachmentSendFileImporter(requireActivity(), trip, persistenceManager, receiptTableController, analytics);
                     return importer.importAttachment(intentImportResult, receipt);
                 })
                 .subscribeOn(Schedulers.io())

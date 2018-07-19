@@ -1,5 +1,6 @@
 package co.smartreceipts.android.fragments;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,7 +49,11 @@ public class WBListFragment extends ListFragment {
 
     @Nullable
     public final ActionBar getSupportActionBar() {
-        return ((AppCompatActivity)getActivity()).getSupportActionBar();
+		final Activity activity = getActivity();
+		if (activity instanceof AppCompatActivity) {
+            return ((AppCompatActivity)activity).getSupportActionBar();
+        }
+        return null;
     }
 
 	public SmartReceiptsApplication getSmartReceiptsApplication() {

@@ -106,6 +106,12 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        updateSubtitle();
+    }
+
+    @Override
     public void onStop() {
         distanceTableController.unsubscribe(this);
         Logger.debug(this, "onStop");
@@ -138,20 +144,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
                 noDataAlert.setVisibility(View.GONE);
                 getListView().setVisibility(View.VISIBLE);
             }
-
-            final ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null && getUserVisibleHint()) {
-                if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
-                    final Price total = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
-                    getSupportActionBar().setSubtitle(getString(R.string.distance_total_item, total.getCurrencyFormattedPrice()));
-                } else {
-                    BigDecimal distanceTotal = BigDecimal.ZERO;
-                    for (final Distance distance : distances) {
-                        distanceTotal = distanceTotal.add(distance.getDistance());
-                    }
-                    getSupportActionBar().setSubtitle(getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal)));
-                }
-            }
+            updateSubtitle();
         }
     }
 
@@ -205,6 +198,23 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     @Override
     public void onDeleteFailure(@NonNull Distance distance, @Nullable Throwable e, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         showToastMessage(R.string.distance_delete_failed);
+    }
+
+    private void updateSubtitle() {
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null && getUserVisibleHint()) {
+            final List<Distance> distances = distanceAdapter.getData();
+            if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
+                final Price total = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
+                actionBar.setSubtitle(getString(R.string.distance_total_item, total.getCurrencyFormattedPrice()));
+            } else {
+                BigDecimal distanceTotal = BigDecimal.ZERO;
+                for (final Distance distance : distances) {
+                    distanceTotal = distanceTotal.add(distance.getDistance());
+                }
+                actionBar.setSubtitle(getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal)));
+            }
+        }
     }
 
     private void showToastMessage(int stringResId) {
