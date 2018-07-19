@@ -126,10 +126,18 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
         if (BuildConfig.DEBUG) {
             Logger.debug(this, "Enabling strict mode");
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build());
+            final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder();
+            threadPolicyBuilder.detectNetwork();
+            threadPolicyBuilder.detectCustomSlowCalls();
+            threadPolicyBuilder.detectDiskReads();
+            threadPolicyBuilder.detectDiskWrites();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                threadPolicyBuilder.detectResourceMismatches();
+            }
+            // .detectUnbufferedIo() Note: Excluding as our 3p libraries can fail this
+            threadPolicyBuilder.penaltyDeath();
+            threadPolicyBuilder.build();
+            StrictMode.setThreadPolicy(threadPolicyBuilder.build());
 
 
             final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder();
