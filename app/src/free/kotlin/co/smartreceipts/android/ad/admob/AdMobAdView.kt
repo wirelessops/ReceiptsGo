@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdSize
@@ -25,10 +26,10 @@ class AdMobAdView @Inject constructor() : BannerAdView {
     private var adLoadListener: AdLoadListener? = null
 
     override fun onActivityCreated(activity: Activity) {
-        this.container = activity.findViewById(R.id.adView_container)
+        this.container = activity.findViewById(R.id.ads_layout)
         this.adView = AdView(activity)
 
-        val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         adView!!.layoutParams = params
         adView!!.adSize = AdSize.SMART_BANNER
         adView!!.adUnitId = activity.resources.getString(R.string.classicAdUnitId)

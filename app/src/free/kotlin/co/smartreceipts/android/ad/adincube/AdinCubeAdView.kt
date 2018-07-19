@@ -26,10 +26,10 @@ class AdinCubeAdView @Inject constructor() : BannerAdView {
         AdinCube.setAppKey(activity.getString(R.string.adin_cube_ad_key))
 
         this.activity = activity
-        this.container = activity.findViewById(R.id.adView_container)
+        this.container = activity.findViewById(R.id.ads_layout)
         this.adView = AdinCube.Banner.createView(activity, AdinCube.Banner.Size.BANNER_AUTO)
 
-        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         params.gravity = Gravity.CENTER_HORIZONTAL
         adView!!.layoutParams = params
         adView!!.setEventListener(object : AdinCubeBannerEventListener {

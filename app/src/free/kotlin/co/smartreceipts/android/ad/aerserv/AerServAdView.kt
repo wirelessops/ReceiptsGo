@@ -24,10 +24,10 @@ class AerServAdView @Inject constructor() : BannerAdView {
         AerServSdk.init(activity, activity.getString(R.string.aerserv_site_id))
 
         this.activity = activity
-        this.container = activity.findViewById(R.id.adView_container)
+        this.container = activity.findViewById(R.id.ads_layout)
         this.adView = AerServBanner(activity)
 
-        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         params.gravity = Gravity.CENTER_HORIZONTAL
         adView!!.layoutParams = params
 

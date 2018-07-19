@@ -38,6 +38,8 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
         this.adView = bannerAdViewFactory.get()
         this.upsellAdView = bannerAdViewFactory.getUpSell()
 
+        Logger.info(this, "Loading ad from {}.", adView!!.javaClass)
+
         // Always initialize the upsell view
         upsellAdView?.onActivityCreated(activity)
 
