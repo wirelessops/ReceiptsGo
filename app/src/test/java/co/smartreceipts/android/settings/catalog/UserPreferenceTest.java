@@ -65,6 +65,7 @@ public class UserPreferenceTest {
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.AutoBackupOnWifiOnly));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.OcrIncognitoMode));
         Assert.assertTrue(userPreferences.contains(UserPreference.Misc.OcrIsEnabled));
+        Assert.assertTrue(userPreferences.contains(UserPreference.Internal.ApplicationVersionCode));
     }
 
     @Test
@@ -267,6 +268,13 @@ public class UserPreferenceTest {
         Assert.assertEquals(UserPreference.Misc.OcrIsEnabled.getType(), Boolean.class);
         Assert.assertEquals(name(UserPreference.Misc.OcrIsEnabled), "OcrIsEnabled");
         Assert.assertEquals(UserPreference.Misc.OcrIsEnabled.getDefaultValue(), R.bool.pref_no_category_ocr_is_enabled_defaultValue);
+    }
+
+    @Test
+    public void internal() {
+        Assert.assertEquals(UserPreference.Internal.ApplicationVersionCode.getType(), Integer.class);
+        Assert.assertEquals(name(UserPreference.Internal.ApplicationVersionCode), "VersionCode");
+        Assert.assertEquals(UserPreference.Internal.ApplicationVersionCode.getDefaultValue(), R.integer.pref_internal_app_version_code_defaultValue);
     }
 
     @NonNull

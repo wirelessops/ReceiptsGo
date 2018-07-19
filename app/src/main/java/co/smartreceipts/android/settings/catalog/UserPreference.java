@@ -1,5 +1,6 @@
 package co.smartreceipts.android.settings.catalog;
 
+import android.content.Context;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -86,10 +87,23 @@ public final class UserPreference<T> {
         public static final UserPreference<Boolean> EnableAdPersonalization = new UserPreference<>(Boolean.class, R.string.pref_privacy_enable_ad_personalization_key, R.bool.pref_privacy_enable_ad_personalization_defaultValue);
     }
 
+    /**
+     * These define preferences that aren't available in the settings menu but otherwise configurable by the user
+     */
     public static final class Misc {
         public static final UserPreference<Boolean> AutoBackupOnWifiOnly = new UserPreference<>(Boolean.class, R.string.pref_no_category_auto_backup_wifi_only_key, R.bool.pref_no_category_auto_backup_wifi_only_defaultValue);
         public static final UserPreference<Boolean> OcrIncognitoMode = new UserPreference<>(Boolean.class, R.string.pref_no_category_ocr_incognito_mode_key, R.bool.pref_no_category_ocr_incognito_mode_defaultValue);
         public static final UserPreference<Boolean> OcrIsEnabled = new UserPreference<>(Boolean.class, R.string.pref_no_category_ocr_is_enabled_key, R.bool.pref_no_category_ocr_is_enabled_defaultValue);
+    }
+
+
+    /**
+     * These define internal preferences that cannot be manually toggled by the user. Adding new fields here is highly discouraged in favor
+     * of using {@link android.preference.PreferenceManager#getDefaultSharedPreferences(Context)} for internal preferences. This primarily
+     * exists for backwards compatibility reasons
+     */
+    public static final class Internal {
+        public static final UserPreference<Integer> ApplicationVersionCode = new UserPreference<>(Integer.class, R.string.pref_internal_app_version_code, R.integer.pref_internal_app_version_code_defaultValue);
     }
 
     private static List<UserPreference<?>> CACHED_VALUES;
