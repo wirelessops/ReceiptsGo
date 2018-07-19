@@ -32,6 +32,7 @@ public class BetaSmartReceiptsHostConfiguration extends SmartReceiptsHostConfigu
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return okHttpBuilder()
                 .addInterceptor(new SmartReceiptsAuthenticatedRequestInterceptor(identityStore))
+                .addInterceptor(new TrafficStatsRequestInterceptor())
                 .addInterceptor(loggingInterceptor)
                 .build();
     }

@@ -28,7 +28,10 @@ public class SmartReceiptsHostConfiguration implements HostConfiguration {
     @NonNull
     @Override
     public OkHttpClient getClient() {
-        return okHttpBuilder().addInterceptor(new SmartReceiptsAuthenticatedRequestInterceptor(identityStore)).build();
+        return okHttpBuilder()
+                .addInterceptor(new SmartReceiptsAuthenticatedRequestInterceptor(identityStore))
+                .addInterceptor(new TrafficStatsRequestInterceptor())
+                .build();
     }
 
     @NonNull
@@ -39,6 +42,6 @@ public class SmartReceiptsHostConfiguration implements HostConfiguration {
 
     @NonNull
     protected OkHttpClient.Builder okHttpBuilder() {
-        return new OkHttpClient.Builder().socketFactory(new TrafficStatsSocketFactory());
+        return new OkHttpClient.Builder();
     }
 }
