@@ -7,8 +7,7 @@ android:
   - build-tools-27.0.3
   - android-26
 before_install:
-- openssl aes-256-cbc -K $encrypted_f86bd80ecf4c_key -iv $encrypted_f86bd80ecf4c_iv
-  -in secrets.tar.enc -out secrets.tar -d
+- openssl aes-256-cbc -k "$super_secret_password" -in secrets.tar.enc -out secrets.tar -d
 - tar xvf secrets.tar
 - echo TEST
 - ls
@@ -22,3 +21,6 @@ before_install:
 - chmod +x gradlew
 script:
 - "./gradlew clean test"
+env:
+  global:
+    secure: Z62ZbwgXnu+U99fY3NKkZfy2AMITDdYBVZLMxrW683UNm5bbh0ZQFGjiDXiybjVlDLVZZq9b+DAUpUnZtVECfzQqvLS0AhK8J0G7ZL/x7qDvZOFyYDcmfyM7o2Xwz9sj8PeTZi8O/cdYfbPNe3mX+sugUt3m1VEsp/wEZ9IOVVgxqU8TUxit/9fEusx6+1NSVc6BKAuIWhCTucKS3TSpFXlZiJh8VRHQJx1Ree/b8FXfDM0pRfm8WZQBn2RU+9EYjqV/3G+/kQvskbmveYFLFUd4hwG0k/IlRhGtNUCjtUXNQi+sr/m1DEjxIxNOgkzNYVllqaMVCje9ks32rIPSNNwB7JNgxOYi5ut6HbWeZjQ0MYhmfs5c9MelA8ZckAHxkBuaZfD9lfRujOf2N49D1ohmLtAVQH5Lr9hr4Y56HytF39sF7hUYT1hyvhwdfG7/ol/a/VyCirJsfiSUdpHnQuHnJyodWJxPxo0edXIu468KteEv4cdzjkhRh9IaTVNv9MQwtTFjnQhQu4Xb7R0aIIZCNMBMfamNAni4jhu5TyKufi3acHvhMPmtFtkP8NuGymDgSZKJhdv1JcF6d5yqkAjiJRyKYPGL/+KkvzUcfRy0iMbsNTxA1OKTIN5u16tpE9208sAVwaPKzT26L68kIbDM4ZjLqIEHhWnxIvVQlLE=
