@@ -38,11 +38,11 @@ public class SubscriptionInAppPurchaseConsumerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
 
         when(subscription.getInAppPurchase()).thenReturn(InAppPurchase.SmartReceiptsPlus);
         when(lazy.get()).thenReturn(preferences);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
         subscriptionInAppPurchaseConsumer = new SubscriptionInAppPurchaseConsumer(lazy);
     }
 

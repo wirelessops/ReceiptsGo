@@ -29,9 +29,9 @@ The free and plus versions versions are identical, except the plus version offer
 - [Features](#features)
 - [Install](#install)
 - [Contribute](#contribute)
-- [Continuous Integration)(#continuous-integration)
+- [Continuous Integration](#continuous-integration)
 - [License](#license)
-- [Attribution)(#attribution)
+- [Attribution](#attribution)
 
 ## Guide
 

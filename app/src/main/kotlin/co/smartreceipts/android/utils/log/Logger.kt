@@ -33,7 +33,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun debug(caller: Any, format: String, vararg arg: Any) {
+    fun debug(caller: Any, format: String, vararg arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).debug(format, *arg)
         }
@@ -41,7 +41,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun debug(caller: Any, format: String, arg: Any) {
+    fun debug(caller: Any, format: String, arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).debug(format, arg)
         }
@@ -49,7 +49,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun debug(caller: Any, format: String, arg1: Any, arg2: Any) {
+    fun debug(caller: Any, format: String, arg1: Any?, arg2: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).debug(format, arg1, arg2)
         }
@@ -73,7 +73,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun info(caller: Any, format: String, vararg arg: Any) {
+    fun info(caller: Any, format: String, vararg arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).info(format, *arg)
         }
@@ -81,7 +81,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun info(caller: Any, format: String, arg: Any) {
+    fun info(caller: Any, format: String, arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).info(format, arg)
         }
@@ -89,7 +89,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun info(caller: Any, format: String, arg1: Any, arg2: Any) {
+    fun info(caller: Any, format: String, arg1: Any?, arg2: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).info(format, arg1, arg2)
         }
@@ -121,7 +121,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun warn(caller: Any, format: String, vararg arg: Any) {
+    fun warn(caller: Any, format: String, vararg arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).warn(format, *arg)
         }
@@ -129,7 +129,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun warn(caller: Any, format: String, arg: Any) {
+    fun warn(caller: Any, format: String, arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).warn(format, arg)
         }
@@ -137,7 +137,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun warn(caller: Any, format: String, arg1: Any, arg2: Any) {
+    fun warn(caller: Any, format: String, arg1: Any?, arg2: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).warn(format, arg1, arg2)
         }
@@ -177,7 +177,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun error(caller: Any, format: String, vararg arg: Any) {
+    fun error(caller: Any, format: String, vararg arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).error(format, *arg)
         }
@@ -185,7 +185,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun error(caller: Any, format: String, arg: Any) {
+    fun error(caller: Any, format: String, arg: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).error(format, arg)
         }
@@ -193,7 +193,7 @@ object Logger {
 
     @JvmStatic
     @AnyThread
-    fun error(caller: Any, format: String, arg1: Any, arg2: Any) {
+    fun error(caller: Any, format: String, arg1: Any?, arg2: Any?) {
         loggingExecutor.execute {
             getLoggerForCaller(caller).error(format, arg1, arg2)
         }
