@@ -1,7 +1,7 @@
 # Smart Receipts
 
 <p align="center">
-  <a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="81" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+  <a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="162" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
   <img src="https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master" alt="Build Status" />
 </p>
 
