@@ -1,4 +1,6 @@
 language: android
+jdk: oraclejdk8
+sudo: required # See https://github.com/travis-ci/travis-ci/issues/5582
 android:
   components:
   - tools
@@ -26,3 +28,13 @@ before_install:
 - chmod +x gradlew
 script:
 - "./gradlew clean test"
+after_failure:
+- find .
+
+# tests
+- cat app/build/reports/tests/testFreeDebugUnitTest/index.html
+- cat app/build/reports/tests/testPlusFlavorDebugUnitTest/index.html
+
+# app
+- cat app/build/reports/lint-results.xml
+- cat app/build/reports/lint-results.html
