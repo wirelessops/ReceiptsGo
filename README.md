@@ -2,9 +2,9 @@
 
 > Save time tracking expenses and get back to what matters
 
-[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
-
 ![SmartReceipts](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+
+[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
 
 <a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="162" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
