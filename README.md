@@ -1,6 +1,9 @@
 # Smart Receipts
 
-[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
+<p align="center">
+    [![Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3DGitHubSmartReceiptsLibrary)
+    [![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
+</p>
 
 > Save time tracking expenses and get back to what matters
 
@@ -10,8 +13,8 @@ Turn your phone into a receipt scanner and expense report generator with [Smart 
  
 Download Smart Receipts on the Google Play Store:
  
-- [Smart Receipts](https://play.google.com/store/apps/details?id=wb.receipts). The free version of the app, but it also supports an in-app purchase subscription.
-- [Smart Receipts Plus](https://play.google.com/store/apps/details?id=wb.receiptspro). A 'paid' app from back before Google supported in-app purchases.
+- [Smart Receipts](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3DGitHubSmartReceiptsLibrary). The free version of the app, but it also supports an in-app purchase subscription.
+- [Smart Receipts Plus](https://play.google.com/store/apps/details?id=wb.receiptspro&referrer=utm_source%3DGitHubSmartReceiptsLibrary). A 'paid' app from back before Google supported in-app purchases.
 
 The free and plus versions versions are identical, except the plus version offers the following enhancements:
 
