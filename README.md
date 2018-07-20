@@ -24,6 +24,7 @@ The free and plus versions versions are identical, except the plus version offer
 - [Install](#install)
 - [Contribute](#contribute)
 - [License](#license)
+- [Continuous Integration)(#continuous-integration)
 
 ## Features
 - [X] Create expense report "folders" to categorize your receipts
@@ -51,10 +52,7 @@ Smart Receipts is broken into a few core modules:
 * **wBMiniLibrary**. A few legacy items that haven't been moved into the Library module, but it's otherwise unused.
 
 To install, clone or pull down this project. Please note that it will **NOT** work out of the box, so you will need to add the following files to ensure it will compile:
-  
-* `google-services.json`. This needs to be added to both the free and plus favors at the root level in order for Firebase to function. Please [refer to the Firebase documentation](https://firebase.google.com/) for more details:
- * `app/src/free/google-services.json`
- * `app/src/plusFlavor/google-services.json`
+
 * `app/src/main/res/values/secrets.xml`. You can copy the secrets.xml.sample file and rename the keys inside to achieve this behavior. This is used for low usage keys
 * `app/src/free/res/values/ads.xml`. The ads file in smartReceiptsFree. You can add `adUnitId` and `classicAdUnitId` to enable support for AdMob Native and Classic Ads, respectively.
 * `app/src/free/res/xml/analytics.xml`. The analytics file in smartReceiptsFree. You can add a key here if you wish to enable Google Analytics.
@@ -64,12 +62,29 @@ Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Rece
 ## Donate
 If you like our project, please consider donating:
 
-* **BTC:** [3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK](bitcoin:3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK)
+* **BTC:** [3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK](https://www.blockchain.com/btc/address/3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK)
 * **ETH:** [0xd5F9Da6a4F9c93B12588D89c7F702a0f7d92303D](https://etherscan.io/address/0xd5F9Da6a4F9c93B12588D89c7F702a0f7d92303D)
 
 ## Contribute
 
-Contributions are always welcome! Please [open an issue](https://github.com/wbaumann/SmartReceiptsLibrary/issues/new) to report a bug or file a feature request to get started.  
+Contributions are always welcome! Please [open an issue](https://github.com/wbaumann/SmartReceiptsLibrary/issues/new) to report a bug or file a feature request to get started.
+
+## Continuous Integration
+
+We currently use Travis-CI for our continuous integration in order perform tests against new commits, allowing us to avoid potential regressions. You can monitor the current build status here:
+
+* [https://travis-ci.com/wbaumann/SmartReceiptsLibrary](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
+
+As we have save a few local API keys (e.g. for ads), we use encrypt a few files in our travis repository. You generate your own encrypted set as follows (note: please install the [Travis CLI client](https://github.com/travis-ci/travis.rb) first):
+
+```
+$ travis login --pro
+$ tar cvf secrets.tar app/src/main/res/values/secrets.xml app/src/free/res/values/ads.xml app/src/free/res/xml/analytics.xml
+$ travis encrypt-file secrets.tar --add --pro
+$ rm -f secrets.tar
+```
+
+This should automatically update our `.travis.yml` for the build
 
 ## License
 ```
