@@ -1,9 +1,7 @@
 # Smart Receipts
 
-<p align="center">
-    [![Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3DGitHubSmartReceiptsLibrary)
-    [![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
-</p>
+[![Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3DGitHubSmartReceiptsLibrary)
+[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
 
 > Save time tracking expenses and get back to what matters
 
