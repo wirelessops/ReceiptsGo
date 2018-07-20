@@ -1,7 +1,9 @@
 # Smart Receipts
 
-[![Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3DGitHubSmartReceiptsLibrary)
-[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
+<p align="center">
+  <a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+  <img src="https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master" alt="Build Status" />
+</p>
 
 > Save time tracking expenses and get back to what matters
 
@@ -9,10 +11,10 @@
 
 Turn your phone into a receipt scanner and expense report generator with [Smart Receipts](https://www.smartreceipts.co/)! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
  
-Download Smart Receipts on the Google Play Store:
+Download Smart Receipts on Google Play:
  
-- [Smart Receipts](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3DGitHubSmartReceiptsLibrary). The free version of the app, but it also supports an in-app purchase subscription.
-- [Smart Receipts Plus](https://play.google.com/store/apps/details?id=wb.receiptspro&referrer=utm_source%3DGitHubSmartReceiptsLibrary). A 'paid' app from back before Google supported in-app purchases.
+- [Smart Receipts](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3Dcom.github.wbaumann.SmartReceiptsLibrary). The free version of the app, but it also supports an in-app purchase subscription.
+- [Smart Receipts Plus](https://play.google.com/store/apps/details?id=wb.receiptspro&referrer=utm_source%3Dcom.github.wbaumann.SmartReceiptsLibrary). A 'paid' app from back before Google supported in-app purchases.
 
 The free and plus versions versions are identical, except the plus version offers the following enhancements:
 
@@ -28,8 +30,9 @@ The free and plus versions versions are identical, except the plus version offer
 - [Features](#features)
 - [Install](#install)
 - [Contribute](#contribute)
-- [License](#license)
 - [Continuous Integration)(#continuous-integration)
+- [License](#license)
+- [Attribution)(#attribution)
 
 ## Guide
 
@@ -100,6 +103,7 @@ $ rm -f secrets.tar
 This should automatically update our `.travis.yml` for the build
 
 ## License
+
 ```
 The GNU Affero General Public License (AGPL)
 
@@ -117,4 +121,10 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+```
+
+## Attribution
+
+```
+Google Play and the Google Play logo are trademarks of Google LLC.
 ```

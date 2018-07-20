@@ -30,7 +30,7 @@ constructor(
      * Note: Column types must be unique, because they are saved to the DB
      * Column type must be >= 0
      */
-    internal enum class ActualDefinition : ActualColumnDefinition {
+    enum class ActualDefinition : ActualColumnDefinition {
         BLANK(0, R.string.column_item_blank, R.string.original_column_item_blank_en_us_name),
         CATEGORY_CODE(1, R.string.column_item_category_code, R.string.original_column_item_category_code_en_us_name),
         CATEGORY_NAME(2, R.string.column_item_category_name, R.string.original_column_item_category_name_en_us_name),
@@ -97,24 +97,24 @@ constructor(
 
     fun getCsvDefaults(): List<Column<Receipt>> =
         listOf(
-            getColumnFromClass(DATE),
-            getColumnFromClass(NAME),
-            getColumnFromClass(PRICE),
-            getColumnFromClass(CURRENCY),
-            getColumnFromClass(CATEGORY_NAME),
-            getColumnFromClass(CATEGORY_CODE),
-            getColumnFromClass(COMMENT),
-            getColumnFromClass(REIMBURSABLE)
+            getColumnFromDefinition(DATE),
+            getColumnFromDefinition(NAME),
+            getColumnFromDefinition(PRICE),
+            getColumnFromDefinition(CURRENCY),
+            getColumnFromDefinition(CATEGORY_NAME),
+            getColumnFromDefinition(CATEGORY_CODE),
+            getColumnFromDefinition(COMMENT),
+            getColumnFromDefinition(REIMBURSABLE)
         )
 
     fun getPdfDefaults(): List<Column<Receipt>> =
         listOf(
-            getColumnFromClass(DATE),
-            getColumnFromClass(NAME),
-            getColumnFromClass(PRICE),
-            getColumnFromClass(CURRENCY),
-            getColumnFromClass(CATEGORY_NAME),
-            getColumnFromClass(REIMBURSABLE)
+            getColumnFromDefinition(DATE),
+            getColumnFromDefinition(NAME),
+            getColumnFromDefinition(PRICE),
+            getColumnFromDefinition(CURRENCY),
+            getColumnFromDefinition(CATEGORY_NAME),
+            getColumnFromDefinition(REIMBURSABLE)
         )
 
     override fun getColumn(
@@ -125,7 +125,7 @@ constructor(
     ): Column<Receipt> {
         for (definition in actualDefinitions) {
             if (columnType == definition.columnType) {
-                return getColumnFromClass(definition, id, syncState, customOrderId)
+                return getColumnFromDefinition(definition, id, syncState, customOrderId)
             }
         }
 
@@ -139,7 +139,7 @@ constructor(
             // don't add column if column name is empty (useful for flex cases)
             if (!reportResourcesManager.getFlexString(definition.columnHeaderId).isEmpty()) {
 
-                val column = getColumnFromClass(definition, Column.UNKNOWN_ID, DefaultSyncState())
+                val column = getColumnFromDefinition(definition, Column.UNKNOWN_ID, DefaultSyncState())
                 columns.add(column)
             }
 
@@ -167,7 +167,7 @@ constructor(
         return -1
     }
 
-    private fun getColumnFromClass(
+    fun getColumnFromDefinition(
         definition: ActualDefinition,
         id: Int = Column.UNKNOWN_ID,
         syncState: SyncState = DefaultSyncState(),
