@@ -1,5 +1,6 @@
 package co.smartreceipts.android.di;
 
+import android.app.Application;
 import android.content.Context;
 
 import co.smartreceipts.android.SmartReceiptsApplication;
@@ -24,6 +25,12 @@ public class BaseAppModule {
     @Provides
     @ApplicationScope
     Context provideContext() {
+        return application;
+    }
+
+    @Provides
+    @ApplicationScope
+    Application provideApplication() {
         return application;
     }
 

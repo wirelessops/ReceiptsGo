@@ -34,6 +34,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
+import co.smartreceipts.android.utils.leaks.MemoryLeakMonitor;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.utils.rx.DefaultRxErrorHandler;
 import co.smartreceipts.android.versioning.AppVersionManager;
@@ -111,6 +112,9 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
     @Inject
     AppVersionManager appVersionManager;
+
+    @Inject
+    MemoryLeakMonitor memoryLeakMonitor;
 
     private AppComponent appComponent;
 
@@ -207,6 +211,7 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         receiptsOrderer.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         picassoInitializer.initialize();
+        memoryLeakMonitor.initialize();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 
@@ -222,13 +227,6 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
         // Add launch count for rating prompt monitoring
         appRatingPreferencesStorage.incrementLaunchCount();
-
-        // LeakCanary initialization
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            Logger.debug(this, "Ignoring this process as it's the LeakCanary analyzer one...");
-        } else {
-            LeakCanary.install(this);
-        }
 
         extraInitializer.init();
     }
