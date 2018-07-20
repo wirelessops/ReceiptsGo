@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="sr_app_name">Basic Receipts</string>
-    <string name="app_name">@string/sr_app_name</string>
-    <string name="trip_no_data">You don\'t seem to have any reports defined at the moment. Try clicking the "+" (plus) button to get started.\n\nYou can create expense reports, track receipts within each, and quickly generate PDF &amp; CSV reports for your receipt totals. It\'s quick and easy! Also, be sure to check out the menu to customize the categories, reports, and other settings to best suit for your needs.</string>
-    <string name="dialog_sql_corrupt_intent_subject">Error - Corrupted Database</string>
-    <string name="rating_tooltip_text">Like this app?</string>
-
-</resources>

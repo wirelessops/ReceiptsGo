@@ -41,11 +41,6 @@ android {
             applicationId "co.smartreceipts.fire.department.tracker.android"
             dimension "versionType"
         }
-        basicReceiptsFlavor {
-            // applicationId "com.basicreceipts.android"
-            applicationId "wb.receiptspro"
-            dimension "versionType"
-        }
     }
 
     signingConfigs {
