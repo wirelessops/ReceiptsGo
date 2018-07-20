@@ -1,15 +1,12 @@
 # Smart Receipts
 
-<p align="center">
-  <a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="162" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
-</p>
-<p align="center">
-    <img src="https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master" alt="Build Status" />
-</p>
-
 > Save time tracking expenses and get back to what matters
 
+[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
+
 ![SmartReceipts](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+
+<a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="162" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 Turn your phone into a receipt scanner and expense report generator with [Smart Receipts](https://www.smartreceipts.co/)! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
  
