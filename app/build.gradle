@@ -90,10 +90,10 @@ android {
 
 		implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
-        implementation "com.google.android.gms:play-services-drive:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        implementation "com.google.firebase:firebase-core:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        implementation "com.google.firebase:firebase-crash:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
-        implementation "com.google.firebase:firebase-messaging:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        implementation "com.google.android.gms:play-services-drive:$DRIVE_API_VERSION"
+        implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
+        implementation "com.google.firebase:firebase-crash:$FIREBASE_CORE_VERSION"
+        implementation "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"
 
         implementation "com.squareup.picasso:picasso:$PICASSO_VERSION"
         implementation "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
@@ -158,17 +158,18 @@ android {
         testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
 
         // Special dependencies for free flavor
-        freeImplementation "com.google.android.gms:play-services-analytics:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        freeImplementation "com.google.android.gms:play-services-analytics:$FIREBASE_CORE_VERSION"
 
         // Free ads
-        freeImplementation "com.google.android.gms:play-services-ads:$FIREBASE_AND_GOOGLE_PLAY_SERVICES_VERSION"
+        freeImplementation "com.google.android.gms:play-services-ads:$ADMOB_VERSION"
         freeImplementation ("com.adincube.sdk:AdinCube-Java-1626ebe:$ADS_ADINCUBE_VERSION@aar") {
             transitive = true
         }
         freeImplementation "com.inmobi.monetization:inmobi-ads:$IN_MOBI_VERSION"
     }
 
-    apply plugin: 'com.google.gms.google-services'
+    // Note: This version is controlled in the base build file
+    apply plugin: "com.google.gms.google-services"
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
