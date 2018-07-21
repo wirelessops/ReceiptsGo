@@ -143,70 +143,70 @@
 
     <!-- ============= Preference Distance ================= -->
     <string name="pref_distance_include_price_in_report_key" translatable="false">MileageTotalInReport</string>
-    <string name="pref_distance_include_price_in_report_title">Add Distance Price to Report</string>
-    <string name="pref_distance_include_price_in_report_summaryOn">Includes distance price in report total</string>
-    <string name="pref_distance_include_price_in_report_summaryOff">Excludes distance price from report total</string>
+    <string name="pref_distance_include_price_in_report_title">הוסף מחיר נסיעה לדוח</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">מוסיף מחיר נסיעה לסכימה בדוח</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">לא מוסיף מחיר נסיעה לסכימה בדוח</string>
     <string name="pref_distance_rate_key" translatable="false">MileageRate</string>
-    <string name="pref_distance_rate_title">Gas Rate</string>
-    <string name="pref_distance_rate_summaryOff">The rate per mi or km travelled</string>
-    <string name="pref_distance_rate_summaryOn">%s per mi or km</string>
+    <string name="pref_distance_rate_title">מחיר לדלק</string>
+    <string name="pref_distance_rate_summaryOff">מחיר לפי קילומטר או מייל של נסיעה</string>
+    <string name="pref_distance_rate_summaryOn">לכל מייל או קילומטר %s</string>
     <string name="pref_distance_print_table_key" translatable="false">MileagePrintTable</string>
-    <string name="pref_distance_print_table_title">Include Distance Table</string>
-    <string name="pref_distance_print_table_summaryOn">PDF/CSV reports include distance table</string>
-    <string name="pref_distance_print_table_summaryOff">PDF/CSV reports don\'t include distance table</string>
+    <string name="pref_distance_print_table_title">הוסף טבלת מרחק נסיעה</string>
+    <string name="pref_distance_print_table_summaryOn">דוחות פידיאף ואקסל כוללים טבלת מרחק נסיעה</string>
+    <string name="pref_distance_print_table_summaryOff">דוחות פידיאף ואקסל לא כוללים טבלת מרחק נסיעה</string>
     <string name="pref_distance_print_daily_key" translatable="false">MileageAddToPDF</string>
-    <string name="pref_distance_print_daily_title">Report on Daily Distance</string>
-    <string name="pref_distance_print_daily_summaryOn">Show distance as receipt line item</string>
-    <string name="pref_distance_print_daily_summaryOff">Don\'t show distance as receipt line item</string>
+    <string name="pref_distance_print_daily_title">דווח על מרחק נסיעה יומי</string>
+    <string name="pref_distance_print_daily_summaryOn">הראה מרחק נסיעה לכל קבלה</string>
+    <string name="pref_distance_print_daily_summaryOff">אל תראה מרחק נסיעה לכל קבלה</string>
     <string name="pref_distance_as_price_key" translatable="false">DistanceAsPrice</string>
-    <string name="pref_distance_as_price_title">Distance Price in Subtitle</string>
-    <string name="pref_distance_as_price_summaryOn">Show distance price total in app subtitle</string>
-    <string name="pref_distance_as_price_summaryOff">Show distance travelled in app subtitle</string>
+    <string name="pref_distance_as_price_title">מחיר מרחק נסיעה בכותרת משנה</string>
+    <string name="pref_distance_as_price_summaryOn">הראה סך הכול מחיר נסיעה בכותרת משנה</string>
+    <string name="pref_distance_as_price_summaryOff">הראה סך הכול מרחק נסיעה בכותרת משנה</string>
 
     <!-- ================= Preference Plus ================== -->
     <string name="pref_pro_pdf_footer_key" translatable="false">PdfFooterString</string>
-    <string name="pref_pro_pdf_footer_title">PDF Footer Text</string>
+    <string name="pref_pro_pdf_footer_title">טקסט בתחתית מסמך פידיאף</string>
     <string name="pref_pro_separate_by_category_key" translatable="false">SeparateByCategory</string>
-    <string name="pref_pro_separate_by_category_title">Separate Payments by Category</string>
-    <string name="pref_pro_separate_by_category_summaryOn">PDF/CSV reports include separate tables for different categories</string>
-    <string name="pref_pro_separate_by_category_summaryOff">PDF/CSV reports don\'t include separate tables for different categories</string>
+    <string name="pref_pro_separate_by_category_title">הפרד תשלומים לפי קטגוריה</string>
+    <string name="pref_pro_separate_by_category_summaryOn">דוחות פידיאף ואקסל מכילים טבלאות שונות לפי קטגוריה</string>
+    <string name="pref_pro_separate_by_category_summaryOff">דוחות פידיאף ואקסל לא מכילים טבלאות שונות לפי קטגוריה</string>
     <string name="pref_pro_categorical_summation_key" translatable="false">IncludeCategoricalSummation</string>
-    <string name="pref_pro_categorical_summation_title">Include Categorical Summation</string>
-    <string name="pref_pro_categorical_summation_summaryOn">PDF/CSV reports include table with summation by category</string>
-    <string name="pref_pro_categorical_summation_summaryOff">PDF/CSV reports don\'t include table with summation by category</string>
+    <string name="pref_pro_categorical_summation_title">כלול סכימה לפי קטגרויה</string>
+    <string name="pref_pro_categorical_summation_summaryOn">דוחות פידיאף ואקסל מכילים טבלאות של סכימה לפי קטגוריה</string>
+    <string name="pref_pro_categorical_summation_summaryOff">דוחות פידיאף ואקסל לא מכילים טבלאות של סכימה לפי קטגוריה</string>
     <string name="pref_pro_omit_default_table_key" translatable="false">OmitDefaultPDFTable</string>
-    <string name="pref_pro_omit_default_table_title">Omit Default PDF Table</string>
+    <string name="pref_pro_omit_default_table_title">אל תכלול טבלת פידיאף ברירת מחדל</string>
 
     <!-- ============== Preference Support ================= -->
     <string name="pref_help_send_love_key" translatable="false">SendLove</string>
-    <string name="pref_help_send_love_title">Send Love</string>
+    <string name="pref_help_send_love_title">(:שלח אהבה</string>
     <string name="pref_help_send_feedback_key" translatable="false">SendFeedback</string>
-    <string name="pref_help_send_feedback_title">Send Feedback</string>
+    <string name="pref_help_send_feedback_title">שלח פידבק</string>
     <string name="pref_help_support_email_key" translatable="false">SupportEmail</string>
-    <string name="pref_help_support_email_title">Email for Support</string>
+    <string name="pref_help_support_email_title">שלח אימייל לתמיכה טכנית</string>
 
     <!-- =============== Preference About ================== -->
     <string name="pref_about_version_key" translatable="false">VersionNo</string>
-    <string name="pref_about_version_title">Version</string>
+    <string name="pref_about_version_title">גרסא</string>
     <string name="pref_about_about_key" translatable="false">About</string>
-    <string name="pref_about_about_title">About</string>
+    <string name="pref_about_about_title">אודות</string>
     <string name="pref_about_about_dialogMessage">Smart Receipts was created and is maintained by Smart Receipts LLC. It is licensed under GNU Affero General Public License</string>
     <string name="pref_about_terms_key" translatable="false">TermsOfUse</string>
-    <string name="pref_about_terms_title">Terms of Use</string>
+    <string name="pref_about_terms_title">תנאי שימוש</string>
     <string name="pref_about_terms_dialogMessage">This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.\n\nYou can view a copy of the GNU Affero General Public License at http://www.gnu.org/licenses/.</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_key" translatable="false">PrivacyPolicy</string>
-    <string name="pref_about_privacy_policy_title">Privacy Policy</string>
+    <string name="pref_about_privacy_policy_title">מדיניות פרטיות</string>
     <string name="pref_privacy_enable_analytics_key" translatable="false">EnableAnalytics</string>
-    <string name="pref_privacy_enable_analytics_title">Share Analytics</string>
-    <string name="pref_privacy_enable_analytics_summary">With Google/Firebase Analytics</string>
+    <string name="pref_privacy_enable_analytics_title">שתף מידע אנונימי אודות השימוש שלך</string>
+    <string name="pref_privacy_enable_analytics_summary">Google/Firebase Analytics באמצעות</string>
     <string name="pref_privacy_enable_crash_tracking_key" translatable="false">EnableCrashTracking</string>
-    <string name="pref_privacy_enable_crash_tracking_title">Share Crash Information</string>
-    <string name="pref_privacy_enable_crash_tracking_summary">With Google Crashlytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">שתף מידע על התרסקות התוכנה</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">Google Crashlyticsבאמצעות </string>
     <string name="pref_privacy_enable_ad_personalization_key" translatable="false">EnableAdPersonalization</string>
-    <string name="pref_privacy_enable_ad_personalization_title">Allow Ad Personalization</string>
-    <string name="pref_privacy_enable_ad_personalization_summary">With Google AdMob</string>
+    <string name="pref_privacy_enable_ad_personalization_title">אפשר התאמה אישית של פרסומות</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">Google AdMobעם </string>
 
     <!-- =============== Preference Misc =================== -->
     <string name="pref_no_category_auto_backup_wifi_only_key" translatable="false">AutoBackupWifiOnly</string>
