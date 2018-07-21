@@ -22,85 +22,85 @@
 
     <!-- ============== Preference General ================= -->
     <string name="pref_general_trip_duration_key" translatable="false">TripDuration</string>
-    <string name="pref_general_trip_duration_title">Default Trip Length</string>
+    <string name="pref_general_trip_duration_title">אורך נסיעה ממוצע</string>
     <string name="pref_general_default_currency_key" translatable="false">isocurr</string>
-    <string name="pref_general_default_currency_title">Default Currency</string>
+    <string name="pref_general_default_currency_title">מטבע ברירת מחדל</string>
     <string name="pref_general_default_date_separator_key" translatable="false">dateseparator</string>
-    <string name="pref_general_default_date_separator_title">Default Date Separator</string>
+    <string name="pref_general_default_date_separator_title">מפריד תאריך ברירת מחדל</string>
     <string name="pref_general_track_cost_center_key" translatable="false">trackcostcenter</string>
-    <string name="pref_general_track_cost_center_title">Track Cost Center</string>
-    <string name="pref_general_track_cost_center_summaryOn">Include Cost Center For Reports</string>
-    <string name="pref_general_track_cost_center_summaryOff">Don\'t Include Cost Center For Reports</string>
+    <string name="pref_general_track_cost_center_title">חשב מרכז עלויות</string>
+    <string name="pref_general_track_cost_center_summaryOn">הכלל מרכז עלויות בדיווחים</string>
+    <string name="pref_general_track_cost_center_summaryOff">אל תכליל מרכז עלויות בדיווחים</string>
 
     <!-- ============== Preference Receipt ================= -->
     <string name="pref_receipt_customize_categories_key" translatable="false">CustomCategories</string>
-    <string name="pref_receipt_customize_categories_title">Customize Receipt Categories</string>
-    <string name="pref_receipt_customize_categories_summary">Tap here to add/edit your categories</string>
+    <string name="pref_receipt_customize_categories_title">התאמה אישית לקטגוריות</string>
+    <string name="pref_receipt_customize_categories_summary">לחץ כאן לשינוי/הוספת קטגוריה</string>
     <string name="pref_receipt_predict_categories_key" translatable="false">PredictCats</string>
-    <string name="pref_receipt_predict_categories_title">Predict Receipt Categories</string>
-    <string name="pref_receipt_predict_categories_summary">Auto-fill category based on prior data</string>
+    <string name="pref_receipt_predict_categories_title">חיזוי קטגוריות</string>
+    <string name="pref_receipt_predict_categories_summary">מלא קטגוריה באופן אוטומטי לפי מידע קודם</string>
     <string name="pref_receipt_match_name_to_category_key" translatable="false">MatchNameCats</string>
-    <string name="pref_receipt_match_name_to_category_title">Match Name to Category</string>
-    <string name="pref_receipt_match_name_to_category_summary">Automatically set name to category</string>
+    <string name="pref_receipt_match_name_to_category_title">התאם שם לקטגוריה</string>
+    <string name="pref_receipt_match_name_to_category_summary">התאם שם לקטגוריה באופן אוטומטי</string>
     <string name="pref_receipt_match_comment_to_category_key" translatable="false">MatchCommentCats</string>
-    <string name="pref_receipt_match_comment_to_category_title">Match Comment to Category</string>
-    <string name="pref_receipt_match_comment_to_category_summary">Automatically set comment to category</string>
+    <string name="pref_receipt_match_comment_to_category_title">התאם הערה לקטגוריה</string>
+    <string name="pref_receipt_match_comment_to_category_summary">התאם הערה לקטגוריה באופן אוטומטי</string>
     <string name="pref_receipt_reimbursable_only_key" translatable="false">OnlyIncludeExpensable</string>
-    <string name="pref_receipt_reimbursable_only_title">Only Report Reimbursable</string>
-    <string name="pref_receipt_reimbursable_only_summary">Omit other receipts from output</string>
+    <string name="pref_receipt_reimbursable_only_title">דווח רק על קבלות ברות-החזר</string>
+    <string name="pref_receipt_reimbursable_only_summary">הסר קבלות אחרות מהדוח</string>
     <string name="pref_receipt_reimbursable_default_key" translatable="false">ExpensableDefault</string>
-    <string name="pref_receipt_reimbursable_default_title">Receipts Default As Reimbursable</string>
+    <string name="pref_receipt_reimbursable_default_title">קבלות מסומנות כברות-החזר כברירת מחדל</string>
     <string name="pref_receipt_include_tax_field_key" translatable="false">IncludeTaxField</string>
-    <string name="pref_receipt_include_tax_field_title">Include Tax Field</string>
-    <string name="pref_receipt_include_tax_field_summary">Adds a line item for taxes</string>
+    <string name="pref_receipt_include_tax_field_title">הוסף שדה מס</string>
+    <string name="pref_receipt_include_tax_field_summary">מוסיף שורה עבור מיסים</string>
     <string name="pref_receipt_tax_percent_key" translatable="false">TaxPercentage</string>
-    <string name="pref_receipt_tax_percent_title">Default Tax Percentage</string>
+    <string name="pref_receipt_tax_percent_title">אחוז מס ברירת-מחדל</string>
     <string name="pref_receipt_pre_tax_key" translatable="false">PreTax</string>
-    <string name="pref_receipt_pre_tax_title">Assume Price is Pre-Tax</string>
-    <string name="pref_receipt_pre_tax_summary_on">Calculates Tax From a Pre-Tax Price</string>
-    <string name="pref_receipt_pre_tax_summary_off">Calculates Tax From a Post-Tax Price</string>
+    <string name="pref_receipt_pre_tax_title">הנח שמחיר הוא לפני מס</string>
+    <string name="pref_receipt_pre_tax_summary_on">מחשב מס ממחיר טרום ניכוי מס</string>
+    <string name="pref_receipt_pre_tax_summary_off">מחשב מס ממחיר לאחר ניכוי מס</string>
     <string name="pref_receipt_enable_autocomplete_key" translatable="false">EnableAutoCompleteSuggestions</string>
-    <string name="pref_receipt_enable_autocomplete_title">Enable AutoComplete Suggestions</string>
-    <string name="pref_receipt_enable_autocomplete_summary">Suggest values from previous values</string>
+    <string name="pref_receipt_enable_autocomplete_title">אפשר הצעות אוטומטיות להשלמה</string>
+    <string name="pref_receipt_enable_autocomplete_summary">מציע ערכים אפשריים מערכים קודמים</string>
     <string name="pref_receipt_minimum_receipts_price_key" translatable="false">MinReceiptPrice</string>
-    <string name="pref_receipt_minimum_receipts_price_title">Minimum Receipt Price</string>
-    <string name="pref_receipt_minimum_receipts_price_summary_all">Include all receipts in report</string>
-    <string name="pref_receipt_minimum_receipts_price_summary_partial">Only report receipt prices over %s</string>
+    <string name="pref_receipt_minimum_receipts_price_title">מחיר קבלה מינימלי</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">הכלל את כל הקבלות בדוח</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">%s דווח רק על קבלות מעל</string>
     <string name="pref_receipt_default_to_report_start_date_key" translatable="false">DefaultToFirstReportDate</string>
-    <string name="pref_receipt_default_to_report_start_date_title">Default to Report Start Date</string>
-    <string name="pref_receipt_default_to_report_start_date_summary">Sets receipt date to match report date</string>
+    <string name="pref_receipt_default_to_report_start_date_title">קבע את תאריך תחילת הדוח כברירת מחדל</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">קובע את תאריך הקבלה לתאריך תחילת הדוח</string>
     <string name="pref_receipt_show_id_key" translatable="false">ShowReceiptID</string>
-    <string name="pref_receipt_show_id_title">Show Receipt ID</string>
-    <string name="pref_receipt_show_id_summary">Displays an auto-generated ID field</string>
+    <string name="pref_receipt_show_id_title">הראה מזהה קבלה</string>
+    <string name="pref_receipt_show_id_summary">מראה מזהה לכל קבלה (מספר המוקצה אוטומטית)</string>
     <string name="pref_receipt_full_page_key" translatable="false">UseFullPage</string>
-    <string name="pref_receipt_full_page_title">Assume Full Page</string>
-    <string name="pref_receipt_full_page_summary">Marks Receipts as Full Page by Default</string>
+    <string name="pref_receipt_full_page_title">הנח דף מלא</string>
+    <string name="pref_receipt_full_page_summary">מסמן קבלות כדף מלא כברירת מחדל</string>
     <string name="pref_receipt_use_payment_methods_key" translatable="false">UsePaymentMethods</string>
-    <string name="pref_receipt_use_payment_methods_title">Enable Payment Methods</string>
-    <string name="pref_receipt_use_payment_methods_summary">Select to track payment methods for receipts</string>
+    <string name="pref_receipt_use_payment_methods_title">אפשר אמצעי תשלום</string>
+    <string name="pref_receipt_use_payment_methods_summary">סמן על מנת לעקוב אחרי אמצעי תשלום לקבלות</string>
     <string name="pref_receipt_payment_methods_key" translatable="false">PaymentMethods</string>
-    <string name="pref_receipt_payment_methods_title">Customize Payment Methods</string>
-    <string name="pref_receipt_payment_methods_summary">Tap here to add/edit payment methods</string>
+    <string name="pref_receipt_payment_methods_title">התאמה אישית לאמצעי תשלום</string>
+    <string name="pref_receipt_payment_methods_summary">לחץ כאן להוספה/שינוי אמצעי תשלום</string>
 
     <!-- ============= Preference Output ================= -->
     <string name="pref_output_custom_csv_key" translatable="false">CustomizeCSVOutput</string>
-    <string name="pref_output_custom_csv_title">Customize CSV Output</string>
+    <string name="pref_output_custom_csv_title">התאמה אישית לדוח אקסל</string>
     <string name="pref_output_custom_pdf_key" translatable="false">CustomizePDFOutput</string>
-    <string name="pref_output_custom_pdf_title">Customize PDF Output</string>
+    <string name="pref_output_custom_pdf_title">התאמה אישית לדוח פידיאף</string>
     <string name="pref_output_username_key" translatable="false">UserName</string>
-    <string name="pref_output_username_title">User ID</string>
-    <string name="pref_output_username_emptyValue">Used as a Custom Output Field</string>
+    <string name="pref_output_username_title">מזהה משתמש</string>
+    <string name="pref_output_username_emptyValue">משמש כשדה ייצוא בהתאמה אישית</string>
     <string name="pref_output_print_receipt_id_by_photo_key" translatable="false">PrintByIDPhotoKey</string>
-    <string name="pref_output_print_receipt_id_by_photo_title">Print ID By Photo</string>
-    <string name="pref_output_print_receipt_id_by_photo_summary">Shows the Receipt ID instead of Index</string>
+    <string name="pref_output_print_receipt_id_by_photo_title">הראה מזהה לפי תמונה</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">מראה את מזהה את קבלה במקום מספר אינדקס</string>
     <string name="pref_output_print_receipt_comment_by_photo_key" translatable="false">PrintCommentByPhoto</string>
-    <string name="pref_output_print_receipt_comment_by_photo_title">Print Receipt Comment By Photo</string>
-    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Shows the Receipt comment above PDF photos</string>
-    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Hide the Receipt comment above PDF photos</string>
+    <string name="pref_output_print_receipt_comment_by_photo_title">הראה הערה לקבלה לפי תמונה</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">מראה הערה לקבלה מעל תמונות פידיאף</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">מחביא הערה לקבלה מתחת לתמונות פידיאף</string>
     <string name="pref_output_receipts_landscape_key" translatable="false">ReceiptsTableLandscape</string>
-    <string name="pref_output_receipts_landscape_title">Print receipts table in landscape mode</string>
-    <string name="pref_output_receipts_landscape_on">Receipts table is printed in landscape mode</string>
-    <string name="pref_output_receipts_landscape_off">Receipts table is printed in portrait mode</string>
+    <string name="pref_output_receipts_landscape_title">מדפיס טבלת קבלות בדף מאוזן</string>
+    <string name="pref_output_receipts_landscape_on">טבלת קבלות מודפסת בדף מאוזן</string>
+    <string name="pref_output_receipts_landscape_off">טבלת קבלות מודפסת בדף מאונך</string>
     <string name="pref_output_pdf_page_size_key" translatable="false">PdfPageSize</string>
     <string name="pref_output_pdf_page_size_a4_entryValue" translatable="false">A4</string>
     <string name="pref_output_pdf_page_size_letter_entryValue" translatable="false">Letter</string>
@@ -115,31 +115,31 @@
 
     <!-- ============== Preference Email ================= -->
     <string name="pref_email_default_email_to_key" translatable="false">EmailTo</string>
-    <string name="pref_email_default_email_to_title">Default Email To Recipient</string>
+    <string name="pref_email_default_email_to_title">כתובת אימייל ברירת מחדל למשלוח הדוח</string>
     <string name="pref_email_default_email_cc_key" translatable="false">EmailCC</string>
-    <string name="pref_email_default_email_cc_title">Default Email CC Recipient</string>
+    <string name="pref_email_default_email_cc_title">כתובת אימייל ברירת מחדל למשלוח העתק של הדוח</string>
     <string name="pref_email_default_email_bcc_key" translatable="false">EmailBCC</string>
-    <string name="pref_email_default_email_bcc_title">Default Email BCC Recipient</string>
-    <string name="pref_email_default_email_emptyValue">Separate values with a semicolon (;)</string>
+    <string name="pref_email_default_email_bcc_title">כתובת אימייל בריבת מחדל למשלוח העתק מוסתר של הדוח</string>
+    <string name="pref_email_default_email_emptyValue">(;) הפרד ערכים עם פסיקודה</string>
     <string name="pref_email_default_email_subject_key" translatable="false">EmailSubject</string>
-    <string name="pref_email_default_email_subject_title">Default Email Subject</string>
+    <string name="pref_email_default_email_subject_title">כותרת אימייל ברירת מחדל</string>
 
     <!-- ============= Preference Camera ================= -->
     <string name="pref_camera_bw_key" translatable="false">SaveBW</string>
-    <string name="pref_camera_bw_title">Convert to Grayscale</string>
-    <string name="pref_camera_bw_summary">Saves image in black and white</string>
+    <string name="pref_camera_bw_title">המר לגווני אפור</string>
+    <string name="pref_camera_bw_summary">שומר תמונה בשחור ולבן</string>
     <string name="pref_camera_rotate_key" translatable="false">Camera_Rotate</string>
-    <string name="pref_camera_rotate_title">Automatically rotate images</string>
-    <string name="pref_camera_rotate_summaryOn">Try to rotate images upright</string>
-    <string name="pref_camera_rotate_summaryOff">Do not rotate images</string>
+    <string name="pref_camera_rotate_title">סובב תמונות באופן אוטומטי</string>
+    <string name="pref_camera_rotate_summaryOn">נסה לסובב את התמונה לכיוון הנכון</string>
+    <string name="pref_camera_rotate_summaryOff">אל תסובב תמונות</string>
 
     <!-- ============= Preference Layout ================= -->
     <string name="pref_layout_display_date_key" translatable="false">LayoutIncludeReceiptDate</string>
-    <string name="pref_layout_display_date_title">Include Receipt Date</string>
-    <string name="pref_layout_display_date_summary">Shows the date of receipt list items</string>
+    <string name="pref_layout_display_date_title">כלול תאריך קבלה</string>
+    <string name="pref_layout_display_date_summary">מראה תאריך לכל קבלה ברשימת הקבלות</string>
     <string name="pref_layout_display_category_key" translatable="false">LayoutIncludeReceiptCategory</string>
-    <string name="pref_layout_display_category_title">Include Receipt Category</string>
-    <string name="pref_layout_display_category_summary">Shows the category of receipt list items</string>
+    <string name="pref_layout_display_category_title">הכלל קטגוריית קבלה</string>
+    <string name="pref_layout_display_category_summary">מראה קטגוריה לכל קבלה ברשימת הקבלות</string>
 
     <!-- ============= Preference Distance ================= -->
     <string name="pref_distance_include_price_in_report_key" translatable="false">MileageTotalInReport</string>
