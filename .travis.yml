@@ -29,7 +29,7 @@ before_install:
 script:
 - "./gradlew clean test"
 after_failure:
-- find .
+- echo "Build FAILED"
 
 # tests
 - cat app/build/reports/tests/testFreeDebugUnitTest/index.html
