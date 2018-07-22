@@ -12,7 +12,6 @@
     <string name="menu_main_pdf">PDF התאם אישית פלט </string>
     <string name="menu_main_ocr_configuration">(OCR) סריקות אוטומטיות</string>
     <string name="menu_main_export">גיבוי</string>
-    <string name="menu_main_usage_guide">מדריך שימוש</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">הוסף</string>
@@ -23,7 +22,7 @@
     <string name="day">יום %s</string>
     <string name="days">ימים %s</string>
     <string name="delete">מחק</string>
-    <string name="delete_item">\?%s מחק</string>
+    <string name="delete_item">?%s מחק</string>
     <string name="delete_sync_information">כל מידע מסונכרן לענן על הפריט הזה יימחק גם הוא.</string>
     <string name="distance">מרחק</string>
     <string name="distance_total_item">%s :סה״כ מרחק</string>
@@ -36,7 +35,7 @@
     <string name="item_code">:קוד</string>
     <string name="item_name">:שם</string>
     <string name="move">הזז</string>
-    <string name="move_copy_item">\?%s הזז/העתק את</string>
+    <string name="move_copy_item">?%s הזז/העתק את</string>
     <string name="next_id">%s :המזהה הבא</string>
     <string name="no">לא</string>
     <string name="pdf">PDF</string>
@@ -93,8 +92,6 @@
     <plurals name="ocr_informational_tooltip_limited_scans_text">
         <item quantity="one">.סריקה נותרה. לחץ ליותר %d</item>
         <item quantity="other">.סריקות נותרו. לחץ ליותר %d</item>
-        <item quantity="two">.סריקות נותרו. לחץ ליותר %d</item>
-        <item quantity="many">.סריקות נותרו. לחץ ליותר %d</item>
     </plurals>
     <string name="ocr_status_title">:OCR מבצע סריקת</string>
     <string name="ocr_status_message_uploading_image">&#8230;מעלה קבלה</string>
@@ -104,10 +101,10 @@
     <string name="ocr_configuration_scans_remaining">%d :שנותרו (OCR) סריקות אוטומטיות</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">(OCR) סריקות אוטומטיות</string>
-    <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
+	    <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
     <string name="ocr_configuration_information_line2">We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</string>
-    <string name="ocr_is_enabled">\?(OCR) הפעל סריקות אוטומטיות</string>
-    <string name="ocr_save_scans_to_improve_results">\?אפשר לנו לשמור תמונות על מנת לשפר את התוצאות</string>
+    <string name="ocr_is_enabled">?(OCR) הפעל סריקות אוטומטיות</string>
+    <string name="ocr_save_scans_to_improve_results">?אפשר לנו לשמור תמונות על מנת לשפר את התוצאות</string>
     <string name="ocr_configuration_available_purchases">:רכישות אפשריות - לחץ לקנות</string>
     <string name="ocr_configuration_information_line3">To try OCR, all new users get 2 free scans! Please remember that OCR is an optional feature and can be disabled at any time.</string>
 
@@ -173,15 +170,15 @@
 
     <!-- ============== Progress Messages ================= -->
     <string name="progress_import">מעלה את הקבצים שלך&#8230;</string>
-    <string name="progress_building_reports">&#8230;בונה דוחות</string>
+    <string name="progress_building_reports">...בונה דוחות</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">.תקלה: אנא וודא שכרטיס הזכרון שלך זמין ולא מחובר למחשב שלך</string>
-    <string name="SD_WARNING">אזהרה: כרטיס הזכרון שלך לא זמין או מחובר למחשב שלך. חלק מהתמונות עלולות להיות בלתי נגישות. מחליף לזכרון פנימי&#8230;</string>
+	    <string name="SD_ERROR">.תקלה: אנא וודא שכרטיס הזכרון שלך זמין ולא מחובר למחשב שלך</string>
+	    <string name="SD_WARNING">אזהרה: כרטיס הזכרון שלך לא זמין או מחובר למחשב שלך. חלק מהתמונות עלולות להיות בלתי נגישות. מחליף לזכרון פנימי&#8230;</string>
     <string name="database_error">תקלה: שמירת קבלה נכשלה</string>
     <string name="database_get_error">.תקלה: בלתי אפשרי לגשת למידע שלך. אנא הפעל מחדש את האפליקציה</string>
-    <string name="IMG_OPEN_ERROR">.תקלה: התמונה כרגע בלתי נגישה או פגומה. כרטיס הזכרון שלך עלול להיות בלתי זמין או מחובר למחשב שלך. אם הוא לא, אנא לחץ על כפתור התפריט על מנת לצלם את התמונה מחדש.</string>
-    <string name="IMG_SAVE_ERROR">תקלה: התמונה לא נשמרה כראוי</string>
+	    <string name="IMG_OPEN_ERROR">.תקלה: התמונה כרגע בלתי נגישה או פגומה. כרטיס הזכרון שלך עלול להיות בלתי זמין או מחובר למחשב שלך. אם הוא לא, אנא לחץ על כפתור התפריט על מנת לצלם את התמונה מחדש.</string>
+	    <string name="IMG_SAVE_ERROR">תקלה: התמונה לא נשמרה כראוי</string>
     <string name="FILE_SAVE_ERROR">תקלה: הקובץ לא נשמר כראוי</string>
     <string name="ILLEGAL_CHAR_ERROR">תקלה: שם הקובץ מכיל תו בלתי חורי</string>
     <string name="SPACE_ERROR">תקלה: השם לא יכול להתחיל עם רווח</string>
@@ -326,26 +323,27 @@
     <string name="auto_backup_title">:גיבוי אוטומטי (ביטא)</string>
     <string name="auto_backup_wifi_only">השתמש בווייפיי בלבד</string>
     <string name="auto_backup_warning_none">זהירות: גיבויים אוטומטיים לא הוגדרו! אתה עלול לאבד את המידע שלך.</string>
-    <string name="auto_backup_warning_drive">זהירות: אתה עלול להיות מחויב על ידי מפעיל הסלולר שלך על ידי יצירת גיבויים אוטומטיים ברשת הסלולרית.</string>
+	    <string name="auto_backup_warning_drive">זהירות: אתה עלול להיות מחויב על ידי מפעיל הסלולר שלך על ידי יצירת גיבויים אוטומטיים ברשת הסלולרית.</string>
     <string name="auto_backup_configure">לחץ להגדרות</string>
     <string name="auto_backup_source_none">כלום</string>
     <string name="auto_backup_source_google_drive">Google Drive</string>
     <string name="existing_backups_title">גיבויים קיימים</string>
     <string name="existing_remote_backup_current_device">%s (הגיבוי הנוכחי שלך)</string>
     <string name="remote_backups_list_item_menu_restore">שחזר</string>
-    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
+    <string name="remote_backups_list_item_menu_delete">@string/מחק</string>
     <string name="remote_backups_list_item_menu_download_images">הורד כקובץ זיפ</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] הורד</string>
-    <string name="dialog_remote_backup_delete_title">@string/delete</string>
-    <string name="dialog_remote_backup_delete_message">אתה בטוח שאתה רוצה למחוק את הגיבויים שלך ממכשיר %s? פעולה זו הינה בלתי הפיכה.</string>
-    <string name="dialog_remote_backup_delete_message_this_device">אתה בטוח שאתה רוצה למחוק את הגיבוי שלך מהמכשיר הזה? הפעולה הינה בלתי הפיכה. אנא שים לב שרצוי לכבות את פונקציית הגיבויים האוטומטיים אחרי שהפעולה הזו הושלמה או שכל המידע המקומי עלול להיות מסונכרן שוב.</string>
-    <string name="dialog_remote_backup_delete_positive">@string/delete</string>
+    <string name="dialog_remote_backup_delete_title">@string/מחק</string>
+    <string name="dialog_remote_backup_delete_message">Are you sure you wish to delete your backup from the %s device? This operation cannot be undone.</string>
+	  <string name="dialog_remote_backup_delete_message">אתה בטוח שאתה רוצה למחוק את הגיבויים שלך ממכשיר %s? פעולה זו הינה בלתי הפיכה.  </string>
+	    <string name="dialog_remote_backup_delete_message_this_device">אתה בטוח שאתה רוצה למחוק את הגיבוי שלך מהמכשיר הזה? הפעולה הינה בלתי הפיכה. אנא שים לב שרצוי לכבות את פונקציית הגיבויים האוטומטיים אחרי שהפעולה הזו הושלמה או שכל המידע המקומי עלול להיות מסונכרן שוב.</string>
+    <string name="dialog_remote_backup_delete_positive">@string/מחק</string>
     <string name="dialog_remote_backup_delete_progress">מחק את הגיבוי שלך ממכשיר %s &#8230;</string>
     <string name="dialog_remote_backup_delete_toast_success">הגיבוי נמחק בהצלחה</string>
     <string name="dialog_remote_backup_delete_toast_failure">מחיקת הגיבוי נכשלה</string>
     <string name="dialog_remote_backup_download_progress">מוריד קבצים לקובץ זיפ&#8230;</string>
     <string name="dialog_remote_backup_drive_restore_title">שחזור דרייב</string>
-    <string name="dialog_remote_backup_drive_restore_message">יש לנו בעיה עם סנכון המידע שלך. על מנת לטפל בנושא, נרצה למחוק את גיבוי הדרייב שלך ולסנכרן מחדש. אם אתה רואה את ההודעה הזו באופן קבוע, אנא צור קשר עם מפתח האפליקציה לתמיכה נוספת.</string>
+	    <string name="dialog_remote_backup_drive_restore_message">יש לנו בעיה עם סנכון המידע שלך. על מנת לטפל בנושא, נרצה למחוק את גיבוי הדרייב שלך ולסנכרן מחדש. אם אתה רואה את ההודעה הזו באופן קבוע, אנא צור קשר עם מפתח האפליקציה לתמיכה נוספת.</string>
     <string name="dialog_remote_backup_restore_progress">מוחק את הגיבוי על מנת להתכונן לסנכרון מחדש&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_success">גיבוי נמחק בהצלחה. מסכנרן מחדש&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_failure">נכשל בסנכרון מחדש של הגיבוי</string>
@@ -463,9 +461,11 @@
 
     <!-- ================== SQL Corrpution ==================== -->
     <string name="dialog_sql_corrupt_title">הו לא!</string>
-    <string name="dialog_sql_corrupt_message">מסד הנתונים שלך פגום. מצב זה קורה לרוב אם יש לך אפליקצית ״הריגת״ מטלות ברקע, אבל הוא יכול להיגרם מכל מיני סיבות. אל תדאג, נוכל לשחזר את המידע שלך.</string>
+    <string name="dialog_sql_corrupt_message">Your database was corrupted. This often occurs if you have a task killer app, but it can be caused by a few different things. Don\'t worry, we should be able to restore most of your data.</string>
+	    <string name="dialog_sql_corrupt_message">מסד הנתונים שלך פגום. מצב זה קורה לרוב אם יש לך אפליקצית ״הריגת״ מטלות ברקע, אבל הוא יכול להיגרם מכל מיני סיבות. אל תדאג, נוכל לשחזר את המידע שלך.</string>
     <string name="dialog_sql_corrupt_positive">שלח דואר אלקטרוני למפתח על מנת לבקש סיוע</string>
     <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - מסדי נתונים פגומים</string>
+    <string name="dialog_sql_corrupt_intent_text">Help - my database was corrupted. How can you help me restore things?</string>
     <string name="dialog_sql_corrupt_intent_text">עזרה - מסד הנתונים שלי פגום. כיצד תוכל לעזור לי לשחזר את המידע שלי?</string>
     <string name="dialog_sql_corrupt_chooser">שלח דואר אלקטרוני&#8230;</string>
 
@@ -506,7 +506,7 @@
     <string name="rating_tooltip_text">אוהב את Smart Receipts?</string>
     <string name="leave_feedback_text">תרצה להשאיר לנו פידבק?</string>
     <string name="apprating_dialog_title">אוהב את %s?</string>
-    <string name="apprating_dialog_message">אנא שקול להשאיר ביקורת בחנות האפליקציות. בתור מפתח עצמאי, הביקורות שלך הן אמצעי החשיפה העיקרי שלי ויכולות מאוד לעזור לי לפתח פונקציונאליות נוספת. תודה!</string>
+	    <string name="apprating_dialog_message">אנא שקול להשאיר ביקורת בחנות האפליקציות. בתור מפתח עצמאי, הביקורות שלך הן אמצעי החשיפה העיקרי שלי ויכולות מאוד לעזור לי לפתח פונקציונאליות נוספת. תודה!</string>
     <string name="apprating_dialog_negative">לא תודה</string>
     <string name="apprating_dialog_neutral">אולי אחר כך</string>
     <string name="apprating_dialog_positive">דרג עכשיו!</string>
