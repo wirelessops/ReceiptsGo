@@ -9,9 +9,9 @@
 <a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="162" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 Turn your phone into a receipt scanner and expense report generator with [Smart Receipts](https://www.smartreceipts.co/)! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
- 
+
 Download Smart Receipts on Google Play:
- 
+
 - [Smart Receipts](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3Dcom.github.wbaumann.SmartReceiptsLibrary). The free version of the app, but it also supports an in-app purchase subscription.
 - [Smart Receipts Plus](https://play.google.com/store/apps/details?id=wb.receiptspro&referrer=utm_source%3Dcom.github.wbaumann.SmartReceiptsLibrary). A 'paid' app from back before Google supported in-app purchases.
 
@@ -22,16 +22,19 @@ The free and plus versions versions are identical, except the plus version offer
 - The paid version automatically processes exchange rate conversions
 - The paid version allows you to automatically break down prices by category/payment method in your reports
 - The paid version allows you to edit/customize the pdf report footer (by default, it is "Report Generated with Smart Receipts")
-    
+
 ## Table of Contents
 
-- [Guide](#guide)
-- [Features](#features)
-- [Install](#install)
-- [Contribute](#contribute)
-- [Continuous Integration](#continuous-integration)
-- [License](#license)
-- [Attribution](#attribution)
+- [Smart Receipts](#smart-receipts)
+  - [Table of Contents](#table-of-contents)
+  - [Guide](#guide)
+  - [Features](#features)
+  - [Install](#install)
+  - [Donate](#donate)
+  - [Contribute](#contribute)
+  - [Continuous Integration](#continuous-integration)
+  - [License](#license)
+  - [Attribution](#attribution)
 
 ## Guide
 
@@ -42,6 +45,7 @@ Curious about how Smart Receipts works? Check out our usage guide:
 Or watch out [YouTube video series](https://www.youtube.com/watch?v=bd9RcOq0nAE&list=PLXMTwjaz9mUJMQN2Y3IXNc_vxjWCKIc66).
 
 ## Features
+
 - [X] Create expense report "folders" to categorize your receipts
 - [X] Take receipt photos with your camera's phone
 - [X] Import existing pictures on your device
@@ -75,6 +79,7 @@ To install, clone or pull down this project. Please note that it will **NOT** wo
 Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Receipts PlusFlavor), since there are less secrets that have been explicitly git ignored to avoid key leaks.
 
 ## Donate
+
 If you like our project, please consider donating:
 
 - **BTC:** [3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK](https://www.blockchain.com/btc/address/3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK)
@@ -92,18 +97,18 @@ We currently use Travis-CI for our continuous integration in order perform tests
 
 As we have save a few local API keys (e.g. for ads), we use encrypt a few files in our travis repository. You generate your own encrypted set as follows (note: please install the [Travis CLI client](https://github.com/travis-ci/travis.rb) first):
 
-```
+```bash
 $ travis login --pro
 $ tar cvf secrets.tar app/src/main/res/values/secrets.xml app/src/free/res/values/ads.xml app/src/free/res/xml/analytics.xml
 $ travis encrypt-file secrets.tar --add --pro
 $ rm -f secrets.tar
 ```
 
-This should automatically update our `.travis.yml` for the build
+This should automatically update our `.travis.yml` for the build.
 
 ## License
 
-```
+```none
 The GNU Affero General Public License (AGPL)
 
 Copyright (c) 2012-2018 Smart Receipts LLC (Will Baumann)
@@ -124,6 +129,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Attribution
 
-```
+```none
 Google Play and the Google Play logo are trademarks of Google LLC.
 ```
