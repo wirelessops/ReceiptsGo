@@ -19,9 +19,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.common.base.Preconditions;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -32,6 +36,12 @@ import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter;
+import co.smartreceipts.android.autocomplete.AutoCompleteField;
+import co.smartreceipts.android.autocomplete.AutoCompletePresenter;
+import co.smartreceipts.android.autocomplete.AutoCompleteResult;
+import co.smartreceipts.android.autocomplete.AutoCompleteView;
+import co.smartreceipts.android.autocomplete.distance.DistanceAutoCompleteField;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
@@ -47,9 +57,9 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
-import wb.android.autocomplete.AutoCompleteAdapter;
+import io.reactivex.Observable;
 
-public class DistanceDialogFragment extends DialogFragment implements OnClickListener {
+public class DistanceDialogFragment extends DialogFragment implements OnClickListener, AutoCompleteView<Distance> {
 
     public static final String TAG = DistanceDialogFragment.class.getSimpleName();
     private static final String ARG_SUGGESTED_DATE = "arg_suggested_date";
@@ -65,6 +75,9 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
 
     @Inject
     UserPreferenceManager userPreferenceManager;
+
+    @Inject
+    AutoCompletePresenter<Distance> distanceAutoCompletePresenter;
 
     // Butterknife Fields
     @BindView(R.id.dialog_mileage_distance)
@@ -92,8 +105,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
     private Trip trip;
     private Distance updateableDistance;
     private Date suggestedDate;
-
-    private AutoCompleteAdapter locationAutoCompleteAdapter;
 
     // Presenters
     private CurrencyListEditorPresenter currencyListEditorPresenter;
@@ -170,7 +181,7 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
         suggestedDate = new Date(getArguments().getLong(ARG_SUGGESTED_DATE, now.toMillis(false)));
 
         final DistanceCurrencyCodeSupplier currencyCodeSupplier = new DistanceCurrencyCodeSupplier(trip, updateableDistance);
-        final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
+        final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
     }
 
@@ -197,13 +208,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             if (distanceRate > 0) {
                 rateEditText.setText(ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(distanceRate), Distance.RATE_PRECISION));
             }
-            if (locationAutoCompleteAdapter == null) {
-                locationAutoCompleteAdapter = AutoCompleteAdapter.getInstance(getActivity(),
-                        DatabaseHelper.TAG_DISTANCE_LOCATION, database);
-            } else {
-                locationAutoCompleteAdapter.reset();
-            }
-            locationAutoCompleteTextView.setAdapter(locationAutoCompleteAdapter);
             distanceEditText.setOnFocusChangeListener((view, hasFocus) -> SoftKeyboardManager.showKeyboard(view));
         } else {
             // Update distance
@@ -224,18 +228,17 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        distanceAutoCompletePresenter.subscribe();
         currencyListEditorPresenter.subscribe();
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
         currencyListEditorPresenter.unsubscribe();
-        if (locationAutoCompleteAdapter != null) {
-            locationAutoCompleteAdapter.onPause();
-        }
-        super.onPause();
+        distanceAutoCompletePresenter.subscribe();
+        super.onStop();
     }
 
     @Override
@@ -327,6 +330,32 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
             return new BigDecimal(number.replace(",", "."));
         } catch (NumberFormatException e) {
             return fallback;
+        }
+    }
+
+    @Override
+    public boolean isInEditingMode() {
+        return updateableDistance != null;
+    }
+
+    @NotNull
+    @Override
+    public Observable<CharSequence> getTextChangeStream(@NotNull AutoCompleteField field) {
+        if (field == DistanceAutoCompleteField.Location) {
+            return RxTextView.textChanges(locationAutoCompleteTextView);
+        } else {
+            throw new IllegalArgumentException("Unsupported field type: " + field);
+        }
+    }
+
+    @Override
+    public void displayAutoCompleteResults(@NotNull AutoCompleteField field, @NotNull List<AutoCompleteResult<Distance>> autoCompleteResults) {
+        final AutoCompleteArrayAdapter<Distance> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
+        if (field == DistanceAutoCompleteField.Location) {
+            locationAutoCompleteTextView.setAdapter(resultsAdapter);
+            locationAutoCompleteTextView.showDropDown();
+        } else {
+            throw new IllegalArgumentException("Unsupported field type: " + field);
         }
     }
 }

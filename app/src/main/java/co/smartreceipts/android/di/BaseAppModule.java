@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import co.smartreceipts.android.SmartReceiptsApplication;
+import co.smartreceipts.android.autocomplete.di.AutoCompleteModule;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import dagger.Module;
 import dagger.Provides;
@@ -13,7 +14,8 @@ import dagger.Provides;
                     LocalRepositoryModule.class,
                     SharedPreferencesModule.class,
                     ImageLoadingModule.class,
-                    ConfigurationModule.class})
+                    ConfigurationModule.class,
+                    AutoCompleteModule.class })
 public class BaseAppModule {
 
     private final SmartReceiptsApplication application;

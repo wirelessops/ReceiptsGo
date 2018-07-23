@@ -20,9 +20,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +35,12 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter;
+import co.smartreceipts.android.autocomplete.AutoCompleteField;
+import co.smartreceipts.android.autocomplete.AutoCompletePresenter;
+import co.smartreceipts.android.autocomplete.AutoCompleteResult;
+import co.smartreceipts.android.autocomplete.AutoCompleteView;
+import co.smartreceipts.android.autocomplete.trip.TripAutoCompleteField;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
@@ -49,10 +57,12 @@ import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
-import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.flex.Flex;
 
-public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener, CurrencyListEditorView, TripDateView {
+public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener,
+        CurrencyListEditorView,
+        TripDateView,
+        AutoCompleteView<Trip> {
 
     public static final String ARG_EXISTING_TRIPS = "arg_existing_trips";
 
@@ -71,17 +81,19 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Inject
     TripCreateEditFragmentPresenter presenter;
 
+    @Inject
+    AutoCompletePresenter<Trip> tripAutoCompletePresenter;
+
     TripDatesPresenter tripDatesPresenter;
 
     private AutoCompleteTextView nameBox;
     private DateEditText startDateBox;
     private DateEditText endDateBox;
     private Spinner currencySpinner;
-    private EditText commentBox;
+    private AutoCompleteTextView commentBox;
     private AutoCompleteTextView costCenterBox;
 
     private View focusedView;
-    private AutoCompleteAdapter nameAutoCompleteAdapter, costCenterAutoCompleteAdapter;
 
     // Presenters
     private CurrencyListEditorPresenter currencyListEditorPresenter;
@@ -105,7 +117,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
         final TripCurrencyCodeSupplier currencyCodeSupplier = new TripCurrencyCodeSupplier(userPreferenceManager, getTrip());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, currencyCodeSupplier, savedInstanceState);
-        defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(getContext(), () -> currencySpinner);
+        defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
         tripDatesPresenter = new TripDatesPresenter(this, userPreferenceManager, getTrip());
     }
 
@@ -126,12 +138,12 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.update_trip, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
 
@@ -162,6 +174,14 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        tripAutoCompletePresenter.subscribe();
+        currencyListEditorPresenter.subscribe();
+        tripDatesPresenter.subscribe();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -177,27 +197,22 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         if (focusedView != null) {
             focusedView.requestFocus(); // Make sure we're focused on the right view
         }
-
-        currencyListEditorPresenter.subscribe();
-        tripDatesPresenter.subscribe();
     }
 
     @Override
     public void onPause() {
-        currencyListEditorPresenter.unsubscribe();
-        tripDatesPresenter.unsubscribe();
-
-        if (nameAutoCompleteAdapter != null) {
-            nameAutoCompleteAdapter.onPause();
-        }
-        if (costCenterAutoCompleteAdapter != null) {
-            costCenterAutoCompleteAdapter.onPause();
-        }
-
         // Dismiss the soft keyboard
         SoftKeyboardManager.hideKeyboard(focusedView);
 
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        tripAutoCompletePresenter.unsubscribe();
+        currencyListEditorPresenter.unsubscribe();
+        tripDatesPresenter.unsubscribe();
+        super.onStop();
     }
 
     @Override
@@ -211,7 +226,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         startDateBox = (DateEditText) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_start);
         endDateBox = (DateEditText) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_end);
         currencySpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_currency);
-        commentBox = (EditText) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_comment);
+        commentBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_comment);
 
         costCenterBox = rootView.findViewById(R.id.dialog_tripmenu_cost_center);
         View costCenterBoxLayout = rootView.findViewById(R.id.dialog_tripmenu_cost_center_layout);
@@ -237,16 +252,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
     private void fillFields() {
         if (getTrip() == null) { // new trip
-
-            if (presenter.isEnableAutoCompleteSuggestions()) {
-                DatabaseHelper db = presenter.getDatabaseHelper();
-                nameAutoCompleteAdapter = AutoCompleteAdapter.getInstance(getActivity(), DatabaseHelper.TAG_TRIPS_NAME, db);
-                costCenterAutoCompleteAdapter = AutoCompleteAdapter.getInstance(getActivity(), DatabaseHelper.TAG_TRIPS_COST_CENTER, db);
-
-                nameBox.setAdapter(nameAutoCompleteAdapter);
-                costCenterBox.setAdapter(costCenterAutoCompleteAdapter);
-            }
-
             //prefill the dates
             final Calendar startCalendar = Calendar.getInstance();
             startCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -292,6 +297,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     SoftKeyboardManager.hideKeyboard(view);
                 }
+                view.performClick();
                 return false;
             }
         };
@@ -386,5 +392,41 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
     private String getFlexString(int id) {
         return getFlexString(flex, id);
+    }
+
+    @Override
+    public boolean isInEditingMode() {
+        return getTrip() != null;
+    }
+
+    @NotNull
+    @Override
+    public Observable<CharSequence> getTextChangeStream(@NotNull AutoCompleteField field) {
+        if (field == TripAutoCompleteField.Name) {
+            return RxTextView.textChanges(nameBox);
+        } else if (field == TripAutoCompleteField.Comment) {
+            return RxTextView.textChanges(commentBox);
+        } else if (field == TripAutoCompleteField.CostCenter) {
+            return RxTextView.textChanges(costCenterBox);
+        } else {
+            throw new IllegalArgumentException("Unsupported field type: " + field);
+        }
+    }
+
+    @Override
+    public void displayAutoCompleteResults(@NotNull AutoCompleteField field, @NotNull List<AutoCompleteResult<Trip>> autoCompleteResults) {
+        final AutoCompleteArrayAdapter<Trip> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
+        if (field == TripAutoCompleteField.Name) {
+            nameBox.setAdapter(resultsAdapter);
+            nameBox.showDropDown();
+        } else if (field == TripAutoCompleteField.Comment) {
+            commentBox.setAdapter(resultsAdapter);
+            commentBox.showDropDown();
+        } else if (field == TripAutoCompleteField.CostCenter) {
+            costCenterBox.setAdapter(resultsAdapter);
+            costCenterBox.showDropDown();
+        } else {
+            throw new IllegalArgumentException("Unsupported field type: " + field);
+        }
     }
 }

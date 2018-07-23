@@ -3,5 +3,5 @@
 
     <!-- ================= Preference Pro ================== -->
     <string name="pref_pro_pdf_footer_defaultValue">Report Generated using Smart Receipts for Android</string>
-    
+
 </resources>

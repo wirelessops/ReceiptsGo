@@ -107,12 +107,14 @@
                     style="@style/Widget.SmartReceipts.GuideImage"
                     android:src="@drawable/ic_comment" />
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/dialog_tripmenu_comment"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
+                    android:completionThreshold="1"
                     android:hint="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                    android:inputType="textCapSentences"
                     android:imeOptions="actionNext"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
             </LinearLayout>

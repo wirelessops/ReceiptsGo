@@ -1,6 +1,5 @@
 package co.smartreceipts.android.persistence;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -38,11 +37,10 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.utils.sorting.AlphabeticalCaseInsensitiveCharSequenceComparator;
 import io.reactivex.Single;
-import wb.android.autocomplete.AutoCompleteAdapter;
 import wb.android.storage.StorageManager;
 
 @ApplicationScope
-public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdapter.QueryListener, AutoCompleteAdapter.ItemSelectedListener {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
     public static final String DATABASE_NAME = "receipts.db";
@@ -50,13 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
 
     @Deprecated
     public static final String NO_DATA = "null"; // TODO: Just set to null
-
-    // Tags
-    public static final String TAG_TRIPS_NAME = "Trips";
-    public static final String TAG_TRIPS_COST_CENTER = "Trips_CostCenter";
-    public static final String TAG_RECEIPTS_NAME = "Receipts";
-    public static final String TAG_RECEIPTS_COMMENT = "Receipts_Comment";
-    public static final String TAG_DISTANCE_LOCATION = "Distance_Location";
 
     // InstanceVar
     private static DatabaseHelper INSTANCE = null;
@@ -71,10 +62,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     private final DatabaseContext mContext;
     private final TableDefaultsCustomizer mCustomizations;
     private final UserPreferenceManager mPreferences;
-    private final OrderingPreferencesManager mOrderingPreferencesManager;
-
-    // Listeners
-    private ReceiptAutoCompleteListener mReceiptAutoCompleteListener;
 
     // Locks
     private final Object mDatabaseLock = new Object();
@@ -110,7 +97,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
         mPreferences = preferences;
         mReceiptColumnDefinitions = receiptColumnDefinitions;
         mCustomizations = tableDefaultsCustomizer;
-        mOrderingPreferencesManager = orderingPreferencesManager;
 
         // Tables:
         mTables = new ArrayList<>();
@@ -376,88 +362,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements AutoCompleteAdap
     @NonNull
     public final List<Table> getTables() {
         return mTables;
-    }
-
-    // //////////////////////////////////////////////////////////////////////////////////////////////////
-    // AutoCompleteTextView Methods
-    // //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public void registerReceiptAutoCompleteListener(ReceiptAutoCompleteListener listener) {
-        mReceiptAutoCompleteListener = listener;
-    }
-
-    public void unregisterReceiptAutoCompleteListener() {
-        mReceiptAutoCompleteListener = null;
-    }
-
-    @Override
-    public Cursor getAutoCompleteCursor(CharSequence text, CharSequence tag) {
-        // TODO: Fix SQL vulnerabilities
-        final SQLiteDatabase db = this.getReadableDatabase();
-        String sqlQuery = "";
-        if (tag == TAG_RECEIPTS_NAME) {
-            sqlQuery = " SELECT DISTINCT TRIM(" + ReceiptsTable.COLUMN_NAME + ") AS _id " + " FROM " + ReceiptsTable.TABLE_NAME + " WHERE " + ReceiptsTable.COLUMN_NAME + " LIKE '%" + text + "%' " + " ORDER BY " + ReceiptsTable.COLUMN_NAME;
-        } else if (tag == TAG_RECEIPTS_COMMENT) {
-            sqlQuery = " SELECT DISTINCT TRIM(" + ReceiptsTable.COLUMN_COMMENT + ") AS _id " + " FROM " + ReceiptsTable.TABLE_NAME + " WHERE " + ReceiptsTable.COLUMN_COMMENT + " LIKE '%" + text + "%' " + " ORDER BY " + ReceiptsTable.COLUMN_COMMENT;
-        } else if (tag == TAG_TRIPS_NAME) {
-            sqlQuery = " SELECT DISTINCT TRIM(" + TripsTable.COLUMN_NAME + ") AS _id " + " FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable.COLUMN_NAME + " LIKE '%" + text + "%' " + " ORDER BY " + TripsTable.COLUMN_NAME;
-        } else if (tag == TAG_TRIPS_COST_CENTER) {
-            sqlQuery = " SELECT DISTINCT TRIM(" + TripsTable.COLUMN_COST_CENTER + ") AS _id " + " FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable.COLUMN_COST_CENTER + " LIKE '%" + text + "%' " + " ORDER BY " + TripsTable.COLUMN_COST_CENTER;
-        } else if (tag == TAG_DISTANCE_LOCATION) {
-            sqlQuery = " SELECT DISTINCT TRIM(" + DistanceTable.COLUMN_LOCATION + ") AS _id " + " FROM " + DistanceTable.TABLE_NAME + " WHERE " + DistanceTable.COLUMN_LOCATION + " LIKE '%" + text + "%' " + " ORDER BY " + DistanceTable.COLUMN_LOCATION;
-        }
-        synchronized (mDatabaseLock) {
-            return db.rawQuery(sqlQuery, null);
-        }
-    }
-
-    @Override
-    public void onItemSelected(CharSequence text, CharSequence tag) {
-        // TODO: Make Async
-
-        Cursor c = null;
-        SQLiteDatabase db = null;
-        final String name = text.toString();
-        if (tag == TAG_RECEIPTS_NAME) {
-            Integer categoryId = null;
-            String price = null;
-            // If we're not predicting, return
-            if (!mPreferences.get(UserPreference.Receipts.PredictCategories)) {
-                // price = null;
-                // category = null
-            } else {
-                synchronized (mDatabaseLock) {
-                    try {
-                        db = this.getReadableDatabase();
-                        c = db.query(ReceiptsTable.TABLE_NAME,
-                                new String[]{ReceiptsTable.COLUMN_CATEGORY_ID, ReceiptsTable.COLUMN_PRICE},
-                                ReceiptsTable.COLUMN_NAME + "= ?",
-                                new String[]{name}, null, null, ReceiptsTable.COLUMN_DATE + " DESC", "2");
-                        if (c != null && c.getCount() == 2) {
-                            if (c.moveToFirst()) {
-                                categoryId = c.getInt(0);
-                                price = c.getString(1);
-                                if (c.moveToNext()) {
-                                    if (!categoryId.equals(c.getInt(0))) {
-                                        categoryId = null;
-                                    }
-                                    if (!price.equalsIgnoreCase(c.getString(1))) {
-                                        price = null;
-                                    }
-                                }
-                            }
-                        }
-                    } finally {
-                        if (c != null) {
-                            c.close();
-                        }
-                    }
-                }
-            }
-            if (mReceiptAutoCompleteListener != null) {
-                mReceiptAutoCompleteListener.onReceiptRowAutoCompleteQueryResult(name, price, categoryId);
-            }
-        }
     }
 
 }

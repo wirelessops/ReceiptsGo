@@ -1,6 +1,9 @@
 package co.smartreceipts.android.di;
 
 import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
+import co.smartreceipts.android.distance.editor.di.DistanceDialogFragmentModule;
+import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
@@ -25,6 +28,7 @@ import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.di.TripFragmentModule;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
+import co.smartreceipts.android.trips.editor.di.TripCreateEditFragmentModule;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -37,7 +41,7 @@ public abstract class SmartReceiptsActivityBindingModule {
     public abstract TripFragment tripFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = TripCreateEditFragmentModule.class)
     public abstract TripCreateEditFragment tripCreateEditFragment();
 
     @FragmentScope
@@ -55,6 +59,14 @@ public abstract class SmartReceiptsActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     public abstract DeleteReceiptDialogFragment deleteReceiptDialogFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract DistanceFragment distanceFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = DistanceDialogFragmentModule.class)
+    public abstract DistanceDialogFragment distanceDialogFragment();
 
     @FragmentScope
     @ContributesAndroidInjector
