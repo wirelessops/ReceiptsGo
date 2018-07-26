@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,6 +44,7 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
+import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -59,7 +59,8 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import wb.android.flex.Flex;
 
-public class TripCreateEditFragment extends WBFragment implements View.OnFocusChangeListener,
+public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
+        View.OnFocusChangeListener,
         CurrencyListEditorView,
         TripDateView,
         AutoCompleteView<Trip> {
@@ -115,15 +116,10 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        final TripCurrencyCodeSupplier currencyCodeSupplier = new TripCurrencyCodeSupplier(userPreferenceManager, getTrip());
+        final TripCurrencyCodeSupplier currencyCodeSupplier = new TripCurrencyCodeSupplier(userPreferenceManager, getEditableItem());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, currencyCodeSupplier, savedInstanceState);
         defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
-        tripDatesPresenter = new TripDatesPresenter(this, userPreferenceManager, getTrip());
-    }
-
-    @Nullable
-    public Trip getTrip() {
-        return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;
+        tripDatesPresenter = new TripDatesPresenter(this, userPreferenceManager, getEditableItem());
     }
 
     @NonNull
@@ -190,7 +186,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_cancel);
-            actionBar.setTitle((getTrip() == null) ? getFlexString(R.string.DIALOG_TRIPMENU_TITLE_NEW) : getFlexString(R.string.DIALOG_TRIPMENU_TITLE_EDIT));
+            actionBar.setTitle((getEditableItem() == null) ? getFlexString(R.string.DIALOG_TRIPMENU_TITLE_NEW) : getFlexString(R.string.DIALOG_TRIPMENU_TITLE_EDIT));
             actionBar.setSubtitle("");
         }
 
@@ -251,7 +247,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     }
 
     private void fillFields() {
-        if (getTrip() == null) { // new trip
+        if (getEditableItem() == null) { // new trip
             //prefill the dates
             final Calendar startCalendar = Calendar.getInstance();
             startCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -262,13 +258,13 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
             startDateBox.setDate(new Date(startCalendar.getTimeInMillis()));
             endDateBox.setDate(new Date(startCalendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration())));
         } else { // edit trip
-            nameBox.setText(getTrip().getName());
-            startDateBox.setDate(getTrip().getStartDate());
-            startDateBox.setTimeZone(getTrip().getStartTimeZone());
-            endDateBox.setDate(getTrip().getEndDate());
-            endDateBox.setTimeZone(getTrip().getEndTimeZone());
-            commentBox.setText(getTrip().getComment());
-            costCenterBox.setText(getTrip().getCostCenter());
+            nameBox.setText(getEditableItem().getName());
+            startDateBox.setDate(getEditableItem().getStartDate());
+            startDateBox.setTimeZone(getEditableItem().getStartTimeZone());
+            endDateBox.setDate(getEditableItem().getEndDate());
+            endDateBox.setTimeZone(getEditableItem().getEndTimeZone());
+            commentBox.setText(getEditableItem().getComment());
+            costCenterBox.setText(getEditableItem().getCostCenter());
         }
 
         // Focused View
@@ -346,7 +342,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
         focusedView = hasFocus ? view : null;
-        if (getTrip() == null && hasFocus) {
+        if (getEditableItem() == null && hasFocus) {
             SoftKeyboardManager.showKeyboard(view);
         }
     }
@@ -363,7 +359,7 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         // Note: we override the default behavior in the #link DefaultCurrencyListEditorView class for the exchange rate warning
         return (Consumer<Integer>) position -> {
             currencySpinner.setSelection(position);
-            if (getTrip() != null && position >= 0 && !getTrip().getDefaultCurrencyCode().equals(currencySpinner.getItemAtPosition(position).toString())) {
+            if (getEditableItem() != null && position >= 0 && !getEditableItem().getDefaultCurrencyCode().equals(currencySpinner.getItemAtPosition(position).toString())) {
                 Toast.makeText(getContext(), R.string.toast_warning_reset_exchange_rate, Toast.LENGTH_LONG).show();
             }
         };
@@ -392,11 +388,6 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
 
     private String getFlexString(int id) {
         return getFlexString(flex, id);
-    }
-
-    @Override
-    public boolean isInEditingMode() {
-        return getTrip() != null;
     }
 
     @NotNull
@@ -428,5 +419,11 @@ public class TripCreateEditFragment extends WBFragment implements View.OnFocusCh
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Trip getEditableItem() {
+        return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;
     }
 }

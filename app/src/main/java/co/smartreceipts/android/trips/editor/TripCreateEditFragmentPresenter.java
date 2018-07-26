@@ -82,7 +82,7 @@ public class TripCreateEditFragmentPresenter {
 
         File file = persistenceManager.getStorageManager().getFile(name);
 
-        if (fragment.getTrip() == null) { // Insert
+        if (fragment.getEditableItem() == null) { // Insert
             analytics.record(Events.Reports.PersistNewReport);
             final Trip insertTrip = new TripBuilderFactory()
                     .setDirectory(file)
@@ -98,7 +98,7 @@ public class TripCreateEditFragmentPresenter {
             return insertTrip;
         } else { // Update
             analytics.record(Events.Reports.PersistUpdateReport);
-            final Trip updateTrip = new TripBuilderFactory(fragment.getTrip())
+            final Trip updateTrip = new TripBuilderFactory(fragment.getEditableItem())
                     .setDirectory(file)
                     .setStartDate(startDate)
                     .setEndDate(endDate)
@@ -107,7 +107,7 @@ public class TripCreateEditFragmentPresenter {
                     .setCostCenter(costCenter)
                     .setDefaultCurrency(defaultCurrency)
                     .build();
-            tripTableController.update(fragment.getTrip(), updateTrip, new DatabaseOperationMetadata());
+            tripTableController.update(fragment.getEditableItem(), updateTrip, new DatabaseOperationMetadata());
             return updateTrip;
         }
     }

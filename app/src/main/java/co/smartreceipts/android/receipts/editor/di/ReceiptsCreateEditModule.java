@@ -1,6 +1,7 @@
 package co.smartreceipts.android.receipts.editor.di;
 
 import co.smartreceipts.android.autocomplete.AutoCompleteView;
+import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.keyboard.decimal.SamsungDecimalInputView;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
@@ -12,6 +13,9 @@ import dagger.Module;
 
 @Module
 public abstract class ReceiptsCreateEditModule {
+
+    @Binds
+    abstract Editor<Receipt> providesEditor(ReceiptCreateEditFragment fragment);
 
     @Binds
     abstract EditableReceiptPricingView provideEditableReceiptPricingView(ReceiptCreateEditFragment fragment);

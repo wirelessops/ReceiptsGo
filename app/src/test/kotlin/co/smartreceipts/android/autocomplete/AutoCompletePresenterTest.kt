@@ -1,5 +1,6 @@
 package co.smartreceipts.android.autocomplete
 
+import co.smartreceipts.android.editor.Editor
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
@@ -27,6 +28,9 @@ class AutoCompletePresenterTest {
     private lateinit var view: AutoCompleteView<Any>
 
     @Mock
+    private lateinit var editor: Editor<Any>
+
+    @Mock
     private lateinit var interactor: AutoCompleteInteractor<Any>
 
     @Mock
@@ -47,12 +51,12 @@ class AutoCompletePresenterTest {
         whenever(view.getTextChangeStream(field2)).thenReturn(field2TextChanges)
         whenever(interactor.getAutoCompleteResults(eq(field1), any())).thenReturn(Maybe.just(FIELD_1_RESULTS))
         whenever(interactor.getAutoCompleteResults(eq(field2), any())).thenReturn(Maybe.just(FIELD_2_RESULTS))
-        presenter = AutoCompletePresenter(view, interactor, Schedulers.trampoline())
+        presenter = AutoCompletePresenter(view, editor, interactor, Schedulers.trampoline())
     }
 
     @Test
     fun subscribeWhenEditing() {
-        whenever(view.isInEditingMode()).thenReturn(true)
+        whenever(editor.editableItem).thenReturn(Any())
         presenter.subscribe()
         verify(view, never()).displayAutoCompleteResults(any(), any())
         verifyZeroInteractions(interactor)
@@ -60,7 +64,7 @@ class AutoCompletePresenterTest {
 
     @Test
     fun subscribeWhenNotEditing() {
-        whenever(view.isInEditingMode()).thenReturn(false)
+        whenever(editor.editableItem).thenReturn(null)
         presenter.subscribe()
         field1TextChanges.onNext("1")
         verify(view).displayAutoCompleteResults(field1, FIELD_1_RESULTS)

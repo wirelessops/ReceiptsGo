@@ -46,6 +46,7 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier;
+import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
@@ -59,7 +60,9 @@ import co.smartreceipts.android.utils.SoftKeyboardManager;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 
-public class DistanceDialogFragment extends DialogFragment implements OnClickListener, AutoCompleteView<Distance> {
+public class DistanceDialogFragment extends DialogFragment implements Editor<Distance>,
+        OnClickListener,
+        AutoCompleteView<Distance> {
 
     public static final String TAG = DistanceDialogFragment.class.getSimpleName();
     private static final String ARG_SUGGESTED_DATE = "arg_suggested_date";
@@ -333,11 +336,6 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
         }
     }
 
-    @Override
-    public boolean isInEditingMode() {
-        return updateableDistance != null;
-    }
-
     @NotNull
     @Override
     public Observable<CharSequence> getTextChangeStream(@NotNull AutoCompleteField field) {
@@ -357,5 +355,11 @@ public class DistanceDialogFragment extends DialogFragment implements OnClickLis
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Distance getEditableItem() {
+        return updateableDistance;
     }
 }

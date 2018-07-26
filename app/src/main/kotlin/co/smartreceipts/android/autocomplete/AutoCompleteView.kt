@@ -11,13 +11,6 @@ import io.reactivex.Observable
 interface AutoCompleteView<Type> {
 
     /**
-     * Checks is we're actively editing data on this view
-     *
-     * @return true if we're editing existing data (eg changing a receipt). false otherwise
-     */
-    fun isInEditingMode() : Boolean
-
-    /**
      * Gets an [Observable], which contains a stream of text changes
      *
      * @param field An [AutoCompleteField] to get the stream for

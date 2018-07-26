@@ -127,7 +127,7 @@ public class ReceiptCreateEditFragmentPresenter {
                      String name, Category category, String currency,
                      String extraText1, String extraText2, String extraText3) {
 
-        final Receipt receipt = fragment.getReceipt();
+        final Receipt receipt = fragment.getEditableItem();
         final Trip parentTrip = fragment.getParentTrip();
 
         final ReceiptBuilderFactory builderFactory = (receipt == null) ? new ReceiptBuilderFactory(-1) : new ReceiptBuilderFactory(receipt);
@@ -159,7 +159,7 @@ public class ReceiptCreateEditFragmentPresenter {
     }
 
     void deleteReceiptFileIfUnused() {
-        if (fragment.getReceipt() == null && fragment.getFile() != null) {
+        if (fragment.getEditableItem() == null && fragment.getFile() != null) {
             if (fragment.getFile().delete()) {
                 Logger.info(this, "Deleting receipt file as we're not saving it");
             }

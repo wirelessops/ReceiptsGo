@@ -61,6 +61,7 @@ import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
+import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
 import co.smartreceipts.android.fragments.ReceiptInputCache;
 import co.smartreceipts.android.fragments.WBFragment;
@@ -108,7 +109,8 @@ import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
 
-public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocusChangeListener,
+public class ReceiptCreateEditFragment extends WBFragment implements Editor<Receipt>,
+        View.OnFocusChangeListener,
         EditableReceiptPricingView,
         ReceiptDateView,
         CurrencyExchangeRateEditorView,
@@ -272,18 +274,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         setHasOptionsMenu(true);
 
         final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
-        final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getReceipt());
+        final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getEditableItem());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
-        receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getReceipt(), savedInstanceState);
-        currencyExchangeRateEditorPresenter = new CurrencyExchangeRateEditorPresenter(this, this, defaultCurrencyListEditorView, this, exchangeRateServiceManager, database, getParentTrip(), getReceipt(), savedInstanceState);
+        receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getEditableItem(), savedInstanceState);
+        currencyExchangeRateEditorPresenter = new CurrencyExchangeRateEditorPresenter(this, this, defaultCurrencyListEditorView, this, exchangeRateServiceManager, database, getParentTrip(), getEditableItem(), savedInstanceState);
     }
 
     Trip getParentTrip() {
         return getArguments().getParcelable(Trip.PARCEL_KEY);
-    }
-
-    Receipt getReceipt() {
-        return getArguments().getParcelable(Receipt.PARCEL_KEY);
     }
 
     File getFile() {
@@ -425,7 +423,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                 }
 
             } else { // edit receipt
-                final Receipt receipt = getReceipt();
+                final Receipt receipt = getEditableItem();
 
                 nameBox.setText(receipt.getName());
                 dateBox.setDate(receipt.getDate());
@@ -492,7 +490,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                             }
                         }
                     } else {
-                        categoriesSpinner.setSelection(categoriesAdapter.getPosition(getReceipt().getCategory()));
+                        categoriesSpinner.setSelection(categoriesAdapter.getPosition(getEditableItem().getCategory()));
                     }
 
                     if (presenter.isMatchReceiptCommentToCategory() || presenter.isMatchReceiptNameToCategory()) {
@@ -512,8 +510,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
                     if (presenter.isUsePaymentMethods()) {
                         ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
-                        if (getReceipt() != null) {
-                            final PaymentMethod oldPaymentMethod = getReceipt().getPaymentMethod();
+                        if (getEditableItem() != null) {
+                            final PaymentMethod oldPaymentMethod = getEditableItem().getPaymentMethod();
                             final int paymentIdx = paymentMethodsAdapter.getPosition(oldPaymentMethod);
                             if (paymentIdx > 0) {
                                 paymentMethodsSpinner.setSelection(paymentIdx);
@@ -551,7 +549,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             title = getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_NEW);
         } else {
             if (presenter.isShowReceiptId()) {
-                title = String.format(getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_EDIT_ID), getReceipt().getId());
+                title = String.format(getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_EDIT_ID), getEditableItem().getId());
             } else {
                 title = getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_EDIT);
             }
@@ -666,7 +664,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
     }
 
     private boolean isNewReceipt() {
-        return getReceipt() == null;
+        return getEditableItem() == null;
     }
 
     private void saveReceipt() {
@@ -686,8 +684,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
             final Date receiptDate;
 
             // updating date just if it was really changed (to prevent reordering)
-            if (getReceipt() != null && getReceipt().getDate().equals(dateBox.getDate())) {
-                receiptDate = getReceipt().getDate();
+            if (getEditableItem() != null && getEditableItem().getDate().equals(dateBox.getDate())) {
+                receiptDate = getEditableItem().getDate();
             } else {
                 receiptDate = dateBox.getDate();
             }
@@ -920,9 +918,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements View.OnFocu
         }
     }
 
+    @org.jetbrains.annotations.Nullable
     @Override
-    public boolean isInEditingMode() {
-        return !isNewReceipt();
+    public Receipt getEditableItem() {
+        return getArguments() != null ? getArguments().getParcelable(Receipt.PARCEL_KEY) : null;
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {
