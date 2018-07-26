@@ -162,6 +162,9 @@ android {
 
         // Free ads
         freeImplementation "com.google.android.gms:play-services-ads:$ADMOB_VERSION"
+        freeImplementation ("com.adincube.sdk:AdinCube-Java-1626ebe:$ADS_ADINCUBE_VERSION@aar") {
+            transitive = true
+        }
         freeImplementation "com.inmobi.monetization:inmobi-ads:$IN_MOBI_VERSION"
     }
 
