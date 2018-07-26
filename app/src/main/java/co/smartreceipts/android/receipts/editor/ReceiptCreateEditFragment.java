@@ -236,7 +236,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private ReceiptPricingPresenter receiptPricingPresenter;
     private CurrencyExchangeRateEditorPresenter currencyExchangeRateEditorPresenter;
 
-    // Rx
+    // Database monitor callbacks
     private TableEventsListener<Category> categoryTableEventsListener;
     private TableEventsListener<PaymentMethod> paymentMethodTableEventsListener;
 
@@ -456,7 +456,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
         }
 
-        // Configure items that require callbacks
+        // Configure items that require callbacks (note: Moves these to presenters at some point for testing)
         categoryTableEventsListener = new StubTableEventsListener<Category>() {
             @Override
             public void onGetSuccess(@NonNull List<Category> list) {
@@ -465,7 +465,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                     categoriesAdapter.update(list);
                     categoriesSpinner.setAdapter(categoriesAdapter);
 
-                    if (isNewReceipt()) { // new receipt
+                    if (getEditableItem() == null) { // new receipt
                         if (presenter.isPredictCategories()) { // Predict Breakfast, Lunch, Dinner by the hour
                             if (receiptInputCache.getCachedCategory() == null) {
                                 final Time now = new Time();
@@ -495,7 +495,15 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                             }
                         }
                     } else {
-                        categoriesSpinner.setSelection(categoriesAdapter.getPosition(getEditableItem().getCategory()));
+                        // Here we manually loop through all categories and check for id == id in case the user changed this via "Manage"
+                        final Category receiptCategory = getEditableItem().getCategory();
+                        for (int i = 0; i < categoriesAdapter.getCount(); i++) {
+                            final Category category = categoriesAdapter.getItem(i);
+                            if (category != null && category.getId() == receiptCategory.getId()) {
+                                categoriesSpinner.setSelection(i);
+                                break;
+                            }
+                        }
                     }
 
                     if (presenter.isMatchReceiptCommentToCategory() || presenter.isMatchReceiptNameToCategory()) {
@@ -504,6 +512,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                 }
             }
         };
+
         paymentMethodTableEventsListener = new StubTableEventsListener<PaymentMethod>() {
             @Override
             public void onGetSuccess(@NonNull List<PaymentMethod> list) {
@@ -516,10 +525,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                     if (presenter.isUsePaymentMethods()) {
                         ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
                         if (getEditableItem() != null) {
-                            final PaymentMethod oldPaymentMethod = getEditableItem().getPaymentMethod();
-                            final int paymentIdx = paymentMethodsAdapter.getPosition(oldPaymentMethod);
-                            if (paymentIdx > 0) {
-                                paymentMethodsSpinner.setSelection(paymentIdx);
+                            // Here we manually loop through all payment methods and check for id == id in case the user changed this via "Manage"
+                            final PaymentMethod receiptPaymentMethod = getEditableItem().getPaymentMethod();
+                            for (int i = 0; i < paymentMethodsAdapter.getCount(); i++) {
+                                final PaymentMethod paymentMethod = paymentMethodsAdapter.getItem(i);
+                                if (paymentMethod != null && paymentMethod.getId() == receiptPaymentMethod.getId()) {
+                                    paymentMethodsSpinner.setSelection(i);
+                                    break;
+                                }
                             }
                         }
                     } else {
@@ -530,8 +543,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         };
         categoriesTableController.subscribe(categoryTableEventsListener);
         paymentMethodsTableController.subscribe(paymentMethodTableEventsListener);
-        categoriesTableController.get();
-        paymentMethodsTableController.get();
     }
 
     @Override
@@ -543,6 +554,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         receiptPricingPresenter.subscribe();
         currencyExchangeRateEditorPresenter.subscribe();
         receiptsEditorToolbarPresenter.subscribe();
+
+        // Attempt to update our lists in case they were changed in the background
+        categoriesTableController.get();
+        paymentMethodsTableController.get();
 
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
