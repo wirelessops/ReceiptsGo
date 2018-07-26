@@ -7,7 +7,6 @@ buildscript {
         google()
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'http://repository.adincube.com/maven' }
 
     }
     dependencies {
@@ -26,7 +25,6 @@ allprojects {
         google()
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'http://repository.adincube.com/maven' }
     }
 }
 
