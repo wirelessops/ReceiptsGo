@@ -25,6 +25,7 @@ import co.smartreceipts.android.utils.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 @ApplicationScope
@@ -115,6 +116,11 @@ public class UserPreferenceManager {
     @NonNull
     public <T> Observable<T> getObservable(final UserPreference<T> preference) {
         return Observable.fromCallable(() -> get(preference));
+    }
+
+    @NonNull
+    public <T> Single<T> getSingle(final UserPreference<T> preference) {
+        return Single.fromCallable(() -> get(preference));
     }
 
     @NonNull

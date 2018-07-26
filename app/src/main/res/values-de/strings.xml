@@ -259,9 +259,9 @@
     <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Erstattungsfähig?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE"> Ganzseitiges Bild?</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Neuer Beleg</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Neuer Beleg - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Neuer Beleg - %d</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Beleg bearbeiten</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Beleg bearbeiten - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Beleg bearbeiten - %d</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Warnung: dieses Belegsdatum liegt außerhalb des angegebenen Bereichs für diesen Bericht</string>
     <string name="manage_categories">Kategorien verwalten</string>
     <string name="manage_payment_methods">Zahlungsmethoden verwalten</string>

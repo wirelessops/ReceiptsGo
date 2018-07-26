@@ -261,9 +261,9 @@
     <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Возмещаемый?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">Изображение на всю страницу?</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Новый чек</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Новый чек - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Новый чек - %d</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Редактировать чек</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Редактировать чек - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Редактировать чек - %d</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Внимание: Дата этого чека выходит за пределы указанного диапазона для данного отчета</string>
     <string name="manage_categories">Управление категориями</string>
     <string name="manage_payment_methods">Управление методами оплаты</string>

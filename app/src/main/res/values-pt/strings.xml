@@ -259,9 +259,9 @@
     <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Reembolsável?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">Imagem em tela cheia?</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Novo recibo</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Novo recibo - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Novo recibo - %d</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Editar recibo</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Editar recibo  - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Editar recibo  - %d</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Aviso: A data do recibo não se enquadra no intervalo determinado para esse relatório</string>
     <string name="manage_categories">Gerenciar categorias</string>
     <string name="manage_payment_methods">Gerenciar Métodos de Pagamento</string>

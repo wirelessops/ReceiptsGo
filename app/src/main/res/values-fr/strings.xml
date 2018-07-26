@@ -259,9 +259,9 @@
     <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Remboursable ?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE"> Image plein écran ?</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Nouveau reçu</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Nouveau reçu - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Nouveau reçu - %d</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Modifier le reçu</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Modifier le reçu - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Modifier le reçu - %d</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Avertissement : La date du reçu ne correspond pas à la période spécifiée pour ce rapport</string>
     <string name="manage_categories">Gérer les catégories</string>
     <string name="manage_payment_methods">Gérer les méthodes de paiement</string>

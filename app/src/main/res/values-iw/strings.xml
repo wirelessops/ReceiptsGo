@@ -277,9 +277,9 @@
     <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">בר החזר?</string>
     <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">תמונה בדף מלא?</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW">קבלה חדשה</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">קבלה חדשה - %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">קבלה חדשה - %d</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">עריכת קבלה</string>
-    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">עריכת קבלה -  %s</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">עריכת קבלה -  %d</string>
     <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">אזהרה: תאריך הקבלה הזו נופל מחוץ לטווח התאריכים של דוח ההוצאות הנוכחי</string>
     <string name="manage_categories">נהל קטגוריות</string>
     <string name="manage_payment_methods">נהל אמצעי תשלום</string>

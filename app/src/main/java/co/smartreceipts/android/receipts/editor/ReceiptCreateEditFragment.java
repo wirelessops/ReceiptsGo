@@ -90,6 +90,8 @@ import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEdi
 import co.smartreceipts.android.receipts.editor.exchange.ExchangeRateServiceManager;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
 import co.smartreceipts.android.receipts.editor.pricing.ReceiptPricingPresenter;
+import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarPresenter;
+import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarView;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
@@ -115,7 +117,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         ReceiptDateView,
         CurrencyExchangeRateEditorView,
         SamsungDecimalInputView,
-        AutoCompleteView<Receipt> {
+        AutoCompleteView<Receipt>,
+        ReceiptsEditorToolbarView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -155,6 +158,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Inject
     AutoCompletePresenter<Receipt> autoCompletePresenter;
+
+    @Inject
+    ReceiptsEditorToolbarPresenter receiptsEditorToolbarPresenter;
 
     // Butterknife Fields
     @BindView(R.id.toolbar)
@@ -231,7 +237,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private CurrencyExchangeRateEditorPresenter currencyExchangeRateEditorPresenter;
 
     // Rx
-    private Disposable idDisposable;
     private TableEventsListener<Category> categoryTableEventsListener;
     private TableEventsListener<PaymentMethod> paymentMethodTableEventsListener;
 
@@ -537,48 +542,21 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         currencyListEditorPresenter.subscribe();
         receiptPricingPresenter.subscribe();
         currencyExchangeRateEditorPresenter.subscribe();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Logger.debug(this, "onResume");
-
-        final String title;
-        if (isNewReceipt()) {
-            title = getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_NEW);
-        } else {
-            if (presenter.isShowReceiptId()) {
-                title = String.format(getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_EDIT_ID), getEditableItem().getId());
-            } else {
-                title = getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_EDIT);
-            }
-        }
+        receiptsEditorToolbarPresenter.subscribe();
 
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_cancel);
-            actionBar.setTitle(title);
             actionBar.setSubtitle("");
         }
+    }
 
-        if (isNewReceipt() && presenter.isShowReceiptId()) {
-            idDisposable = database.getNextReceiptAutoIncremenetIdHelper()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(receiptId -> {
-                        if (isResumed()) {
-                            final ActionBar bar = getSupportActionBar();
-                            if (bar != null) {
-                                final String titleWithId = String.format(getFlexString(R.string.DIALOG_RECEIPTMENU_TITLE_NEW_ID), receiptId);
-                                bar.setTitle(titleWithId);
-                            }
-                        }
-                    });
-        }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Logger.debug(this, "onResume");
         if (focusedView != null) {
             focusedView.requestFocus(); // Make sure we're focused on the right view
         }
@@ -614,11 +592,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Override
     public void onPause() {
-        if (idDisposable != null) {
-            idDisposable.dispose();
-            idDisposable = null;
-        }
-
         // Dismiss the soft keyboard
         SoftKeyboardManager.hideKeyboard(focusedView);
 
@@ -637,6 +610,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Override
     public void onStop() {
+        receiptsEditorToolbarPresenter.unsubscribe();
         receiptPricingPresenter.unsubscribe();
         currencyListEditorPresenter.unsubscribe();
         currencyExchangeRateEditorPresenter.unsubscribe();
@@ -922,6 +896,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Receipt getEditableItem() {
         return getArguments() != null ? getArguments().getParcelable(Receipt.PARCEL_KEY) : null;
+    }
+
+    @Override
+    public void displayTitle(@NotNull String title) {
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {
