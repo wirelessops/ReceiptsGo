@@ -10,11 +10,13 @@ import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.AdLoadListener
 import co.smartreceipts.android.ad.BannerAdView
 import com.aerserv.sdk.*
+import java.util.concurrent.Executors
 
 import javax.inject.Inject
 
 class AerServAdView @Inject constructor() : BannerAdView {
 
+    private val executor = Executors.newSingleThreadExecutor()
     private var container: ViewGroup? = null
     private var adView: AerServBanner? = null
     private var activity: Activity? = null
@@ -36,15 +38,17 @@ class AerServAdView @Inject constructor() : BannerAdView {
 
     override fun loadAd(allowAdPersonalization: Boolean) {
         activity?.let {
-            AerServSdk.setGdprConsentFlag(it, allowAdPersonalization)
-            val config = AerServConfig(it, it.getString(R.string.aerserv_placement_id))
-            config.eventListener = AerServEventListener { event, _ ->
-                when(event) {
-                    AerServEvent.AD_LOADED -> adLoadListener?.onAdLoadSuccess()
-                    AerServEvent.AD_FAILED -> adLoadListener?.onAdLoadFailure()
+            executor.execute {
+                AerServSdk.setGdprConsentFlag(it, allowAdPersonalization)
+                val config = AerServConfig(it, it.getString(R.string.aerserv_placement_id))
+                config.eventListener = AerServEventListener { event, _ ->
+                    when(event) {
+                        AerServEvent.AD_LOADED -> adLoadListener?.onAdLoadSuccess()
+                        AerServEvent.AD_FAILED -> adLoadListener?.onAdLoadFailure()
+                    }
                 }
+                adView?.configure(config)!!.show()
             }
-            adView?.configure(config)!!.show()
         }
 
     }
