@@ -174,10 +174,7 @@
     <string name="pref_about_version_title">Versão</string>
 
     <string name="pref_about_about_title">Sobre</string>
-    <string name="pref_about_about_dialogMessage">O Recibos Inteligentes foi criado e é mantido por Will Baumann. O app está licenciado sob licença GNU Affero General Public License</string>
-
     <string name="pref_about_terms_title">Termos de Uso</string>
-    <string name="pref_about_terms_dialogMessage">Este programa é freeware: você pode redistribuí-lo e/ou modificá-lo nos termos da GNU Affero General Public License, conforme publicada pela Free Software Foundation, tanto a versão 3 da licença quanto (a seu critério) qualquer versão posterior.\n\nEste programa é distribuído no intuito de útil, mas SEM QUALQUER GARANTIA; mesmo a garantia implícita de COMERCIABILIDADE ou ADEQUAÇÃO A FIANLIDADE ESPECÍFICA. Consulte o GNU Affero General Public License para obter mais detalhes.\n\nVocê pode ver uma cópia da Licença Pública Geral GNU Affero em http://www.gnu.org/licenses/.</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Política de Privacidade</string>

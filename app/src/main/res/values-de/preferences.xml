@@ -172,12 +172,8 @@
     <!-- =============== Preference About ================== -->
 
     <string name="pref_about_version_title">Version</string>
-
     <string name="pref_about_about_title">Über</string>
-    <string name="pref_about_about_dialogMessage">Smart Receipts wurde erstellt und wird betreut von Will Baumann. Es steht unter der GNU Affero General Public License</string>
-
     <string name="pref_about_terms_title">Nutzungsbedingungen</string>
-    <string name="pref_about_terms_dialogMessage">Dieses Programm  ist eine freie Software: Sie können es gemäß den Bedingungen GNU Affero General Public License as published by the Free Software Foundation, Version 3 der Lizenz oder (nach Ihrer Wahl) einer beliebigen späteren Version verteilen und/oder ändern.\nDieses Programm wird verteilt in der Hoffnung, dass es nützlich ist, doch OHNE JEDE GARANTIE; auch ohne jede implizierte Garantie für die MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.  Siehe die GNU Affero General Public License für mehr Einzlheiten\n\nEine Kopie der GNU Affero General Public License finden Sie unter  http://www.gnu.org/licenses/.</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Datenschutz-Bestimmungen</string>

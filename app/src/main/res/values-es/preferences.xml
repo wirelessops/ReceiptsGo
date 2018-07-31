@@ -174,10 +174,7 @@
     <string name="pref_about_version_title">Versión</string>
 
     <string name="pref_about_about_title">Acerca de</string>
-    <string name="pref_about_about_dialogMessage">Recibos Inteligentes fue creada y es mantenida por Will Baumann. Está licenciada bajo la licencia pública general de Affero</string>
-
     <string name="pref_about_terms_title">Términos de uso</string>
-    <string name="pref_about_terms_dialogMessage">Este programa es software gratuito: puedes redistribuirlo y/o modificarlo de conformidad con los términos de la licencia pública general de Affero como fue publicada por la Fundación para el Software Libre, ya sea en la versión 3 de la licencia, o a tu elección, cualquier versión posterior.\n\nEste programa se distribuye con la esperanza que sea útil, pero SIN GARANTÍA ALGUNA, ni siquiera garantía implícita de MERCANTIBILIDAD o IDONEIDAD PARA UN FIN EN PARTICULAR.  Consulta la licencia pública general de Affero para obtener más información.\n\nPuedes consultar una copia de la licencia pública general de Affero en http://www.gnu.org/licenses/.</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Política de Privacidad</string>

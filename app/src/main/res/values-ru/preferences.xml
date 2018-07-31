@@ -175,10 +175,7 @@
     <string name="pref_about_version_title">Версия</string>
 
     <string name="pref_about_about_title">О программе</string>
-    <string name="pref_about_about_dialogMessage">Смарт Чеки создал и поддерживает Will Baumann. Программа распространяется под лицензией GNU Affero General Public License</string>
-
     <string name="pref_about_terms_title">Условия использования</string>
-    <string name="pref_about_terms_dialogMessage">Эта программа является свободным программным обеспечением: вы можете распространять и/или изменять его в соответствии с условиями GNU Affero General Public License, опубликованной Фондом свободного программного обеспечения, версии 3, либо (по вашему выбору) любой более поздней версии.\n\nЭта программа распространяется в надежде, что она будет полезной, однако БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, и даже без подразумеваемых гарантий КОММЕРЧЕСКОЙ ЦЕННОСТИ или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ. Смотрите GNU Affero General Public License для более подробной информации.\n\nКопия GNU Affero General Public License доступна по адресу http://www.gnu.org/licenses/.</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Политика конфиденциальности</string>
