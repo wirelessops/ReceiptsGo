@@ -6,6 +6,8 @@ import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
 import co.smartreceipts.android.model.factory.TripBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
+import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
+import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.*
@@ -68,6 +70,15 @@ class ReceiptsOrdererTest {
     @Mock
     lateinit var receipt: Receipt
 
+    @Mock
+    lateinit var receipt1: Receipt
+
+    @Mock
+    lateinit var receipt2: Receipt
+
+    @Mock
+    lateinit var receipt3: Receipt
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -79,6 +90,9 @@ class ReceiptsOrdererTest {
 
         // Note: Stub return here to keep the flow working
         whenever(receiptTableController.update(any(), any(), any())).thenReturn(Observable.just(Optional.of(receipt)))
+        whenever(receiptTableController.update(eq(ORDERED_RECEIPT_1), any(), any())).thenReturn(Observable.just(Optional.of(receipt1)))
+        whenever(receiptTableController.update(eq(ORDERED_RECEIPT_2), any(), any())).thenReturn(Observable.just(Optional.of(receipt2)))
+        whenever(receiptTableController.update(eq(ORDERED_RECEIPT_3), any(), any())).thenReturn(Observable.just(Optional.of(receipt3)))
 
         receiptsOrderer = ReceiptsOrderer(tripTableController, receiptTableController, orderingMigrationStore, orderingPreferencesManager, Schedulers.trampoline())
     }
@@ -117,5 +131,44 @@ class ReceiptsOrdererTest {
 
         verify(orderingMigrationStore, never()).setOrderingMigrationOccurred(any())
         verify(orderingPreferencesManager, never()).saveReceiptsTableOrdering()
+    }
+
+    @Test
+    fun reorderReceiptsInListToMoveFirstReceiptToTheEndAcrossDateBoundary() {
+        val list = listOf(ORDERED_RECEIPT_1, ORDERED_RECEIPT_2, ORDERED_RECEIPT_3)
+        receiptsOrderer.reorderReceiptsInList(list, 0, 2)
+                .test()
+                .assertValue(listOf(ORDERED_RECEIPT_2, receipt3, receipt1))
+                .assertNoErrors()
+                .assertComplete()
+        verify(receiptTableController, never()).update(eq(ORDERED_RECEIPT_2), any(), any())
+        verify(receiptTableController).update(ORDERED_RECEIPT_3, ReceiptBuilderFactory(ORDERED_RECEIPT_3).setCustomOrderId(17518001L).build(), DatabaseOperationMetadata(OperationFamilyType.Silent))
+        verify(receiptTableController).update(ORDERED_RECEIPT_1, ReceiptBuilderFactory(ORDERED_RECEIPT_1).setCustomOrderId(17518000L).build(), DatabaseOperationMetadata())
+    }
+
+    @Test
+    fun reorderReceiptsInListToMoveLastReceiptToTheStartAcrossDateBoundary() {
+        val list = listOf(ORDERED_RECEIPT_1, ORDERED_RECEIPT_2, ORDERED_RECEIPT_3)
+        receiptsOrderer.reorderReceiptsInList(list, 2, 0)
+                .test()
+                .assertValue(listOf(receipt3, receipt1, receipt2))
+                .assertNoErrors()
+                .assertComplete()
+        verify(receiptTableController).update(ORDERED_RECEIPT_3, ReceiptBuilderFactory(ORDERED_RECEIPT_3).setCustomOrderId(17509002L).build(), DatabaseOperationMetadata(OperationFamilyType.Silent))
+        verify(receiptTableController).update(ORDERED_RECEIPT_1, ReceiptBuilderFactory(ORDERED_RECEIPT_1).setCustomOrderId(17509001L).build(), DatabaseOperationMetadata(OperationFamilyType.Silent))
+        verify(receiptTableController).update(ORDERED_RECEIPT_2, ReceiptBuilderFactory(ORDERED_RECEIPT_2).setCustomOrderId(17509000L).build(), DatabaseOperationMetadata())
+    }
+
+    @Test
+    fun reorderReceiptsInListToSwitchReceiptOrderWithinTheSameDay() {
+        val list = listOf(ORDERED_RECEIPT_1, ORDERED_RECEIPT_2, ORDERED_RECEIPT_3)
+        receiptsOrderer.reorderReceiptsInList(list, 1, 0)
+                .test()
+                .assertValue(listOf(receipt2, receipt1, ORDERED_RECEIPT_3))
+                .assertNoErrors()
+                .assertComplete()
+        verify(receiptTableController, never()).update(eq(ORDERED_RECEIPT_3), any(), any())
+        verify(receiptTableController).update(ORDERED_RECEIPT_2, ReceiptBuilderFactory(ORDERED_RECEIPT_2).setCustomOrderId(17509001L).build(), DatabaseOperationMetadata(OperationFamilyType.Silent))
+        verify(receiptTableController).update(ORDERED_RECEIPT_1, ReceiptBuilderFactory(ORDERED_RECEIPT_1).setCustomOrderId(17509000L).build(), DatabaseOperationMetadata())
     }
 }

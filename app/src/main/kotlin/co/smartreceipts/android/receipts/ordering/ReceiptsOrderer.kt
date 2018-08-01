@@ -3,7 +3,6 @@ package co.smartreceipts.android.receipts.ordering
 import co.smartreceipts.android.date.DateUtils
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
-import co.smartreceipts.android.model.TaxItem
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
@@ -118,8 +117,11 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                     // Next, remove this item
                     val movedReceipt = mutableReceiptsList.removeAt(fromPosition)
 
+                    // Then ensure the movedReceipt gets modified to use the new toPositionFakeDays
+                    val movedReceiptWithCorrectFakeDays = ReceiptBuilderFactory(movedReceipt).setCustomOrderId(toPositionFakeDays * DAYS_TO_ORDER_FACTOR).build()
+
                     // And add it back to the list at the proper position
-                    mutableReceiptsList.add(toPosition, movedReceipt)
+                    mutableReceiptsList.add(toPosition, movedReceiptWithCorrectFakeDays)
 
                     // From here, count the number of receipts within this "fake day" and update the index of each. This process should
                     // ensure that all of our receipts are now properly ordered
@@ -131,21 +133,33 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                         if (receipt.customOrderId / DAYS_TO_ORDER_FACTOR == toPositionFakeDays) {
                             val updated = ReceiptBuilderFactory(receipt).setCustomOrderId(toPositionFakeDays * DAYS_TO_ORDER_FACTOR + sameFakeDaysNumber).build()
                             sameFakeDaysNumber++
-                            receiptsToUpdateList.add(Pair(receipt, updated))
+                            if (receipt == movedReceiptWithCorrectFakeDays) {
+                                // Pass in the original reference to ease our testing
+                                receiptsToUpdateList.add(Pair(movedReceipt, updated))
+                            } else {
+                                receiptsToUpdateList.add(Pair(receipt, updated))
+                            }
                         } else {
+                            // Or if this item exists on a different day, don't bother to update (ie pair it with a null)
                             receiptsToUpdateList.add(Pair(receipt, null))
                         }
                     }
+
+                    // Reverse the list to maintain the original ordering (ie before the indices reversal above)
+                    receiptsToUpdateList.reverse()
+
                     return@fromCallable receiptsToUpdateList
                 }
                 .subscribeOn(backgroundScheduler)
-                .flatMap {receiptsToUpdateList ->
+                .flatMap { receiptsToUpdateList ->
                     return@flatMap Observable.fromIterable(receiptsToUpdateList)
                             .concatMap {
                                 // Note: We use concatMap to preserve the list ordering
-                                if (it.second != null) {
+                                if (it.second == null) {
+                                    // Return the original receipt if there's nothing to update
                                     return@concatMap Observable.just(it.first)
                                 } else {
+                                    // Or if there's a change, apply this and update accordingly
                                     return@concatMap receiptTableController.update(it.first, it.second!!, getDatabaseOperationMetadata(receiptsToUpdateList, it))
                                             .flatMap {
                                                 if (it.isPresent) {
@@ -224,9 +238,14 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
      * @return the appropriate [DatabaseOperationMetadata], usually [OperationFamilyType.Silent] but [OperationFamilyType.Default]
      * if it's the last
      */
-    private fun getDatabaseOperationMetadata(list: List<Any>, item: Any) : DatabaseOperationMetadata {
+    private fun getDatabaseOperationMetadata(list: List<Pair<Receipt, Receipt?>>, item: Any) : DatabaseOperationMetadata {
+        // Find the index as either the next or "last" item
+        val nextItemIndex = Math.min(list.indexOf(item) + 1, list.size - 1)
         return if (list.last() == item) {
             // As the last item to update in this list, we'll update all listeners when it's done (ie non-Silent operation)
+            DatabaseOperationMetadata()
+        } else if (list[nextItemIndex].second == null) {
+            // If the next item index has a null value, perform a non-silent operations
             DatabaseOperationMetadata()
         } else {
             DatabaseOperationMetadata(OperationFamilyType.Silent)

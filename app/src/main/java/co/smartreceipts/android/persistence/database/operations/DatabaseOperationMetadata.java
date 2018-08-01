@@ -6,19 +6,19 @@ import com.google.common.base.Preconditions;
 
 public class DatabaseOperationMetadata {
 
-    private final OperationFamilyType mOperationFamilyType;
+    private final OperationFamilyType operationFamilyType;
 
     public DatabaseOperationMetadata() {
         this(OperationFamilyType.Default);
     }
 
     public DatabaseOperationMetadata(@NonNull OperationFamilyType operationFamilyType) {
-        mOperationFamilyType = Preconditions.checkNotNull(operationFamilyType);
+        this.operationFamilyType = Preconditions.checkNotNull(operationFamilyType);
     }
 
     @NonNull
     public OperationFamilyType getOperationFamilyType() {
-        return mOperationFamilyType;
+        return operationFamilyType;
     }
 
     @Override
@@ -28,12 +28,18 @@ public class DatabaseOperationMetadata {
 
         DatabaseOperationMetadata that = (DatabaseOperationMetadata) o;
 
-        return mOperationFamilyType == that.mOperationFamilyType;
+        return operationFamilyType == that.operationFamilyType;
 
     }
 
     @Override
     public int hashCode() {
-        return mOperationFamilyType.hashCode();
+        return operationFamilyType.hashCode();
+    }
+
+
+    @Override
+    public String toString() {
+        return "DatabaseOperationMetadata{" + operationFamilyType.name() +"}";
     }
 }

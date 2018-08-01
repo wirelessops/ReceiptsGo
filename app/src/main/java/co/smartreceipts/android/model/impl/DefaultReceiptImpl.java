@@ -337,7 +337,7 @@ public final class DefaultReceiptImpl implements Receipt {
                 ", mPrice=" + mPrice.getCurrencyFormattedPrice() +
                 ", mTax=" + mTax +
                 ", mDate=" + mDate +
-                ", mTimeZone=" + mTimeZone +
+                ", mTimeZone=" + mTimeZone.getID() +
                 ", mIsReimbursable=" + mIsReimbursable +
                 ", mIsFullPage=" + mIsFullPage +
                 ", mSource=" + mSource +
