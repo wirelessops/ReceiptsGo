@@ -19,7 +19,11 @@ class ReceiptCurrencyCodeColumn(id: Int, syncState: SyncState, customOrderId: Lo
     override fun getValue(receipt: Receipt): String = receipt.price.currencyCode
 
     override fun getFooter(rows: List<Receipt>): String {
-        val tripCurrency = rows[0].trip.tripCurrency
-        return PriceBuilderFactory().setPriceables(rows, tripCurrency).build().currencyCode
+        return if (rows.isNotEmpty()) {
+            val tripCurrency = rows[0].trip.tripCurrency
+            PriceBuilderFactory().setPriceables(rows, tripCurrency).build().currencyCode
+        } else {
+            ""
+        }
     }
 }
