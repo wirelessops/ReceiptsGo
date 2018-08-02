@@ -7,6 +7,7 @@ import android.support.annotation.VisibleForTesting;
 import com.google.common.base.Preconditions;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -51,7 +52,11 @@ public class S3Manager {
                                 .flatMap(s3KeyGenerator -> Observable.fromCallable(() -> {
                                     final String key = subDirectoryPath + s3KeyGenerator.getS3Key() + file.getName();
                                     amazonS3.get().putObject(BUCKET, key, file);
-                                    return amazonS3.get().getResourceUrl(BUCKET, key);
+                                    try {
+                                        return amazonS3.get().getResourceUrl(BUCKET, key);
+                                    } catch (Exception e) {
+                                        throw new IOException("Caught Amazon S3 exception", e);
+                                    }
                                 }));
                     } else {
                         return Observable.error(new Exception("Failed to initialize the S3 client"));
