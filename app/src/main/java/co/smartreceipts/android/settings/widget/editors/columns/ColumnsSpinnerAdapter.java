@@ -12,13 +12,14 @@ import com.google.common.base.Preconditions;
 
 import java.util.List;
 
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
 public class ColumnsSpinnerAdapter<T> extends ArrayAdapter<Column<T>> {
 
-    private static final int SPINNER_ITEM_RES = android.R.layout.simple_spinner_item;
-    private static final int SPINNER_DROPDOWN_ITEM_RES = android.R.layout.simple_spinner_dropdown_item;
+    private static final int SPINNER_ITEM_RES = R.layout.simple_spinner_item;
+    private static final int SPINNER_DROPDOWN_ITEM_RES = R.layout.simple_spinner_dropdown_item;
 
     private final ReportResourcesManager reportResourcesManager;
 
