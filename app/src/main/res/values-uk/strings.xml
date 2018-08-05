@@ -414,6 +414,8 @@
     <string name="category_price_field">Вартість</string>
     <string name="category_tax_field">Податок</string>
     <string name="category_currency_field">Валюта</string>
+    <string name="category_price_exchanged_field">Вартість (після обміну)</string>
+
 
     <string name="receipt_dialog_action_edit">Редагувати чек</string>
     <string name="receipt_dialog_action_view">Переглянути чек %s</string>

@@ -37,7 +37,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryCodeColumn;
-import co.smartreceipts.android.model.impl.columns.categories.CategoryCurrencyColumn;
+import co.smartreceipts.android.model.impl.columns.categories.CategoryExchangedPriceColumn;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryNameColumn;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryPriceColumn;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryTaxColumn;
@@ -500,7 +500,7 @@ public class InteractivePdfBoxTest {
         summationColumns.add(new CategoryCodeColumn(2, new DefaultSyncState()));
         summationColumns.add(new CategoryPriceColumn(3, new DefaultSyncState()));
         summationColumns.add(new CategoryTaxColumn(4, new DefaultSyncState()));
-        summationColumns.add(new CategoryCurrencyColumn(5, new DefaultSyncState()));
+        summationColumns.add(new CategoryExchangedPriceColumn(5, new DefaultSyncState()));
 
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip, receipts,
                 receiptColumns, Collections.<Distance>emptyList(), distanceColumns,

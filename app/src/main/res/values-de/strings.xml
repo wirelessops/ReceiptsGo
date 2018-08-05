@@ -412,6 +412,8 @@
     <string name="category_price_field">Preis</string>
     <string name="category_tax_field">Steuer</string>
     <string name="category_currency_field">Währung</string>
+    <string name="category_price_exchanged_field">Preis (getauscht)</string>
+
 
     <string name="receipt_dialog_action_edit">Beleg bearbeiten</string>
     <string name="receipt_dialog_action_view">Ansicht Beleg %s</string>

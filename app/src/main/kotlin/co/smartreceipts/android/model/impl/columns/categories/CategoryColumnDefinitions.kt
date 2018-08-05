@@ -14,7 +14,7 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import java.util.*
 
-class CategoryColumnDefinitions(private val reportResourcesManager: ReportResourcesManager) :
+class CategoryColumnDefinitions(private val reportResourcesManager: ReportResourcesManager, private val multiCurrency: Boolean) :
     ColumnDefinitions<SumCategoryGroupingResult> {
 
     private val actualDefinitions = values()
@@ -31,7 +31,7 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
         CODE(1, R.string.category_code_field),
         PRICE(2, R.string.category_price_field),
         TAX(3, R.string.category_tax_field),
-        CURRENCY(4, R.string.category_currency_field);
+        PRICE_EXCHANGED(4, R.string.category_price_exchanged_field);
 
         override fun getColumnType(): Int = columnType
 
@@ -55,13 +55,15 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
     }
 
     override fun getAllColumns(): List<Column<SumCategoryGroupingResult>> {
-        val columns =
-            ArrayList<AbstractColumnImpl<SumCategoryGroupingResult>>(actualDefinitions.size)
-        for (definition in actualDefinitions) {
-            val column = getColumnFromClass(Column.UNKNOWN_ID, definition, DefaultSyncState())
+        val columns = ArrayList<AbstractColumnImpl<SumCategoryGroupingResult>>(actualDefinitions.size)
 
-            columns.add(column)
+        for (definition in actualDefinitions) {
+            // don't include PRICE_EXCHANGED definition if all receipts have same currency
+            if (!(definition == PRICE_EXCHANGED && !multiCurrency)) {
+                columns.add(getColumnFromClass(Column.UNKNOWN_ID, definition, DefaultSyncState()))
+            }
         }
+
         Collections.sort(columns, ColumnNameComparator(reportResourcesManager))
         return ArrayList<Column<SumCategoryGroupingResult>>(columns)
     }
@@ -81,7 +83,7 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
             CODE -> CategoryCodeColumn(id, syncState)
             PRICE -> CategoryPriceColumn(id, syncState)
             TAX -> CategoryTaxColumn(id, syncState)
-            CURRENCY -> CategoryCurrencyColumn(id, syncState)
+            PRICE_EXCHANGED -> CategoryExchangedPriceColumn(id, syncState)
         }
     }
 }

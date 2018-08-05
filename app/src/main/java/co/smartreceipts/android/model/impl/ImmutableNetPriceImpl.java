@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,11 +145,7 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     @NonNull
     @Override
     public String getDecimalFormattedPrice() {
-        if (areAllExchangeRatesValid) {
-            return ModelUtils.getDecimalFormattedValue(totalPrice);
-        } else {
-            return getCurrencyCodeFormattedStringFromMap(currencyToPriceMap);
-        }
+        return decimalFormattedPrice;
     }
 
     @NonNull
@@ -160,11 +157,7 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     @NonNull
     @Override
     public String getCurrencyCodeFormattedPrice() {
-        if (notExchangedPriceMap.size() > 1) {
-            return getCurrencyCodeFormattedStringFromMap(notExchangedPriceMap);
-        } else {
-            return ModelUtils.getCurrencyCodeFormattedValue(totalPrice, currency);
-        }
+        return currencyCodeFormattedPrice;
     }
 
     @NonNull
@@ -217,6 +210,10 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
         return 0;
     }
 
+    public Map<PriceCurrency, BigDecimal> getImmutableOriginalPrices() {
+        return Collections.unmodifiableMap(notExchangedPriceMap);
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(currency.getCurrencyCode());
@@ -231,7 +228,7 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     }
 
     @NonNull
-    public String calculateDecimalFormattedPrice() {
+    private String calculateDecimalFormattedPrice() {
         if (areAllExchangeRatesValid) {
             return ModelUtils.getDecimalFormattedValue(totalPrice);
         } else {
@@ -253,12 +250,8 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
     }
 
     @NonNull
-    public String calculateCurrencyCodeFormattedPrice() {
-        if (notExchangedPriceMap.size() > 1) {
+    private String calculateCurrencyCodeFormattedPrice() {
             return getCurrencyCodeFormattedStringFromMap(notExchangedPriceMap);
-        } else {
-            return ModelUtils.getCurrencyCodeFormattedValue(totalPrice, currency);
-        }
     }
 
     private void writeMapToParcel(@NonNull Parcel dest, @NonNull Map<PriceCurrency, BigDecimal> map) {

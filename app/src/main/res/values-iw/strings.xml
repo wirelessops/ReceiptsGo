@@ -315,6 +315,7 @@
     <string name="category_price_field">מחיר</string>
     <string name="category_tax_field">מס</string>
     <string name="category_currency_field">מטבע</string>
+    <string name="category_price_exchanged_field">מחיר לאחר המרה</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">גיבויים</string>

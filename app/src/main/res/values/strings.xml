@@ -427,6 +427,8 @@
     <string name="category_price_field">Price</string>
     <string name="category_tax_field">Tax</string>
     <string name="category_currency_field">Currency</string>
+    <string name="category_price_exchanged_field">Price (Exchanged)</string>
+
 
     <string name="receipt_dialog_action_edit">Edit Receipt</string>
     <string name="receipt_dialog_action_view">View Receipt %s</string>

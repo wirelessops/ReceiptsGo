@@ -8,27 +8,31 @@ import co.smartreceipts.android.sync.model.SyncState
 import java.util.*
 
 
-class CategoryCurrencyColumn(id: Int, syncState: SyncState) :
+class CategoryExchangedPriceColumn(id: Int, syncState: SyncState) :
     AbstractColumnImpl<SumCategoryGroupingResult>(
         id,
-        CategoryColumnDefinitions.ActualDefinition.CURRENCY,
+        CategoryColumnDefinitions.ActualDefinition.PRICE_EXCHANGED,
         syncState
     ) {
 
-    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String =
-        sumCategoryGroupingResult.currency.currencyCode
+    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String {
+        val price = sumCategoryGroupingResult.netPrice
+        return price.currency.currencyCode + price.decimalFormattedPrice
+    }
 
     override fun getFooter(rows: List<SumCategoryGroupingResult>): String {
         return if (!rows.isEmpty()) {
-            val tripCurrency = rows[0].currency
+            val tripCurrency = rows[0].baseCurrency
             val prices = ArrayList<Price>()
             for (row in rows) {
-                prices.add(row.price)
+                prices.add(row.netPrice)
             }
-            PriceBuilderFactory().setPrices(prices, tripCurrency).build().currencyCode
+
+            val total = PriceBuilderFactory().setPrices(prices, tripCurrency).build()
+
+            total.currencyCodeFormattedPrice
         } else {
             ""
         }
     }
-
 }

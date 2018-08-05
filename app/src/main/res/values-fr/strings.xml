@@ -412,6 +412,8 @@
     <string name="category_price_field">Prix</string>
     <string name="category_tax_field">Taxe</string>
     <string name="category_currency_field">Devise</string>
+    <string name="category_price_exchanged_field">Prix (Échangé)</string>
+
 
     <string name="receipt_dialog_action_edit">Modifier le reçu</string>
     <string name="receipt_dialog_action_view">Afficher le reçu %s</string>

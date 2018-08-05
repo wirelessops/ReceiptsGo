@@ -414,6 +414,8 @@
     <string name="category_price_field">Цена</string>
     <string name="category_tax_field">Налог</string>
     <string name="category_currency_field">Валюта</string>
+    <string name="category_price_exchanged_field">Цена (после обмена)</string>
+
 
     <string name="receipt_dialog_action_edit">Редактировать чек</string>
     <string name="receipt_dialog_action_view">Просмотреть чек %s</string>

@@ -47,9 +47,17 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
         final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
 
         // Categories Summation Table
-        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getReportResourcesManager())
-                .getAllColumns();
         final List<SumCategoryGroupingResult> categories = groupingController.getSummationByCategory(trip).toList().blockingGet();
+
+        boolean isMultiCurrency = false;
+        for (SumCategoryGroupingResult categorySummation : categories) {
+            if (categorySummation.isMultiCurrency()) {
+                isMultiCurrency = true;
+                break;
+            }
+        }
+        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getReportResourcesManager(), isMultiCurrency)
+                .getAllColumns();
 
         // Grouping by Category Receipts Tables
         final List<CategoryGroupingResult> groupingResults = groupingController.getReceiptsGroupedByCategory(trip).toList().blockingGet();

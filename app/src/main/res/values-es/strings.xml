@@ -412,6 +412,8 @@
     <string name="category_price_field">Precio</string>
     <string name="category_tax_field">Impuesto</string>
     <string name="category_currency_field">Moneda</string>
+    <string name="category_price_exchanged_field">Precio (al cambio)</string>
+
 
     <string name="receipt_dialog_action_edit">Editar recibo</string>
     <string name="receipt_dialog_action_view">Ver recibo %s</string>

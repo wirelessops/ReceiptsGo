@@ -16,19 +16,21 @@ class CategoryTaxColumn(id: Int, syncState: SyncState) :
     ) {
 
     override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String? =
-        sumCategoryGroupingResult.tax.decimalFormattedPrice
+        sumCategoryGroupingResult.netTax.currencyCodeFormattedPrice
 
     override fun getFooter(rows: List<SumCategoryGroupingResult>): String {
         return if (!rows.isEmpty()) {
-            val tripCurrency = rows[0].currency
             val prices = ArrayList<Price>()
+
             for (row in rows) {
-                prices.add(row.tax)
+                for (entry in row.netTax.immutableOriginalPrices.entries) {
+                    prices.add(PriceBuilderFactory().setCurrency(entry.key).setPrice(entry.value).build())
+                }
             }
 
-            val total = PriceBuilderFactory().setPrices(prices, tripCurrency).build()
+            val total = PriceBuilderFactory().setPrices(prices, rows[0].baseCurrency).build()
 
-            if (total.currencyCodeCount == 1) total.decimalFormattedPrice else total.currencyCodeFormattedPrice
+            total.currencyCodeFormattedPrice
         } else {
             ""
         }

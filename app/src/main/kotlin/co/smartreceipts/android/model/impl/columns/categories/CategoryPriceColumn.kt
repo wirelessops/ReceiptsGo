@@ -5,7 +5,6 @@ import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
 import co.smartreceipts.android.sync.model.SyncState
-import java.util.*
 
 
 class CategoryPriceColumn(id: Int, syncState: SyncState) :
@@ -15,20 +14,23 @@ class CategoryPriceColumn(id: Int, syncState: SyncState) :
         syncState
     ) {
 
-    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String =
-        sumCategoryGroupingResult.price.decimalFormattedPrice
+    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String {
+        return sumCategoryGroupingResult.netPrice.currencyCodeFormattedPrice
+    }
 
     override fun getFooter(rows: List<SumCategoryGroupingResult>): String {
         return if (!rows.isEmpty()) {
-            val tripCurrency = rows[0].currency
             val prices = ArrayList<Price>()
+
             for (row in rows) {
-                prices.add(row.price)
+                for (entry in row.netPrice.immutableOriginalPrices.entries) {
+                    prices.add(PriceBuilderFactory().setCurrency(entry.key).setPrice(entry.value).build())
+                }
             }
 
-            val total = PriceBuilderFactory().setPrices(prices, tripCurrency).build()
+            val total = PriceBuilderFactory().setPrices(prices, rows[0].baseCurrency).build()
 
-            if (total.currencyCodeCount == 1) total.decimalFormattedPrice else total.currencyCodeFormattedPrice
+            total.currencyCodeFormattedPrice
         } else {
             ""
         }

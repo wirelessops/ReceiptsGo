@@ -328,7 +328,14 @@ public class EmailAssistant {
                                 .toList()
                                 .blockingGet();
 
-                        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(reportResourcesManager)
+                        boolean isMultiCurrency = false;
+                        for (SumCategoryGroupingResult sumCategoryGroupingResult : sumCategoryGroupingResults) {
+                            if (sumCategoryGroupingResult.isMultiCurrency()) {
+                                isMultiCurrency = true;
+                                break;
+                            }
+                        }
+                        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(reportResourcesManager, isMultiCurrency)
                                 .getAllColumns();
 
                         data += "\n\n";

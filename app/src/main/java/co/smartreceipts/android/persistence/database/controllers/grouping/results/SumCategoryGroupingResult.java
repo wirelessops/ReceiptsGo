@@ -4,27 +4,30 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.android.model.Category;
-import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Category;
+import co.smartreceipts.android.model.impl.ImmutableNetPriceImpl;
 
 public class SumCategoryGroupingResult {
 
     private final Category category;
 
-    private final PriceCurrency currency;
+    private final PriceCurrency baseCurrency;
 
-    private final Price price, tax;
+    private final ImmutableNetPriceImpl netPrice, netTax;
 
     private final int receiptsCount;
 
-    public SumCategoryGroupingResult(@NonNull Category category, @NonNull PriceCurrency currency,
-                                     @NonNull Price price, @NonNull Price tax, int receiptsCount) {
+    private final boolean isMultiCurrency;
+
+    public SumCategoryGroupingResult(@NonNull Category category, @NonNull PriceCurrency baseCurrency,
+                                     @NonNull ImmutableNetPriceImpl netPrice, @NonNull ImmutableNetPriceImpl netTax, int receiptsCount) {
         this.category = Preconditions.checkNotNull(category);
-        this.currency = Preconditions.checkNotNull(currency);
-        this.price = Preconditions.checkNotNull(price);
-        this.tax = Preconditions.checkNotNull(tax);
+        this.baseCurrency = Preconditions.checkNotNull(baseCurrency);
+        this.netPrice = Preconditions.checkNotNull(netPrice);
+        this.netTax = Preconditions.checkNotNull(netTax);
         this.receiptsCount = receiptsCount;
+        this.isMultiCurrency = netPrice.getImmutableOriginalPrices().keySet().size() > 1;
     }
 
     @NonNull
@@ -33,21 +36,25 @@ public class SumCategoryGroupingResult {
     }
 
     @NonNull
-    public PriceCurrency getCurrency() {
-        return currency;
+    public PriceCurrency getBaseCurrency() {
+        return baseCurrency;
     }
 
     @NonNull
-    public Price getPrice() {
-        return price;
+    public ImmutableNetPriceImpl getNetPrice() {
+        return netPrice;
     }
 
     @NonNull
-    public Price getTax() {
-        return tax;
+    public ImmutableNetPriceImpl getNetTax() {
+        return netTax;
     }
 
     public int getReceiptsCount() {
         return receiptsCount;
+    }
+
+    public boolean isMultiCurrency() {
+        return isMultiCurrency;
     }
 }
