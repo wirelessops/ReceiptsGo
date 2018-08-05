@@ -35,8 +35,8 @@ class AdinCubeAdView @Inject constructor() : BannerAdView {
 
             val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             params.gravity = Gravity.CENTER_HORIZONTAL
-            adView!!.layoutParams = params
-            adView!!.setEventListener(object : AdinCubeBannerEventListener {
+            adView?.layoutParams = params
+            adView?.setEventListener(object : AdinCubeBannerEventListener {
                 override fun onAdClicked(view: BannerView?) {
                     // Intentional no-op
                 }
@@ -59,7 +59,7 @@ class AdinCubeAdView @Inject constructor() : BannerAdView {
 
             })
             UiThread.run {
-                container!!.addView(adView)
+                container?.addView(adView)
             }
         }
     }
@@ -90,8 +90,8 @@ class AdinCubeAdView @Inject constructor() : BannerAdView {
     override fun onDestroy() {
         adView?.destroy()
         container?.removeView(adView)
-        adView = null
         container = null
+        adView = null
         activity = null
     }
 
