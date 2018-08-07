@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.Metadata;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
@@ -32,7 +34,6 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 
-
 public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks {
 
     private final DriveDataStreams driveDataStreams;
@@ -41,15 +42,20 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
     private final DriveThrowableToSyncErrorTranslator syncErrorTranslator;
     private final AtomicReference<CountDownLatch> latchReference;
 
-    public DriveStreamsManager(@NonNull Context context, @NonNull GoogleApiClient googleApiClient, @NonNull GoogleDriveSyncMetadata googleDriveSyncMetadata,
-                               @NonNull Subject<Optional<Throwable>> driveErrorStream, @NonNull DriveUploadCompleteManager driveUploadCompleteManager) {
-        this(new DriveDataStreams(context, googleApiClient, googleDriveSyncMetadata, driveUploadCompleteManager), new DriveStreamMappings(), driveErrorStream, new DriveThrowableToSyncErrorTranslator());
+    public DriveStreamsManager(@NonNull Context context,
+                               @NonNull DriveClient driveClient,
+                               @NonNull DriveResourceClient driveResourceClient,
+                               @NonNull GoogleDriveSyncMetadata googleDriveSyncMetadata,
+                               @NonNull Subject<Optional<Throwable>> driveErrorStream,
+                               @NonNull DriveUploadCompleteManager driveUploadCompleteManager) {
+        this(new DriveDataStreams(context, driveClient, driveResourceClient, googleDriveSyncMetadata, driveUploadCompleteManager), new DriveStreamMappings(), driveErrorStream, new DriveThrowableToSyncErrorTranslator());
     }
 
     @VisibleForTesting
-    DriveStreamsManager(@NonNull DriveDataStreams driveDataStreams, @NonNull DriveStreamMappings driveStreamMappings,
-                               @NonNull Subject<Optional<Throwable>> driveErrorStream,
-                               @NonNull DriveThrowableToSyncErrorTranslator syncErrorTranslator) {
+    DriveStreamsManager(@NonNull DriveDataStreams driveDataStreams,
+                        @NonNull DriveStreamMappings driveStreamMappings,
+                        @NonNull Subject<Optional<Throwable>> driveErrorStream,
+                        @NonNull DriveThrowableToSyncErrorTranslator syncErrorTranslator) {
         this.driveDataStreams = Preconditions.checkNotNull(driveDataStreams);
         this.driveStreamMappings = Preconditions.checkNotNull(driveStreamMappings);
         this.driveErrorStream = Preconditions.checkNotNull(driveErrorStream);

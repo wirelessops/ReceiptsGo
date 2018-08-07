@@ -26,7 +26,7 @@ public interface BackupProvider {
      *
      * @param activity the current {@link FragmentActivity} if one is required for connection error resolutions
      */
-    void initialize(@Nullable FragmentActivity activity);
+    void initialize(@NonNull FragmentActivity activity);
 
     /**
      * De-initialize the backup provider to stop it from being used
