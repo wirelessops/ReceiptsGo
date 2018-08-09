@@ -263,7 +263,9 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
 
         @Override
         public void onClick(@NonNull View view) {
-            launchCalendarDialog(null);
+            if (datePickerDialog == null) {
+                launchCalendarDialog(null);
+            }
         }
     }
 
