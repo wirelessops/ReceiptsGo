@@ -125,7 +125,7 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
 
                         if (db.update(getTableName(), columnValues, COLUMN_ID + "= ?", new String[]{Integer.toString(id)}) == 0) {
                             Logger.error(this, "Column update error happened");
-                            throw new RuntimeException("Column update error happened");
+                            throw new RuntimeException("Column update error happened for (" + id + ", " + oldColumnType + ", " + newColumnType + ")");
                         }
 
 
