@@ -926,11 +926,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (isNewReceipt()) {
-                if (presenter.isMatchReceiptNameToCategory()) {
-                    nameBox.setText(categoriesAdapter.getItem(position).getName());
-                }
-                if (presenter.isMatchReceiptCommentToCategory()) {
-                    commentBox.setText(categoriesAdapter.getItem(position).getName());
+                final Category category = categoriesAdapter.getItem(position);
+                if (category != null) {
+                    if (presenter.isMatchReceiptNameToCategory()) {
+                        nameBox.setText(category.getName());
+                    }
+                    if (presenter.isMatchReceiptCommentToCategory()) {
+                        commentBox.setText(category.getName());
+                    }
                 }
             }
         }
