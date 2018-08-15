@@ -105,27 +105,34 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
             try {
                 columnsCursor = db.query(getTableName(), new String[]{DEPRECATED_COLUMN_ID_AS_NAME, DEPRECATED_COLUMN_TYPE_AS_NAME, COLUMN_TYPE}, null, null, null, null, null);
                 if (columnsCursor != null && columnsCursor.moveToFirst()) {
-                    final int idIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_ID_AS_NAME);
-                    final int typeIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_TYPE_AS_NAME);
+                    final int oldIdIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_ID_AS_NAME);
+                    final int oldTypeAsNameIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_TYPE_AS_NAME);
 
                     do {
-                        final int id = columnsCursor.getInt(idIndex);
-                        final String oldColumnType = columnsCursor.getString(typeIndex);
+                        // Fetch our old column id and type
+                        final int oldId = columnsCursor.getInt(oldIdIndex);
+                        final String oldColumnTypeAsNameString = columnsCursor.getString(oldTypeAsNameIndex);
 
+                        // By default, we use the default column as our migration placeholder
                         int newColumnType = receiptColumnDefinitions.getDefaultInsertColumn().getType();
 
-                        final int columnTypeByHeaderValue = columnFinder.getColumnTypeByHeaderValue(oldColumnType);
+                        // If we manage to find our old column by name, assign that type as the new type
+                        final int columnTypeByHeaderValue = columnFinder.getColumnTypeByHeaderValue(oldColumnTypeAsNameString);
                         if (columnTypeByHeaderValue >= 0) {
                             newColumnType = columnTypeByHeaderValue;
                         }
 
                         final ContentValues columnValues = new ContentValues(1);
                         columnValues.put(COLUMN_TYPE, newColumnType);
-                        Logger.debug(this, "Updating old column header value: {} to new column type {}", oldColumnType, newColumnType);
+                        Logger.debug(this, "Updating old column header value: {} to new column type {}", oldColumnTypeAsNameString, newColumnType);
 
-                        if (db.update(getTableName(), columnValues, COLUMN_ID + "= ?", new String[]{Integer.toString(id)}) == 0) {
+                        if (db.update(getTableName(), columnValues, COLUMN_ID + "= ?", new String[]{Integer.toString(oldId)}) == 0) {
                             Logger.error(this, "Column update error happened");
-                            throw new RuntimeException("Column update error happened for (" + id + ", " + oldColumnType + ", " + newColumnType + ")");
+                            if (oldId == 0 && newColumnType == 0) {
+                                Logger.error(this, "Non fatal error occurred. Mapping default to default");
+                            } else {
+                                throw new RuntimeException("Column update error happened for (" + oldId + ", " + oldColumnTypeAsNameString + ", " + newColumnType + ")");
+                            }
                         }
 
 
