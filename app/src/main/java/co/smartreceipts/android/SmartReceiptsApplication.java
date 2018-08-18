@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.os.Build;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
@@ -44,6 +45,9 @@ import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import wb.android.flex.Flex;
@@ -197,6 +201,10 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
         // To handle RxJava exceptions
         RxJavaPlugins.setErrorHandler(new DefaultRxErrorHandler(analytics));
+
+        // To configure the Android schedulers as per: https://medium.com/@sweers/rxandroids-new-async-api-4ab5b3ad3e93
+        final Scheduler asyncMainThreadScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true);
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> asyncMainThreadScheduler);
 
         flex.initialize();
         userPreferenceManager.initialize();
