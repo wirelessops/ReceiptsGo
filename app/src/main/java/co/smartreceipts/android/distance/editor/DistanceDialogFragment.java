@@ -348,12 +348,14 @@ public class DistanceDialogFragment extends DialogFragment implements Editor<Dis
 
     @Override
     public void displayAutoCompleteResults(@NotNull AutoCompleteField field, @NotNull List<AutoCompleteResult<Distance>> autoCompleteResults) {
-        final AutoCompleteArrayAdapter<Distance> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
-        if (field == DistanceAutoCompleteField.Location) {
-            locationAutoCompleteTextView.setAdapter(resultsAdapter);
-            locationAutoCompleteTextView.showDropDown();
-        } else {
-            throw new IllegalArgumentException("Unsupported field type: " + field);
+        if (isAdded()) {
+            final AutoCompleteArrayAdapter<Distance> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
+            if (field == DistanceAutoCompleteField.Location) {
+                locationAutoCompleteTextView.setAdapter(resultsAdapter);
+                locationAutoCompleteTextView.showDropDown();
+            } else {
+                throw new IllegalArgumentException("Unsupported field type: " + field);
+            }
         }
     }
 
