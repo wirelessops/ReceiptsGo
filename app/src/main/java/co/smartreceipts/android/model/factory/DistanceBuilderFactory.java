@@ -64,6 +64,14 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         _currency = distance.getPrice().getCurrency();
         _comment = distance.getComment();
         _syncState = distance.getSyncState();
+
+        // Clean up data here if this is from an import that might break things
+        if (_location == null) {
+            _location = "";
+        }
+        if (_comment == null) {
+            _comment = "";
+        }
     }
 
     public DistanceBuilderFactory setTrip(final Trip trip) {
@@ -71,8 +79,8 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         return this;
     }
 
-    public DistanceBuilderFactory setLocation(String location) {
-        _location = location;
+    public DistanceBuilderFactory setLocation(@NonNull String location) {
+        _location = Preconditions.checkNotNull(location);
         return this;
     }
 
@@ -132,8 +140,8 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         return this;
     }
 
-    public DistanceBuilderFactory setComment(String comment) {
-        _comment = comment;
+    public DistanceBuilderFactory setComment(@Nullable String comment) {
+        _comment = comment != null ? comment : "";
         return this;
     }
 

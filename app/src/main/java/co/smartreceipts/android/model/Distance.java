@@ -35,6 +35,7 @@ public interface Distance extends Parcelable, Priceable, Comparable<Distance>, S
      *
      * @return the location as a {@link String}
      */
+    @NonNull
     String getLocation();
 
     /**
@@ -103,6 +104,7 @@ public interface Distance extends Parcelable, Priceable, Comparable<Distance>, S
      *
      * @return - the current comment as a {@link String}
      */
+    @NonNull
     String getComment();
 
 }
