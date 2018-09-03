@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- =================== App Details ===================== -->
@@ -17,14 +17,14 @@
     <string name="add">Hinzufügen</string>
     <string name="column_item">Spalte %s</string>
     <string name="copy">Kopieren</string>
-    <string name="daily_total">Täglich Gesamt: %s</string>
+    <string name="daily_total">Gesamt pro Tag: %s</string>
     <string name="day">%s Tag</string>
     <string name="days">%s Tage</string>
     <string name="delete">Löschen</string>
-    <string name="delete_item">Löschen %s?</string>
-    <string name="delete_sync_information">Alle remote-synchronisierten Daten für diesen Titel werden ebenfalls gelöscht.</string>
-    <string name="distance">Entfernung</string>
-    <string name="distance_total_item">Entfernung. insgesamt: %s</string>
+    <string name="delete_item">%s Löschen?</string>
+    <string name="delete_sync_information">Alle remote-synchronisierten Daten für dieses Objekt werden ebenfalls gelöscht.</string>
+    <string name="distance">Strecke</string>
+    <string name="distance_total_item">Strecke insgesamt: %s</string>
     <string name="edit">Bearbeiten</string>
     <string name="export">Export</string>
     <string name="feedback">%s - Feedback</string>
@@ -33,8 +33,8 @@
     <string name="import_string_item">Import %s</string>
     <string name="item_code">Code:</string>
     <string name="item_name">Name:</string>
-    <string name="move">Bewegung</string>
-    <string name="move_copy_item">bewegen/kopieren %s?</string>
+    <string name="move">Verschieben</string>
+    <string name="move_copy_item">Verschieben/Kopieren %s?</string>
     <string name="next_id">Nächste ID: %d</string>
     <string name="no">Nein</string>
     <string name="pdf">PDF</string>
@@ -49,35 +49,35 @@
     <string name="undefined">Undefiniert</string>
     <string name="update">Aktualisieren</string>
     <string name="yes">Ja</string>
-    <string name="yes_as_pdf">Ja - Als PDF</string>
-    <string name="reorder">Nachbestellen</string>
+    <string name="yes_as_pdf">Ja - als PDF</string>
+    <string name="reorder">Umsortieren</string>
     <string name="share">Senden</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart-Plus-Receipts</string>
 
     <!-- ================ No More Ads ================= -->
-    <string name="missing_ad_suggest_removal_upsell">Überdrüssig der Anzeigen? Tippen Sie auf eine anzeigenfreie Testversion zu starten</string>
+    <string name="missing_ad_suggest_removal_upsell">Werbung entfernen? Tippen Sie, um eine anzeigenfreie Testversion zu starten</string>
 
     <!-- ============= Report Navigation ============== -->
     <string name="report_info_graphs">Grafiken</string>
     <string name="report_info_receipts">Belege</string>
-    <string name="report_info_distance">Entfernung</string>
-    <string name="report_info_generate">Generieren</string>
+    <string name="report_info_distance">Strecken</string>
+    <string name="report_info_generate">Erzeugen</string>
 
     <!-- ============= Report Generation ============== -->
     <string name="report_header_from">Von: %s</string>
     <string name="report_header_to">An: %s</string>
-    <string name="report_header_receipts_total">Belege Total: %s</string>
+    <string name="report_header_receipts_total">Belege Gesamt: %s</string>
     <string name="report_header_receipts_total_tax">MwSt: %s</string>
-    <string name="report_header_receipts_total_no_tax">Einnahmen Total (Sans Tax): %s</string>
-    <string name="report_header_receipts_total_with_tax">Einnahmen Total (Mit Tax): %s</string>
-    <string name="report_header_distance_total">Die Entfernung Total: %s</string>
-    <string name="report_header_receipts_total_reimbursable">Gesamtsumme (Erstattungsfähige): %s</string>
+    <string name="report_header_receipts_total_no_tax">Einnahmen Gesamt (ohne Steuer): %s</string>
+    <string name="report_header_receipts_total_with_tax">Einnahmen Gesamt (mit Steuer): %s</string>
+    <string name="report_header_distance_total">Strecke Gesamt: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Gesamtsumme (Erstattungsfähig): %s</string>
     <string name="report_header_grand_total">Gesamtsumme: %s</string>
     <string name="report_header_cost_center">Kostenstelle: %s</string>
     <string name="report_header_comment">Kommentar melden: %s</string>
-    <string name="report_pdf_generation_error">Es gab einen Fehler, bei der Erstellung des Berichts</string>
+    <string name="report_pdf_generation_error">Es gab einen Fehler bei der Erstellung des Berichts</string>
     <string name="report_pdf_error_too_many_columns_title">Zu viele Spalten</string>
     <string name="report_pdf_error_too_many_columns_message">Es gibt nicht genug Platz, um alle Spalten in den Bericht aufzunehmen. Bitte versuchen Sie die Anzahl der Spalten in den Einstellungen zu begrenzen.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Es gibt nicht genug Platz, um alle Spalten in den Bericht einzufügen. Bitte versuchen Sie die Anzahl der Spalten in den Einstellungen zu begrenzen oder Querformat verwenden.</string>
@@ -98,11 +98,11 @@
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Automatische Scans (OCR):</string>
     <string name="ocr_configuration_information">Smart Receipts ist mit Taggun integriert um automatisches Scannen zu ermöglichen (z.B. OCR), die Beleg-Metadaten wie Preis, Steuern, Datum und Händlernamen aus Ihren Fotos extrahieren können.</string>
-    <string name="ocr_configuration_information_line2">Wir verwenden eine Kombination von Google Vision and Machine Learning um schnell (oft in 5 Sekunden oder weniger) Ergenisse zu liefern, die mit der Zeit immer genauer werden. Da diese Dienste eine pro-Nutzungsgebühr haben, werden wir jeden untenstehenden Belegscan  verrechnen.</string>
+    <string name="ocr_configuration_information_line2">Wir verwenden eine Kombination von Google Vision and Machine Learning um schnell (oft in 5 Sekunden oder weniger) Ergebnisse zu liefern, die mit der Zeit immer genauer werden. Da diese Dienste eine Gegebühr pro Nutzung haben, werden wir jeden untenstehenden Belegscan  verrechnen.</string>
     <string name="ocr_is_enabled">Aktivieren der automatischen Scans (OCR)?</string>
-    <string name="ocr_save_scans_to_improve_results">Erlauben Sie uns Bilder zu speichern, um die  Genauigkeit zu verbessern?</string>
+    <string name="ocr_save_scans_to_improve_results">Dürfen wir Bilder speichern, um die  Genauigkeit zu verbessern?</string>
     <string name="ocr_configuration_available_purchases">Verfügbare Käufe - Tippen Sie, um zu kaufen:</string>
-    <string name="ocr_configuration_information_line3">Um OCR zu versuchen, erhalten alle neuen Benutzer 2 kostenlose Scans! Bitte beachten Sie, dass OCR eine optionale Funktion ist und jederzeit deaktiviert werden kann.</string>
+    <string name="ocr_configuration_information_line3">Um OCR auzuprobieren, erhalten alle neuen Benutzer 2 kostenlose Scans! Bitte beachten Sie, dass OCR eine optionale Funktion ist und jederzeit deaktiviert werden kann.</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_name">Name:</string>
@@ -120,7 +120,7 @@
     <string name="category_gasoline">Benzin</string>
     <string name="category_gasoline_code">GAS</string>
     <string name="category_gift">Geschenk</string>
-    <string name="category_gift_code">GESCHENK</string>
+    <string name="category_gift_code">GIFT</string>
     <string name="category_hotel">Hotel</string>
     <string name="category_hotel_code">HTL</string>
     <string name="category_laundry">Wäsche</string>
@@ -158,61 +158,61 @@
 
     <!-- ================ Img Menu Options =================== -->
     <string name="menu_receiptimage_retake">Foto noch einmal machen</string>
-    <string name="menu_receiptimage_rotate_ccw">Drehen entgegen den Uhrzeigersinn</string>
+    <string name="menu_receiptimage_rotate_ccw">Drehen gegen den Uhrzeigersinn</string>
     <string name="menu_receiptimage_rotate_cw">Drehen im Uhrzeigersinn</string>
 
     <!-- ===================== Email ====================== -->
-    <string name="email_body_subject_5mb_warning">Der folgende Anhang hat mehr als 5 MB groß und kann nicht richtig beigefügt werden: %s</string>
+    <string name="email_body_subject_5mb_warning">Der folgende Anhang ist mehr als 5 MB groß und kann nicht richtig angehängt werden: %s</string>
 
     <!-- ============== Progress Messages ================= -->
     <string name="progress_import">Importieren Ihrer Dateien…</string>
-    <string name="progress_building_reports">Gebäudeberichte…</string>
+    <string name="progress_building_reports">Erzeuge Bericht…</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">Fehler: Bitte stellen Sie sicher, dass die SD-Karte verfügbar ist und nicht an den Computer montiert.</string>
-    <string name="SD_WARNING">Warnung: Ihre SD-Karte ist nicht verfügbar oder auf Ihrem Computer angebracht. Einige Bilder könnten nicht zugreifbar sein. Das Umschalten auf internen Speicher …</string>
-    <string name="database_error">Fehler: Fehler beim Speichern der Quittung</string>
-    <string name="database_get_error">Fehler: Fehler beim Holen  Ihrer Daten. Versuchen Sie die App. neu zu starten.</string>
-    <string name="IMG_OPEN_ERROR">Fehler: Das Bild ist derzeit nicht zugänglich oder beschädigt. SD-Karte ist nicht verfügbar oder am Computer montiert. Wenn nicht, klicken Sie auf die Menü-Taste, um das Foto wieder zu holen.</string>
+    <string name="SD_ERROR">Fehler: Bitte stellen Sie sicher, dass die SD-Karte verfügbar ist und nicht am Computer gemounted.</string>
+    <string name="SD_WARNING">Warnung: Ihre SD-Karte ist nicht verfügbar oder an Ihrem Computer gemounted. Einige Bilder könnten nicht zugreifbar sein. Umschalten auf internen Speicher …</string>
+    <string name="database_error">Fehler: Fehler beim Speichern der Beleges</string>
+    <string name="database_get_error">Fehler: Fehler beim Laden Ihrer Daten. Versuchen Sie die App neu zu starten.</string>
+    <string name="IMG_OPEN_ERROR">Fehler: Das Bild ist derzeit nicht zugänglich oder beschädigt. SD-Karte ist nicht verfügbar oder am Computer montiert. Wenn nicht, klicken Sie auf die Menü-Taste, um das Foto erneut aufzunehmen.</string>
     <string name="IMG_SAVE_ERROR">Fehler: Das Bild konnte nicht richtig gespeichert werden</string>
     <string name="FILE_SAVE_ERROR">Fehler: Die Datei konnte nicht korrekt gespeichert werden</string>
     <string name="ILLEGAL_CHAR_ERROR">Fehler: Der Name enthält ein unzulässiges Zeichen</string>
     <string name="SPACE_ERROR">Fehler: Der Name kann nicht mit einem Leerzeichen beginnen,</string>
-    <string name="CALENDAR_TAB_ERROR">Fehler: Bitte Tippen Sie auf die Datum TextBox, um das Datum einzustellen</string>
-    <string name="DURATION_ERROR">Fehler: Das Startdatum muss vor dem Enddatum kommen</string>
+    <string name="CALENDAR_TAB_ERROR">Fehler: Bitte Tippen Sie auf die Datums-TextBox, um das Datum einzustellen</string>
+    <string name="DURATION_ERROR">Fehler: Das Startdatum muss vor dem Enddatum liegen</string>
     <string name="EXPORT_ERROR">Fehler: Ihre Daten wurden nicht ordnungsgemäß exportiert.</string>
-    <string name="IMPORT_ERROR">Fehler: Fehler, die Datei wurde nicht importierbar erkannt</string>
-    <string name="MOVE_ERROR">Fehler: Fehler beim Bewegen des Belegs</string>
+    <string name="IMPORT_ERROR">Fehler: Die Datei wurde nicht als importierbar erkannt</string>
+    <string name="MOVE_ERROR">Fehler: Fehler beim Verschieben des Belegs</string>
     <string name="COPY_ERROR">Fehler: Fehler beim Kopieren des Belegs</string>
-    <string name="toast_warning_reset_exchange_rate">Achtung: beim Ändern der Währung, werden alle Wechselkurse zurückgesetzt</string>
+    <string name="toast_warning_reset_exchange_rate">Achtung: Beim Ändern der Währung werden alle Wechselkurse zurückgesetzt</string>
     <string name="toast_error_trip_exists">Fehler: Eine Kostenabrechnung mit diesem Namen existiert bereits</string>
     <string name="toast_error_category_exists">Fehler: Eine Kategorie mit diesem Namen existiert bereits</string>
 
     <!-- ============== Toast Messages ================= -->
     <string name="toast_receipt_copy">Beleg erfolgreich kopiert</string>
-    <string name="toast_receipt_move">Beleg erfolgreich bewegt</string>
+    <string name="toast_receipt_move">Beleg erfolgreich verschoben</string>
     <string name="toast_receipt_image_added">Ein neues Bild erfolgreich auf %s hinzugefügt</string>
-    <string name="toast_receipt_image_replaced">Ein neues Bild erfolgreich ersetzt für %s</string>
-    <string name="toast_receipt_pdf_added">Neue PDF erfolgreich auf %s hinzugefügt</string>
-    <string name="toast_receipt_pdf_replaced">Eine neue PDF für %s wurde erfolgreich ersetzt</string>
-    <string name="toast_import_complete">Alle Dateien wurden erfolgreich importiert. Bitte starten Sie die App. erneut</string>
-    <string name="toast_no_storage_permissions">Kann keine Datei ohne Speicherberechtigungen importieren</string>
+    <string name="toast_receipt_image_replaced">Bild für %s erfolgreich ersetzt </string>
+    <string name="toast_receipt_pdf_added">Neues PDF erfolgreich auf %s hinzugefügt</string>
+    <string name="toast_receipt_pdf_replaced">PDF für %s wurde erfolgreich ersetzt</string>
+    <string name="toast_import_complete">Alle Dateien wurden erfolgreich importiert. Bitte starten Sie die App erneut</string>
+    <string name="toast_no_storage_permissions">Kann Datei ohne Speicherberechtigungen nicht importieren</string>
     <string name="toast_reorder_hint">Lange drücken, um das Ziehen zu starten</string>
     <string name="toast_csv_report_distances">Um einen CSV-Bericht zu erstellen, aktivieren Sie die Option %s</string>
     <string name="attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to"> nach</string>
-    <string name="trip_no_data">Sie scheinen zur Zeit  keine definierten Berichte haben. Versuchen Sie auf die + Taste (plus) zu klicken, um zu beginnen.\n\nSmart Receipts lässt Sie Kostenberichte, Track Belege erstellen und sehr schnell PDF &amp; CSV-Berichte für Ihre Belegsummen generieren. Es ist schnell und einfach! Überprüfen Sie undedingt das Menü, um die Kategorien, Berichte und anderen Einstellungen bestens an Ihre Bedürfnisse anzupassen.</string>
+    <string name="trip_adapter_list_item_to">nach</string>
+    <string name="trip_no_data">Sie scheinen zur Zeit keine definierten Berichte haben. Zum Beginnen tippen Sie auf die + (plus) Taste.\n\nSmart Receipts lässt Sie Kostenberichte erstellen, Kostenstellen verwalten und sehr schnell PDF &amp; CSV-Berichte für Ihre Belegsummen generieren. Es ist schnell und einfach! Überprüfen Sie unbedingt das Menü, um die Kategorien, Berichte und anderen Einstellungen optimal an Ihre Bedürfnisse anzupassen.</string>
 
     <!-- ================= Receipt Adapter =================== -->
-    <string name="receipt_no_data">Sie scheinen noch keine Belege zu haben. Versuchen Sie, die + (plus) Taste zu drücken, um loszulegen …</string>
+    <string name="receipt_no_data">Sie scheinen noch keine Belege zu haben. Tippen Sie die + (plus) Taste um loszulegen.</string>
 
     <!-- ================= Distance Adapter ================== -->
-    <string name="distance_no_data">Sie scheinen noch keine Entfernung aufgespürt zu haben. Versuchen Sie, die + (Plus) um loszulegen.</string>
-    <string name="distance_insert_failed">Fehler: Es ist nicht gelungen, diesen Abstand zu erstellen. Bitte stellen Sie sicher, dass Ihr Telefon nicht an Ihrem Computer angebracht ist.</string>
-    <string name="distance_update_failed">Fehler: Fehler, diesen Abstand Artikel zu aktualisieren. Bitte stellen Sie sicher, dass Ihr Telefon an Ihrem Computer angebracht ist.</string>
-    <string name="distance_delete_failed">Fehler: Es ist nicht gelungen, diesen Abstand zu löschen. Bitte stellen Sie sicher, dass Ihr Telefon nicht an Ihrem Computer angebracht ist.</string>
+    <string name="distance_no_data">Sie scheinen noch keine Strecken erfasst zu haben. Tippen Sie die + (plus) Taste um loszulegen. </string>
+    <string name="distance_insert_failed">Fehler: Es ist nicht gelungen, diese Strecke zu erstellen. Bitte stellen Sie sicher, dass Ihr Telefon an Ihrem Computer angebracht ist.</string>
+    <string name="distance_update_failed">Fehler: Diese Strecke kann nicht aktualisiert werden. Bitte stellen Sie sicher, dass Ihr Telefon an Ihrem Computer angebracht ist.</string>
+    <string name="distance_delete_failed">Fehler: Es ist nicht gelungen, diese Strecke zu löschen. Bitte stellen Sie sicher, dass Ihr Telefon an Ihrem Computer angebracht ist.</string>
 
     <!-- ================= Receipt Actions =================== -->
     <string name="receipt_action_camera">Bild</string>
@@ -226,11 +226,11 @@
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Vollständiger PDF Bericht</string>
     <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF Bericht - Keine Tabelle</string>
     <string name="DIALOG_EMAIL_CHECKBOX_CSV">CSV-Datei</string>
-    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - Quittungen Dateien mit Metadaten</string>
-    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Quittungen Dateien</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - Quittungs-Dateien mit Metadaten</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Quittungs-Dateien</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Bitte wählen Sie mindestens einen Bericht</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Es gibt keine Belege in diesem Bericht</string>
-    <string name="generate_report_tooltip">Tippen Sie auf die Berichtslayouts, um sie zu konfigurieren</string>
+    <string name="generate_report_tooltip">Tippen Sie unten auf ein Berichtslayout.</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Name</string>
@@ -262,7 +262,7 @@
     <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Neuer Beleg - %d</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Beleg bearbeiten</string>
     <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Beleg bearbeiten - %d</string>
-    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Warnung: dieses Belegsdatum liegt außerhalb des angegebenen Bereichs für diesen Bericht</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Warnung: Dieses Belegdatum liegt außerhalb des angegebenen Bereichs für diesen Bericht</string>
     <string name="manage_categories">Kategorien verwalten</string>
     <string name="manage_payment_methods">Zahlungsmethoden verwalten</string>
 
@@ -282,13 +282,13 @@
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
     <string name="manual_backup_title">Manuelle Backups:</string>
-    <string name="manual_backup_description">Sichern Sie Ihre Daten, um Ihre Belege sicher zu halten! Sie können Ihre Daten durch den Import der SmartReceipts.SMR Sicherungsdatei wiederherstellen, die unten über die Backup-Taste erstellt wird.</string>
+    <string name="manual_backup_description">Sichern Sie Ihre Daten, um Ihre Belege zu schützen! Sie können Ihre Daten durch den Import der SmartReceipts.SMR Sicherungsdatei wiederherstellen, die unten über die Backup-Taste erstellt wird.</string>
     <string name="manual_backup_export">Sicherungskopie</string>
     <string name="manual_backup_import">Importieren</string>
     <string name="auto_backup_title">Automatische Backups [BETA]:</string>
     <string name="auto_backup_wifi_only">Verwenden Sie nur Wi-Fi</string>
     <string name="auto_backup_warning_none">Warnung: Automatische Backups sind nicht konfiguriert!\nSie könnten Ihre Daten verlieren.</string>
-    <string name="auto_backup_warning_drive">Warnung: Standardgebühren für automatische Backups über ein Mobilfunknetz könnten verrechnet werden.</string>
+    <string name="auto_backup_warning_drive">Warnung: Für automatische Backups über ein Mobilfunknetz können Kosten anfallen.</string>
     <string name="auto_backup_configure">Tippen Sie auf Konfigurieren</string>
     <string name="auto_backup_source_none">Keiner</string>
     <string name="auto_backup_source_google_drive">Google Drive</string>
@@ -297,11 +297,11 @@
     <string name="remote_backups_list_item_menu_restore">Wiederherstellen</string>
     <string name="remote_backups_list_item_menu_delete">@string/delete</string>
     <string name="remote_backups_list_item_menu_download_images">Auf ZIP herunterladen</string>
-    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] herunterladen</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Herunterladen</string>
 
     <string name="dialog_remote_backup_delete_title">@string/delete</string>
     <string name="dialog_remote_backup_delete_message">Sind Sie sicher, dass Sie Ihre Sicherungskopie vom %s Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
-    <string name="dialog_remote_backup_delete_message_this_device">Sind Sie sicher, dass Sie Ihren Backup auf diesem Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte beachten Sie, dass Sie die automatische Sicherungen ausschalten möchte, um nach dieser Vorgang abgeschlossen ist oder alle lokalen Daten neu synchronisiert werden können.</string>
+    <string name="dialog_remote_backup_delete_message_this_device">Sind Sie sicher, dass Sie Ihren Backup auf diesem Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte beachten Sie, dass Sie die automatische Sicherung ausschalten sollten, sobald dieser Vorgang abgeschlossen ist - ansonsten werden alle lokalen Daten neu synchronisiert.</string>
     <string name="dialog_remote_backup_delete_positive">@string/delete</string>
     <string name="dialog_remote_backup_delete_progress">Löschen Sie Ihren Backup vom %s Gerät …</string>
     <string name="dialog_remote_backup_delete_toast_success">Backup erfolgreich gelöscht</string>
@@ -332,7 +332,7 @@
     <string name="login_fields_hint_password">Passwörter müssen mindestens 8 Zeichen lang sein:</string>
     <string name="login_fields_hint_valid">Tippen Sie unten zum Einloggen oder Anmelden:</string>
     <string name="login_success_toast">Einloggen erfolgreich</string>
-    <string name="sign_up_success_toast">Registrieren Erfolg</string>
+    <string name="sign_up_success_toast">Registrierung erfolgreich</string>
     <string name="login_failure_toast">Einloggen fehlgeschlagen</string>
     <string name="sign_up_failure_toast">Anmeldung gescheitert</string>
     <string name="login_failure_credentials_toast">Fehler: Falscher Benutzername oder Passwort</string>
@@ -343,8 +343,8 @@
     <string name="dialog_filter_negative_button">Filter entfernen</string>
 
     <!-- ==================== dialog miles ======================== -->
-    <string name="dialog_mileage_title_create">Entfernung hinzufügen</string>
-    <string name="dialog_mileage_title_update">Entfernung aktualisieren</string>
+    <string name="dialog_mileage_title_create">Strecke hinzufügen</string>
+    <string name="dialog_mileage_title_update">Strecke aktualisieren</string>
     <string name="dialog_mileage_positive_create">Hinzufügen</string>
     <string name="dialog_mileage_positive_update">Aktualisieren</string>
     <string name="dialog_mileage_neutral_delete">Löschen</string>
@@ -389,7 +389,7 @@
     <string name="column_item_converted_price_exchange_rate">Preis (getauscht)</string>
     <string name="column_item_converted_tax_exchange_rate">Steuer (getauscht)</string>
     <string name="column_item_converted_price_plus_tax_exchange_rate">Preis plus Steuer (getauscht)</string>
-    <string name="column_item_converted_price_minus_tax_exchange_rate">Price ohne Steuer (getauscht)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Preis ohne Steuer (getauscht)</string>
     <string name="column_item_exchange_rate">Wechselkurs</string>
     <string name="column_item_pictured">abgebildet</string>
     <string name="column_item_reimbursable">rückzahlbar</string>
@@ -400,7 +400,7 @@
     <!-- ====================== Distance Report ======================== -->
     <string name="distance_location_field">Ort</string>
     <string name="distance_price_field">Preis</string>
-    <string name="distance_distance_field">Entfernung</string>
+    <string name="distance_distance_field">Strecke</string>
     <string name="distance_rate_field">Preis</string>
     <string name="dialog_currency_field">Währung</string>
     <string name="distance_date_field">Datum</string>
@@ -419,7 +419,7 @@
     <string name="receipt_dialog_action_view">Ansicht Beleg %s</string>
     <string name="receipt_dialog_action_delete">Beleg löschen</string>
     <string name="receipt_dialog_action_move_copy">Verschieben / Kopieren</string>
-    <string name="receipt_dialog_action_remove_attachment">Entfernen Sie den Anhang</string>
+    <string name="receipt_dialog_action_remove_attachment">Anhang entfernen</string>
 
     <string name="dialog_attachment_text">Tippen Sie auf einen bestehenden Beleg um ihn hinzufügen %s</string>
 
@@ -438,8 +438,8 @@
     <string name="error_no_wifi">Fehler: Nicht mit einem Wi-Fi verbunden</string>
 
     <!-- ================== SQL Corrpution ==================== -->
-    <string name="dialog_sql_corrupt_title">Ach nein!</string>
-    <string name="dialog_sql_corrupt_message">Ihre Datenbank wurde beschädigt. Dies geschieht häufig, wenn Sie eine Aufgabe Killer-Anwendung haben, aber es kann durch einige andere Dinge verursacht werden. Keine Sorge, wir sollten in der Lage sein, die meisten Ihrer Daten wiederherzustellen.</string>
+    <string name="dialog_sql_corrupt_title">Oh nein!</string>
+    <string name="dialog_sql_corrupt_message">Ihre Datenbank wurde beschädigt. Dies geschieht häufig, wenn Sie eine App zum Beenden von Tasks haben, aber es kann durch einige andere Dinge verursacht werden. Keine Sorge, wir sollten in der Lage sein, die meisten Ihrer Daten wiederherzustellen.</string>
     <string name="dialog_sql_corrupt_positive">E-Mail an den Entwickler senden für Hilfe</string>
     <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Datenbank beschädigt</string>
     <string name="dialog_sql_corrupt_intent_text">Hilfe - meine Datenbank wurde beschädigt  Wie können Sie mir helfen, die Dinge wieder herzustellen?</string>
@@ -482,23 +482,23 @@
     <string name="rating_tooltip_text">Mögen Sie Smart Receipts?</string>
     <string name="leave_feedback_text">Möchten Sie uns ein Feedback lassen?</string>
     <string name="apprating_dialog_title">Wie %s?</string>
-    <string name="apprating_dialog_message">Bitte erwägen Sie einen Bericht darüber zu senden. Als unabhängiger Entwickler, sind Ihre Bewertungen meine primäre Quelle der Exposition und helfen wirklich mich zu ermutigen, neue Features, hinzuzufügen. Vielen Dank!</string>
+    <string name="apprating_dialog_message">Würden Sie darüber einen Bericht senden? Für mich als unabhängigen Entwickler sind Ihre Bewertungen mein Schaufenster. Konstruktives Feedback ermutigt mich, neue Features hinzuzufügen. Vielen Dank!</string>
     <string name="apprating_dialog_negative">Nein Danke</string>
     <string name="apprating_dialog_neutral">Vielleicht später</string>
-    <string name="apprating_dialog_positive">Bewerten Sie es jetzt!</string>
+    <string name="apprating_dialog_positive">Bewerten Sie jetzt!</string>
 
     <!-- ================== Tooltip messages ==================== -->
-    <string name="tooltip_generate_info_message">Verwenden Sie den ‚Generate‘ Registerkarte um Berichte zu erstellen</string>
+    <string name="tooltip_generate_info_message">Verwenden Sie die ‚Erzeugen‘ Registerkarte um Berichte zu erstellen</string>
     <string name="tooltip_no_backups_info_message">Erinnerung: Sichern Sie regelmäßig Ihre Daten</string>
     <string name="tooltip_backup_info_message">%d Tage seit dein letztem Backup</string>
     <string name="tooltip_import_info_message">Bitte wählen Sie den Beleg für Ihren Anhang</string>
     <string name="tooltip_review_privacy">Tippen Sie hier, um Ihre Datenschutzeinstellungen zu überprüfen</string>
 
     <!-- ================== Graph titles ==================== -->
-    <string name="graphs_no_data">Fügen Sie Ihre ersten Quittungen hinzu, um Graphen zu sehen.</string>
+    <string name="graphs_no_data">Fügen Sie Ihre ersten Quittungen hinzu, um Grafiken zu sehen.</string>
     <string name="graphs_expenditure_by_dates_title">Tägliche Ausgaben</string>
     <string name="graphs_expenditure_by_categories_title">Ausgaben nach Kategorien</string>
-    <string name="graphs_expenditure_by_reimbursable_title">Erstattungsfähig vs Nicht rückzahlbar</string>
+    <string name="graphs_expenditure_by_reimbursable_title">Erstattungsfähig vs nicht rückzahlbar</string>
     <string name="graphs_expenditure_by_payment_methods_title">Aufwendungen nach Zahlungsmethoden</string>
     <string name="graphs_label_reimbursable">Erstattungsfähig</string>
     <string name="graphs_label_non_reimbursable">Nicht rückzahlbar</string>
