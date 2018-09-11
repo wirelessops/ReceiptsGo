@@ -1,4 +1,4 @@
-package co.smartreceipts.android.purchases.apis;
+package co.smartreceipts.android.purchases.apis.purchases;
 
 import android.support.annotation.NonNull;
 
