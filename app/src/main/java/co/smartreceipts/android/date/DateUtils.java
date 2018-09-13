@@ -16,7 +16,8 @@ import java.util.regex.Pattern;
 
 public class DateUtils {
 
-    public static final String DEFAULT_SEPARATOR = "/";
+    private static final String DEFAULT_SEPARATOR = "/";
+
     private static String separator;
 
     private DateUtils() {
