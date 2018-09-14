@@ -1,5 +1,6 @@
 package co.smartreceipts.android.ocr.purchases;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
@@ -75,6 +76,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
     }
 
+    @SuppressLint("CheckResult")
     public void initialize() {
         Logger.debug(this, "Initializing...");
         this.purchaseManager.addEventListener(this);
@@ -107,7 +109,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     @Override
     public void onPurchaseSuccess(@NonNull InAppPurchase inAppPurchase, @NonNull PurchaseSource purchaseSource) {
         if (inAppPurchase.getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
-            final ManagedProduct managedProduct = purchaseWallet.getManagedProduct(inAppPurchase);
+            final ManagedProduct managedProduct = purchaseWallet.getLocalInAppManagedProduct(inAppPurchase);
             if (managedProduct != null) {
                 this.identityManager.isLoggedInStream()
                         .subscribeOn(subscribeOnScheduler)

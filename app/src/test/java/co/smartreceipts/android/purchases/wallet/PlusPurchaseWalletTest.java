@@ -13,14 +13,11 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 
 import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
-import co.smartreceipts.android.purchases.model.Subscription;
 import dagger.Lazy;
 
 import static org.junit.Assert.assertEquals;
@@ -44,8 +41,6 @@ public class PlusPurchaseWalletTest {
 
     ManagedProduct managedProduct;
 
-    ManagedProduct plusManagedProduct;
-
     @Mock
     Lazy<SharedPreferences> sharedPreferencesLazy;
 
@@ -66,7 +61,6 @@ public class PlusPurchaseWalletTest {
         this.purchaseData = purchaseData.toString();
 
         managedProduct = new ConsumablePurchase(InAppPurchase.OcrScans50, this.purchaseData, PURCHASE_TOKEN, IN_APP_DATA_SIGNATURE);
-        plusManagedProduct = new Subscription(InAppPurchase.SmartReceiptsPlus, "", "", "");
 
         preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
         preferences.edit().putString(TEST, TEST).apply();
@@ -86,21 +80,21 @@ public class PlusPurchaseWalletTest {
     @Test
     public void emptyPurchases() {
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
+        assertNull(plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.SmartReceiptsPlus));
         assertFalse(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertNull(plusPurchaseWallet.getManagedProduct(InAppPurchase.OcrScans50));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), Collections.singleton(plusManagedProduct));
+        assertNull(plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50));
+        assertEquals(plusPurchaseWallet.getActiveLocalInAppPurchases(), Collections.emptySet());
     }
 
     @Test
     public void singlePurchase() {
-        plusPurchaseWallet.addPurchaseToWallet(managedProduct);
+        plusPurchaseWallet.addLocalInAppPurchaseToWallet(managedProduct);
 
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
+        assertNull(plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.SmartReceiptsPlus));
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertEquals(managedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.OcrScans50));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), new HashSet<>(Arrays.asList(managedProduct, plusManagedProduct)));
+        assertEquals(managedProduct, plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50));
+        assertEquals(plusPurchaseWallet.getActiveLocalInAppPurchases(), Collections.singleton(managedProduct));
 
         assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.singleton(InAppPurchase.OcrScans50.getSku()));
         assertEquals(preferences.getString("ocr_purchase_1_purchaseData", null), this.purchaseData);
@@ -109,11 +103,11 @@ public class PlusPurchaseWalletTest {
 
     @Test
     public void updatePurchases() {
-        plusPurchaseWallet.updatePurchasesInWallet(Collections.singleton(managedProduct));
+        plusPurchaseWallet.updateLocalInAppPurchasesInWallet(Collections.singleton(managedProduct));
 
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), new HashSet<>(Arrays.asList(managedProduct, plusManagedProduct)));
+        assertEquals(plusPurchaseWallet.getActiveLocalInAppPurchases(), Collections.singleton(managedProduct));
 
         assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.singleton(InAppPurchase.OcrScans50.getSku()));
         assertEquals(preferences.getString("ocr_purchase_1_purchaseData", null), this.purchaseData);
@@ -121,36 +115,21 @@ public class PlusPurchaseWalletTest {
     }
 
     @Test
-    public void removeMissingPurchase() {
-        plusPurchaseWallet.removePurchaseFromWallet(InAppPurchase.OcrScans50);
-
-        assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
-        assertFalse(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertNull(plusPurchaseWallet.getManagedProduct(InAppPurchase.OcrScans50));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), Collections.singleton(plusManagedProduct));
-
-        assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.<String>emptySet());
-        assertFalse(preferences.contains("ocr_purchase_1_purchaseData"));
-        assertFalse(preferences.contains("ocr_purchase_1_inAppDataSignature"));
-    }
-
-    @Test
     public void ensureAddedPurchaseIsPersistedAndPlusRemains() {
-        plusPurchaseWallet.addPurchaseToWallet(managedProduct);
+        plusPurchaseWallet.addLocalInAppPurchaseToWallet(managedProduct);
         final PurchaseWallet newWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
+        assertNull(newWallet.getLocalInAppManagedProduct(InAppPurchase.SmartReceiptsPlus));
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
+        assertNull(plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.SmartReceiptsPlus));
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertEquals(managedProduct, newWallet.getManagedProduct(InAppPurchase.OcrScans50));
-        assertEquals(newWallet.getActivePurchases(), new HashSet<>(Arrays.asList(managedProduct, plusManagedProduct)));
+        assertEquals(managedProduct, newWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50));
+        assertEquals(newWallet.getActiveLocalInAppPurchases(), Collections.singleton(managedProduct));
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertEquals(managedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.OcrScans50));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), new HashSet<>(Arrays.asList(managedProduct, plusManagedProduct)));
+        assertEquals(managedProduct, plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50));
+        assertEquals(plusPurchaseWallet.getActiveLocalInAppPurchases(), Collections.singleton(managedProduct));
 
         assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.singleton(InAppPurchase.OcrScans50.getSku()));
         assertEquals(preferences.getString("ocr_purchase_1_purchaseData", null), this.purchaseData);
@@ -160,49 +139,24 @@ public class PlusPurchaseWalletTest {
     @Test
     public void ensureUpdatedPurchaseListIsPersistedAndPlusRemains() {
         // First add it
-        plusPurchaseWallet.addPurchaseToWallet(managedProduct);
+        plusPurchaseWallet.addLocalInAppPurchaseToWallet(managedProduct);
 
         // Then revoke it
-        plusPurchaseWallet.updatePurchasesInWallet(Collections.<ManagedProduct>emptySet());
+        plusPurchaseWallet.updateLocalInAppPurchasesInWallet(Collections.<ManagedProduct>emptySet());
         final PurchaseWallet newWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
 
         assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
+        assertNull(newWallet.getLocalInAppManagedProduct(InAppPurchase.SmartReceiptsPlus));
         assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
+        assertNull(plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.SmartReceiptsPlus));
 
         assertFalse(newWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertNull(newWallet.getManagedProduct(InAppPurchase.OcrScans50));
+        assertNull(newWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50));
         assertFalse(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertNull(plusPurchaseWallet.getManagedProduct(InAppPurchase.OcrScans50));
+        assertNull(plusPurchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50));
 
-        assertEquals(newWallet.getActivePurchases(), Collections.singleton(plusManagedProduct));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), Collections.singleton(plusManagedProduct));
-
-        assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.emptySet());
-        assertFalse(preferences.contains("ocr_purchase_1_purchaseData"));
-        assertFalse(preferences.contains("ocr_purchase_1_inAppDataSignature"));
-    }
-
-    @Test
-    public void ensureRemovedPurchaseIsPersisted() {
-        plusPurchaseWallet.addPurchaseToWallet(managedProduct);
-        plusPurchaseWallet.removePurchaseFromWallet(InAppPurchase.OcrScans50);
-
-        final PurchaseWallet newWallet = new PlusPurchaseWallet(sharedPreferencesLazy);
-
-        assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, newWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
-        assertTrue(plusPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
-        assertEquals(plusManagedProduct, plusPurchaseWallet.getManagedProduct(InAppPurchase.SmartReceiptsPlus));
-
-        assertFalse(newWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertNull(newWallet.getManagedProduct(InAppPurchase.OcrScans50));
-        assertFalse(plusPurchaseWallet.hasActivePurchase(InAppPurchase.OcrScans50));
-        assertNull(plusPurchaseWallet.getManagedProduct(InAppPurchase.OcrScans50));
-
-        assertEquals(newWallet.getActivePurchases(), Collections.singleton(plusManagedProduct));
-        assertEquals(plusPurchaseWallet.getActivePurchases(), Collections.singleton(plusManagedProduct));
+        assertEquals(newWallet.getActiveLocalInAppPurchases(), Collections.emptySet());
+        assertEquals(plusPurchaseWallet.getActiveLocalInAppPurchases(), Collections.emptySet());
 
         assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.emptySet());
         assertFalse(preferences.contains("ocr_purchase_1_purchaseData"));

@@ -39,25 +39,25 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
         this.sharedPreferences = Preconditions.checkNotNull(preferences);
     }
 
-    @NonNull
-    @Override
-    public Set<ManagedProduct> getActivePurchases() {
-        return new HashSet<>(getOwnedInAppPurchasesMap().values());
-    }
-
     @Override
     public synchronized boolean hasActivePurchase(@NonNull InAppPurchase inAppPurchase) {
         return getOwnedInAppPurchasesMap().containsKey(inAppPurchase) || ownedRemotePurchasesMap.containsKey(inAppPurchase);
     }
 
+    @NonNull
+    @Override
+    public Set<ManagedProduct> getActiveLocalInAppPurchases() {
+        return new HashSet<>(getOwnedInAppPurchasesMap().values());
+    }
+
     @Nullable
     @Override
-    public synchronized ManagedProduct getManagedProduct(@NonNull InAppPurchase inAppPurchase) {
+    public synchronized ManagedProduct getLocalInAppManagedProduct(@NonNull InAppPurchase inAppPurchase) {
         return getOwnedInAppPurchasesMap().get(inAppPurchase);
     }
 
     @Override
-    public synchronized void updatePurchasesInWallet(@NonNull Set<ManagedProduct> managedProducts) {
+    public synchronized void updateLocalInAppPurchasesInWallet(@NonNull Set<ManagedProduct> managedProducts) {
         final Map<InAppPurchase, ManagedProduct> actualInAppPurchasesMap = new HashMap<>();
         for (final ManagedProduct managedProduct : managedProducts) {
             actualInAppPurchasesMap.put(managedProduct.getInAppPurchase(), managedProduct);
@@ -84,19 +84,7 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
     }
 
     @Override
-    public synchronized void removePurchaseFromWallet(@NonNull InAppPurchase inAppPurchase) {
-        final ManagedProduct managedProduct = getOwnedInAppPurchasesMap().remove(inAppPurchase);
-        if (managedProduct != null) {
-            final SharedPreferences.Editor editor = sharedPreferences.get().edit();
-            editor.remove(getKeyForPurchaseData(inAppPurchase));
-            editor.remove(getKeyForInAppDataSignature(inAppPurchase));
-            editor.apply();
-            persistWallet(); // And persist our sku set
-        }
-    }
-
-    @Override
-    public synchronized void addPurchaseToWallet(@NonNull ManagedProduct managedProduct) {
+    public synchronized void addLocalInAppPurchaseToWallet(@NonNull ManagedProduct managedProduct) {
         if (!getOwnedInAppPurchasesMap().containsKey(managedProduct.getInAppPurchase())) {
             ownedInAppPurchasesMap.put(managedProduct.getInAppPurchase(), managedProduct);
             persistWallet();

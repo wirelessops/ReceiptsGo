@@ -126,7 +126,7 @@ public class PurchaseManagerTest {
     public void onCreate() {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet).getActiveLocalInAppPurchases();
     }
 
     @Test
@@ -145,7 +145,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet).getActiveLocalInAppPurchases();
     }
 
     @Test
@@ -164,7 +164,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet).getActiveLocalInAppPurchases();
     }
 
     @Test
@@ -185,7 +185,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet).getActiveLocalInAppPurchases();
     }
 
     @Test
@@ -206,7 +206,7 @@ public class PurchaseManagerTest {
 
         // Verify
         verifyInAppBillingServiceConnected();
-        verify(purchaseWallet).getActivePurchases();
+        verify(purchaseWallet).getActiveLocalInAppPurchases();
     }
 
     @Test
@@ -229,10 +229,10 @@ public class PurchaseManagerTest {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
 
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -256,10 +256,10 @@ public class PurchaseManagerTest {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
 
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -283,10 +283,10 @@ public class PurchaseManagerTest {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
 
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -310,10 +310,10 @@ public class PurchaseManagerTest {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
 
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -337,10 +337,10 @@ public class PurchaseManagerTest {
         purchaseManager.initialize(application);
         verifyInAppBillingServiceConnected();
 
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.<ManagedProduct>emptySet(), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -365,10 +365,10 @@ public class PurchaseManagerTest {
         verifyInAppBillingServiceConnected();
 
         final ManagedProduct consumablePurchase = new ConsumablePurchase(InAppPurchase.OcrScans50, getInAppPurchaseData(InAppPurchase.OcrScans50, PURCHASE_STATE_PURCHASED), PURCHASE_TOKEN, IN_APP_DATA_SIGNATURE);
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.singleton(consumablePurchase), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -393,10 +393,10 @@ public class PurchaseManagerTest {
         verifyInAppBillingServiceConnected();
 
         final ManagedProduct subscription = new Subscription(InAppPurchase.SmartReceiptsPlus, getInAppPurchaseData(InAppPurchase.SmartReceiptsPlus, PURCHASE_STATE_PURCHASED), PURCHASE_TOKEN, IN_APP_DATA_SIGNATURE);
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(Collections.singleton(subscription), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -422,10 +422,10 @@ public class PurchaseManagerTest {
 
         final ManagedProduct subscription = new Subscription(InAppPurchase.SmartReceiptsPlus, getInAppPurchaseData(InAppPurchase.SmartReceiptsPlus, PURCHASE_STATE_PURCHASED), PURCHASE_TOKEN, IN_APP_DATA_SIGNATURE);
         final ManagedProduct consumablePurchase = new ConsumablePurchase(InAppPurchase.OcrScans50, getInAppPurchaseData(InAppPurchase.OcrScans50, PURCHASE_STATE_PURCHASED), PURCHASE_TOKEN, IN_APP_DATA_SIGNATURE);
-        verify(purchaseWallet).updatePurchasesInWallet(updateManagedProductsCaptor.capture());
-        when(purchaseWallet.getActivePurchases()).thenReturn(updateManagedProductsCaptor.getValue());
+        verify(purchaseWallet).updateLocalInAppPurchasesInWallet(updateManagedProductsCaptor.capture());
+        when(purchaseWallet.getActiveLocalInAppPurchases()).thenReturn(updateManagedProductsCaptor.getValue());
         assertEquals(new HashSet<>(Arrays.asList(subscription, consumablePurchase)), updateManagedProductsCaptor.getValue());
-        verify(purchaseWallet, times(2)).getActivePurchases();
+        verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
     }
 
@@ -479,9 +479,8 @@ public class PurchaseManagerTest {
                 .assertValue(Collections.<AvailablePurchase>emptySet())
                 .assertComplete()
                 .assertNoErrors();
-        verify(purchaseWallet, never()).addPurchaseToWallet(any(ManagedProduct.class));
-        verify(purchaseWallet, never()).updatePurchasesInWallet(anySetOf(ManagedProduct.class));
-        verify(purchaseWallet, never()).removePurchaseFromWallet(any(InAppPurchase.class));
+        verify(purchaseWallet, never()).addLocalInAppPurchaseToWallet(any(ManagedProduct.class));
+        verify(purchaseWallet, never()).updateLocalInAppPurchasesInWallet(anySetOf(ManagedProduct.class));
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getSubscriptionSkus());
     }
 
@@ -500,9 +499,8 @@ public class PurchaseManagerTest {
                 .assertValue(Collections.singleton(getSkuDetailsAsAvailablePurchase(InAppPurchase.SmartReceiptsPlus)))
                 .assertComplete()
                 .assertNoErrors();
-        verify(purchaseWallet, never()).addPurchaseToWallet(any(ManagedProduct.class));
-        verify(purchaseWallet, never()).updatePurchasesInWallet(anySetOf(ManagedProduct.class));
-        verify(purchaseWallet, never()).removePurchaseFromWallet(any(InAppPurchase.class));
+        verify(purchaseWallet, never()).addLocalInAppPurchaseToWallet(any(ManagedProduct.class));
+        verify(purchaseWallet, never()).updateLocalInAppPurchasesInWallet(anySetOf(ManagedProduct.class));
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getSubscriptionSkus());
     }
 
@@ -557,9 +555,8 @@ public class PurchaseManagerTest {
                 .assertValue(Collections.<AvailablePurchase>emptySet())
                 .assertComplete()
                 .assertNoErrors();
-        verify(purchaseWallet, never()).addPurchaseToWallet(any(ManagedProduct.class));
-        verify(purchaseWallet, never()).updatePurchasesInWallet(anySetOf(ManagedProduct.class));
-        verify(purchaseWallet, never()).removePurchaseFromWallet(any(InAppPurchase.class));
+        verify(purchaseWallet, never()).addLocalInAppPurchaseToWallet(any(ManagedProduct.class));
+        verify(purchaseWallet, never()).updateLocalInAppPurchasesInWallet(anySetOf(ManagedProduct.class));
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getConsumablePurchaseSkus());
     }
 
@@ -578,9 +575,8 @@ public class PurchaseManagerTest {
                 .assertValue(Collections.singleton(getSkuDetailsAsAvailablePurchase(InAppPurchase.OcrScans50)))
                 .assertComplete()
                 .assertNoErrors();
-        verify(purchaseWallet, never()).addPurchaseToWallet(any(ManagedProduct.class));
-        verify(purchaseWallet, never()).updatePurchasesInWallet(anySetOf(ManagedProduct.class));
-        verify(purchaseWallet, never()).removePurchaseFromWallet(any(InAppPurchase.class));
+        verify(purchaseWallet, never()).addLocalInAppPurchaseToWallet(any(ManagedProduct.class));
+        verify(purchaseWallet, never()).updateLocalInAppPurchasesInWallet(anySetOf(ManagedProduct.class));
         assertEquals(bundleCaptor.getValue().getStringArrayList("ITEM_ID_LIST"), InAppPurchase.getConsumablePurchaseSkus());
     }
 
@@ -601,9 +597,8 @@ public class PurchaseManagerTest {
                 .assertValue(new HashSet<>(Arrays.asList(getSkuDetailsAsAvailablePurchase(InAppPurchase.SmartReceiptsPlus), getSkuDetailsAsAvailablePurchase(InAppPurchase.OcrScans50))))
                 .assertComplete()
                 .assertNoErrors();
-        verify(purchaseWallet, never()).addPurchaseToWallet(any(ManagedProduct.class));
-        verify(purchaseWallet, never()).updatePurchasesInWallet(anySetOf(ManagedProduct.class));
-        verify(purchaseWallet, never()).removePurchaseFromWallet(any(InAppPurchase.class));
+        verify(purchaseWallet, never()).addLocalInAppPurchaseToWallet(any(ManagedProduct.class));
+        verify(purchaseWallet, never()).updateLocalInAppPurchasesInWallet(anySetOf(ManagedProduct.class));
     }
 
     @Test
@@ -623,9 +618,8 @@ public class PurchaseManagerTest {
                 .assertValue(new HashSet<>(Arrays.asList(InAppPurchase.SmartReceiptsPlus, InAppPurchase.OcrScans50)))
                 .assertComplete()
                 .assertNoErrors();
-        verify(purchaseWallet, never()).addPurchaseToWallet(any(ManagedProduct.class));
-        verify(purchaseWallet, never()).updatePurchasesInWallet(anySetOf(ManagedProduct.class));
-        verify(purchaseWallet, never()).removePurchaseFromWallet(any(InAppPurchase.class));
+        verify(purchaseWallet, never()).addLocalInAppPurchaseToWallet(any(ManagedProduct.class));
+        verify(purchaseWallet, never()).updateLocalInAppPurchasesInWallet(anySetOf(ManagedProduct.class));
     }
 
     @Test

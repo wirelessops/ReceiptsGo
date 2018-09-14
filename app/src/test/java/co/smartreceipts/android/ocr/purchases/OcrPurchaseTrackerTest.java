@@ -97,7 +97,7 @@ public class OcrPurchaseTrackerTest {
         when(managedProduct.getInAppDataSignature()).thenReturn("");
         when(managedProduct.getPurchaseData()).thenReturn("");
         when(defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)).thenReturn(false);
-        when(purchaseWallet.getManagedProduct(InAppPurchase.OcrScans50)).thenReturn(managedProduct);
+        when(purchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50)).thenReturn(managedProduct);
         when(serviceManager.getService(MobileAppPurchasesService.class)).thenReturn(mobileAppPurchasesService);
         when(identityManager.isLoggedInStream()).thenReturn(Observable.just(true));
         when(identityManager.getMe()).thenReturn(Observable.just(meResponse));
@@ -412,7 +412,7 @@ public class OcrPurchaseTrackerTest {
     public void onPurchaseSuccessSucceedsForOtherPurchaseType() {
         // Configure
         when(managedProduct.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans10);
-        when(purchaseWallet.getManagedProduct(InAppPurchase.OcrScans10)).thenReturn(managedProduct);
+        when(purchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans10)).thenReturn(managedProduct);
         when(defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)).thenReturn(Completable.complete());
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 

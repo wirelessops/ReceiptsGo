@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -147,7 +146,7 @@ public class PurchaseManager {
                         throwable -> Logger.error(PurchaseManager.this, "Failed to initialize all user owned purchases.", throwable));
 
         // Pre-load all of our purchases into memory
-        Observable.fromCallable(purchaseWallet::getActivePurchases)
+        Observable.fromCallable(purchaseWallet::getActiveLocalInAppPurchases)
                 .subscribeOn(subscribeOnScheduler)
                 .subscribe();
     }
@@ -234,7 +233,7 @@ public class PurchaseManager {
                         final String sku = json.getString("productId");
                         final InAppPurchase inAppPurchase = InAppPurchase.from(sku);
                         if (inAppPurchase != null) {
-                            purchaseWallet.addPurchaseToWallet(new ManagedProductFactory(inAppPurchase, purchaseData, inAppDataSignature).get());
+                            purchaseWallet.addLocalInAppPurchaseToWallet(new ManagedProductFactory(inAppPurchase, purchaseData, inAppDataSignature).get());
                             for (final PurchaseEventsListener listener : listeners) {
                                 listener.onPurchaseSuccess(inAppPurchase, purchaseSource);
                             }
@@ -273,8 +272,8 @@ public class PurchaseManager {
                     return combinedSet;
                 })
                 .map(purchasedProducts -> {
-                    purchaseWallet.updatePurchasesInWallet(purchasedProducts);
-                    return purchaseWallet.getActivePurchases();
+                    purchaseWallet.updateLocalInAppPurchasesInWallet(purchasedProducts);
+                    return purchaseWallet.getActiveLocalInAppPurchases();
                 })
                 .subscribeOn(subscribeOnScheduler);
     }
