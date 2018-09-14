@@ -1,5 +1,6 @@
 package co.smartreceipts.android.apis.hosts;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -14,6 +15,7 @@ import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.store.IdentityStore;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -26,11 +28,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @ApplicationScope
 public class ServiceManager {
 
+    private final static int CACHE_SIZE_BYTES = 1024 * 1024 * 5; // 5MB
+
     private final Retrofit retrofit;
     private final Map<Class<?>, Object> cachedServiceMap = new HashMap<>();
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public ServiceManager(@NonNull HostConfiguration defaultHostConfiguration,
+    public ServiceManager(@NonNull Context context,
+                          @NonNull HostConfiguration defaultHostConfiguration,
                           @NonNull IdentityStore identityStore,
                           @NonNull SmartReceiptsGsonBuilder smartReceiptsGsonBuilder) {
 
@@ -48,6 +53,7 @@ public class ServiceManager {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             okHttpClientBuilder.addInterceptor(loggingInterceptor);
         }
+        okHttpClientBuilder.cache(new Cache(context.getCacheDir(), CACHE_SIZE_BYTES));
 
         // Build our retrofit instance
         final Retrofit.Builder builder = new Retrofit.Builder();
