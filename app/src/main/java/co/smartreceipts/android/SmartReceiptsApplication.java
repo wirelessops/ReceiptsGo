@@ -28,6 +28,7 @@ import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
@@ -83,6 +84,9 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
     @Inject
     PurchaseManager purchaseManager;
+
+    @Inject
+    RemoteSubscriptionManager remoteSubscriptionManager;
 
     @Inject
     PushManager pushManager;
@@ -213,6 +217,7 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         identityManager.initialize();
         pushManager.initialize();
         purchaseManager.initialize(this);
+        remoteSubscriptionManager.initialize();
         cognitoManager.initialize();
         ocrManager.initialize();
         crashReporter.initialize();
