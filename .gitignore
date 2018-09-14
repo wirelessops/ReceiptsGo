@@ -1,9 +1,9 @@
 ################
 ## Project Obfuscation
 ################
-# ads.xml
-# analytics.xml
-# secrets.xml
+ads.xml
+analytics.xml
+secrets.xml
 
 #################
 ## Android Studio
