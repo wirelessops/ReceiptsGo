@@ -37,7 +37,7 @@ public class NetworkingModule {
             Logger.warn(BaseAppModule.class, "*****Configuring our app to use our beta endpoint*****");
             host = new BetaSmartReceiptsHostConfiguration();
         }
-        return new ServiceManager(host, mutableIdentityStore, gsonBuilder);
+        return new ServiceManager(context, host, mutableIdentityStore, gsonBuilder);
     }
 
 
