@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import co.smartreceipts.android.apis.ApiValidationException;
-import co.smartreceipts.android.apis.hosts.WebServiceManager;
+import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.apis.organizations.Organization;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;

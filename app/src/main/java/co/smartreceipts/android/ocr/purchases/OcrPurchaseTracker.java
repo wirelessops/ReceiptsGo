@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
-import co.smartreceipts.android.apis.hosts.WebServiceManager;
+import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;

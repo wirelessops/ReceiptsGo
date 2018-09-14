@@ -6,7 +6,7 @@ import android.content.Context;
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder;
 import co.smartreceipts.android.apis.hosts.BetaSmartReceiptsHostConfiguration;
 import co.smartreceipts.android.apis.hosts.HostConfiguration;
-import co.smartreceipts.android.apis.hosts.WebServiceManager;
+import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.apis.hosts.SmartReceiptsHostConfiguration;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.store.MutableIdentityStore;

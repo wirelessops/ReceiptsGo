@@ -13,7 +13,7 @@ import java.util.Set;
 
 import co.smartreceipts.android.apis.SmartReceiptsApiErrorResponse;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
-import co.smartreceipts.android.apis.hosts.WebServiceManager;
+import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.apis.me.MeResponse;
 import co.smartreceipts.android.identity.apis.me.User;

@@ -13,7 +13,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.io.File;
 
 import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.apis.hosts.WebServiceManager;
+import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.aws.s3.S3Manager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.IdentityManager;

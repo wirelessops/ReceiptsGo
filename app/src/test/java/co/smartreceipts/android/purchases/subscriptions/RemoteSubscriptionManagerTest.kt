@@ -1,6 +1,6 @@
 package co.smartreceipts.android.purchases.subscriptions
 
-import co.smartreceipts.android.apis.hosts.WebServiceManager
+import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiService
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet

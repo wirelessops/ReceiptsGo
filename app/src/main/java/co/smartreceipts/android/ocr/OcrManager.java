@@ -14,7 +14,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
-import co.smartreceipts.android.apis.hosts.WebServiceManager;
+import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.aws.s3.S3Manager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
