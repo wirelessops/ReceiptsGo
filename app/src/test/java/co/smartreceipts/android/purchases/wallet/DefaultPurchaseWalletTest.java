@@ -14,10 +14,12 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import java.util.Collections;
+import java.util.Date;
 
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.Subscription;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
 import dagger.Lazy;
 
 import static org.junit.Assert.assertEquals;
@@ -107,6 +109,15 @@ public class DefaultPurchaseWalletTest {
         assertEquals(preferences.getStringSet("key_sku_set", Collections.<String>emptySet()), Collections.singleton(InAppPurchase.SmartReceiptsPlus.getSku()));
         assertEquals(preferences.getString("plus_sku_4_purchaseData", null), purchaseData);
         assertEquals(preferences.getString("plus_sku_4_inAppDataSignature", null), IN_APP_DATA_SIGNATURE);
+    }
+
+    @Test
+    public void updateRemotePurchases() {
+        assertFalse(defaultPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
+
+        final RemoteSubscription remoteSubscription = new RemoteSubscription(1, InAppPurchase.SmartReceiptsPlus, new Date());
+        defaultPurchaseWallet.updateRemotePurchases(Collections.singleton(remoteSubscription));
+        assertTrue(defaultPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
     }
 
     @Test

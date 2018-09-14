@@ -7,6 +7,7 @@ import java.util.Set;
 
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
 
 public interface PurchaseWallet {
 
@@ -46,6 +47,13 @@ public interface PurchaseWallet {
      * @param managedProducts the {@link Set} of {@link ManagedProduct}s that are owned by this wallet
      */
     void updatePurchasesInWallet(@NonNull Set<ManagedProduct> managedProducts);
+
+    /**
+     * Updates the list of owned remote purchases in this wallet
+     *
+     * @param remoteSubscriptions the {@link Set} of {@link RemoteSubscription}s that are owned by this wallet
+     */
+    void updateRemotePurchases(@NonNull Set<RemoteSubscription> remoteSubscriptions);
 
     /**
      * Removes an existing purchase from our wallet

@@ -1,15 +1,13 @@
 package co.smartreceipts.android.purchases.subscriptions
 
 import co.smartreceipts.android.purchases.apis.subscriptions.Subscription
-import org.junit.Assert.*
-
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
-import co.smartreceipts.android.purchases.model.PurchaseFamily
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 class SubscriptionApiResponseValidatorTest {
@@ -18,7 +16,7 @@ class SubscriptionApiResponseValidatorTest {
 
     @Test
     fun convertResponseWithNullList() {
-        val remoteSubscriptions = remoteSubscriptionConverter.convert(SubscriptionsApiResponse(null))
+        val remoteSubscriptions = remoteSubscriptionConverter.getActiveSubscriptions(SubscriptionsApiResponse(null))
         assertNotNull(remoteSubscriptions)
         assertTrue(remoteSubscriptions.isEmpty())
     }
@@ -30,14 +28,14 @@ class SubscriptionApiResponseValidatorTest {
         val invalidSubscription2 = Subscription(1, "Google", null, PURCHASE_DATE, EXPIRATION_DATE)
         val invalidSubscription3 = Subscription(1, "Google", "Some random purchase", PURCHASE_DATE, EXPIRATION_DATE)
         val subscriptions = listOf(validSubscription, invalidSubscription1, invalidSubscription2, invalidSubscription3)
-        val remoteSubscriptions = remoteSubscriptionConverter.convert(SubscriptionsApiResponse(subscriptions))
+        val remoteSubscriptions = remoteSubscriptionConverter.getActiveSubscriptions(SubscriptionsApiResponse(subscriptions))
         assertNotNull(remoteSubscriptions)
         assertTrue(remoteSubscriptions.size == 1)
 
-        val remoteSubscription = remoteSubscriptions[0]
+        val remoteSubscription = remoteSubscriptions.distinct()[0]
         assertNotNull(remoteSubscription)
         assertEquals(ID, remoteSubscription.id)
-        assertEquals(PurchaseFamily.SmartReceiptsPlus, remoteSubscription.purchaseFamily)
+        assertEquals(InAppPurchase.SmartReceiptsPlus, remoteSubscription.inAppPurchase)
         assertEquals(EXPIRATION_DATE, remoteSubscription.expirationDate)
     }
 

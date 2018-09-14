@@ -1,7 +1,9 @@
 package co.smartreceipts.android.purchases.subscriptions
 
+import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
-import co.smartreceipts.android.purchases.model.PurchaseFamily
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import javax.inject.Inject
 
 /**
  * Assists us with converting [SubscriptionsApiResponse], which is returned from our APIs, to a
@@ -11,7 +13,8 @@ import co.smartreceipts.android.purchases.model.PurchaseFamily
  * initial request. As a result (so long as we're not reading from the cache), all subscriptions
  * are assumed to be active.
  */
-class SubscriptionApiResponseValidator {
+@ApplicationScope
+class SubscriptionApiResponseValidator @Inject constructor() {
 
     /**
      * Converts a [SubscriptionsApiResponse], which is returned from our APIs, to a [List] of
@@ -20,8 +23,8 @@ class SubscriptionApiResponseValidator {
      * @param subscriptionsApiResponse the [SubscriptionsApiResponse] from our API
      * @return a [List] of [RemoteSubscription]
      */
-    fun convert(subscriptionsApiResponse: SubscriptionsApiResponse) : List<RemoteSubscription> {
-        val remoteSubscriptions = mutableListOf<RemoteSubscription>()
+    fun getActiveSubscriptions(subscriptionsApiResponse: SubscriptionsApiResponse) : Set<RemoteSubscription> {
+        val remoteSubscriptions = mutableSetOf<RemoteSubscription>()
         subscriptionsApiResponse.subscriptions?.let { subscriptions ->
             subscriptions.forEach {
                 val purchaseFamily = getPurchaseFamily(it.product_name)
@@ -34,9 +37,9 @@ class SubscriptionApiResponseValidator {
         return remoteSubscriptions
     }
 
-    private fun getPurchaseFamily(productName: String?) : PurchaseFamily? {
+    private fun getPurchaseFamily(productName: String?) : InAppPurchase? {
         return if (SMART_RECEIPTS_PLUS.equals(productName, true)) {
-            PurchaseFamily.SmartReceiptsPlus
+            InAppPurchase.SmartReceiptsPlus
         } else {
             null
         }

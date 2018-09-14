@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.ManagedProductFactory;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.Lazy;
 
@@ -31,6 +32,7 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
 
     private final Lazy<SharedPreferences> sharedPreferences;
     private Map<InAppPurchase, ManagedProduct> ownedInAppPurchasesMap = null;
+    private Map<InAppPurchase, RemoteSubscription> ownedRemotePurchasesMap = Collections.emptyMap();
 
     @Inject
     public DefaultPurchaseWallet(@NonNull Lazy<SharedPreferences> preferences) {
@@ -45,7 +47,7 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
 
     @Override
     public synchronized boolean hasActivePurchase(@NonNull InAppPurchase inAppPurchase) {
-        return getOwnedInAppPurchasesMap().containsKey(inAppPurchase);
+        return getOwnedInAppPurchasesMap().containsKey(inAppPurchase) || ownedRemotePurchasesMap.containsKey(inAppPurchase);
     }
 
     @Nullable
@@ -68,6 +70,17 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
             ownedInAppPurchasesMap.putAll(actualInAppPurchasesMap);
             persistWallet();
         }
+    }
+
+    @Override
+    public synchronized void updateRemotePurchases(@NonNull Set<RemoteSubscription> remoteSubscriptions) {
+        final Map<InAppPurchase, RemoteSubscription> localOwnedRemotePurchasesMap = new HashMap<>();
+        for (final RemoteSubscription remoteSubscription : remoteSubscriptions) {
+            localOwnedRemotePurchasesMap.put(remoteSubscription.getInAppPurchase(), remoteSubscription);
+        }
+
+        // Note: We just keep this in memory as we trust that our OkHttp cache handles this
+        this.ownedRemotePurchasesMap = localOwnedRemotePurchasesMap;
     }
 
     @Override
