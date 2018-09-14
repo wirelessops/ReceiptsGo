@@ -5,6 +5,7 @@ import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiRes
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiService
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import org.junit.Before
@@ -51,5 +52,12 @@ class RemoteSubscriptionManagerTest {
     fun initialize() {
         remoteSubscriptionManager.initialize()
         verify(purchaseWallet).updateRemotePurchases(subscriptionSet)
+    }
+
+    @Test
+    fun initializeWithError() {
+        whenever(subscriptionsApiService.getSubscriptions()).thenReturn(Observable.error(Exception("Test")))
+        remoteSubscriptionManager.initialize()
+        verifyZeroInteractions(purchaseWallet)
     }
 }

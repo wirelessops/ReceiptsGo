@@ -4,6 +4,7 @@ import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiService
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
+import co.smartreceipts.android.utils.log.Logger
 import javax.inject.Inject
 
 @ApplicationScope
@@ -17,9 +18,13 @@ class RemoteSubscriptionManager @Inject constructor(private val purchaseWallet: 
                 .map {
                     subscriptionApiResponseValidator.getActiveSubscriptions(it)
                 }
-                .subscribe {
+                .subscribe ({
+                    Logger.info(this, "Successfully fetched {} remote subscriptions from our APIs.", it.size)
                     purchaseWallet.updateRemotePurchases(it)
-                }
+                },
+                {
+                    Logger.error(this, "Failed to fetch our remote subscriptions: {}", it.message)
+                })
     }
 
 
