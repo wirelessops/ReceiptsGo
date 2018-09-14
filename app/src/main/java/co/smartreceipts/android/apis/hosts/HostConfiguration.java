@@ -6,6 +6,9 @@ import com.google.gson.Gson;
 
 import okhttp3.OkHttpClient;
 
+/**
+ * A simple interface that allows us to toggle between the production and beta URLs/configurations
+ */
 public interface HostConfiguration {
 
     /**
@@ -14,15 +17,4 @@ public interface HostConfiguration {
     @NonNull
     String getBaseUrl();
 
-    /**
-     * @return the desired {@link OkHttpClient}
-     */
-    @NonNull
-    OkHttpClient getClient();
-
-    /**
-     * @return the desired {@link Gson} for response parsing
-     */
-    @NonNull
-    Gson getGson();
 }

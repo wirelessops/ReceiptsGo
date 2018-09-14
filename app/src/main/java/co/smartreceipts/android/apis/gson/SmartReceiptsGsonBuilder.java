@@ -18,7 +18,6 @@ import co.smartreceipts.android.model.Receipt;
 
 public class SmartReceiptsGsonBuilder {
 
-
     private final ColumnDefinitions<Receipt> mReceiptColumnDefinitions;
 
     public SmartReceiptsGsonBuilder(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions) {

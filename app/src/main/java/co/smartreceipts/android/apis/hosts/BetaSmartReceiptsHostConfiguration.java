@@ -10,14 +10,7 @@ import co.smartreceipts.android.utils.log.Logger;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-public class BetaSmartReceiptsHostConfiguration extends SmartReceiptsHostConfiguration {
-
-    private final IdentityStore identityStore;
-
-    public BetaSmartReceiptsHostConfiguration(@NonNull IdentityStore identityStore, @NonNull SmartReceiptsGsonBuilder smartReceiptsGsonBuilder) {
-        super(identityStore, smartReceiptsGsonBuilder);
-        this.identityStore = Preconditions.checkNotNull(identityStore);
-    }
+public class BetaSmartReceiptsHostConfiguration implements HostConfiguration {
 
     @NonNull
     @Override
@@ -25,15 +18,4 @@ public class BetaSmartReceiptsHostConfiguration extends SmartReceiptsHostConfigu
         return "https://beta.smartreceipts.co";
     }
 
-    @NonNull
-    @Override
-    public OkHttpClient getClient() {
-        final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> Logger.info(HttpLoggingInterceptor.class, message));
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        return okHttpBuilder()
-                .addInterceptor(new SmartReceiptsAuthenticatedRequestInterceptor(identityStore))
-                .addInterceptor(new TrafficStatsRequestInterceptor())
-                .addInterceptor(loggingInterceptor)
-                .build();
-    }
 }

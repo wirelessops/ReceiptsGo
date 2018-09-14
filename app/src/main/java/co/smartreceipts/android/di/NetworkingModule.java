@@ -32,12 +32,12 @@ public class NetworkingModule {
                                                        Context context) {
         final HostConfiguration host;
         if (ConfigurableStaticFeature.UseProductionEndpoint.isEnabled(context)) {
-            host = new SmartReceiptsHostConfiguration(mutableIdentityStore, gsonBuilder);
+            host = new SmartReceiptsHostConfiguration();
         } else {
             Logger.warn(BaseAppModule.class, "*****Configuring our app to use our beta endpoint*****");
-            host = new BetaSmartReceiptsHostConfiguration(mutableIdentityStore, gsonBuilder);
+            host = new BetaSmartReceiptsHostConfiguration();
         }
-        return new ServiceManager(host);
+        return new ServiceManager(host, mutableIdentityStore, gsonBuilder);
     }
 
 
