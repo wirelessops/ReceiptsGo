@@ -70,13 +70,19 @@ Smart Receipts is broken into a few core modules:
 - **app**. All common application code for both the `free` and `plusFlavor` flavors of the application are defined here. In practice, all development work should occur in this module
 - **wBMiniLibrary**. A few legacy items that haven't been moved into the Library module, but it's otherwise unused.
 
-To install, clone or pull down this project. Please note that it will **NOT** work out of the box, so you will need to add the following files to ensure it will compile:
+Please note that that in order to use this project fully, you will need to replace the following place holder files:
 
 - `app/src/main/res/values/secrets.xml`. You can copy the secrets.xml.sample file and rename the keys inside to achieve this behavior. This is used for low usage keys
 - `app/src/free/res/values/ads.xml`. The ads file in smartReceiptsFree. You can add `adUnitId` and `classicAdUnitId` to enable support for AdMob Native and Classic Ads, respectively.
 - `app/src/free/res/xml/analytics.xml`. The analytics file in smartReceiptsFree. You can add a key here if you wish to enable Google Analytics.
 
-Generally speaking, it's easier to test against SmartReceiptsPlus (ie Smart Receipts PlusFlavor), since there are less secrets that have been explicitly git ignored to avoid key leaks.
+It is recommended to run the following commands after cloning this project in order to avoid accidentally pushing changes to these files:
+
+- `git update-index --assume-unchanged app/src/free/res/values/ads.xml`
+- `git update-index --assume-unchanged app/src/free/res/xml/analytics.xml`
+- `git update-index --assume-unchanged app/src/main/res/values/secrets.xml`
+
+This will prevent git from tracking these changes against your local secrets.
 
 ## Donate
 
@@ -95,7 +101,7 @@ We currently use Travis-CI for our continuous integration in order perform tests
 
 - [https://travis-ci.com/wbaumann/SmartReceiptsLibrary](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
 
-As we have save a few local API keys (e.g. for ads), we use encrypt a few files in our travis repository. You generate your own encrypted set as follows (note: please install the [Travis CLI client](https://github.com/travis-ci/travis.rb) first):
+All repository secrets have been replaced with placeholder files, so Travis should be able to build properly for all requests.
 
 ```bash
 $ travis login --pro
