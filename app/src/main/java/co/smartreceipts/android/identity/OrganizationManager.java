@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import co.smartreceipts.android.apis.ApiValidationException;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.apis.organizations.Organization;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;
@@ -23,16 +23,16 @@ import io.reactivex.Observable;
 
 public class OrganizationManager {
 
-    private final ServiceManager serviceManager;
+    private final WebServiceManager webServiceManager;
     private final IdentityStore identityStore;
     private final UserPreferenceManager userPreferenceManager;
     private final ConfigurationManager configurationManager;
 
-    public OrganizationManager(@NonNull ServiceManager serviceManager,
+    public OrganizationManager(@NonNull WebServiceManager webServiceManager,
                                @NonNull IdentityStore identityStore,
                                @NonNull UserPreferenceManager userPreferenceManager,
                                @NonNull ConfigurationManager configurationManager) {
-        this.serviceManager = Preconditions.checkNotNull(serviceManager);
+        this.webServiceManager = Preconditions.checkNotNull(webServiceManager);
         this.identityStore = Preconditions.checkNotNull(identityStore);
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
         this.configurationManager = Preconditions.checkNotNull(configurationManager);
@@ -55,7 +55,7 @@ public class OrganizationManager {
     @NonNull
     private Observable<OrganizationsResponse> getOrganizationsApiRequest() {
         if (identityStore.isLoggedIn()) {
-            return serviceManager.getService(OrganizationsService.class).organizations();
+            return webServiceManager.getService(OrganizationsService.class).organizations();
         } else {
             return Observable.error(new IllegalStateException("Cannot fetch the user's organizations until we're logged in"));
         }

@@ -26,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * service endpoint for network requests within the app
  */
 @ApplicationScope
-public class ServiceManager {
+public class WebServiceManager {
 
     private final static int CACHE_SIZE_BYTES = 1024 * 1024 * 5; // 5MB
 
@@ -34,10 +34,10 @@ public class ServiceManager {
     private final Map<Class<?>, Object> cachedServiceMap = new HashMap<>();
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public ServiceManager(@NonNull Context context,
-                          @NonNull HostConfiguration defaultHostConfiguration,
-                          @NonNull IdentityStore identityStore,
-                          @NonNull SmartReceiptsGsonBuilder smartReceiptsGsonBuilder) {
+    public WebServiceManager(@NonNull Context context,
+                             @NonNull HostConfiguration defaultHostConfiguration,
+                             @NonNull IdentityStore identityStore,
+                             @NonNull SmartReceiptsGsonBuilder smartReceiptsGsonBuilder) {
 
         Preconditions.checkNotNull(defaultHostConfiguration);
         Preconditions.checkNotNull(identityStore);

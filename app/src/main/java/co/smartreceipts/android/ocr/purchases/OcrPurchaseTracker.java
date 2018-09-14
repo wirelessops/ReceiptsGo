@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
@@ -41,7 +41,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     private static final String GOAL = "Recognition";
 
     private final IdentityManager identityManager;
-    private final ServiceManager serviceManager;
+    private final WebServiceManager webServiceManager;
     private final PurchaseManager purchaseManager;
     private final PurchaseWallet purchaseWallet;
     private final DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer;
@@ -51,24 +51,24 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     @Inject
     public OcrPurchaseTracker(@NonNull Context context,
                               @NonNull IdentityManager identityManager,
-                              @NonNull ServiceManager serviceManager,
+                              @NonNull WebServiceManager webServiceManager,
                               @NonNull PurchaseManager purchaseManager,
                               @NonNull PurchaseWallet purchaseWallet,
                               @NonNull DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer,
                               @NonNull LocalOcrScansTracker localOcrScansTracker) {
-        this(identityManager, serviceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, localOcrScansTracker, Schedulers.io());
+        this(identityManager, webServiceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, localOcrScansTracker, Schedulers.io());
     }
 
     @VisibleForTesting
     OcrPurchaseTracker(@NonNull IdentityManager identityManager,
-                       @NonNull ServiceManager serviceManager,
+                       @NonNull WebServiceManager webServiceManager,
                        @NonNull PurchaseManager purchaseManager,
                        @NonNull PurchaseWallet purchaseWallet,
                        @NonNull DefaultInAppPurchaseConsumer defaultInAppPurchaseConsumer,
                        @NonNull LocalOcrScansTracker localOcrScansTracker,
                        @NonNull Scheduler subscribeOnScheduler) {
         this.identityManager = Preconditions.checkNotNull(identityManager);
-        this.serviceManager = Preconditions.checkNotNull(serviceManager);
+        this.webServiceManager = Preconditions.checkNotNull(webServiceManager);
         this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
         this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
         this.defaultInAppPurchaseConsumer = Preconditions.checkNotNull(defaultInAppPurchaseConsumer);
@@ -171,7 +171,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
         }
 
         Logger.info(this, "Uploading consumable purchase: {}", managedProduct.getInAppPurchase());
-        return serviceManager.getService(MobileAppPurchasesService.class).addPurchase(new PurchaseRequest(managedProduct, GOAL))
+        return webServiceManager.getService(MobileAppPurchasesService.class).addPurchase(new PurchaseRequest(managedProduct, GOAL))
                 .flatMap(purchaseResponse -> {
                     Logger.debug(OcrPurchaseTracker.this, "Received purchase response of {}", purchaseResponse);
                     return defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)

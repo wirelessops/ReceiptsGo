@@ -14,7 +14,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.aws.s3.S3Manager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
@@ -44,7 +44,7 @@ public class OcrManager {
     private final Context context;
     private final S3Manager s3Manager;
     private final IdentityManager identityManager;
-    private final ServiceManager ocrServiceManager;
+    private final WebServiceManager ocrWebServiceManager;
     private final PushManager pushManager;
     private final UserPreferenceManager userPreferenceManager;
     private final Analytics analytics;
@@ -58,21 +58,21 @@ public class OcrManager {
     public OcrManager(@NonNull Context context,
                       @NonNull S3Manager s3Manager,
                       @NonNull IdentityManager identityManager,
-                      @NonNull ServiceManager serviceManager,
+                      @NonNull WebServiceManager webServiceManager,
                       @NonNull PushManager pushManager,
                       @NonNull OcrPurchaseTracker ocrPurchaseTracker,
                       @NonNull OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor,
                       @NonNull UserPreferenceManager userPreferenceManager,
                       @NonNull Analytics analytics,
                       @NonNull ConfigurationManager configurationManager) {
-        this(context, s3Manager, identityManager, serviceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
+        this(context, s3Manager, identityManager, webServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
     }
 
     @VisibleForTesting
     OcrManager(@NonNull Context context,
                @NonNull S3Manager s3Manager,
                @NonNull IdentityManager identityManager,
-               @NonNull ServiceManager serviceManager,
+               @NonNull WebServiceManager webServiceManager,
                @NonNull PushManager pushManager,
                @NonNull OcrPurchaseTracker ocrPurchaseTracker,
                @NonNull OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor,
@@ -83,7 +83,7 @@ public class OcrManager {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.s3Manager = Preconditions.checkNotNull(s3Manager);
         this.identityManager = Preconditions.checkNotNull(identityManager);
-        this.ocrServiceManager = Preconditions.checkNotNull(serviceManager);
+        this.ocrWebServiceManager = Preconditions.checkNotNull(webServiceManager);
         this.pushManager = Preconditions.checkNotNull(pushManager);
         this.ocrPurchaseTracker = Preconditions.checkNotNull(ocrPurchaseTracker);
         this.ocrInformationalTooltipInteractor = Preconditions.checkNotNull(ocrInformationalTooltipInteractor);
@@ -126,7 +126,7 @@ public class OcrManager {
                         Logger.debug(OcrManager.this, "Uploading OCR request for processing");
                         ocrProcessingStatusSubject.onNext(OcrProcessingStatus.PerformingScan);
                         final boolean incognito = userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode);
-                        return ocrServiceManager.getService(OcrService.class).scanReceipt(new RecongitionRequest(s3Url, incognito));
+                        return ocrWebServiceManager.getService(OcrService.class).scanReceipt(new RecongitionRequest(s3Url, incognito));
                     })
                     .flatMap(recognitionResponse -> {
                         if (recognitionResponse != null && recognitionResponse.getRecognition() != null && recognitionResponse.getRecognition().getId() != null) {
@@ -149,7 +149,7 @@ public class OcrManager {
                     .flatMap(recognitionId -> {
                         Logger.debug(OcrManager.this, "Scan completed. Fetching results for {}.", recognitionId);
                         ocrProcessingStatusSubject.onNext(OcrProcessingStatus.RetrievingResults);
-                        return ocrServiceManager.getService(OcrService.class).getRecognitionResult(recognitionId);
+                        return ocrWebServiceManager.getService(OcrService.class).getRecognitionResult(recognitionId);
                     })
                     .flatMap(recognitionResponse -> {
                         Logger.debug(OcrManager.this, "Parsing OCR Response");

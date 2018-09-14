@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(RobolectricTestRunner.class)
-public class ExchangeRateServiceManagerTest {
+public class ExchangeRateWebServiceManagerTest {
 
     private static final Date DATE = new Date(1482022800000L);
     private static final String BASE_CURRENCY = "EUR";

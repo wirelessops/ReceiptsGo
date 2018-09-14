@@ -15,7 +15,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.apis.login.LoginPayload;
@@ -47,7 +47,7 @@ import io.reactivex.subjects.BehaviorSubject;
 @ApplicationScope
 public class IdentityManager implements IdentityStore {
 
-    private final ServiceManager serviceManager;
+    private final WebServiceManager webServiceManager;
     private final Analytics analytics;
     private final MutableIdentityStore mutableIdentityStore;
     private final OrganizationManager organizationManager;
@@ -58,18 +58,18 @@ public class IdentityManager implements IdentityStore {
     public IdentityManager(@NonNull Analytics analytics,
                            @NonNull UserPreferenceManager userPreferenceManager,
                            @NonNull MutableIdentityStore mutableIdentityStore,
-                           @NonNull ServiceManager serviceManager,
+                           @NonNull WebServiceManager webServiceManager,
                            @NonNull ConfigurationManager configurationManager) {
-        this(analytics, mutableIdentityStore, serviceManager, new OrganizationManager(serviceManager, mutableIdentityStore, userPreferenceManager, configurationManager), Schedulers.io());
+        this(analytics, mutableIdentityStore, webServiceManager, new OrganizationManager(webServiceManager, mutableIdentityStore, userPreferenceManager, configurationManager), Schedulers.io());
 
     }
 
     public IdentityManager(@NonNull Analytics analytics,
                            @NonNull MutableIdentityStore mutableIdentityStore,
-                           @NonNull ServiceManager serviceManager,
+                           @NonNull WebServiceManager webServiceManager,
                            @NonNull OrganizationManager organizationManager,
                            @NonNull Scheduler initializationScheduler) {
-        this.serviceManager = serviceManager;
+        this.webServiceManager = webServiceManager;
         this.analytics = analytics;
         this.mutableIdentityStore = mutableIdentityStore;
         this.organizationManager = organizationManager;
@@ -134,11 +134,11 @@ public class IdentityManager implements IdentityStore {
         if (credentials.getLoginType() == LoginType.LogIn) {
             Logger.info(this, "Initiating user log in");
             this.analytics.record(Events.Identity.UserLogin);
-            loginResponseObservable = serviceManager.getService(LoginService.class).logIn(new LoginPayload(credentials));
+            loginResponseObservable = webServiceManager.getService(LoginService.class).logIn(new LoginPayload(credentials));
         } else if (credentials.getLoginType() == LoginType.SignUp) {
             Logger.info(this, "Initiating user sign up");
             this.analytics.record(Events.Identity.UserSignUp);
-            loginResponseObservable = serviceManager.getService(SignUpService.class).signUp(new SignUpPayload(credentials));
+            loginResponseObservable = webServiceManager.getService(SignUpService.class).signUp(new SignUpPayload(credentials));
         } else {
             throw new IllegalArgumentException("Unsupported log in type");
         }
@@ -181,7 +181,7 @@ public class IdentityManager implements IdentityStore {
         Logger.info(this, "Initiating user log-out");
         this.analytics.record(Events.Identity.UserLogout);
 
-        return serviceManager.getService(LogoutService.class).logOut()
+        return webServiceManager.getService(LogoutService.class).logOut()
                 .doOnNext(logoutResponse -> mutableIdentityStore.setCredentials(null, null, null))
                 .doOnError(throwable -> {
                     Logger.error(this, "Failed to complete the log-out request", throwable);
@@ -197,7 +197,7 @@ public class IdentityManager implements IdentityStore {
     @NonNull
     public Observable<MeResponse> getMe() {
         if (isLoggedIn()) {
-            return serviceManager.getService(MeService.class).me();
+            return webServiceManager.getService(MeService.class).me();
         } else {
             return Observable.error(new IllegalStateException("Cannot fetch the user's account until we're logged in"));
         }
@@ -206,7 +206,7 @@ public class IdentityManager implements IdentityStore {
     @NonNull
     public Observable<MeResponse> updateMe(@NonNull UpdatePushTokensRequest request) {
         if (isLoggedIn()) {
-            return serviceManager.getService(MeService.class).me(request);
+            return webServiceManager.getService(MeService.class).me(request);
         } else {
             return Observable.error(new IllegalStateException("Cannot fetch the user's account until we're logged in"));
         }

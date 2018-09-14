@@ -13,7 +13,7 @@ import java.util.Set;
 
 import co.smartreceipts.android.apis.SmartReceiptsApiErrorResponse;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.apis.me.MeResponse;
 import co.smartreceipts.android.identity.apis.me.User;
@@ -58,7 +58,7 @@ public class OcrPurchaseTrackerTest {
     IdentityManager identityManager;
 
     @Mock
-    ServiceManager serviceManager;
+    WebServiceManager webServiceManager;
 
     @Mock
     PurchaseManager purchaseManager;
@@ -98,12 +98,12 @@ public class OcrPurchaseTrackerTest {
         when(managedProduct.getPurchaseData()).thenReturn("");
         when(defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)).thenReturn(false);
         when(purchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50)).thenReturn(managedProduct);
-        when(serviceManager.getService(MobileAppPurchasesService.class)).thenReturn(mobileAppPurchasesService);
+        when(webServiceManager.getService(MobileAppPurchasesService.class)).thenReturn(mobileAppPurchasesService);
         when(identityManager.isLoggedInStream()).thenReturn(Observable.just(true));
         when(identityManager.getMe()).thenReturn(Observable.just(meResponse));
         when(meResponse.getUser()).thenReturn(user);
         when(user.getRecognitionsAvailable()).thenReturn(REMAINING_SCANS);
-        ocrPurchaseTracker = new OcrPurchaseTracker(identityManager, serviceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, localOcrScansTracker, Schedulers.trampoline());
+        ocrPurchaseTracker = new OcrPurchaseTracker(identityManager, webServiceManager, purchaseManager, purchaseWallet, defaultInAppPurchaseConsumer, localOcrScansTracker, Schedulers.trampoline());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class OcrPurchaseTrackerTest {
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
         verifyNoMoreInteractions(purchaseManager);
-        verifyZeroInteractions(serviceManager);
+        verifyZeroInteractions(webServiceManager);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class OcrPurchaseTrackerTest {
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
         verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
-        verifyZeroInteractions(serviceManager);
+        verifyZeroInteractions(webServiceManager);
     }
 
     @Test
@@ -149,7 +149,7 @@ public class OcrPurchaseTrackerTest {
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
         verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
-        verifyZeroInteractions(serviceManager);
+        verifyZeroInteractions(webServiceManager);
     }
 
     @Test
@@ -166,7 +166,7 @@ public class OcrPurchaseTrackerTest {
         verify(purchaseManager).addEventListener(ocrPurchaseTracker);
         verify(localOcrScansTracker).setRemainingScans(REMAINING_SCANS);
         verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
-        verifyZeroInteractions(serviceManager);
+        verifyZeroInteractions(webServiceManager);
     }
 
     @Test
@@ -351,7 +351,7 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
-        verifyZeroInteractions(serviceManager);
+        verifyZeroInteractions(webServiceManager);
     }
 
     @Test
@@ -364,7 +364,7 @@ public class OcrPurchaseTrackerTest {
         // Verify
         verify(defaultInAppPurchaseConsumer, never()).consumePurchase(any(ManagedProduct.class), any(PurchaseFamily.class));
         verify(localOcrScansTracker, never()).setRemainingScans(REMAINING_SCANS);
-        verifyZeroInteractions(serviceManager);
+        verifyZeroInteractions(webServiceManager);
     }
 
     @Test
@@ -475,7 +475,7 @@ public class OcrPurchaseTrackerTest {
     @Test
     public void onPurchaseFailed() {
         ocrPurchaseTracker.onPurchaseFailed(PurchaseSource.Unknown);
-        verifyZeroInteractions(serviceManager, purchaseManager, purchaseWallet, localOcrScansTracker);
+        verifyZeroInteractions(webServiceManager, purchaseManager, purchaseWallet, localOcrScansTracker);
     }
 
     @Test

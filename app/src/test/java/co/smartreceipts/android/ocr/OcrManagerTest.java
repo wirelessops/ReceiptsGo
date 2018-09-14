@@ -13,7 +13,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.io.File;
 
 import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.aws.s3.S3Manager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.IdentityManager;
@@ -57,7 +57,7 @@ public class OcrManagerTest {
     IdentityManager identityManager;
 
     @Mock
-    ServiceManager ocrServiceManager;
+    WebServiceManager ocrWebServiceManager;
 
     @Mock
     PushManager pushManager;
@@ -113,7 +113,7 @@ public class OcrManagerTest {
         when(ocrPurchaseTracker.hasAvailableScans()).thenReturn(true);
         when(ocrPushMessageReceiverFactory.get()).thenReturn(pushMessageReceiver);
         when(s3Manager.upload(file, "ocr/")).thenReturn(Observable.just("https://aws.amazon.com/smartreceipts/ocr/" + IMG_NAME));
-        when(ocrServiceManager.getService(OcrService.class)).thenReturn(ocrService);
+        when(ocrWebServiceManager.getService(OcrService.class)).thenReturn(ocrService);
         when(recognitionResponse.getRecognition()).thenReturn(recognition);
         when(recognition.getId()).thenReturn(ID);
         when(recognition.getData()).thenReturn(recognitionData);
@@ -125,7 +125,7 @@ public class OcrManagerTest {
         when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode)).thenReturn(false);
 
-        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
+        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrWebServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class OcrManagerTest {
         testObserver.assertValue(new OcrResponse());
         testObserver.onComplete();
         testObserver.assertNoErrors();
-        verifyZeroInteractions(s3Manager, ocrServiceManager, pushManager, pushMessageReceiver);
+        verifyZeroInteractions(s3Manager, ocrWebServiceManager, pushManager, pushMessageReceiver);
         verify(ocrPurchaseTracker, never()).decrementRemainingScans();
     }
 
@@ -157,7 +157,7 @@ public class OcrManagerTest {
         testObserver.assertValue(new OcrResponse());
         testObserver.onComplete();
         testObserver.assertNoErrors();
-        verifyZeroInteractions(s3Manager, ocrServiceManager, pushManager, pushMessageReceiver);
+        verifyZeroInteractions(s3Manager, ocrWebServiceManager, pushManager, pushMessageReceiver);
         verify(ocrPurchaseTracker, never()).decrementRemainingScans();
     }
 
@@ -170,7 +170,7 @@ public class OcrManagerTest {
         testObserver.assertValue(new OcrResponse());
         testObserver.onComplete();
         testObserver.assertNoErrors();
-        verifyZeroInteractions(s3Manager, ocrServiceManager, pushManager, pushMessageReceiver);
+        verifyZeroInteractions(s3Manager, ocrWebServiceManager, pushManager, pushMessageReceiver);
         verify(ocrPurchaseTracker, never()).decrementRemainingScans();
     }
 
@@ -183,7 +183,7 @@ public class OcrManagerTest {
         testObserver.assertValue(new OcrResponse());
         testObserver.onComplete();
         testObserver.assertNoErrors();
-        verifyZeroInteractions(s3Manager, ocrServiceManager, pushManager, pushMessageReceiver);
+        verifyZeroInteractions(s3Manager, ocrWebServiceManager, pushManager, pushMessageReceiver);
         verify(ocrPurchaseTracker, never()).decrementRemainingScans();
     }
 
@@ -203,7 +203,7 @@ public class OcrManagerTest {
         verify(ocrService, never()).getRecognitionResult(anyString());
         verify(ocrPurchaseTracker, never()).decrementRemainingScans();
         verify(pushMessageReceiver, never()).getOcrPushResponse();
-        verifyZeroInteractions(ocrServiceManager);
+        verifyZeroInteractions(ocrWebServiceManager);
     }
 
     @Test
@@ -222,7 +222,7 @@ public class OcrManagerTest {
         verify(ocrService, never()).getRecognitionResult(anyString());
         verify(ocrPurchaseTracker, never()).decrementRemainingScans();
         verify(pushMessageReceiver, never()).getOcrPushResponse();
-        verifyZeroInteractions(ocrServiceManager);
+        verifyZeroInteractions(ocrWebServiceManager);
     }
 
     @Test

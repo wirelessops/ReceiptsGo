@@ -1,6 +1,6 @@
 package co.smartreceipts.android.purchases.subscriptions
 
-import co.smartreceipts.android.apis.hosts.ServiceManager
+import co.smartreceipts.android.apis.hosts.WebServiceManager
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiService
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
@@ -24,7 +24,7 @@ class RemoteSubscriptionManagerTest {
     private lateinit var purchaseWallet: PurchaseWallet
 
     @Mock
-    private lateinit var serviceManager: ServiceManager
+    private lateinit var webServiceManager: WebServiceManager
 
     @Mock
     private lateinit var subscriptionApiResponseValidator: SubscriptionApiResponseValidator
@@ -41,10 +41,10 @@ class RemoteSubscriptionManagerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(serviceManager.getService(SubscriptionsApiService::class.java)).thenReturn(subscriptionsApiService)
+        whenever(webServiceManager.getService(SubscriptionsApiService::class.java)).thenReturn(subscriptionsApiService)
         whenever(subscriptionsApiService.getSubscriptions()).thenReturn(Observable.just(subscriptionsApiResponse))
         whenever(subscriptionApiResponseValidator.getActiveSubscriptions(subscriptionsApiResponse)).thenReturn(subscriptionSet)
-        remoteSubscriptionManager = RemoteSubscriptionManager(purchaseWallet, serviceManager, subscriptionApiResponseValidator)
+        remoteSubscriptionManager = RemoteSubscriptionManager(purchaseWallet, webServiceManager, subscriptionApiResponseValidator)
     }
 
     @Test

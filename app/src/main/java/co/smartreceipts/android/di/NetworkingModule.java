@@ -6,7 +6,7 @@ import android.content.Context;
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder;
 import co.smartreceipts.android.apis.hosts.BetaSmartReceiptsHostConfiguration;
 import co.smartreceipts.android.apis.hosts.HostConfiguration;
-import co.smartreceipts.android.apis.hosts.ServiceManager;
+import co.smartreceipts.android.apis.hosts.WebServiceManager;
 import co.smartreceipts.android.apis.hosts.SmartReceiptsHostConfiguration;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.store.MutableIdentityStore;
@@ -27,9 +27,9 @@ public class NetworkingModule {
 
     @Provides
     @ApplicationScope
-    public static ServiceManager provideServiceManager(MutableIdentityStore mutableIdentityStore,
-                                                       SmartReceiptsGsonBuilder gsonBuilder,
-                                                       Context context) {
+    public static WebServiceManager provideServiceManager(MutableIdentityStore mutableIdentityStore,
+                                                          SmartReceiptsGsonBuilder gsonBuilder,
+                                                          Context context) {
         final HostConfiguration host;
         if (ConfigurableStaticFeature.UseProductionEndpoint.isEnabled(context)) {
             host = new SmartReceiptsHostConfiguration();
@@ -37,7 +37,7 @@ public class NetworkingModule {
             Logger.warn(BaseAppModule.class, "*****Configuring our app to use our beta endpoint*****");
             host = new BetaSmartReceiptsHostConfiguration();
         }
-        return new ServiceManager(context, host, mutableIdentityStore, gsonBuilder);
+        return new WebServiceManager(context, host, mutableIdentityStore, gsonBuilder);
     }
 
 
