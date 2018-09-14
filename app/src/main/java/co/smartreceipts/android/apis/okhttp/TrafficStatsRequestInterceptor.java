@@ -1,4 +1,4 @@
-package co.smartreceipts.android.apis.hosts;
+package co.smartreceipts.android.apis.okhttp;
 
 
 import android.net.TrafficStats;

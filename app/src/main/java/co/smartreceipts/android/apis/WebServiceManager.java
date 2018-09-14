@@ -9,11 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.smartreceipts.android.BuildConfig;
-import co.smartreceipts.android.apis.SmartReceiptsApisRxJavaCallAdapterFactory;
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder;
 import co.smartreceipts.android.apis.hosts.HostConfiguration;
-import co.smartreceipts.android.apis.hosts.SmartReceiptsAuthenticatedRequestInterceptor;
-import co.smartreceipts.android.apis.hosts.TrafficStatsRequestInterceptor;
+import co.smartreceipts.android.apis.okhttp.SmartReceiptsAuthenticatedRequestInterceptor;
+import co.smartreceipts.android.apis.okhttp.TrafficStatsRequestInterceptor;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.store.IdentityStore;
 import co.smartreceipts.android.utils.log.Logger;
