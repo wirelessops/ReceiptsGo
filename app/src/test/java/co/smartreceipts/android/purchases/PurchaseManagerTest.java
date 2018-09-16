@@ -36,7 +36,10 @@ import co.smartreceipts.android.purchases.model.ConsumablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.Subscription;
+import co.smartreceipts.android.purchases.source.PurchaseSource;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static junit.framework.Assert.assertEquals;
@@ -88,6 +91,9 @@ public class PurchaseManagerTest {
     PurchaseWallet purchaseWallet;
 
     @Mock
+    RemoteSubscriptionManager remoteSubscriptionManager;
+
+    @Mock
     Analytics analytics;
 
     @Mock
@@ -115,7 +121,9 @@ public class PurchaseManagerTest {
         when(binder.queryLocalInterface("com.android.vending.billing.IInAppBillingService")).thenReturn(inAppBillingService);
         shadowApplication.setComponentNameAndServiceForBindService(new ComponentName("com.android.vending.billing", "InAppBillingService"), binder);
 
-        purchaseManager = new PurchaseManager(application, purchaseWallet, analytics, Schedulers.trampoline(), Schedulers.trampoline());
+        when(remoteSubscriptionManager.getNewRemotePurchases()).thenReturn(Observable.empty());
+
+        purchaseManager = new PurchaseManager(application, remoteSubscriptionManager, purchaseWallet, analytics, Schedulers.trampoline(), Schedulers.trampoline());
         purchaseManager.addEventListener(listener1);
         purchaseManager.addEventListener(listener2);
         purchaseManager.addEventListener(listener3);
@@ -427,6 +435,17 @@ public class PurchaseManagerTest {
         assertEquals(new HashSet<>(Arrays.asList(subscription, consumablePurchase)), updateManagedProductsCaptor.getValue());
         verify(purchaseWallet, times(2)).getActiveLocalInAppPurchases();
         verifyNoMoreInteractions(purchaseWallet);
+    }
+
+    @Test
+    public void initializeWithNewRemoteSubscriptions() throws Exception {
+        when(remoteSubscriptionManager.getNewRemotePurchases()).thenReturn(Observable.just(Collections.singleton(InAppPurchase.SmartReceiptsPlus)));
+        purchaseManager.initialize(application);
+        verifyInAppBillingServiceConnected();
+
+        verify(listener1).onPurchaseSuccess(InAppPurchase.SmartReceiptsPlus, PurchaseSource.Remote);
+        verify(listener2).onPurchaseSuccess(InAppPurchase.SmartReceiptsPlus, PurchaseSource.Remote);
+        verifyZeroInteractions(listener3);
     }
 
     @Test

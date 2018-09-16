@@ -236,7 +236,10 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseSuccess).addDataPoint(new DataPoint("sku", inAppPurchase.getSku())).addDataPoint(new DataPoint("source", purchaseSource)));
         runOnUiThread(() -> {
             invalidateOptionsMenu(); // To hide the subscription option
-            Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
+            if (purchaseSource != PurchaseSource.Remote) {
+                // Don't show this for remote purchases
+                Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_succeeded, Toast.LENGTH_LONG).show();
+            }
 
             if (InAppPurchase.SmartReceiptsPlus == inAppPurchase) {
                 adPresenter.onSuccessPlusPurchase();

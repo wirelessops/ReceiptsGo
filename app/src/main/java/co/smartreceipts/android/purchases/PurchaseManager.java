@@ -45,6 +45,7 @@ import co.smartreceipts.android.purchases.model.ManagedProductFactory;
 import co.smartreceipts.android.purchases.model.Subscription;
 import co.smartreceipts.android.purchases.rx.RxInAppBillingServiceConnection;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Completable;
@@ -77,6 +78,7 @@ public class PurchaseManager {
     private static final String HARDCODED_DEVELOPER_PAYLOAD = "1234567890";
 
     private final Context context;
+    private final RemoteSubscriptionManager remoteSubscriptionManager;
     private final PurchaseWallet purchaseWallet;
     private final Analytics analytics;
     private final CopyOnWriteArrayList<PurchaseEventsListener> listeners;
@@ -91,17 +93,22 @@ public class PurchaseManager {
     private volatile PurchaseSource mPurchaseSource;
 
     @Inject
-    public PurchaseManager(Context context, PurchaseWallet purchaseWallet, Analytics analytics) {
-        this(context, purchaseWallet, analytics, Schedulers.io(), AndroidSchedulers.mainThread());
+    public PurchaseManager(@NonNull Context context,
+                           @NonNull RemoteSubscriptionManager remoteSubscriptionManager,
+                           @NonNull PurchaseWallet purchaseWallet,
+                           @NonNull Analytics analytics) {
+        this(context, remoteSubscriptionManager, purchaseWallet, analytics, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @VisibleForTesting
     PurchaseManager(@NonNull Context context,
+                    @NonNull RemoteSubscriptionManager remoteSubscriptionManager,
                     @NonNull PurchaseWallet purchaseWallet,
                     @NonNull Analytics analytics,
                     @NonNull Scheduler subscribeOnScheduler,
                     @NonNull Scheduler observeOnScheduler) {
         this.context = context.getApplicationContext();
+        this.remoteSubscriptionManager = remoteSubscriptionManager;
         this.purchaseWallet = purchaseWallet;
         this.analytics = analytics;
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
@@ -118,8 +125,8 @@ public class PurchaseManager {
      * @param listener the listener to register
      * @return {@code true} if it was successfully registered. {@code false} otherwise
      */
-    public boolean addEventListener(@NonNull PurchaseEventsListener listener) {
-        return listeners.add(listener);
+    public void addEventListener(@NonNull PurchaseEventsListener listener) {
+        listeners.add(listener);
     }
 
     /**
@@ -128,8 +135,8 @@ public class PurchaseManager {
      * @param listener the listener to unregister
      * @return {@code true} if it was successfully unregistered. {@code false} otherwise
      */
-    public boolean removeEventListener(@NonNull PurchaseEventsListener listener) {
-        return listeners.remove(listener);
+    public void removeEventListener(@NonNull PurchaseEventsListener listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -140,15 +147,27 @@ public class PurchaseManager {
     public void initialize(@NonNull Application application) {
         Logger.debug(PurchaseManager.this, "Initializing the purchase manager");
         application.registerActivityLifecycleCallbacks(new PurchaseManagerActivityLifecycleCallbacks(this));
-        getAllOwnedPurchases()
-                .subscribeOn(subscribeOnScheduler)
-                .subscribe(managedProducts -> Logger.debug(PurchaseManager.this, "Successfully initialized all user owned purchases {}.", managedProducts),
-                        throwable -> Logger.error(PurchaseManager.this, "Failed to initialize all user owned purchases.", throwable));
 
         // Pre-load all of our purchases into memory
         Observable.fromCallable(purchaseWallet::getActiveLocalInAppPurchases)
                 .subscribeOn(subscribeOnScheduler)
                 .subscribe();
+
+        // Initialize our purchase set to update our wallet
+        getAllOwnedPurchases()
+                .subscribeOn(subscribeOnScheduler)
+                .subscribe(managedProducts -> Logger.debug(PurchaseManager.this, "Successfully initialized all user owned purchases {}.", managedProducts),
+                        throwable -> Logger.error(PurchaseManager.this, "Failed to initialize all user owned purchases.", throwable));
+
+        // Fetch all of our remote subscriptions and notify if appropriate
+        remoteSubscriptionManager.getNewRemotePurchases()
+                .subscribe(newInAppPurchases -> {
+                    for (InAppPurchase newInAppPurchase : newInAppPurchases) {
+                        for (final PurchaseEventsListener listener : listeners) {
+                            listener.onPurchaseSuccess(newInAppPurchase, PurchaseSource.Remote);
+                        }
+                    }
+                }, throwable -> Logger.error(this, "Failed to fetch our remote subscriptions"));
     }
 
     /**

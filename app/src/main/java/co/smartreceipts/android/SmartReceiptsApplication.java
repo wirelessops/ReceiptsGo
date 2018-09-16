@@ -10,7 +10,6 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 
-import com.squareup.leakcanary.LeakCanary;
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
 import javax.inject.Inject;
@@ -84,9 +83,6 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
     @Inject
     PurchaseManager purchaseManager;
-
-    @Inject
-    RemoteSubscriptionManager remoteSubscriptionManager;
 
     @Inject
     PushManager pushManager;
@@ -217,7 +213,6 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         identityManager.initialize();
         pushManager.initialize();
         purchaseManager.initialize(this);
-        remoteSubscriptionManager.initialize();
         cognitoManager.initialize();
         ocrManager.initialize();
         crashReporter.initialize();

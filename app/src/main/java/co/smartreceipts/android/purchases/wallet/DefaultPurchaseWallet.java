@@ -29,10 +29,11 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
     private static final String KEY_SKU_SET = "key_sku_set";
     private static final String FORMAT_KEY_PURCHASE_DATA = "%s_purchaseData";
     private static final String FORMAT_KEY_IN_APP_DATA_SIGNATURE = "%s_inAppDataSignature";
+    private static final String KEY_REMOTE_SKU_SET = "key_remote_purchase_sku_set";
 
     private final Lazy<SharedPreferences> sharedPreferences;
-    private Map<InAppPurchase, ManagedProduct> ownedInAppPurchasesMap = null;
-    private Map<InAppPurchase, RemoteSubscription> ownedRemotePurchasesMap = Collections.emptyMap();
+    private Map<InAppPurchase, ManagedProduct> locallyOwnedInAppPurchasesMap = null;
+    private Set<InAppPurchase> remotelyOwnedPurchases = null;
 
     @Inject
     public DefaultPurchaseWallet(@NonNull Lazy<SharedPreferences> preferences) {
@@ -41,19 +42,19 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
 
     @Override
     public synchronized boolean hasActivePurchase(@NonNull InAppPurchase inAppPurchase) {
-        return getOwnedInAppPurchasesMap().containsKey(inAppPurchase) || ownedRemotePurchasesMap.containsKey(inAppPurchase);
+        return getLocallyOwnedInAppPurchasesMap().containsKey(inAppPurchase) || getRemotelyOwnedPurchases().contains(inAppPurchase);
     }
 
     @NonNull
     @Override
     public Set<ManagedProduct> getActiveLocalInAppPurchases() {
-        return new HashSet<>(getOwnedInAppPurchasesMap().values());
+        return new HashSet<>(getLocallyOwnedInAppPurchasesMap().values());
     }
 
     @Nullable
     @Override
     public synchronized ManagedProduct getLocalInAppManagedProduct(@NonNull InAppPurchase inAppPurchase) {
-        return getOwnedInAppPurchasesMap().get(inAppPurchase);
+        return getLocallyOwnedInAppPurchasesMap().get(inAppPurchase);
     }
 
     @Override
@@ -63,37 +64,38 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
             actualInAppPurchasesMap.put(managedProduct.getInAppPurchase(), managedProduct);
         }
 
-        getOwnedInAppPurchasesMap();
-        if (!actualInAppPurchasesMap.equals(ownedInAppPurchasesMap)) {
+        getLocallyOwnedInAppPurchasesMap();
+        if (!actualInAppPurchasesMap.equals(locallyOwnedInAppPurchasesMap)) {
             // Only update if we actually added something to the underlying set
-            ownedInAppPurchasesMap.clear();
-            ownedInAppPurchasesMap.putAll(actualInAppPurchasesMap);
+            locallyOwnedInAppPurchasesMap.clear();
+            locallyOwnedInAppPurchasesMap.putAll(actualInAppPurchasesMap);
             persistWallet();
         }
     }
 
     @Override
     public synchronized void updateRemotePurchases(@NonNull Set<RemoteSubscription> remoteSubscriptions) {
-        final Map<InAppPurchase, RemoteSubscription> localOwnedRemotePurchasesMap = new HashMap<>();
+        final Set<InAppPurchase> remotePurchases = new HashSet<>();
         for (final RemoteSubscription remoteSubscription : remoteSubscriptions) {
-            localOwnedRemotePurchasesMap.put(remoteSubscription.getInAppPurchase(), remoteSubscription);
+            remotePurchases.add(remoteSubscription.getInAppPurchase());
         }
-
-        // Note: We just keep this in memory as we trust that our OkHttp cache handles this
-        this.ownedRemotePurchasesMap = localOwnedRemotePurchasesMap;
+        if (!getRemotelyOwnedPurchases().equals(remotePurchases)) {
+            this.remotelyOwnedPurchases = remotePurchases;
+            persistWallet();
+        }
     }
 
     @Override
     public synchronized void addLocalInAppPurchaseToWallet(@NonNull ManagedProduct managedProduct) {
-        if (!getOwnedInAppPurchasesMap().containsKey(managedProduct.getInAppPurchase())) {
-            ownedInAppPurchasesMap.put(managedProduct.getInAppPurchase(), managedProduct);
+        if (!getLocallyOwnedInAppPurchasesMap().containsKey(managedProduct.getInAppPurchase())) {
+            locallyOwnedInAppPurchasesMap.put(managedProduct.getInAppPurchase(), managedProduct);
             persistWallet();
         }
     }
 
     @NonNull
-    private synchronized Map<InAppPurchase, ManagedProduct> getOwnedInAppPurchasesMap() {
-        if (this.ownedInAppPurchasesMap == null) {
+    private synchronized Map<InAppPurchase, ManagedProduct> getLocallyOwnedInAppPurchasesMap() {
+        if (this.locallyOwnedInAppPurchasesMap == null) {
             final Set<String> skusSet = sharedPreferences.get().getStringSet(KEY_SKU_SET, Collections.emptySet());
             final Map<InAppPurchase, ManagedProduct> inAppPurchasesMap = new HashMap<>();
             for (final String sku : skusSet) {
@@ -109,30 +111,59 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
                     }
                 }
             }
-            this.ownedInAppPurchasesMap = inAppPurchasesMap;
+            this.locallyOwnedInAppPurchasesMap = inAppPurchasesMap;
         }
-        return this.ownedInAppPurchasesMap;
+        return this.locallyOwnedInAppPurchasesMap;
+    }
+
+    @NonNull
+    private synchronized Set<InAppPurchase> getRemotelyOwnedPurchases() {
+        if (this.remotelyOwnedPurchases == null) {
+            final Set<String> skusSet = sharedPreferences.get().getStringSet(KEY_REMOTE_SKU_SET, Collections.emptySet());
+            final Set<InAppPurchase> remotePurchaseSet = new HashSet<>();
+            for (final String sku : skusSet) {
+                final InAppPurchase inAppPurchase = InAppPurchase.from(sku);
+                if (inAppPurchase != null) {
+                    remotePurchaseSet.add(inAppPurchase);
+                }
+            }
+            this.remotelyOwnedPurchases = remotePurchaseSet;
+        }
+        return this.remotelyOwnedPurchases;
     }
 
     private void persistWallet() {
-        final Set<InAppPurchase> ownedInAppPurchases = new HashSet<>(ownedInAppPurchasesMap.keySet());
-        final Set<String> skusSet = new HashSet<>();
         final SharedPreferences.Editor editor = sharedPreferences.get().edit();
 
-        // Note per: https://developer.android.com/reference/android/content/SharedPreferences.Editor.html#remove(java.lang.String)
-        // All removals are done first, regardless of whether you called remove before or after put methods on this editor.
-        for (final InAppPurchase inAppPurchase : InAppPurchase.values()) {
-            editor.remove(getKeyForPurchaseData(inAppPurchase));
-            editor.remove(getKeyForInAppDataSignature(inAppPurchase));
+        if (locallyOwnedInAppPurchasesMap != null) {
+            final Set<InAppPurchase> ownedInAppPurchases = new HashSet<>(locallyOwnedInAppPurchasesMap.keySet());
+            final Set<String> skusSet = new HashSet<>();
+
+            // Note per: https://developer.android.com/reference/android/content/SharedPreferences.Editor.html#remove(java.lang.String)
+            // All removals are done first, regardless of whether you called remove before or after put methods on this editor.
+            for (final InAppPurchase inAppPurchase : InAppPurchase.values()) {
+                editor.remove(getKeyForPurchaseData(inAppPurchase));
+                editor.remove(getKeyForInAppDataSignature(inAppPurchase));
+            }
+
+            for (final InAppPurchase inAppPurchase : ownedInAppPurchases) {
+                final ManagedProduct managedProduct = locallyOwnedInAppPurchasesMap.get(inAppPurchase);
+                skusSet.add(inAppPurchase.getSku());
+                editor.putString(getKeyForPurchaseData(inAppPurchase), managedProduct.getPurchaseData());
+                editor.putString(getKeyForInAppDataSignature(inAppPurchase), managedProduct.getInAppDataSignature());
+            }
+
+            editor.putStringSet(KEY_SKU_SET, skusSet);
         }
 
-        for (final InAppPurchase inAppPurchase : ownedInAppPurchases) {
-            final ManagedProduct managedProduct = ownedInAppPurchasesMap.get(inAppPurchase);
-            skusSet.add(inAppPurchase.getSku());
-            editor.putString(getKeyForPurchaseData(inAppPurchase), managedProduct.getPurchaseData());
-            editor.putString(getKeyForInAppDataSignature(inAppPurchase), managedProduct.getInAppDataSignature());
+        if (remotelyOwnedPurchases != null) {
+            final Set<String> remoteSkusSet = new HashSet<>();
+            for (final InAppPurchase remoteInAppPurchase : remotelyOwnedPurchases) {
+                remoteSkusSet.add(remoteInAppPurchase.getSku());
+            }
+            editor.putStringSet(KEY_REMOTE_SKU_SET, remoteSkusSet);
         }
-        editor.putStringSet(KEY_SKU_SET, skusSet);
+
         editor.apply();
     }
 

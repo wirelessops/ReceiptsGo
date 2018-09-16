@@ -118,6 +118,10 @@ public class DefaultPurchaseWalletTest {
         final RemoteSubscription remoteSubscription = new RemoteSubscription(1, InAppPurchase.SmartReceiptsPlus, new Date());
         defaultPurchaseWallet.updateRemotePurchases(Collections.singleton(remoteSubscription));
         assertTrue(defaultPurchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
+
+        // Now ensure persisted
+        final PurchaseWallet newWallet = new DefaultPurchaseWallet(sharedPreferencesLazy);
+        assertTrue(newWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus));
     }
 
     @Test
