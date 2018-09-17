@@ -3,6 +3,7 @@ package co.smartreceipts.android.ad
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.upsell.UpsellAdView
 
 import co.smartreceipts.android.analytics.Analytics
@@ -33,10 +34,12 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
 
     private var adView: BannerAdView? = null
     private var upsellAdView: UpsellAdView? = null
+    private var adContainer: View? = null
 
     override fun onActivityCreated(activity: Activity) {
         this.adView = bannerAdViewFactory.get()
         this.upsellAdView = bannerAdViewFactory.getUpSell()
+        this.adContainer = activity.findViewById(R.id.ads_layout)
 
         Logger.info(this, "Loading ad from {}.", adView!!.javaClass)
 
@@ -90,6 +93,7 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
     override fun onDestroy() {
         upsellAdView?.onDestroy()
         executeIfWeAreShowingAds { adView?.onDestroy() }
+        adContainer = null
     }
 
     override fun onSuccessPlusPurchase() {
@@ -99,13 +103,16 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
         adView?.onDestroy()
         adView?.hide()
         upsellAdView?.hide()
+        adContainer?.visibility = View.GONE
     }
 
     private fun executeIfWeAreShowingAds(adFunction: () -> Unit) {
         if (!shouldShowAds(context)) {
             adView?.hide()
             upsellAdView?.hide()
+            adContainer?.visibility = View.GONE
         } else {
+            adContainer?.visibility = View.VISIBLE
             adFunction()
         }
     }
