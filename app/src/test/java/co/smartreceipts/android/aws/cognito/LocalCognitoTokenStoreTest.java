@@ -12,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import java.util.Date;
+
 import co.smartreceipts.android.identity.apis.me.Cognito;
 import dagger.Lazy;
 
@@ -23,7 +25,7 @@ public class LocalCognitoTokenStoreTest {
 
     private static final String TOKEN = "token";
     private static final String IDENTITY_ID = "identityId";
-    private static final long EXPIRES_AT = 5;
+    private static final Date EXPIRES_AT = new Date(5);
 
     // Class under test
     LocalCognitoTokenStore localCognitoTokenStore;

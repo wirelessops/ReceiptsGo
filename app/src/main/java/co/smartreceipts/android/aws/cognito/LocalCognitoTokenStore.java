@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.ApplicationScope;
@@ -33,7 +35,7 @@ public class LocalCognitoTokenStore {
         if (token == null || identityId == null) {
             return null;
         } else {
-            return new Cognito(token, identityId, expirationTimeStamp);
+            return new Cognito(token, identityId, new Date(expirationTimeStamp));
         }
     }
 
@@ -41,7 +43,7 @@ public class LocalCognitoTokenStore {
         final SharedPreferences.Editor editor = sharedPreferences.get().edit();
         editor.putString(KEY_COGNITO_TOKEN, cognito != null ? cognito.getCognitoToken() : null);
         editor.putString(KEY_COGNITO_IDENTITY_ID, cognito != null ? cognito.getIdentityId() : null);
-        editor.putLong(KEY_COGNITO_TOKEN_EXPIRATION, cognito != null ? cognito.getCognitoTokenExpiresAt() : -1);
+        editor.putLong(KEY_COGNITO_TOKEN_EXPIRATION, cognito != null ? cognito.getCognitoTokenExpiresAt().getTime() : -1);
         editor.apply();
     }
 

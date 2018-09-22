@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
+import java.util.Date;
 
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.apis.me.Cognito;
@@ -30,7 +31,7 @@ public class CognitoIdentityProviderTest {
 
     private static final String TOKEN = "token";
     private static final String IDENTITY_ID = "identityId";
-    private static final long EXPIRES_AT = 5;
+    private static final Date EXPIRES_AT = new Date(5);
 
     // Class under test
     CognitoIdentityProvider cognitoIdentityProvider;

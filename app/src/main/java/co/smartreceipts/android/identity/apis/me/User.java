@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.common.base.Preconditions;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class User implements Serializable {
@@ -18,7 +19,7 @@ public class User implements Serializable {
     private List<String> registration_ids;
     private String cognito_token;
     private String identity_id;
-    private long cognito_token_expires_at;
+    private Date cognito_token_expires_at;
     private int recognitions_available;
 
     public User(@NonNull List<String> registrationIds) {
@@ -60,7 +61,7 @@ public class User implements Serializable {
         return identity_id;
     }
 
-    public long getCognitoTokenExpiresAt() {
+    public Date getCognitoTokenExpiresAt() {
         return cognito_token_expires_at;
     }
 
