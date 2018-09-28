@@ -82,7 +82,7 @@ It is recommended to run the following commands after cloning this project in or
 - `git update-index --assume-unchanged app/src/free/res/xml/analytics.xml`
 - `git update-index --assume-unchanged app/src/main/res/values/secrets.xml`
 
-This will prevent git from tracking these changes against your local secrets.
+This will prevent git from tracking these changes against your local secrets. Alternatively, you can run `resources/git_init.sh` from the command line to ensure these are run.
 
 ## Donate
 
@@ -102,15 +102,6 @@ We currently use Travis-CI for our continuous integration in order perform tests
 - [https://travis-ci.com/wbaumann/SmartReceiptsLibrary](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
 
 All repository secrets have been replaced with placeholder files, so Travis should be able to build properly for all requests.
-
-```bash
-$ travis login --pro
-$ tar cvf secrets.tar app/src/main/res/values/secrets.xml app/src/free/res/values/ads.xml app/src/free/res/xml/analytics.xml
-$ travis encrypt-file secrets.tar --add --pro
-$ rm -f secrets.tar
-```
-
-This should automatically update our `.travis.yml` for the build.
 
 ## License
 
