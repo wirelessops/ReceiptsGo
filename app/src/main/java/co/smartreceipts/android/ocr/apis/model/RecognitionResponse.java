@@ -2,6 +2,8 @@ package co.smartreceipts.android.ocr.apis.model;
 
 import android.support.annotation.Nullable;
 
+import java.util.Date;
+
 public class RecognitionResponse {
 
     private Recognition recognition;
@@ -17,7 +19,7 @@ public class RecognitionResponse {
         private String status;
         private String s3_path;
         private RecognitionData data;
-        private long created_at;
+        private Date created_at;
 
         @Nullable
         public String getId() {
@@ -39,7 +41,7 @@ public class RecognitionResponse {
             return data;
         }
 
-        public long getCreatedAt() {
+        public Date getCreatedAt() {
             return created_at;
         }
 
