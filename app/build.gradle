@@ -86,6 +86,9 @@ android {
         implementation "com.android.support:exifinterface:$SUPPORT_LIBRARY_VERSION"
         implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
 
+        // Note: We don't use custom tabs, but it stops the support library from complaining about mixed versions
+        implementation "com.android.support:customtabs:$SUPPORT_LIBRARY_VERSION"
+
         implementation "com.android.support:multidex:$MULTIDEX_VERSION"
 
 		implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
