@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.widget.Button;
 import java.util.List;
 
 import co.smartreceipts.android.R;
-import wb.android.util.UiUtils;
 
 
 public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
@@ -68,7 +68,7 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
             final Button button = new Button(getContext());
             button.setText(buttonTextResId);
             button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.card_background));
-            UiUtils.setTextAppearance(button, R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
+            TextViewCompat.setTextAppearance(button, R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
 
             button.setOnClickListener(listener);
 
