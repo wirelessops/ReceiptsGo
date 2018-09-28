@@ -11,7 +11,6 @@
     <color name="smart_receipts_ripple_dark">#44000000</color>
     <color name="smart_receipts_colorSuccess">#2e7d32</color>
     <color name="smart_receipts_colorError">#c62828</color>
-    <color name="smart_receipts_colorError_pressed">#b71c1c</color>
     <color name="text_primary_color">#DFFFFFFF</color>
     <color name="text_secondary_color">#8AFFFFFF</color>
     <color name="accent_text_primary_color">@color/text_primary_color</color>

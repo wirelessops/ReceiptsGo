@@ -44,19 +44,7 @@
 	    <item name="android:padding">@dimen/card_padding</item>
 	    <item name="android:background">@drawable/card_selector</item>
     </style>
-    
-    <style name="Widget.SmartReceipts.LinearLayout" parent="Widget">
-        <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">match_parent</item>
-    </style>
-    
-    <style name="Widget.SmartReceipts.LinearLayout.Card" parent="Widget.SmartReceipts.LinearLayout">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-	    <item name="android:padding">@dimen/card_padding</item>
-	    <item name="android:background">@drawable/card_selector</item>
-    </style>
-    
+
     <style name="Widget.SmartReceipts.ListView" parent="Widget">
         <item name="android:layout_height">match_parent</item>
 		<item name="android:layout_width">match_parent</item>
@@ -93,35 +81,6 @@
     </style>
 
     <!-- Text Styles go below -->
-    <style name="Widget.SmartReceipts.TextView.Display4">
-        <item name="android:textSize">112sp</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textColor">@color/text_secondary_color</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.TextView.Display3">
-        <item name="android:textSize">56sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/text_secondary_color</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.TextView.Display2">
-        <item name="android:textSize">45sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/text_secondary_color</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.TextView.Display1">
-        <item name="android:textSize">34sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/text_secondary_color</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.TextView.Headline">
-        <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/text_primary_color</item>
-    </style>
 
     <style name="Widget.SmartReceipts.TextView.Title">
         <item name="android:textSize">20sp</item>
@@ -147,12 +106,6 @@
         <item name="android:textColor">@color/text_primary_color</item>
     </style>
 
-    <style name="Widget.SmartReceipts.TextView.Caption">
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/text_secondary_color</item>
-    </style>
-
     <style name="Widget.SmartReceipts.TextView.Button">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -166,17 +119,6 @@
         <item name="android:background">@drawable/button_background</item>
     </style>
 
-    <style name="Widget.SmartReceipts.RelativeLayout.Button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">48dp</item> 
-        <item name="android:minWidth">88dp</item> 
-        <item name="android:focusable">true</item> 
-        <item name="android:clickable">true</item> 
-        <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button</item>
-        <item name="android:background">@drawable/button_background_ripple</item>
-    </style>
-
     <style name="Widget.SmartReceipts.TextView.Button.Secondary">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/accent_text_primary</item>
@@ -184,11 +126,6 @@
     </style>
 
     <style name="Widget.SmartReceipts.Button.Secondary" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button.Secondary</item>
-        <item name="android:background">@drawable/button_background_secondary</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.RelativeLayout.Button.Secondary">
         <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button.Secondary</item>
         <item name="android:background">@drawable/button_background_secondary</item>
     </style>
@@ -204,15 +141,6 @@
         <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button.Tertiary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_background_tertiary</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.RelativeLayout.Button.Error">
-        <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button.Secondary</item>
-        <item name="android:background">@drawable/button_background_error</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.TextView.Button.Error" parent="@style/Widget.SmartReceipts.TextView.Button.Secondary">
-
     </style>
 
     <style name="Widget.SmartReceipts.FloatingActionButton">

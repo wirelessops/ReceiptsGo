@@ -43,7 +43,6 @@
     <string name="reports_attached">%s отчетов приложено</string>
     <string name="save">Сохранить</string>
     <string name="send_email">Отправить файл…</string>
-    <string name="submit">Отправить</string>
     <string name="support">%s - Поддержка</string>
     <string name="total">Всего</string>
     <string name="undefined">Не определено</string>
@@ -95,7 +94,6 @@
     <string name="ocr_status_message_uploading_image">Загрузка чека…</string>
     <string name="ocr_status_message_performing_scan">Сканирование метаданных чека…</string>
     <string name="ocr_status_message_fetching_results">Обработка результатов…</string>
-    <string name="ocr_configuration_title">Автоматическое сканирование (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Сканов OCR осталось: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Автоматическое сканирование (OCR):</string>
@@ -107,8 +105,6 @@
     <string name="ocr_configuration_information_line3">Чтобы попробовать OCR, все новые пользователи получают 2 бесплатных сканирования! Помните, что OCR является дополнительной функцией и может быть отключено в любое время.</string>
 
     <!-- ================ Categories ================== -->
-    <string name="category_name">Имя:</string>
-    <string name="category_code">Код:</string>
     <string name="category_null">&lt;Категория&gt;</string>
     <string name="category_null_code">NUL</string>
     <string name="category_airfare">Стоимость авиабилета</string>
@@ -171,7 +167,6 @@
     <string name="progress_building_reports">Построение отчётов…</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">Ошибка: убедитесь, что ваша SD-карта доступна и не подключена к вашему компьютеру.</string>
     <string name="SD_WARNING">Внимание: Ваша SD-карта отсутствует или подключена к вашему компьютеру. Некоторые изображения могут быть недоступны. Переключение на внутреннюю память…</string>
     <string name="database_error">Ошибка: Не удалось сохранить ваш чек</string>
     <string name="database_get_error">Ошибка: Не удалось получить данные. Попробуйте перезапустить приложение.</string>
@@ -188,7 +183,6 @@
     <string name="COPY_ERROR">Ошибка: Не удалось копировать чек</string>
     <string name="toast_warning_reset_exchange_rate">Внимание: изменение валюты сбросит ВСЕ курсы валют</string>
     <string name="toast_error_trip_exists">Ошибка: отчет о расходах с этим названием уже существует</string>
-    <string name="toast_error_category_exists">Ошибка: категория с этим именем уже существует</string>
 
     <!-- ============== Toast Messages ================= -->
     <string name="toast_receipt_copy">Чек успешно cкопирован</string>
@@ -247,7 +241,6 @@
 
     <!-- ================= DIALOG_RECEIPTMENU =================== -->
     <string name="DIALOG_RECEIPTMENU_HINT_NAME">Имя</string>
-    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Цена (например, 150,00)</string>
     <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Цена</string>
     <string name="DIALOG_RECEIPTMENU_HINT_TAX">Налог</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Валюта</string>
@@ -413,12 +406,9 @@
     <string name="category_code_field">Код категории</string>
     <string name="category_price_field">Цена</string>
     <string name="category_tax_field">Налог</string>
-    <string name="category_currency_field">Валюта</string>
     <string name="category_price_exchanged_field">Цена (после обмена)</string>
 
 
-    <string name="receipt_dialog_action_edit">Редактировать чек</string>
-    <string name="receipt_dialog_action_view">Просмотреть чек %s</string>
     <string name="receipt_dialog_action_delete">Удалить чек</string>
     <string name="receipt_dialog_action_move_copy">Переместить/Копировать</string>
     <string name="receipt_dialog_action_remove_attachment">Удалить вложение</string>

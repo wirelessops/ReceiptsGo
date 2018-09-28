@@ -18,22 +18,15 @@
     <dimen name="card_padding">2dp</dimen>
     <dimen name="card_thumbnail_margins">4dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
-    <dimen name="card_image_size">80dp</dimen>
     <dimen name="card_image_padding">8dp</dimen>
 
     <!-- Action Bar -->
-    <dimen name="action_bar_border_stroke_inverted">-2dp</dimen>
-    <dimen name="action_bar_border_stroke">2dp</dimen>
 
     <!-- Material Styling Defaults -->
     <dimen name="margin_tiniest">4dp</dimen>
     <dimen name="margin_tiny">8dp</dimen>
-    <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
-    <dimen name="margin_large">20dp</dimen>
-    <dimen name="margin_larger">24dp</dimen>
 
-    <dimen name="padding_tiny">2dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_normal">8dp</dimen>
     <dimen name="padding_large">16dp</dimen>
@@ -51,7 +44,6 @@
     <!-- Edit/Create Receipt Layout -->
     <dimen name="guide_image_size">24dp</dimen>
     <dimen name="guide_image_margin">8dp</dimen>
-    <dimen name="input_item_top_margin">8dp</dimen>
 
     <!-- Toolbar -->
     <dimen name="title_paging_layout_separator">16dp</dimen>
@@ -67,7 +59,6 @@
     <!--Material Font Sizes-->
     <dimen name="font_caption">12sp</dimen>
     <dimen name="font_subhead">16sp</dimen>
-    <dimen name="font_title">20sp</dimen>
     <dimen name="font_headline">24sp</dimen>
 
     <!-- Samsung Decimal Button -->

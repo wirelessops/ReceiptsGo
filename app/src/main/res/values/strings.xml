@@ -45,7 +45,6 @@
     <string name="reports_attached">%s reports attached</string>
     <string name="save">Save</string>
     <string name="send_email">Send File&#8230;</string>
-    <string name="submit">Submit</string>
     <string name="support">%s - Support</string>
     <string name="total">Total</string>
     <string name="undefined">Undefined</string>
@@ -96,7 +95,6 @@
     <string name="ocr_status_message_uploading_image">Uploading Receipt&#8230;</string>
     <string name="ocr_status_message_performing_scan">Scanning for Receipt Metadata&#8230;</string>
     <string name="ocr_status_message_fetching_results">Fetching Results&#8230;</string>
-    <string name="ocr_configuration_title">Automatic Scans (OCR)</string>
     <string name="ocr_configuration_scans_remaining">OCR Scans Remaining: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Automatic Scans (OCR):</string>
@@ -108,8 +106,6 @@
     <string name="ocr_configuration_information_line3">To try OCR, all new users get 2 free scans! Please remember that OCR is an optional feature and can be disabled at any time.</string>
 
     <!-- ================ Categories ================== -->
-    <string name="category_name">Name: </string>
-    <string name="category_code">Code: </string>
     <string name="category_null">&lt;Category&gt;</string>
     <string name="category_null_code">NUL</string>
     <string name="category_airfare">Airfare</string>
@@ -172,7 +168,6 @@
     <string name="progress_building_reports">Building Reports…</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">Error: Please make sure that your SD Card is available and not mounted to your computer.</string>
     <string name="SD_WARNING">Warning: Your SD Card is not available or is mounted to your computer. Some images may be inaccessible. Switching to internal storage&#8230;</string>
     <string name="database_error">Error: Failed to save your receipt</string>
     <string name="database_get_error">Error: Failed to fetch your data. Try re-launching the app.</string>
@@ -189,7 +184,6 @@
     <string name="COPY_ERROR">Error: Failed to copy the receipt</string>
     <string name="toast_warning_reset_exchange_rate">Warning: Changing the currency will reset ALL exchange rates</string>
     <string name="toast_error_trip_exists">Error: An expense report with that name already exists</string>
-    <string name="toast_error_category_exists">Error: An category with that name already exists</string>
 
     <!-- ============== Toast Messages ================= -->
     <string name="toast_receipt_copy">Successfully copied the receipt</string>
@@ -258,7 +252,6 @@
 
     <!-- ================= DIALOG_RECEIPTMENU =================== -->
     <string name="DIALOG_RECEIPTMENU_HINT_NAME">Name</string>
-    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Price (e.g. 150.00)</string>
     <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Price</string>
     <string name="DIALOG_RECEIPTMENU_HINT_TAX">Tax</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Currency</string>
@@ -426,12 +419,9 @@
     <string name="category_code_field">Category Code</string>
     <string name="category_price_field">Price</string>
     <string name="category_tax_field">Tax</string>
-    <string name="category_currency_field">Currency</string>
     <string name="category_price_exchanged_field">Price (Exchanged)</string>
 
 
-    <string name="receipt_dialog_action_edit">Edit Receipt</string>
-    <string name="receipt_dialog_action_view">View Receipt %s</string>
     <string name="receipt_dialog_action_delete">Delete Receipt</string>
     <string name="receipt_dialog_action_move_copy">Move/Copy</string>
     <string name="receipt_dialog_action_remove_attachment">Remove Attachment</string>

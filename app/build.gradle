@@ -148,6 +148,11 @@ android {
         testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
         testImplementation "com.nhaarman:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
 
+        // Espresso Tests
+        androidTestImplementation "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
+        androidTestImplementation "com.android.support.test:runner:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestImplementation "com.android.support.test:rules:$ANDROID_TEST_RUNNER_VERSION"
+
         // Leak Canary
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
         releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"

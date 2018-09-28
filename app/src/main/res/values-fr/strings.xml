@@ -43,7 +43,6 @@
     <string name="reports_attached">%s rapports joints</string>
     <string name="save">Enregistrer</string>
     <string name="send_email">Envoyer le fichier…</string>
-    <string name="submit">Soumettre</string>
     <string name="support">%s - Assistance</string>
     <string name="total">Total</string>
     <string name="undefined">Non défini</string>
@@ -93,7 +92,6 @@
     <string name="ocr_status_message_uploading_image">Importation du reçu…</string>
     <string name="ocr_status_message_performing_scan">Recherche des métadonnées du reçu…</string>
     <string name="ocr_status_message_fetching_results">Récupération des résultats…</string>
-    <string name="ocr_configuration_title">Scans automatiques (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Scans OCR restants : %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Scans automatiques (OCR) :</string>
@@ -105,8 +103,6 @@
     <string name="ocr_configuration_information_line3">Pour essayer OCR, tous les nouveaux utilisateurs obtiennent 2 scans gratuits! N\'oubliez pas que l\'OCR est une fonction facultative et peut être désactivé à tout moment.</string>
 
     <!-- ================ Categories ================== -->
-    <string name="category_name">Nom :</string>
-    <string name="category_code">Code :</string>
     <string name="category_null">&lt;Catégorie&gt;</string>
     <string name="category_null_code">NUL</string>
     <string name="category_airfare">Prix du billet d\'avion</string>
@@ -169,7 +165,6 @@
     <string name="progress_building_reports">Construire des rapports…</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">Erreur : Veuillez vérifier que votre carte SD est disponible et non montée sur votre ordinateur.</string>
     <string name="SD_WARNING"><![CDATA[Attention : votre carte SD n’est pas disponible ou est montée sur votre ordinateur. Certaines images peuvent être inaccessibles. Mise en mémoire interne…]]></string>
     <string name="database_error">Erreur : Échec de l\'enregistrement de votre reçu</string>
     <string name="database_get_error">Erreur : Échec de la récupération de vos données. Essayez de relancer l\'appli.</string>
@@ -186,7 +181,6 @@
     <string name="COPY_ERROR">Erreur : Impossible de copier le reçu</string>
     <string name="toast_warning_reset_exchange_rate">Attention : Changer la devise réinitialisera TOUS les taux de change</string>
     <string name="toast_error_trip_exists">Erreur : Une note de frais avec ce nom existe déjà</string>
-    <string name="toast_error_category_exists">Erreur : Une catégorie avec ce nom existe déjà</string>
 
     <!-- ============== Toast Messages ================= -->
     <string name="toast_receipt_copy">Reçu copié avec succès</string>
@@ -245,7 +239,6 @@
 
     <!-- ================= DIALOG_RECEIPTMENU =================== -->
     <string name="DIALOG_RECEIPTMENU_HINT_NAME">Nom</string>
-    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Prix ​​(par exemple 150,00)</string>
     <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Prix</string>
     <string name="DIALOG_RECEIPTMENU_HINT_TAX">Taxe</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Devise</string>
@@ -411,12 +404,9 @@
     <string name="category_code_field">Code de la catégorie</string>
     <string name="category_price_field">Prix</string>
     <string name="category_tax_field">Taxe</string>
-    <string name="category_currency_field">Devise</string>
     <string name="category_price_exchanged_field">Prix (Échangé)</string>
 
 
-    <string name="receipt_dialog_action_edit">Modifier le reçu</string>
-    <string name="receipt_dialog_action_view">Afficher le reçu %s</string>
     <string name="receipt_dialog_action_delete">Supprimer le reçu</string>
     <string name="receipt_dialog_action_move_copy">Déplacer/Copier</string>
     <string name="receipt_dialog_action_remove_attachment">Supprimer la pièce jointe</string>

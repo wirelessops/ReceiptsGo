@@ -43,7 +43,6 @@
     <string name="reports_attached">%s Berichte beigefügt</string>
     <string name="save">Speichern</string>
     <string name="send_email">Datei senden…</string>
-    <string name="submit">einreichen</string>
     <string name="support">%s - Unterstützung</string>
     <string name="total">Gesamt</string>
     <string name="undefined">Undefiniert</string>
@@ -93,7 +92,6 @@
     <string name="ocr_status_message_uploading_image">Beleg hochladen…</string>
     <string name="ocr_status_message_performing_scan">Beleg scannen \nMetadaten …</string>
     <string name="ocr_status_message_fetching_results">Ergebnisse holen…</string>
-    <string name="ocr_configuration_title">Automatische Scans (OCR)</string>
     <string name="ocr_configuration_scans_remaining">Restliche OCR Scans: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Automatische Scans (OCR):</string>
@@ -105,8 +103,6 @@
     <string name="ocr_configuration_information_line3">Um OCR auzuprobieren, erhalten alle neuen Benutzer 2 kostenlose Scans! Bitte beachten Sie, dass OCR eine optionale Funktion ist und jederzeit deaktiviert werden kann.</string>
 
     <!-- ================ Categories ================== -->
-    <string name="category_name">Name:</string>
-    <string name="category_code">Code:</string>
     <string name="category_null">&lt;Kategorie&gt;</string>
     <string name="category_null_code">NUL</string>
     <string name="category_airfare">Flugpreis</string>
@@ -169,7 +165,6 @@
     <string name="progress_building_reports">Erzeuge Bericht…</string>
 
     <!-- ============== Start Error Messages ================= -->
-    <string name="SD_ERROR">Fehler: Bitte stellen Sie sicher, dass die SD-Karte verfügbar ist und nicht am Computer gemounted.</string>
     <string name="SD_WARNING">Warnung: Ihre SD-Karte ist nicht verfügbar oder an Ihrem Computer gemounted. Einige Bilder könnten nicht zugreifbar sein. Umschalten auf internen Speicher …</string>
     <string name="database_error">Fehler: Fehler beim Speichern der Beleges</string>
     <string name="database_get_error">Fehler: Fehler beim Laden Ihrer Daten. Versuchen Sie die App neu zu starten.</string>
@@ -186,7 +181,6 @@
     <string name="COPY_ERROR">Fehler: Fehler beim Kopieren des Belegs</string>
     <string name="toast_warning_reset_exchange_rate">Achtung: Beim Ändern der Währung werden alle Wechselkurse zurückgesetzt</string>
     <string name="toast_error_trip_exists">Fehler: Eine Kostenabrechnung mit diesem Namen existiert bereits</string>
-    <string name="toast_error_category_exists">Fehler: Eine Kategorie mit diesem Namen existiert bereits</string>
 
     <!-- ============== Toast Messages ================= -->
     <string name="toast_receipt_copy">Beleg erfolgreich kopiert</string>
@@ -245,7 +239,6 @@
 
     <!-- ================= DIALOG_RECEIPTMENU =================== -->
     <string name="DIALOG_RECEIPTMENU_HINT_NAME">Name</string>
-    <string name="DIALOG_RECEIPTMENU_HINT_PRICE">Preis (z. B. 150,00)</string>
     <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Preis</string>
     <string name="DIALOG_RECEIPTMENU_HINT_TAX">Steuer</string>
     <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Währung</string>
@@ -411,12 +404,9 @@
     <string name="category_code_field">Kategorie-Code</string>
     <string name="category_price_field">Preis</string>
     <string name="category_tax_field">Steuer</string>
-    <string name="category_currency_field">Währung</string>
     <string name="category_price_exchanged_field">Preis (getauscht)</string>
 
 
-    <string name="receipt_dialog_action_edit">Beleg bearbeiten</string>
-    <string name="receipt_dialog_action_view">Ansicht Beleg %s</string>
     <string name="receipt_dialog_action_delete">Beleg löschen</string>
     <string name="receipt_dialog_action_move_copy">Verschieben / Kopieren</string>
     <string name="receipt_dialog_action_remove_attachment">Anhang entfernen</string>
