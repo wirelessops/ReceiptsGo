@@ -2,7 +2,7 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="app_name">Смарт Чеки</string>
+    <string name="sr_app_name">Смарт Чеки</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Налаштування</string>

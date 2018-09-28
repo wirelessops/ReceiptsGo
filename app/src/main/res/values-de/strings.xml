@@ -2,7 +2,7 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="app_name">Smart Receipts</string>
+    <string name="sr_app_name">Smart Receipts</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Einstellungen</string>
@@ -62,8 +62,8 @@
     <!-- ============= Report Navigation ============== -->
     <string name="report_info_graphs">Grafiken</string>
     <string name="report_info_receipts">Belege</string>
-    <string name="report_info_distance">Strecken</string>
-    <string name="report_info_generate">Erzeugen</string>
+    <string name="report_info_distance">Kilometer</string>
+    <string name="report_info_generate">Bericht</string>
 
     <!-- ============= Report Generation ============== -->
     <string name="report_header_from">Von: %s</string>
@@ -202,7 +202,7 @@
     <string name="attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">nach</string>
+    <string name="trip_adapter_list_item_to">bis</string>
     <string name="trip_no_data">Sie scheinen zur Zeit keine definierten Berichte haben. Zum Beginnen tippen Sie auf die + (plus) Taste.\n\nSmart Receipts lässt Sie Kostenberichte erstellen, Kostenstellen verwalten und sehr schnell PDF &amp; CSV-Berichte für Ihre Belegsummen generieren. Es ist schnell und einfach! Überprüfen Sie unbedingt das Menü, um die Kategorien, Berichte und anderen Einstellungen optimal an Ihre Bedürfnisse anzupassen.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -501,7 +501,7 @@
     <string name="graphs_expenditure_by_reimbursable_title">Erstattungsfähig vs nicht rückzahlbar</string>
     <string name="graphs_expenditure_by_payment_methods_title">Aufwendungen nach Zahlungsmethoden</string>
     <string name="graphs_label_reimbursable">Erstattungsfähig</string>
-    <string name="graphs_label_non_reimbursable">Nicht rückzahlbar</string>
+    <string name="graphs_label_non_reimbursable">Nicht erstattungsfähig</string>
     <string name="graphs_label_others">Andere</string>
 
 </resources>

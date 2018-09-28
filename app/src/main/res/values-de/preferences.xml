@@ -10,7 +10,7 @@
     <string name="pref_camera_header">Kamera</string>
 
     <string name="pref_layout_header">Layout-Anpassungen</string>
-    <string name="pref_distance_header">Strecken</string>
+    <string name="pref_distance_header">Kilometergeld</string>
     <string name="pref_pro_header">Smart-Plus-Berichte</string>
     <string name="pref_help_header">Unterstützung</string>
     <string name="pref_about_header">Über</string>
@@ -19,7 +19,7 @@
 
     <!-- ============== Preference General ================= -->
 
-    <string name="pref_general_trip_duration_title">Standardstrecke</string>
+    <string name="pref_general_trip_duration_title">Standarddauer</string>
 
     <string name="pref_general_default_currency_title">Standardwährung</string>
 
@@ -48,14 +48,14 @@
 
     <string name="pref_receipt_reimbursable_default_title">Standard-Belege als erstattungsfähig</string>
 
-    <string name="pref_receipt_include_tax_field_title">Belege</string>
+    <string name="pref_receipt_include_tax_field_title">Steuern ausweisen</string>
     <string name="pref_receipt_include_tax_field_summary">Fügt einen Einzelposten für Steuern hinzu</string>
 
     <string name="pref_receipt_tax_percent_title">Standardsteuersatz</string>
 
-    <string name="pref_receipt_pre_tax_title">Es sei angenommen, Preis ist Pre-Tax</string>
+    <string name="pref_receipt_pre_tax_title">Bruttopreise annehmen</string>
     <string name="pref_receipt_pre_tax_summary_on">Berechnet Steuern aus einem Vorsteuer-Preis</string>
-    <string name="pref_receipt_pre_tax_summary_off">Berechnet Steuer aus einem Post-Steuer-Preis</string>
+    <string name="pref_receipt_pre_tax_summary_off">Berechnet Steuern aus einem Nach-Steuer-Preis</string>
 
     <string name="pref_receipt_enable_autocomplete_title">Vorschläge aktivieren</string>
     <string name="pref_receipt_enable_autocomplete_summary">Werte aus früheren Einträgen vorschlagen</string>
@@ -87,12 +87,12 @@
     <string name="pref_output_username_title">Benutzeridentifikation</string>
     <string name="pref_output_username_emptyValue">Wird als Ausgabefeld definiert</string>
 
-    <string name="pref_output_print_receipt_id_by_photo_title">ID drucken nach Foto</string>
-    <string name="pref_output_print_receipt_id_by_photo_summary">Zeigt die Beleg ID statt den Index</string>
+    <string name="pref_output_print_receipt_id_by_photo_title">Beleg-ID zumh Foto</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Zeigt die Beleg-ID anstelle des Index</string>
 
-    <string name="pref_output_print_receipt_comment_by_photo_title">Belegkommentar drucken nach Foto</string>
-    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Zeigt den Belegkommentar über PDF Fotos</string>
-    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Den Belegkommentar über PDF Fotos ausblenden</string>
+    <string name="pref_output_print_receipt_comment_by_photo_title">Belegkommentar zum Foto anzeigen</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Im PDF den Belegkommentar über den Fotos anzeigen</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Im PDF den Belegkommentar über den Fotos ausblenden</string>
 
     <string name="pref_output_receipts_landscape_title">Belegtabelle im Querformat drucken</string>
     <string name="pref_output_receipts_landscape_on">Belegtabelle ist im Querformat gedruckt</string>
@@ -130,7 +130,7 @@
 
     <!-- ============= Preference Distance ================= -->
 
-    <string name="pref_distance_include_price_in_report_title">Kilometergeld im Gesamtbericht</string>
+    <string name="pref_distance_include_price_in_report_title">Kilometergeld im Bericht</string>
     <string name="pref_distance_include_price_in_report_summaryOn"> Kilometergeld einschließen</string>
     <string name="pref_distance_include_price_in_report_summaryOff">Kilometergeld weglassen</string>
 

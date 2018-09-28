@@ -2,7 +2,7 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="app_name">Smart Receipts</string>
+    <string name="sr_app_name">Smart Receipts</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Configurações</string>
