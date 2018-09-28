@@ -120,11 +120,7 @@ android {
         implementation "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"
 
         implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
-        implementation "com.github.tony19:logback-android-core:$LOGBACK_VERSION"
-        implementation("com.github.tony19:logback-android-classic:$LOGBACK_VERSION") {
-            // workaround issue #73
-            exclude group: 'com.google.android', module: 'android'
-        }
+        implementation "com.github.tony19:logback-android:$LOGBACK_VERSION"
 
         // Note: Periodically check for updates here so we can revert to the official version
         // implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
