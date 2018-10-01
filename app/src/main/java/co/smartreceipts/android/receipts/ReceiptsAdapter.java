@@ -194,13 +194,10 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
         for (Receipt receipt : items) {
             if (previousReceipt != null) {
-                final Date receiptDate = receipt.getDate();
-                final Date previousReceiptDate = previousReceipt.getDate();
+                final String receiptDate = receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator));
+                final String previousReceiptDate = previousReceipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator));
 
-                final long receiptDays = TimeUnit.MILLISECONDS.toDays(receiptDate.getTime());
-                final long previousReceiptDays = TimeUnit.MILLISECONDS.toDays(previousReceiptDate.getTime());
-
-                if (receiptDays != previousReceiptDays) {
+                if (!receiptDate.equals(previousReceiptDate)) {
                     listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(),
                             receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
                 }

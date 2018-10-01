@@ -1,5 +1,6 @@
 package co.smartreceipts.android.receipts.ordering
 
+import android.annotation.SuppressLint
 import co.smartreceipts.android.date.DateUtils
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
@@ -57,6 +58,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         }
     }
 
+    @SuppressLint("CheckResult")
     fun initialize() {
         orderingMigrationStore.hasOrderingMigrationOccurred()
                 .subscribeOn(backgroundScheduler)
