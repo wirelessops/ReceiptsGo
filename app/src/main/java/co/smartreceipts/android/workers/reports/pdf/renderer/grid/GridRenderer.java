@@ -115,7 +115,7 @@ public class GridRenderer extends Renderer {
                     newPageHeader.getRenderingConstraints().addConstraint(new YPositionConstraint(y));
                     newPageHeader.measure();
                     rowRenderers.add(rowRenderers.indexOf(rowRenderer), newPageHeader);
-                    y += rowRenderer.getHeight();
+                    y += newPageHeader.getHeight();
                     newLineRows.add(newPageHeader);
                 } else {
                     newLineRows.add(rowRenderer);

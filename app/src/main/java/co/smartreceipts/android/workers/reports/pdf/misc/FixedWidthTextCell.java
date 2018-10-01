@@ -42,12 +42,14 @@ public class FixedWidthTextCell implements FixedWidthCell {
             String token = tokenizer.nextToken();
             sb.append(token).append(" ");
             String currentLine = sb.toString();
-            if (PdfBoxUtils.getStringWidth(currentLine, mFontSpec) > mWidth) {
-                if (sb.indexOf(token) > 0) {
-                    lines.add(sb.substring(0, sb.indexOf(token)));
+            if (PdfBoxUtils.getStringWidth(currentLine, mFontSpec) > mWidth - mCellPadding * 2) {
+                if (sb.lastIndexOf(token) > 0) {
+                    // Remove the token (i.e. last word) from the current line and place it as the start of the next
+                    lines.add(sb.substring(0, sb.lastIndexOf(token)));
                     sb = new StringBuilder();
                     sb.append(token).append(" ");
                 } else {
+                    // If the token takes up the entire line, use it as the entire line
                     lines.add(sb.toString().trim());
                     sb = new StringBuilder();
                 }

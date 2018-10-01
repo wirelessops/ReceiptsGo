@@ -94,15 +94,13 @@ public class TextRenderer extends Renderer {
             final float measuredHeight;
             final float measuredWidth;
 
-            final List<String> lines;
             if (widthConstraint != null) {
-                lines = new FixedWidthTextCell(widthConstraint, padding, string, fontSpec, color).getLines();
                 measuredWidth = widthConstraint;
+                measuredHeight = new FixedWidthTextCell(widthConstraint, padding, string, fontSpec, color).getHeight();
             } else {
-                lines = Collections.singletonList(string);
                 measuredWidth = PdfBoxUtils.getStringWidth(string, fontSpec);
+                measuredHeight = PdfBoxUtils.getFontHeight(fontSpec) + 2 * padding;
             }
-            measuredHeight = lines.size() * PdfBoxUtils.getFontHeight(fontSpec) + 2 * padding;
 
             this.width = measuredWidth;
             this.height = measuredHeight;
