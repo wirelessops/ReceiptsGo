@@ -76,13 +76,14 @@ Please note that that in order to use this project fully, you will need to repla
 - `app/src/free/res/values/ads.xml`. The ads file in smartReceiptsFree. You can add `adUnitId` and `classicAdUnitId` to enable support for AdMob Native and Classic Ads, respectively.
 - `app/src/free/res/xml/analytics.xml`. The analytics file in smartReceiptsFree. You can add a key here if you wish to enable Google Analytics.
 
-It is recommended to run the following commands after cloning this project in order to avoid accidentally pushing changes to these files:
+When running a build locally, we run the following operations via our gradle script to extract these secrets (if you have a valid GPG key) to allow the app to operate as expected:
 
 - `git update-index --assume-unchanged app/src/free/res/values/ads.xml`
 - `git update-index --assume-unchanged app/src/free/res/xml/analytics.xml`
 - `git update-index --assume-unchanged app/src/main/res/values/secrets.xml`
+- `gpg -d secrets.tar.gpg | tar xv`
 
-This will prevent git from tracking these changes against your local secrets. Alternatively, you can run `resources/git_init.sh` from the command line to ensure these are run.
+The last command in this script uses a "SmartReceipts/support@smartreceipts.co" GPG key to extract the encrypted secrets from this file. Feel free to replace this key with your own local variant for testing/build purposes.
 
 ## Donate
 

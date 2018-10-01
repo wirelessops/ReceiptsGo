@@ -166,3 +166,18 @@ android {
         targetCompatibility 1.8
     }
 }
+
+task secretsExtraction << {
+    description "Allows us to extract our secrets if we have a local decrpytion key"
+    println "Running our secrets extractor to attempt to replace our placeholder files"
+    exec {
+        workingDir rootDir
+        executable "${rootDir}/scripts/secrets_extractor.sh"
+        // Note: We currently do NOT validate that this succeeds when creating a release build.
+        // We should add this extra fail-safe to help verify that we do not release a fault build.
+    }
+    println ""
+    println ""
+}
+
+preBuild.dependsOn secretsExtraction
