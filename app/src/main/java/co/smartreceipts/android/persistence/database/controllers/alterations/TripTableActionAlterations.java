@@ -26,7 +26,7 @@ import wb.android.storage.StorageManager;
 
 public class TripTableActionAlterations extends StubTableActionAlterations<Trip> {
 
-    private final Table<Trip, String> mTripsTable;
+    private final Table<Trip, Integer> mTripsTable;
     private final ReceiptsTable mReceiptsTable;
     private final DistanceTable mDistanceTable;
     private final DatabaseHelper mDatabaseHelper;
@@ -40,7 +40,7 @@ public class TripTableActionAlterations extends StubTableActionAlterations<Trip>
         this(Preconditions.checkNotNull(databaseHelper).getTripsTable(), databaseHelper.getReceiptsTable(), databaseHelper.getDistanceTable(), databaseHelper, storageManager);
     }
 
-    public TripTableActionAlterations(@NonNull Table<Trip, String> tripsTable, @NonNull ReceiptsTable receiptsTable, @NonNull DistanceTable distanceTable,
+    public TripTableActionAlterations(@NonNull Table<Trip, Integer> tripsTable, @NonNull ReceiptsTable receiptsTable, @NonNull DistanceTable distanceTable,
                                       @NonNull DatabaseHelper databaseHelper, @NonNull StorageManager storageManager) {
         mTripsTable = Preconditions.checkNotNull(tripsTable);
         mReceiptsTable = Preconditions.checkNotNull(receiptsTable);

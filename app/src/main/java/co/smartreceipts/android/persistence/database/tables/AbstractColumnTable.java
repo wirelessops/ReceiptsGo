@@ -27,7 +27,6 @@ import co.smartreceipts.android.utils.log.Logger;
  */
 public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receipt>, Integer> {
 
-    public static final String COLUMN_ID = "id";
     public static final String COLUMN_TYPE = "column_type";
 
     private final int tableExistsSinceDatabaseVersion;
@@ -63,7 +62,8 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
-                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_UUID + " TEXT "
                 + ");";
         Logger.debug(this, columnsTable);
 
@@ -176,6 +176,10 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
             final String dropOldTable = "DROP TABLE " + getTableName() + "_tmp" + ";";
             Logger.debug(this, dropOldTable);
             db.execSQL(dropOldTable);
+        }
+
+        if (oldVersion <= 18) { // v18 => 19 added UUID column
+            onUpgradeToAddUUID(db, oldVersion);
         }
     }
 

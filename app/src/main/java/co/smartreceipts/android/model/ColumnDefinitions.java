@@ -3,6 +3,7 @@ package co.smartreceipts.android.model;
 import android.support.annotation.NonNull;
 
 import java.util.List;
+import java.util.UUID;
 
 import co.smartreceipts.android.sync.model.SyncState;
 
@@ -18,10 +19,11 @@ public interface ColumnDefinitions<T> {
      * @param columnType    the column type
      * @param syncState     the current {@link SyncState} of the column
      * @param customOrderId the order id for this column
+     * @param uuid          the uuid for the column
      * @return a new column instance or {@code null} if none can be found
      */
     @NonNull
-    Column<T> getColumn(int id, int columnType, @NonNull SyncState syncState, long customOrderId);
+    Column<T> getColumn(int id, int columnType, @NonNull SyncState syncState, long customOrderId, @NonNull UUID uuid);
 
     /**
      * Gets a list of all {@link Column} instances that are available as part

@@ -3,6 +3,7 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 
@@ -23,8 +24,8 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
 
     // SQL Definitions:
     public static final String TABLE_NAME = "distance";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_PARENT = "parent";
+
+    public static final String COLUMN_PARENT_TRIP_ID = "parentKey";
     public static final String COLUMN_DISTANCE = "distance";
     public static final String COLUMN_LOCATION = "location";
     public static final String COLUMN_DATE = "date";
@@ -33,10 +34,14 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
     public static final String COLUMN_RATE = "rate";
     public static final String COLUMN_RATE_CURRENCY = "rate_currency";
 
+    @Deprecated
+    public static final String COLUMN_PARENT = "parent";
+
     private final UserPreferenceManager userPreferenceManager;
 
-    public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, String> tripsTable, @NonNull UserPreferenceManager userPreferenceManager) {
-        super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable), new DistancePrimaryKey(), COLUMN_PARENT, new OrderByColumn(COLUMN_DATE, true));
+    public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip, Integer> tripsTable, @NonNull UserPreferenceManager userPreferenceManager) {
+        super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable), new DistancePrimaryKey(),
+                COLUMN_PARENT_TRIP_ID, new OrderByColumn(COLUMN_DATE, true));
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
     }
 
@@ -45,7 +50,7 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
         super.onCreate(db, customizer);
         final String sql = "CREATE TABLE " + TABLE_NAME + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_PARENT + " TEXT REFERENCES " + TripsTable.COLUMN_NAME + " ON DELETE CASCADE,"
+                + COLUMN_PARENT_TRIP_ID + " INTEGER REFERENCES " + TripsTable.COLUMN_NAME + " ON DELETE CASCADE,"
                 + COLUMN_DISTANCE + " DECIMAL(10, 2) DEFAULT 0.00,"
                 + COLUMN_LOCATION + " TEXT,"
                 + COLUMN_DATE + " DATE,"
@@ -56,7 +61,8 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE "
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE ,"
+                + AbstractSqlTable.COLUMN_UUID + " TEXT "
                 + ");";
         Logger.debug(this, sql);
         db.execSQL(sql);
@@ -94,6 +100,61 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance, Inte
 
         if (oldVersion <= 14) {
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
+        }
+
+        if (oldVersion <= 18) { //v18 => 19 Changed Trip foreign key from Name to Id, added UUID column
+
+            // adding parent trip id as a foreign key
+            final String addTripIdColumn = String.format("ALTER TABLE %s ADD %s INTEGER REFERENCES %s ON DELETE CASCADE",
+                    TABLE_NAME, COLUMN_PARENT_TRIP_ID, TripsTable.TABLE_NAME);
+            Logger.debug(this, addTripIdColumn);
+            db.execSQL(addTripIdColumn);
+
+            final String fillTripId = String.format("UPDATE %s SET %s = ( SELECT %s FROM %s WHERE %s = %s LIMIT 1 )",
+                    TABLE_NAME, COLUMN_PARENT_TRIP_ID, TripsTable.COLUMN_ID, TripsTable.TABLE_NAME,
+                    TripsTable.COLUMN_NAME, COLUMN_PARENT);
+            Logger.debug(this, fillTripId);
+            db.execSQL(fillTripId);
+
+            // removing old COLUMN_PARENT column
+            final String finalColumns = TextUtils.join(",", new String[]{
+                    COLUMN_ID, COLUMN_PARENT_TRIP_ID, COLUMN_DISTANCE, COLUMN_LOCATION, COLUMN_DATE, COLUMN_TIMEZONE,
+                    COLUMN_COMMENT, COLUMN_RATE_CURRENCY, COLUMN_RATE, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID,
+                    AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION,
+                    AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME});
+
+            final String copyTable = "CREATE TABLE " + TABLE_NAME + "_copy" + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_PARENT_TRIP_ID + " INTEGER REFERENCES " + TripsTable.COLUMN_NAME + " ON DELETE CASCADE,"
+                    + COLUMN_DISTANCE + " DECIMAL(10, 2) DEFAULT 0.00,"
+                    + COLUMN_LOCATION + " TEXT,"
+                    + COLUMN_DATE + " DATE,"
+                    + COLUMN_TIMEZONE + " TEXT,"
+                    + COLUMN_COMMENT + " TEXT,"
+                    + COLUMN_RATE_CURRENCY + " TEXT NOT NULL, "
+                    + COLUMN_RATE + " DECIMAL(10, 2) DEFAULT 0.00, "
+                    + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE "
+                    + ");";
+            Logger.debug(this, copyTable);
+            db.execSQL(copyTable);
+
+            final String insertData = String.format("INSERT INTO %s_copy ( %s ) SELECT %s FROM %s ;",
+                    TABLE_NAME, finalColumns, finalColumns, TABLE_NAME);
+            Logger.debug(this, insertData);
+            db.execSQL(insertData);
+
+            final String dropOldTable = String.format("DROP TABLE %s;", TABLE_NAME);
+            Logger.debug(this, dropOldTable);
+            db.execSQL(dropOldTable);
+
+            final String renameTable = String.format("ALTER TABLE %s_copy RENAME TO %s;", TABLE_NAME, TABLE_NAME);
+            Logger.debug(this, renameTable);
+            db.execSQL(renameTable);
+
+            onUpgradeToAddUUID(db, oldVersion);
         }
     }
 

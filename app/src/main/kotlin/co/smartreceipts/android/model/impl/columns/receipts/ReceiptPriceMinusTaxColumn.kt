@@ -15,12 +15,13 @@ import java.util.*
 class ReceiptPriceMinusTaxColumn(
     id: Int, syncState: SyncState,
     private val userPreferenceManager: UserPreferenceManager,
-    customOrderId: Long
+    customOrderId: Long, uuid: UUID
 ) : AbstractColumnImpl<Receipt>(
     id,
     ReceiptColumnDefinitions.ActualDefinition.PRICE_MINUS_TAX,
     syncState,
-    customOrderId
+    customOrderId,
+    uuid
 ) {
 
     override fun getValue(receipt: Receipt): String = getPrice(receipt).decimalFormattedPrice

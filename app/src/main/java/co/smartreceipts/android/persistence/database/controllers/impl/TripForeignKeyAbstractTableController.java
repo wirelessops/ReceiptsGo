@@ -8,13 +8,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.alterations.TableActionAlterations;
 import co.smartreceipts.android.persistence.database.controllers.results.ForeignKeyGetResult;
-import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.TripForeignKeyAbstractSqlTable;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
@@ -31,7 +31,7 @@ import io.reactivex.subjects.Subject;
  *
  * @param <ModelType> the model object type that this will be used to create
  */
-public class TripForeignKeyAbstractTableController<ModelType> extends AbstractTableController<ModelType> {
+public class TripForeignKeyAbstractTableController<ModelType extends Keyed> extends AbstractTableController<ModelType> {
 
     private final ConcurrentHashMap<TripForeignKeyTableEventsListener<ModelType>, BridgingTripForeignKeyTableEventsListener<ModelType>> mBridgingTableEventsListeners = new ConcurrentHashMap<>();
     private final CopyOnWriteArrayList<TripForeignKeyTableEventsListener<ModelType>> mForeignTableEventsListeners = new CopyOnWriteArrayList<>();

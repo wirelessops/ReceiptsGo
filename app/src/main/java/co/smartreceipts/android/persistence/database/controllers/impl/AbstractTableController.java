@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.alterations.StubTableActionAlterations;
@@ -43,7 +44,7 @@ import io.reactivex.subjects.Subject;
  *
  * @param <ModelType> the model object type that this will be used to create
  */
-abstract class AbstractTableController<ModelType> implements TableController<ModelType> {
+abstract class AbstractTableController<ModelType extends Keyed> implements TableController<ModelType> {
 
     protected final String TAG = getClass().getSimpleName();
 

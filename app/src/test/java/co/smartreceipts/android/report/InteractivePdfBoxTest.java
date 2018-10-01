@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import co.smartreceipts.android.TestResourceReader;
 import co.smartreceipts.android.model.Column;
@@ -481,10 +482,10 @@ public class InteractivePdfBoxTest {
         final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager);
 
         final ArrayList<Column<Receipt>> receiptColumns = new ArrayList<>();
-        receiptColumns.add(new ReceiptNameColumn(1, new DefaultSyncState(), 0));
-        receiptColumns.add(new ReceiptPriceColumn(2, new DefaultSyncState(), 0));
-        receiptColumns.add(new ReceiptDateColumn(3, new DefaultSyncState(), context, userPreferenceManager, 0));
-        receiptColumns.add(new ReceiptCategoryNameColumn(4, new DefaultSyncState()));
+        receiptColumns.add(new ReceiptNameColumn(1, new DefaultSyncState(), 0, UUID.randomUUID()));
+        receiptColumns.add(new ReceiptPriceColumn(2, new DefaultSyncState(), 0, UUID.randomUUID()));
+        receiptColumns.add(new ReceiptDateColumn(3, new DefaultSyncState(), context, userPreferenceManager, 0, UUID.randomUUID()));
+        receiptColumns.add(new ReceiptCategoryNameColumn(4, new DefaultSyncState(), 0, UUID.randomUUID()));
 
         final List<Column<Distance>> distanceColumns = new ArrayList<>();
         distanceColumns.add(new DistanceLocationColumn(1, new DefaultSyncState(), context));
@@ -545,6 +546,5 @@ public class InteractivePdfBoxTest {
         }
         assertEquals("An incorrect amount of PDF images was rendered.", actualImageCount, expectedImageCount);
     }
-
 
 }

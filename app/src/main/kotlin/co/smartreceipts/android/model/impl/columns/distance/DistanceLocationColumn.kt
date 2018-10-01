@@ -14,7 +14,7 @@ class DistanceLocationColumn(id: Int, syncState: SyncState, private val localize
         syncState
     ) {
 
-    override fun getValue(distance: Distance): String? = distance.location
+    override fun getValue(distance: Distance): String = distance.location
 
     override fun getFooter(rows: List<Distance>): String =
         localizedContext.getString(R.string.total)

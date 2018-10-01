@@ -20,8 +20,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import co.smartreceipts.android.model.Distance;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -47,13 +49,13 @@ public class DistanceTableTest {
 
     private static final double DISTANCE_1 = 12.55d;
     private static final String LOCATION_1 = "Location";
-    private static final String TRIP_1 = "Trip";
+    private static final int TRIP_ID_1 = 5;
     private static final double DISTANCE_2 = 140d;
     private static final String LOCATION_2 = "Location2";
-    private static final String TRIP_2 = "Trip2";
+    private static final int TRIP_ID_2 = 7;
     private static final double DISTANCE_3 = 12.123;
     private static final String LOCATION_3 = "Location3";
-    private static final String TRIP_3 = "Trip3";
+    private static final int TRIP_ID_3 = 8;
 
     private static final long DATE = 1409703721000L;
     private static final String TIMEZONE = TimeZone.getDefault().getID();
@@ -71,7 +73,7 @@ public class DistanceTableTest {
     TableDefaultsCustomizer mTableDefaultsCustomizer;
 
     @Mock
-    Table<Trip, String> mTripsTable;
+    Table<Trip, Integer> mTripsTable;
 
     @Mock
     UserPreferenceManager userPreferenceManager;
@@ -100,13 +102,13 @@ public class DistanceTableTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(mTrip1.getName()).thenReturn(TRIP_1);
-        when(mTrip2.getName()).thenReturn(TRIP_2);
-        when(mTrip3.getName()).thenReturn(TRIP_3);
+        when(mTrip1.getId()).thenReturn(TRIP_ID_1);
+        when(mTrip2.getId()).thenReturn(TRIP_ID_2);
+        when(mTrip3.getId()).thenReturn(TRIP_ID_3);
 
-        when(mTripsTable.findByPrimaryKey(TRIP_1)).thenReturn(Single.just(mTrip1));
-        when(mTripsTable.findByPrimaryKey(TRIP_2)).thenReturn(Single.just(mTrip2));
-        when(mTripsTable.findByPrimaryKey(TRIP_3)).thenReturn(Single.just(mTrip3));
+        when(mTripsTable.findByPrimaryKey(TRIP_ID_1)).thenReturn(Single.just(mTrip1));
+        when(mTripsTable.findByPrimaryKey(TRIP_ID_2)).thenReturn(Single.just(mTrip2));
+        when(mTripsTable.findByPrimaryKey(TRIP_ID_3)).thenReturn(Single.just(mTrip3));
         when(userPreferenceManager.get(UserPreference.General.DefaultCurrency)).thenReturn(CURRENCY_CODE);
 
         mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
@@ -139,7 +141,7 @@ public class DistanceTableTest {
 
         assertTrue(mSqlCaptor.getValue().contains("CREATE TABLE distance")); // Table name
         assertTrue(mSqlCaptor.getValue().contains("id INTEGER PRIMARY KEY AUTOINCREMENT"));
-        assertTrue(mSqlCaptor.getValue().contains("parent TEXT"));
+        assertTrue(mSqlCaptor.getValue().contains("parentKey INTEGER"));
         assertTrue(mSqlCaptor.getValue().contains("distance DECIMAL(10, 2)"));
         assertTrue(mSqlCaptor.getValue().contains("location TEXT"));
         assertTrue(mSqlCaptor.getValue().contains("date DATE"));
@@ -151,6 +153,7 @@ public class DistanceTableTest {
         assertTrue(mSqlCaptor.getValue().contains("drive_is_synced BOOLEAN DEFAULT 0"));
         assertTrue(mSqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
         assertTrue(mSqlCaptor.getValue().contains("last_local_modification_time DATE"));
+        assertTrue(mSqlCaptor.getValue().contains("entity_uuid TEXT"));
     }
 
     @Test
@@ -206,6 +209,29 @@ public class DistanceTableTest {
     }
 
     @Test
+    public void onUpgradeFromV18() {
+        final int oldVersion = 18;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mDistanceTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
+        verifyZeroInteractions(customizer);
+
+        assertEquals(mSqlCaptor.getAllValues().get(0), String.format("ALTER TABLE %s ADD parentKey INTEGER REFERENCES %s ON DELETE CASCADE",
+                mDistanceTable.getTableName(), TripsTable.TABLE_NAME));
+        assertEquals(mSqlCaptor.getAllValues().get(1), String.format("UPDATE %s SET parentKey = ( SELECT %s FROM %s WHERE %s = parent LIMIT 1 )",
+                mDistanceTable.getTableName(), TripsTable.COLUMN_ID, TripsTable.TABLE_NAME, TripsTable.COLUMN_NAME));
+        assertTrue(mSqlCaptor.getAllValues().get(2).contains("CREATE TABLE " + mDistanceTable.getTableName() + "_copy (id INTEGER PRIMARY KEY AUTOINCREMENT"));
+        assertTrue(mSqlCaptor.getAllValues().get(3).contains(String.format("INSERT INTO %s_copy", mDistanceTable.getTableName())));
+        assertTrue(mSqlCaptor.getAllValues().get(3).contains(String.format("FROM %s", mDistanceTable.getTableName())));
+        assertEquals(mSqlCaptor.getAllValues().get(4), "DROP TABLE " + mDistanceTable.getTableName() + ";");
+        assertEquals(mSqlCaptor.getAllValues().get(5), String.format("ALTER TABLE %s_copy RENAME TO %s;", mDistanceTable.getTableName(), mDistanceTable.getTableName()));
+        assertEquals(mSqlCaptor.getAllValues().get(6), String.format("ALTER TABLE %s ADD entity_uuid TEXT", mDistanceTable.getTableName()));
+
+    }
+
+    @Test
     public void onUpgradeAlreadyOccurred() {
         final int oldVersion = DatabaseHelper.DATABASE_VERSION;
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
@@ -243,6 +269,8 @@ public class DistanceTableTest {
 
         final List<Distance> distances = mDistanceTable.get().blockingGet();
         assertEquals(distances, Arrays.asList(mDistance1, mDistance2, distance));
+        assertNotNull(distance.getUuid());
+        assertFalse(distance.getUuid().equals(Keyed.Companion.getMISSING_UUID()));
     }
 
     @Test
@@ -262,9 +290,15 @@ public class DistanceTableTest {
 
     @Test
     public void update() {
-        final Distance updatedDistance = mDistanceTable.update(mDistance1, mBuilder.setDistance(DISTANCE_3).setLocation(LOCATION_3).setTrip(mTrip3).build(), new DatabaseOperationMetadata()).blockingGet();
+        final UUID oldUuid = mDistance1.getUuid();
+        final UUID newUuid = UUID.randomUUID();
+
+        final Distance updatedDistance = mDistanceTable.update(mDistance1, mBuilder.setDistance(DISTANCE_3).setUuid(newUuid)
+                .setLocation(LOCATION_3).setTrip(mTrip3).build(), new DatabaseOperationMetadata()).blockingGet();
+
         assertNotNull(updatedDistance);
         assertFalse(mDistance1.equals(updatedDistance));
+        assertEquals(oldUuid, updatedDistance.getUuid());
 
         final List<Distance> distances = mDistanceTable.get().blockingGet();
         assertEquals(distances, Arrays.asList(updatedDistance, mDistance2));

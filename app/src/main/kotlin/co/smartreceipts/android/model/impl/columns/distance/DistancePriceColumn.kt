@@ -11,7 +11,7 @@ class DistancePriceColumn(
     private val allowSpecialCharacters: Boolean
 ) : AbstractColumnImpl<Distance>(id, DistanceColumnDefinitions.ActualDefinition.PRICE, syncState) {
 
-    override fun getValue(distance: Distance): String? =
+    override fun getValue(distance: Distance): String =
         if (allowSpecialCharacters) distance.price.currencyFormattedPrice
         else distance.price.currencyCodeFormattedPrice
 

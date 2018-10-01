@@ -4,8 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -17,13 +20,15 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
 
     private final ColumnDefinitions<T> columnDefinitions;
     private int id;
+    private UUID uuid;
     private int columnType;
     private SyncState syncState;
     private long customOrderId;
 
     public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions) {
         this.columnDefinitions = columnDefinitions;
-        id = Column.UNKNOWN_ID;
+        id = Keyed.MISSING_ID;
+        uuid = Keyed.Companion.getMISSING_UUID();
         columnType = 0;
         syncState = new DefaultSyncState();
         customOrderId = 0;
@@ -31,6 +36,11 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
 
     public ColumnBuilderFactory<T> setColumnId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public ColumnBuilderFactory<T> setColumnUuid(UUID uuid) {
+        this.uuid = uuid;
         return this;
     }
 
@@ -52,7 +62,7 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
     @NonNull
     @Override
     public Column<T> build() {
-        return columnDefinitions.getColumn(id, columnType, syncState, customOrderId);
+        return columnDefinitions.getColumn(id, columnType, syncState, customOrderId, uuid);
     }
 
 }

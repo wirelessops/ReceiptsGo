@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -29,11 +31,13 @@ public class CategoryDatabaseAdapterTest {
     private static final int PRIMARY_KEY_INT = 15;
     private static final String CODE = "code_123";
     private static final long CUSTOM_ORDER_ID = 10;
+    private static final UUID CAT_UUID = UUID.randomUUID();
 
     private static final String CUSTOM_ORDER_ID_KEY = "custom_order_id";
     private static final String ID_KEY = "id";
     private static final String NAME_KEY = "name";
     private static final String CODE_KEY = "code";
+    private static final String UUID_KEY = "entity_uuid";
 
     // Class under test
     CategoryDatabaseAdapter mCategoryDatabaseAdapter;
@@ -61,20 +65,24 @@ public class CategoryDatabaseAdapterTest {
         final int nameIndex = 2;
         final int codeIndex = 3;
         final int customOrderIdIndex = 4;
+        final int uuidIndex = 5;
         when(mCursor.getColumnIndex(ID_KEY)).thenReturn(idIndex);
         when(mCursor.getColumnIndex(NAME_KEY)).thenReturn(nameIndex);
         when(mCursor.getColumnIndex(CODE_KEY)).thenReturn(codeIndex);
         when(mCursor.getColumnIndex(CUSTOM_ORDER_ID_KEY)).thenReturn(customOrderIdIndex);
+        when(mCursor.getColumnIndex(UUID_KEY)).thenReturn(uuidIndex);
         when(mCursor.getInt(idIndex)).thenReturn(PRIMARY_KEY_INT);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
         when(mCursor.getString(codeIndex)).thenReturn(CODE);
         when(mCursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
+        when(mCursor.getString(uuidIndex)).thenReturn(CAT_UUID.toString());
 
         when(mCategory.getId()).thenReturn(PRIMARY_KEY_INT);
         when(mCategory.getName()).thenReturn(NAME);
         when(mCategory.getCode()).thenReturn(CODE);
         when(mCategory.getSyncState()).thenReturn(mSyncState);
         when(mCategory.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
+        when(mCategory.getUuid()).thenReturn(CAT_UUID);
 
         when(mPrimaryKey.getPrimaryKeyValue(mCategory)).thenReturn(PRIMARY_KEY_INT);
 
@@ -88,6 +96,7 @@ public class CategoryDatabaseAdapterTest {
     public void read() throws Exception {
         final Category category = new CategoryBuilderFactory()
                 .setId(PRIMARY_KEY_INT)
+                .setUuid(CAT_UUID)
                 .setName(NAME)
                 .setCode(CODE)
                 .setSyncState(mSyncState)
@@ -108,6 +117,7 @@ public class CategoryDatabaseAdapterTest {
         assertEquals(CODE, contentValues.getAsString(CODE_KEY));
         assertEquals(sync, contentValues.getAsString(sync));
         assertEquals(CUSTOM_ORDER_ID, (int) contentValues.getAsInteger(CUSTOM_ORDER_ID_KEY));
+        assertEquals(CAT_UUID.toString(), contentValues.getAsString(UUID_KEY));
     }
 
     @Test
@@ -122,18 +132,20 @@ public class CategoryDatabaseAdapterTest {
         assertEquals(CODE, contentValues.getAsString(CODE_KEY));
         assertEquals(sync, contentValues.getAsString(sync));
         assertEquals(CUSTOM_ORDER_ID, (int) contentValues.getAsInteger(CUSTOM_ORDER_ID_KEY));
+        assertEquals(CAT_UUID.toString(), contentValues.getAsString(UUID_KEY));
     }
 
     @Test
     public void build() throws Exception {
         final Category category = new CategoryBuilderFactory()
                 .setId(PRIMARY_KEY_INT)
+                .setUuid(CAT_UUID)
                 .setName(NAME)
                 .setCode(CODE)
                 .setSyncState(mGetSyncState)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .build();
-        assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
-        assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, CAT_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, CAT_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 }

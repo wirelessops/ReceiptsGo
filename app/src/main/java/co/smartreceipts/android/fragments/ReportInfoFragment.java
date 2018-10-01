@@ -2,7 +2,6 @@ package co.smartreceipts.android.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -35,7 +34,6 @@ import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
 import dagger.android.support.AndroidSupportInjection;
-import wb.android.BuildConfig;
 
 public class ReportInfoFragment extends WBFragment implements GenerateNavigator, BackupNavigator {
 

@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -33,14 +35,22 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
     @Override
     public PaymentMethod read(@NonNull Cursor cursor) {
         final int idIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_ID);
+        final int uuidIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_UUID);
         final int methodIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_METHOD);
         final int customOrderIdIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
+        final UUID uuid = UUID.fromString(cursor.getString(uuidIndex));
         final String method = cursor.getString(methodIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
         final long customOrderId = cursor.getLong(customOrderIdIndex);
-        return new PaymentMethodBuilderFactory().setId(id).setMethod(method).setSyncState(syncState).setCustomOrderId(customOrderId).build();
+        return new PaymentMethodBuilderFactory()
+                .setId(id)
+                .setUuid(uuid)
+                .setMethod(method)
+                .setSyncState(syncState)
+                .setCustomOrderId(customOrderId)
+                .build();
     }
 
     @NonNull
@@ -49,6 +59,7 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
         final ContentValues values = new ContentValues();
         values.put(PaymentMethodsTable.COLUMN_METHOD, paymentMethod.getMethod());
         values.put(PaymentMethodsTable.COLUMN_CUSTOM_ORDER_ID, paymentMethod.getCustomOrderId());
+        values.put(PaymentMethodsTable.COLUMN_UUID, paymentMethod.getUuid().toString());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(paymentMethod.getSyncState()));
         } else {
@@ -59,9 +70,11 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
 
     @NonNull
     @Override
-    public PaymentMethod build(@NonNull PaymentMethod paymentMethod, @NonNull PrimaryKey<PaymentMethod, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
+    public PaymentMethod build(@NonNull PaymentMethod paymentMethod, @NonNull PrimaryKey<PaymentMethod, Integer> primaryKey,
+                               @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         return new PaymentMethodBuilderFactory()
                 .setId(primaryKey.getPrimaryKeyValue(paymentMethod))
+                .setUuid(uuid)
                 .setMethod(paymentMethod.getMethod())
                 .setSyncState(mSyncStateAdapter.get(paymentMethod.getSyncState(), databaseOperationMetadata))
                 .setCustomOrderId(paymentMethod.getCustomOrderId())

@@ -285,10 +285,10 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
             if (receipt.hasPDF()) {
                 setIcon(image, R.drawable.ic_file_black_24dp);
-            } else if (receipt.getImage() != null) {
+            } else if (receipt.hasImage() && receipt.getFile() != null) {
                 image.setPadding(0, 0, 0, 0);
                 picasso
-                        .load(receipt.getImage())
+                        .load(receipt.getFile())
                         .fit()
                         .centerCrop()
                         .into(image);

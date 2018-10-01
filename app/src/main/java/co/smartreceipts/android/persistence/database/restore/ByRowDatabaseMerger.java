@@ -38,16 +38,17 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
     @NonNull
     @Override
     public Completable merge(@NonNull DatabaseHelper currentDatabase, @NonNull DatabaseHelper importedBackupDatabase) {
+        // TODO:  31.08.2018 review merging process due to tables changes (new uuid column)
         return Completable.fromAction(() -> {
             Logger.info(ByRowDatabaseMerger.this, "Importing database entries by row, preferring the existing item where appropriate");
 
             final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata(OperationFamilyType.Import);
 
             Logger.info(ByRowDatabaseMerger.this, "Removing all existing pdf entries as we lack a good conflict resolution tool.");
-            currentDatabase.getPDFTable().deleteAllTableRowsBlockiing();
+            currentDatabase.getPDFTable().deleteAllTableRowsBlocking();
 
             Logger.info(ByRowDatabaseMerger.this, "Removing all existing csv entries as we lack a good conflict resolution tool.");
-            currentDatabase.getCSVTable().deleteAllTableRowsBlockiing();
+            currentDatabase.getCSVTable().deleteAllTableRowsBlocking();
 
             final List<Column<Receipt>> pdfColumns = importedBackupDatabase.getPDFTable().getBlocking();
             Logger.info(ByRowDatabaseMerger.this, "Importing {} pdf column entries", pdfColumns.size());
@@ -112,6 +113,7 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
             final List<Trip> importedTrips = new ArrayList<>(importedBackupDatabase.getTripsTable().getBlocking());
             Logger.info(ByRowDatabaseMerger.this, "Importing {} trip entries", importedTrips.size());
             for (final Trip importedTrip : importedTrips) {
+                // TODO: 31.08.2018 trip names are still unique (because of directory names). what if imported trip has same name but different UUID?
                 boolean wasDuplicateFound = false;
                 for (final Trip existingTrip : existingTrips) {
                     if (importedTrip.getName().equals(existingTrip.getName())) {

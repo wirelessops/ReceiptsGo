@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -30,6 +32,7 @@ public class PaymentMethodDatabaseAdapterTest {
     private static final int PRIMARY_KEY_ID = 11;
     private static final String METHOD = "abcd";
     private static final long CUSTOM_ORDER = 8;
+    private static final UUID PM_UUID = UUID.randomUUID();
 
     // Class under test
     PaymentMethodDatabaseAdapter mPaymentMethodDatabaseAdapter;
@@ -56,17 +59,21 @@ public class PaymentMethodDatabaseAdapterTest {
         final int idIndex = 1;
         final int methodIndex = 2;
         final int orderIndex = 3;
+        final int uuidIndex = 4;
         when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
         when(mCursor.getColumnIndex("method")).thenReturn(methodIndex);
         when(mCursor.getColumnIndex("custom_order_id")).thenReturn(orderIndex);
+        when(mCursor.getColumnIndex("entity_uuid")).thenReturn(uuidIndex);
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(methodIndex)).thenReturn(METHOD);
         when(mCursor.getLong(orderIndex)).thenReturn(CUSTOM_ORDER);
+        when(mCursor.getString(uuidIndex)).thenReturn(PM_UUID.toString());
 
         when(mPaymentMethod.getId()).thenReturn(ID);
         when(mPaymentMethod.getMethod()).thenReturn(METHOD);
         when(mPaymentMethod.getSyncState()).thenReturn(mSyncState);
         when(mPaymentMethod.getCustomOrderId()).thenReturn(CUSTOM_ORDER);
+        when(mPaymentMethod.getUuid()).thenReturn(PM_UUID);
 
         when(mPrimaryKey.getPrimaryKeyValue(mPaymentMethod)).thenReturn(PRIMARY_KEY_ID);
 
@@ -80,6 +87,7 @@ public class PaymentMethodDatabaseAdapterTest {
     public void read() throws Exception {
         final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
                 .setId(ID)
+                .setUuid(PM_UUID)
                 .setMethod(METHOD)
                 .setSyncState(mSyncState)
                 .setCustomOrderId(CUSTOM_ORDER)
@@ -98,6 +106,7 @@ public class PaymentMethodDatabaseAdapterTest {
         assertEquals(METHOD, contentValues.getAsString("method"));
         assertEquals(sync, contentValues.getAsString(sync));
         assertEquals(CUSTOM_ORDER, (int) contentValues.getAsInteger("custom_order_id"));
+        assertEquals(PM_UUID.toString(), contentValues.getAsString("entity_uuid"));
         assertFalse(contentValues.containsKey("id"));
     }
 
@@ -112,6 +121,7 @@ public class PaymentMethodDatabaseAdapterTest {
         assertEquals(METHOD, contentValues.getAsString("method"));
         assertEquals(sync, contentValues.getAsString(sync));
         assertEquals(CUSTOM_ORDER, (int) contentValues.getAsInteger("custom_order_id"));
+        assertEquals(PM_UUID.toString(), contentValues.getAsString("entity_uuid"));
         assertFalse(contentValues.containsKey("id"));
     }
 
@@ -119,11 +129,12 @@ public class PaymentMethodDatabaseAdapterTest {
     public void build() throws Exception {
         final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
                 .setId(PRIMARY_KEY_ID)
+                .setUuid(PM_UUID)
                 .setMethod(METHOD)
                 .setSyncState(mGetSyncState)
                 .setCustomOrderId(CUSTOM_ORDER)
                 .build();
-        final PaymentMethod actual = mPaymentMethodDatabaseAdapter.build(mPaymentMethod, mPrimaryKey, mock(DatabaseOperationMetadata.class));
+        final PaymentMethod actual = mPaymentMethodDatabaseAdapter.build(mPaymentMethod, mPrimaryKey, PM_UUID, mock(DatabaseOperationMetadata.class));
 
         assertEquals(paymentMethod, actual);
     }

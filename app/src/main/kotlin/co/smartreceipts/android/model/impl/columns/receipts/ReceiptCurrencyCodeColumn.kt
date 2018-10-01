@@ -4,16 +4,18 @@ import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.sync.model.SyncState
+import java.util.*
 
 /**
  * Provides a column that returns the category code for a particular receipt
  */
-class ReceiptCurrencyCodeColumn(id: Int, syncState: SyncState, customOrderId: Long) :
+class ReceiptCurrencyCodeColumn(id: Int, syncState: SyncState, customOrderId: Long, uuid: UUID) :
     AbstractColumnImpl<Receipt>(
         id,
         ReceiptColumnDefinitions.ActualDefinition.CURRENCY,
         syncState,
-        customOrderId
+        customOrderId,
+        uuid
     ) {
 
     override fun getValue(receipt: Receipt): String = receipt.price.currencyCode

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.SelectionBackedDatabaseAdapter;
@@ -33,7 +34,7 @@ import io.reactivex.Single;
  * @param <ModelType> the model object that CRUD operations here should return
  * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that will be used
  */
-public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> extends AbstractSqlTable<ModelType, PrimaryKeyType> {
+public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed, PrimaryKeyType> extends AbstractSqlTable<ModelType, PrimaryKeyType> {
 
     private final HashMap<Trip, List<ModelType>> mPerTripCache = new HashMap<>();
     private final SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> mSelectionBackedDatabaseAdapter;
@@ -116,7 +117,9 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
         Cursor cursor = null;
         try {
             final List<ModelType> results = new ArrayList<>();
-            cursor = getReadableDatabase().query(getTableName(), null, mTripForeignKeyReferenceColumnName + "= ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{ trip.getName(), Integer.toString(0) }, null, null, new OrderByColumn(mOrderBy.getOrderByColumn(), isDescending).getOrderByPredicate());
+            cursor = getReadableDatabase().query(getTableName(), null, mTripForeignKeyReferenceColumnName + "= ? AND "
+                    + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{ Integer.toString(trip.getId()), Integer.toString(0) },
+                    null, null, new OrderByColumn(mOrderBy.getOrderByColumn(), isDescending).getOrderByPredicate());
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     results.add(mSelectionBackedDatabaseAdapter.readForSelection(cursor, trip, isDescending));
@@ -227,8 +230,9 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
 
     public synchronized void updateParentBlocking(@NonNull Trip oldTrip, @NonNull Trip newTrip) {
         final ContentValues contentValues = new ContentValues();
-        contentValues.put(mTripForeignKeyReferenceColumnName, newTrip.getName());
-        getWritableDatabase().update(getTableName(), contentValues, mTripForeignKeyReferenceColumnName + "= ?", new String[]{ oldTrip.getName() });
+        contentValues.put(mTripForeignKeyReferenceColumnName, newTrip.getId());
+        getWritableDatabase().update(getTableName(), contentValues, mTripForeignKeyReferenceColumnName + "= ?",
+                new String[]{ Integer.toString(oldTrip.getId()) });
         mPerTripCache.remove(oldTrip);
     }
 
@@ -246,7 +250,7 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType, PrimaryKeyType> 
     }
 
     public synchronized void deleteParentBlocking(@NonNull Trip trip) {
-        getWritableDatabase().delete(getTableName(), mTripForeignKeyReferenceColumnName + "= ?", new String[]{ trip.getName() });
+        getWritableDatabase().delete(getTableName(), mTripForeignKeyReferenceColumnName + "= ?", new String[]{ Integer.toString(trip.getId()) });
         mPerTripCache.remove(trip);
     }
 

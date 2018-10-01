@@ -3,13 +3,13 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.CategoryDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.keys.CategoryPrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.utils.log.Logger;
@@ -21,7 +21,7 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
 
     // SQL Definitions:
     public static final String TABLE_NAME = "categories";
-    public static final String COLUMN_ID = "id";
+
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_BREAKDOWN = "breakdown";
@@ -45,7 +45,8 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
                 + COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
                 + COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
-                + COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0, "
+                + COLUMN_UUID + " TEXT "
                 + ");";
 
         Logger.debug(this, categories);
@@ -81,9 +82,9 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
             Logger.debug(this, copyTable);
             db.execSQL(copyTable);
 
-            final String baseColumns = String.format("%s, %s, %s, %s, %s, %s, %s",
-                    COLUMN_NAME, COLUMN_CODE, COLUMN_BREAKDOWN, COLUMN_DRIVE_SYNC_ID,
-                    COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME);
+            final String baseColumns = TextUtils.join(", ", new String[]{
+                    COLUMN_NAME, COLUMN_CODE, COLUMN_BREAKDOWN, COLUMN_DRIVE_SYNC_ID, COLUMN_DRIVE_IS_SYNCED,
+                    COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME});
 
             final String insertData = "INSERT INTO " + getTableName() + "_copy"
                     + " (" + baseColumns + ") "
@@ -99,6 +100,10 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
             final String renameTable = "ALTER TABLE " + getTableName() + "_copy" + " RENAME TO " + getTableName() + ";";
             Logger.debug(this, renameTable);
             db.execSQL(renameTable);
+        }
+
+        if (oldVersion <= 18) { // v18 => 19 added UUID column
+            onUpgradeToAddUUID(db, oldVersion);
         }
     }
 }

@@ -2,13 +2,6 @@ package co.smartreceipts.android.persistence.database.controllers.impl;
 
 import android.support.annotation.NonNull;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,19 +12,24 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import co.smartreceipts.android.KeyedObject;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.alterations.TableActionAlterations;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.TripForeignKeyAbstractSqlTable;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class TripForeignKeyAbstractTableControllerTest {
@@ -39,10 +37,10 @@ public class TripForeignKeyAbstractTableControllerTest {
     /**
      * Test impl for our abstract class
      */
-    private class TripForeignKeyAbstractTableControllerImpl extends TripForeignKeyAbstractTableController<Object> {
+    private class TripForeignKeyAbstractTableControllerImpl extends TripForeignKeyAbstractTableController<KeyedObject> {
 
-        TripForeignKeyAbstractTableControllerImpl(@NonNull TripForeignKeyAbstractSqlTable<Object, ?> table,
-                                                  @NonNull TableActionAlterations<Object> tableActionAlterations,
+        TripForeignKeyAbstractTableControllerImpl(@NonNull TripForeignKeyAbstractSqlTable<KeyedObject, ?> table,
+                                                  @NonNull TableActionAlterations<KeyedObject> tableActionAlterations,
                                                   @NonNull Analytics analytics,
                                                   @NonNull Scheduler subscribeOnScheduler,
                                                   @NonNull Scheduler observeOnScheduler) {
@@ -51,28 +49,28 @@ public class TripForeignKeyAbstractTableControllerTest {
     }
 
     // Class under test
-    TripForeignKeyAbstractTableController<Object> mAbstractTableController;
+    TripForeignKeyAbstractTableController<KeyedObject> mAbstractTableController;
 
     @Mock
-    TripForeignKeyAbstractSqlTable<Object, ?> mTable;
+    TripForeignKeyAbstractSqlTable<KeyedObject, ?> mTable;
 
     @Mock
     Trip mTrip;
 
     @Mock
-    TableActionAlterations<Object> mTableActionAlterations;
+    TableActionAlterations<KeyedObject> mTableActionAlterations;
 
     @Mock
     Analytics mAnalytics;
 
     @Mock
-    TripForeignKeyTableEventsListener<Object> mListener1;
+    TripForeignKeyTableEventsListener<KeyedObject> mListener1;
 
     @Mock
-    TripForeignKeyTableEventsListener<Object> mListener2;
+    TripForeignKeyTableEventsListener<KeyedObject> mListener2;
 
     @Mock
-    TripForeignKeyTableEventsListener<Object> mListener3;
+    TripForeignKeyTableEventsListener<KeyedObject> mListener3;
 
     @Before
     public void setUp() throws Exception {
@@ -85,7 +83,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onGetSuccess() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get()).thenReturn(Single.just(objects));
         when(mTableActionAlterations.postGet(objects)).thenReturn(Single.just(objects));
@@ -100,7 +98,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPreGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         final Exception e = new Exception();
         when(mTableActionAlterations.preGet()).thenReturn(Completable.error(e));
         when(mTable.get()).thenReturn(Single.just(objects));
@@ -117,7 +115,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         final Exception e = new Exception();
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get()).thenReturn(Single.error(e));
@@ -134,7 +132,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPostGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get()).thenReturn(Single.just(objects));
         when(mTableActionAlterations.postGet(objects)).thenReturn(Single.error(new Exception("")));
@@ -150,7 +148,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onForeignKeyGetSuccess() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get(mTrip, true)).thenReturn(Single.just(objects));
         when(mTableActionAlterations.postGet(objects)).thenReturn(Single.just(objects));
@@ -165,7 +163,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onForeignKeyPreGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         final Exception e = new Exception();
         when(mTableActionAlterations.preGet()).thenReturn(Completable.error(e));
         when(mTable.get(mTrip, true)).thenReturn(Single.just(objects));
@@ -182,7 +180,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onForeignKeyGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         final Exception e = new Exception();
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get(mTrip, true)).thenReturn(Single.error(e));
@@ -199,7 +197,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onForeignKeyPostGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get(mTrip, true)).thenReturn(Single.just(objects));
         when(mTableActionAlterations.postGet(objects)).thenReturn(Single.error(new Exception("")));
@@ -215,7 +213,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onInsertSuccess() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.just(insertItem));
         when(mTable.insert(insertItem, databaseOperationMetadata)).thenReturn(Single.just(insertItem));
@@ -231,7 +229,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPreInsertException() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.error(e));
@@ -249,7 +247,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onInsertException() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.just(insertItem));
@@ -267,7 +265,7 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPostInsertException() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.just(insertItem));
@@ -286,8 +284,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onUpdateSuccess() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.just(newItem));
         when(mTable.update(oldItem, newItem, databaseOperationMetadata)).thenReturn(Single.just(newItem));
@@ -303,8 +301,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPreUpdateException() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.error(e));
@@ -322,8 +320,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onUpdateException() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.just(newItem));
@@ -341,8 +339,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPostUpdateException() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.just(newItem));
@@ -361,8 +359,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onDeleteSuccess() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.just(deleteCandidateItem));
         when(mTable.delete(deleteCandidateItem, databaseOperationMetadata)).thenReturn(Single.just(deletedItem));
@@ -378,8 +376,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPreDeleteException() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.error(e));
@@ -397,8 +395,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onDeleteException() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.just(deleteCandidateItem));
@@ -416,8 +414,8 @@ public class TripForeignKeyAbstractTableControllerTest {
 
     @Test
     public void onPostDeleteException() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.just(deleteCandidateItem));
@@ -433,5 +431,4 @@ public class TripForeignKeyAbstractTableControllerTest {
         verify(mListener3).onDeleteFailure(eq(deleteCandidateItem), any(Exception.class), eq(databaseOperationMetadata));
         verifyZeroInteractions(mListener2);
     }
-
 }

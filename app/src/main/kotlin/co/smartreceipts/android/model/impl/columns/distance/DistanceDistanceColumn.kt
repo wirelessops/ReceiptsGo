@@ -12,7 +12,7 @@ class DistanceDistanceColumn(id: Int, syncState: SyncState) : AbstractColumnImpl
     syncState
 ) {
 
-    override fun getValue(distance: Distance): String? = distance.decimalFormattedDistance
+    override fun getValue(distance: Distance): String = distance.decimalFormattedDistance
 
     override fun getFooter(distances: List<Distance>): String {
         var distance = BigDecimal.ZERO

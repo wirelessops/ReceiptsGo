@@ -1,5 +1,7 @@
 package co.smartreceipts.android.currency;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
@@ -15,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.utils.log.Logger;
 
-public final class PriceCurrency {
+public final class PriceCurrency implements Parcelable {
 
     @Deprecated
     public static final PriceCurrency MISSING_CURRENCY = new PriceCurrency("NUL");
@@ -114,4 +116,28 @@ public final class PriceCurrency {
     public static void clearStaticCachesForTesting() {
         sCurrencyMap.clear();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getCurrencyCode());
+
+    }
+
+    public static final Creator<PriceCurrency> CREATOR = new Creator<PriceCurrency>() {
+        @Override
+        public PriceCurrency createFromParcel(Parcel in) {
+            return PriceCurrency.getInstance(in.readString());
+        }
+
+        @Override
+        public PriceCurrency[] newArray(int size) {
+            return new PriceCurrency[size];
+        }
+    };
+
 }

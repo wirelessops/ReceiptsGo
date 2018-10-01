@@ -397,7 +397,7 @@ public class EmailAssistant {
                             try {
                                 Bitmap b = stampImage(trip, receipt, Bitmap.Config.ARGB_8888);
                                 if (b != null) {
-                                    mStorageManager.writeBitmap(dir, b, receipt.getImage().getName(), CompressFormat.JPEG, 85);
+                                    mStorageManager.writeBitmap(dir, b, receipt.getFile().getName(), CompressFormat.JPEG, 85);
                                     b.recycle();
                                     b = null;
                                 }
@@ -407,7 +407,7 @@ public class EmailAssistant {
                                 try {
                                     Bitmap b = stampImage(trip, receipt, Bitmap.Config.RGB_565);
                                     if (b != null) {
-                                        mStorageManager.writeBitmap(dir, b, receipt.getImage().getName(), CompressFormat.JPEG, 85);
+                                        mStorageManager.writeBitmap(dir, b, receipt.getFile().getName(), CompressFormat.JPEG, 85);
                                         b.recycle();
                                     }
                                 } catch (OutOfMemoryError e2) {
@@ -458,7 +458,7 @@ public class EmailAssistant {
             if (!receipt.hasImage()) {
                 return null;
             }
-            Bitmap foreground = mStorageManager.getMutableMemoryEfficientBitmap(receipt.getImage());
+            Bitmap foreground = mStorageManager.getMutableMemoryEfficientBitmap(receipt.getFile());
             if (foreground != null) { // It can be null if file not found
                 // Size the image
                 int foreWidth = foreground.getWidth();

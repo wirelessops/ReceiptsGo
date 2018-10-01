@@ -8,6 +8,7 @@ import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.sync.model.SyncState
+import java.util.*
 
 /**
  * Provides a column that returns the total of the price and tax fields based on user settings
@@ -16,13 +17,15 @@ class ReceiptNetExchangedPriceMinusTaxColumn(
     id: Int, syncState: SyncState,
     localizedContext: Context,
     private val userPreferenceManager: UserPreferenceManager,
-    customOrderId: Long
+    customOrderId: Long,
+    uuid: UUID
 ) : AbstractExchangedPriceColumn(
     id,
     ReceiptColumnDefinitions.ActualDefinition.PRICE_MINUS_TAX_EXCHANGED,
     syncState,
     localizedContext,
-    customOrderId
+    customOrderId,
+    uuid
 ) {
 
     override fun getPrice(receipt: Receipt): Price {

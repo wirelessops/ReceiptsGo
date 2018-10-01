@@ -22,7 +22,7 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
 
     // SQL Definitions:
     public static final String TABLE_NAME = "paymentmethods";
-    public static final String COLUMN_ID = "id";
+
     public static final String COLUMN_METHOD = "method";
 
     public PaymentMethodsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
@@ -42,7 +42,8 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
-                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_UUID + " TEXT "
                 + ");";
 
         Logger.debug(this, sql);
@@ -85,6 +86,10 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod, I
                 db.execSQL(addCustomOrderColumn);
                 db.execSQL(updateDefaultCustomOrder);
             }
+        }
+
+        if (oldVersion <= 18) { // v18 => 19 added UUID column
+            onUpgradeToAddUUID(db, oldVersion);
         }
     }
 

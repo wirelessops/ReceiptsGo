@@ -5,6 +5,7 @@ import co.smartreceipts.android.R
 import co.smartreceipts.android.model.ActualColumnDefinition
 import co.smartreceipts.android.model.Column
 import co.smartreceipts.android.model.ColumnDefinitions
+import co.smartreceipts.android.model.Keyed
 import co.smartreceipts.android.model.comparators.ColumnNameComparator
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions.ActualDefinition.*
@@ -24,8 +25,8 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
      * Column type must be >= 0
      */
     internal enum class ActualDefinition(
-        private val columnType: Int,
-        private val stringResId: Int
+        override val columnType: Int,
+        @StringRes override val columnHeaderId: Int
     ) : ActualColumnDefinition {
         NAME(0, R.string.category_name_field),
         CODE(1, R.string.category_code_field),
@@ -33,22 +34,19 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
         TAX(3, R.string.category_tax_field),
         PRICE_EXCHANGED(4, R.string.category_price_exchanged_field);
 
-        override fun getColumnType(): Int = columnType
-
-        @StringRes
-        override fun getColumnHeaderId(): Int = stringResId
     }
 
     override fun getColumn(
         id: Int,
         columnType: Int,
         syncState: SyncState,
-        ignoredCustomOrderId: Long
+        ignoredCustomOrderId: Long,
+        ignoredUuid: UUID
     ): Column<SumCategoryGroupingResult> {
         for (definition in actualDefinitions) {
 
             if (columnType == definition.columnType) {
-                return getColumnFromClass(id, definition, syncState)
+                return getColumnFromClass(definition, id, syncState)
             }
         }
         throw IllegalArgumentException("Unknown column type: $columnType")
@@ -60,7 +58,7 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
         for (definition in actualDefinitions) {
             // don't include PRICE_EXCHANGED definition if all receipts have same currency
             if (!(definition == PRICE_EXCHANGED && !multiCurrency)) {
-                columns.add(getColumnFromClass(Column.UNKNOWN_ID, definition, DefaultSyncState()))
+                columns.add(getColumnFromClass(definition))
             }
         }
 
@@ -69,14 +67,14 @@ class CategoryColumnDefinitions(private val reportResourcesManager: ReportResour
     }
 
     override fun getDefaultInsertColumn(): Column<SumCategoryGroupingResult> {
-        return getColumnFromClass(Column.UNKNOWN_ID, NAME, DefaultSyncState())
+        return getColumnFromClass(NAME)
     }
 
 
     private fun getColumnFromClass(
-        id: Int,
         definition: ActualDefinition,
-        syncState: SyncState
+        id: Int = Keyed.MISSING_ID,
+        syncState: SyncState = DefaultSyncState()
     ): AbstractColumnImpl<SumCategoryGroupingResult> {
         return when (definition) {
             NAME -> CategoryNameColumn(id, syncState)

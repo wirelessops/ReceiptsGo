@@ -116,11 +116,14 @@ public class CategoriesListFragment extends DraggableEditableListFragment<Catego
                     final String newName = nameBox.getText().toString();
                     final String newCode = codeBox.getText().toString();
 
-                    final Category category = new CategoryBuilderFactory()
+                    final CategoryBuilderFactory categoryBuilderFactory = new CategoryBuilderFactory()
                             .setName(newName)
                             .setCode(newCode)
-                            .setCustomOrderId(isEdit ? editCategory.getCustomOrderId() : Long.MAX_VALUE)
-                            .build();
+                            .setCustomOrderId(isEdit ? editCategory.getCustomOrderId() : Long.MAX_VALUE);
+                    if (isEdit) {
+                        categoryBuilderFactory.setUuid(editCategory.getUuid());
+                    }
+                    final Category category = categoryBuilderFactory.build();
 
                     if (isEdit) {
                         categoriesTableController.update(editCategory, category, new DatabaseOperationMetadata());

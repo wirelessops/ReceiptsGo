@@ -2,8 +2,6 @@ package co.smartreceipts.android.persistence.database.restore;
 
 import android.support.annotation.NonNull;
 
-import com.hadisatrio.optional.Optional;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +39,7 @@ public class OverwriteDatabaseMerger implements DatabaseMerger {
 
             for (final Table table : currentDatabase.getTables()) {
                 Logger.info(OverwriteDatabaseMerger.this, "Deleting all rows in {}", table.getTableName());
-                table.deleteAllTableRowsBlockiing();
+                table.deleteAllTableRowsBlocking();
             }
             
             final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata(OperationFamilyType.Import);

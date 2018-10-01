@@ -15,12 +15,15 @@ import java.util.*
  * Allows us to genericize how different prices are converted to a trip's base currency
  */
 abstract class AbstractExchangedPriceColumn(
-    id: Int, definition: ActualColumnDefinition,
+    id: Int,
+    definition: ActualColumnDefinition,
     syncState: SyncState,
-    private val localizedContext: Context, customOrderId: Long
-) : AbstractColumnImpl<Receipt>(id, definition, syncState, customOrderId) {
+    private val localizedContext: Context,
+    customOrderId: Long,
+    uuid: UUID
+) : AbstractColumnImpl<Receipt>(id, definition, syncState, customOrderId, uuid) {
 
-    override fun getValue(receipt: Receipt): String? {
+    override fun getValue(receipt: Receipt): String {
         val price = getPrice(receipt)
         val exchangeRate = price.exchangeRate
         val baseCurrency = receipt.trip.tripCurrency

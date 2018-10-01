@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import io.reactivex.Single;
@@ -16,7 +17,7 @@ import io.reactivex.Single;
  * @param <ModelType> the model object that this table will interact with
  * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that is used by the primary key column
  */
-public interface Table<ModelType, PrimaryKeyType> {
+public interface Table<ModelType extends Keyed, PrimaryKeyType> {
 
     /**
      * @return the table name for SQL operations
@@ -98,7 +99,7 @@ public interface Table<ModelType, PrimaryKeyType> {
     /**
      * Deletes all row entries in this table
      */
-    void deleteAllTableRowsBlockiing();
+    void deleteAllTableRowsBlocking();
 
     /**
      * Clears any cached data in our table

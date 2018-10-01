@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.Category;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -17,6 +19,7 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 public class CategoryBuilderFactory implements BuilderFactory<Category> {
 
     private int id;
+    private UUID uuid;
     private String name;
     private String code;
     private SyncState syncState;
@@ -26,11 +29,21 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      * Default constructor for this class
      */
     public CategoryBuilderFactory() {
-        id = MISSING_ID;
+        id = Keyed.MISSING_ID;
+        uuid = Keyed.Companion.getMISSING_UUID();
         name = "";
         code = "";
         syncState = new DefaultSyncState();
         customOrderId  = 0;
+    }
+
+    public CategoryBuilderFactory(Category category) {
+        id = category.getId();
+        uuid = category.getUuid();
+        name = category.getName();
+        code = category.getCode();
+        syncState = category.getSyncState();
+        customOrderId  = category.getCustomOrderId();
     }
 
 
@@ -42,6 +55,17 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      */
     public CategoryBuilderFactory setId(int id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Defines the uuid for this object
+     *
+     * @param uuid - the uuid
+     * @return this {@link CategoryBuilderFactory} for method chaining
+     */
+    public CategoryBuilderFactory setUuid(UUID uuid) {
+        this.uuid = uuid;
         return this;
     }
 
@@ -88,6 +112,6 @@ public class CategoryBuilderFactory implements BuilderFactory<Category> {
      */
     @NonNull
     public Category build() {
-        return new ImmutableCategoryImpl(id, name, code, syncState, customOrderId);
+        return new Category(id, uuid, name, code, syncState, customOrderId);
     }
 }

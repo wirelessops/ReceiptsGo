@@ -11,6 +11,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
@@ -36,6 +38,7 @@ public class ColumnDatabaseAdapterTest {
     private static final int ID = 5;
     private static final int TYPE = ReceiptColumnDefinitions.ActualDefinition.NAME.getColumnType();
 	private static final long CUSTOM_ORDER_ID = 10;
+	private static final UUID COLUMN_UUID = UUID.randomUUID();
     
     // Class under test
     ColumnDatabaseAdapter columnDatabaseAdapter;
@@ -70,23 +73,27 @@ public class ColumnDatabaseAdapterTest {
         final int idIndex = 1;
         final int typeIndex = 2;
         final int customOrderIdIndex = 3;
+        final int uuidIndex = 4;
 
-        receiptNameColumn = new ReceiptNameColumn(ID, getSyncState, CUSTOM_ORDER_ID);
+        receiptNameColumn = new ReceiptNameColumn(ID, getSyncState, CUSTOM_ORDER_ID, COLUMN_UUID);
         ReceiptColumnDefinitions receiptColumnDefinitions = new ReceiptColumnDefinitions(reportResourcesManager, preferences);
 
         when(reportResourcesManager.getLocalizedContext()).thenReturn(RuntimeEnvironment.systemContext);
 
         when(cursor.getColumnIndex(AbstractColumnTable.COLUMN_ID)).thenReturn(idIndex);
+        when(cursor.getColumnIndex(AbstractColumnTable.COLUMN_UUID)).thenReturn(uuidIndex);
         when(cursor.getColumnIndex(AbstractColumnTable.COLUMN_TYPE)).thenReturn(typeIndex);
         when(cursor.getColumnIndex(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID)).thenReturn(customOrderIdIndex);
         when(cursor.getInt(idIndex)).thenReturn(ID);
         when(cursor.getInt(typeIndex)).thenReturn(TYPE);
         when(cursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
+        when(cursor.getString(uuidIndex)).thenReturn(COLUMN_UUID.toString());
 
         when(column.getId()).thenReturn(ID);
         when(column.getType()).thenReturn(TYPE);
         when(column.getSyncState()).thenReturn(syncState);
         when(column.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
+        when(column.getUuid()).thenReturn(COLUMN_UUID);
 
         when(primaryKey.getPrimaryKeyValue(column)).thenReturn(ID);
 
@@ -113,6 +120,7 @@ public class ColumnDatabaseAdapterTest {
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey(AbstractColumnTable.COLUMN_ID));
         assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID));
+        assertEquals(COLUMN_UUID.toString(), contentValues.getAsString(AbstractSqlTable.COLUMN_UUID));
 }
 
     @Test
@@ -127,11 +135,12 @@ public class ColumnDatabaseAdapterTest {
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey(AbstractColumnTable.COLUMN_ID));
         assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong(AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID));
+        assertEquals(COLUMN_UUID.toString(), contentValues.getAsString(AbstractSqlTable.COLUMN_UUID));
     }
 
     @Test
     public void build() throws Exception {
-        assertEquals(receiptNameColumn, columnDatabaseAdapter.build(column, primaryKey, mock(DatabaseOperationMetadata.class)));
-        assertEquals(receiptNameColumn.getSyncState(), columnDatabaseAdapter.build(column, primaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(receiptNameColumn, columnDatabaseAdapter.build(column, primaryKey, COLUMN_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(receiptNameColumn.getSyncState(), columnDatabaseAdapter.build(column, primaryKey, COLUMN_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 }

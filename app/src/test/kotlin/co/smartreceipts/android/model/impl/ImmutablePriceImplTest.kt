@@ -6,6 +6,7 @@ import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory
 import co.smartreceipts.android.utils.TestUtils
+import co.smartreceipts.android.utils.testParcel
 import junit.framework.Assert.assertEquals
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.IsNot.not
@@ -124,5 +125,14 @@ class ImmutablePriceImplTest {
             price,
             not(equalTo(ImmutablePriceImpl(PRICE, PriceCurrency.getInstance("EUR"), EXCHANGE_RATE)))
         )
+    }
+
+    @Test
+    fun parcelEquality() {
+        val priceFromParcel = price.testParcel()
+
+        junit.framework.Assert.assertNotSame(price, priceFromParcel)
+        junit.framework.Assert.assertEquals(price, priceFromParcel)
+
     }
 }

@@ -257,8 +257,8 @@ public class ReceiptImageFragment extends WBFragment {
     }
 
     private void loadImage() {
-        if (receipt.getImage() != null) {
-            Picasso.get().load(receipt.getImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside().into(imageView, new Callback() {
+        if (receipt.getFile() != null && receipt.hasImage()) {
+            Picasso.get().load(receipt.getFile()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside().into(imageView, new Callback() {
                 @Override
                 public void onSuccess() {
                     progress.setVisibility(View.GONE);
@@ -283,7 +283,7 @@ public class ReceiptImageFragment extends WBFragment {
         }
         isRotateOngoing = true;
         progress.setVisibility(View.VISIBLE);
-        (new ImageRotater(orientation, receipt.getImage())).execute();
+        (new ImageRotater(orientation, receipt.getFile())).execute();
     }
 
     private void onRotateComplete(boolean success) {

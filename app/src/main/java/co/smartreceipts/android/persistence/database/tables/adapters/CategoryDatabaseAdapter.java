@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -35,16 +37,25 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
     @NonNull
     public Category read(@NonNull Cursor cursor) {
         final int idIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_ID);
+        final int uuidIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_UUID);
         final int nameIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_NAME);
         final int codeIndex = cursor.getColumnIndex(CategoriesTable.COLUMN_CODE);
         final int customOrderIdIndex = cursor.getColumnIndex(COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
+        final UUID uuid = UUID.fromString(cursor.getString(uuidIndex));
         final String name = cursor.getString(nameIndex);
         final String code = cursor.getString(codeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
         final long orderId = cursor.getLong(customOrderIdIndex);
-        return new CategoryBuilderFactory().setId(id).setName(name).setCode(code).setSyncState(syncState).setCustomOrderId(orderId).build();
+        return new CategoryBuilderFactory()
+                .setId(id)
+                .setUuid(uuid)
+                .setName(name)
+                .setCode(code)
+                .setSyncState(syncState)
+                .setCustomOrderId(orderId)
+                .build();
     }
 
     @Override
@@ -54,6 +65,7 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
         values.put(CategoriesTable.COLUMN_NAME, category.getName());
         values.put(CategoriesTable.COLUMN_CODE, category.getCode());
         values.put(CategoriesTable.COLUMN_CUSTOM_ORDER_ID, category.getCustomOrderId());
+        values.put(CategoriesTable.COLUMN_UUID, category.getUuid().toString());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(category.getSyncState()));
         } else {
@@ -64,10 +76,12 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
 
     @Override
     @NonNull
-    public Category build(@NonNull Category category, @NonNull PrimaryKey<Category, Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
+    public Category build(@NonNull Category category, @NonNull PrimaryKey<Category, Integer> primaryKey, @NonNull UUID uuid,
+                          @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         Integer id = primaryKey.getPrimaryKeyValue(category);
         return new CategoryBuilderFactory()
                 .setId(id)
+                .setUuid(uuid)
                 .setName(category.getName())
                 .setCode(category.getCode())
                 .setSyncState(mSyncStateAdapter.get(category.getSyncState(), databaseOperationMetadata))

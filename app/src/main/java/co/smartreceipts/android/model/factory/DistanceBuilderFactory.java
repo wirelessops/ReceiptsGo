@@ -7,13 +7,17 @@ import android.text.TextUtils;
 import com.google.common.base.Preconditions;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
-import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Distance;
+import co.smartreceipts.android.model.Keyed;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.model.impl.ImmutableDistanceImpl;
+import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -23,7 +27,10 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  */
 public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
 
+    private static final int ROUNDING_PRECISION = Distance.RATE_PRECISION + 2;
+
     private int _id;
+    private UUID _uuid;
     private Trip _trip;
     private String _location;
     private BigDecimal _distance;
@@ -35,11 +42,12 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     private SyncState _syncState;
 
     public DistanceBuilderFactory() {
-        this(MISSING_ID);
+        this(Keyed.MISSING_ID);
     }
 
     public DistanceBuilderFactory(int id) {
         _id = id;
+        _uuid = Keyed.Companion.getMISSING_UUID();
         _location = "";
         _distance = BigDecimal.ZERO;
         _date = new Date(System.currentTimeMillis());
@@ -55,6 +63,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
 
     public DistanceBuilderFactory(int id, @NonNull Distance distance) {
         _id = id;
+        _uuid = distance.getUuid();
         _trip = distance.getTrip();
         _location = distance.getLocation();
         _distance = distance.getDistance();
@@ -72,6 +81,11 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         if (_comment == null) {
             _comment = "";
         }
+    }
+
+    public DistanceBuilderFactory setUuid(@NonNull UUID uuid) {
+        _uuid = uuid;
+        return this;
     }
 
     public DistanceBuilderFactory setTrip(final Trip trip) {
@@ -153,6 +167,12 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     @Override
     @NonNull
     public Distance build() {
-        return new ImmutableDistanceImpl(_id, _trip, _location, _distance, _rate, _currency, _date, _timezone, _comment, _syncState);
+        final BigDecimal scaledDistance = _distance.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
+        final BigDecimal scaledRate = _rate.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
+
+        final int precision = ModelUtils.getDecimalFormattedValue(_distance.multiply(_rate), Distance.RATE_PRECISION).endsWith("0") ? Price.DEFAULT_DECIMAL_PRECISION : Distance.RATE_PRECISION;
+        Price price = new PriceBuilderFactory().setCurrency(_currency).setPrice(_distance.multiply(_rate)).setDecimalPrecision(precision).build();
+
+        return new Distance(_id, _uuid, price, _syncState, _trip, _location, scaledDistance, scaledRate, _date, _timezone, _comment);
     }
 }

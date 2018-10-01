@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -26,10 +27,9 @@ import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl;
-import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
+import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -49,12 +49,15 @@ public class ReceiptDatabaseAdapterTest {
     private static final int ID = 5;
     private static final int PRIMARY_KEY_ID = 11;
 
+    private static final UUID RECEIPT_UUID = UUID.randomUUID();
+    private static final int PARENT_TRIP_ID = 128;
     private static final File PARENT_DIR = new File(System.getProperty("java.io.tmpdir"), "Trip");
     private static final File RECEIPT_FILE = new File(PARENT_DIR, "Image.jpg");
     private static final String NAME = "Name";
     private static final int CATEGORY_ID = 15;
     private static final String CATEGORY_NAME = "Category";
-    private static final Category CATEGORY = new ImmutableCategoryImpl(CATEGORY_ID, CATEGORY_NAME, "code");
+    private static final UUID CATEGORY_UUID = UUID.randomUUID();
+    private static final Category CATEGORY = new Category(CATEGORY_ID, CATEGORY_UUID, CATEGORY_NAME, "code");
     private static final double PRICE = 12.55d;
     private static final double TAX = 2.50d;
     private static final String CURRENCY_CODE = "USD";
@@ -66,10 +69,11 @@ public class ReceiptDatabaseAdapterTest {
     private static final String COMMENT = "Comment";
     private static final boolean REIMBURSABLE = true;
     private static final int PAYMENT_METHOD_ID = 2;
+    private static final UUID PAYMENT_METHOD_UUID = UUID.randomUUID();
     private static final int DESCENDING_INDEX = 3;
     private static final int ASCENDING_INDEX = 2;
     private static final int CURSOR_COUNT = 4;
-    private static final PaymentMethod PAYMENT_METHOD = new ImmutablePaymentMethodImpl(PAYMENT_METHOD_ID, "method");
+    private static final PaymentMethod PAYMENT_METHOD = new PaymentMethod(PAYMENT_METHOD_ID, PAYMENT_METHOD_UUID, "method");
     private static final boolean FULL_PAGE = true;
     private static final String EXTRA1 = "extra1";
     private static final String EXTRA2 = "extra2";
@@ -80,7 +84,7 @@ public class ReceiptDatabaseAdapterTest {
     ReceiptDatabaseAdapter mReceiptDatabaseAdapter;
 
     @Mock
-    Table<Trip, String> mTripsTable;
+    Table<Trip, Integer> mTripsTable;
 
     @Mock
     Table<PaymentMethod, Integer> mPaymentMethodsTable;
@@ -122,7 +126,7 @@ public class ReceiptDatabaseAdapterTest {
         final int idIndex = 1;
         final int pathIndex = 2;
         final int nameIndex = 3;
-        final int parentIndex = 4;
+        final int parentKeyIndex = 4;
         final int categoryIdIndex = 5;
         final int priceIndex = 6;
         final int taxIndex = 7;
@@ -138,31 +142,33 @@ public class ReceiptDatabaseAdapterTest {
         final int extraEdittext2Index = 18;
         final int extraEdittext3Index = 19;
         final int customOrderIdIndex = 20;
+        final int uuidIndex = 21;
 
-        when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
-        when(mCursor.getColumnIndex("path")).thenReturn(pathIndex);
-        when(mCursor.getColumnIndex("name")).thenReturn(nameIndex);
-        when(mCursor.getColumnIndex("parent")).thenReturn(parentIndex);
-        when(mCursor.getColumnIndex("categoryKey")).thenReturn(categoryIdIndex);
-        when(mCursor.getColumnIndex("price")).thenReturn(priceIndex);
-        when(mCursor.getColumnIndex("tax")).thenReturn(taxIndex);
-        when(mCursor.getColumnIndex("exchange_rate")).thenReturn(exchangeRateIndex);
-        when(mCursor.getColumnIndex("rcpt_date")).thenReturn(dateIndex);
-        when(mCursor.getColumnIndex("timezone")).thenReturn(timezoneIndex);
-        when(mCursor.getColumnIndex("comment")).thenReturn(commentIndex);
-        when(mCursor.getColumnIndex("expenseable")).thenReturn(expenseableIndex);
-        when(mCursor.getColumnIndex("isocode")).thenReturn(currencyCodeIndex);
-        when(mCursor.getColumnIndex("paymentMethodKey")).thenReturn(paymentMethodKeyIndex);
-        when(mCursor.getColumnIndex("fullpageimage")).thenReturn(fullPageImageIndex);
-        when(mCursor.getColumnIndex("extra_edittext_1")).thenReturn(extraEdittext1Index);
-        when(mCursor.getColumnIndex("extra_edittext_2")).thenReturn(extraEdittext2Index);
-        when(mCursor.getColumnIndex("extra_edittext_3")).thenReturn(extraEdittext3Index);
-        when(mCursor.getColumnIndex("custom_order_id")).thenReturn(customOrderIdIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_ID)).thenReturn(idIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PATH)).thenReturn(pathIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_NAME)).thenReturn(nameIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PARENT_TRIP_ID)).thenReturn(parentKeyIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY_ID)).thenReturn(categoryIdIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PRICE)).thenReturn(priceIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_TAX)).thenReturn(taxIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXCHANGE_RATE)).thenReturn(exchangeRateIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_DATE)).thenReturn(dateIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_TIMEZONE)).thenReturn(timezoneIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_COMMENT)).thenReturn(commentIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_REIMBURSABLE)).thenReturn(expenseableIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_ISO4217)).thenReturn(currencyCodeIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID)).thenReturn(paymentMethodKeyIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE)).thenReturn(fullPageImageIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1)).thenReturn(extraEdittext1Index);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2)).thenReturn(extraEdittext2Index);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3)).thenReturn(extraEdittext3Index);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID)).thenReturn(customOrderIdIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_UUID)).thenReturn(uuidIndex);
 
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(pathIndex)).thenReturn(RECEIPT_FILE.getName());
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
-        when(mCursor.getString(parentIndex)).thenReturn(PARENT_DIR.getName());
+        when(mCursor.getInt(parentKeyIndex)).thenReturn(PARENT_TRIP_ID);
         when(mCursor.getInt(categoryIdIndex)).thenReturn(CATEGORY_ID);
         when(mCursor.getDouble(priceIndex)).thenReturn(PRICE);
         when(mCursor.getDouble(taxIndex)).thenReturn(TAX);
@@ -180,6 +186,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
         when(mCursor.getCount()).thenReturn(CURSOR_COUNT);
         when(mCursor.getPosition()).thenReturn(ASCENDING_INDEX - 1);
+        when(mCursor.getString(uuidIndex)).thenReturn(RECEIPT_UUID.toString());
 
         when(mReceipt.getId()).thenReturn(ID);
         when(mReceipt.getFile()).thenReturn(RECEIPT_FILE);
@@ -201,7 +208,9 @@ public class ReceiptDatabaseAdapterTest {
         when(mReceipt.getIndex()).thenReturn(DESCENDING_INDEX);
         when(mReceipt.getSource()).thenReturn(Source.Undefined);
         when(mReceipt.getSyncState()).thenReturn(mSyncState);
+        when(mReceipt.getUuid()).thenReturn(RECEIPT_UUID);
 
+        when(mTrip.getId()).thenReturn(PARENT_TRIP_ID);
         when(mTrip.getName()).thenReturn(PARENT_DIR.getName());
         when(mTrip.getDirectory()).thenReturn(PARENT_DIR);
         when(mTrip.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
@@ -216,7 +225,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mTax.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
         when(mTax.getExchangeRate()).thenReturn(EXCHANGE_RATE);
 
-        when(mTripsTable.findByPrimaryKey(PARENT_DIR.getName())).thenReturn(Single.just(mTrip));
+        when(mTripsTable.findByPrimaryKey(PARENT_TRIP_ID)).thenReturn(Single.just(mTrip));
         when(mPaymentMethodsTable.findByPrimaryKey(PAYMENT_METHOD_ID)).thenReturn(Single.just(PAYMENT_METHOD));
         when(mCategoriesTable.findByPrimaryKey(CATEGORY_ID)).thenReturn(Single.just(CATEGORY));
 
@@ -239,6 +248,7 @@ public class ReceiptDatabaseAdapterTest {
     public void read() throws Exception {
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -270,6 +280,7 @@ public class ReceiptDatabaseAdapterTest {
 
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -298,6 +309,7 @@ public class ReceiptDatabaseAdapterTest {
     public void readForSelectionDescending() throws Exception {
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -326,6 +338,7 @@ public class ReceiptDatabaseAdapterTest {
     public void readForSelectionAscending() throws Exception {
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -356,6 +369,7 @@ public class ReceiptDatabaseAdapterTest {
 
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -386,6 +400,7 @@ public class ReceiptDatabaseAdapterTest {
 
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -417,6 +432,7 @@ public class ReceiptDatabaseAdapterTest {
 
         // Note: Full page is backwards in the database
         final Receipt receipt = new ReceiptBuilderFactory(ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -451,26 +467,27 @@ public class ReceiptDatabaseAdapterTest {
         final ContentValues contentValues = mReceiptDatabaseAdapter.write(mReceipt, new DatabaseOperationMetadata());
 
         // Note: Full page is backwards in the database
-        assertEquals(RECEIPT_FILE.getName(), contentValues.getAsString("path"));
-        assertEquals(NAME, contentValues.getAsString("name"));
-        assertEquals(PARENT_DIR.getName(), contentValues.getAsString("parent"));
-        assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger("categoryKey"));
-        assertEquals(PRICE, contentValues.getAsDouble("price"), 0.0001d);
-        assertEquals(TAX, contentValues.getAsDouble("tax"), 0.0001d);
-        assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble("exchange_rate"), 0.0001d);
-        assertEquals(DATE, (long) contentValues.getAsLong("rcpt_date"));
-        assertEquals(TIMEZONE, contentValues.getAsString("timezone"));
-        assertEquals(COMMENT, contentValues.getAsString("comment"));
-        assertEquals(REIMBURSABLE, contentValues.getAsBoolean("expenseable"));
-        assertEquals(CURRENCY_CODE, contentValues.getAsString("isocode"));
-        assertEquals(PAYMENT_METHOD_ID, (int) contentValues.getAsInteger("paymentMethodKey"));
-        assertEquals(!FULL_PAGE, contentValues.getAsBoolean("fullpageimage"));
-        assertEquals(EXTRA1, contentValues.getAsString("extra_edittext_1"));
-        assertEquals(EXTRA2, contentValues.getAsString("extra_edittext_2"));
-        assertEquals(EXTRA3, contentValues.getAsString("extra_edittext_3"));
-        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong("custom_order_id"));
+        assertEquals(RECEIPT_FILE.getName(), contentValues.getAsString(ReceiptsTable.COLUMN_PATH));
+        assertEquals(NAME, contentValues.getAsString(ReceiptsTable.COLUMN_NAME));
+        assertTrue(PARENT_TRIP_ID == contentValues.getAsInteger(ReceiptsTable.COLUMN_PARENT_TRIP_ID));
+        assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger(ReceiptsTable.COLUMN_CATEGORY_ID));
+        assertEquals(PRICE, contentValues.getAsDouble(ReceiptsTable.COLUMN_PRICE), 0.0001d);
+        assertEquals(TAX, contentValues.getAsDouble(ReceiptsTable.COLUMN_TAX), 0.0001d);
+        assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble(ReceiptsTable.COLUMN_EXCHANGE_RATE), 0.0001d);
+        assertEquals(DATE, (long) contentValues.getAsLong(ReceiptsTable.COLUMN_DATE));
+        assertEquals(TIMEZONE, contentValues.getAsString(ReceiptsTable.COLUMN_TIMEZONE));
+        assertEquals(COMMENT, contentValues.getAsString(ReceiptsTable.COLUMN_COMMENT));
+        assertEquals(REIMBURSABLE, contentValues.getAsBoolean(ReceiptsTable.COLUMN_REIMBURSABLE));
+        assertEquals(CURRENCY_CODE, contentValues.getAsString(ReceiptsTable.COLUMN_ISO4217));
+        assertEquals(PAYMENT_METHOD_ID, (int) contentValues.getAsInteger(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID));
+        assertEquals(!FULL_PAGE, contentValues.getAsBoolean(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE));
+        assertEquals(EXTRA1, contentValues.getAsString(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1));
+        assertEquals(EXTRA2, contentValues.getAsString(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2));
+        assertEquals(EXTRA3, contentValues.getAsString(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3));
+        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID));
+        assertEquals(RECEIPT_UUID.toString(), contentValues.getAsString(ReceiptsTable.COLUMN_UUID));
         assertEquals(sync, contentValues.getAsString(sync));
-        assertFalse(contentValues.containsKey("id"));
+        assertFalse(contentValues.containsKey(ReceiptsTable.COLUMN_ID));
     }
 
     @Test
@@ -483,31 +500,33 @@ public class ReceiptDatabaseAdapterTest {
         final ContentValues contentValues = mReceiptDatabaseAdapter.write(mReceipt, new DatabaseOperationMetadata(OperationFamilyType.Sync));
 
         // Note: Full page is backwards in the database
-        assertEquals(RECEIPT_FILE.getName(), contentValues.getAsString("path"));
-        assertEquals(NAME, contentValues.getAsString("name"));
-        assertEquals(PARENT_DIR.getName(), contentValues.getAsString("parent"));
-        assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger("categoryKey"));
-        assertEquals(PRICE, contentValues.getAsDouble("price"), 0.0001d);
-        assertEquals(TAX, contentValues.getAsDouble("tax"), 0.0001d);
-        assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble("exchange_rate"), 0.0001d);
-        assertEquals(DATE, (long) contentValues.getAsLong("rcpt_date"));
-        assertEquals(TIMEZONE, contentValues.getAsString("timezone"));
-        assertEquals(COMMENT, contentValues.getAsString("comment"));
-        assertEquals(REIMBURSABLE, contentValues.getAsBoolean("expenseable"));
-        assertEquals(CURRENCY_CODE, contentValues.getAsString("isocode"));
-        assertEquals(PAYMENT_METHOD_ID, (int) contentValues.getAsInteger("paymentMethodKey"));
-        assertEquals(!FULL_PAGE, contentValues.getAsBoolean("fullpageimage"));
-        assertEquals(EXTRA1, contentValues.getAsString("extra_edittext_1"));
-        assertEquals(EXTRA2, contentValues.getAsString("extra_edittext_2"));
-        assertEquals(EXTRA3, contentValues.getAsString("extra_edittext_3"));
-        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong("custom_order_id"));
+        assertEquals(RECEIPT_FILE.getName(), contentValues.getAsString(ReceiptsTable.COLUMN_PATH));
+        assertEquals(NAME, contentValues.getAsString(ReceiptsTable.COLUMN_NAME));
+        assertTrue(PARENT_TRIP_ID == contentValues.getAsInteger(ReceiptsTable.COLUMN_PARENT_TRIP_ID));
+        assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger(ReceiptsTable.COLUMN_CATEGORY_ID));
+        assertEquals(PRICE, contentValues.getAsDouble(ReceiptsTable.COLUMN_PRICE), 0.0001d);
+        assertEquals(TAX, contentValues.getAsDouble(ReceiptsTable.COLUMN_TAX), 0.0001d);
+        assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble(ReceiptsTable.COLUMN_EXCHANGE_RATE), 0.0001d);
+        assertEquals(DATE, (long) contentValues.getAsLong(ReceiptsTable.COLUMN_DATE));
+        assertEquals(TIMEZONE, contentValues.getAsString(ReceiptsTable.COLUMN_TIMEZONE));
+        assertEquals(COMMENT, contentValues.getAsString(ReceiptsTable.COLUMN_COMMENT));
+        assertEquals(REIMBURSABLE, contentValues.getAsBoolean(ReceiptsTable.COLUMN_REIMBURSABLE));
+        assertEquals(CURRENCY_CODE, contentValues.getAsString(ReceiptsTable.COLUMN_ISO4217));
+        assertEquals(PAYMENT_METHOD_ID, (int) contentValues.getAsInteger(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID));
+        assertEquals(!FULL_PAGE, contentValues.getAsBoolean(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE));
+        assertEquals(EXTRA1, contentValues.getAsString(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1));
+        assertEquals(EXTRA2, contentValues.getAsString(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2));
+        assertEquals(EXTRA3, contentValues.getAsString(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3));
+        assertEquals(CUSTOM_ORDER_ID, (long) contentValues.getAsLong(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID));
+        assertEquals(RECEIPT_UUID.toString(), contentValues.getAsString(ReceiptsTable.COLUMN_UUID));
         assertEquals(sync, contentValues.getAsString(sync));
-        assertFalse(contentValues.containsKey("id"));
+        assertFalse(contentValues.containsKey(ReceiptsTable.COLUMN_ID));
     }
 
     @Test
     public void build() throws Exception {
         final Receipt receipt = new ReceiptBuilderFactory(PRIMARY_KEY_ID)
+                .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
                 .setPrice(PRICE)
@@ -529,8 +548,8 @@ public class ReceiptDatabaseAdapterTest {
                 .setExtraEditText3(EXTRA3)
                 .setSyncState(mGetSyncState)
                 .build();
-        assertEquals(receipt, mReceiptDatabaseAdapter.build(mReceipt, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
-        assertEquals(receipt.getSyncState(), mReceiptDatabaseAdapter.build(mReceipt, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(receipt, mReceiptDatabaseAdapter.build(mReceipt, mPrimaryKey, RECEIPT_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(receipt.getSyncState(), mReceiptDatabaseAdapter.build(mReceipt, mPrimaryKey, RECEIPT_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 
 }

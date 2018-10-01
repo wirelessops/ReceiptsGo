@@ -7,18 +7,20 @@ import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.sync.model.SyncState
+import java.util.*
 
 /**
  * Provides a column that returns the category code for a particular receipt
  */
 class ReceiptDateColumn(
     id: Int, syncState: SyncState, private val localizedContext: Context,
-    private val preferences: UserPreferenceManager, customOrderId: Long
+    private val preferences: UserPreferenceManager, customOrderId: Long, uuid: UUID
 ) : AbstractColumnImpl<Receipt>(
     id,
     ReceiptColumnDefinitions.ActualDefinition.DATE,
     syncState,
-    customOrderId
+    customOrderId,
+    uuid
 ) {
 
     override fun getValue(receipt: Receipt): String =

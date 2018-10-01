@@ -2,10 +2,7 @@ package co.smartreceipts.android.model.impl.columns.distance
 
 import android.support.annotation.StringRes
 import co.smartreceipts.android.R
-import co.smartreceipts.android.model.ActualColumnDefinition
-import co.smartreceipts.android.model.Column
-import co.smartreceipts.android.model.ColumnDefinitions
-import co.smartreceipts.android.model.Distance
+import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions.ActualDefinition.*
 import co.smartreceipts.android.settings.UserPreferenceManager
@@ -30,8 +27,8 @@ class DistanceColumnDefinitions(
      * Column type must be >= 0
      */
     internal enum class ActualDefinition(
-        private val columnType: Int,
-        private val stringResId: Int
+        override val columnType: Int,
+        @StringRes override val columnHeaderId: Int
     ) : ActualColumnDefinition {
         LOCATION(0, R.string.distance_location_field),
         PRICE(1, R.string.distance_price_field),
@@ -40,11 +37,6 @@ class DistanceColumnDefinitions(
         RATE(4, R.string.distance_rate_field),
         DATE(5, R.string.distance_date_field),
         COMMENT(6, R.string.distance_comment_field);
-
-        override fun getColumnType(): Int = columnType
-
-        @StringRes
-        override fun getColumnHeaderId(): Int = stringResId
     }
 
 
@@ -52,11 +44,12 @@ class DistanceColumnDefinitions(
         id: Int,
         columnType: Int,
         syncState: SyncState,
-        ignoredCustomOrderId: Long
+        ignoredCustomOrderId: Long,
+        ignoredUUID: UUID
     ): Column<Distance> {
         for (definition in actualDefinitions) {
             if (columnType == definition.columnType) {
-                return getColumnFromClass(id, definition, syncState)
+                return getColumnFromClass(definition, id, syncState)
             }
         }
         throw IllegalArgumentException("Unknown column type: $columnType")
@@ -65,26 +58,21 @@ class DistanceColumnDefinitions(
     override fun getAllColumns(): List<Column<Distance>> {
         val columns = ArrayList<AbstractColumnImpl<Distance>>(actualDefinitions.size)
         for (definition in actualDefinitions) {
-            val column = getColumnFromClass(
-                Column.UNKNOWN_ID,
-                definition, DefaultSyncState()
-            )
-            columns.add(column)
-
+            columns.add(getColumnFromClass(definition))
         }
         return ArrayList<Column<Distance>>(columns)
     }
 
     override fun getDefaultInsertColumn(): Column<Distance> {
         // Hack for the distance default until we let users dynamically set columns. Actually, this will never be called
-        return getColumnFromClass(Column.UNKNOWN_ID, DISTANCE, DefaultSyncState())
+        return getColumnFromClass(DISTANCE)
     }
 
 
     private fun getColumnFromClass(
-        id: Int,
         definition: ActualDefinition,
-        syncState: SyncState
+        id: Int = Keyed.MISSING_ID,
+        syncState: SyncState = DefaultSyncState()
     ): AbstractColumnImpl<Distance> {
         val localizedContext = reportResourcesManager.getLocalizedContext()
 

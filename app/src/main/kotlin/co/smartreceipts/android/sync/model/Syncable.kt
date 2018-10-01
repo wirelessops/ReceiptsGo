@@ -9,4 +9,6 @@ interface Syncable {
      * The current [SyncState] associated with this item
      */
     val syncState: SyncState
+
 }
+

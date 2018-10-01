@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
@@ -44,10 +45,10 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
 
     // SQL Definitions:
     public static final String TABLE_NAME = "receipts";
-    public static final String COLUMN_ID = "id";
+
     public static final String COLUMN_PATH = "path";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_PARENT = "parent";
+    public static final String COLUMN_PARENT_TRIP_ID = "parentKey";
     public static final String COLUMN_CATEGORY_ID = "categoryKey";
     public static final String COLUMN_PRICE = "price";
     public static final String COLUMN_TAX = "tax";
@@ -64,17 +65,20 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
     public static final String COLUMN_EXTRA_EDITTEXT_2 = "extra_edittext_2";
     public static final String COLUMN_EXTRA_EDITTEXT_3 = "extra_edittext_3";
 
+    @Deprecated
+    public static final String COLUMN_PARENT = "parent";
+
     private final UserPreferenceManager userPreferenceManager;
 
     public ReceiptsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
-                         @NonNull Table<Trip, String> tripsTable,
+                         @NonNull Table<Trip, Integer> tripsTable,
                          @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
                          @NonNull Table<Category, Integer> categoryTable,
                          @NonNull StorageManager storageManager,
                          @NonNull UserPreferenceManager preferences,
                          @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         super(sqLiteOpenHelper, TABLE_NAME, new ReceiptDatabaseAdapter(tripsTable, paymentMethodTable,
-                categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT,
+                        categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT_TRIP_ID,
                 new OrderByOrderingPreference(orderingPreferencesManager, ReceiptsTable.class, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, true), new OrderByColumn(COLUMN_DATE, true)));
 
         this.userPreferenceManager = Preconditions.checkNotNull(preferences);
@@ -86,7 +90,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
         final String receipts = "CREATE TABLE " + ReceiptsTable.TABLE_NAME + " ("
                 + ReceiptsTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ReceiptsTable.COLUMN_PATH + " TEXT, "
-                + ReceiptsTable.COLUMN_PARENT + " TEXT REFERENCES " + TripsTable.TABLE_NAME + " ON DELETE CASCADE, "
+                + ReceiptsTable.COLUMN_PARENT_TRIP_ID + " INTEGER REFERENCES " + TripsTable.TABLE_NAME + " ON DELETE CASCADE, "
                 + ReceiptsTable.COLUMN_NAME + " TEXT DEFAULT \"New Receipt\", "
                 + ReceiptsTable.COLUMN_CATEGORY_ID + " INTEGER REFERENCES " + CategoriesTable.TABLE_NAME + " ON DELETE NO ACTION, "
                 + ReceiptsTable.COLUMN_DATE + " DATE DEFAULT (DATE('now', 'localtime')), "
@@ -107,7 +111,8 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
-                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_UUID + " TEXT "
                 + ");";
         Logger.debug(this, receipts);
         db.execSQL(receipts);
@@ -264,7 +269,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
             Logger.debug(this, copyTable);
             db.execSQL(copyTable);
 
-            final String finalColumns = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
+            final String finalColumns = TextUtils.join(", ", new String[]{
                     ReceiptsTable.COLUMN_ID, ReceiptsTable.COLUMN_PATH, ReceiptsTable.COLUMN_PARENT,
                     ReceiptsTable.COLUMN_NAME, ReceiptsTable.COLUMN_CATEGORY_ID, ReceiptsTable.COLUMN_DATE,
                     ReceiptsTable.COLUMN_TIMEZONE, ReceiptsTable.COLUMN_COMMENT, ReceiptsTable.COLUMN_ISO4217,
@@ -274,22 +279,86 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
                     ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1, ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2,
                     ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID,
                     AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION,
-                    AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME);
+                    AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME});
 
-            final String insertData = "INSERT INTO " + ReceiptsTable.TABLE_NAME + "_copy" + " (" + finalColumns + ") "
-                    + "SELECT " + finalColumns
-                    + " FROM " + ReceiptsTable.TABLE_NAME + ";";
-            Logger.debug(this, insertData);
-            db.execSQL(insertData);
+            moveDataToCopyTableAndRename(db, finalColumns);
 
-            final String dropOldTable = "DROP TABLE " + getTableName() + ";";
-            Logger.debug(this, dropOldTable);
-            db.execSQL(dropOldTable);
-
-            final String renameTable = "ALTER TABLE " + getTableName() + "_copy" + " RENAME TO " + getTableName() + ";";
-            Logger.debug(this, renameTable);
-            db.execSQL(renameTable);
         }
+
+        if (oldVersion <= 18) { // v18 => 19 Changed Trip foreign key from Name to Id, added UUID column
+
+            // adding parent trip id as a foreign key
+
+            final String addTripIdColumn = String.format("ALTER TABLE %s ADD %s INTEGER REFERENCES %s ON DELETE CASCADE",
+                    TABLE_NAME, COLUMN_PARENT_TRIP_ID, TripsTable.TABLE_NAME);
+            Logger.debug(this, addTripIdColumn);
+            db.execSQL(addTripIdColumn);
+
+            final String fillTripId = String.format("UPDATE %s SET %s = ( SELECT %s FROM %s WHERE %s = %s LIMIT 1 )",
+                    ReceiptsTable.TABLE_NAME, COLUMN_PARENT_TRIP_ID, TripsTable.COLUMN_ID, TripsTable.TABLE_NAME,
+                    TripsTable.COLUMN_NAME, COLUMN_PARENT);
+            Logger.debug(this, fillTripId);
+            db.execSQL(fillTripId);
+
+            // removing old COLUMN_PARENT column
+
+            final String finalColumns = TextUtils.join(",", new String[]{
+                    COLUMN_ID, COLUMN_PATH, COLUMN_PARENT_TRIP_ID, COLUMN_NAME, COLUMN_CATEGORY_ID, COLUMN_DATE,
+                    COLUMN_TIMEZONE, COLUMN_COMMENT, COLUMN_ISO4217, COLUMN_PRICE, COLUMN_TAX, COLUMN_EXCHANGE_RATE,
+                    COLUMN_PAYMENT_METHOD_ID, COLUMN_REIMBURSABLE, COLUMN_NOTFULLPAGEIMAGE, COLUMN_PROCESSING_STATUS,
+                    COLUMN_EXTRA_EDITTEXT_1, COLUMN_EXTRA_EDITTEXT_2, COLUMN_EXTRA_EDITTEXT_3,
+                    AbstractSqlTable.COLUMN_DRIVE_SYNC_ID, AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED,
+                    AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION, AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME});
+
+            final String copyTable = "CREATE TABLE " + ReceiptsTable.TABLE_NAME + "_copy" + " ("
+                    + ReceiptsTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + ReceiptsTable.COLUMN_PATH + " TEXT, "
+                    + ReceiptsTable.COLUMN_PARENT_TRIP_ID + " INTEGER REFERENCES " + TripsTable.TABLE_NAME + " ON DELETE CASCADE, "
+                    + ReceiptsTable.COLUMN_NAME + " TEXT DEFAULT \"New Receipt\", "
+                    + ReceiptsTable.COLUMN_CATEGORY_ID + " INTEGER REFERENCES " + CategoriesTable.TABLE_NAME + " ON DELETE NO ACTION, "
+                    + ReceiptsTable.COLUMN_DATE + " DATE DEFAULT (DATE('now', 'localtime')), "
+                    + ReceiptsTable.COLUMN_TIMEZONE + " TEXT, "
+                    + ReceiptsTable.COLUMN_COMMENT + " TEXT, "
+                    + ReceiptsTable.COLUMN_ISO4217 + " TEXT NOT NULL, "
+                    + ReceiptsTable.COLUMN_PRICE + " DECIMAL(10, 2) DEFAULT 0.00, "
+                    + ReceiptsTable.COLUMN_TAX + " DECIMAL(10, 2) DEFAULT 0.00, "
+                    + ReceiptsTable.COLUMN_EXCHANGE_RATE + " DECIMAL(10, 10) DEFAULT -1.00, "
+                    + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID + " INTEGER REFERENCES " + PaymentMethodsTable.TABLE_NAME + " ON DELETE NO ACTION, "
+                    + ReceiptsTable.COLUMN_REIMBURSABLE + " BOOLEAN DEFAULT 1, "
+                    + ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE + " BOOLEAN DEFAULT 1, "
+                    + ReceiptsTable.COLUMN_PROCESSING_STATUS + " TEXT, "
+                    + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1 + " TEXT, "
+                    + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2 + " TEXT, "
+                    + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3 + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                    + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                    + ");";
+            Logger.debug(this, copyTable);
+            db.execSQL(copyTable);
+
+            moveDataToCopyTableAndRename(db, finalColumns);
+
+            // adding new UUID column
+            onUpgradeToAddUUID(db, oldVersion);
+        }
+    }
+
+    private void moveDataToCopyTableAndRename(@NonNull SQLiteDatabase db, String dataColumns) {
+        final String insertData = String.format("INSERT INTO %s_copy ( %s ) SELECT %s FROM %s ;",
+                TABLE_NAME, dataColumns, dataColumns, TABLE_NAME);
+        Logger.debug(this, insertData);
+        db.execSQL(insertData);
+
+        final String dropOldTable = String.format("DROP TABLE %s;", TABLE_NAME);
+        Logger.debug(this, dropOldTable);
+        db.execSQL(dropOldTable);
+
+        final String renameTable = String.format("ALTER TABLE %s_copy RENAME TO %s;", TABLE_NAME, TABLE_NAME);
+        Logger.debug(this, renameTable);
+        db.execSQL(renameTable);
     }
 
     @NonNull

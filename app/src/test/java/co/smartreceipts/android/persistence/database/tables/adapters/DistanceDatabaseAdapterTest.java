@@ -13,14 +13,16 @@ import org.robolectric.RobolectricTestRunner;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
+import co.smartreceipts.android.persistence.database.tables.DistanceTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -28,6 +30,7 @@ import io.reactivex.Single;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,7 +40,7 @@ public class DistanceDatabaseAdapterTest {
 
     private static final int ID = 5;
     private static final int PRIMARY_KEY_ID = 11;
-    private static final String PARENT = "Trip";
+    private static final int PARENT_ID = 15;
     private static final double DISTANCE = 12.55d;
     private static final String LOCATION = "Location";
     private static final long DATE = 1409703721000L;
@@ -45,13 +48,14 @@ public class DistanceDatabaseAdapterTest {
     private static final String COMMENT = "Comment";
     private static final double RATE = 0.33d;
     private static final String CURRENCY_CODE = "USD";
+    private static final UUID DIST_UUID = UUID.randomUUID();
 
 
     // Class under test
     DistanceDatabaseAdapter mDistanceDatabaseAdapter;
 
     @Mock
-    Table<Trip, String> mTripsTable;
+    Table<Trip, Integer> mTripsTable;
 
     @Mock
     Trip mTrip;
@@ -87,8 +91,9 @@ public class DistanceDatabaseAdapterTest {
         final int commentIndex = 7;
         final int rateIndex = 8;
         final int rateCurrencyIndex = 9;
+        final int uuidIndex = 10;
         when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
-        when(mCursor.getColumnIndex("parent")).thenReturn(parentIndex);
+        when(mCursor.getColumnIndex("parentKey")).thenReturn(parentIndex);
         when(mCursor.getColumnIndex("distance")).thenReturn(distanceIndex);
         when(mCursor.getColumnIndex("location")).thenReturn(locationIndex);
         when(mCursor.getColumnIndex("date")).thenReturn(dateIndex);
@@ -96,9 +101,10 @@ public class DistanceDatabaseAdapterTest {
         when(mCursor.getColumnIndex("comment")).thenReturn(commentIndex);
         when(mCursor.getColumnIndex("rate")).thenReturn(rateIndex);
         when(mCursor.getColumnIndex("rate_currency")).thenReturn(rateCurrencyIndex);
+        when(mCursor.getColumnIndex("entity_uuid")).thenReturn(uuidIndex);
 
         when(mCursor.getInt(idIndex)).thenReturn(ID);
-        when(mCursor.getString(parentIndex)).thenReturn(PARENT);
+        when(mCursor.getInt(parentIndex)).thenReturn(PARENT_ID);
         when(mCursor.getDouble(distanceIndex)).thenReturn(DISTANCE);
         when(mCursor.getString(locationIndex)).thenReturn(LOCATION);
         when(mCursor.getLong(dateIndex)).thenReturn(DATE);
@@ -106,6 +112,7 @@ public class DistanceDatabaseAdapterTest {
         when(mCursor.getString(commentIndex)).thenReturn(COMMENT);
         when(mCursor.getDouble(rateIndex)).thenReturn(RATE);
         when(mCursor.getString(rateCurrencyIndex)).thenReturn(CURRENCY_CODE);
+        when(mCursor.getString(uuidIndex)).thenReturn(DIST_UUID.toString());
 
         when(mDistance.getTrip()).thenReturn(mTrip);
         when(mDistance.getLocation()).thenReturn(LOCATION);
@@ -116,12 +123,13 @@ public class DistanceDatabaseAdapterTest {
         when(mDistance.getPrice()).thenReturn(mPrice);
         when(mDistance.getComment()).thenReturn(COMMENT);
         when(mDistance.getSyncState()).thenReturn(mSyncState);
+        when(mDistance.getUuid()).thenReturn(DIST_UUID);
 
-        when(mTrip.getName()).thenReturn(PARENT);
+        when(mTrip.getId()).thenReturn(PARENT_ID);
         when(mPrice.getCurrencyCode()).thenReturn(CURRENCY_CODE);
         when(mPrice.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
 
-        when(mTripsTable.findByPrimaryKey(PARENT)).thenReturn(Single.just(mTrip));
+        when(mTripsTable.findByPrimaryKey(PARENT_ID)).thenReturn(Single.just(mTrip));
         when(mPrimaryKey.getPrimaryKeyValue(mDistance)).thenReturn(PRIMARY_KEY_ID);
 
         when(mSyncStateAdapter.read(mCursor)).thenReturn(mSyncState);
@@ -132,19 +140,19 @@ public class DistanceDatabaseAdapterTest {
 
     @Test
     public void read() throws Exception {
-        final Distance distance = new DistanceBuilderFactory(ID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mSyncState).build();
+        final Distance distance = new DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mSyncState).build();
         assertEquals(distance, mDistanceDatabaseAdapter.read(mCursor));
     }
 
     @Test
     public void readForSelectionDescending() throws Exception {
-        final Distance distance = new DistanceBuilderFactory(ID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mSyncState).build();
+        final Distance distance = new DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mSyncState).build();
         assertEquals(distance, mDistanceDatabaseAdapter.readForSelection(mCursor, mTrip, true));
     }
 
     @Test
     public void readForSelectionAscending() throws Exception {
-        final Distance distance = new DistanceBuilderFactory(ID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mSyncState).build();
+        final Distance distance = new DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mSyncState).build();
         assertEquals(distance, mDistanceDatabaseAdapter.readForSelection(mCursor, mTrip, false));
     }
 
@@ -156,16 +164,17 @@ public class DistanceDatabaseAdapterTest {
         when(mSyncStateAdapter.writeUnsynced(mSyncState)).thenReturn(syncValues);
 
         final ContentValues contentValues = mDistanceDatabaseAdapter.write(mDistance, new DatabaseOperationMetadata());
-        assertEquals(PARENT, contentValues.getAsString("parent"));
-        assertEquals(DISTANCE, contentValues.getAsDouble("distance"), 0.0001d);
-        assertEquals(LOCATION, contentValues.getAsString("location"));
-        assertEquals(DATE, (long) contentValues.getAsLong("date"));
-        assertEquals(TIMEZONE, contentValues.getAsString("timezone"));
-        assertEquals(COMMENT, contentValues.getAsString("comment"));
-        assertEquals(RATE, contentValues.getAsDouble("rate"), 0.0001d);
-        assertEquals(CURRENCY_CODE, contentValues.getAsString("rate_currency"));
+        assertTrue(PARENT_ID == contentValues.getAsInteger(DistanceTable.COLUMN_PARENT_TRIP_ID));
+        assertEquals(DISTANCE, contentValues.getAsDouble(DistanceTable.COLUMN_DISTANCE), 0.0001d);
+        assertEquals(LOCATION, contentValues.getAsString(DistanceTable.COLUMN_LOCATION));
+        assertEquals(DATE, (long) contentValues.getAsLong(DistanceTable.COLUMN_DATE));
+        assertEquals(TIMEZONE, contentValues.getAsString(DistanceTable.COLUMN_TIMEZONE));
+        assertEquals(COMMENT, contentValues.getAsString(DistanceTable.COLUMN_COMMENT));
+        assertEquals(RATE, contentValues.getAsDouble(DistanceTable.COLUMN_RATE), 0.0001d);
+        assertEquals(CURRENCY_CODE, contentValues.getAsString(DistanceTable.COLUMN_RATE_CURRENCY));
+        assertEquals(DIST_UUID.toString(), contentValues.getAsString(DistanceTable.COLUMN_UUID));
         assertEquals(sync, contentValues.getAsString(sync));
-        assertFalse(contentValues.containsKey("id"));
+        assertFalse(contentValues.containsKey(DistanceTable.COLUMN_ID));
     }
 
     @Test
@@ -176,23 +185,24 @@ public class DistanceDatabaseAdapterTest {
         when(mSyncStateAdapter.write(mSyncState)).thenReturn(syncValues);
 
         final ContentValues contentValues = mDistanceDatabaseAdapter.write(mDistance, new DatabaseOperationMetadata(OperationFamilyType.Sync));
-        assertEquals(PARENT, contentValues.getAsString("parent"));
-        assertEquals(DISTANCE, contentValues.getAsDouble("distance"), 0.0001d);
-        assertEquals(LOCATION, contentValues.getAsString("location"));
-        assertEquals(DATE, (long) contentValues.getAsLong("date"));
-        assertEquals(TIMEZONE, contentValues.getAsString("timezone"));
-        assertEquals(COMMENT, contentValues.getAsString("comment"));
-        assertEquals(RATE, contentValues.getAsDouble("rate"), 0.0001d);
-        assertEquals(CURRENCY_CODE, contentValues.getAsString("rate_currency"));
+        assertTrue(PARENT_ID == contentValues.getAsInteger(DistanceTable.COLUMN_PARENT_TRIP_ID));
+        assertEquals(DISTANCE, contentValues.getAsDouble(DistanceTable.COLUMN_DISTANCE), 0.0001d);
+        assertEquals(LOCATION, contentValues.getAsString(DistanceTable.COLUMN_LOCATION));
+        assertEquals(DATE, (long) contentValues.getAsLong(DistanceTable.COLUMN_DATE));
+        assertEquals(TIMEZONE, contentValues.getAsString(DistanceTable.COLUMN_TIMEZONE));
+        assertEquals(COMMENT, contentValues.getAsString(DistanceTable.COLUMN_COMMENT));
+        assertEquals(RATE, contentValues.getAsDouble(DistanceTable.COLUMN_RATE), 0.0001d);
+        assertEquals(CURRENCY_CODE, contentValues.getAsString(DistanceTable.COLUMN_RATE_CURRENCY));
+        assertEquals(DIST_UUID.toString(), contentValues.getAsString(DistanceTable.COLUMN_UUID));
         assertEquals(sync, contentValues.getAsString(sync));
-        assertFalse(contentValues.containsKey("id"));
+        assertFalse(contentValues.containsKey(DistanceTable.COLUMN_ID));
     }
 
     @Test
     public void build() throws Exception {
-        final Distance distance = new DistanceBuilderFactory(PRIMARY_KEY_ID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mGetSyncState).build();
-        assertEquals(distance, mDistanceDatabaseAdapter.build(mDistance, mPrimaryKey, mock(DatabaseOperationMetadata.class)));
-        assertEquals(distance.getSyncState(), mDistanceDatabaseAdapter.build(mDistance, mPrimaryKey, mock(DatabaseOperationMetadata.class)).getSyncState());
+        final Distance distance = new DistanceBuilderFactory(PRIMARY_KEY_ID).setUuid(DIST_UUID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mGetSyncState).build();
+        assertEquals(distance, mDistanceDatabaseAdapter.build(mDistance, mPrimaryKey, DIST_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(distance.getSyncState(), mDistanceDatabaseAdapter.build(mDistance, mPrimaryKey, DIST_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 
 }

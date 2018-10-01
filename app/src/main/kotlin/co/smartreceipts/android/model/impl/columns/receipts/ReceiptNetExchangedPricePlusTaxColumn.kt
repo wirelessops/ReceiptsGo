@@ -16,13 +16,15 @@ class ReceiptNetExchangedPricePlusTaxColumn(
     id: Int, syncState: SyncState,
     localizedContext: Context,
     private val preferences: UserPreferenceManager,
-    customOrderId: Long
+    customOrderId: Long,
+    uuid: UUID
 ) : AbstractExchangedPriceColumn(
     id,
     ReceiptColumnDefinitions.ActualDefinition.PRICE_PLUS_TAX_EXCHANGED,
     syncState,
     localizedContext,
-    customOrderId
+    customOrderId,
+    uuid
 ) {
 
     override fun getPrice(receipt: Receipt): Price {

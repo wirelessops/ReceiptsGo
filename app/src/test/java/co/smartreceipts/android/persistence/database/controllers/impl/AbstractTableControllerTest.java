@@ -12,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import co.smartreceipts.android.KeyedObject;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
@@ -35,34 +36,34 @@ public class AbstractTableControllerTest {
     /**
      * Test impl for our abstract class
      */
-    private class AbstractTableControllerTestImpl extends AbstractTableController<Object> {
+    private class AbstractTableControllerTestImpl extends AbstractTableController<KeyedObject> {
 
-        AbstractTableControllerTestImpl(@NonNull Table<Object, ?> table, @NonNull TableActionAlterations<Object> tableActionAlterations, @NonNull Analytics analytics,
+        AbstractTableControllerTestImpl(@NonNull Table<KeyedObject, ?> table, @NonNull TableActionAlterations<KeyedObject> tableActionAlterations, @NonNull Analytics analytics,
                                         @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
             super(table, tableActionAlterations, analytics, subscribeOnScheduler, observeOnScheduler);
         }
     }
 
     // Class under test
-    AbstractTableController<Object> mAbstractTableController;
+    AbstractTableController<KeyedObject> mAbstractTableController;
 
     @Mock
-    Table<Object, ?> mTable;
+    Table<KeyedObject, ?> mTable;
 
     @Mock
-    TableActionAlterations<Object> mTableActionAlterations;
+    TableActionAlterations<KeyedObject> mTableActionAlterations;
 
     @Mock
     Analytics mAnalytics;
 
     @Mock
-    TableEventsListener<Object> mListener1;
+    TableEventsListener<KeyedObject> mListener1;
 
     @Mock
-    TableEventsListener<Object> mListener2;
+    TableEventsListener<KeyedObject> mListener2;
 
     @Mock
-    TableEventsListener<Object> mListener3;
+    TableEventsListener<KeyedObject> mListener3;
 
     @Before
     public void setUp() throws Exception {
@@ -75,7 +76,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onGetSuccess() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get()).thenReturn(Single.just(objects));
         when(mTableActionAlterations.postGet(objects)).thenReturn(Single.just(objects));
@@ -90,7 +91,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPreGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         final Exception e = new Exception();
         when(mTableActionAlterations.preGet()).thenReturn(Completable.error(e));
         when(mTable.get()).thenReturn(Single.just(objects));
@@ -107,7 +108,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         final Exception e = new Exception();
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get()).thenReturn(Single.error(e));
@@ -124,7 +125,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPostGetException() throws Exception {
-        final List<Object> objects = Arrays.asList(new Object(), new Object(), new Object());
+        final List<KeyedObject> objects = Arrays.asList(new KeyedObject(), new KeyedObject(), new KeyedObject());
         when(mTableActionAlterations.preGet()).thenReturn(Completable.complete());
         when(mTable.get()).thenReturn(Single.just(objects));
         when(mTableActionAlterations.postGet(objects)).thenReturn(Single.error(new Exception("")));
@@ -140,7 +141,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onInsertSuccess() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.just(insertItem));
         when(mTable.insert(insertItem, databaseOperationMetadata)).thenReturn(Single.just(insertItem));
@@ -156,7 +157,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPreInsertException() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.error(e));
@@ -174,7 +175,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onInsertException() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.just(insertItem));
@@ -192,7 +193,7 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPostInsertException() throws Exception {
-        final Object insertItem = new Object();
+        final KeyedObject insertItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preInsert(insertItem)).thenReturn(Single.just(insertItem));
@@ -211,8 +212,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onUpdateSuccess() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.just(newItem));
         when(mTable.update(oldItem, newItem, databaseOperationMetadata)).thenReturn(Single.just(newItem));
@@ -228,8 +229,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPreUpdateException() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.error(e));
@@ -247,8 +248,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onUpdateException() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.just(newItem));
@@ -266,8 +267,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPostUpdateException() throws Exception {
-        final Object oldItem = new Object();
-        final Object newItem = new Object();
+        final KeyedObject oldItem = new KeyedObject();
+        final KeyedObject newItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preUpdate(oldItem, newItem)).thenReturn(Single.just(newItem));
@@ -286,8 +287,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onDeleteSuccess() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.just(deleteCandidateItem));
         when(mTable.delete(deleteCandidateItem, databaseOperationMetadata)).thenReturn(Single.just(deletedItem));
@@ -303,8 +304,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPreDeleteException() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.error(e));
@@ -322,8 +323,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onDeleteException() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.just(deleteCandidateItem));
@@ -341,8 +342,8 @@ public class AbstractTableControllerTest {
 
     @Test
     public void onPostDeleteException() throws Exception {
-        final Object deleteCandidateItem = new Object();
-        final Object deletedItem = new Object();
+        final KeyedObject deleteCandidateItem = new KeyedObject();
+        final KeyedObject deletedItem = new KeyedObject();
         final Exception e = new Exception();
         final DatabaseOperationMetadata databaseOperationMetadata = new DatabaseOperationMetadata();
         when(mTableActionAlterations.preDelete(deleteCandidateItem)).thenReturn(Single.just(deleteCandidateItem));

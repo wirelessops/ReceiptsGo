@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.io.File;
 
@@ -18,9 +19,10 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import wb.android.storage.StorageManager;
 
-public class TripsTable extends AbstractSqlTable<Trip, String> {
+public class TripsTable extends AbstractSqlTable<Trip, Integer> {
 
     public static final String TABLE_NAME = "trips";
+
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_FROM = "from_date";
     public static final String COLUMN_TO = "to_date";
@@ -46,7 +48,8 @@ public class TripsTable extends AbstractSqlTable<Trip, String> {
     public synchronized void onCreate(@NonNull SQLiteDatabase db, @NonNull TableDefaultsCustomizer customizer) {
         super.onCreate(db, customizer);
         final String trips = "CREATE TABLE " + getTableName() + " ("
-                + COLUMN_NAME + " TEXT PRIMARY KEY, "
+                + AbstractSqlTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_NAME + " TEXT UNIQUE, "
                 + COLUMN_FROM + " DATE, "
                 + COLUMN_TO + " DATE, "
                 + COLUMN_FROM_TIMEZONE + " TEXT, "
@@ -59,7 +62,8 @@ public class TripsTable extends AbstractSqlTable<Trip, String> {
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
-                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + AbstractSqlTable.COLUMN_UUID + " TEXT "
                 + ");";
         Logger.debug(this, trips);
         db.execSQL(trips);
@@ -72,7 +76,7 @@ public class TripsTable extends AbstractSqlTable<Trip, String> {
         if (oldVersion <= 6) { // Fix the database to replace absolute paths with relative ones
             Cursor tripsCursor = null;
             try {
-                tripsCursor = db.query(TripsTable.TABLE_NAME, new String[]{ TripsTable.COLUMN_NAME }, null, null, null, null, null);
+                tripsCursor = db.query(TripsTable.TABLE_NAME, new String[]{TripsTable.COLUMN_NAME}, null, null, null, null, null);
                 if (tripsCursor != null && tripsCursor.moveToFirst()) {
                     final int nameIndex = tripsCursor.getColumnIndex(TripsTable.COLUMN_NAME);
                     do {
@@ -143,6 +147,53 @@ public class TripsTable extends AbstractSqlTable<Trip, String> {
 
         if (oldVersion <= 14) {
             onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
+        }
+
+        if (oldVersion <= 18) { // v18 => 19 Changed TripsTable pk to id (instead of name), added UUID column
+
+            // adding id column, changing primary key
+            final String copyTable = "CREATE TABLE " + getTableName() + "_copy" + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + COLUMN_NAME + " TEXT UNIQUE, "
+                    + COLUMN_FROM + " DATE, "
+                    + COLUMN_TO + " DATE, "
+                    + COLUMN_FROM_TIMEZONE + " TEXT, "
+                    + COLUMN_TO_TIMEZONE + " TEXT, "
+                    + COLUMN_COMMENT + " TEXT, "
+                    + COLUMN_COST_CENTER + " TEXT, "
+                    + COLUMN_DEFAULT_CURRENCY + " TEXT, "
+                    + COLUMN_PROCESSING_STATUS + " TEXT, "
+                    + COLUMN_FILTERS + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE"
+                    + ");";
+            Logger.debug(this, copyTable);
+            db.execSQL(copyTable);
+
+            final String baseColumns = TextUtils.join(", ", new String[]{
+                    COLUMN_NAME, COLUMN_FROM, COLUMN_TO, COLUMN_FROM_TIMEZONE, COLUMN_TO_TIMEZONE, COLUMN_COMMENT,
+                    COLUMN_COST_CENTER, COLUMN_DEFAULT_CURRENCY, COLUMN_PROCESSING_STATUS, COLUMN_FILTERS, COLUMN_DRIVE_SYNC_ID,
+                    COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME});
+
+            final String insertData = "INSERT INTO " + getTableName() + "_copy"
+                    + " (" + baseColumns + ") "
+                    + "SELECT " + baseColumns
+                    + " FROM " + getTableName() + ";";
+            Logger.debug(this, insertData);
+            db.execSQL(insertData);
+
+            final String dropOldTable = "DROP TABLE " + getTableName() + ";";
+            Logger.debug(this, dropOldTable);
+            db.execSQL(dropOldTable);
+
+            final String renameTable = "ALTER TABLE " + getTableName() + "_copy" + " RENAME TO " + getTableName() + ";";
+            Logger.debug(this, renameTable);
+            db.execSQL(renameTable);
+
+            // adding new UUID column
+            onUpgradeToAddUUID(db, oldVersion);
         }
 
     }

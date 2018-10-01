@@ -34,7 +34,7 @@ public class TripTableActionAlterationsTest {
     TripTableActionAlterations mTripTableActionAlterations;
 
     @Mock
-    Table<Trip, String> mTripsTable;
+    Table<Trip, Integer> mTripsTable;
 
     @Mock
     ReceiptsTable mReceiptsTable;

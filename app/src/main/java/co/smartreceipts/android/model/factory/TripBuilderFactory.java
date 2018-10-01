@@ -9,11 +9,12 @@ import com.google.common.base.Preconditions;
 import java.io.File;
 import java.sql.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.model.impl.DefaultTripImpl;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 
@@ -23,6 +24,8 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  */
 public final class TripBuilderFactory implements BuilderFactory<Trip> {
 
+    private int _id;
+    private UUID _uuid;
     private File _dir;
     private String _comment, _costCenter;
     private Date _startDate, _endDate;
@@ -32,6 +35,8 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
     private Source _source;
 
     public TripBuilderFactory() {
+        _id = Keyed.MISSING_ID;
+        _uuid = Keyed.Companion.getMISSING_UUID();
         _dir = new File("");
         _comment = "";
         _costCenter = "";
@@ -45,6 +50,8 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
     }
 
     public TripBuilderFactory(@NonNull Trip trip) {
+        _id = trip.getId();
+        _uuid = trip.getUuid();
         _dir = trip.getDirectory();
         _comment = trip.getComment();
         _costCenter = trip.getCostCenter();
@@ -55,6 +62,16 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         _startTimeZone = trip.getStartTimeZone();
         _endTimeZone = trip.getEndTimeZone();
         _syncState = trip.getSyncState();
+    }
+
+    public TripBuilderFactory setId(int id) {
+        _id = id;
+        return this;
+    }
+
+    public TripBuilderFactory setUuid(UUID uuid) {
+        _uuid = uuid;
+        return this;
     }
 
     public TripBuilderFactory setDirectory(@NonNull File directory) {
@@ -151,6 +168,7 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
     @Override
     @NonNull
     public Trip build() {
-        return new DefaultTripImpl(_dir, _startDate, _startTimeZone, _endDate, _endTimeZone, _defaultCurrency, _comment, _costCenter, _source, _syncState);
+        return new Trip(_id, _uuid, _dir, _startDate, _startTimeZone, _endDate, _endTimeZone, _defaultCurrency,
+                _comment, _costCenter, _source, _syncState);
     }
 }

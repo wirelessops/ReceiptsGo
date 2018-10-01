@@ -8,8 +8,6 @@ import android.support.annotation.NonNull;
  */
 public interface BuilderFactory<T> {
 
-    int MISSING_ID = -1;
-
     /**
      * Creates a new instance of the desired factory object type
      *

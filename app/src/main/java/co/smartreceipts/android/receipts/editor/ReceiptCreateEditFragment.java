@@ -73,7 +73,6 @@ import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
-import co.smartreceipts.android.model.impl.ImmutablePaymentMethodImpl;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.util.OcrResponseParser;
@@ -103,10 +102,7 @@ import co.smartreceipts.android.widget.rxbinding2.RxTextViewExtensions;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
@@ -518,7 +514,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             public void onGetSuccess(@NonNull List<PaymentMethod> list) {
                 if (isAdded()) {
                     List<PaymentMethod> paymentMethods = new ArrayList<>(list);
-                    paymentMethods.add(ImmutablePaymentMethodImpl.NONE);
+                    paymentMethods.add(PaymentMethod.Companion.getNONE());
 
                     paymentMethodsAdapter.update(paymentMethods);
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);

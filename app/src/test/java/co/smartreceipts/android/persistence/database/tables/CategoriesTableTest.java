@@ -2,6 +2,7 @@ package co.smartreceipts.android.persistence.database.tables;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,8 +17,10 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import co.smartreceipts.android.model.Category;
+import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
@@ -41,7 +44,6 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class CategoriesTableTest {
@@ -120,6 +122,7 @@ public class CategoriesTableTest {
         assertTrue(creatingTable.contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
         assertTrue(creatingTable.contains("last_local_modification_time DATE"));
         assertTrue(creatingTable.contains("custom_order_id INTEGER DEFAULT 0"));
+        assertTrue(creatingTable.contains("entity_uuid TEXT"));
     }
 
     @Test
@@ -166,7 +169,7 @@ public class CategoriesTableTest {
         verify(customizer, never()).insertCategoryDefaults(mCategoriesTable);
 
         List<String> allValues = mSqlCaptor.getAllValues();
-        assertEquals(4, allValues.size());
+        assertEquals(5, allValues.size());
 
         assertEquals(allValues.get(0), "CREATE TABLE " + CategoriesTable.TABLE_NAME + "_copy" + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -180,9 +183,9 @@ public class CategoriesTableTest {
                 + COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
                 + ");");
 
-        final String baseColumns = String.format("%s, %s, %s, %s, %s, %s, %s",
+        final String baseColumns = TextUtils.join(", ", new String[]{
                 COLUMN_NAME, COLUMN_CODE, COLUMN_BREAKDOWN, COLUMN_DRIVE_SYNC_ID,
-                COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME);
+                COLUMN_DRIVE_IS_SYNCED, COLUMN_DRIVE_MARKED_FOR_DELETION, COLUMN_LAST_LOCAL_MODIFICATION_TIME});
 
 
         assertEquals(allValues.get(1), "INSERT INTO " + CategoriesTable.TABLE_NAME + "_copy ("
@@ -195,6 +198,24 @@ public class CategoriesTableTest {
         assertEquals(allValues.get(3), "ALTER TABLE " + CategoriesTable.TABLE_NAME + "_copy "
                 + "RENAME TO " + CategoriesTable.TABLE_NAME + ";");
 
+        assertEquals(allValues.get(4), "ALTER TABLE " + CategoriesTable.TABLE_NAME + " ADD " + AbstractSqlTable.COLUMN_UUID + " TEXT");
+
+    }
+
+    @Test
+    public void onUpgradeFromV18() {
+        final int oldVersion = 18;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mCategoriesTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verify(mSQLiteDatabase, atLeastOnce()).execSQL(mSqlCaptor.capture());
+        verify(customizer, never()).insertCategoryDefaults(mCategoriesTable);
+
+        List<String> allValues = mSqlCaptor.getAllValues();
+        assertEquals(1, allValues.size());
+
+        assertEquals(allValues.get(0), String.format("ALTER TABLE %s ADD entity_uuid TEXT", CategoriesTable.TABLE_NAME));
     }
 
     @Test
@@ -243,12 +264,16 @@ public class CategoriesTableTest {
         final String name = "abc";
         final String code = "abc";
         final int customOrderId = 5;
+
         final Category insertCategory = new CategoryBuilderFactory().setName(name).setCode(code).setCustomOrderId(customOrderId).build();
         Category insertedCategory = mCategoriesTable.insert(insertCategory, new DatabaseOperationMetadata()).blockingGet();
 
         assertEquals(insertCategory.getName(), insertedCategory.getName());
         assertEquals(insertCategory.getCode(), insertedCategory.getCode());
         assertEquals(insertCategory.getCustomOrderId(), insertedCategory.getCustomOrderId());
+        assertNotNull(insertedCategory.getUuid());
+        assertTrue(insertCategory.getUuid().equals(Keyed.Companion.getMISSING_UUID()));
+        assertFalse(insertedCategory.getUuid().equals(Keyed.Companion.getMISSING_UUID()));
 
         final List<Category> categories = mCategoriesTable.get().blockingGet();
         assertEquals(categories, Arrays.asList(insertedCategory, mCategory1, mCategory2));
@@ -259,18 +284,24 @@ public class CategoriesTableTest {
         final String name = "NewName";
         final String code = "NewCode";
         final int customOrderId = 5;
-        final Category updateCategory = new CategoryBuilderFactory().setName(name).setCode(code).setCustomOrderId(customOrderId).build();
+        final UUID newUuid = UUID.randomUUID();
+
+        final Category updateCategory = new CategoryBuilderFactory().setUuid(newUuid).setName(name).setCode(code).setCustomOrderId(customOrderId).build();
         Category updatedCategory = mCategoriesTable.update(mCategory1, updateCategory, new DatabaseOperationMetadata()).blockingGet();
 
         assertNotNull(updatedCategory);
         assertEquals(name, updatedCategory.getName());
         assertEquals(code, updatedCategory.getCode());
         assertEquals(customOrderId, updatedCategory.getCustomOrderId());
+        assertEquals(customOrderId, updatedCategory.getCustomOrderId());
         assertFalse(mCategory1.equals(updatedCategory));
+        assertEquals(mCategory1.getUuid(), updatedCategory.getUuid());
+
 
         final List<Category> categories = mCategoriesTable.get().blockingGet();
         assertTrue(categories.contains(new CategoryBuilderFactory()
                 .setId(mCategory1.getId())
+                .setUuid(mCategory1.getUuid())
                 .setName(name)
                 .setCode(code)
                 .setCustomOrderId(customOrderId)

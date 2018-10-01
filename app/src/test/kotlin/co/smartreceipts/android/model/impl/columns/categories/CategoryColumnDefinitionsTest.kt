@@ -1,6 +1,6 @@
 package co.smartreceipts.android.model.impl.columns.categories
 
-import co.smartreceipts.android.model.Column
+import co.smartreceipts.android.model.Keyed
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import com.nhaarman.mockito_kotlin.any
@@ -34,7 +34,7 @@ class CategoryColumnDefinitionsTest {
 
         assert(allColumns.isNotEmpty())
         assert(allColumns.size == CategoryColumnDefinitions.ActualDefinition.values().size)
-        assert(allColumns.contains(CategoryExchangedPriceColumn(Column.UNKNOWN_ID, DefaultSyncState())))
+        assert(allColumns.contains(CategoryExchangedPriceColumn(Keyed.MISSING_ID, DefaultSyncState())))
     }
 
     @Test
@@ -45,7 +45,7 @@ class CategoryColumnDefinitionsTest {
 
         assert(allColumns.isNotEmpty())
         assert(allColumns.size == CategoryColumnDefinitions.ActualDefinition.values().size - 1)
-        assert(!allColumns.contains(CategoryExchangedPriceColumn(Column.UNKNOWN_ID, DefaultSyncState())))
+        assert(!allColumns.contains(CategoryExchangedPriceColumn(Keyed.MISSING_ID, DefaultSyncState())))
     }
 
     companion object {

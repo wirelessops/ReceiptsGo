@@ -17,6 +17,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Receipt;
@@ -35,7 +36,6 @@ import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import static co.smartreceipts.android.persistence.database.tables.AbstractColumnTable.COLUMN_ID;
 import static co.smartreceipts.android.persistence.database.tables.AbstractColumnTable.COLUMN_TYPE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
@@ -82,8 +82,8 @@ public class PDFTableTest {
 
         // Now create the table and insert some defaults
         pdfTable.onCreate(sqliteOpenHelper.getWritableDatabase(), tableDefaultsCustomizer);
-        receiptNameColumn = pdfTable.insert(new ReceiptNameColumn(-1, new DefaultSyncState(), 0), new DatabaseOperationMetadata()).blockingGet();
-        receiptPriceColumn = pdfTable.insert(new ReceiptPriceColumn(-1, new DefaultSyncState(), 0), new DatabaseOperationMetadata()).blockingGet();
+        receiptNameColumn = pdfTable.insert(new ReceiptNameColumn(-1, new DefaultSyncState(), 0, UUID.randomUUID()), new DatabaseOperationMetadata()).blockingGet();
+        receiptPriceColumn = pdfTable.insert(new ReceiptPriceColumn(-1, new DefaultSyncState(), 0, UUID.randomUUID()), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(receiptNameColumn);
         assertNotNull(receiptPriceColumn);
     }
@@ -113,6 +113,7 @@ public class PDFTableTest {
         assertTrue(sqlCaptor.getValue().contains("drive_marked_for_deletion BOOLEAN DEFAULT 0"));
         assertTrue(sqlCaptor.getValue().contains("last_local_modification_time DATE"));
         assertTrue(sqlCaptor.getValue().contains("custom_order_id INTEGER DEFAULT 0"));
+        assertTrue(sqlCaptor.getValue().contains("entity_uuid TEXT"));
     }
 
     @Test
@@ -203,6 +204,22 @@ public class PDFTableTest {
     }
 
     @Test
+    public void onUpgradeFromV18() {
+        final int oldVersion = 18;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        pdfTable.onUpgrade(sqliteDatabase, oldVersion, newVersion, customizer);
+        verify(sqliteDatabase, atLeastOnce()).execSQL(sqlCaptor.capture());
+        verify(customizer, never()).insertPDFDefaults(pdfTable);
+
+        final List<String> allValues = sqlCaptor.getAllValues();
+        assertEquals(1, allValues.size());
+
+        assertEquals(allValues.get(0), "ALTER TABLE " + PDFTable.TABLE_NAME + " ADD entity_uuid TEXT");
+    }
+
+    @Test
     public void onUpgradeAlreadyOccurred() {
         final int oldVersion = DatabaseHelper.DATABASE_VERSION;
         final int newVersion = DatabaseHelper.DATABASE_VERSION;
@@ -236,11 +253,13 @@ public class PDFTableTest {
 
     @Test
     public void insert() {
+        final UUID uuid = UUID.randomUUID();
         final Column<Receipt> column = pdfTable.insert(new ReceiptCategoryNameColumn(-1,
-                new DefaultSyncState()), new DatabaseOperationMetadata()).blockingGet();
+                new DefaultSyncState(), 0, uuid), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(column);
         assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnType(), column.getType());
         assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnHeaderId(), column.getHeaderStringResId());
+        assertEquals(uuid, column.getUuid());
 
         final List<Column<Receipt>> columns = pdfTable.get().blockingGet();
         assertEquals(columns, Arrays.asList(receiptNameColumn, receiptPriceColumn, column));
@@ -248,12 +267,14 @@ public class PDFTableTest {
 
     @Test
     public void update() {
+        final UUID oldUuid = receiptNameColumn.getUuid();
+
         final Column<Receipt> column = pdfTable.update(receiptNameColumn,
-                new ReceiptCategoryNameColumn(-1, new DefaultSyncState())
-                , new DatabaseOperationMetadata()).blockingGet();
+                new ReceiptCategoryNameColumn(-1, new DefaultSyncState(), 0, UUID.randomUUID()), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(column);
         assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnType(), column.getType());
         assertEquals(ReceiptColumnDefinitions.ActualDefinition.CATEGORY_NAME.getColumnHeaderId(), column.getHeaderStringResId());
+        assertEquals(oldUuid, column.getUuid());
 
         final List<Column<Receipt>> columns = pdfTable.get().blockingGet();
         assertEquals(columns, Arrays.asList(column, receiptPriceColumn));

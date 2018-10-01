@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import java.util.UUID;
+
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;
@@ -38,15 +40,18 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
     @Override
     public Column<Receipt> read(@NonNull Cursor cursor) {
         final int idIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_ID);
+        final int uuidIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_UUID);
         final int typeIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_TYPE);
         final int customOrderIndex = cursor.getColumnIndex(AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
+        final UUID uuid = UUID.fromString(cursor.getString(uuidIndex));
         final int type = cursor.getInt(typeIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
         final long customOrderId = cursor.getLong(customOrderIndex);
         return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
                 .setColumnId(id)
+                .setColumnUuid(uuid)
                 .setColumnType(type)
                 .setSyncState(syncState)
                 .setCustomOrderId(customOrderId)
@@ -59,6 +64,7 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
         final ContentValues values = new ContentValues();
         values.put(AbstractColumnTable.COLUMN_TYPE, column.getType());
         values.put(AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID, column.getCustomOrderId());
+        values.put(AbstractColumnTable.COLUMN_UUID, column.getUuid().toString());
 
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(column.getSyncState()));
@@ -71,9 +77,10 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
     @NonNull
     @Override
     public Column<Receipt> build(@NonNull Column<Receipt> column, @NonNull PrimaryKey<Column<Receipt>,
-            Integer> primaryKey, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
+            Integer> primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
                 .setColumnId(primaryKey.getPrimaryKeyValue(column))
+                .setColumnUuid(uuid)
                 .setColumnType(column.getType())
                 .setSyncState(mSyncStateAdapter.get(column.getSyncState(), databaseOperationMetadata))
                 .setCustomOrderId(column.getCustomOrderId())

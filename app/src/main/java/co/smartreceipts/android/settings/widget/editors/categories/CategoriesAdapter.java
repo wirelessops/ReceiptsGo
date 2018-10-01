@@ -54,11 +54,7 @@ public class CategoriesAdapter extends DraggableEditableCardsAdapter<Category> {
     public void saveNewOrder(TableController<Category> tableController) {
         for (Category item : items) {
             if (item.getCustomOrderId() != items.indexOf(item)) {
-                tableController.update(item, new CategoryBuilderFactory()
-                                .setId(item.getId())
-                                .setName(item.getName())
-                                .setCode(item.getCode())
-                                .setSyncState(item.getSyncState())
+                tableController.update(item, new CategoryBuilderFactory(item)
                                 .setCustomOrderId(items.indexOf(item))
                                 .build(),
                         new DatabaseOperationMetadata());
