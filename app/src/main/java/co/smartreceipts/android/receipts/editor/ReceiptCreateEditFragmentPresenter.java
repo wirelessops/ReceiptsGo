@@ -148,12 +148,21 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setIsFullPage(isFullpage)
                 .setExtraEditText1(extraText1)
                 .setExtraEditText2(extraText2)
-                .setExtraEditText3(extraText3)
-                .setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? ReceiptsOrderer.Companion.getDefaultCustomOrderId(date) : 0);
+                .setExtraEditText3(extraText3);
         
         if (receipt == null) {
+            // Set the custom order id for all new receipts
+            builderFactory.setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? ReceiptsOrderer.Companion.getDefaultCustomOrderId(date) : 0);
             receiptTableController.insert(builderFactory.setFile(fragment.getFile()).build(), new DatabaseOperationMetadata());
         } else {
+            final Receipt updatedReceipt = builderFactory.build();
+            if (receipt.getDate().equals(updatedReceipt.getDate()) && receipt.getTimeZone().equals(updatedReceipt.getTimeZone())) {
+                // If we didn't change the date, keep the original custom order id
+                builderFactory.setCustomOrderId(receipt.getCustomOrderId());
+            } else {
+                // Modify the custom order id if we changed the date/timezone
+                builderFactory.setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? ReceiptsOrderer.Companion.getDefaultCustomOrderId(date) : 0);
+            }
             receiptTableController.update(receipt, builderFactory.build(), new DatabaseOperationMetadata());
         }
     }
