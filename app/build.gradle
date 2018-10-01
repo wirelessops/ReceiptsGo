@@ -64,15 +64,6 @@ android {
         }
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        free.java.srcDirs += 'src/free/kotlin'
-        plusFlavor.java.srcDirs += 'src/plusFlavor/kotlin'
-        fireDepartmentFlavor.java.srcDirs += 'src/fireDepartmentFlavor/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-    }
-
-
     dependencies {
         implementation fileTree(dir: 'libs', include: '*.jar')
         implementation project(':wbMiniLibrary')
