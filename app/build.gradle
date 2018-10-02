@@ -172,6 +172,11 @@ task secretsExtraction << {
     println "Running our secrets extractor to attempt to replace our placeholder files"
     exec {
         workingDir rootDir
+        executable "chmod"
+        args = ["+x", "${rootDir}/scripts/secrets_extractor.sh"]
+    }
+    exec {
+        workingDir rootDir
         executable "${rootDir}/scripts/secrets_extractor.sh"
         // Note: We currently do NOT validate that this succeeds when creating a release build.
         // We should add this extra fail-safe to help verify that we do not release a fault build.
