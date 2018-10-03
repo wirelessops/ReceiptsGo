@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.support.annotation.VisibleForTesting;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 
@@ -24,6 +25,7 @@ import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.images.PicassoInitializer;
 import co.smartreceipts.android.launch.OnLaunchDataPreFetcher;
 import co.smartreceipts.android.ocr.OcrManager;
+import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
@@ -65,6 +67,9 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
     @Inject
     PersistenceManager persistenceManager;
+
+    @Inject
+    DatabaseHelper databaseHelper;
 
     @Inject
     Flex flex;
@@ -195,6 +200,19 @@ public class SmartReceiptsApplication extends Application implements HasActivity
     @Override
     public AndroidInjector<Service> serviceInjector() {
         return serviceInjector;
+    }
+
+    /**
+     * A simple way to allow us to fetch our database helper for database upgrade tests. I attempted
+     * to have dagger automatically inject this into our test modules, but I ended up spending far
+     * too much time trying to get a TestAppComponent to work properly. For expediency purposes, I'm
+     * just using this getter instead
+     *
+     * @return the {@link DatabaseHelper}
+     */
+    @VisibleForTesting
+    public DatabaseHelper getDatabaseHelper() {
+        return databaseHelper;
     }
 
     private void init() {
