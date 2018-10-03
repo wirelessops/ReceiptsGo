@@ -20,6 +20,10 @@ android {
         versionName "4.15.0.500"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+
+        // Required for espresso (plus clears the app on launch)
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     dexOptions {
@@ -62,6 +66,7 @@ android {
                 jvmArgs '-noverify'
             }
         }
+        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 
     dependencies {
@@ -146,6 +151,7 @@ android {
         androidTestImplementation "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
         androidTestImplementation "com.android.support.test:runner:$ANDROID_TEST_RUNNER_VERSION"
         androidTestImplementation "com.android.support.test:rules:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestUtil "com.android.support.test:orchestrator:$ANDROID_TEST_RUNNER_VERSION"
 
         // Leak Canary
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
