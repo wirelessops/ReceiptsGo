@@ -115,6 +115,7 @@ public class GroupingController {
                 .groupBy(receipt -> {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(receipt.getDate());
+                    calendar.setTimeZone(receipt.getTimeZone());
                     return calendar.get(Calendar.DAY_OF_YEAR);
                 })
                 .flatMap(dateReceiptGroupedObservable -> dateReceiptGroupedObservable
