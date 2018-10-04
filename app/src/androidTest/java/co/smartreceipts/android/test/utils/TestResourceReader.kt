@@ -16,6 +16,7 @@ class TestResourceReader {
     companion object {
         // Note: Don't put these in sub-folders in the resources dir as everything blows up
         const val V15_DATABASE = "v15_receipts.db"
+        const val V19_DATABASE = "v19_receipts.db"
         const val V15_IMAGE = "v15_img.jpg"
         const val V15_PDF = "v15_pdf.pdf"
     }

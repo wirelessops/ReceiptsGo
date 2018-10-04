@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class UpgradeFromDatabaseV15Test : UpgradeFromKnownDatabaseValidator() {
+class UpgradeFromDatabaseV19Test : UpgradeFromKnownDatabaseValidator() {
 
     companion object {
 
@@ -16,7 +16,7 @@ class UpgradeFromDatabaseV15Test : UpgradeFromKnownDatabaseValidator() {
         @JvmStatic
         @BeforeApplicationOnCreate
         fun setUpBeforeApplicationOnCreate() {
-            UpgradeFromKnownDatabaseValidator.setUpBeforeApplicationOnCreate(TestResourceReader.V15_DATABASE)
+            UpgradeFromKnownDatabaseValidator.setUpBeforeApplicationOnCreate(TestResourceReader.V19_DATABASE)
         }
 
     }
