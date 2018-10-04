@@ -14,6 +14,7 @@ import co.smartreceipts.android.espresso.test.utils.TestResourceReader
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import co.smartreceipts.android.persistence.DatabaseHelper
+import com.google.common.base.Preconditions
 import org.apache.commons.io.IOUtils
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.not
@@ -27,28 +28,79 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.regex.Pattern
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class DatabaseUpgradeTests {
 
     companion object {
+        
+        const val TAG = "DatabaseUpgradeTests"
 
         @Suppress("unused")
         @JvmStatic
         @BeforeApplicationOnCreate
         fun setUpBeforeApplicationOnCreate() {
-            Log.i("DatabaseUpgradeTests", "Copying our test v15 database onto the local device...")
+            Log.i(TAG, "Copying our test v15 database onto the local device...")
+            val externalFilesDir = InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null)
+            val databaseLocation = File(externalFilesDir, DatabaseHelper.DATABASE_NAME)
+            copyFile(TestResourceReader.V15_DATABASE, databaseLocation)
 
-            // Set up the database info for the source and destination
-            val inputStream = TestResourceReader().openStream(TestResourceReader.DATABASE_V15)
-            val databaseLocation = File(InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null), DatabaseHelper.DATABASE_NAME)
+            Log.i(TAG, "Creating report folders...")
+            val report1Folder = File(externalFilesDir, "Report 1")
+            val report2Folder = File(externalFilesDir, "Report 2")
+            val report3Folder = File(externalFilesDir, "Report 3")
+            Preconditions.checkArgument(report1Folder.exists() || report1Folder.mkdirs())
+            Preconditions.checkArgument(report2Folder.exists() || report2Folder.mkdirs())
+            Preconditions.checkArgument(report3Folder.exists() || report3Folder.mkdirs())
 
-            // Copy our test from from our resources folder to the device
-            val outputStream = FileOutputStream(databaseLocation)
-            IOUtils.copy(inputStream, outputStream)
-            IOUtils.closeQuietly(inputStream)
-            IOUtils.closeQuietly(outputStream)
+            Log.i(TAG, "Copying over placeholder images/pdfs...")
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "1_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "2_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "3_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "4_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "5_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "6_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "7_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "8_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report1Folder, "9_Picture.jpg"))
+
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "1_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "2_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "3_Full picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "4_Full picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "5_Full picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "6_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "14794171342646_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "7_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "8_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "9_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report2Folder, "10_Picture.jpg"))
+
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "11_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "11_Full picture.jpg"))
+            copyFile(TestResourceReader.V15_PDF, File(report3Folder, "3_Pdf sample.pdf"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "4_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "5_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "6_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "7_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "8_Picture.jpg"))
+            copyFile(TestResourceReader.V15_IMAGE, File(report3Folder, "9_Picture.jpg"))
+        }
+
+        @JvmStatic
+        private fun copyFile(resourceName: String, destination: File) {
+            try {
+                val inputStream = TestResourceReader().openStream(resourceName)
+                val outputStream = FileOutputStream(destination)
+                IOUtils.copy(inputStream, outputStream)
+                IOUtils.closeQuietly(inputStream)
+                IOUtils.closeQuietly(outputStream)
+            } catch (e: Exception) {
+                Log.e(TAG, "Copy failed: $resourceName -> ${destination.absolutePath}", e)
+                throw e
+            }
         }
 
     }
@@ -133,6 +185,7 @@ class DatabaseUpgradeTests {
         verifyPaymentMethod(paymentMethods[0], 1, "Unspecified", 0)
         verifyPaymentMethod(paymentMethods[1], 2, "Corporate Card", 0)
         verifyPaymentMethod(paymentMethods[2], 3, "Personal Card", 0)
+        val personalCardPaymentMethod = paymentMethods[2]
         verifyPaymentMethod(paymentMethods[3], 4, "Check", 0)
         verifyPaymentMethod(paymentMethods[4], 5, "Cash", 0)
 
@@ -171,12 +224,12 @@ class DatabaseUpgradeTests {
         assertEquals(1, report1.id)
         assertEquals("Report 1", report1.name)
         assertEquals("Report 1", report1.directory.name)
-        assertEquals("11/17/16", report1.getFormattedStartDate(context, "/"))
+        assertEquals("11/16/16", report1.getFormattedStartDate(context, "/"))
         assertEquals("11/20/16", report1.getFormattedEndDate(context, "/"))
         assertEquals("$45.00", report1.price.currencyFormattedPrice)
         assertEquals("USD", report1.tripCurrency.currencyCode)
-        assertEquals("", report1.comment)
-        assertEquals("", report1.costCenter)
+        assertEquals("Comment", report1.comment)
+        assertEquals("Cost Center", report1.costCenter)
 
         // And the receipts in report 1
         val report1Receipts = databaseHelper.receiptsTable.get(report1, false).blockingGet()
@@ -216,7 +269,7 @@ class DatabaseUpgradeTests {
             lastReceiptCustomOrderId = it.customOrderId
             when (receiptIndexCounter - 1) {
                 in 1..5 -> verifyPictureReceipt(it, report2, dinnerCategory)
-                in 6..8 -> verifyFullPictureReceipt(it, report2, dinnerCategory)
+                in 6..8 -> verifyFullPictureReceipt(it, report2, lunchCategory, personalCardPaymentMethod)
                 else -> verifyPictureReceipt(it, report2, dinnerCategory, "11/19/16")
             }
         }
@@ -233,7 +286,7 @@ class DatabaseUpgradeTests {
         assertEquals("Report 3", report3.directory.name)
         assertEquals("11/17/16", report3.getFormattedStartDate(context, "/"))
         assertEquals("11/20/16", report3.getFormattedEndDate(context, "/"))
-        assertEquals("$42.00", report3.price.currencyFormattedPrice)
+        assertEquals("$68.60", report3.price.currencyFormattedPrice)
         assertEquals("USD", report3.tripCurrency.currencyCode)
         assertEquals("", report3.comment)
         assertEquals("", report3.costCenter)
@@ -249,15 +302,27 @@ class DatabaseUpgradeTests {
             lastReceiptCustomOrderId = it.customOrderId
             when (receiptIndexCounter - 1) {
                 1 -> verifyPictureReceipt(it, report3, dinnerCategory)
-                2 -> verifyFullPictureReceipt(it, report3, dinnerCategory)
+                2 -> verifyFullPictureReceipt(it, report3, lunchCategory, personalCardPaymentMethod)
                 3 -> verifyPdfSampleReceipt(it, report3, dinnerCategory)
+                in 4..9 -> verifyPictureReceipt(it, report3, dinnerCategory, "11/20/16")
+                10 -> verifyTextReceipt(it, report3, lunchCategory)
                 else -> verifyPictureReceipt(it, report3, dinnerCategory, "11/20/16")
             }
         }
 
         // And the distances
         val report3Distances = databaseHelper.distanceTable.get(report3, false).blockingGet()
-        assertTrue(report3Distances.isEmpty())
+        assertTrue(report3Distances.size == 1)
+        val distance = report3Distances[0]
+        assertEquals(1, distance.id)
+        assertEquals(report3, distance.trip)
+        assertEquals("1.500", distance.decimalFormattedRate)
+        assertEquals("$3.00", distance.price.currencyFormattedPrice)
+        assertEquals("USD", distance.price.currencyCode)
+        assertEquals("Location", distance.location)
+        assertEquals("11/20/16", distance.getFormattedDate(context, "/"))
+        assertEquals("Comment", distance.comment)
+
         allDistances.addAll(report3Distances)
 
         // Verify that none of our items have the same uuid
@@ -268,6 +333,9 @@ class DatabaseUpgradeTests {
         assertNoUuidsAreEqual(trips)
         assertNoUuidsAreEqual(allReceipts)
         assertNoUuidsAreEqual(allDistances)
+
+        // Verify that our receipts don't point to the same file
+        assertNoFilesAreEqual(allReceipts)
     }
 
     private fun verifyCategory(category: Category, name: String, code: String, customOrderId: Long) {
@@ -297,6 +365,10 @@ class DatabaseUpgradeTests {
     private fun verifyPictureReceipt(receipt: Receipt, parent: Trip, category: Category, date: String = "11/17/16") {
         assertEquals(parent, receipt.trip)
         assertEquals("Picture", receipt.name)
+        assertNotNull(receipt.file)
+        assertTrue(receipt.hasImage())
+        assertFalse(receipt.hasPDF())
+        assertTrue(Pattern.compile("\\d+_Picture.jpg").matcher(receipt.fileName).matches())
         assertEquals("$5.00", receipt.price.currencyFormattedPrice)
         assertEquals("USD", receipt.price.currencyCode)
         assertEquals("$0.00", receipt.tax.currencyFormattedPrice)
@@ -309,23 +381,31 @@ class DatabaseUpgradeTests {
         assertFalse(receipt.isFullPage)
     }
 
-    private fun verifyFullPictureReceipt(receipt: Receipt, parent: Trip, category: Category, date: String = "11/18/16") {
+    private fun verifyFullPictureReceipt(receipt: Receipt, parent: Trip, category: Category, paymentMethod: PaymentMethod, date: String = "11/18/16") {
         assertEquals(parent, receipt.trip)
+        assertNotNull(receipt.file)
+        assertTrue(receipt.hasImage())
+        assertFalse(receipt.hasPDF())
+        assertTrue(Pattern.compile("\\d+_Full picture.jpg").matcher(receipt.fileName).matches())
         assertEquals("Full picture", receipt.name)
         assertEquals("$5.00", receipt.price.currencyFormattedPrice)
         assertEquals("USD", receipt.price.currencyCode)
-        assertEquals("$0.00", receipt.tax.currencyFormattedPrice)
+        assertEquals("$1.50", receipt.tax.currencyFormattedPrice)
         assertEquals("USD", receipt.tax.currencyCode)
         assertEquals(date, receipt.getFormattedDate(context, "/"))
         assertEquals(category, receipt.category)
         assertEquals("", receipt.comment)
-        assertEquals(PaymentMethod.NONE, receipt.paymentMethod)
+        assertEquals(paymentMethod, receipt.paymentMethod)
         assertTrue(receipt.isReimbursable)
         assertTrue(receipt.isFullPage)
     }
 
     private fun verifyPdfSampleReceipt(receipt: Receipt, parent: Trip, category: Category, date: String = "11/19/16") {
         assertEquals(parent, receipt.trip)
+        assertNotNull(receipt.file)
+        assertFalse(receipt.hasImage())
+        assertTrue(receipt.hasPDF())
+        assertEquals("3_Pdf sample.pdf", receipt.fileName)
         assertEquals("Pdf sample", receipt.name)
         assertEquals("$2.00", receipt.price.currencyFormattedPrice)
         assertEquals("USD", receipt.price.currencyCode)
@@ -334,6 +414,28 @@ class DatabaseUpgradeTests {
         assertEquals(date, receipt.getFormattedDate(context, "/"))
         assertEquals(category, receipt.category)
         assertEquals("", receipt.comment)
+        assertEquals(PaymentMethod.NONE, receipt.paymentMethod)
+        assertFalse(receipt.isReimbursable)
+        assertFalse(receipt.isFullPage)
+    }
+
+    private fun verifyTextReceipt(receipt: Receipt, parent: Trip, category: Category) {
+        assertEquals(parent, receipt.trip)
+        assertNull(receipt.file)
+        assertFalse(receipt.hasImage())
+        assertFalse(receipt.hasPDF())
+        assertEquals("Text", receipt.name)
+        assertEquals("€13.30", receipt.price.currencyFormattedPrice)
+        assertEquals("EUR", receipt.price.currencyCode)
+        assertEquals("€13.30", receipt.price.currencyFormattedPrice)
+        assertEquals("€0.00", receipt.tax.currencyFormattedPrice)
+        assertEquals("EUR", receipt.price.exchangeRate.baseCurrencyCode)
+        assertTrue(receipt.price.exchangeRate.supportsExchangeRateFor("USD"))
+        assertEquals("2.000000", receipt.price.exchangeRate.getDecimalFormattedExchangeRate("USD"))
+        assertEquals("EUR", receipt.tax.currencyCode)
+        assertEquals("11/20/16", receipt.getFormattedDate(context, "/"))
+        assertEquals(category, receipt.category)
+        assertEquals("Comment", receipt.comment)
         assertEquals(PaymentMethod.NONE, receipt.paymentMethod)
         assertTrue(receipt.isReimbursable)
         assertFalse(receipt.isFullPage)
@@ -345,6 +447,17 @@ class DatabaseUpgradeTests {
                 if (item1 != item2) {
                     // Don't compare if it's the same item
                     assertThat(item1.uuid, not(equalTo(item2.uuid)))
+                }
+            }
+        }
+    }
+
+    private fun assertNoFilesAreEqual(receipts: List<Receipt>) {
+        receipts.forEach { item1 ->
+            receipts.forEach {item2 ->
+                if (item1 != item2) {
+                    // Don't compare if it's the same item
+                    assertThat(item1.file, not(equalTo(item2.file)))
                 }
             }
         }
