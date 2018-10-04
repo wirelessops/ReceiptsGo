@@ -1,8 +1,6 @@
-package co.smartreceipts.android.espresso.test.runner
+package co.smartreceipts.android.test.runner
 
-import android.app.Activity
 import android.app.Application
-import android.app.Instrumentation
 import android.os.Bundle
 import android.support.test.internal.runner.RunnerArgs
 import android.support.test.runner.AndroidJUnitRunner

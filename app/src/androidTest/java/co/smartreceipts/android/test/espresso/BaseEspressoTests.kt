@@ -1,4 +1,4 @@
-package co.smartreceipts.android.espresso
+package co.smartreceipts.android.test.espresso
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.*

@@ -1,4 +1,4 @@
-package co.smartreceipts.android.espresso
+package co.smartreceipts.android.test.espresso
 
 import android.content.Context
 import android.support.test.InstrumentationRegistry
@@ -8,9 +8,9 @@ import android.support.test.runner.AndroidJUnit4
 import android.util.Log
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
-import co.smartreceipts.android.espresso.test.runner.BeforeApplicationOnCreate
-import co.smartreceipts.android.espresso.test.utils.TestLocaleToggler
-import co.smartreceipts.android.espresso.test.utils.TestResourceReader
+import co.smartreceipts.android.test.runner.BeforeApplicationOnCreate
+import co.smartreceipts.android.test.utils.TestLocaleToggler
+import co.smartreceipts.android.test.utils.TestResourceReader
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import co.smartreceipts.android.persistence.DatabaseHelper
@@ -32,7 +32,7 @@ import java.util.regex.Pattern
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class DatabaseUpgradeTests {
+class UpgradeFromDatabaseV15Test {
 
     companion object {
         

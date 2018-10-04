@@ -22,7 +22,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         // Required for espresso (plus clears the app on launch)
-        testInstrumentationRunner "co.smartreceipts.android.espresso.test.runner.ApplicationAwareAndroidJUnitRunner"
+        testInstrumentationRunner "co.smartreceipts.android.test.runner.ApplicationAwareAndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 

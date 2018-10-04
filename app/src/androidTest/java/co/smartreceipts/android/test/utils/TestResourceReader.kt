@@ -1,4 +1,4 @@
-package co.smartreceipts.android.espresso.test.utils
+package co.smartreceipts.android.test.utils
 
 import java.io.File
 import java.io.InputStream

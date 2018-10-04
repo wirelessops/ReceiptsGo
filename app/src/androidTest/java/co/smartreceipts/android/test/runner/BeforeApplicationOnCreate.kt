@@ -1,4 +1,4 @@
-package co.smartreceipts.android.espresso.test.runner
+package co.smartreceipts.android.test.runner
 
 /**
  * <p>Sometimes several tests need to perform computationally expensive setup before the Android
