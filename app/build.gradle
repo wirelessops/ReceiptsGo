@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-kapt'
 
 
 androidExtensions {
@@ -99,6 +100,9 @@ android {
         implementation "com.squareup.okhttp3:logging-interceptor:$OK_HTTP_VERSION"
         implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
         implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+        implementation "com.squareup.moshi:moshi:$MOSHI_VERSION"
+        kapt "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
+        implementation "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
 
         //Rx2
         implementation "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
@@ -110,7 +114,7 @@ android {
         implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
 
         implementation "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
-        annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
+        kapt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
         implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
         implementation "com.github.clans:fab:$FAB_MENU_VERSION"
@@ -135,8 +139,8 @@ android {
         // Dagger
         implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
         implementation "com.google.dagger:dagger:$DAGGER_VERSION"
-        annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
-        annotationProcessor "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+        kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+        kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
         // Crashalytics
         implementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS_VERSION"

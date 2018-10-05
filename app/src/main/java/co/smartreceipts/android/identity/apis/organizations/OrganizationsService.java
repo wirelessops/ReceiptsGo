@@ -6,6 +6,6 @@ import retrofit2.http.GET;
 public interface OrganizationsService {
 
     @GET("api/organizations")
-    Observable<OrganizationsResponse> organizations();
+    Observable<OrganizationsResponseKt> organizations();
 
 }

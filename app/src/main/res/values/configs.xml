@@ -7,5 +7,5 @@
     <bool name="config_is_ocr_enabled">true</bool>
 
     <!-- Incubating Features -->
-    <bool name="config_is_organization_syncing_enabled">false</bool>
+    <bool name="config_is_organization_syncing_enabled">true</bool>
 </resources>

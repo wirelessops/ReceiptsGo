@@ -26,7 +26,7 @@ public enum ConfigurableStaticFeature implements Feature {
      * Indicates that we should use the production SmartReceipts.co endpoint (ie instead of beta).
      * This value should always be set to {@code true} in release builds
      */
-    UseProductionEndpoint(true);
+    UseProductionEndpoint(false);
 
     private final boolean isEnabled;
 
