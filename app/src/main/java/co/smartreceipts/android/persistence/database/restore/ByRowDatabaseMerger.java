@@ -35,6 +35,8 @@ import io.reactivex.Completable;
  */
 public class ByRowDatabaseMerger implements DatabaseMerger {
 
+    private static final int DATABASE_VERSION_WITH_UUIDS = 19;
+
     @NonNull
     @Override
     public Completable merge(@NonNull DatabaseHelper currentDatabase, @NonNull DatabaseHelper importedBackupDatabase) {
@@ -113,7 +115,6 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
             final List<Trip> importedTrips = new ArrayList<>(importedBackupDatabase.getTripsTable().getBlocking());
             Logger.info(ByRowDatabaseMerger.this, "Importing {} trip entries", importedTrips.size());
             for (final Trip importedTrip : importedTrips) {
-                // TODO: 31.08.2018 trip names are still unique (because of directory names). what if imported trip has same name but different UUID?
                 boolean wasDuplicateFound = false;
                 for (final Trip existingTrip : existingTrips) {
                     if (importedTrip.getName().equals(existingTrip.getName())) {
@@ -136,12 +137,28 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
             for (final Distance importedDistance : importedDistances) {
                 boolean wasDuplicateFound = false;
                 for (final Distance existingDistance : existingDistances) {
-                    if (importedDistance.getTrip().getName().equals(existingDistance.getTrip().getName()) && 
-                            importedDistance.getLocation().equals(existingDistance.getLocation()) && 
-                            importedDistance.getDate().equals(existingDistance.getDate())) {
-                        wasDuplicateFound = true;
-                        Logger.debug(ByRowDatabaseMerger.this, "Found a situation in which both databases have a distance with the same attributes: {}. Ignoring import...", importedDistance);
-                        break; // To exit inner loop early
+                    if (importedBackupDatabase.getDatabaseStartingVersion() < DATABASE_VERSION_WITH_UUIDS) {
+                        // If we didn't have UUIDs in the old database, we need to use our old way
+                        if (importedDistance.getTrip().getName().equals(existingDistance.getTrip().getName()) &&
+                                importedDistance.getLocation().equals(existingDistance.getLocation()) &&
+                                importedDistance.getDate().equals(existingDistance.getDate())) {
+                            Logger.debug(ByRowDatabaseMerger.this, "Pre-UUID: Found a situation in which both databases have a distance with the same attributes: {}. Ignoring import...", importedDistance);
+                            wasDuplicateFound = true;
+                            break; // To exit inner loop early
+                        }
+                    } else {
+                        // If we do have UUIDs, let's use those instead
+                        if (importedDistance.getTrip().getName().equals(existingDistance.getTrip().getName()) &&
+                                importedDistance.getUuid().equals(existingDistance.getUuid())) {
+                            Logger.debug(ByRowDatabaseMerger.this, "Post-UUID: Found a situation in which both databases have a distance with the same attributes: {}. Ignoring import...", importedDistance);
+                            wasDuplicateFound = true;
+                            if (importedDistance.getSyncState().getLastLocalModificationTime().after(existingDistance.getSyncState().getLastLocalModificationTime())) {
+                                Logger.info(ByRowDatabaseMerger.this, "The imported receipt is more recent. Updating the original one");
+                                final Distance distanceToUpdate = new DistanceBuilderFactory(importedDistance).setTrip(tripMap.get(importedDistance.getTrip())).build();
+                                currentDatabase.getDistanceTable().update(existingDistance, distanceToUpdate, databaseOperationMetadata);
+                            }
+                            break; // To exit inner loop early
+                        }
                     }
                 }
                 if (!wasDuplicateFound) {
@@ -157,12 +174,35 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
             for (final Receipt importedReceipt : importedReceipts) {
                 boolean wasDuplicateFound = false;
                 for (final Receipt existingReceipt : existingReceipts) {
-                    if (importedReceipt.getTrip().getName().equals(existingReceipt.getTrip().getName()) &&
-                            importedReceipt.getName().equals(existingReceipt.getName()) &&
-                            importedReceipt.getDate().equals(existingReceipt.getDate())) {
-                        wasDuplicateFound = true;
-                        Logger.debug(ByRowDatabaseMerger.this, "Found a situation in which both databases have a receipt with the same attributes: {}. Ignoring import...", importedReceipt);
-                        break; // To exit inner loop early
+                    if (importedBackupDatabase.getDatabaseStartingVersion() < DATABASE_VERSION_WITH_UUIDS) {
+                        // If we didn't have UUIDs in the old database, we need to use our old way
+                        if (importedReceipt.getTrip().getName().equals(existingReceipt.getTrip().getName()) &&
+                                importedReceipt.getName().equals(existingReceipt.getName()) &&
+                                importedReceipt.getDate().equals(existingReceipt.getDate())) {
+                            Logger.debug(ByRowDatabaseMerger.this, "Pre-UUID: FFound a situation in which both databases have a receipt with the same attributes: {}. Ignoring import...", importedReceipt);
+                            wasDuplicateFound = true;
+                            break; // To exit inner loop early
+                        }
+                    } else {
+                        // If we do have UUIDs, let's use those instead
+                        if (importedReceipt.getTrip().getName().equals(existingReceipt.getTrip().getName()) &&
+                                importedReceipt.getUuid().equals(existingReceipt.getUuid())) {
+                            Logger.debug(ByRowDatabaseMerger.this, "Post-UUID: Found a situation in which both databases have a receipt with the same attributes: {}. Ignoring import...", importedReceipt);
+                            wasDuplicateFound = true;
+                            if (importedReceipt.getSyncState().getLastLocalModificationTime().after(existingReceipt.getSyncState().getLastLocalModificationTime())) {
+                                Logger.info(ByRowDatabaseMerger.this, "The imported receipt is more recent. Updating the original one");
+                                final ReceiptBuilderFactory builder = new ReceiptBuilderFactory(importedReceipt)
+                                        .setTrip(tripMap.get(importedReceipt.getTrip()))
+                                        .setCategory(categoryMap.get(importedReceipt.getCategory()))
+                                        .setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod()));
+                                if (importedReceipt.getCustomOrderId() == 0) {
+                                    builder.setCustomOrderId(ReceiptsOrderer.Companion.getDefaultCustomOrderId(importedReceipt.getDate()));
+                                }
+                                final Receipt receiptToUpdate = builder.build();
+                                currentDatabase.getReceiptsTable().updateBlocking(existingReceipt, receiptToUpdate, databaseOperationMetadata);
+                            }
+                            break; // To exit inner loop early
+                        }
                     }
                 }
                 if (!wasDuplicateFound) {

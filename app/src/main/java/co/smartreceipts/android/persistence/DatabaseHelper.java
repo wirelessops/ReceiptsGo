@@ -76,6 +76,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final PDFTable mPDFTable;
     private final PaymentMethodsTable mPaymentMethodsTable;
 
+    private int databaseStartingVersion = DATABASE_VERSION;
+
     // Misc Vars
     private boolean mIsDBOpen = false;
 
@@ -152,7 +154,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(final SQLiteDatabase db, int oldVersion, final int newVersion) {
-        Logger.info(this, "onCreate from {} to {}.", oldVersion, newVersion);
+        Logger.info(this, "onUpgrade from {} to {}.", oldVersion, newVersion);
+        this.databaseStartingVersion = oldVersion;
 
         for (final Table table : mTables) {
             table.onUpgrade(db, oldVersion, newVersion, mCustomizations);
@@ -319,6 +322,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         Collections.sort(mMostRecentlyUsedCurrencyList, new AlphabeticalCaseInsensitiveCharSequenceComparator());
         return mMostRecentlyUsedCurrencyList;
+    }
+
+    /**
+     * @return the original version of this database before being attached. This is only useful in
+     * the event that our {@link #onUpgrade(SQLiteDatabase, int, int)} script was triggered as it
+     * will always be equal to the {@link #DATABASE_VERSION} otherwise.
+     */
+    public final int getDatabaseStartingVersion() {
+        return this.databaseStartingVersion;
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////////
