@@ -6,12 +6,13 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
+import co.smartreceipts.android.sync.model.Syncable;
 import io.reactivex.Scheduler;
 
 /**
  * A temporary class to bridge our refactoring work and avoid breaking changes while we get this all in place
  */
-public class BridgingTripForeignKeyTableEventsListener<ModelType extends Keyed> extends BridgingTableEventsListener<ModelType> {
+public class BridgingTripForeignKeyTableEventsListener<ModelType extends Keyed & Syncable> extends BridgingTableEventsListener<ModelType> {
 
     private final TripForeignKeyAbstractTableController<ModelType> tripForeignKeyAbstractTableController;
     private final TripForeignKeyTableEventsListener<ModelType> tripForeignKeyTableEventsListener;

@@ -16,6 +16,7 @@ import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyT
 import co.smartreceipts.android.persistence.database.controllers.alterations.TableActionAlterations;
 import co.smartreceipts.android.persistence.database.controllers.results.ForeignKeyGetResult;
 import co.smartreceipts.android.persistence.database.tables.TripForeignKeyAbstractSqlTable;
+import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -31,7 +32,7 @@ import io.reactivex.subjects.Subject;
  *
  * @param <ModelType> the model object type that this will be used to create
  */
-public class TripForeignKeyAbstractTableController<ModelType extends Keyed> extends AbstractTableController<ModelType> {
+public class TripForeignKeyAbstractTableController<ModelType extends Keyed & Syncable> extends AbstractTableController<ModelType> {
 
     private final ConcurrentHashMap<TripForeignKeyTableEventsListener<ModelType>, BridgingTripForeignKeyTableEventsListener<ModelType>> mBridgingTableEventsListeners = new ConcurrentHashMap<>();
     private final CopyOnWriteArrayList<TripForeignKeyTableEventsListener<ModelType>> mForeignTableEventsListeners = new CopyOnWriteArrayList<>();

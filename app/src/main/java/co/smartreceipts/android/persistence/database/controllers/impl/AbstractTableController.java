@@ -25,6 +25,7 @@ import co.smartreceipts.android.persistence.database.controllers.results.InsertR
 import co.smartreceipts.android.persistence.database.controllers.results.UpdateResult;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.Table;
+import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.utils.PreFixedThreadFactory;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
@@ -44,7 +45,7 @@ import io.reactivex.subjects.Subject;
  *
  * @param <ModelType> the model object type that this will be used to create
  */
-abstract class AbstractTableController<ModelType extends Keyed> implements TableController<ModelType> {
+abstract class AbstractTableController<ModelType extends Keyed & Syncable> implements TableController<ModelType> {
 
     protected final String TAG = getClass().getSimpleName();
 

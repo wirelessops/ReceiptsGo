@@ -34,7 +34,7 @@ import io.reactivex.Single;
  * @param <ModelType> the model object that CRUD operations here should return
  * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that will be used
  */
-public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed, PrimaryKeyType> extends AbstractSqlTable<ModelType, PrimaryKeyType> {
+public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & Syncable, PrimaryKeyType> extends AbstractSqlTable<ModelType, PrimaryKeyType> {
 
     private final HashMap<Trip, List<ModelType>> mPerTripCache = new HashMap<>();
     private final SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> mSelectionBackedDatabaseAdapter;

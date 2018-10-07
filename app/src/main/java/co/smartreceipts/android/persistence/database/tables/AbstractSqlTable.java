@@ -36,7 +36,7 @@ import io.reactivex.Single;
  * @param <ModelType>      the model object that CRUD operations here should return
  * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that is used by the primary key column
  */
-public abstract class AbstractSqlTable<ModelType extends Keyed, PrimaryKeyType> implements Table<ModelType, PrimaryKeyType> {
+public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, PrimaryKeyType> implements Table<ModelType, PrimaryKeyType> {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_UUID = "entity_uuid";
@@ -349,12 +349,11 @@ public abstract class AbstractSqlTable<ModelType extends Keyed, PrimaryKeyType> 
         final boolean updateSuccess;
         final String oldPrimaryKeyValue = primaryKey.getPrimaryKeyValue(oldModelType).toString();
 
-        if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync && oldModelType instanceof Syncable) {
+        if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             // For sync operations, ensure that this only succeeds if we haven't already updated this item more recently
-            final Syncable syncableOldModel = (Syncable) oldModelType;
             updateSuccess = getWritableDatabase().update(getTableName(), values, primaryKey.getPrimaryKeyColumn() +
                     " = ? AND " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " >= ?",
-                    new String[]{oldPrimaryKeyValue, Long.toString(syncableOldModel.getSyncState().getLastLocalModificationTime().getTime())}) > 0;
+                    new String[]{oldPrimaryKeyValue, Long.toString(oldModelType.getSyncState().getLastLocalModificationTime().getTime())}) > 0;
         } else {
             updateSuccess = getWritableDatabase().update(getTableName(), values, primaryKey.getPrimaryKeyColumn() + " = ?",
                     new String[]{oldPrimaryKeyValue}) > 0;
@@ -391,12 +390,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed, PrimaryKeyType> 
                     }
                 }
 
-                if (newModelType instanceof Syncable) {
-                    final Syncable syncable = (Syncable) newModelType;
-                    if (!syncable.getSyncState().isMarkedForDeletion(SyncProvider.GoogleDrive)) {
-                        cachedResults.add(updatedItem);
-                    }
-                } else {
+                if (!newModelType.getSyncState().isMarkedForDeletion(SyncProvider.GoogleDrive)) {
                     cachedResults.add(updatedItem);
                 }
 
