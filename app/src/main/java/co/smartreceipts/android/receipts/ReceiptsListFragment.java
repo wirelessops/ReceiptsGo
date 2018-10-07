@@ -490,9 +490,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
         final String[] receiptActions;
         if (receipt.getFile() != null) {
-            receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
-        } else {
             receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};
+        } else {
+            receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
         }
         builder.setItems(receiptActions, (dialog, item) -> {
             final String selection = receiptActions[item];
