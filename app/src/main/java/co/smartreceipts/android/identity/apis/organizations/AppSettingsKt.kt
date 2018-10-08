@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.apis.organizations
 
-import co.smartreceipts.android.model.impl.ImmutableCategoryImpl
+import co.smartreceipts.android.model.Category
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -19,5 +19,5 @@ class AppSettingsKt(
 
     @Json(name = "Configurations") val configurations: ConfigurationsKt,
     @Json(name = "Settings") val settings: OrganizationSettingsKt,
-    @Json(name = "Categories") val categories: List<ImmutableCategoryImpl>
+    @Json(name = "Categories") val categories: List<Category>
 )

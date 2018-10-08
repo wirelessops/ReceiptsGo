@@ -3,26 +3,17 @@ package co.smartreceipts.android.apis;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.google.common.base.Preconditions;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder;
 import co.smartreceipts.android.apis.hosts.HostConfiguration;
-import co.smartreceipts.android.apis.okhttp.SmartReceiptsAuthenticatedRequestInterceptor;
-import co.smartreceipts.android.apis.okhttp.TrafficStatsRequestInterceptor;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.identity.store.IdentityStore;
-import co.smartreceipts.android.utils.log.Logger;
 import dagger.Lazy;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
