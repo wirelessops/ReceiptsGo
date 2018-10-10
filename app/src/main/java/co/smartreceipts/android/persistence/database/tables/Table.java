@@ -15,9 +15,8 @@ import io.reactivex.Single;
  * and create/upgrade scripts
  *
  * @param <ModelType> the model object that this table will interact with
- * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that is used by the primary key column
  */
-public interface Table<ModelType extends Keyed, PrimaryKeyType> {
+public interface Table<ModelType extends Keyed> {
 
     /**
      * @return the table name for SQL operations
@@ -28,7 +27,7 @@ public interface Table<ModelType extends Keyed, PrimaryKeyType> {
     /**
      * Called when this table is first created to allow us to build it out
      *
-     * @param db the {@link SQLiteDatabase} that database operations can be performed on
+     * @param db         the {@link SQLiteDatabase} that database operations can be performed on
      * @param customizer a {@link TableDefaultsCustomizer} to allow us to insert the reasonable defaults
      */
     void onCreate(@NonNull SQLiteDatabase db, @NonNull TableDefaultsCustomizer customizer);
@@ -36,7 +35,7 @@ public interface Table<ModelType extends Keyed, PrimaryKeyType> {
     /**
      * Called whenever we upgrade our underlying database version
      *
-     * @param db the {@link SQLiteDatabase} that database operations can be performed on
+     * @param db         the {@link SQLiteDatabase} that database operations can be performed on
      * @param oldVersion the old database version
      * @param newVersion the new database version
      * @param customizer a {@link TableDefaultsCustomizer} to allow us to insert the reasonable defaults
@@ -58,18 +57,18 @@ public interface Table<ModelType extends Keyed, PrimaryKeyType> {
     Single<List<ModelType>> get();
 
     /**
-     * Attempts to look up an object based on it's {@link PrimaryKeyType} value for it's primary key column
+     * Attempts to look up an object based on it's primary key value for it's primary key column
      *
-     * @param primaryKeyType the primary key for this object
+     * @param primaryKeyValue the primary key for this object
      * @return a {@link Single} with: the {@link ModelType} object or {@link Exception}
      */
     @NonNull
-    Single<ModelType> findByPrimaryKey(@NonNull PrimaryKeyType primaryKeyType);
+    Single<ModelType> findByPrimaryKey(int primaryKeyValue);
 
     /**
      * Inserts a new object of type {@link ModelType} into this table. Please note that this is a blocking operation
      *
-     * @param modelType the object to insert
+     * @param modelType                 the object to insert
      * @param databaseOperationMetadata metadata about this particular database operation
      * @return a {@link Single} with: the inserted object of type {@link ModelType} or {@link Exception} if the insert failed
      */
@@ -79,8 +78,8 @@ public interface Table<ModelType extends Keyed, PrimaryKeyType> {
     /**
      * Updates an existing object of type {@link ModelType} in this table. Please note that this is a blocking operation
      *
-     * @param oldModelType the old object that will be replaced
-     * @param newModelType the new object that will take the place of the old one
+     * @param oldModelType              the old object that will be replaced
+     * @param newModelType              the new object that will take the place of the old one
      * @param databaseOperationMetadata metadata about this particular database operation
      * @return a {@link Single} with: the updated object of type {@link ModelType} or {@link Exception} if the update failed
      */
@@ -89,7 +88,8 @@ public interface Table<ModelType extends Keyed, PrimaryKeyType> {
 
     /**
      * Removes an existing object of type {@link ModelType} from this table. Please note that this is a blocking operation
-     * @param modelType the object to remove
+     *
+     * @param modelType                 the object to remove
      * @param databaseOperationMetadata metadata about this particular database operation
      * @return a {@link Single} with: the deleted {@link ModelType} if successful, {@link Exception} otherwise
      */

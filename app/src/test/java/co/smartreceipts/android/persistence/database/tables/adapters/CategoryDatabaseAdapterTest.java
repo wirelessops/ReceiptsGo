@@ -16,7 +16,6 @@ import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
 import static org.junit.Assert.assertEquals;
@@ -47,9 +46,6 @@ public class CategoryDatabaseAdapterTest {
 
     @Mock
     Category mCategory;
-
-    @Mock
-    PrimaryKey<Category, Integer> mPrimaryKey;
 
     @Mock
     SyncStateAdapter mSyncStateAdapter;
@@ -83,8 +79,6 @@ public class CategoryDatabaseAdapterTest {
         when(mCategory.getSyncState()).thenReturn(mSyncState);
         when(mCategory.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
         when(mCategory.getUuid()).thenReturn(CAT_UUID);
-
-        when(mPrimaryKey.getPrimaryKeyValue(mCategory)).thenReturn(PRIMARY_KEY_INT);
 
         when(mSyncStateAdapter.read(mCursor)).thenReturn(mSyncState);
         when(mSyncStateAdapter.get(any(SyncState.class), any(DatabaseOperationMetadata.class))).thenReturn(mGetSyncState);
@@ -145,7 +139,7 @@ public class CategoryDatabaseAdapterTest {
                 .setSyncState(mGetSyncState)
                 .setCustomOrderId(CUSTOM_ORDER_ID)
                 .build();
-        assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, CAT_UUID, mock(DatabaseOperationMetadata.class)));
-        assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, mPrimaryKey, CAT_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(category, mCategoryDatabaseAdapter.build(mCategory, PRIMARY_KEY_INT, CAT_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(category.getSyncState(), mCategoryDatabaseAdapter.build(mCategory, PRIMARY_KEY_INT, CAT_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 }

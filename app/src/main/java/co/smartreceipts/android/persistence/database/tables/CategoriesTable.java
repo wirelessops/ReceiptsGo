@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.CategoryDatabaseAdapter;
-import co.smartreceipts.android.persistence.database.tables.keys.CategoryPrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
@@ -17,7 +16,7 @@ import co.smartreceipts.android.utils.log.Logger;
 /**
  * Stores all database operations related to the {@link Category} model object
  */
-public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
+public final class CategoriesTable extends AbstractSqlTable<Category> {
 
     // SQL Definitions:
     public static final String TABLE_NAME = "categories";
@@ -29,7 +28,7 @@ public final class CategoriesTable extends AbstractSqlTable<Category, Integer> {
 
     public CategoriesTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                            @NonNull OrderingPreferencesManager orderingPreferencesManager) {
-        super(sqLiteOpenHelper, TABLE_NAME, new CategoryDatabaseAdapter(), new CategoryPrimaryKey(),
+        super(sqLiteOpenHelper, TABLE_NAME, new CategoryDatabaseAdapter(),
                 new OrderByOrderingPreference(orderingPreferencesManager, CategoriesTable.class, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByColumn(COLUMN_NAME, false)));
     }
 

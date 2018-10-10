@@ -49,9 +49,9 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
 
     protected final String TAG = getClass().getSimpleName();
 
-    private final Table<ModelType, ?> mTable;
+    private final Table<ModelType> mTable;
     private final ConcurrentHashMap<TableEventsListener<ModelType>, BridgingTableEventsListener<ModelType>> mBridgingTableEventsListeners = new ConcurrentHashMap<>();
-    protected final CopyOnWriteArrayList<TableEventsListener<ModelType>> mTableEventsListeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<TableEventsListener<ModelType>> mTableEventsListeners = new CopyOnWriteArrayList<>();
     protected final TableActionAlterations<ModelType> mTableActionAlterations;
     protected final Analytics mAnalytics;
     protected final Scheduler mSubscribeOnScheduler;
@@ -64,11 +64,11 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
 
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public AbstractTableController(@NonNull Table<ModelType, ?> table, @NonNull Analytics analytics) {
+    public AbstractTableController(@NonNull Table<ModelType> table, @NonNull Analytics analytics) {
         this(table, new StubTableActionAlterations<>(), analytics);
     }
 
-    public AbstractTableController(@NonNull Table<ModelType, ?> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics) {
+    public AbstractTableController(@NonNull Table<ModelType> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics) {
         mTable = Preconditions.checkNotNull(table);
         mTableActionAlterations = Preconditions.checkNotNull(tableActionAlterations);
         mAnalytics = Preconditions.checkNotNull(analytics);
@@ -76,7 +76,7 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
         mObserveOnScheduler = AndroidSchedulers.mainThread();
     }
 
-    AbstractTableController(@NonNull Table<ModelType, ?> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations,
+    AbstractTableController(@NonNull Table<ModelType> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations,
                             @NonNull Analytics analytics, @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
         mTable = Preconditions.checkNotNull(table);
         mTableActionAlterations = Preconditions.checkNotNull(tableActionAlterations);

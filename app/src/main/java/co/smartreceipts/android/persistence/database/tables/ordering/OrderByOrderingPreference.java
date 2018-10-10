@@ -2,7 +2,6 @@ package co.smartreceipts.android.persistence.database.tables.ordering;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 
@@ -10,13 +9,13 @@ import co.smartreceipts.android.persistence.database.tables.Table;
 
 public class OrderByOrderingPreference implements OrderBy {
 
-    private final Class<? extends Table<?, ?>> tableClass;
+    private final Class<? extends Table<?>> tableClass;
     private final OrderBy preferenceOrderedOrderBy;
     private final OrderBy fallbackOrderByIfNoPreferenceDefined;
     protected final OrderingPreferencesManager orderingPreferencesManager;
 
     public OrderByOrderingPreference(@NonNull OrderingPreferencesManager orderingPreferencesManager,
-                                     @NonNull Class<? extends Table<?, ?>> tableClass,
+                                     @NonNull Class<? extends Table<?>> tableClass,
                                      @NonNull OrderBy preferenceOrderedOrderBy,
                                      @NonNull OrderBy fallbackOrderByIfNoPreferenceDefined) {
         this.orderingPreferencesManager = Preconditions.checkNotNull(orderingPreferencesManager);

@@ -93,13 +93,13 @@ public class ReceiptsTableTest {
     TableDefaultsCustomizer mTableDefaultsCustomizer;
 
     @Mock
-    Table<Trip, Integer> mTripsTable;
+    Table<Trip> mTripsTable;
 
     @Mock
-    Table<PaymentMethod, Integer> mPaymentMethodTable;
+    Table<PaymentMethod> mPaymentMethodTable;
 
     @Mock
-    Table<Category, Integer> mCategoryTable;
+    Table<Category> mCategoryTable;
 
     @Mock
     PersistenceManager mPersistenceManager;
@@ -544,7 +544,6 @@ public class ReceiptsTableTest {
     }
     
     private void verifyV18Upgrade(@NonNull VerificationMode verificationMode) {
-        // TODO: 30.09.2018
         verify(mSQLiteDatabase, verificationMode).execSQL(String.format("ALTER TABLE %s ADD %s INTEGER REFERENCES %s ON DELETE CASCADE",
                 ReceiptsTable.TABLE_NAME, ReceiptsTable.COLUMN_PARENT_TRIP_ID, TripsTable.TABLE_NAME));
 

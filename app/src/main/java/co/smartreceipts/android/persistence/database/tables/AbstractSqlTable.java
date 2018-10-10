@@ -20,8 +20,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.adapters.DatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.adapters.SyncStateAdapter;
-import co.smartreceipts.android.persistence.database.tables.keys.AutoIncrementIdPrimaryKey;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.sync.model.Syncable;
@@ -34,9 +32,8 @@ import io.reactivex.Single;
  * operate in a standard manner.
  *
  * @param <ModelType>      the model object that CRUD operations here should return
- * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that is used by the primary key column
  */
-public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, PrimaryKeyType> implements Table<ModelType, PrimaryKeyType> {
+public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable> implements Table<ModelType> {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_UUID = "entity_uuid";
@@ -49,8 +46,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
     private final SQLiteOpenHelper sqLiteOpenHelper;
     private final String tableName;
 
-    protected final DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter;
-    protected final PrimaryKey<ModelType, PrimaryKeyType> primaryKey;
+    protected final DatabaseAdapter<ModelType> databaseAdapter;
     private final OrderBy orderBy;
 
     private SQLiteDatabase initialNonRecursivelyCalledDatabase;
@@ -59,18 +55,15 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
 
     public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                             @NonNull String tableName,
-                            @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
-                            @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey) {
-        this(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, new OrderByDatabaseDefault());
+                            @NonNull DatabaseAdapter<ModelType> databaseAdapter) {
+        this(sqLiteOpenHelper, tableName, databaseAdapter, new OrderByDatabaseDefault());
     }
 
     public AbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull String tableName,
-                            @NonNull DatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>> databaseAdapter,
-                            @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey, @NonNull OrderBy orderBy) {
+                            @NonNull DatabaseAdapter<ModelType> databaseAdapter, @NonNull OrderBy orderBy) {
         this.sqLiteOpenHelper = Preconditions.checkNotNull(sqLiteOpenHelper);
         this.tableName = Preconditions.checkNotNull(tableName);
         this.databaseAdapter = Preconditions.checkNotNull(databaseAdapter);
-        this.primaryKey = Preconditions.checkNotNull(primaryKey);
         this.orderBy = Preconditions.checkNotNull(orderBy);
     }
 
@@ -198,7 +191,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
 
     @NonNull
     @Override
-    public Single<ModelType> findByPrimaryKey(@NonNull final PrimaryKeyType primaryKeyType) {
+    public Single<ModelType> findByPrimaryKey(final int primaryKeyType) {
         return Single.fromCallable(() -> AbstractSqlTable.this.findByPrimaryKeyBlocking(primaryKeyType))
                 .map(modelTypeOptional -> {
                     if (modelTypeOptional.isPresent()) {
@@ -290,37 +283,18 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
         UUID uuid = UUID.fromString(values.getAsString(COLUMN_UUID));
 
         if (getWritableDatabase().insertOrThrow(getTableName(), null, values) != -1) {
-            if (Integer.class.equals(primaryKey.getPrimaryKeyClass())) {
-                Cursor cursor = null;
-                try {
-                    cursor = getReadableDatabase().rawQuery("SELECT last_insert_rowid()", null);
+            Cursor cursor = null;
+            try {
+                cursor = getReadableDatabase().rawQuery("SELECT last_insert_rowid()", null);
 
-                    final Integer id;
-                    if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
-                        id = cursor.getInt(0);
-                    } else {
-                        id = -1;
-                    }
-
-                    // Note: We do some quick hacks around generics here to ensure the types are consistent
-                    final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) primaryKey, id);
-
-                    final ModelType insertedItem = databaseAdapter.build(modelType, autoIncrementPrimaryKey, uuid, databaseOperationMetadata);
-                    if (cachedResults != null) {
-                        cachedResults.add(insertedItem);
-                        if (insertedItem instanceof Comparable<?>) {
-                            Collections.sort((List<? extends Comparable>) cachedResults);
-                        }
-                    }
-                    return Optional.of(insertedItem);
-                } finally { // Close the cursor and db to avoid memory leaks
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                final int id;
+                if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
+                    id = cursor.getInt(0);
+                } else {
+                    id = -1;
                 }
-            } else {
-                // If it's not an auto-increment id, just grab whatever the definition is...
-                final ModelType insertedItem = databaseAdapter.build(modelType, primaryKey, uuid, databaseOperationMetadata);
+
+                final ModelType insertedItem = databaseAdapter.build(modelType, id, uuid, databaseOperationMetadata);
                 if (cachedResults != null) {
                     cachedResults.add(insertedItem);
                     if (insertedItem instanceof Comparable<?>) {
@@ -328,6 +302,10 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
                     }
                 }
                 return Optional.of(insertedItem);
+            } finally { // Close the cursor and db to avoid memory leaks
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
         } else {
             return Optional.absent();
@@ -345,40 +323,33 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
             values.remove(COLUMN_UUID);
         }
 
-
         final boolean updateSuccess;
-        final String oldPrimaryKeyValue = primaryKey.getPrimaryKeyValue(oldModelType).toString();
+        final String oldPrimaryKeyValue = String.valueOf(oldModelType.getId());
 
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             // For sync operations, ensure that this only succeeds if we haven't already updated this item more recently
-            updateSuccess = getWritableDatabase().update(getTableName(), values, primaryKey.getPrimaryKeyColumn() +
-                    " = ? AND " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " >= ?",
-                    new String[]{oldPrimaryKeyValue, Long.toString(oldModelType.getSyncState().getLastLocalModificationTime().getTime())}) > 0;
+            final Syncable syncableOldModel = (Syncable) oldModelType;
+            updateSuccess = getWritableDatabase().update(getTableName(), values, COLUMN_ID +
+                            " = ? AND " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " >= ?",
+                    new String[]{oldPrimaryKeyValue, Long.toString(syncableOldModel.getSyncState().getLastLocalModificationTime().getTime())}) > 0;
         } else {
-            updateSuccess = getWritableDatabase().update(getTableName(), values, primaryKey.getPrimaryKeyColumn() + " = ?",
+            updateSuccess = getWritableDatabase().update(getTableName(), values, COLUMN_ID + " = ?",
                     new String[]{oldPrimaryKeyValue}) > 0;
         }
 
         if (updateSuccess) {
             final ModelType updatedItem;
 
-            if (Integer.class.equals(primaryKey.getPrimaryKeyClass())) {
-                // If it's an auto-increment key, ensure we're re-using the same id as the old key
-                final PrimaryKey<ModelType, PrimaryKeyType> autoIncrementPrimaryKey = (PrimaryKey<ModelType, PrimaryKeyType>) new AutoIncrementIdPrimaryKey<>((PrimaryKey<ModelType, Integer>) primaryKey, (Integer) primaryKey.getPrimaryKeyValue(oldModelType));
-                updatedItem = databaseAdapter.build(newModelType, autoIncrementPrimaryKey, oldModelType.getUuid(), databaseOperationMetadata);
-            } else {
-                // Otherwise, we'll use whatever the user defined...
-                updatedItem = databaseAdapter.build(newModelType, primaryKey, oldModelType.getUuid(), databaseOperationMetadata);
-            }
-
+                // ensure we're re-using the same id as the old key and the same uuid
+                updatedItem = databaseAdapter.build(newModelType, oldModelType.getId(), oldModelType.getUuid(), databaseOperationMetadata);
             if (cachedResults != null) {
                 boolean wasCachedResultRemoved = cachedResults.remove(oldModelType);
                 if (!wasCachedResultRemoved) {
                     // If our cache is wrong, let's use the actual primary key to see if we can find it
-                    final PrimaryKeyType primaryKeyValue = primaryKey.getPrimaryKeyValue(newModelType);
+                    final int primaryKeyValue = newModelType.getId();
                     Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
                     for (final ModelType cachedResult : cachedResults) {
-                        if (primaryKeyValue.equals(primaryKey.getPrimaryKeyValue(cachedResult))) {
+                        if (primaryKeyValue == cachedResult.getId()) {
                             wasCachedResultRemoved = cachedResults.remove(cachedResult);
                             if (wasCachedResultRemoved) {
                                 break;
@@ -406,8 +377,8 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
     }
 
     public synchronized Optional<ModelType> deleteBlocking(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        final String primaryKeyValue = primaryKey.getPrimaryKeyValue(modelType).toString();
-        if (getWritableDatabase().delete(getTableName(), primaryKey.getPrimaryKeyColumn() + " = ?", new String[]{primaryKeyValue}) > 0) {
+        final String primaryKeyValue = String.valueOf(modelType.getId());
+        if (getWritableDatabase().delete(getTableName(), COLUMN_ID + " = ?", new String[]{primaryKeyValue}) > 0) {
             if (cachedResults != null) {
                 cachedResults.remove(modelType);
             }
@@ -436,10 +407,10 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
     }
 
     @NonNull
-    public synchronized Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
+    public synchronized Optional<ModelType> findByPrimaryKeyBlocking(int primaryKeyValue) {
         if (cachedResults != null) {
             for (final ModelType cachedResult : cachedResults) {
-                if (primaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                if (cachedResult.getId() == primaryKeyValue) {
                     return Optional.of(cachedResult);
                 }
             }
@@ -449,7 +420,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable, Prima
             final int size = entries.size();
             for (int i = 0; i < size; i++) {
                 final ModelType modelType = entries.get(i);
-                if (primaryKey.getPrimaryKeyValue(modelType).equals(primaryKeyType)) {
+                if (modelType.getId() == primaryKeyValue) {
                     return Optional.of(modelType);
                 }
             }

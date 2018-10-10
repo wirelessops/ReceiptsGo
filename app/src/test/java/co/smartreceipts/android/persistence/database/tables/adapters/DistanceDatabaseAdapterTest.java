@@ -24,7 +24,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.DistanceTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 import io.reactivex.Single;
 
@@ -55,7 +54,7 @@ public class DistanceDatabaseAdapterTest {
     DistanceDatabaseAdapter mDistanceDatabaseAdapter;
 
     @Mock
-    Table<Trip, Integer> mTripsTable;
+    Table<Trip> mTripsTable;
 
     @Mock
     Trip mTrip;
@@ -68,9 +67,6 @@ public class DistanceDatabaseAdapterTest {
 
     @Mock
     Price mPrice;
-
-    @Mock
-    PrimaryKey<Distance, Integer> mPrimaryKey;
 
     @Mock
     SyncStateAdapter mSyncStateAdapter;
@@ -130,7 +126,6 @@ public class DistanceDatabaseAdapterTest {
         when(mPrice.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
 
         when(mTripsTable.findByPrimaryKey(PARENT_ID)).thenReturn(Single.just(mTrip));
-        when(mPrimaryKey.getPrimaryKeyValue(mDistance)).thenReturn(PRIMARY_KEY_ID);
 
         when(mSyncStateAdapter.read(mCursor)).thenReturn(mSyncState);
         when(mSyncStateAdapter.get(any(SyncState.class), any(DatabaseOperationMetadata.class))).thenReturn(mGetSyncState);
@@ -200,9 +195,9 @@ public class DistanceDatabaseAdapterTest {
 
     @Test
     public void build() throws Exception {
-        final Distance distance = new DistanceBuilderFactory(PRIMARY_KEY_ID).setUuid(DIST_UUID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mGetSyncState).build();
-        assertEquals(distance, mDistanceDatabaseAdapter.build(mDistance, mPrimaryKey, DIST_UUID, mock(DatabaseOperationMetadata.class)));
-        assertEquals(distance.getSyncState(), mDistanceDatabaseAdapter.build(mDistance, mPrimaryKey, DIST_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
+        final Distance distance = new DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(mTrip).setLocation(LOCATION).setDistance(DISTANCE).setDate(DATE).setTimezone(TIMEZONE).setRate(RATE).setCurrency(CURRENCY_CODE).setComment(COMMENT).setSyncState(mGetSyncState).build();
+        assertEquals(distance, mDistanceDatabaseAdapter.build(mDistance, ID, DIST_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(distance.getSyncState(), mDistanceDatabaseAdapter.build(mDistance, ID, DIST_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 
 }

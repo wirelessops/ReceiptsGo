@@ -1,6 +1,5 @@
 package co.smartreceipts.android.persistence.database.tables.ordering;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
@@ -97,7 +96,7 @@ public class OrderingPreferencesManager {
                 .apply();
     }
 
-    public boolean isOrdered(Class<? extends Table<?, ?>> tableClass) {
+    public boolean isOrdered(Class<? extends Table<?>> tableClass) {
         if (CategoriesTable.class.equals(tableClass)) {
             return isCategoriesTableOrdered();
         } else if (PaymentMethodsTable.class.equals(tableClass)) {

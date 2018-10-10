@@ -38,7 +38,7 @@ public class AbstractTableControllerTest {
      */
     private class AbstractTableControllerTestImpl extends AbstractTableController<KeyedObject> {
 
-        AbstractTableControllerTestImpl(@NonNull Table<KeyedObject, ?> table, @NonNull TableActionAlterations<KeyedObject> tableActionAlterations, @NonNull Analytics analytics,
+        AbstractTableControllerTestImpl(@NonNull Table<KeyedObject> table, @NonNull TableActionAlterations<KeyedObject> tableActionAlterations, @NonNull Analytics analytics,
                                         @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
             super(table, tableActionAlterations, analytics, subscribeOnScheduler, observeOnScheduler);
         }
@@ -48,7 +48,7 @@ public class AbstractTableControllerTest {
     AbstractTableController<KeyedObject> mAbstractTableController;
 
     @Mock
-    Table<KeyedObject, ?> mTable;
+    Table<KeyedObject> mTable;
 
     @Mock
     TableActionAlterations<KeyedObject> mTableActionAlterations;

@@ -21,7 +21,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.AbstractColumnTable;
 import co.smartreceipts.android.persistence.database.tables.AbstractSqlTable;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
@@ -48,9 +47,6 @@ public class ColumnDatabaseAdapterTest {
 
     @Mock
     Column<Receipt> column;
-
-    @Mock
-    PrimaryKey<Column<Receipt>, Integer> primaryKey;
 
     @Mock
     ReportResourcesManager reportResourcesManager;
@@ -95,8 +91,6 @@ public class ColumnDatabaseAdapterTest {
         when(column.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
         when(column.getUuid()).thenReturn(COLUMN_UUID);
 
-        when(primaryKey.getPrimaryKeyValue(column)).thenReturn(ID);
-
         when(syncStateAdapter.read(cursor)).thenReturn(syncState);
         when(syncStateAdapter.get(any(SyncState.class), any(DatabaseOperationMetadata.class))).thenReturn(getSyncState);
 
@@ -140,7 +134,7 @@ public class ColumnDatabaseAdapterTest {
 
     @Test
     public void build() throws Exception {
-        assertEquals(receiptNameColumn, columnDatabaseAdapter.build(column, primaryKey, COLUMN_UUID, mock(DatabaseOperationMetadata.class)));
-        assertEquals(receiptNameColumn.getSyncState(), columnDatabaseAdapter.build(column, primaryKey, COLUMN_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(receiptNameColumn, columnDatabaseAdapter.build(column, ID, COLUMN_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(receiptNameColumn.getSyncState(), columnDatabaseAdapter.build(column, ID, COLUMN_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 }

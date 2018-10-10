@@ -14,7 +14,6 @@ import co.smartreceipts.android.model.ColumnFinder;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.ColumnDatabaseAdapter;
-import co.smartreceipts.android.persistence.database.tables.keys.ColumnPrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
@@ -25,7 +24,7 @@ import co.smartreceipts.android.utils.log.Logger;
  * Since our CSV and PDF tables share almost all of the same logic, this class purely acts as a wrapper around
  * each to centralize where all logic is managed
  */
-public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receipt>, Integer> {
+public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receipt>> {
 
     public static final String COLUMN_TYPE = "column_type";
 
@@ -44,9 +43,9 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
                                int tableExistsSinceDatabaseVersion,
                                @NonNull ColumnDefinitions<Receipt> columnDefinitions,
                                @NonNull OrderingPreferencesManager orderingPreferencesManager,
-                               @NonNull Class<? extends Table<?, ?>> tableClass) {
+                               @NonNull Class<? extends Table<?>> tableClass) {
         super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(columnDefinitions),
-                new ColumnPrimaryKey(COLUMN_ID), new OrderByOrderingPreference(orderingPreferencesManager, tableClass, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
+                new OrderByOrderingPreference(orderingPreferencesManager, tableClass, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
         this.tableExistsSinceDatabaseVersion = tableExistsSinceDatabaseVersion;
         receiptColumnDefinitions = Preconditions.checkNotNull(columnDefinitions);
         columnFinder = (ColumnFinder) columnDefinitions;

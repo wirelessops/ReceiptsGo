@@ -17,22 +17,21 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.persistence.database.tables.DistanceTable;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link DistanceTable}
  */
-public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAdapter<Distance, PrimaryKey<Distance, Integer>, Trip> {
+public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAdapter<Distance, Trip> {
 
-    private final Table<Trip, Integer> mTripsTable;
+    private final Table<Trip> mTripsTable;
     private final SyncStateAdapter mSyncStateAdapter;
 
-    public DistanceDatabaseAdapter(@NonNull Table<Trip, Integer> tripsTable) {
+    public DistanceDatabaseAdapter(@NonNull Table<Trip> tripsTable) {
         this(tripsTable, new SyncStateAdapter());
     }
 
-    public DistanceDatabaseAdapter(@NonNull Table<Trip, Integer> tripsTable, @NonNull SyncStateAdapter syncStateAdapter) {
+    public DistanceDatabaseAdapter(@NonNull Table<Trip> tripsTable, @NonNull SyncStateAdapter syncStateAdapter) {
         mTripsTable = Preconditions.checkNotNull(tripsTable);
         mSyncStateAdapter = Preconditions.checkNotNull(syncStateAdapter);
     }
@@ -109,9 +108,9 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
 
     @NonNull
     @Override
-    public Distance build(@NonNull Distance distance, @NonNull PrimaryKey<Distance, Integer> primaryKey, @NonNull UUID uuid,
+    public Distance build(@NonNull Distance distance, int primaryKey, @NonNull UUID uuid,
                           @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        return new DistanceBuilderFactory(primaryKey.getPrimaryKeyValue(distance), distance)
+        return new DistanceBuilderFactory(primaryKey, distance)
                 .setUuid(uuid)
                 .setSyncState(mSyncStateAdapter.get(distance.getSyncState(), databaseOperationMetadata))
                 .build();

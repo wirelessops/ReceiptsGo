@@ -39,7 +39,7 @@ public class TripForeignKeyAbstractTableControllerTest {
      */
     private class TripForeignKeyAbstractTableControllerImpl extends TripForeignKeyAbstractTableController<KeyedObject> {
 
-        TripForeignKeyAbstractTableControllerImpl(@NonNull TripForeignKeyAbstractSqlTable<KeyedObject, ?> table,
+        TripForeignKeyAbstractTableControllerImpl(@NonNull TripForeignKeyAbstractSqlTable<KeyedObject> table,
                                                   @NonNull TableActionAlterations<KeyedObject> tableActionAlterations,
                                                   @NonNull Analytics analytics,
                                                   @NonNull Scheduler subscribeOnScheduler,
@@ -52,7 +52,7 @@ public class TripForeignKeyAbstractTableControllerTest {
     TripForeignKeyAbstractTableController<KeyedObject> mAbstractTableController;
 
     @Mock
-    TripForeignKeyAbstractSqlTable<KeyedObject, ?> mTable;
+    TripForeignKeyAbstractSqlTable<KeyedObject> mTable;
 
     @Mock
     Trip mTrip;

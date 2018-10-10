@@ -13,7 +13,6 @@ import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
 import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID;
@@ -21,7 +20,7 @@ import static co.smartreceipts.android.persistence.database.tables.AbstractSqlTa
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link co.smartreceipts.android.persistence.database.tables.CategoriesTable}
  */
-public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, PrimaryKey<Category, Integer>> {
+public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category> {
 
     private final SyncStateAdapter mSyncStateAdapter;
 
@@ -76,11 +75,10 @@ public final class CategoryDatabaseAdapter implements DatabaseAdapter<Category, 
 
     @Override
     @NonNull
-    public Category build(@NonNull Category category, @NonNull PrimaryKey<Category, Integer> primaryKey, @NonNull UUID uuid,
+    public Category build(@NonNull Category category, int primaryKey, @NonNull UUID uuid,
                           @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        Integer id = primaryKey.getPrimaryKeyValue(category);
         return new CategoryBuilderFactory()
-                .setId(id)
+                .setId(primaryKey)
                 .setUuid(uuid)
                 .setName(category.getName())
                 .setCode(category.getCode())

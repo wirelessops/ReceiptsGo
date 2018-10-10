@@ -15,14 +15,13 @@ import co.smartreceipts.android.model.factory.ColumnBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.AbstractColumnTable;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link co.smartreceipts.android.persistence.database.tables.AbstractColumnTable}
  * for CSVs and PDFs
  */
-public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Receipt>, PrimaryKey<Column<Receipt>, Integer>> {
+public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Receipt>> {
 
     private final ColumnDefinitions<Receipt> mReceiptColumnDefinitions;
     private final SyncStateAdapter mSyncStateAdapter;
@@ -76,10 +75,9 @@ public final class ColumnDatabaseAdapter implements DatabaseAdapter<Column<Recei
 
     @NonNull
     @Override
-    public Column<Receipt> build(@NonNull Column<Receipt> column, @NonNull PrimaryKey<Column<Receipt>,
-            Integer> primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
+    public Column<Receipt> build(@NonNull Column<Receipt> column, int primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         return new ColumnBuilderFactory<>(mReceiptColumnDefinitions)
-                .setColumnId(primaryKey.getPrimaryKeyValue(column))
+                .setColumnId(primaryKey)
                 .setColumnUuid(uuid)
                 .setColumnType(column.getType())
                 .setSyncState(mSyncStateAdapter.get(column.getSyncState(), databaseOperationMetadata))

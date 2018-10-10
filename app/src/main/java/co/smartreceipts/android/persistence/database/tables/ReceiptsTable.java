@@ -23,7 +23,6 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.ReceiptDatabaseAdapter;
-import co.smartreceipts.android.persistence.database.tables.keys.ReceiptPrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
@@ -41,7 +40,7 @@ import wb.android.storage.StorageManager;
 /**
  * Stores all database operations related to the {@link Receipt} model objects
  */
-public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integer> {
+public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
 
     // SQL Definitions:
     public static final String TABLE_NAME = "receipts";
@@ -71,14 +70,14 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt, Integ
     private final UserPreferenceManager userPreferenceManager;
 
     public ReceiptsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
-                         @NonNull Table<Trip, Integer> tripsTable,
-                         @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
-                         @NonNull Table<Category, Integer> categoryTable,
+                         @NonNull Table<Trip> tripsTable,
+                         @NonNull Table<PaymentMethod> paymentMethodTable,
+                         @NonNull Table<Category> categoryTable,
                          @NonNull StorageManager storageManager,
                          @NonNull UserPreferenceManager preferences,
                          @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         super(sqLiteOpenHelper, TABLE_NAME, new ReceiptDatabaseAdapter(tripsTable, paymentMethodTable,
-                        categoryTable, storageManager), new ReceiptPrimaryKey(), COLUMN_PARENT_TRIP_ID,
+                        categoryTable, storageManager), COLUMN_PARENT_TRIP_ID,
                 new OrderByOrderingPreference(orderingPreferencesManager, ReceiptsTable.class, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, true), new OrderByColumn(COLUMN_DATE, true)));
 
         this.userPreferenceManager = Preconditions.checkNotNull(preferences);

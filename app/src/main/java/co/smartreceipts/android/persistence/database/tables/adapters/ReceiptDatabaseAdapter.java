@@ -23,28 +23,27 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 import wb.android.storage.StorageManager;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link ReceiptsTable}
  */
-public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdapter<Receipt, PrimaryKey<Receipt, Integer>, Trip> {
+public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdapter<Receipt, Trip> {
 
-    private final Table<Trip, Integer> mTripsTable;
-    private final Table<PaymentMethod, Integer> mPaymentMethodTable;
-    private final Table<Category, Integer> mCategoriesTable;
+    private final Table<Trip> mTripsTable;
+    private final Table<PaymentMethod> mPaymentMethodTable;
+    private final Table<Category> mCategoriesTable;
     private final StorageManager mStorageManager;
     private final SyncStateAdapter mSyncStateAdapter;
 
-    public ReceiptDatabaseAdapter(@NonNull Table<Trip, Integer> tripsTable, @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
-                                  @NonNull Table<Category, Integer> categoriesTable, @NonNull StorageManager storageManager) {
+    public ReceiptDatabaseAdapter(@NonNull Table<Trip> tripsTable, @NonNull Table<PaymentMethod> paymentMethodTable,
+                                  @NonNull Table<Category> categoriesTable, @NonNull StorageManager storageManager) {
         this(tripsTable, paymentMethodTable, categoriesTable, storageManager, new SyncStateAdapter());
     }
 
-    public ReceiptDatabaseAdapter(@NonNull Table<Trip, Integer> tripsTable, @NonNull Table<PaymentMethod, Integer> paymentMethodTable,
-                                  @NonNull Table<Category, Integer> categoriesTable, @NonNull StorageManager storageManager,
+    public ReceiptDatabaseAdapter(@NonNull Table<Trip> tripsTable, @NonNull Table<PaymentMethod> paymentMethodTable,
+                                  @NonNull Table<Category> categoriesTable, @NonNull StorageManager storageManager,
                                   @NonNull SyncStateAdapter syncStateAdapter) {
         mTripsTable = Preconditions.checkNotNull(tripsTable);
         mPaymentMethodTable = Preconditions.checkNotNull(paymentMethodTable);
@@ -246,9 +245,9 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
 
     @NonNull
     @Override
-    public Receipt build(@NonNull Receipt receipt, @NonNull PrimaryKey<Receipt, Integer> primaryKey,
+    public Receipt build(@NonNull Receipt receipt, int primaryKey,
                          @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        return new ReceiptBuilderFactory(primaryKey.getPrimaryKeyValue(receipt), receipt)
+        return new ReceiptBuilderFactory(primaryKey, receipt)
                 .setUuid(uuid)
                 .setSyncState(mSyncStateAdapter.get(receipt.getSyncState(), databaseOperationMetadata)).build();
     }

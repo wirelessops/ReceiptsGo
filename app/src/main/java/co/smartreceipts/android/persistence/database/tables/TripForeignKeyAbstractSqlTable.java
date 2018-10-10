@@ -18,7 +18,6 @@ import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.adapters.SelectionBackedDatabaseAdapter;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.sync.model.Syncable;
@@ -32,22 +31,20 @@ import io.reactivex.Single;
  * it'll stay hard-typed for now until this requirement arises...
  *
  * @param <ModelType> the model object that CRUD operations here should return
- * @param <PrimaryKeyType> the primary key type (e.g. Integer, String) that will be used
  */
-public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & Syncable, PrimaryKeyType> extends AbstractSqlTable<ModelType, PrimaryKeyType> {
+public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & Syncable> extends AbstractSqlTable<ModelType> {
 
     private final HashMap<Trip, List<ModelType>> mPerTripCache = new HashMap<>();
-    private final SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> mSelectionBackedDatabaseAdapter;
+    private final SelectionBackedDatabaseAdapter<ModelType, Trip> mSelectionBackedDatabaseAdapter;
     private final String mTripForeignKeyReferenceColumnName;
     private final OrderBy mOrderBy;
 
     public TripForeignKeyAbstractSqlTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                                           @NonNull String tableName,
-                                          @NonNull SelectionBackedDatabaseAdapter<ModelType, PrimaryKey<ModelType, PrimaryKeyType>, Trip> databaseAdapter,
-                                          @NonNull PrimaryKey<ModelType, PrimaryKeyType> primaryKey,
+                                          @NonNull SelectionBackedDatabaseAdapter<ModelType, Trip> databaseAdapter,
                                           @NonNull String tripForeignKeyReferenceColumnName,
                                           @NonNull OrderBy orderBy) {
-        super(sqLiteOpenHelper, tableName, databaseAdapter, primaryKey, orderBy);
+        super(sqLiteOpenHelper, tableName, databaseAdapter, orderBy);
         mSelectionBackedDatabaseAdapter = Preconditions.checkNotNull(databaseAdapter);
         mTripForeignKeyReferenceColumnName = Preconditions.checkNotNull(tripForeignKeyReferenceColumnName);
         mOrderBy = Preconditions.checkNotNull(orderBy);
@@ -159,6 +156,7 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & S
         return results;
     }
 
+    @NonNull
     @SuppressWarnings("unchecked")
     @Override
     public synchronized Optional<ModelType> insertBlocking(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
@@ -188,10 +186,10 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & S
                 boolean wasCachedResultRemoved = perTripResults.remove(oldModelType);
                 if (!wasCachedResultRemoved) {
                     // If our cache is wrong, let's use the actual primary key to see if we can find it
-                    final PrimaryKeyType primaryKeyValue = primaryKey.getPrimaryKeyValue(newModelType);
+                    final int primaryKeyValue = newModelType.getId();
                     Logger.debug(this, "Failed to remove {} with primary key {} from our cache. Searching through to manually remove...", newModelType.getClass(), primaryKeyValue);
                     for (final ModelType cachedResult : perTripResults) {
-                        if (primaryKeyValue.equals(primaryKey.getPrimaryKeyValue(cachedResult))) {
+                        if (primaryKeyValue == cachedResult.getId()) {
                             wasCachedResultRemoved = perTripResults.remove(cachedResult);
                             if (wasCachedResultRemoved) {
                                 break;
@@ -265,10 +263,10 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & S
     }
 
     @NonNull
-    public synchronized Optional<ModelType> findByPrimaryKeyBlocking(@NonNull PrimaryKeyType primaryKeyType) {
+    public synchronized Optional<ModelType> findByPrimaryKeyBlocking(int primaryKeyValue) {
         for (final Map.Entry<Trip, List<ModelType>> tripListEntry : mPerTripCache.entrySet()) {
             for (final ModelType cachedResult : tripListEntry.getValue()) {
-                if (primaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                if (cachedResult.getId() == primaryKeyValue) {
                     return Optional.of(cachedResult);
                 }
             }
@@ -276,12 +274,12 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & S
 
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().query(getTableName(), null, primaryKey.getPrimaryKeyColumn() + " = ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{primaryKeyType.toString(), Integer.toString(0)}, null, null, null);
+            cursor = getReadableDatabase().query(getTableName(), null, COLUMN_ID + " = ? AND " + COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{String.valueOf(primaryKeyValue), Integer.toString(0)}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 final ModelType foundModel = databaseAdapter.read(cursor);
                 final List<ModelType> cachedResultsList = getBlocking(getTripFor(foundModel), true); // Note: We do this b/c of issues with the receipt index field
                 for (final ModelType cachedResult : cachedResultsList) {
-                    if (primaryKey.getPrimaryKeyValue(cachedResult).equals(primaryKeyType)) {
+                    if (cachedResult.getId() == primaryKeyValue) {
                         return Optional.of(cachedResult);
                     }
                 }

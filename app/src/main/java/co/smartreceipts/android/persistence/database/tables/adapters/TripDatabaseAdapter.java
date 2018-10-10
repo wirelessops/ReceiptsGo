@@ -14,7 +14,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
 import co.smartreceipts.android.persistence.database.tables.TripsTable;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -23,7 +22,7 @@ import wb.android.storage.StorageManager;
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link co.smartreceipts.android.persistence.database.tables.TripsTable}
  */
-public final class TripDatabaseAdapter implements DatabaseAdapter<Trip, PrimaryKey<Trip, Integer>> {
+public final class TripDatabaseAdapter implements DatabaseAdapter<Trip> {
 
     private final StorageManager storageManager;
     private final UserPreferenceManager preferences;
@@ -100,10 +99,9 @@ public final class TripDatabaseAdapter implements DatabaseAdapter<Trip, PrimaryK
 
     @Override
     @NonNull
-    public Trip build(@NonNull Trip trip, @NonNull PrimaryKey<Trip, Integer> primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        Integer id = primaryKey.getPrimaryKeyValue(trip);
+    public Trip build(@NonNull Trip trip, int primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         return new TripBuilderFactory(trip)
-                .setId(id)
+                .setId(primaryKey)
                 .setUuid(uuid)
                 .setDirectory(storageManager.getFile(trip.getName()))
                 .setSyncState(syncStateAdapter.get(trip.getSyncState(), databaseOperationMetadata))

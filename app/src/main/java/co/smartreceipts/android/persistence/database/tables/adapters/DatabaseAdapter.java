@@ -12,9 +12,8 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
  * Enables to quickly convert a model object to/from Android database objects
  *
  * @param <ModelType> the model object type that this will be used to create
- * @param <KeyType>   he class type that represents the primary key (e.g. {@link Integer}, {@link String}).
  */
-public interface DatabaseAdapter<ModelType, KeyType> {
+public interface DatabaseAdapter<ModelType> {
 
     /**
      * Consumes a database cursor in order to read a single entry
@@ -40,11 +39,11 @@ public interface DatabaseAdapter<ModelType, KeyType> {
      * (as based off the underlying values of the original object)
      *
      * @param modelType                 the object to serve as the "base"
-     * @param primaryKey                the primary key
+     * @param primaryKey                the primary key int value
      * @param uuid                      the unique identifier
      * @param databaseOperationMetadata metadata about this particular database operation
      * @return the object param or a new object of type {@link ModelType} if this primary key is needed
      */
     @NonNull
-    ModelType build(@NonNull ModelType modelType, @NonNull KeyType primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata);
+    ModelType build(@NonNull ModelType modelType, int primaryKey, @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata);
 }

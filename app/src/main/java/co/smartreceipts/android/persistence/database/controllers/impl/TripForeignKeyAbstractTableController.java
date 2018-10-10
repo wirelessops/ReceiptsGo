@@ -36,21 +36,21 @@ public class TripForeignKeyAbstractTableController<ModelType extends Keyed & Syn
 
     private final ConcurrentHashMap<TripForeignKeyTableEventsListener<ModelType>, BridgingTripForeignKeyTableEventsListener<ModelType>> mBridgingTableEventsListeners = new ConcurrentHashMap<>();
     private final CopyOnWriteArrayList<TripForeignKeyTableEventsListener<ModelType>> mForeignTableEventsListeners = new CopyOnWriteArrayList<>();
-    protected final TripForeignKeyAbstractSqlTable<ModelType, ?> mTripForeignKeyTable;
+    protected final TripForeignKeyAbstractSqlTable<ModelType> mTripForeignKeyTable;
 
     private final Subject<ForeignKeyGetResult<ModelType>> foreignKeyGetStreamSubject = PublishSubject.<ForeignKeyGetResult<ModelType>>create().toSerialized();
 
-    public TripForeignKeyAbstractTableController(@NonNull TripForeignKeyAbstractSqlTable<ModelType, ?> table, @NonNull Analytics analytics) {
+    public TripForeignKeyAbstractTableController(@NonNull TripForeignKeyAbstractSqlTable<ModelType> table, @NonNull Analytics analytics) {
         super(table, analytics);
         mTripForeignKeyTable = table;
     }
 
-    public TripForeignKeyAbstractTableController(@NonNull TripForeignKeyAbstractSqlTable<ModelType, ?> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics) {
+    public TripForeignKeyAbstractTableController(@NonNull TripForeignKeyAbstractSqlTable<ModelType> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics) {
         super(table, tableActionAlterations, analytics);
         mTripForeignKeyTable = table;
     }
 
-    TripForeignKeyAbstractTableController(@NonNull TripForeignKeyAbstractSqlTable<ModelType, ?> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics, @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
+    TripForeignKeyAbstractTableController(@NonNull TripForeignKeyAbstractSqlTable<ModelType> table, @NonNull TableActionAlterations<ModelType> tableActionAlterations, @NonNull Analytics analytics, @NonNull Scheduler subscribeOnScheduler, @NonNull Scheduler observeOnScheduler) {
         super(table, tableActionAlterations, analytics, subscribeOnScheduler, observeOnScheduler);
         mTripForeignKeyTable = table;
     }

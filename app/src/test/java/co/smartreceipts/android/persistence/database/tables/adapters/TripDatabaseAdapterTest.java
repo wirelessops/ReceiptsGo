@@ -20,7 +20,6 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.TripBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.model.SyncState;
@@ -38,7 +37,6 @@ public class TripDatabaseAdapterTest {
     private static final int ID = 15;
     private static final UUID TRIP_UUID = UUID.randomUUID();
     private static final String NAME = "Trip";
-//    private static final String PRIMARY_KEY_NAME = "Trip_PK_Update";
     private static final long START_DATE = 1409703721000L;
     private static final long END_DATE = 1409703794000L;
     private static final String START_TIMEZONE = TimeZone.getAvailableIDs()[0];
@@ -56,9 +54,6 @@ public class TripDatabaseAdapterTest {
 
     @Mock
     Cursor mCursor;
-
-    @Mock
-    PrimaryKey<Trip, Integer> mPrimaryKey;
 
     @Mock
     StorageManager mStorageManager;
@@ -122,8 +117,6 @@ public class TripDatabaseAdapterTest {
         when(mTrip.getSource()).thenReturn(Source.Undefined);
         when(mTrip.getSyncState()).thenReturn(mSyncState);
         when(mTrip.getUuid()).thenReturn(TRIP_UUID);
-
-        when(mPrimaryKey.getPrimaryKeyValue(mTrip)).thenReturn(ID);
 
         when(mPreferences.get(UserPreference.General.DefaultCurrency)).thenReturn(USER_PREFERENCES_CURRENCY_CODE);
         when(mStorageManager.getFile(NAME)).thenReturn(new File(NAME));
@@ -220,8 +213,8 @@ public class TripDatabaseAdapterTest {
                 .setSourceAsCache()
                 .setSyncState(mGetSyncState)
                 .build();
-        assertEquals(trip, mTripDatabaseAdapter.build(mTrip, mPrimaryKey, TRIP_UUID, mock(DatabaseOperationMetadata.class)));
-        assertEquals(trip.getSyncState(), mTripDatabaseAdapter.build(mTrip, mPrimaryKey, TRIP_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(trip, mTripDatabaseAdapter.build(mTrip, ID, TRIP_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(trip.getSyncState(), mTripDatabaseAdapter.build(mTrip, ID, TRIP_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 
 }

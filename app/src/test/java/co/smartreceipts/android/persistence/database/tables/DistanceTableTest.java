@@ -73,7 +73,7 @@ public class DistanceTableTest {
     TableDefaultsCustomizer mTableDefaultsCustomizer;
 
     @Mock
-    Table<Trip, Integer> mTripsTable;
+    Table<Trip> mTripsTable;
 
     @Mock
     UserPreferenceManager userPreferenceManager;

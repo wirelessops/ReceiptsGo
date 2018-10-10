@@ -13,13 +13,12 @@ import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link co.smartreceipts.android.persistence.database.tables.PaymentMethodsTable}
  */
-public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<PaymentMethod, PrimaryKey<PaymentMethod, Integer>> {
+public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<PaymentMethod> {
 
     private final SyncStateAdapter mSyncStateAdapter;
 
@@ -70,10 +69,10 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
 
     @NonNull
     @Override
-    public PaymentMethod build(@NonNull PaymentMethod paymentMethod, @NonNull PrimaryKey<PaymentMethod, Integer> primaryKey,
+    public PaymentMethod build(@NonNull PaymentMethod paymentMethod, int primaryKey,
                                @NonNull UUID uuid, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         return new PaymentMethodBuilderFactory()
-                .setId(primaryKey.getPrimaryKeyValue(paymentMethod))
+                .setId(primaryKey)
                 .setUuid(uuid)
                 .setMethod(paymentMethod.getMethod())
                 .setSyncState(mSyncStateAdapter.get(paymentMethod.getSyncState(), databaseOperationMetadata))

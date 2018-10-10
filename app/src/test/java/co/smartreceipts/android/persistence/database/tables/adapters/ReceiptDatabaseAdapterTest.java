@@ -18,10 +18,10 @@ import java.util.Collections;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
@@ -31,7 +31,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.persistence.database.tables.keys.PrimaryKey;
 import co.smartreceipts.android.sync.model.SyncState;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
@@ -47,7 +46,6 @@ import static org.mockito.Mockito.when;
 public class ReceiptDatabaseAdapterTest {
 
     private static final int ID = 5;
-    private static final int PRIMARY_KEY_ID = 11;
 
     private static final UUID RECEIPT_UUID = UUID.randomUUID();
     private static final int PARENT_TRIP_ID = 128;
@@ -84,13 +82,13 @@ public class ReceiptDatabaseAdapterTest {
     ReceiptDatabaseAdapter mReceiptDatabaseAdapter;
 
     @Mock
-    Table<Trip, Integer> mTripsTable;
+    Table<Trip> mTripsTable;
 
     @Mock
-    Table<PaymentMethod, Integer> mPaymentMethodsTable;
+    Table<PaymentMethod> mPaymentMethodsTable;
 
     @Mock
-    Table<Category, Integer> mCategoriesTable;
+    Table<Category> mCategoriesTable;
 
     @Mock
     StorageManager mStorageManager;
@@ -106,9 +104,6 @@ public class ReceiptDatabaseAdapterTest {
 
     @Mock
     Price mPrice, mTax;
-
-    @Mock
-    PrimaryKey<Receipt, Integer> mPrimaryKey;
 
     @Mock
     SyncStateAdapter mSyncStateAdapter;
@@ -229,7 +224,6 @@ public class ReceiptDatabaseAdapterTest {
         when(mPaymentMethodsTable.findByPrimaryKey(PAYMENT_METHOD_ID)).thenReturn(Single.just(PAYMENT_METHOD));
         when(mCategoriesTable.findByPrimaryKey(CATEGORY_ID)).thenReturn(Single.just(CATEGORY));
 
-        when(mPrimaryKey.getPrimaryKeyValue(mReceipt)).thenReturn(PRIMARY_KEY_ID);
         when(mStorageManager.getFile(PARENT_DIR, RECEIPT_FILE.getName())).thenReturn(RECEIPT_FILE);
 
         when(mSyncStateAdapter.read(mCursor)).thenReturn(mSyncState);
@@ -525,7 +519,7 @@ public class ReceiptDatabaseAdapterTest {
 
     @Test
     public void build() throws Exception {
-        final Receipt receipt = new ReceiptBuilderFactory(PRIMARY_KEY_ID)
+        final Receipt receipt = new ReceiptBuilderFactory(ID)
                 .setUuid(RECEIPT_UUID)
                 .setTrip(mTrip)
                 .setName(NAME)
@@ -548,8 +542,8 @@ public class ReceiptDatabaseAdapterTest {
                 .setExtraEditText3(EXTRA3)
                 .setSyncState(mGetSyncState)
                 .build();
-        assertEquals(receipt, mReceiptDatabaseAdapter.build(mReceipt, mPrimaryKey, RECEIPT_UUID, mock(DatabaseOperationMetadata.class)));
-        assertEquals(receipt.getSyncState(), mReceiptDatabaseAdapter.build(mReceipt, mPrimaryKey, RECEIPT_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
+        assertEquals(receipt, mReceiptDatabaseAdapter.build(mReceipt, ID, RECEIPT_UUID, mock(DatabaseOperationMetadata.class)));
+        assertEquals(receipt.getSyncState(), mReceiptDatabaseAdapter.build(mReceipt, ID, RECEIPT_UUID, mock(DatabaseOperationMetadata.class)).getSyncState());
     }
 
 }

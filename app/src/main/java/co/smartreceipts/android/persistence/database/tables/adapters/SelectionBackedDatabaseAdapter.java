@@ -7,10 +7,9 @@ import android.support.annotation.NonNull;
  * A slightly extended version of the {@link DatabaseAdapter} contract that supports a specific selection type
  *
  * @param <ModelType> the model object type that this will be used to create
- * @param <KeyType> he class type that represents the primary key (e.g. {@link Integer}, {@link String}).
  * @param <SelectionModelType> the model type that was used in the 'WHERE' part of the 'SELECT' statement
  */
-public interface SelectionBackedDatabaseAdapter<ModelType, KeyType, SelectionModelType> extends DatabaseAdapter<ModelType, KeyType> {
+public interface SelectionBackedDatabaseAdapter<ModelType, SelectionModelType> extends DatabaseAdapter<ModelType> {
 
     /**
      * Consumes a database cursor in order to read a single entry for a given selection
