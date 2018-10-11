@@ -45,3 +45,6 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+# Translation Tools
+scripts/logs/

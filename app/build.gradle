@@ -191,4 +191,18 @@ task secretsExtraction << {
     println ""
 }
 
+task translateToIOS << {
+     description "Twine-translate Android .xml locale files to iOS, check for differences in iOS GitHub repo, create pull request for the iOS repo with the new translations if need be"
+     exec {
+         workingDir rootDir
+         executable "chmod"
+         args = ["+x", "${rootDir}/scripts/barebones-locale-tool.sh"]
+         // Note: Used for Travis execution.
+     }
+     exec {
+         workingDir rootDir
+         executable "${rootDir}/scripts/barebones-locale-tool.sh"
+     }
+ }
+
 preBuild.dependsOn secretsExtraction
