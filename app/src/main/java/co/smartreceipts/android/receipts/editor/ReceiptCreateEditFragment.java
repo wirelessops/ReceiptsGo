@@ -884,12 +884,17 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                 if (selectedItem instanceof AutoCompleteResult) {
                     //noinspection unchecked
                     final AutoCompleteResult<Receipt> selectedAutoCompleteResult = (AutoCompleteResult<Receipt>) selectedItem;
-                    final Receipt receipt = selectedAutoCompleteResult.getItem();
+                    final Receipt firstReceipt = selectedAutoCompleteResult.getFirstItem();
+
+                    // Only update the price if: no text is set AND the next item price == the first
                     if (priceBox.getText().length() == 0) {
-                        priceBox.setText(receipt.getPrice().getDecimalFormattedPrice());
+                        final Receipt secondReceipt = selectedAutoCompleteResult.getSecondItem();
+                        if (secondReceipt != null && firstReceipt.getPrice().getDecimalFormattedPrice().equals(secondReceipt.getPrice().getDecimalFormattedPrice())) {
+                            priceBox.setText(firstReceipt.getPrice().getDecimalFormattedPrice());
+                        }
                     }
 
-                    final int categoryIndex = categoriesList.indexOf(receipt.getCategory());
+                    final int categoryIndex = categoriesList.indexOf(firstReceipt.getCategory());
                     if (categoryIndex > 0) {
                         categoriesSpinner.setSelection(categoryIndex);
                     }

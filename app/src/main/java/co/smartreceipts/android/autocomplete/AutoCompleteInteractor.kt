@@ -45,14 +45,17 @@ class AutoCompleteInteractor<Type> constructor(private val provider: AutoComplet
                         .subscribeOn(backgroundScheduler)
                         .flatMapMaybe { getResults ->
                             val results = mutableListOf<AutoCompleteResult<Type>>()
-                            val resultsSet = mutableSetOf<CharSequence>()
+                            val resultsSet = mutableMapOf<CharSequence, AutoCompleteResult<Type>>()
                             getResults.forEach {
                                 if (resultsChecker.matchesInput(input, field, it)) {
                                     val displayName = resultsChecker.getValue(field, it)
                                     // Only allow input with new display names
                                     if (!resultsSet.contains(displayName)) {
-                                        resultsSet.add(displayName)
-                                        results.add(AutoCompleteResult(displayName, it))
+                                        val result = AutoCompleteResult(displayName, it)
+                                        resultsSet[displayName] = result
+                                        results.add(result)
+                                    } else {
+                                        resultsSet[displayName]!!.additionalItems.add(it)
                                     }
                                 }
                             }
