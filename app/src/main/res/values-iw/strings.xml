@@ -421,7 +421,6 @@
     <string name="column_item_exchange_rate">שער חליפין</string>
     <string name="column_item_pictured">בתמונה</string>
     <string name="column_item_reimbursable">בר-החזר</string>
-    <string name="column_item_deprecated_expensable" translatable="false">Expensable</string>
     <string name="column_item_index">אינדקס קבלה</string>
     <string name="column_item_id">מזהה קבלה</string>
     <string name="column_item_payment_method">אמצעי תשלום</string>
