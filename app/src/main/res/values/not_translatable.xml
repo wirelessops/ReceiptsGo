@@ -20,14 +20,17 @@
     <string name="original_column_item_image_file_name_en_us_name" translatable="false">Image Name</string>
     <string name="original_column_item_image_path_en_us_name" translatable="false">Image Path</string>
     <!-- **Please note that for _en_us_namef translatable="false" lex purposes, some of these use the legacy names above** -->
+    <string name="original_column_item_receipt_price_minus_tax_en_us_name" translatable="false">Price Minus Tax"</string>
     <string name="original_column_item_converted_price_exchange_rate_en_us_name" translatable="false">Price (Exchanged)</string>
     <string name="original_column_item_converted_tax_exchange_rate_en_us_name" translatable="false">Tax (Exchanged)</string>
     <string name="original_column_item_converted_price_plus_tax_exchange_rate_en_us_name" translatable="false">Price Plus Tax (Exchanged)</string>
+    <string name="original_column_item_converted_price_minus_tax_exchange_rate_en_us_name" translatable="false">Price Minus Tax (Exchanged)</string>
     <string name="original_column_item_exchange_rate_en_us_name" translatable="false">Exchange Rate</string>
     <string name="original_column_item_pictured_en_us_name" translatable="false">Pictured</string>
     <string name="original_column_item_reimbursable_en_us_name" translatable="false">Reimbursable</string>
     <string name="original_column_item_index_en_us_name" translatable="false">Receipt Index</string>
     <string name="original_column_item_id_en_us_name" translatable="false">Receipt ID</string>
+    <string name="original_column_item_payment_method_en_us_name">Payment Method</string>
 
     <!--Supported languages-->
     <string name="language_en_entry" translatable="false">en</string>
