@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class OrganizationSettingsKt(
+data class OrganizationSettings(
 
     //TODO 20.08.18 shouldn't ne nonnull?
 
