@@ -101,6 +101,7 @@ android {
         implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
         implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
         implementation "com.squareup.moshi:moshi:$MOSHI_VERSION"
+        implementation "com.squareup.moshi:moshi-adapters:$MOSHI_VERSION"
         kapt "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
         implementation "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
 

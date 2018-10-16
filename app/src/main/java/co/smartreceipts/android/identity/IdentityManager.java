@@ -27,7 +27,7 @@ import co.smartreceipts.android.identity.apis.logout.LogoutResponse;
 import co.smartreceipts.android.identity.apis.logout.LogoutService;
 import co.smartreceipts.android.identity.apis.me.MeResponse;
 import co.smartreceipts.android.identity.apis.me.MeService;
-import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponseKt;
+import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;
 import co.smartreceipts.android.identity.apis.signup.SignUpPayload;
 import co.smartreceipts.android.identity.apis.signup.SignUpService;
 import co.smartreceipts.android.identity.store.EmailAddress;
@@ -213,7 +213,7 @@ public class IdentityManager implements IdentityStore {
     }
 
     @NonNull
-    public Observable<OrganizationsResponseKt> getOrganizations() {
+    public Observable<OrganizationsResponse> getOrganizations() {
         return organizationManager.getOrganizations();
     }
 }
