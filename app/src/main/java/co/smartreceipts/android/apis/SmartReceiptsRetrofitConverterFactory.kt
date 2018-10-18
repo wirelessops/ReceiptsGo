@@ -16,25 +16,22 @@ class SmartReceiptsRetrofitConverterFactory @Inject constructor(moshiBuilder: Sm
     @Retention(AnnotationRetention.RUNTIME)
     annotation class MoshiType
 
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class GsonType
-
     private val moshi: MoshiConverterFactory = MoshiConverterFactory.create(moshiBuilder.create())
     private val gson: GsonConverterFactory = GsonConverterFactory.create(gsonBuilder.create())
 
     override fun responseBodyConverter(type: Type, annotations: Array<Annotation>, retrofit: Retrofit): Converter<ResponseBody, *>? {
+        var isMoshi = false
+
         for (annotation in annotations) {
-
             if (annotation.annotationClass == MoshiType::class) {
-                return moshi.responseBodyConverter(type, annotations, retrofit)
+                isMoshi = true
             }
-
-            if (annotation.annotationClass == GsonType::class) {
-                return gson.responseBodyConverter(type, annotations, retrofit)
-            }
-
         }
 
-        return null
+        return if (isMoshi) {
+            moshi.responseBodyConverter(type, annotations, retrofit)
+        } else {
+            gson.responseBodyConverter(type, annotations, retrofit)
+        }
     }
 }
