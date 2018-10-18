@@ -6,11 +6,14 @@ import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.apis.organizations.Organization;
-import co.smartreceipts.android.identity.apis.organizations.OrganizationSettings;
+import co.smartreceipts.android.identity.apis.organizations.AppSettings.OrganizationSettings;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsService;
 import co.smartreceipts.android.identity.store.IdentityStore;
@@ -62,11 +65,13 @@ public class OrganizationManager {
 
     @NonNull
     private Observable<Object> applyOrganizationsResponse(@NonNull final OrganizationsResponse response) {
+        Logger.debug(this, "Got OrganizationsResponse: " + response.toString());
         return getPrimaryOrganization(response)
                 .flatMap(organization -> getOrganizationSettings(organization)
                         .flatMap(settings -> userPreferenceManager.getUserPreferencesObservable()
                                 .flatMapIterable(userPreferences -> userPreferences)
                                 .flatMap(userPreference -> apply(settings, userPreference))));
+        // TODO: 19.10.2018 gets several organizations.. as much as number of prefs were applied
     }
 
     @NonNull
@@ -99,31 +104,40 @@ public class OrganizationManager {
     @Nullable
     @SuppressWarnings("unchecked")
     public <T> Observable<T> apply(@NonNull OrganizationSettings settings, @NonNull UserPreference<T> toPreference) {
+        Logger.debug(OrganizationManager.this, "Applying organization settings");
         final String preferenceName = userPreferenceManager.name(toPreference);
-        // TODO: 17.08.2018 settings were JsonObject. fix it
-//        if (settings.has(preferenceName)) {
-//            final JsonElement element = settings.get(preferenceName);
-//            if (!element.isJsonNull()) {
-//                Logger.debug(OrganizationManager.this, "Giving preference \'{}\' a value of {}.", preferenceName, element);
-//                if (Boolean.class.equals(toPreference.getType())) {
-//                    return userPreferenceManager.setObservable(toPreference, (T) Boolean.valueOf(element.getAsBoolean()));
-//                } else if (String.class.equals(toPreference.getType())) {
-//                    return userPreferenceManager.setObservable(toPreference, (T) element.getAsString());
-//                } else if (Float.class.equals(toPreference.getType())) {
-//                    return userPreferenceManager.setObservable(toPreference, (T) Float.valueOf(element.getAsFloat()));
-//                } else if (Integer.class.equals(toPreference.getType())) {
-//                    return userPreferenceManager.setObservable(toPreference, (T) Integer.valueOf(element.getAsInt()));
-//                } else {
-//                    return Observable.error(new Exception("Unsupported organization setting type for " + preferenceName));
-//                }
-//            } else {
-//                Logger.debug(OrganizationManager.this, "Skipping preference \'{}\', which is defined as null.", preferenceName, element);
-//                return Observable.empty();
-//            }
-//        } else {
-//            Logger.warn(OrganizationManager.this, "Failed to find preference: {}", preferenceName);
+        final JSONObject settingsObject = settings.getJsonObject();
+
+        if (!settingsObject.has(preferenceName)) {
+            Logger.warn(OrganizationManager.this, "Failed to find preference: {}", preferenceName);
             return Observable.empty();
-//        }
+        }
+
+        if (settingsObject.isNull(preferenceName)) {
+            Logger.debug(OrganizationManager.this, "Skipping preference \'{}\', which is defined as null.", preferenceName);
+            return Observable.empty();
+        }
+
+        try {
+            T preferenceValue;
+            if (Boolean.class.equals(toPreference.getType())) {
+                preferenceValue = (T) Boolean.valueOf(settingsObject.getBoolean(preferenceName));
+            } else if (String.class.equals(toPreference.getType())) {
+                preferenceValue = (T) settingsObject.getString(preferenceName);
+            } else if (Float.class.equals(toPreference.getType())) { // TODO: 19.10.2018 check float
+                preferenceValue = (T) Float.valueOf(settingsObject.getString(preferenceName));
+            } else if (Integer.class.equals(toPreference.getType())) {
+                preferenceValue = (T) Integer.valueOf(settingsObject.getInt(preferenceName));
+            } else {
+                return Observable.error(new Exception("Unsupported organization setting type for " + preferenceName));
+            }
+
+            return userPreferenceManager.setObservable(toPreference, preferenceValue);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return Observable.error(new Exception("Unsupported organization setting type for " + preferenceName));
+        }
     }
 
 }

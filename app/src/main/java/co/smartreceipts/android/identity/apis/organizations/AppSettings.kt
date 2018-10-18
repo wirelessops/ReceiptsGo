@@ -4,6 +4,7 @@ import co.smartreceipts.android.model.Category
 import co.smartreceipts.android.model.PaymentMethod
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
 @JsonClass(generateAdapter = true)
 class AppSettings(
@@ -19,3 +20,7 @@ class AppSettings(
     @Json(name = "Categories") val categories: List<Category>,
     @Json(name = "PaymentMethods") val paymentMethods: List<PaymentMethod>
 )
+
+{
+    data class OrganizationSettings(val jsonObject: JSONObject)
+}

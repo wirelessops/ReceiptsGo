@@ -188,11 +188,46 @@ class OrganizationsResponseTest {
 
         val configurations = appSettings.configurations
         assertNotNull(configurations)
-        assertNull(configurations.isSettingsEnabled) //todo 14.10.18 server gets null now
+        assertNull(configurations.isSettingsEnabled)
 
         val settings = appSettings.settings
         assertNotNull(settings)
-        //todo 14.10.18 test organization settings
+        val jsonObject = settings.jsonObject
+
+        assertTrue(jsonObject.has("TripDuration") && jsonObject.isNull("TripDuration"))
+        assertTrue(jsonObject.has("isocurr") && !jsonObject.isNull("isocurr") && jsonObject.getString("isocurr") == "AED")
+        assertTrue(jsonObject.has("dateseparator") && !jsonObject.isNull("dateseparator") && jsonObject.getString("dateseparator") == "-")
+        assertTrue(jsonObject.has("trackcostcenter") && jsonObject.isNull("trackcostcenter"))
+        assertTrue(jsonObject.has("PredictCats") && jsonObject.isNull("PredictCats"))
+        assertTrue(jsonObject.has("MatchNameCats") && jsonObject.isNull("MatchNameCats"))
+        assertTrue(jsonObject.has("MatchCommentCats") && jsonObject.isNull("MatchCommentCats"))
+        assertTrue(jsonObject.has("OnlyIncludeExpensable") && jsonObject.isNull("OnlyIncludeExpensable"))
+        assertTrue(jsonObject.has("ExpensableDefault") && jsonObject.isNull("ExpensableDefault"))
+        assertTrue(jsonObject.has("IncludeTaxField") && jsonObject.isNull("IncludeTaxField"))
+        assertTrue(jsonObject.has("TaxPercentage") && jsonObject.isNull("TaxPercentage"))
+        assertTrue(jsonObject.has("PreTax") && jsonObject.isNull("PreTax"))
+        assertTrue(jsonObject.has("EnableAutoCompleteSuggestions") && jsonObject.isNull("EnableAutoCompleteSuggestions"))
+        assertTrue(jsonObject.has("MinReceiptPrice") && jsonObject.isNull("MinReceiptPrice"))
+        assertTrue(jsonObject.has("DefaultToFirstReportDate") && jsonObject.isNull("DefaultToFirstReportDate"))
+        assertTrue(jsonObject.has("ShowReceiptID") && jsonObject.isNull("ShowReceiptID"))
+        assertTrue(jsonObject.has("UseFullPage") && jsonObject.isNull("UseFullPage"))
+        assertTrue(jsonObject.has("UsePaymentMethods") && jsonObject.isNull("UsePaymentMethods"))
+        assertTrue(jsonObject.has("IncludeCSVHeaders") && jsonObject.isNull("IncludeCSVHeaders"))
+        assertTrue(jsonObject.has("PrintByIDPhotoKey") && jsonObject.isNull("PrintByIDPhotoKey"))
+        assertTrue(jsonObject.has("PrintCommentByPhoto") && jsonObject.isNull("PrintCommentByPhoto"))
+        assertTrue(jsonObject.has("EmailTo") && !jsonObject.isNull("EmailTo") && jsonObject.getString("EmailTo").isEmpty())
+        assertTrue(jsonObject.has("EmailCC") && !jsonObject.isNull("EmailCC") && jsonObject.getString("EmailCC").isEmpty())
+        assertTrue(jsonObject.has("EmailBCC") && !jsonObject.isNull("EmailBCC") && jsonObject.getString("EmailBCC").isEmpty())
+        assertTrue(jsonObject.has("EmailSubject") && !jsonObject.isNull("EmailSubject") && jsonObject.getString("EmailSubject").isEmpty())
+        assertTrue(jsonObject.has("SaveBW") && jsonObject.isNull("SaveBW"))
+        assertTrue(jsonObject.has("LayoutIncludeReceiptDate") && jsonObject.isNull("LayoutIncludeReceiptDate"))
+        assertTrue(jsonObject.has("LayoutIncludeReceiptCategory") && jsonObject.isNull("LayoutIncludeReceiptCategory"))
+        assertTrue(jsonObject.has("LayoutIncludeReceiptPicture") && jsonObject.isNull("LayoutIncludeReceiptPicture"))
+        assertTrue(jsonObject.has("MileageTotalInReport") && jsonObject.isNull("MileageTotalInReport"))
+        assertTrue(jsonObject.has("MileageRate") && jsonObject.isNull("MileageRate"))
+        assertTrue(jsonObject.has("MileagePrintTable") && jsonObject.isNull("MileagePrintTable"))
+        assertTrue(jsonObject.has("MileageAddToPDF") && jsonObject.isNull("MileageAddToPDF"))
+        assertTrue(jsonObject.has("PdfFooterString") && jsonObject.isNull("PdfFooterString"))
 
     }
 }
