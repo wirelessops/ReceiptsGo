@@ -47,17 +47,17 @@ class MeResponseTest {
                 "   \"user\":{\n" +
                 "      \"id\":\"1234\",\n" +
                 "      \"email\":\"email@email.com\",\n" +
-                "      \"created_at\":\"2014-09-11T03:00:12.368Z\",\n" +
+                "      \"created_at_iso8601\":\"2014-09-11T03:00:12.368Z\",\n" +
                 "      \"name\":\"Name\",\n" +
                 "      \"display_name\":\"Display Name\",\n" +
                 "      \"provider\":\"Provider\",\n" +
                 "      \"registration_ids\":[\n" +
                 "         \"REGISTRATION_ID\"\n" +
                 "      ],\n" +
-                "      \"confirmed_at\":\"2014-09-22T11:06:33.556Z\",\n" +
-                "      \"confirmation_sent_at\":null,\n" +
+                "      \"confirmed_at_iso8601\":\"2014-09-22T11:06:33.556Z\",\n" +
+                "      \"confirmation_sent_at_iso8601\":null,\n" +
                 "      \"cognito_token\":\"COGNITO_TOKEN\",\n" +
-                "      \"cognito_token_expires_at\":\"2015-09-22T11:06:33.556Z\",\n" +
+                "      \"cognito_token_expires_at_iso8601\":\"2015-09-22T11:06:33.556Z\",\n" +
                 "      \"identity_id\":\"IDENTITY_ID\",\n" +
                 "      \"recognitions_available\":359\n" +
                 "   }\n" +

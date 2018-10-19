@@ -26,7 +26,7 @@ class SubscriptionsApiResponseTest {
                 "      \"subscription_provider\": \"Stripe\",\n" +
                 "      \"product_name\": \"Smart Receipts Plus\",\n" +
                 "      \"purchased_at\": \"2018-08-22T22:13:08.000Z\",\n" +
-                "      \"expires_at\": \"2018-09-22T22:13:08.000Z\"\n" +
+                "      \"expires_at_iso8601\": \"2018-09-22T22:13:08.000Z\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}"
@@ -70,7 +70,7 @@ class SubscriptionsApiResponseTest {
 
         val iso8601DateFormat = Iso8601DateFormat()
         assertEquals("2018-08-22T22:13:08.000Z", iso8601DateFormat.format(subscription.purchased_at))
-        assertEquals("2018-09-22T22:13:08.000Z", iso8601DateFormat.format(subscription.expires_at))
+        assertEquals("2018-09-22T22:13:08.000Z", iso8601DateFormat.format(subscription.expires_at_iso8601))
     }
 
     @Test

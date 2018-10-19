@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String cognito_token;
     private String identity_id;
     private Date cognito_token_expires_at;
+    private Date cognito_token_expires_at_iso8601;
     private int recognitions_available;
 
     public User(@NonNull List<String> registrationIds) {
@@ -61,8 +62,14 @@ public class User implements Serializable {
         return identity_id;
     }
 
+    @Nullable
     public Date getCognitoTokenExpiresAt() {
-        return cognito_token_expires_at;
+        // Supports a fallback until we upgrade our service to avoid this entirely
+        if (cognito_token_expires_at != null) {
+            return cognito_token_expires_at;
+        } else {
+            return cognito_token_expires_at_iso8601;
+        }
     }
 
     public int getRecognitionsAvailable() {

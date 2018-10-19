@@ -11,9 +11,7 @@ public class PurchaseResponse {
         private String user_id;
         private String pay_service;
         private String purchase_id;
-        private Date purchase_time;
         private String status;
-        private Date created_at;
     }
 
 }

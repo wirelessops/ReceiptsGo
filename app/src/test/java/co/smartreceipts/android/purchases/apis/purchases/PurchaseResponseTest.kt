@@ -41,9 +41,9 @@ class PurchaseResponseTest {
                 "      \"user_id\":\"5678\",\n" +
                 "      \"pay_service\":\"Google Play\",\n" +
                 "      \"purchase_id\":\"GPA.12345\",\n" +
-                "      \"purchase_time\":\"2018-09-27T19:54:38.000Z\",\n" +
+                "      \"purchase_time_iso8601\":\"2018-09-27T19:54:38.000Z\",\n" +
                 "      \"status\":\"Purchased\",\n" +
-                "      \"created_at\":\"2018-09-27T19:54:42.000Z\"\n" +
+                "      \"created_at_iso8601\":\"2018-09-27T19:54:42.000Z\"\n" +
                 "   }\n" +
                 "}"
     }

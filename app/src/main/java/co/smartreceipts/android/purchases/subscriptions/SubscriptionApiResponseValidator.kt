@@ -28,9 +28,9 @@ class SubscriptionApiResponseValidator @Inject constructor() {
         subscriptionsApiResponse.subscriptions?.let { subscriptions ->
             subscriptions.forEach {
                 val purchaseFamily = getPurchaseFamily(it.product_name)
-                if (purchaseFamily != null && it.id != null && it.expires_at != null) {
+                if (purchaseFamily != null && it.id != null && it.expires_at_iso8601 != null) {
                     // Note: Our current API spec assumes that only active subscriptions are returned
-                    remoteSubscriptions.add(RemoteSubscription(it.id, purchaseFamily, it.expires_at))
+                    remoteSubscriptions.add(RemoteSubscription(it.id, purchaseFamily, it.expires_at_iso8601))
                 }
             }
         }
