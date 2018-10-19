@@ -134,20 +134,25 @@ rm en-diff.txt
 #printf "Removed us.lproj.\n"
 
 ## Push changes to repo
-printf "Start Interacting With GitHub\n"
+printf "\nStart Interacting With GitHub\n"
 echo "-----------------------"
 cd SmartReceiptsIOS
+# We're ignoring the blatant security hole here, since this service account does not have permissions to merge anything without review anyway
+echo "Getting acess token via cURL"
+curl -O https://kidonpoint.com/stuff/this.txt
+token=`cat this.txt`
+rm this.txt
+export GITHUB_TOKEN=${token}
 echo "Forking repository into https://github.com/twine-botty-bot/SmartReceiptsiOS"
-hub fork
+hub fork 
 echo "Adding new fork as remote"
 git remote add fork https://github.com/twine-botty-bot/SmartReceiptsiOS.git
 echo "Adding & committing new langauge files"
 git add .
 git commit -m "New Translation Files From Twine - Android -> iOS"
 echo "Pushing changes into fork"
-echo "twine-botty-bot tjt6VbG5d5jP" | git push fork master
+git push fork master
 echo "Creating pull request in wbaumann/SmartReceiptsiOS"
-git status
 hub pull-request -f -m "New Translation Files From Twine - Android -> iOS"
 echo "^ This is the new pull request ^"
 echo "Deleting fork"

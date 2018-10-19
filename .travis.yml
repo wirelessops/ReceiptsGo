@@ -43,6 +43,10 @@ notifications:
     on_failure: always # default: always
 
 before_install:
+- sudo add-apt-repository -y ppa:cpick/hub # adding ubuntu repo for downloading hub
+- sudo apt-get -y update # get latest versions of dependencies before installing hub
+- sudo apt-get -y install hub # install hub
+- gem install twine # install hub
 - mkdir "$ANDROID_HOME/licenses" || true
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
