@@ -12,6 +12,7 @@
     <string name="menu_main_ocr_configuration">Scans automatiques (OCR)</string>
     <string name="menu_main_export">Sauvegarde</string>
     <string name="menu_main_usage_guide">Guide d\'utilisation</string>
+    <string name="menu_main_my_account">Mon compte</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">Ajouter</string>

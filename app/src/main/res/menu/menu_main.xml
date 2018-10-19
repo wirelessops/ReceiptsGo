@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" 
-      xmlns:app="http://schemas.android.com/apk/res-auto" >
-    <item android:id="@+id/menu_main_settings"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_main_settings"
         android:title="@string/menu_main_settings"
         app:showAsAction="never" />
-    <item android:id="@+id/menu_main_ocr_configuration"
-          android:title="@string/menu_main_ocr_configuration"
-          app:showAsAction="never" />
-    <item android:id="@+id/menu_main_export"
+    <item
+        android:id="@+id/menu_main_ocr_configuration"
+        android:title="@string/menu_main_ocr_configuration"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_main_export"
         android:title="@string/menu_main_export"
         app:showAsAction="never" />
-    <item android:id="@+id/menu_main_pro_subscription"
-          android:title="@string/pro_subscription"
-          app:showAsAction="never" />
-    <item android:id="@+id/menu_main_usage_guide"
-          android:title="@string/menu_main_usage_guide"
-          app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_main_pro_subscription"
+        android:title="@string/pro_subscription"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_main_usage_guide"
+        android:title="@string/menu_main_usage_guide"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_main_my_account"
+        android:title="@string/menu_main_my_account"
+        app:showAsAction="never" />
 </menu>

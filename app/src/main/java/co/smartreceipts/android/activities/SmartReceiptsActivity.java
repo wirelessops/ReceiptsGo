@@ -21,6 +21,7 @@ import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -77,6 +78,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
 
     @Inject
     IntentImportInformationPresenter intentImportInformationPresenter;
+
+    @Inject
+    IdentityManager identityManager; // TODO: 18.08.2018 remove
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
@@ -191,6 +195,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
         } else if (item.getItemId() == R.id.menu_main_usage_guide) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
             analytics.record(Events.Navigation.UsageGuideOverflow);
+            return true;
+        } else if (item.getItemId() == R.id.menu_main_my_account) {
+            navigationHandler.navigateToLoginScreen();
+            // TODO: 19.10.2018 show organizations for logged in users
+//            final List<OrganizationsResponse> organizationsResponseKts = identityManager.getOrganizations().toList().blockingGet();
             return true;
         } else {
             return super.onOptionsItemSelected(item);

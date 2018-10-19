@@ -12,6 +12,7 @@
     <string name="menu_main_ocr_configuration">Escaneos automáticos (OCR)</string>
     <string name="menu_main_export">Copia de seguridad</string>
     <string name="menu_main_usage_guide">Guía de uso</string>
+    <string name="menu_main_my_account">Mi cuenta</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">Agregar</string>
