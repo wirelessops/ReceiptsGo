@@ -3,12 +3,18 @@ package co.smartreceipts.android.identity.apis.organizations
 import co.smartreceipts.android.apis.moshi.SmartReceiptsMoshiBuilder
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory
-import com.squareup.moshi.Moshi
+import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryCodeColumn
+import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
+import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
+import org.intellij.lang.annotations.Language
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.util.*
 
@@ -20,109 +26,117 @@ class OrganizationsResponseTest {
                 "{\n" +
                 "}"
 
-        private const val JSON = "{\n" +
-                "    \"organizations\": [\n" +
-                "        {\n" +
-                "            \"id\": \"2587917096\",\n" +
-                "            \"name\": \"Test organization\",\n" +
-                "            \"created_at_iso8601\": \"2018-08-25T12:48:47.628Z\",\n" +
-                "            \"app_settings\": {\n" +
-                "                \"Configurations\": {\n" +
-                "                    \"IsSettingsEnable\": null\n" +
-                "                },\n" +
-                "                \"Settings\": {\n" +
-                "                    \"TripDuration\": null,\n" +
-                "                    \"isocurr\": \"AED\",\n" +
-                "                    \"dateseparator\": \"-\",\n" +
-                "                    \"trackcostcenter\": null,\n" +
-                "                    \"PredictCats\": null,\n" +
-                "                    \"MatchNameCats\": null,\n" +
-                "                    \"MatchCommentCats\": null,\n" +
-                "                    \"OnlyIncludeExpensable\": null,\n" +
-                "                    \"ExpensableDefault\": null,\n" +
-                "                    \"IncludeTaxField\": null,\n" +
-                "                    \"TaxPercentage\": null,\n" +
-                "                    \"PreTax\": null,\n" +
-                "                    \"EnableAutoCompleteSuggestions\": null,\n" +
-                "                    \"MinReceiptPrice\": null,\n" +
-                "                    \"DefaultToFirstReportDate\": null,\n" +
-                "                    \"ShowReceiptID\": null,\n" +
-                "                    \"UseFullPage\": null,\n" +
-                "                    \"UsePaymentMethods\": null,\n" +
-                "                    \"IncludeCSVHeaders\": null,\n" +
-                "                    \"PrintByIDPhotoKey\": null,\n" +
-                "                    \"PrintCommentByPhoto\": null,\n" +
-                "                    \"EmailTo\": \"\",\n" +
-                "                    \"EmailCC\": \"\",\n" +
-                "                    \"EmailBCC\": \"\",\n" +
-                "                    \"EmailSubject\": \"\",\n" +
-                "                    \"SaveBW\": null,\n" +
-                "                    \"LayoutIncludeReceiptDate\": null,\n" +
-                "                    \"LayoutIncludeReceiptCategory\": null,\n" +
-                "                    \"LayoutIncludeReceiptPicture\": null,\n" +
-                "                    \"MileageTotalInReport\": null,\n" +
-                "                    \"MileageRate\": null,\n" +
-                "                    \"MileagePrintTable\": null,\n" +
-                "                    \"MileageAddToPDF\": null,\n" +
-                "                    \"PdfFooterString\": null\n" +
-                "                },\n" +
-                "                \"Categories\": [\n" +
-                "                    {\n" +
-                "                        \"uuid\": \"075059fe-38c8-4fd6-b195-923448d0b08a\",\n" +
-                "                        \"Name\": \"Cat 1\",\n" +
-                "                        \"Code\": \"Cat1Code\"\n" +
-                "                    }\n" +
-                "                ],\n" +
-                "                \"PaymentMethods\": [\n" +
-                "                    {\n" +
-                "                        \"uuid\": \"41230f03-3254-4428-a806-946b9b30f935\",\n" +
-                "                        \"Code\": \"PayM1\"\n" +
-                "                    }\n" +
-                "                ],\n" +
-                "                \"CSVColumns\": [\n" +
-                "                    {\n" +
-                "                        \"uuid\": \"fff24e83-fe5a-47b5-86fa-376d449fe348\",\n" +
-                "                        \"Code\": \"CSVcol1\"\n" +
-                "                    }\n" +
-                "                ],\n" +
-                "                \"PDFColumns\": [\n" +
-                "                    {\n" +
-                "                        \"uuid\": \"bec00e55-80ad-4147-9c39-9d4a5acb635f\",\n" +
-                "                        \"Code\": \"PDFcol1\"\n" +
-                "                    }\n" +
-                "                ]\n" +
-                "            },\n" +
-                "            \"error\": {\n" +
-                "                \"has_error\": false,\n" +
-                "                \"errors\": []\n" +
-                "            },\n" +
-                "            \"organization_users\": [\n" +
-                "                {\n" +
-                "                    \"id\": 15,\n" +
-                "                    \"user_id\": 50,\n" +
-                "                    \"organization_id\": 11,\n" +
-                "                    \"role\": 1,\n" +
-                "                    \"created_at\": \"2018-08-25T12:48:49.757Z\",\n" +
-                "                    \"updated_at\": \"2018-08-25T12:48:49.757Z\"\n" +
-                "                }\n" +
-                "            ]\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}"
+        @Language("JSON")
+        private const val JSON = """{
+    "organizations": [
+        {
+            "id": "2587917096",
+            "name": "Test organization",
+            "created_at_iso8601": "2018-08-25T12:48:47.628Z",
+            "app_settings": {
+                "Configurations": {
+                    "IsSettingsEnable": null
+                },
+                "Settings": {
+                    "TripDuration": null,
+                    "isocurr": "AED",
+                    "dateseparator": "-",
+                    "trackcostcenter": null,
+                    "PredictCats": null,
+                    "MatchNameCats": null,
+                    "MatchCommentCats": null,
+                    "OnlyIncludeExpensable": null,
+                    "ExpensableDefault": null,
+                    "IncludeTaxField": null,
+                    "TaxPercentage": null,
+                    "PreTax": null,
+                    "EnableAutoCompleteSuggestions": null,
+                    "MinReceiptPrice": null,
+                    "DefaultToFirstReportDate": null,
+                    "ShowReceiptID": null,
+                    "UseFullPage": null,
+                    "UsePaymentMethods": null,
+                    "IncludeCSVHeaders": null,
+                    "PrintByIDPhotoKey": null,
+                    "PrintCommentByPhoto": null,
+                    "EmailTo": "",
+                    "EmailCC": "",
+                    "EmailBCC": "",
+                    "EmailSubject": "",
+                    "SaveBW": null,
+                    "LayoutIncludeReceiptDate": null,
+                    "LayoutIncludeReceiptCategory": null,
+                    "LayoutIncludeReceiptPicture": null,
+                    "MileageTotalInReport": null,
+                    "MileageRate": null,
+                    "MileagePrintTable": null,
+                    "MileageAddToPDF": null,
+                    "PdfFooterString": null
+                },
+                "Categories": [
+                    {
+                        "uuid": "075059fe-38c8-4fd6-b195-923448d0b08a",
+                        "Name": "Cat 1",
+                        "Code": "Cat1Code"
+                    }
+                ],
+                "PaymentMethods": [
+                    {
+                        "uuid": "41230f03-3254-4428-a806-946b9b30f935",
+                        "Code": "PayM1"
+                    }
+                ],
+                "CSVColumns": [
+                    {
+                        "uuid": "fff24e83-fe5a-47b5-86fa-376d449fe348",
+                        "column_type": 1
+                    }
+                ],
+                "PDFColumns": [
+                    {
+                        "uuid": "bec00e55-80ad-4147-9c39-9d4a5acb635f",
+                        "column_type": 1
+                    }
+                ]
+            },
+            "error": {
+                "has_error": false,
+                "errors": []
+            },
+            "organization_users": [
+                {
+                    "id": 15,
+                    "user_id": 50,
+                    "organization_id": 11,
+                    "role": 1,
+                    "created_at": "2018-08-25T12:48:49.757Z",
+                    "updated_at": "2018-08-25T12:48:49.757Z"
+                }
+            ]
+        }
+    ]
+}"""
     }
 
-    lateinit var moshi: Moshi
+    private val receiptColumnDefinitions = mock<ReceiptColumnDefinitions>()
+
+    private val jsonAdapter = SmartReceiptsMoshiBuilder(receiptColumnDefinitions).create().adapter(OrganizationsResponse::class.java)
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        moshi = SmartReceiptsMoshiBuilder().create()
+        whenever(receiptColumnDefinitions.getColumn(any(), eq(1), any(), any(), eq(UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348"))))
+            .thenReturn(ReceiptCategoryCodeColumn(-1, DefaultSyncState(), 0, UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348")))
+
+        whenever(receiptColumnDefinitions.getColumn(any(), eq(1), any(), any(), eq(UUID.fromString("bec00e55-80ad-4147-9c39-9d4a5acb635f"))))
+            .thenReturn(ReceiptCategoryCodeColumn(-1, DefaultSyncState(), 0, UUID.fromString("bec00e55-80ad-4147-9c39-9d4a5acb635f")))
+
     }
 
     @Test
     fun deserializeEmptyResponse() {
-        val response = moshi.adapter(OrganizationsResponse::class.java).fromJson(JSON_EMPTY)
+        val response = jsonAdapter.fromJson(JSON_EMPTY)
         assertNotNull(response)
+
         val organizations = response!!.organizations
         assertNotNull(organizations)
         assertTrue(organizations.isEmpty())
@@ -130,7 +144,7 @@ class OrganizationsResponseTest {
 
     @Test
     fun deserializeResponse() {
-        val response = moshi.adapter(OrganizationsResponse::class.java).fromJson(JSON)
+        val response = jsonAdapter.fromJson(JSON)
         assertNotNull(response)
 
         val organizations = response!!.organizations
@@ -141,15 +155,26 @@ class OrganizationsResponseTest {
         val organization = organizations[0]
         assertEquals("2587917096", organization.id)
         assertEquals("Test organization", organization.name)
-        //todo 14.10.18 test date
-//        assertEquals(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse("2018-08-25T12:48:47.628Z"), organization.createdAt)
 
+        // "created_at_iso8601": "2018-08-25T12:48:47.628Z"
+        val date: Date =
+            Calendar.getInstance(TimeZone.getTimeZone("GMT")).apply {
+                set(2018, 7, 25, 12, 48, 47)
+                set(Calendar.MILLISECOND, 628)
+            }
+                .time
+        assertEquals(date, organization.createdAt)
+
+
+        // Testing Errors section
         val error = organization.error
         assertNotNull(error)
         assertFalse(error.hasError)
         assertNotNull(error.errors)
         assertTrue(error.errors.isEmpty())
 
+
+        // Testing OrganizationUsers section
         val organizationUsers = organization.organizationUsers
         assertNotNull(organizationUsers)
         assertEquals(1, organizationUsers.size)
@@ -159,8 +184,18 @@ class OrganizationsResponseTest {
         assertEquals("50", user.userId)
         assertEquals("11", user.organizationId)
         assertEquals(OrganizationUser.UserRole.ADMIN, user.role)
-        //todo 14.10.18 test dates
+        // created_at": "2018-08-25T12:48:49.757Z", "updated_at": "2018-08-25T12:48:49.757Z"
+        val userCreatedDate: Date =
+            Calendar.getInstance(TimeZone.getTimeZone("GMT")).apply {
+                set(2018, 7, 25, 12, 48, 49)
+                set(Calendar.MILLISECOND, 757)
+            }
+                .time
+        assertEquals(userCreatedDate, user.createdAt)
+        assertEquals(userCreatedDate, user.updatedAt)
 
+
+        // Testing AppSettings section
         val appSettings = organization.appSettings
         assertNotNull(appSettings)
         assertNotNull(appSettings.categories)
@@ -168,28 +203,14 @@ class OrganizationsResponseTest {
         assertNotNull(appSettings.settings)
         assertNotNull(appSettings.configurations)
 
-        val categories = appSettings.categories
-        assertEquals(1, categories.size)
-        val category = CategoryBuilderFactory()
-            .setUuid(UUID.fromString("075059fe-38c8-4fd6-b195-923448d0b08a"))
-            .setName("Cat 1")
-            .setCode("Cat1Code")
-            .build()
-        assertEquals(category, categories[0])
 
-        val paymentMethods = appSettings.paymentMethods
-        assertEquals(1, paymentMethods.size)
-        val method = PaymentMethodBuilderFactory()
-            .setUuid(UUID.fromString("41230f03-3254-4428-a806-946b9b30f935"))
-            .setMethod("PayM1")
-            .build()
-        assertEquals(method, paymentMethods[0])
-
-
+        // Testing Configurations section
         val configurations = appSettings.configurations
         assertNotNull(configurations)
         assertNull(configurations.isSettingsEnabled)
 
+
+        // Testing Settings section
         val settings = appSettings.settings
         assertNotNull(settings)
         val jsonObject = settings.jsonObject
@@ -229,5 +250,41 @@ class OrganizationsResponseTest {
         assertTrue(jsonObject.has("MileageAddToPDF") && jsonObject.isNull("MileageAddToPDF"))
         assertTrue(jsonObject.has("PdfFooterString") && jsonObject.isNull("PdfFooterString"))
 
+
+        // Testing Categories section
+        val categories = appSettings.categories
+        assertEquals(1, categories.size)
+        val category = CategoryBuilderFactory()
+            .setUuid(UUID.fromString("075059fe-38c8-4fd6-b195-923448d0b08a"))
+            .setName("Cat 1")
+            .setCode("Cat1Code")
+            .build()
+        assertEquals(category, categories[0])
+
+
+        // Testing PaymentMethods section
+        val paymentMethods = appSettings.paymentMethods
+        assertEquals(1, paymentMethods.size)
+        val method = PaymentMethodBuilderFactory()
+            .setUuid(UUID.fromString("41230f03-3254-4428-a806-946b9b30f935"))
+            .setMethod("PayM1")
+            .build()
+        assertEquals(method, paymentMethods[0])
+
+
+        // Testing CsvColumns section
+        val csvColumns = appSettings.csvColumns
+        assertEquals(1, csvColumns.size)
+        val csvColumn = csvColumns[0]
+        assertEquals("fff24e83-fe5a-47b5-86fa-376d449fe348", csvColumn.uuid.toString())
+        assertEquals(1, csvColumn.type)
+
+        // Testing PdfColumns section
+        val pdfColumns = appSettings.pdfColumns
+        assertEquals(1, pdfColumns.size)
+        val pdfColumn = pdfColumns[0]
+        assertEquals("bec00e55-80ad-4147-9c39-9d4a5acb635f", pdfColumn.uuid.toString())
+        assertEquals(1, pdfColumn.type)
     }
+
 }

@@ -1,15 +1,13 @@
 package co.smartreceipts.android.apis.moshi
 
-import co.smartreceipts.android.apis.moshi.adapters.CategoryJsonAdapter
-import co.smartreceipts.android.apis.moshi.adapters.OrganizationSettingsJsonAdapter
-import co.smartreceipts.android.apis.moshi.adapters.PaymentMethodJsonAdapter
-import co.smartreceipts.android.apis.moshi.adapters.UserRoleJsonAdapter
+import co.smartreceipts.android.apis.moshi.adapters.*
+import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import java.util.*
 import javax.inject.Inject
 
-class SmartReceiptsMoshiBuilder @Inject constructor() {
+class SmartReceiptsMoshiBuilder @Inject constructor(val receiptColumnDefinitions: ReceiptColumnDefinitions) {
 
     fun create(): Moshi {
         return Moshi.Builder()
@@ -18,6 +16,7 @@ class SmartReceiptsMoshiBuilder @Inject constructor() {
             .add(Date::class.java, Rfc3339DateJsonAdapter())
             .add(UserRoleJsonAdapter())
             .add(OrganizationSettingsJsonAdapter())
+            .add(ColumnJsonAdapter(receiptColumnDefinitions))
             .build()
     }
 }
