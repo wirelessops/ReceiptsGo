@@ -18,7 +18,6 @@ import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Completable;
 
@@ -194,10 +193,8 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
                                 final ReceiptBuilderFactory builder = new ReceiptBuilderFactory(importedReceipt)
                                         .setTrip(tripMap.get(importedReceipt.getTrip()))
                                         .setCategory(categoryMap.get(importedReceipt.getCategory()))
-                                        .setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod()));
-                                if (importedReceipt.getCustomOrderId() == 0) {
-                                    builder.setCustomOrderId(ReceiptsOrderer.Companion.getDefaultCustomOrderId(importedReceipt.getDate()));
-                                }
+                                        .setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod()))
+                                        .setCustomOrderId(existingReceipt.getCustomOrderId()); // Keep the same custom order id for simplicity
                                 final Receipt receiptToUpdate = builder.build();
                                 currentDatabase.getReceiptsTable().updateBlocking(existingReceipt, receiptToUpdate, databaseOperationMetadata);
                             }
@@ -212,9 +209,6 @@ public class ByRowDatabaseMerger implements DatabaseMerger {
                             .setTrip(tripMap.get(importedReceipt.getTrip()))
                             .setCategory(categoryMap.get(importedReceipt.getCategory()))
                             .setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod()));
-                    if (importedReceipt.getCustomOrderId() == 0) {
-                        builder.setCustomOrderId(ReceiptsOrderer.Companion.getDefaultCustomOrderId(importedReceipt.getDate()));
-                    }
                     final Receipt receiptToInsert = builder.build();
                     currentDatabase.getReceiptsTable().insertBlocking(receiptToInsert, databaseOperationMetadata);
                 }

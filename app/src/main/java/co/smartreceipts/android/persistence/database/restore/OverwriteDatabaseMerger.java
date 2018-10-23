@@ -18,7 +18,6 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Completable;
 
@@ -97,9 +96,6 @@ public class OverwriteDatabaseMerger implements DatabaseMerger {
                         .setTrip(tripMap.get(importedReceipt.getTrip()))
                         .setCategory(categoryMap.get(importedReceipt.getCategory()))
                         .setPaymentMethod(paymentMethodMap.get(importedReceipt.getPaymentMethod()));
-                if (importedReceipt.getCustomOrderId() == 0) {
-                    builder.setCustomOrderId(ReceiptsOrderer.Companion.getDefaultCustomOrderId(importedReceipt.getDate()));
-                }
                 final Receipt receiptToInsert = builder.build();
                 currentDatabase.getReceiptsTable().insertBlocking(receiptToInsert, databaseOperationMetadata);
             }

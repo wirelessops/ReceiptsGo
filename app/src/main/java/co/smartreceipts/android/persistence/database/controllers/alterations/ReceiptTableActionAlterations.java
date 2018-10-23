@@ -60,48 +60,63 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     @NonNull
     @Override
     public Single<Receipt> preInsert(@NonNull final Receipt receipt) {
-        return Single.fromCallable(() ->
-                updateReceiptFileNameBlocking(receiptBuilderFactoryFactory.build(receipt).setIndex(getNextReceiptIndex(receipt)).build()));
+        return receiptsTable.get(receipt.getTrip())
+                .map(existingReceipts -> {
+                    final ReceiptBuilderFactory factory = receiptBuilderFactoryFactory.build(receipt).setIndex(getNextReceiptIndex(receipt));
+                    final long customOrderId = ReceiptsOrderer.getCustomOrderId(receipt, existingReceipts);
+                    return updateReceiptFileNameBlocking(factory.setCustomOrderId(customOrderId).build());
+                });
+
     }
 
     @NonNull
     @Override
     public Single<Receipt> preUpdate(@NonNull final Receipt oldReceipt, @NonNull final Receipt newReceipt) {
-        return Single.fromCallable(() -> {
-            if (newReceipt.getFile() != null) {
-                if (!newReceipt.getFile().equals(oldReceipt.getFile())) {
-                    // If we changed the receipt file, replace the old file name
-                    if (oldReceipt.getFile() != null) {
-                        final ReceiptBuilderFactory factory = receiptBuilderFactoryFactory.build(newReceipt);
-                        final String oldExtension = "." + UriUtils.getExtension(oldReceipt.getFile(), context);
-                        final String newExtension = "." + UriUtils.getExtension(newReceipt.getFile(), context);
-                        if (newExtension.equals(oldExtension)) {
-                            picasso.get().invalidate(oldReceipt.getFile());
-                            if (newReceipt.getFile().renameTo(oldReceipt.getFile())) {
-                                // Note: Keep 'oldReceipt' here, since File is immutable (and renamedTo doesn't change it)
-                                factory.setFile(oldReceipt.getFile());
-                            }
-                        } else {
-                            final String renamedNewFileName = oldReceipt.getFile().getName().replace(oldExtension, newExtension);
-                            final String renamedNewFilePath = newReceipt.getFile().getAbsolutePath().replace(newReceipt.getFile().getName(), renamedNewFileName);
-                            final File renamedNewFile = new File(renamedNewFilePath);
-                            if (newReceipt.getFile().renameTo(renamedNewFile)) {
-                                factory.setFile(renamedNewFile);
-                            }
-                        }
-                        return factory.build();
-                    } else {
-                        return updateReceiptFileNameBlocking(newReceipt);
+        return receiptsTable.get(newReceipt.getTrip())
+                .map(existingReceipts -> {
+                    final ReceiptBuilderFactory factory = receiptBuilderFactoryFactory.build(newReceipt);
+                    if (!oldReceipt.getDate().equals(newReceipt.getDate()) || !oldReceipt.getTimeZone().equals(newReceipt.getTimeZone())) {
+                        // If the receipt date/timezone changed, update the custom order id
+                        // Note: This approach isn't as strictly correct as the reorderReceiptsInList option, but it greatly simplifies our dependency chain
+                        // Since this is relatively rare (and can lead to a cyclic dependency), we use this to get the best guess for the next one
+                        final long customOrderId = ReceiptsOrderer.getCustomOrderId(oldReceipt, existingReceipts);
+                        factory.setCustomOrderId(customOrderId);
                     }
-                } else if (newReceipt.getIndex() != oldReceipt.getIndex()) {
-                    return updateReceiptFileNameBlocking(newReceipt);
-                } else {
-                    return newReceipt;
-                }
-            } else {
-                return newReceipt;
-            }
-        });
+
+                    if (newReceipt.getFile() != null) {
+                        // If new receipt has a file, check if we need to update our file name
+                        if (!newReceipt.getFile().equals(oldReceipt.getFile())) {
+                            // If we changed the receipt file, replace the old file name
+                            if (oldReceipt.getFile() != null) {
+                                final String oldExtension = "." + UriUtils.getExtension(oldReceipt.getFile(), context);
+                                final String newExtension = "." + UriUtils.getExtension(newReceipt.getFile(), context);
+                                if (newExtension.equals(oldExtension)) {
+                                    picasso.get().invalidate(oldReceipt.getFile());
+                                    if (newReceipt.getFile().renameTo(oldReceipt.getFile())) {
+                                        // Note: Use 'oldReceipt' here, since File is immutable (and renamedTo doesn't change it)
+                                        factory.setFile(oldReceipt.getFile());
+                                    }
+                                } else {
+                                    final String renamedNewFileName = oldReceipt.getFile().getName().replace(oldExtension, newExtension);
+                                    final String renamedNewFilePath = newReceipt.getFile().getAbsolutePath().replace(newReceipt.getFile().getName(), renamedNewFileName);
+                                    final File renamedNewFile = new File(renamedNewFilePath);
+                                    if (newReceipt.getFile().renameTo(renamedNewFile)) {
+                                        factory.setFile(renamedNewFile);
+                                    }
+                                }
+                                return factory.build();
+                            } else {
+                                return updateReceiptFileNameBlocking(factory.build());
+                            }
+                        } else if (newReceipt.getIndex() != oldReceipt.getIndex()) {
+                            return updateReceiptFileNameBlocking(factory.build());
+                        } else {
+                            return factory.build();
+                        }
+                    } else {
+                        return factory.build();
+                    }
+                });
     }
 
     @NonNull
@@ -141,7 +156,8 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
 
     @NonNull
     public Single<Receipt> preCopy(@NonNull final Receipt receipt, @NonNull final Trip toTrip) {
-        return Single.fromCallable(() -> copyReceiptFileBlocking(receipt, toTrip));
+        return receiptsTable.get(receipt.getTrip())
+                .map(receiptsInTrip -> copyReceiptFileBlocking(receipt, toTrip, receiptsInTrip));
     }
 
     public void postCopy(@NonNull Receipt oldReceipt, @Nullable Receipt newReceipt) throws Exception {
@@ -190,13 +206,10 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
     }
 
     @NonNull
-    private Receipt copyReceiptFileBlocking(@NonNull Receipt receipt, @NonNull Trip toTrip) throws IOException {
+    private Receipt copyReceiptFileBlocking(@NonNull Receipt receipt, @NonNull Trip toTrip, @NonNull List<Receipt> receiptsInTrip) throws IOException {
         final ReceiptBuilderFactory builder = receiptBuilderFactoryFactory.build(receipt);
         builder.setTrip(toTrip);
-
-        if (receipt.getCustomOrderId() != 0) {
-            ReceiptsOrderer.Companion.getDefaultCustomOrderId(receipt.getDate());
-        }
+        builder.setCustomOrderId(ReceiptsOrderer.getCustomOrderId(receipt, receiptsInTrip));
 
         if (receipt.getFile() != null && receipt.getFile().exists()) {
             final File destination = storageManager.getFile(toTrip.getDirectory(), System.currentTimeMillis() + receipt.getFileName());

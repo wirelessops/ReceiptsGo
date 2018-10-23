@@ -19,7 +19,6 @@ import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
-import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.log.Logger;
@@ -149,20 +148,11 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setExtraEditText1(extraText1)
                 .setExtraEditText2(extraText2)
                 .setExtraEditText3(extraText3);
-        
+                // Note: We don't set the custom_order_id. This happens in the ReceiptTableActionAlterations
+
         if (receipt == null) {
-            // Set the custom order id for all new receipts
-            builderFactory.setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? ReceiptsOrderer.Companion.getDefaultCustomOrderId(date) : 0);
             receiptTableController.insert(builderFactory.setFile(fragment.getFile()).build(), new DatabaseOperationMetadata());
         } else {
-            final Receipt updatedReceipt = builderFactory.build();
-            if (receipt.getDate().equals(updatedReceipt.getDate()) && receipt.getTimeZone().equals(updatedReceipt.getTimeZone())) {
-                // If we didn't change the date, keep the original custom order id
-                builderFactory.setCustomOrderId(receipt.getCustomOrderId());
-            } else {
-                // Modify the custom order id if we changed the date/timezone
-                builderFactory.setCustomOrderId(orderingPreferencesManager.isReceiptsTableOrdered() ? ReceiptsOrderer.Companion.getDefaultCustomOrderId(date) : 0);
-            }
             receiptTableController.update(receipt, builderFactory.build(), new DatabaseOperationMetadata());
         }
     }

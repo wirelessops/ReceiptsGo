@@ -12,8 +12,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
@@ -30,6 +32,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -38,8 +41,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+// TODO: Re-write this class to test with real models instead of mocks
 @RunWith(RobolectricTestRunner.class)
 public class ReceiptTableActionAlterationsTest {
+
+    private static final Date DATE = new Date(1512778546145L);
+    private static final long CUSTOM_ORDER_ID = 17509000L;
+    private static final TimeZone TIMEZONE = TimeZone.getTimeZone("America/New_York");
 
     // Class under test
     ReceiptTableActionAlterations receiptTableActionAlterations;
@@ -76,6 +84,8 @@ public class ReceiptTableActionAlterationsTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(receipt.getTrip()).thenReturn(trip);
+        when(receipt.getDate()).thenReturn(DATE);
+        when(receipt.getTimeZone()).thenReturn(TIMEZONE);
         when(trip.getDirectory()).thenReturn(new File(System.getProperty("java.io.tmpdir")));
         when(receiptBuilderFactory.build()).thenReturn(receipt);
         when(receiptBuilderFactoryFactory.build(receipt)).thenReturn(receiptBuilderFactory);
@@ -92,13 +102,21 @@ public class ReceiptTableActionAlterationsTest {
             when(receipt.getIndex()).thenReturn((Integer) invocation.getArguments()[0]);
             return receiptBuilderFactory;
         }).when(receiptBuilderFactory).setIndex(anyInt());
+        doAnswer(invocation -> {
+            when(receipt.getIndex()).thenReturn((Integer) invocation.getArguments()[0]);
+            return receiptBuilderFactory;
+        }).when(receiptBuilderFactory).setIndex(anyInt());
+        doAnswer(invocation -> {
+            when(receipt.getCustomOrderId()).thenReturn((Long) invocation.getArguments()[0]);
+            return receiptBuilderFactory;
+        }).when(receiptBuilderFactory).setCustomOrderId(anyLong());
 
         receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory, picassoLazy);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         if (file1 != null) {
             file1.delete();
         }
@@ -122,6 +140,7 @@ public class ReceiptTableActionAlterationsTest {
 
         assertNull(receipt.getFile());
         verify(receiptBuilderFactory).setIndex(4);
+        verify(receiptBuilderFactory).setCustomOrderId(CUSTOM_ORDER_ID);
     }
 
     @Test
@@ -140,6 +159,7 @@ public class ReceiptTableActionAlterationsTest {
 
         assertEquals(new File("4_name.jpg"), receipt.getFile());
         verify(receiptBuilderFactory).setIndex(4);
+        verify(receiptBuilderFactory).setCustomOrderId(CUSTOM_ORDER_ID);
     }
 
     @Test
@@ -158,11 +178,16 @@ public class ReceiptTableActionAlterationsTest {
 
         assertEquals(new File("4_before__after.jpg"), receipt.getFile());
         verify(receiptBuilderFactory).setIndex(4);
+        verify(receiptBuilderFactory).setCustomOrderId(CUSTOM_ORDER_ID);
     }
 
     @Test
     public void preUpdateWithoutFile() {
+        final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
         final Receipt oldReceipt = mock(Receipt.class);
+        when(oldReceipt.getDate()).thenReturn(DATE);
+        when(oldReceipt.getTimeZone()).thenReturn(TIMEZONE);
         when(receipt.getFile()).thenReturn(null);
 
         receiptTableActionAlterations.preUpdate(oldReceipt, receipt)
@@ -175,8 +200,12 @@ public class ReceiptTableActionAlterationsTest {
     @Test
     public void preUpdateWithBrandNewFile() {
         final String name = "name";
+        final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
         final Receipt oldReceipt = mock(Receipt.class);
         when(oldReceipt.getFile()).thenReturn(null);
+        when(oldReceipt.getDate()).thenReturn(DATE);
+        when(oldReceipt.getTimeZone()).thenReturn(TIMEZONE);
         when(receipt.getIndex()).thenReturn(4);
         when(receipt.getName()).thenReturn(name);
         when(receipt.getFile()).thenReturn(new File("12345.jpg"));
@@ -187,9 +216,7 @@ public class ReceiptTableActionAlterationsTest {
                 .assertNoErrors()
                 .values();
 
-//        final List<Receipt> onNextResults = testSubscriber.getOnNextEvents();
-//        assertNotNull(onNextResults);
-        assertTrue(result.size() == 1);
+        assertEquals(1, result.size());
         final Receipt receipt = result.get(0);
         assertEquals(new File("4_name.jpg"), receipt.getFile());
     }
@@ -202,7 +229,11 @@ public class ReceiptTableActionAlterationsTest {
         assertTrue(this.file2.createNewFile());
 
         final String name = "name";
+        final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
         final Receipt oldReceipt = mock(Receipt.class);
+        when(oldReceipt.getDate()).thenReturn(DATE);
+        when(oldReceipt.getTimeZone()).thenReturn(TIMEZONE);
         when(oldReceipt.getIndex()).thenReturn(1);
         when(oldReceipt.getName()).thenReturn(name);
         when(oldReceipt.getFile()).thenReturn(file1);
@@ -217,7 +248,7 @@ public class ReceiptTableActionAlterationsTest {
                         .values();
 
         assertNotNull(onNextResults);
-        assertTrue(onNextResults.size() == 1);
+        assertEquals(1, onNextResults.size());
         final Receipt result = onNextResults.get(0);
         assertNotNull(result.getFile());
         assertEquals("1_name.jpg", result.getFile().getName());
@@ -232,10 +263,14 @@ public class ReceiptTableActionAlterationsTest {
         assertTrue(this.file2.createNewFile());
 
         final String name = "name";
+        final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
         final Receipt oldReceipt = mock(Receipt.class);
         when(oldReceipt.getIndex()).thenReturn(1);
         when(oldReceipt.getName()).thenReturn(name);
         when(oldReceipt.getFile()).thenReturn(file1);
+        when(oldReceipt.getDate()).thenReturn(DATE);
+        when(oldReceipt.getTimeZone()).thenReturn(TIMEZONE);
         when(receipt.getIndex()).thenReturn(1);
         when(receipt.getName()).thenReturn(name);
         when(receipt.getFile()).thenReturn(file2);
@@ -258,10 +293,14 @@ public class ReceiptTableActionAlterationsTest {
     @Test
     public void preUpdateWithNewIndex() {
         final String name = "name";
+        final List<Receipt> receiptsInTrip = Arrays.asList(mock(Receipt.class), mock(Receipt.class), mock(Receipt.class));
+        when(receiptsTable.get(trip)).thenReturn(Single.just(receiptsInTrip));
         final Receipt oldReceipt = mock(Receipt.class);
         when(oldReceipt.getIndex()).thenReturn(1);
         when(oldReceipt.getName()).thenReturn(name);
         when(oldReceipt.getFile()).thenReturn(new File("1_name.jpg"));
+        when(oldReceipt.getDate()).thenReturn(DATE);
+        when(oldReceipt.getTimeZone()).thenReturn(TIMEZONE);
         when(receipt.getIndex()).thenReturn(4);
         when(receipt.getName()).thenReturn(name);
         when(receipt.getFile()).thenReturn(new File("1_name.jpg"));
