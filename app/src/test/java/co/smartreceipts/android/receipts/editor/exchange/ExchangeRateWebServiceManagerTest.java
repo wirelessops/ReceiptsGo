@@ -65,7 +65,7 @@ public class ExchangeRateWebServiceManagerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         TestLocaleToggler.setDefaultLocale(Locale.US);
-        TestTimezoneToggler.setDefaulTimeZone(TimeZone.getTimeZone("America/New_York"));
+        TestTimezoneToggler.setDefaultTimeZone(TimeZone.getTimeZone("America/New_York"));
 
         when(context.getApplicationContext()).thenReturn(context);
         when(context.getString(anyInt())).thenReturn(APP_ID);

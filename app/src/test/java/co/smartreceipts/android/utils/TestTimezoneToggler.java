@@ -11,7 +11,7 @@ public class TestTimezoneToggler {
 
     private static TimeZone originalTimeZone;
 
-    public static void setDefaulTimeZone(@NonNull TimeZone timeZone) {
+    public static void setDefaultTimeZone(@NonNull TimeZone timeZone) {
         PriceCurrency.clearStaticCachesForTesting();
         ModelUtils.clearStaticCachesForTesting();
         originalTimeZone = TimeZone.getDefault();
