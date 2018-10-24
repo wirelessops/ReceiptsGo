@@ -1,10 +1,10 @@
 buildscript {
     ext.kotlin_version = '1.2.51'
     repositories {
-        mavenCentral()
         mavenLocal()
-	    jcenter()
+        mavenCentral()
         google()
+        jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'http://repository.adincube.com/maven' }
@@ -20,10 +20,10 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
         mavenLocal()
-	    jcenter()
+        mavenCentral()
         google()
+        jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'http://repository.adincube.com/maven' }
