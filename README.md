@@ -104,6 +104,19 @@ We currently use Travis-CI for our continuous integration in order perform tests
 
 All repository secrets have been replaced with placeholder files, so Travis should be able to build properly for all requests.
 
+## Legacy Branch Access
+
+We changed our way of saving secrets files starting with `release_4.14.0`. If you wish to interact with a release prior to then, you should perform the following:
+
+1. `tar cvf secrets.tar app/src/main/res/values/secrets.xml app/src/free/res/values/ads.xml app/src/free/res/xml/analytics.xml`  
+2. `rm app/src/free/res/values/ads.xml`
+3. `rm app/src/free/res/xml/analytics.xml` 
+4. `rm app/src/main/res/values/secrets.xml`
+5. `git checkout YOUR_DESIRED_BRANCH`
+6. `tar xvf secrets.tar`
+
+Which should allow these to build properly with the placeholder files.
+
 ## License
 
 ```none
