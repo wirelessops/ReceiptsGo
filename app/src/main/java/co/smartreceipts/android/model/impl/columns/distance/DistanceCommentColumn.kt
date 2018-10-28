@@ -10,5 +10,5 @@ class DistanceCommentColumn(id: Int, syncState: SyncState) : AbstractColumnImpl<
     syncState
 ) {
 
-    override fun getValue(distance: Distance): String = distance.comment
+    override fun getValue(rowItem: Distance): String = rowItem.comment
 }

@@ -17,7 +17,7 @@ class ReportNameColumn(id: Int, syncState: SyncState, customOrderId: Long, uuid:
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.trip.name
+    override fun getValue(rowItem: Receipt): String = rowItem.trip.name
 
     override fun getFooter(rows: List<Receipt>): String =
         if (!rows.isEmpty()) getValue(rows[0]) else ""

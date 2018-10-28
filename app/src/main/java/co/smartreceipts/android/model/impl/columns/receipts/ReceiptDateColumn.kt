@@ -23,8 +23,8 @@ class ReceiptDateColumn(
     uuid
 ) {
 
-    override fun getValue(receipt: Receipt): String =
-        receipt.getFormattedDate(
+    override fun getValue(rowItem: Receipt): String =
+        rowItem.getFormattedDate(
             localizedContext,
             preferences.get(UserPreference.General.DateSeparator)
         )

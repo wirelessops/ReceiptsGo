@@ -14,8 +14,8 @@ class CategoryPriceColumn(id: Int, syncState: SyncState) :
         syncState
     ) {
 
-    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String {
-        return sumCategoryGroupingResult.netPrice.currencyCodeFormattedPrice
+    override fun getValue(rowItem: SumCategoryGroupingResult): String {
+        return rowItem.netPrice.currencyCodeFormattedPrice
     }
 
     override fun getFooter(rows: List<SumCategoryGroupingResult>): String {

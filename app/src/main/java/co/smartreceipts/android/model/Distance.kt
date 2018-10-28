@@ -89,8 +89,8 @@ class Distance(
         return "Distance [uuid=$uuid, mLocation=$location, mDistance=$distance, mDate=$date, mTimezone=$timeZone, mRate=$rate, mPrice= $price, mComment=$comment]"
     }
 
-    override fun compareTo(distance: Distance): Int {
-        return distance.date.compareTo(date)
+    override fun compareTo(other: Distance): Int {
+        return other.date.compareTo(date)
     }
 
     override fun equals(other: Any?): Boolean {

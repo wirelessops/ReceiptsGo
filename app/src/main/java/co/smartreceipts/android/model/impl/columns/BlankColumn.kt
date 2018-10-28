@@ -7,7 +7,7 @@ import java.util.*
 /**
  * Provides a column that returns blank values for everything but the header
  */
-class BlankColumn<T> @JvmOverloads constructor(
+class BlankColumn<T> constructor(
     id: Int,
     syncState: SyncState,
     customOrderId: Long,

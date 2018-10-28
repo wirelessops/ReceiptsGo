@@ -19,13 +19,13 @@ class ReceiptTaxColumn(id: Int, syncState: SyncState, customOrderId: Long, uuid:
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.tax.decimalFormattedPrice
+    override fun getValue(rowItem: Receipt): String = rowItem.tax.decimalFormattedPrice
 
-    override fun getFooter(receipts: List<Receipt>): String {
-        return if (!receipts.isEmpty()) {
-            val tripCurrency = receipts[0].trip.tripCurrency
+    override fun getFooter(rows: List<Receipt>): String {
+        return if (!rows.isEmpty()) {
+            val tripCurrency = rows[0].trip.tripCurrency
             val prices = ArrayList<Price>()
-            for (receipt in receipts) {
+            for (receipt in rows) {
                 prices.add(receipt.tax)
             }
 

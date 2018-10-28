@@ -18,7 +18,7 @@ class ReceiptCurrencyCodeColumn(id: Int, syncState: SyncState, customOrderId: Lo
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.price.currencyCode
+    override fun getValue(rowItem: Receipt): String = rowItem.price.currencyCode
 
     override fun getFooter(rows: List<Receipt>): String {
         return if (rows.isNotEmpty()) {

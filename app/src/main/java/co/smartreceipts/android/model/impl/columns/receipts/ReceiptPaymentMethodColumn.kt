@@ -17,5 +17,5 @@ class ReceiptPaymentMethodColumn(id: Int, syncState: SyncState, customOrderId: L
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.paymentMethod.method
+    override fun getValue(rowItem: Receipt): String = rowItem.paymentMethod.method
 }

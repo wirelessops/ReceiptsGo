@@ -26,11 +26,11 @@ class PaymentMethod @JvmOverloads constructor (
 
     override fun toString() = method
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o !is PaymentMethod) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PaymentMethod) return false
 
-        val that = o as PaymentMethod?
+        val that = other as PaymentMethod?
 
         if (id != that!!.id) return false
         if (uuid != that.uuid) return false
@@ -45,8 +45,8 @@ class PaymentMethod @JvmOverloads constructor (
         return result
     }
 
-    override fun compareTo(paymentMethod: PaymentMethod): Int {
-        return customOrderId.compareTo(paymentMethod.customOrderId)
+    override fun compareTo(other: PaymentMethod): Int {
+        return customOrderId.compareTo(other.customOrderId)
     }
 
     companion object {

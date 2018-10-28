@@ -23,8 +23,8 @@ class ReportEndDateColumn(
     uuid
 ) {
 
-    override fun getValue(receipt: Receipt): String =
-        receipt.trip.getFormattedEndDate(
+    override fun getValue(rowItem: Receipt): String =
+        rowItem.trip.getFormattedEndDate(
             context,
             preferences.get(UserPreference.General.DateSeparator)
         )

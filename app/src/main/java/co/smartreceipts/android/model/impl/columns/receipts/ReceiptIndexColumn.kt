@@ -17,5 +17,5 @@ class ReceiptIndexColumn(id: Int, syncState: SyncState, customOrderId: Long, uui
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = Integer.toString(receipt.index)
+    override fun getValue(rowItem: Receipt): String = Integer.toString(rowItem.index)
 }

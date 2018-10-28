@@ -17,5 +17,5 @@ class ReceiptCategoryCodeColumn(id: Int, syncState: SyncState, customOrderId: Lo
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.category.code
+    override fun getValue(rowItem: Receipt): String = rowItem.category.code
 }

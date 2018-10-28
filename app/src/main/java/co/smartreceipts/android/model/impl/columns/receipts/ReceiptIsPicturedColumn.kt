@@ -22,10 +22,10 @@ class ReceiptIsPicturedColumn(
     uuid
 ) {
 
-    override fun getValue(receipt: Receipt): String {
+    override fun getValue(rowItem: Receipt): String {
         return when {
-            receipt.hasImage() -> localizedContext.getString(R.string.yes)
-            receipt.hasPDF() -> localizedContext.getString(R.string.yes_as_pdf)
+            rowItem.hasImage() -> localizedContext.getString(R.string.yes)
+            rowItem.hasPDF() -> localizedContext.getString(R.string.yes_as_pdf)
             else -> localizedContext.getString(R.string.no)
         }
     }

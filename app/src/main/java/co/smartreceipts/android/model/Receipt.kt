@@ -170,11 +170,11 @@ class Receipt constructor(
                 '}'.toString()
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o !is Receipt) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Receipt) return false
 
-        val that = o as Receipt?
+        val that = other as Receipt?
 
         if (id != that!!.id) return false
         if (uuid != that.uuid) return false

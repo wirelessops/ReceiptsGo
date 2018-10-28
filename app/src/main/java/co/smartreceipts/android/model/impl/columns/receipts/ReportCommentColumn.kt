@@ -17,7 +17,7 @@ class ReportCommentColumn(id: Int, syncState: SyncState, customOrderId: Long, uu
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.trip.comment
+    override fun getValue(rowItem: Receipt): String = rowItem.trip.comment
 
     override fun getFooter(rows: List<Receipt>): String =
         if (!rows.isEmpty()) getValue(rows[0])

@@ -153,11 +153,11 @@ class Trip @JvmOverloads constructor(
     }
 
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o !is Trip) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Trip) return false
 
-        val that = o as Trip?
+        val that = other as Trip?
 
         if (id != that!!.id) return false
         if (uuid != that.uuid) return false
@@ -204,8 +204,8 @@ class Trip @JvmOverloads constructor(
                 '}'.toString()
     }
 
-    override fun compareTo(trip: Trip): Int {
-        return trip.endDate.compareTo(endDate)
+    override fun compareTo(other: Trip): Int {
+        return other.endDate.compareTo(endDate)
     }
 
     companion object {

@@ -17,6 +17,6 @@ class ReceiptExchangeRateColumn(id: Int, syncState: SyncState, customOrderId: Lo
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String =
-        receipt.price.exchangeRate.getDecimalFormattedExchangeRate(receipt.trip.tripCurrency)
+    override fun getValue(rowItem: Receipt): String =
+        rowItem.price.exchangeRate.getDecimalFormattedExchangeRate(rowItem.trip.tripCurrency)
 }

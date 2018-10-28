@@ -13,8 +13,8 @@ class DistanceDateColumn(
     private val preferences: UserPreferenceManager
 ) : AbstractColumnImpl<Distance>(id, DistanceColumnDefinitions.ActualDefinition.DATE, syncState) {
 
-    override fun getValue(distance: Distance): String =
-        distance.getFormattedDate(
+    override fun getValue(rowItem: Distance): String =
+        rowItem.getFormattedDate(
             localizedContext,
             preferences.get(UserPreference.General.DateSeparator)
         )

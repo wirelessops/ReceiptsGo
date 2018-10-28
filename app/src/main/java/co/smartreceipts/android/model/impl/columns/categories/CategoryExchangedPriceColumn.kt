@@ -15,8 +15,8 @@ class CategoryExchangedPriceColumn(id: Int, syncState: SyncState) :
         syncState
     ) {
 
-    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String {
-        val price = sumCategoryGroupingResult.netPrice
+    override fun getValue(rowItem: SumCategoryGroupingResult): String {
+        val price = rowItem.netPrice
         return price.currency.currencyCode + price.decimalFormattedPrice
     }
 

@@ -7,6 +7,6 @@ import co.smartreceipts.android.sync.model.SyncState
 class DistanceRateColumn(id: Int, syncState: SyncState) :
     AbstractColumnImpl<Distance>(id, DistanceColumnDefinitions.ActualDefinition.RATE, syncState) {
 
-    override fun getValue(distance: Distance): String = distance.decimalFormattedRate
+    override fun getValue(rowItem: Distance): String = rowItem.decimalFormattedRate
 
 }

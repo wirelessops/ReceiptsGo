@@ -24,7 +24,7 @@ class ReceiptPriceMinusTaxColumn(
     uuid
 ) {
 
-    override fun getValue(receipt: Receipt): String = getPrice(receipt).decimalFormattedPrice
+    override fun getValue(rowItem: Receipt): String = getPrice(rowItem).decimalFormattedPrice
 
     override fun getFooter(rows: List<Receipt>): String {
         return if (!rows.isEmpty()) {

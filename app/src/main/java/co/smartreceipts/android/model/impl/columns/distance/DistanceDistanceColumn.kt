@@ -12,12 +12,12 @@ class DistanceDistanceColumn(id: Int, syncState: SyncState) : AbstractColumnImpl
     syncState
 ) {
 
-    override fun getValue(distance: Distance): String = distance.decimalFormattedDistance
+    override fun getValue(rowItem: Distance): String = rowItem.decimalFormattedDistance
 
-    override fun getFooter(distances: List<Distance>): String {
+    override fun getFooter(rows: List<Distance>): String {
         var distance = BigDecimal.ZERO
-        for (i in distances.indices) {
-            distance = distance.add(distances[i].distance)
+        for (i in rows.indices) {
+            distance = distance.add(rows[i].distance)
         }
         return ModelUtils.getDecimalFormattedValue(distance)
     }

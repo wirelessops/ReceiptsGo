@@ -12,6 +12,6 @@ class CategoryCodeColumn(id: Int, syncState: SyncState) :
         syncState
     ) {
 
-    override fun getValue(sumCategoryGroupingResult: SumCategoryGroupingResult): String =
-        sumCategoryGroupingResult.category.code
+    override fun getValue(rowItem: SumCategoryGroupingResult): String =
+        rowItem.category.code
 }

@@ -11,16 +11,16 @@ class DistancePriceColumn(
     private val allowSpecialCharacters: Boolean
 ) : AbstractColumnImpl<Distance>(id, DistanceColumnDefinitions.ActualDefinition.PRICE, syncState) {
 
-    override fun getValue(distance: Distance): String =
-        if (allowSpecialCharacters) distance.price.currencyFormattedPrice
-        else distance.price.currencyCodeFormattedPrice
+    override fun getValue(rowItem: Distance): String =
+        if (allowSpecialCharacters) rowItem.price.currencyFormattedPrice
+        else rowItem.price.currencyCodeFormattedPrice
 
-    override fun getFooter(distances: List<Distance>): String {
-        val tripCurrency = if (!distances.isEmpty()) distances[0].trip.tripCurrency else null
+    override fun getFooter(rows: List<Distance>): String {
+        val tripCurrency = if (!rows.isEmpty()) rows[0].trip.tripCurrency else null
         return if (allowSpecialCharacters) {
-            PriceBuilderFactory().setPriceables(distances, tripCurrency!!).build().currencyFormattedPrice
+            PriceBuilderFactory().setPriceables(rows, tripCurrency!!).build().currencyFormattedPrice
         } else {
-            PriceBuilderFactory().setPriceables(distances, tripCurrency!!).build().currencyCodeFormattedPrice
+            PriceBuilderFactory().setPriceables(rows, tripCurrency!!).build().currencyCodeFormattedPrice
         }
     }
 }

@@ -23,10 +23,10 @@ abstract class AbstractExchangedPriceColumn(
     uuid: UUID
 ) : AbstractColumnImpl<Receipt>(id, definition, syncState, customOrderId, uuid) {
 
-    override fun getValue(receipt: Receipt): String {
-        val price = getPrice(receipt)
+    override fun getValue(rowItem: Receipt): String {
+        val price = getPrice(rowItem)
         val exchangeRate = price.exchangeRate
-        val baseCurrency = receipt.trip.tripCurrency
+        val baseCurrency = rowItem.trip.tripCurrency
         return if (exchangeRate.supportsExchangeRateFor(baseCurrency)) {
             ModelUtils.getDecimalFormattedValue(
                 price.price.multiply(

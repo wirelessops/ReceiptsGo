@@ -17,5 +17,5 @@ class ReceiptCommentColumn(id: Int, syncState: SyncState, customOrderId: Long, u
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.comment
+    override fun getValue(rowItem: Receipt): String = rowItem.comment
 }

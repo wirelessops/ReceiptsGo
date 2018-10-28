@@ -17,5 +17,5 @@ class ReceiptFilePathColumn(id: Int, syncState: SyncState, customOrderId: Long, 
         uuid
     ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.filePath
+    override fun getValue(rowItem: Receipt): String = rowItem.filePath
 }

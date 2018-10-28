@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Provides a column that returns the category code for a particular receipt
  */
-class ReceiptCategoryNameColumn @JvmOverloads constructor(
+class ReceiptCategoryNameColumn constructor(
     id: Int,
     syncState: SyncState,
     customOrderId: Long,
@@ -21,5 +21,5 @@ class ReceiptCategoryNameColumn @JvmOverloads constructor(
     uuid
 ) {
 
-    override fun getValue(receipt: Receipt): String = receipt.category.name
+    override fun getValue(rowItem: Receipt): String = rowItem.category.name
 }

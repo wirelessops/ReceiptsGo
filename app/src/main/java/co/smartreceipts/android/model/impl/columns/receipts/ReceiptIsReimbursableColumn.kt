@@ -22,8 +22,8 @@ class ReceiptIsReimbursableColumn(
     uuid
 ) {
 
-    override fun getValue(receipt: Receipt): String =
-        if (receipt.isReimbursable) localizedContext.getString(R.string.yes) else localizedContext.getString(
+    override fun getValue(rowItem: Receipt): String =
+        if (rowItem.isReimbursable) localizedContext.getString(R.string.yes) else localizedContext.getString(
             R.string.no
         )
 
