@@ -28,6 +28,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -48,6 +49,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.Lazy;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
@@ -63,21 +65,30 @@ public class ReceiptImageFragment extends WBFragment {
 
     @Inject
     Flex flex;
+
     @Inject
     PersistenceManager persistenceManager;
+
     @Inject
     Analytics analytics;
+
     @Inject
     ReceiptTableController receiptTableController;
+
     @Inject
     OcrManager ocrManager;
+
     @Inject
     NavigationHandler navigationHandler;
 
     @Inject
     ActivityFileResultLocator activityFileResultLocator;
+
     @Inject
     ActivityFileResultImporter activityFileResultImporter;
+
+    @Inject
+    Lazy<Picasso> picasso;
 
     private PinchToZoomImageView imageView;
     private LinearLayout footer;
@@ -258,7 +269,7 @@ public class ReceiptImageFragment extends WBFragment {
 
     private void loadImage() {
         if (receipt.getFile() != null && receipt.hasImage()) {
-            Picasso.get().load(receipt.getFile()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside().into(imageView, new Callback() {
+            picasso.get().load(receipt.getFile()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside().into(imageView, new Callback() {
                 @Override
                 public void onSuccess() {
                     progress.setVisibility(View.GONE);
@@ -289,6 +300,8 @@ public class ReceiptImageFragment extends WBFragment {
     private void onRotateComplete(boolean success) {
         if (!success) {
             Toast.makeText(getActivity(), "Image Rotate Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            picasso.get().invalidate(Objects.requireNonNull(receipt.getFile()));
         }
         isRotateOngoing = false;
         progress.setVisibility(View.GONE);
