@@ -8,6 +8,8 @@ import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.graphs.GraphsFragment;
+import co.smartreceipts.android.identity.widget.account.AccountFragment;
+import co.smartreceipts.android.identity.widget.di.AccountModule;
 import co.smartreceipts.android.identity.widget.di.LoginModule;
 import co.smartreceipts.android.identity.widget.login.LoginFragment;
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
@@ -115,6 +117,10 @@ public abstract class SmartReceiptsActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = LoginModule.class)
     public abstract LoginFragment loginFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = AccountModule.class)
+    public abstract AccountFragment accountFragment();
 
     @FragmentScope
     @ContributesAndroidInjector(modules = OcrConfigurationModule.class)

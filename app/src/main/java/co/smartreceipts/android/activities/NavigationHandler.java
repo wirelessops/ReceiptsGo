@@ -163,6 +163,14 @@ public class NavigationHandler<T extends FragmentActivity> {
         }
     }
 
+    public void navigateToAccountScreen() {
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newAccountFragment(), R.id.content_details);
+        } else {
+            replaceFragment(fragmentProvider.newAccountFragment(), R.id.content_list);
+        }
+    }
+
     public void navigateToSettings() {
         final FragmentActivity activity = fragmentActivityWeakReference.get();
         if (activity != null) {

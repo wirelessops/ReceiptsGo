@@ -364,6 +364,7 @@
     <string name="sign_up_failure_toast">הרשמה נכשלה</string>
     <string name="login_failure_credentials_toast">שגיאה: שם משתמש או סיסמא לא נכונים</string>
     <string name="sign_up_failure_account_exists_toast">שגיאה - כתובת הדואר האלקטורני קיימת כבר, נסה להתחבר</string>
+    <string name="logout_button_text">להתנתק</string>
 
     <!-- ==================== dialog filter ======================= -->
     <string name="dialog_filter_positive_button">הוסף פילור</string>

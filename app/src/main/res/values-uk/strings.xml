@@ -332,6 +332,7 @@
     <string name="sign_up_failure_toast">Зареєструватися не вдалося</string>
     <string name="login_failure_credentials_toast">Помилка: Неправильне ім\'я користувача або пароль</string>
     <string name="sign_up_failure_account_exists_toast">Помилка: Ця електронна адреса вже існує. Спробуйте увійти до системи</string>
+    <string name="logout_button_text">Вийти</string>
 
     <!-- ==================== dialog filter ======================= -->
     <string name="dialog_filter_positive_button">Додати фільтр</string>

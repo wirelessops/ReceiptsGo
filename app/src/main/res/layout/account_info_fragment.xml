@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_large">
+
+            <TextView
+                android:id="@+id/login_text"
+                style="@style/Widget.SmartReceipts.TextView.Body1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Logged in as:"
+                app:layout_constraintBottom_toTopOf="@+id/login_field_email"
+                app:layout_constraintEnd_toStartOf="@id/logout_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/login_field_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:hint="@string/login_field_email_hint"
+                tools:text="sample@gmail.com"
+                app:layout_constraintEnd_toStartOf="@id/logout_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_text" />
+
+            <Button
+                android:id="@+id/logout_button"
+                style="@style/Widget.SmartReceipts.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/logout_button_text"
+                app:layout_constraintBottom_toBottomOf="@id/login_field_email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider"
+                style="@style/Widget.View.Divider.Horizontal"
+                android:layout_marginVertical="@dimen/margin_normal"
+                app:layout_constraintTop_toBottomOf="@id/login_field_email" />
+
+            <TextView
+                android:id="@+id/organizations_text"
+                style="@style/Widget.SmartReceipts.TextView.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="Organizations:"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
+
+
+            <Button
+                android:id="@+id/apply_button"
+                style="@style/Widget.SmartReceipts.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply Settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/organizations_text" />
+
+            <TextView
+                android:id="@+id/organization_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/apply_button"
+                app:layout_constraintEnd_toStartOf="@id/apply_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/apply_button"
+                tools:text="Organization Name" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

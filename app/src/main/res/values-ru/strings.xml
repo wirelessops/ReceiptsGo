@@ -332,6 +332,7 @@
     <string name="sign_up_failure_toast">Не удалось зарегистрироваться</string>
     <string name="login_failure_credentials_toast">Ошибка: Неправильное имя пользователя или пароль</string>
     <string name="sign_up_failure_account_exists_toast">Ошибка: Этот адрес уже существует. Попробуйте войти в систему</string>
+    <string name="logout_button_text">Выйти</string>
 
     <!-- ==================== dialog filter ======================= -->
     <string name="dialog_filter_positive_button">Добавить фильтр</string>

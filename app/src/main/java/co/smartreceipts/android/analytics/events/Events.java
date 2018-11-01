@@ -21,6 +21,7 @@ public final class Events {
         public static final Event OcrConfiguration = new DefaultEvent(Category.Navigation, "OcrConfiguration");
         public static final Event SmartReceiptsPlusOverflow = new DefaultEvent(Category.Navigation, "SmartReceiptsPlusOverflow");
         public static final Event UsageGuideOverflow = new DefaultEvent(Category.Navigation, "UsageGuideOverflow");
+        public static final Event MyAccountOverflow = new DefaultEvent(Category.Navigation, "MyAccountOverflow");
     }
 
     public static final class Reports {

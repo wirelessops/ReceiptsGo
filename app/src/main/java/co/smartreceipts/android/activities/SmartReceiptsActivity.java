@@ -197,9 +197,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
             analytics.record(Events.Navigation.UsageGuideOverflow);
             return true;
         } else if (item.getItemId() == R.id.menu_main_my_account) {
-            navigationHandler.navigateToLoginScreen();
-            // TODO: 19.10.2018 show organizations for logged in users
-//            final List<OrganizationsResponse> organizationsResponseKts = identityManager.getOrganizations().toList().blockingGet();
+            navigationHandler.navigateToAccountScreen();
+            analytics.record(Events.Navigation.MyAccountOverflow);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -31,21 +30,21 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.identity.store.EmailAddress;
+import co.smartreceipts.android.identity.widget.NeededLoginFragment;
+import co.smartreceipts.android.identity.widget.NeededLoginRouter;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
-public class OcrConfigurationFragment extends Fragment implements OcrConfigurationView {
-
-    private static final String OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN = "out_bool_was_previously_sent_to_login_screen";
+public class OcrConfigurationFragment extends NeededLoginFragment implements OcrConfigurationView {
 
     @Inject
     OcrConfigurationPresenter presenter;
 
     @Inject
-    OcrConfigurationRouter router;
+    NeededLoginRouter router;
 
     @Inject
     Analytics analytics;
@@ -58,7 +57,6 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     private OcrPurchasesListAdapter ocrPurchasesListAdapter;
     private Unbinder unbinder;
-    private boolean wasPreviouslySentToLogin = false;
 
     public static OcrConfigurationFragment newInstance() {
         return new OcrConfigurationFragment();
@@ -79,7 +77,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         if (savedInstanceState == null) {
             analytics.record(Events.Ocr.OcrViewConfigurationPage);
         } else {
-            wasPreviouslySentToLogin = savedInstanceState.getBoolean(OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, false);
+            setWasPreviouslySentToLogin(savedInstanceState.getBoolean(OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, false));
         }
     }
 
@@ -88,7 +86,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.simple_recycler_view, container, false);
-        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(android.R.id.list);
+        final RecyclerView recyclerView = rootView.findViewById(android.R.id.list);
         final View headerView = inflater.inflate(R.layout.ocr_configuration_fragment, null);
 
         this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter(headerView);
@@ -102,7 +100,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
@@ -125,7 +123,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     public void onResume() {
         Logger.debug(this, "onResume");
         super.onResume();
-        wasPreviouslySentToLogin = router.navigateToProperLocation(wasPreviouslySentToLogin);
+        setWasPreviouslySentToLogin(router.navigateToProperLocation(getWasPreviouslySentToLogin()));
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
@@ -139,12 +137,6 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         Logger.debug(this, "onPause");
         presenter.unsubscribe();
         super.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, wasPreviouslySentToLogin);
     }
 
     @Override

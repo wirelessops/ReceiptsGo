@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
+import co.smartreceipts.android.identity.widget.account.AccountFragment;
 import co.smartreceipts.android.identity.widget.login.LoginFragment;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
@@ -123,6 +124,16 @@ public class FragmentProvider {
     @NonNull
     public LoginFragment newLoginFragment() {
         return LoginFragment.newInstance();
+    }
+
+    /**
+     * Creates a {@link AccountFragment} instance
+     *
+     * @return a new instance of this fragment
+     */
+    @NonNull
+    public AccountFragment newAccountFragment() {
+        return AccountFragment.Companion.newInstance();
     }
 
     /**

@@ -330,6 +330,7 @@
     <string name="sign_up_failure_toast">Falha ao registrar-se</string>
     <string name="login_failure_credentials_toast">Erro: nome de usuário ou senha incorretos</string>
     <string name="sign_up_failure_account_exists_toast">Erro: esse e-mail já existe - Tente conectar-se</string>
+    <string name="logout_button_text">Sair</string>
 
     <!-- ==================== dialog filter ======================= -->
     <string name="dialog_filter_positive_button">Adicionar filtro</string>
