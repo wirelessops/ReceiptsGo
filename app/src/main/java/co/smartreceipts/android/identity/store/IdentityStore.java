@@ -27,4 +27,9 @@ public interface IdentityStore {
      */
     boolean isLoggedIn();
 
+    /**
+     * Logging out current user, removing all user's credentials
+     */
+    void logOut();
+
 }

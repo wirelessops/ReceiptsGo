@@ -69,4 +69,12 @@ public final class MutableIdentityStore implements IdentityStore {
         editor.apply();
     }
 
+    @Override
+    public void logOut() {
+        final SharedPreferences.Editor editor = sharedPreferences.get().edit();
+        editor.remove(KEY_EMAIL);
+        editor.remove(KEY_USER_ID);
+        editor.remove(KEY_TOKEN);
+        editor.apply();
+    }
 }

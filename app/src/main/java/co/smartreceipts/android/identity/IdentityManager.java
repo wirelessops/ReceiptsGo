@@ -23,8 +23,6 @@ import co.smartreceipts.android.identity.apis.login.LoginResponse;
 import co.smartreceipts.android.identity.apis.login.LoginService;
 import co.smartreceipts.android.identity.apis.login.LoginType;
 import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
-import co.smartreceipts.android.identity.apis.logout.LogoutResponse;
-import co.smartreceipts.android.identity.apis.logout.LogoutService;
 import co.smartreceipts.android.identity.apis.me.MeResponse;
 import co.smartreceipts.android.identity.apis.me.MeService;
 import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;
@@ -177,21 +175,11 @@ public class IdentityManager implements IdentityStore {
                 });
     }
 
-    public synchronized Observable<LogoutResponse> logOut() {
-        Logger.info(this, "Initiating user log-out");
-        this.analytics.record(Events.Identity.UserLogout);
-
-        return webServiceManager.getService(LogoutService.class).logOut()
-                .doOnNext(logoutResponse -> mutableIdentityStore.setCredentials(null, null, null))
-                .doOnError(throwable -> {
-                    Logger.error(this, "Failed to complete the log-out request", throwable);
-                    analytics.record(Events.Identity.UserLogoutFailure);
-                })
-                .doOnComplete(() -> {
-                    Logger.info(this, "Successfully completed the log-out request");
-                    isLoggedInBehaviorSubject.onNext(false);
-                    analytics.record(Events.Identity.UserLogoutSuccess);
-                });
+    @Override
+    public void logOut() {
+        mutableIdentityStore.logOut();
+        isLoggedInBehaviorSubject.onNext(false);
+        analytics.record(Events.Identity.UserLogout);
     }
 
     @NonNull
