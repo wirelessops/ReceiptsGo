@@ -204,17 +204,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
         }
 
-
-        // Prints the receipts total if we have distances AND (the IncludeTaxField setting is false OR the value of taxes is 0)
-        if (!distances.isEmpty() && (ModelUtils.isPriceZero(data.getTaxPrice()) || !preferenceManager.get(UserPreference.Receipts.IncludeTaxField))) {
-            headerRows.add(new GridRowRenderer(new TextRenderer(
-                    pdfBoxContext.getAndroidContext(),
-                    pdDocument,
-                    pdfBoxContext.getString(R.string.report_header_receipts_total, data.getReceiptsWithTaxPrice().getCurrencyFormattedPrice()),
-                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
-                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
-        }
-
         // Print the various tax totals if the IncludeTaxField is true and we have taxes
         if (preferenceManager.get(UserPreference.Receipts.IncludeTaxField) && !ModelUtils.isPriceZero(data.getTaxPrice())) {
 
@@ -239,6 +228,15 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getAndroidContext(),
                     pdDocument,
                     pdfBoxContext.getString(R.string.report_header_receipts_total_with_tax, data.getReceiptsWithTaxPrice().getCurrencyFormattedPrice()),
+                    pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
+                    pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
+        } else if (!distances.isEmpty()) {
+            // Prints the receipts total if we have distances AND (the IncludeTaxField setting is false OR the value of taxes is 0)
+            // We use this to distinguish receipts vs distances when we do NOT have the tax breakdown
+            headerRows.add(new GridRowRenderer(new TextRenderer(
+                    pdfBoxContext.getAndroidContext(),
+                    pdDocument,
+                    pdfBoxContext.getString(R.string.report_header_receipts_total, data.getReceiptsWithTaxPrice().getCurrencyFormattedPrice()),
                     pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.Default))));
         }
