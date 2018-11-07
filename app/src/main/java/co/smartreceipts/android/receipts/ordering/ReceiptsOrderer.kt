@@ -110,8 +110,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                                                 val orderingType = getOrderingType(receipts)
                                                 when (orderingType) {
                                                     None, Legacy -> reorderReceiptsByDate(receipts)
-                                                    PartiallyOrdered -> fixPartialCustomIdOrdering(receipts)
-                                                    else -> Observable.empty()
+                                                    else -> fixPartialCustomIdOrdering(receipts)
                                                 }
                                             }
                                 }
@@ -319,7 +318,11 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                         // The outcome of this sort should result in items was a large custom order id appearing closer to index 0
                         grouping.sortWith(Comparator { receipt1, receipt2 ->
                             if (receipt1.customOrderId == receipt2.customOrderId) {
-                                return@Comparator (receipt1.syncState.lastLocalModificationTime.time - receipt2.syncState.lastLocalModificationTime.time).toInt()
+                                if (receipt1.date == receipt2.date) {
+                                    return@Comparator (receipt1.syncState.lastLocalModificationTime.time - receipt2.syncState.lastLocalModificationTime.time).toInt()
+                                } else {
+                                    return@Comparator (receipt1.date.time - receipt2.date.time).toInt()
+                                }
                             } else {
                                 return@Comparator (receipt1.customOrderId - receipt2.customOrderId).toInt()
                             }
@@ -328,10 +331,10 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                         // Then we update the customOrderId based on the current alignment
                         val checkedReceiptsInGrouping = mutableListOf<Receipt>()
                         grouping.forEach {
-                            // Only update the customOrderId if it ends with '999'
-                            if (it.customOrderId.rem(DAYS_TO_ORDER_FACTOR) == PARTIAL_ORDERING_REMAINDER) {
-                                // Determine the correct customOrderId, using the checked list (so we get the proper ordering)
-                                val customOrderId = getCustomOrderId(it, checkedReceiptsInGrouping)
+                            // Determine the correct customOrderId, using the checked list (so we get the proper ordering)
+                            val customOrderId = getCustomOrderId(it, checkedReceiptsInGrouping)
+                            if (it.customOrderId != customOrderId) {
+                                // Only update if we found a new customOrderId
                                 val updatedReceipt = ReceiptBuilderFactory(it).setCustomOrderId(customOrderId).build()
                                 receiptPairs.add(Pair(it, updatedReceipt))
                             }

@@ -63,6 +63,6 @@ class ReceiptsOrderingMigrationStore @Inject constructor(private val preferences
 
     companion object {
         private const val V1_ORDERING_KEY = "receipt_ordering_migration_has_occurred"
-        private const val V2_ORDERING_KEY = "receipt_ordering_migration_has_occurred_v2"
+        private const val V2_ORDERING_KEY = "receipt_ordering_migration_has_occurred_v2_b" // _b for test build users
     }
 }
