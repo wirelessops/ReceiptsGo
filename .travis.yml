@@ -38,8 +38,8 @@ android:
 notifications:
   email:
     recipients:
-      - support@smartreceipts.co
-    on_success: never # default: change
+      - android-build-interest@smartreceipts.co
+    on_success: change # default: change
     on_failure: always # default: always
 
 before_install:
