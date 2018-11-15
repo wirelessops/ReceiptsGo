@@ -36,9 +36,7 @@ public class TripCardAdapter extends CardAdapter<Trip> {
 		final String dateSeparator = getPreferences().get(UserPreference.General.DateSeparator);
 		final String from = data.getFormattedStartDate(getContext(), dateSeparator);
 		final String to = data.getFormattedEndDate(getContext(), dateSeparator);
-		final String separator = getContext().getString(R.string.trip_adapter_list_item_to);
-		// TODO: Use string placeholders
-		textView.setText(from + separator + to);
+		textView.setText(getContext().getString(R.string.trip_adapter_list_item_to, from, to));
 	}
 
 }

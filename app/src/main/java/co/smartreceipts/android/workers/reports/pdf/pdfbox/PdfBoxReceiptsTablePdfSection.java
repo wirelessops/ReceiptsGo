@@ -174,9 +174,9 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Title))));
 
         // Print the From: StartDate To: EndDate
-        final String fromToPeriod = pdfBoxContext.getString(R.string.report_header_from, trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)))
-                + " "
-                + pdfBoxContext.getString(R.string.report_header_to, trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)));
+        final String fromToPeriod = pdfBoxContext.getString(R.string.report_header_duration,
+                trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)),
+                trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)));
         headerRows.add(new GridRowRenderer(new TextRenderer(
                 pdfBoxContext.getAndroidContext(),
                 pdDocument,

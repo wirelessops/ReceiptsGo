@@ -32,8 +32,8 @@
     <string name="image">תמונה</string>
     <string name="import_string">ייבא</string>
     <string name="import_string_item">%s ייבא</string>
-    <string name="item_code">:קוד</string>
-    <string name="item_name">:שם</string>
+    <string name="item_code">קוד</string>
+    <string name="item_name">שם</string>
     <string name="move">הזז</string>
     <string name="move_copy_item">\?%s הזז/העתק את</string>
     <string name="next_id">%s :המזהה הבא</string>
@@ -67,8 +67,7 @@
     <string name="report_info_generate">ייצר</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_from">%s :מאת</string>
-    <string name="report_header_to">%s :אל</string>
+    <string name="report_header_duration">%2$s :אל s%1$ :מאת</string>
     <string name="report_header_receipts_total">%s :סה״כ קבלות</string>
     <string name="report_header_receipts_total_tax">%s :סה״כ מס</string>
     <string name="report_header_receipts_total_no_tax">%s :סה״כ קבלות (ללא מס)</string>
@@ -202,7 +201,7 @@
     <string name="attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">\u0020אל\u0020</string>
+    <string name="trip_adapter_list_item_to">%2$s %1$s אל</string>
 	<string name="trip_no_data">אין לך דוחות מוגדרים כרגע. נסה ללחוץ על + על מנת להתחיל. \n\n האפליקציה מאפשר לך ליצור דוחות הוצאה, לעקוב אחרי קבלות בכל אחד מהדוחות, ולייצר דוחות PDF וCSV להוצאות שלך. זה קל ופשוט! בנוסף, ניתן לבצע התאמה אישית לקטגוריות, דוחות ושאר הגדרות בתפריט ההגדרות על מנת להתאים את התוכנה לצרכיך.</string>
 	
 

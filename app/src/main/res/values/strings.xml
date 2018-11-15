@@ -33,8 +33,8 @@
     <string name="image">Image</string>
     <string name="import_string">Import</string>
     <string name="import_string_item">Import %s</string>
-    <string name="item_code">Code:</string>
-    <string name="item_name">Name:</string>
+    <string name="item_code">Code</string>
+    <string name="item_name">Name</string>
     <string name="move">Move</string>
     <string name="move_copy_item">Move/Copy %s?</string>
     <string name="next_id">Next ID: %d</string>
@@ -68,8 +68,7 @@
     <string name="report_info_generate">Generate</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_from">From: %s</string>
-    <string name="report_header_to">To: %s</string>
+    <string name="report_header_duration">From: %1$s To: %2$s</string>
     <string name="report_header_receipts_total">Receipts Total: %s</string>
     <string name="report_header_receipts_total_tax">Tax Total: %s</string>
     <string name="report_header_receipts_total_no_tax">Receipts Total (Without Tax): %s</string>
@@ -199,7 +198,7 @@
     <string name="attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">\u0020to\u0020</string>
+    <string name="trip_adapter_list_item_to">%1$s to %2$s</string>
     <string name="trip_no_data">You don\'t seem to have any reports defined at the moment. Try clicking the "+" (plus) button to get started.\n\nSmart Receipts lets you create Expense reports, track receipts within each, and quickly generate PDF &amp; CSV reports for your receipt totals. It\'s quick and easy! Also, be sure to check out the menu to customize the categories, reports, and other settings to best suit for your needs.</string>
 
     <!-- ================= Receipt Adapter =================== -->

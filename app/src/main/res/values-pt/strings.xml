@@ -31,8 +31,8 @@
     <string name="image">Imagem</string>
     <string name="import_string">Importar</string>
     <string name="import_string_item">Importar %s</string>
-    <string name="item_code">Código:</string>
-    <string name="item_name">Nome:</string>
+    <string name="item_code">Código</string>
+    <string name="item_name">Nome</string>
     <string name="move">Mover</string>
     <string name="move_copy_item">Deseja mover/copiar %s?</string>
     <string name="next_id">Próxima ID: %d</string>
@@ -65,8 +65,7 @@
     <string name="report_info_generate">Gerar</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_from">De: %s</string>
-    <string name="report_header_to">Para: %s</string>
+    <string name="report_header_duration">De: %1$s Para: %2$s</string>
     <string name="report_header_receipts_total">Total de recibos: %s</string>
     <string name="report_header_receipts_total_tax">Total de impostos: %s</string>
     <string name="report_header_receipts_total_no_tax">Total de recibos (sem impostos): %s</string>
@@ -196,7 +195,7 @@
     <string name="attachment_error">Não é possível anexar este arquivo.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">para</string>
+    <string name="trip_adapter_list_item_to">%1$s para %2$s</string>
     <string name="trip_no_data">Você não parece ter nenhum relatório definido no momento. Tente clicar no botão \'+\' para começar. \n\nO Smart Receipts permite criar relatórios de gastos, rastrear recibos em cada um deles e gerar rapidamente relatórios PDF e CSV para as totalizações. É fácil e rápido! Certifique-se de conferir o menu para personalizar as categorias, relatórios e outras configurações para adequá-las às suas necessidades.</string>
 
     <!-- ================= Receipt Adapter =================== -->

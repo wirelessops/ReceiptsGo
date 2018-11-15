@@ -31,8 +31,8 @@
     <string name="image">Bild</string>
     <string name="import_string">Import</string>
     <string name="import_string_item">Import %s</string>
-    <string name="item_code">Code:</string>
-    <string name="item_name">Name:</string>
+    <string name="item_code">Code</string>
+    <string name="item_name">Name</string>
     <string name="move">Verschieben</string>
     <string name="move_copy_item">Verschieben/Kopieren %s?</string>
     <string name="next_id">Nächste ID: %d</string>
@@ -65,8 +65,7 @@
     <string name="report_info_generate">Bericht</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_from">Von: %s</string>
-    <string name="report_header_to">An: %s</string>
+    <string name="report_header_duration">Von: %1$s An: %2$s</string>
     <string name="report_header_receipts_total">Belege Gesamt: %s</string>
     <string name="report_header_receipts_total_tax">MwSt: %s</string>
     <string name="report_header_receipts_total_no_tax">Einnahmen Gesamt (ohne Steuer): %s</string>
@@ -196,7 +195,7 @@
     <string name="attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">bis</string>
+    <string name="trip_adapter_list_item_to">%1$s bis %2$s</string>
     <string name="trip_no_data">Sie scheinen zur Zeit keine definierten Berichte haben. Zum Beginnen tippen Sie auf die + (plus) Taste.\n\nSmart Receipts lässt Sie Kostenberichte erstellen, Kostenstellen verwalten und sehr schnell PDF &amp; CSV-Berichte für Ihre Belegsummen generieren. Es ist schnell und einfach! Überprüfen Sie unbedingt das Menü, um die Kategorien, Berichte und anderen Einstellungen optimal an Ihre Bedürfnisse anzupassen.</string>
 
     <!-- ================= Receipt Adapter =================== -->

@@ -31,8 +31,8 @@
     <string name="image">Image</string>
     <string name="import_string">Importer</string>
     <string name="import_string_item">Importer %s</string>
-    <string name="item_code">Code :</string>
-    <string name="item_name">Nom :</string>
+    <string name="item_code">Code</string>
+    <string name="item_name">Nom</string>
     <string name="move">Déplacer</string>
     <string name="move_copy_item">Déplacer/Copier %s ?</string>
     <string name="next_id">ID suivant : %d</string>
@@ -65,8 +65,7 @@
     <string name="report_info_generate">Créer</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_from">De : %s</string>
-    <string name="report_header_to">À : %s</string>
+    <string name="report_header_duration">De : %1$s À : %2$s</string>
     <string name="report_header_receipts_total">Total des reçus : %s</string>
     <string name="report_header_receipts_total_tax">Total des taxes : %s</string>
     <string name="report_header_receipts_total_no_tax">Total des reçus (Hors taxe) : %s</string>
@@ -196,7 +195,7 @@
     <string name="attachment_error">Impossible de joindre ce fichier.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to"> à</string>
+    <string name="trip_adapter_list_item_to">%1$s à %2$s</string>
     <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.\n\nSmart Receipts vous permet de créer des notes de frais, de suivre les reçus dans chacune d’elle et de créer rapidement des rapports PDF et CSV pour la totalité de vos reçus. C’est rapide et facile ! Assurez-vous également de consulter le menu pour personnaliser les catégories, les rapports et d’autres paramètres pour qu’ils répondent mieux à vos besoins.</string>
 
     <!-- ================= Receipt Adapter =================== -->

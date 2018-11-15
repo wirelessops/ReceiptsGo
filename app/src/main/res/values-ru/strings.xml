@@ -31,8 +31,8 @@
     <string name="image">Изображение</string>
     <string name="import_string">Импорт</string>
     <string name="import_string_item">Импорт %s</string>
-    <string name="item_code">Код:</string>
-    <string name="item_name">Имя:</string>
+    <string name="item_code">Код</string>
+    <string name="item_name">Имя</string>
     <string name="move">Переместить</string>
     <string name="move_copy_item">Переместить/Копировать %s?</string>
     <string name="next_id">Следующий ID: %d</string>
@@ -65,8 +65,7 @@
     <string name="report_info_generate">Создать</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_from">От: %s</string>
-    <string name="report_header_to">До: %s</string>
+    <string name="report_header_duration">От: %1$s До: %2$s</string>
     <string name="report_header_receipts_total">Всего по чекам: %s</string>
     <string name="report_header_receipts_total_tax">Налог, всего: %s</string>
     <string name="report_header_receipts_total_no_tax">Всего по чекам (без налога): %s</string>
@@ -198,7 +197,7 @@
     <string name="attachment_error">Не удалось прикрепить этот файл.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">\u0020до\u0020</string>
+    <string name="trip_adapter_list_item_to">%1$s до %2$s</string>
     <string name="trip_no_data">Судя по всему, в настоящее время у вас нет отчетов. Нажмите на кнопку + (плюс), чтобы начать.\n\nСмарт Чеки позволяют создавать отчеты о расходах, отслеживать чеки внутри каждого из них, и быстро создавать отчеты в форматах PDF и CSV. Быстро и просто! Кроме того, обязательно ознакомьтесь с меню, чтобы настроить категории, отчеты и другие параметры для ваших нужд.</string>
 
     <!-- ================= Receipt Adapter =================== -->
