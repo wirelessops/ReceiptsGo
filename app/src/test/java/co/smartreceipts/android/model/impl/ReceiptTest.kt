@@ -107,6 +107,65 @@ class ReceiptTest {
     }
 
     @Test
+    fun hasPDF() {
+        val pdfFile = File("file.pdf")
+        val pdfFileWithUpperCaseExtension = File("file.PDF")
+        val pdfReceipt = Receipt(
+                ID, REC_UUID, INDEX, trip, pdfFile, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        val pdfReceiptWithUpperCaseExtension = Receipt(
+                ID, REC_UUID, INDEX, trip, pdfFileWithUpperCaseExtension, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        assertFalse(receipt.hasPDF())
+        assertTrue(pdfReceipt.hasPDF())
+        assertTrue(pdfReceiptWithUpperCaseExtension.hasPDF())
+    }
+
+    @Test
+    fun hasImage() {
+        val pngFile = File("file.png")
+        val jpgFile = File("file.jpg")
+        val jpegFile = File("file.jpeg")
+        val pngFileWithUpperCaseExtension = File("file.PNG")
+        val jpgFileWithUpperCaseExtension = File("file.JPG")
+        val jpegFileWithUpperCaseExtension = File("file.JPEG")
+
+        val pngReceipt = Receipt(
+                ID, REC_UUID, INDEX, trip, pngFile, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        val jpgReceipt = Receipt(
+                ID, REC_UUID, INDEX, trip, jpgFile, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        val jpegReceipt = Receipt(
+                ID, REC_UUID, INDEX, trip, jpegFile, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        val pngReceiptWithUpperCaseExtension = Receipt(
+                ID, REC_UUID, INDEX, trip, pngFileWithUpperCaseExtension, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        val jpgReceiptWithUpperCaseExtension = Receipt(
+                ID, REC_UUID, INDEX, trip, jpgFileWithUpperCaseExtension, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        val jpegReceiptWithUpperCaseExtension = Receipt(
+                ID, REC_UUID, INDEX, trip, jpegFileWithUpperCaseExtension, paymentMethod, NAME, category, COMMENT, price, tax, DATE, TIMEZONE, REIMBURSABLE,
+                FULL_PAGE, IS_SELECTED, Source.Undefined, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+        )
+        assertFalse(receipt.hasImage())
+        assertTrue(pngReceipt.hasImage())
+        assertTrue(jpgReceipt.hasImage())
+        assertTrue(jpegReceipt.hasImage())
+        assertTrue(pngReceiptWithUpperCaseExtension.hasImage())
+        assertTrue(jpgReceiptWithUpperCaseExtension.hasImage())
+        assertTrue(jpegReceiptWithUpperCaseExtension.hasImage())
+    }
+
+    @Test
     fun getCategory() {
         assertEquals(category, receipt.category)
     }
