@@ -115,14 +115,16 @@ class Receipt constructor(
      *  Checks if this receipt is connected to an image file
      */
     fun hasImage(): Boolean {
-        return file?.name?.run { endsWith(".jpg") || endsWith(".jpeg") || endsWith(".png") } ?: false
+        return file?.name?.run {
+            endsWith(".jpg", ignoreCase = true) || endsWith(".jpeg", ignoreCase = true) || endsWith(".png", ignoreCase = true)
+        } ?: false
     }
 
     /**
      *  Checks if this receipt is connected to an PDF file
      */
     fun hasPDF(): Boolean {
-        return file?.name?.endsWith(".pdf") ?: false
+        return file?.name?.endsWith(".pdf", ignoreCase = true) ?: false
     }
 
     /**
