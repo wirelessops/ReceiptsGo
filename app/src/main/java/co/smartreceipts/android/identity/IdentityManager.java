@@ -16,7 +16,6 @@ import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.WebServiceManager;
-import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.apis.login.LoginPayload;
 import co.smartreceipts.android.identity.apis.login.LoginResponse;
@@ -25,7 +24,6 @@ import co.smartreceipts.android.identity.apis.login.LoginType;
 import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
 import co.smartreceipts.android.identity.apis.me.MeResponse;
 import co.smartreceipts.android.identity.apis.me.MeService;
-import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse;
 import co.smartreceipts.android.identity.apis.signup.SignUpPayload;
 import co.smartreceipts.android.identity.apis.signup.SignUpService;
 import co.smartreceipts.android.identity.store.EmailAddress;
@@ -34,7 +32,6 @@ import co.smartreceipts.android.identity.store.MutableIdentityStore;
 import co.smartreceipts.android.identity.store.Token;
 import co.smartreceipts.android.identity.store.UserId;
 import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
-import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -48,29 +45,24 @@ public class IdentityManager implements IdentityStore {
     private final WebServiceManager webServiceManager;
     private final Analytics analytics;
     private final MutableIdentityStore mutableIdentityStore;
-    private final OrganizationManager organizationManager;
     private final BehaviorSubject<Boolean> isLoggedInBehaviorSubject;
     private final Scheduler initializationScheduler;
 
     @Inject
     public IdentityManager(@NonNull Analytics analytics,
-                           @NonNull UserPreferenceManager userPreferenceManager,
                            @NonNull MutableIdentityStore mutableIdentityStore,
-                           @NonNull WebServiceManager webServiceManager,
-                           @NonNull ConfigurationManager configurationManager) {
-        this(analytics, mutableIdentityStore, webServiceManager, new OrganizationManager(webServiceManager, mutableIdentityStore, userPreferenceManager, configurationManager), Schedulers.io());
+                           @NonNull WebServiceManager webServiceManager) {
+        this(analytics, mutableIdentityStore, webServiceManager, Schedulers.io());
 
     }
 
     public IdentityManager(@NonNull Analytics analytics,
                            @NonNull MutableIdentityStore mutableIdentityStore,
                            @NonNull WebServiceManager webServiceManager,
-                           @NonNull OrganizationManager organizationManager,
                            @NonNull Scheduler initializationScheduler) {
         this.webServiceManager = webServiceManager;
         this.analytics = analytics;
         this.mutableIdentityStore = mutableIdentityStore;
-        this.organizationManager = organizationManager;
         this.initializationScheduler = initializationScheduler;
         this.isLoggedInBehaviorSubject = BehaviorSubject.create();
     }
@@ -151,8 +143,6 @@ public class IdentityManager implements IdentityStore {
                             return Observable.error(new ApiValidationException("The response did not contain a valid API token"));
                         }
                 })
-                .flatMap(loginResponse -> organizationManager.getOrganizations()
-                        .flatMap(response -> Observable.just(loginResponse)))
                 .doOnError(throwable -> {
                         if (credentials.getLoginType() == LoginType.LogIn) {
                             Logger.error(this, "Failed to complete the log in request", throwable);
@@ -198,10 +188,5 @@ public class IdentityManager implements IdentityStore {
         } else {
             return Observable.error(new IllegalStateException("Cannot fetch the user's account until we're logged in"));
         }
-    }
-
-    @NonNull
-    public Observable<OrganizationsResponse> getOrganizations() {
-        return organizationManager.getOrganizations();
     }
 }

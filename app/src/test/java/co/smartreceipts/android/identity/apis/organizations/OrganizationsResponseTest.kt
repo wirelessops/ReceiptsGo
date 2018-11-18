@@ -26,6 +26,7 @@ class OrganizationsResponseTest {
                 "{\n" +
                 "}"
 
+
         @Language("JSON")
         private const val JSON = """{
     "organizations": [
@@ -38,11 +39,11 @@ class OrganizationsResponseTest {
                     "IsSettingsEnable": null
                 },
                 "Settings": {
-                    "TripDuration": null,
+                    "TripDuration": 8,
                     "isocurr": "AED",
                     "dateseparator": "-",
-                    "trackcostcenter": null,
-                    "PredictCats": null,
+                    "trackcostcenter": true,
+                    "PredictCats": false,
                     "MatchNameCats": null,
                     "MatchCommentCats": null,
                     "OnlyIncludeExpensable": null,
@@ -51,7 +52,7 @@ class OrganizationsResponseTest {
                     "TaxPercentage": null,
                     "PreTax": null,
                     "EnableAutoCompleteSuggestions": null,
-                    "MinReceiptPrice": null,
+                    "MinReceiptPrice": 10.5,
                     "DefaultToFirstReportDate": null,
                     "ShowReceiptID": null,
                     "UseFullPage": null,
@@ -143,7 +144,7 @@ class OrganizationsResponseTest {
     }
 
     @Test
-    fun deserializeResponse() {
+    fun deserializeRealResponse() {
         val response = jsonAdapter.fromJson(JSON)
         assertNotNull(response)
 
@@ -215,11 +216,11 @@ class OrganizationsResponseTest {
         assertNotNull(settings)
         val jsonObject = settings.jsonObject
 
-        assertTrue(jsonObject.has("TripDuration") && jsonObject.isNull("TripDuration"))
+        assertTrue(jsonObject.has("TripDuration") && jsonObject.getInt("TripDuration") == 8)
         assertTrue(jsonObject.has("isocurr") && !jsonObject.isNull("isocurr") && jsonObject.getString("isocurr") == "AED")
         assertTrue(jsonObject.has("dateseparator") && !jsonObject.isNull("dateseparator") && jsonObject.getString("dateseparator") == "-")
-        assertTrue(jsonObject.has("trackcostcenter") && jsonObject.isNull("trackcostcenter"))
-        assertTrue(jsonObject.has("PredictCats") && jsonObject.isNull("PredictCats"))
+        assertTrue(jsonObject.has("trackcostcenter") && jsonObject.getBoolean("trackcostcenter"))
+        assertTrue(jsonObject.has("PredictCats") && !jsonObject.getBoolean("PredictCats"))
         assertTrue(jsonObject.has("MatchNameCats") && jsonObject.isNull("MatchNameCats"))
         assertTrue(jsonObject.has("MatchCommentCats") && jsonObject.isNull("MatchCommentCats"))
         assertTrue(jsonObject.has("OnlyIncludeExpensable") && jsonObject.isNull("OnlyIncludeExpensable"))
@@ -228,7 +229,7 @@ class OrganizationsResponseTest {
         assertTrue(jsonObject.has("TaxPercentage") && jsonObject.isNull("TaxPercentage"))
         assertTrue(jsonObject.has("PreTax") && jsonObject.isNull("PreTax"))
         assertTrue(jsonObject.has("EnableAutoCompleteSuggestions") && jsonObject.isNull("EnableAutoCompleteSuggestions"))
-        assertTrue(jsonObject.has("MinReceiptPrice") && jsonObject.isNull("MinReceiptPrice"))
+        assertTrue(jsonObject.has("MinReceiptPrice") && java.lang.Float.valueOf(jsonObject.getString("MinReceiptPrice")) == 10.5f)
         assertTrue(jsonObject.has("DefaultToFirstReportDate") && jsonObject.isNull("DefaultToFirstReportDate"))
         assertTrue(jsonObject.has("ShowReceiptID") && jsonObject.isNull("ShowReceiptID"))
         assertTrue(jsonObject.has("UseFullPage") && jsonObject.isNull("UseFullPage"))

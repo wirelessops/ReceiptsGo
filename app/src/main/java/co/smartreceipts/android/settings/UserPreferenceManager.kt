@@ -49,7 +49,7 @@ class UserPreferenceManager constructor(private val context: Context,
                 .subscribe { Logger.debug(this, "Registered a shared preference change listener") }
 
         // Pre-initialize each of the preferences that require a more complete default value
-        userPreferencesObservable
+        userPreferencesSingle
                 .subscribeOn(this.initializationScheduler)
                 .subscribe { userPreferences ->
                     for (userPreference in userPreferences) {
@@ -194,7 +194,10 @@ class UserPreferenceManager constructor(private val context: Context,
             java.lang.String::class.java == preference.type -> preferences.get().edit().putString(name, t as String).apply()
             java.lang.Float::class.java == preference.type -> preferences.get().edit().putFloat(name, t as Float).apply()
             java.lang.Integer::class.java == preference.type -> preferences.get().edit().putInt(name, t as Int).apply()
-            else -> throw IllegalArgumentException("Unsupported preference type: " + preference.type)
+            else -> {
+                Logger.warn(this@UserPreferenceManager, "Unsupported preference type: " + preference.type)
+                throw IllegalArgumentException("Unsupported preference type: " + preference.type)
+            }
         }
     }
 
@@ -210,7 +213,7 @@ class UserPreferenceManager constructor(private val context: Context,
 
     @SuppressLint("CheckResult")
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        userPreferencesObservable
+        userPreferencesSingle
                 .subscribeOn(this.initializationScheduler)
                 .subscribe { userPreferences ->
                     for (userPreference in userPreferences) {
@@ -224,9 +227,9 @@ class UserPreferenceManager constructor(private val context: Context,
     }
 
     /**
-     * @return an [Observable] that emits our entire [List] of [UserPreference]
+     * @return a [Single] that emits our entire [List] of [UserPreference]
      */
-    val userPreferencesObservable: Observable<List<UserPreference<*>>> get() = Observable.fromCallable { UserPreference.values() }
+    val userPreferencesSingle: Single<List<UserPreference<*>>> get() = Single.fromCallable { UserPreference.values() }
 
     /**
      * @return an [Observable], which will emit a [UserPreference] value this key changes

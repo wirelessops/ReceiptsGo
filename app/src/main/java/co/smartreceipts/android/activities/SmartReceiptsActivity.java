@@ -21,7 +21,6 @@ import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -78,9 +77,6 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
 
     @Inject
     IntentImportInformationPresenter intentImportInformationPresenter;
-
-    @Inject
-    IdentityManager identityManager; // TODO: 18.08.2018 remove
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;

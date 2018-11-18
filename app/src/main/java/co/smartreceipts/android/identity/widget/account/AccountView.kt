@@ -6,15 +6,15 @@ import io.reactivex.Observable
 
 interface AccountView {
 
-    fun present(emailAddress: EmailAddress)
-
-    fun present(indicator: UiIndicator<Boolean>)
-
-    fun updateProperScreen()
-
-    fun showError(message: String)
-
     val logoutButtonClicks: Observable<Any>
 
-    val applySettingsButtonClicks: Observable<Any>
+    val applySettingsClicks: Observable<Any>
+
+    fun presentEmail(emailAddress: EmailAddress)
+
+    fun presentOrganization(uiIndicator: UiIndicator<AccountInteractor.OrganizationModel>)
+
+    fun presentApplyingResult(uiIndicator: UiIndicator<Unit>)
+
+    fun updateProperScreen()
 }

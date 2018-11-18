@@ -12,7 +12,6 @@ import java.util.*
 
 class ColumnJsonAdapter(private val definitions: ColumnDefinitions<Receipt>) {
 
-//todo 19.10.18 mock server data
     @FromJson
     fun columnFromJson(columnJson: ColumnJson) : Column<Receipt> = ColumnBuilderFactory(definitions)
         .setColumnUuid(UUID.fromString(columnJson.uuid))
@@ -25,6 +24,6 @@ class ColumnJsonAdapter(private val definitions: ColumnDefinitions<Receipt>) {
     @JsonClass(generateAdapter = true)
     data class ColumnJson(
         @Json(name = "uuid") val uuid: String,
-        @Json(name = "column_type") val columnType: Int = 1
+        @Json(name = "column_type") val columnType: Int = 1 // TODO: 19.10.2018 mocked server data
     )
 }

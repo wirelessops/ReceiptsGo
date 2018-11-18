@@ -20,6 +20,8 @@ import javax.inject.Inject
 
 class AccountFragment : NeededLoginFragment(), AccountView {
 
+    // TODO: 14.11.2018 translate all strings related to this fragment
+
     @Inject
     lateinit var presenter: AccountPresenter
 
@@ -27,11 +29,9 @@ class AccountFragment : NeededLoginFragment(), AccountView {
     lateinit var router: NeededLoginRouter
 
 
-    override val logoutButtonClicks: Observable<Any>
-        get() = RxView.clicks(logout_button)
+    override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
+    override val applySettingsClicks: Observable<Any> get() = RxView.clicks(organization_caution)
 
-    override val applySettingsButtonClicks: Observable<Any>
-        get() = RxView.clicks(apply_button)
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -51,7 +51,6 @@ class AccountFragment : NeededLoginFragment(), AccountView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.account_info_fragment, container, false)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -94,25 +93,64 @@ class AccountFragment : NeededLoginFragment(), AccountView {
         super.onPause()
     }
 
-    override fun present(emailAddress: EmailAddress) {
-        login_field_email.text = emailAddress
-    }
-
-    override fun present(uiIndicator: UiIndicator<Boolean>) {
-        Toast.makeText(context, "present", Toast.LENGTH_SHORT).show()
-    }
-
     override fun updateProperScreen() {
         wasPreviouslySentToLogin = router.navigateToProperLocation(wasPreviouslySentToLogin)
     }
 
-    override fun showError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    override fun presentEmail(emailAddress: EmailAddress) {
+        login_field_email.text = emailAddress
+    }
+
+    override fun presentOrganization(uiIndicator: UiIndicator<AccountInteractor.OrganizationModel>) {
+        when (uiIndicator.state) {
+            UiIndicator.State.Success -> {
+                progress_bar.visibility = View.GONE
+                showOrganization(uiIndicator.data.get())
+            }
+            UiIndicator.State.Loading -> {
+                progress_bar.visibility = View.VISIBLE
+            }
+            UiIndicator.State.Error -> {
+                organization_group.visibility = View.GONE
+                progress_bar.visibility = View.GONE
+                // TODO: 18.11.2018 define error message or ignore?
+            }
+            UiIndicator.State.Idle -> {
+                organization_group.visibility = View.GONE
+                progress_bar.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun presentApplyingResult(uiIndicator: UiIndicator<Unit>) {
+        when (uiIndicator.state) {
+            UiIndicator.State.Success -> {
+                Toast.makeText(context, getString(R.string.organization_apply_success), Toast.LENGTH_SHORT).show()
+                organization_caution.visibility = View.GONE
+            }
+            UiIndicator.State.Error -> {
+                Toast.makeText(context, getString(R.string.organization_apply_error), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                throw IllegalStateException("Applying settings must return only Success or Error result")
+            }
+        }
+    }
+
+    private fun showOrganization(organizationModel: AccountInteractor.OrganizationModel) {
+        organization_group.visibility = View.VISIBLE
+
+        organization_name.text = organizationModel.organization.name
+        user_role.text = organizationModel.userRole.name
+
+        when {
+            organizationModel.settingsMatch -> organization_caution.visibility = View.GONE
+            else -> organization_caution.visibility = View.VISIBLE
+        }
     }
 
     companion object {
         fun newInstance() = AccountFragment()
     }
-
 
 }

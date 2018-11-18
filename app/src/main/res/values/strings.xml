@@ -515,4 +515,12 @@
     <string name="graphs_label_non_reimbursable">Non-reimbursable</string>
     <string name="graphs_label_others">Others</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Your current settings are not synced with your organization. Tap here to apply organization settings.</string>
+    <string name="organization_settings_match">Your current settings are synced with your organization.</string>
+    <string name="organization_apply_error">Something went wrong while applying organization settings</string>
+    <string name="organization_apply_success">Settings were applied successfully</string>
+    <string name="logged_in_as">Logged in as:</string>
+    <string name="organization_label">Primary organization:</string>
+
 </resources>
