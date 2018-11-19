@@ -1,5 +1,6 @@
 package co.smartreceipts.android.identity.widget.account
 
+import co.smartreceipts.android.identity.apis.organizations.Organization
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockito_kotlin.*
@@ -56,6 +57,7 @@ class AccountPresenterTest {
     fun presentOrganization() {
         val organizationModel = mock<AccountInteractor.OrganizationModel>()
         whenever(interactor.getOrganization()).thenReturn(Observable.just(UiIndicator.loading(), UiIndicator.success(organizationModel)))
+        whenever(organizationModel.organization).thenReturn(mock<Organization>())
 
         presenter.subscribe()
 
