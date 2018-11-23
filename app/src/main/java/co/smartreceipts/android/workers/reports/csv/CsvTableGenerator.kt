@@ -43,8 +43,8 @@ class CsvTableGenerator<DataType> @JvmOverloads constructor(
                         addCell(csvBuilder, columns[i].getValue(data), i == columnCount - 1)
                     }
                     filteredList.add(data)
+                    csvBuilder.append("\n")
                 }
-                csvBuilder.append("\n")
             }
 
             // Add the footer
