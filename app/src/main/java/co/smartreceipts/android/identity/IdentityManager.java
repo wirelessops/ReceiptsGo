@@ -170,6 +170,7 @@ public class IdentityManager implements IdentityStore {
         mutableIdentityStore.logOut();
         isLoggedInBehaviorSubject.onNext(false);
         analytics.record(Events.Identity.UserLogout);
+        Logger.info(this, "User logged out");
     }
 
     @NonNull

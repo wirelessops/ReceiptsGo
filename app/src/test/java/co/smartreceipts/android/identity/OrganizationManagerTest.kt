@@ -66,7 +66,7 @@ class OrganizationManagerTest {
     fun getPrimaryOrganizationTestWithoutOrganizationSyncing() {
         whenever(configurationManager.isEnabled(ConfigurableResourceFeature.OrganizationSyncing)).thenReturn(false)
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertComplete()
             .assertNoErrors()
             .assertNoValues()
@@ -77,7 +77,7 @@ class OrganizationManagerTest {
     fun getPrimaryOrganizationTestWithoutLoggingIn() {
         whenever(identityStore.isLoggedIn).thenReturn(false)
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertNotComplete()
             .assertError(IllegalStateException::class.java)
             .assertNoValues()
@@ -88,7 +88,7 @@ class OrganizationManagerTest {
 
         whenever(service.organizations()).thenReturn(Observable.error(Exception()))
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertNotComplete()
             .assertNoValues()
             .assertError(Exception::class.java)
@@ -99,7 +99,7 @@ class OrganizationManagerTest {
 
         whenever(organizationsResponse.organizations).thenReturn(emptyList())
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertComplete()
             .assertNoErrors()
             .assertNoValues()
@@ -111,7 +111,7 @@ class OrganizationManagerTest {
 
         whenever(organizationsResponse.organizations).thenReturn(listOf(organization1, organization2))
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertComplete()
             .assertNoErrors()
             .assertValueCount(1)
@@ -121,7 +121,7 @@ class OrganizationManagerTest {
     @Test
     fun getPrimaryOrganizationTestWithOneOrganization() {
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertComplete()
             .assertNoErrors()
             .assertValueCount(1)
@@ -134,7 +134,7 @@ class OrganizationManagerTest {
         whenever(organizationsResponse.organizations).thenReturn(listOf(organization1))
         whenever(orgError.hasError).thenReturn(true)
 
-        organizationManager.primaryOrganization.test()
+        organizationManager.getPrimaryOrganization().test()
             .assertNotComplete()
             .assertNoValues()
             .assertError(ApiValidationException::class.java)

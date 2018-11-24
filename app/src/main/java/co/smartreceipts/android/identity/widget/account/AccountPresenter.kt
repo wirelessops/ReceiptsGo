@@ -26,13 +26,11 @@ class AccountPresenter @Inject constructor(view: AccountView, interactor: Accoun
         compositeDisposable.add(
             interactor.getOrganization()
                 .subscribe { organizationIndicator ->
-                    run {
                         view.presentOrganization(organizationIndicator)
 
                         if (organizationIndicator.state == UiIndicator.State.Success && organizationIndicator.data.isPresent) {
                             organizationSubject.onNext(organizationIndicator.data.get().organization)
                         }
-                    }
                 }
         )
 

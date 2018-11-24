@@ -44,7 +44,7 @@ class AccountInteractorTest {
 
     @Test
     fun getOrganizationSuccessTest() {
-        whenever(organizationManager.primaryOrganization).thenReturn(Maybe.just(organization))
+        whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.just(organization))
         whenever(organizationManager.checkOrganizationSettingsMatch(organization)).thenReturn(Single.just(false))
 
         val expectedOrganizationModel = AccountInteractor.OrganizationModel(organization, OrganizationUser.UserRole.USER, false)
@@ -60,7 +60,7 @@ class AccountInteractorTest {
 
     @Test
     fun getOrganizationEmptyTest() {
-        whenever(organizationManager.primaryOrganization).thenReturn(Maybe.empty())
+        whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.empty())
 
         val testObserver = interactor.getOrganization().test()
         testObserver.awaitTerminalEvent()
@@ -72,7 +72,7 @@ class AccountInteractorTest {
 
     @Test
     fun getOrganizationErrorTest() {
-        whenever(organizationManager.primaryOrganization).thenReturn(Maybe.error(Exception()))
+        whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.error(Exception()))
 
         val testObserver = interactor.getOrganization().test()
         testObserver.awaitTerminalEvent()

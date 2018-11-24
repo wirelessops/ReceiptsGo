@@ -133,7 +133,7 @@ public class FragmentProvider {
      */
     @NonNull
     public AccountFragment newAccountFragment() {
-        return AccountFragment.Companion.newInstance();
+        return AccountFragment.newInstance();
     }
 
     /**

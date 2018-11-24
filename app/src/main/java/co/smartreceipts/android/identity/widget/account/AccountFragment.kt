@@ -8,8 +8,8 @@ import android.view.*
 import android.widget.Toast
 import co.smartreceipts.android.R
 import co.smartreceipts.android.identity.store.EmailAddress
-import co.smartreceipts.android.identity.widget.NeededLoginFragment
-import co.smartreceipts.android.identity.widget.NeededLoginRouter
+import co.smartreceipts.android.identity.widget.NeedsLoginFragment
+import co.smartreceipts.android.identity.widget.NeedsLoginRouter
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.support.AndroidSupportInjection
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.account_info_fragment.*
 import javax.inject.Inject
 
 
-class AccountFragment : NeededLoginFragment(), AccountView {
+class AccountFragment : NeedsLoginFragment(), AccountView {
 
     // TODO: 14.11.2018 translate all strings related to this fragment
 
@@ -26,7 +26,7 @@ class AccountFragment : NeededLoginFragment(), AccountView {
     lateinit var presenter: AccountPresenter
 
     @Inject
-    lateinit var router: NeededLoginRouter
+    lateinit var router: NeedsLoginRouter
 
 
     override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
@@ -38,24 +38,15 @@ class AccountFragment : NeededLoginFragment(), AccountView {
         super.onAttach(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-
-        if (savedInstanceState != null) {
-            wasPreviouslySentToLogin =
-                    savedInstanceState.getBoolean(NeededLoginFragment.OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, false)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.account_info_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val toolbar = activity!!.findViewById<Toolbar>(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        val fragmentActivity = requireActivity()
+        val toolbar = fragmentActivity.findViewById<Toolbar>(R.id.toolbar)
+        (fragmentActivity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -77,7 +68,7 @@ class AccountFragment : NeededLoginFragment(), AccountView {
 
         updateProperScreen()
 
-        val actionBar = (activity as AppCompatActivity).supportActionBar
+        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
         actionBar?.apply {
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
@@ -150,7 +141,7 @@ class AccountFragment : NeededLoginFragment(), AccountView {
     }
 
     companion object {
-        fun newInstance() = AccountFragment()
+        @JvmStatic fun newInstance() = AccountFragment()
     }
 
 }

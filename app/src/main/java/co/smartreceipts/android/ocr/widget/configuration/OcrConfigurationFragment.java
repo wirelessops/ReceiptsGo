@@ -30,21 +30,21 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.identity.store.EmailAddress;
-import co.smartreceipts.android.identity.widget.NeededLoginFragment;
-import co.smartreceipts.android.identity.widget.NeededLoginRouter;
+import co.smartreceipts.android.identity.widget.NeedsLoginFragment;
+import co.smartreceipts.android.identity.widget.NeedsLoginRouter;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
-public class OcrConfigurationFragment extends NeededLoginFragment implements OcrConfigurationView {
+public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrConfigurationView {
 
     @Inject
     OcrConfigurationPresenter presenter;
 
     @Inject
-    NeededLoginRouter router;
+    NeedsLoginRouter router;
 
     @Inject
     Analytics analytics;
@@ -70,14 +70,10 @@ public class OcrConfigurationFragment extends NeededLoginFragment implements Ocr
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Logger.debug(this, "onCreate");
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
         if (savedInstanceState == null) {
             analytics.record(Events.Ocr.OcrViewConfigurationPage);
-        } else {
-            setWasPreviouslySentToLogin(savedInstanceState.getBoolean(OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, false));
         }
     }
 

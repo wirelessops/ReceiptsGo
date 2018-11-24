@@ -8,8 +8,8 @@ import co.smartreceipts.android.utils.log.Logger
 import javax.inject.Inject
 
 @FragmentScope
-class NeededLoginRouter @Inject constructor(private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
-                                             private val identityManager: IdentityManager) {
+class NeedsLoginRouter @Inject constructor(private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
+                                           private val identityManager: IdentityManager) {
 
     /**
      * Navigates us to the proper next screen: nowhere if we're logged in, back if the user was previously

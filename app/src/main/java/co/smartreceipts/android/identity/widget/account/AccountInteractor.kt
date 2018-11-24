@@ -35,7 +35,7 @@ class AccountInteractor constructor(
     fun getOrganization(): Observable<UiIndicator<OrganizationModel>> {
 
         return Observable.concat(Observable.just(UiIndicator.loading<OrganizationModel>()),
-            organizationManager.primaryOrganization
+            organizationManager.getPrimaryOrganization()
                 .flatMapSingle { organization: Organization ->
                     organizationManager.checkOrganizationSettingsMatch(organization)
                         .flatMap { settingsMatch: Boolean ->

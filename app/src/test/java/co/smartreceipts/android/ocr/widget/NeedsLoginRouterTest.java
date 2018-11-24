@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.identity.IdentityManager;
-import co.smartreceipts.android.identity.widget.NeededLoginRouter;
+import co.smartreceipts.android.identity.widget.NeedsLoginRouter;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -19,10 +19,10 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-public class NeededLoginRouterTest {
+public class NeedsLoginRouterTest {
 
     @InjectMocks
-    NeededLoginRouter router;
+    NeedsLoginRouter router;
 
     @Mock
     NavigationHandler navigationHandler;
