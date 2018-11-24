@@ -63,8 +63,8 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         updateProperScreen()
 
@@ -79,9 +79,10 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
         this.presenter.subscribe()
     }
 
-    override fun onPause() {
+    override fun onStop() {
         this.presenter.unsubscribe()
-        super.onPause()
+
+        super.onStop()
     }
 
     override fun updateProperScreen() {
