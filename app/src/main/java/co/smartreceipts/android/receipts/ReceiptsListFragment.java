@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,7 +87,6 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
 public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView,
@@ -480,7 +480,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     public final void showReceiptMenu(final Receipt receipt) {
         highlightedReceipt = receipt;
-        final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(receipt.getName())
                 .setCancelable(true)
                 .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());

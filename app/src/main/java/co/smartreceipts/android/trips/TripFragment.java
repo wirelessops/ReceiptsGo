@@ -47,13 +47,11 @@ import co.smartreceipts.android.tooltip.model.StaticTooltip;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
-import co.smartreceipts.android.utils.ConfigurableStaticFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
-import wb.android.dialog.BetterDialogBuilder;
 import wb.android.flex.Flex;
 
 public class TripFragment extends WBListFragment implements TableEventsListener<Trip>,
@@ -205,7 +203,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     public final void editTrip(final Trip trip) {
-        final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] editTripItems = flex.getStringArray(getActivity(), R.array.EDIT_TRIP_ITEMS);
         builder.setTitle(trip.getName())
                 .setCancelable(true)
@@ -222,7 +220,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     public final void deleteTrip(final Trip trip) {
-        final BetterDialogBuilder builder = new BetterDialogBuilder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.delete_item, trip.getName()))
                 .setMessage(getString(R.string.delete_sync_information))
                 .setCancelable(true)

@@ -21,7 +21,6 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPre
 import co.smartreceipts.android.settings.widget.editors.DraggableEditableListFragment;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import dagger.android.support.AndroidSupportInjection;
-import wb.android.dialog.BetterDialogBuilder;
 
 public class CategoriesListFragment extends DraggableEditableListFragment<Category> {
 
@@ -92,7 +91,7 @@ public class CategoriesListFragment extends DraggableEditableListFragment<Catego
 
         boolean isEdit = editCategory != null;
 
-        final BetterDialogBuilder innerBuilder = new BetterDialogBuilder(getActivity());
+        final android.support.v7.app.AlertDialog.Builder innerBuilder = new android.support.v7.app.AlertDialog.Builder(getActivity());
         final LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.BOTTOM);
