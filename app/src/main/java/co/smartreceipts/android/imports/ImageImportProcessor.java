@@ -24,10 +24,9 @@ import co.smartreceipts.android.imports.exceptions.InvalidImageException;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Single;
-import wb.android.image.ImageUtils;
+import co.smartreceipts.android.utils.ImageUtils;
 import wb.android.storage.StorageManager;
 
 public class ImageImportProcessor implements FileImportProcessor {

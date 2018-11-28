@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 import co.smartreceipts.android.utils.log.Logger;
-import wb.android.image.ImageUtils;
+import co.smartreceipts.android.utils.ImageUtils;
 
 /**
  * Used to load pdf files via the native Android {@link PdfRenderer} stack

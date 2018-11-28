@@ -36,7 +36,7 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Backgrou
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Color;
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Font;
 import co.smartreceipts.android.workers.reports.pdf.renderer.formatting.Padding;
-import wb.android.image.ImageUtils;
+import co.smartreceipts.android.utils.ImageUtils;
 
 /**
  * A fallback implementation, which should be used in conjunction with the {@link TextRenderer} class

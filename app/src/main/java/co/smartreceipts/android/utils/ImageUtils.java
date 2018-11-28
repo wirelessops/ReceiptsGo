@@ -1,4 +1,4 @@
-package wb.android.image;
+package co.smartreceipts.android.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +8,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -18,17 +17,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import wb.android.storage.StorageManager;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
+import co.smartreceipts.android.utils.log.Logger;
 import wb.android.storage.StorageManager;
 
 public class ImageUtils {
-
-    private static final String TAG = ImageUtils.class.getSimpleName();
 
     private ImageUtils() {
     }
@@ -125,7 +117,7 @@ public class ImageUtils {
             bitmap.recycle();
             return bmRotated;
         } catch (OutOfMemoryError e) {
-            Log.e(TAG, e.toString());
+            Logger.error(ImageUtils.class, "Failed to rotate bitmap.", e);
             return bitmap;
         }
     }

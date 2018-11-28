@@ -53,9 +53,9 @@ import dagger.Lazy;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
-import wb.android.image.ImageUtils;
+import co.smartreceipts.android.utils.ImageUtils;
 import wb.android.storage.StorageManager;
-import wb.android.ui.PinchToZoomImageView;
+import co.smartreceipts.android.widget.ui.PinchToZoomImageView;
 
 public class ReceiptImageFragment extends WBFragment {
 
