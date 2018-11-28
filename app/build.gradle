@@ -27,6 +27,22 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
+    bundle {
+        language {
+            // We include all languages to allow users to choose their report language
+            enableSplit = false
+        }
+        density {
+            // Performing initial tests with the split disabled for simplicity
+            enableSplit = false
+        }
+        abi {
+            // Force this reduce the size of PDF generation libraries to avoid an Android bug
+            enableSplit = true
+        }
+    }
+
+
     dexOptions {
         javaMaxHeapSize "2048M"
     }
