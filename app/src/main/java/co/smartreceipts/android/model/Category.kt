@@ -51,5 +51,8 @@ class Category @JvmOverloads constructor(
         return result
     }
 
+    companion object {
+        @JvmField val PARCEL_KEY: String = Category::class.java.name
+    }
 
 }

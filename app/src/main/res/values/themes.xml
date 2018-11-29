@@ -13,6 +13,7 @@
         <item name="colorPrimaryDark">@color/smart_receipts_colorPrimaryDark</item>
         <item name="colorAccent">@color/smart_receipts_colorAccent</item>
         <item name="alertDialogStyle">@style/Theme.SmartReceipts.Dialog</item>
+        <item name="alertDialogTheme">@style/Theme.SmartReceipts.Dialog</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
     </style>
 

@@ -91,9 +91,14 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        getTableController().subscribe(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        getTableController().subscribe(this);
         getTableController().get();
     }
 
@@ -102,9 +107,14 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
         if (!isOnDragMode) {
             saveTableOrdering();
         }
-        getTableController().unsubscribe(this);
         recyclerViewDragDropManager.cancelDrag();
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        getTableController().unsubscribe(this);
+        super.onStop();
     }
 
     /**

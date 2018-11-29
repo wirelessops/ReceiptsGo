@@ -15,6 +15,7 @@ import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentDialogFragmen
 import co.smartreceipts.android.receipts.attacher.ReceiptRemoveAttachmentDialogFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
+import co.smartreceipts.android.settings.widget.editors.categories.CategoryEditorDialogFragment;
 import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.columns.PDFColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
@@ -90,6 +91,10 @@ public abstract class GlobalBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     public abstract CategoriesListFragment categoriesListFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract CategoryEditorDialogFragment categoryEditorDialogFragment();
 
     @FragmentScope
     @ContributesAndroidInjector
