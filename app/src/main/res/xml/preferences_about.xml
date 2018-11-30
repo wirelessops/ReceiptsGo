@@ -13,7 +13,5 @@
 			android:title="@string/pref_about_terms_title"
 			android:dialogTitle="@string/pref_about_terms_title"
 			android:dialogMessage="@string/pref_about_terms_dialogMessage" />
-        <Preference android:key="@string/pref_about_privacy_policy_key"
-                    android:title="@string/pref_about_privacy_policy_title" />
 	</PreferenceCategory>
 </PreferenceScreen>
