@@ -34,6 +34,11 @@ public enum ConfigurableResourceFeature implements Feature {
     Ocr(R.bool.config_is_ocr_enabled),
 
     /**
+     * Allows us to manage if the "My Account" option is enabled within the app or not
+     */
+    MyAccount(R.bool.my_account_is_enabled),
+
+    /**
      * Allows us to manage syncing of organization settings across users
      */
     OrganizationSyncing(R.bool.config_is_organization_syncing_enabled);

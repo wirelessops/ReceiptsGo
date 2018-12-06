@@ -163,8 +163,14 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
             menu.removeItem(R.id.menu_main_settings);
         }
 
+        // Check OCR availability before enabling this menu item
         if (!configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)) {
             menu.removeItem(R.id.menu_main_ocr_configuration);
+        }
+
+        // Check "My Account" availability before enabling this menu item
+        if (!configurationManager.isEnabled(ConfigurableResourceFeature.MyAccount)) {
+            menu.removeItem(R.id.menu_main_my_account);
         }
 
         return super.onCreateOptionsMenu(menu);
