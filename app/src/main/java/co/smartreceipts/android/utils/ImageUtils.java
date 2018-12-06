@@ -181,6 +181,8 @@ public class ImageUtils {
             } else {
                 throw new IOException("Failed to convert the bitmap codec");
             }
+        } catch (OutOfMemoryError e) {
+            throw new IOException("Insufficient application memory to perform this operation");
         } finally {
             StorageManager.closeQuietly(outputStream);
         }
