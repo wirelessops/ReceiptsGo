@@ -40,6 +40,7 @@ import co.smartreceipts.android.autocomplete.AutoCompletePresenter;
 import co.smartreceipts.android.autocomplete.AutoCompleteResult;
 import co.smartreceipts.android.autocomplete.AutoCompleteView;
 import co.smartreceipts.android.autocomplete.trip.TripAutoCompleteField;
+import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
@@ -306,9 +307,15 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         String name = nameBox.getText().toString().trim();
         final String startDateText = startDateBox.getText().toString();
         final String endDateText = endDateBox.getText().toString();
-        final String currencyCode = currencySpinner.getSelectedItem().toString();
         final String comment = commentBox.getText().toString();
         final String costCenter = costCenterBox.getText().toString();
+
+        final String currencyCode;
+        if (currencySpinner.getSelectedItem() != null) {
+            currencyCode = currencySpinner.getSelectedItem().toString();
+        } else {
+            currencyCode = PriceCurrency.getDefaultCurrency().getCurrencyCode();
+        }
 
         if (presenter.checkTrip(name, startDateText, startDateBox.getDate(), endDateText, endDateBox.getDate())) {
             presenter.saveTrip(name, startDateBox.getDate(), startDateBox.getTimeZone(), endDateBox.getDate(), endDateBox.getTimeZone(), currencyCode, comment, costCenter);
