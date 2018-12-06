@@ -18,25 +18,20 @@ import co.smartreceipts.android.analytics.events.Event;
 public class FirebaseAnalytics implements Analytics {
 
 
-    private final com.google.firebase.analytics.FirebaseAnalytics mFirebaseAnalytics;
+    private final com.google.firebase.analytics.FirebaseAnalytics firebaseAnalytics;
 
     @Inject
     public FirebaseAnalytics(Context context) {
-        mFirebaseAnalytics = com.google.firebase.analytics.FirebaseAnalytics.getInstance(
-                context.getApplicationContext());
+        firebaseAnalytics = com.google.firebase.analytics.FirebaseAnalytics.getInstance(context.getApplicationContext());
     }
 
     @Override
     public void record(@NonNull Event event) {
-        if (event instanceof ErrorEvent) {
-            FirebaseCrash.report(((ErrorEvent) event).getThrowable());
-        } else {
-            Bundle b = new Bundle();
-            List<DataPoint> dataPoints = event.getDataPoints();
-            for (DataPoint dataPoint : dataPoints) {
-                b.putString(dataPoint.getName(), dataPoint.getValue());
-            }
-            mFirebaseAnalytics.logEvent(event.name().name(), b);
+        Bundle b = new Bundle();
+        List<DataPoint> dataPoints = event.getDataPoints();
+        for (DataPoint dataPoint : dataPoints) {
+            b.putString(dataPoint.getName(), dataPoint.getValue());
         }
+        firebaseAnalytics.logEvent(event.name().name(), b);
     }
 }
