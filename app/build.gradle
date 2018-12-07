@@ -27,6 +27,21 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
+    buildTypes {
+        debug {
+            shrinkResources true
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
     bundle {
         language {
             // We include all languages to allow users to choose their report language
