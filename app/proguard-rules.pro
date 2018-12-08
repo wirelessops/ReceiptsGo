@@ -44,6 +44,7 @@
 -dontwarn org.spongycastle.**
 
 
+
 ##### Kotlin ProGuard configurations #####
 
 -keep class kotlin.** { *; }
@@ -55,6 +56,7 @@
 -keepclassmembers class kotlin.Metadata {
     public <methods>;
 }
+
 
 
 ##### ButterKnife ProGuard configurations #####
@@ -156,6 +158,7 @@
 
 
 ##### AWS ProGuard configurations #####
+
 # Class names are needed in reflection
 -keepnames class com.amazonaws.**
 -keepnames class com.amazon.**
@@ -169,6 +172,15 @@
 # The SDK has several references of Apache HTTP client
 -dontwarn com.amazonaws.http.**
 -dontwarn com.amazonaws.metrics.**
+
+
+
+##### FireBase ProGuard configurations #####
+
+-keep class com.google.firebase.provider.FirebaseInitProvider
+
+
+
 
 # All below here are from: https://gist.github.com/jemshit/767ab25a9670eb0083bafa65f8d786bb
 
