@@ -288,7 +288,6 @@
     <string name="existing_backups_title">Copias de seguridad existentes:</string>
     <string name="existing_remote_backup_current_device">%s (Tu copia de seguridad actual)</string>
     <string name="remote_backups_list_item_menu_restore">Restaurar</string>
-    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
     <string name="remote_backups_list_item_menu_download_images">Descargar a ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Depuración] Descargar</string>
 

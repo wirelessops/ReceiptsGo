@@ -290,7 +290,6 @@
     <string name="existing_backups_title">Існуючі резервні копії:</string>
     <string name="existing_remote_backup_current_device">%s (Ваша поточна резервна копія)</string>
     <string name="remote_backups_list_item_menu_restore">Відновити</string>
-    <string name="remote_backups_list_item_menu_delete">@string/delete</string>
     <string name="remote_backups_list_item_menu_download_images">Скачати в ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Скачати</string>
 
