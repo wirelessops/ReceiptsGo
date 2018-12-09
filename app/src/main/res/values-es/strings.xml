@@ -275,8 +275,8 @@
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Copias de seguridad</string>
     <string name="manual_backup_title">Copia de seguridad manual:</string>
-    <string name="manual_backup_description">¡Haz copia de seguridad para mantener seguros tus recibos! Puedes restaurar tus datos importando el archivo de respaldo SmartReceipts.SMR, que se genera por medio del botón Copia de seguridad que encuentras a continuación.</string>
-    <string name="manual_backup_export">Copia de seguridad</string>
+    <string name="manual_backup_description">¡Haz copia de seguridad para mantener seguros tus recibos! Puedes restaurar tus datos importando el archivo de respaldo SmartReceipts.SMR, que se genera por medio del botón "Backup" que encuentras a continuación.</string>
+    <string name="manual_backup_export">Backup</string>
     <string name="manual_backup_import">Importar</string>
     <string name="auto_backup_title">Copias de seguridad automáticas (BETA):</string>
     <string name="auto_backup_wifi_only">Usar solo Wi-Fi</string>
