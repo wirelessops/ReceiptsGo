@@ -294,10 +294,8 @@
     <string name="remote_backups_list_item_menu_download_images">Скачати в ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Скачати</string>
 
-    <string name="dialog_remote_backup_delete_title">@string/delete</string>
     <string name="dialog_remote_backup_delete_message">Ви впевнені, що хочете видалити резервну копію з пристрою %s? Ця операція не може бути скасована.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Ви впевнені, що хочете видалити резервну копію з цього пристрою? Ця операція не зможе бути скасована. Будь ласка, зверніть увагу, що ви можете відключити автоматичне резервне копіювання після того, як ця операція завершиться, або всі локальні дані можуть бути повторно синхронізовані.</string>
-    <string name="dialog_remote_backup_delete_positive">@string/delete</string>
     <string name="dialog_remote_backup_delete_progress">Видалення резервної копії з пристрою %s…</string>
     <string name="dialog_remote_backup_delete_toast_success">Резервна копія вдало видалена</string>
     <string name="dialog_remote_backup_delete_toast_failure">Не вдалося видалити цю резервну копію</string>

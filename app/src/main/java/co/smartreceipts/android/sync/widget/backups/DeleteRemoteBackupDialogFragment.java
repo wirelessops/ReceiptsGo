@@ -56,14 +56,14 @@ public class DeleteRemoteBackupDialogFragment extends DialogFragment implements 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.dialog_remote_backup_delete_title);
+        builder.setTitle(R.string.delete);
         if (backupMetadata.getSyncDeviceId().equals(backupProvidersManager.getDeviceSyncId())) {
             builder.setMessage(getString(R.string.dialog_remote_backup_delete_message_this_device));
         } else {
             builder.setMessage(getString(R.string.dialog_remote_backup_delete_message, backupMetadata.getSyncDeviceName()));
         }
         builder.setCancelable(true);
-        builder.setPositiveButton(R.string.dialog_remote_backup_delete_positive, this);
+        builder.setPositiveButton(R.string.delete, this);
         builder.setNegativeButton(android.R.string.cancel, this);
         return builder.create();
     }
