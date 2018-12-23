@@ -494,4 +494,11 @@
     <string name="graphs_label_non_reimbursable">Nicht erstattungsfähig</string>
     <string name="graphs_label_others">Andere</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Ihre aktuellen Einstellungen werden nicht mit Ihrer Organisation synchronisiert. Tippen Sie hier, um die Organisationseinstellungen anzuwenden.</string>
+    <string name="organization_apply_error">Beim Anwenden von Organisationseinstellungen ist ein Fehler aufgetreten</string>
+    <string name="organization_apply_success">Einstellungen wurden erfolgreich übernommen</string>
+    <string name="logged_in_as">Eingeloggt als:</string>
+    <string name="organization_label">Deine Organisation:</string>
+
 </resources>

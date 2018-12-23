@@ -516,4 +516,11 @@
     <string name="graphs_label_non_reimbursable">לא בר-החזר</string>
     <string name="graphs_label_others">אחרים</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">ההגדרות הנוכחיות שלך אינן מסונכרנות עם הארגון שלך. הקש כאן כדי להחיל הגדרות ארגון.</string>
+    <string name="organization_apply_error">משהו השתבש במהלך החלת הגדרות הארגון</string>
+    <string name="organization_apply_success">ההגדרות הוחלו בהצלחה</string>
+    <string name="logged_in_as">מחובר כ:</string>
+    <string name="organization_label">הארגון שלך:</string>
+
 </resources>

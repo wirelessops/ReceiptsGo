@@ -494,4 +494,11 @@
     <string name="graphs_label_non_reimbursable">Non remboursable</string>
     <string name="graphs_label_others">Autres</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Vos paramètres actuels ne sont pas synchronisés avec votre organisation. Appuyez ici pour appliquer les paramètres d\'organisation.</string>
+    <string name="organization_apply_error">Une erreur s\'est produite lors de l\'application des paramètres d\'organisation.</string>
+    <string name="organization_apply_success">Les paramètres ont été appliqués avec succès</string>
+    <string name="logged_in_as">Connecté en tant que:</string>
+    <string name="organization_label">Ton organisation:</string>
+
 </resources>

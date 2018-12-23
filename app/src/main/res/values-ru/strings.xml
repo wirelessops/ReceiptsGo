@@ -496,4 +496,11 @@
     <string name="graphs_label_non_reimbursable">Невозмещаемые</string>
     <string name="graphs_label_others">Другие</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Ваши текущие настройки не синхронизованы с вашей организацией. Нажмите здесь, чтобы применить настройки организации.</string>
+    <string name="organization_apply_error">Что-то пошло не так при применении настроек организации</string>
+    <string name="organization_apply_success">Настройки были успешно применены</string>
+    <string name="logged_in_as">Вы вошли как:</string>
+    <string name="organization_label">Ваша организация:</string>
+
 </resources>

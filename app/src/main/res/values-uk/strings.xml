@@ -496,5 +496,12 @@
     <string name="graphs_label_non_reimbursable">Не відшкодовуються</string>
     <string name="graphs_label_others">Інші</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Ваші поточні налаштування не синхронізовані з вашою організацією. Натисніть тут, щоб застосувати налаштування організації.</string>
+    <string name="organization_apply_error">Під час застосування налаштувань організації сталася помилка</string>
+    <string name="organization_apply_success">Налаштування були успішно застосовані</string>
+    <string name="logged_in_as">Ви увійшли як:</string>
+    <string name="organization_label">Ваша організація:</string>
+
 </resources>
 

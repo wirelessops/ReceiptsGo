@@ -494,4 +494,11 @@
     <string name="graphs_label_non_reimbursable">No reembolsable</string>
     <string name="graphs_label_others">Otros</string>
 
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Su configuración actual no está sincronizada con su organización. Toque aquí para aplicar la configuración de la organización.</string>
+    <string name="organization_apply_error">Algo salió mal al aplicar la configuración de la organización</string>
+    <string name="organization_apply_success">Los ajustes se aplicaron con éxito</string>
+    <string name="logged_in_as">Conectado como:</string>
+    <string name="organization_label">Tu organización:</string>
+
 </resources>

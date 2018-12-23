@@ -20,8 +20,6 @@ import javax.inject.Inject
 
 class AccountFragment : NeedsLoginFragment(), AccountView {
 
-    // TODO: 14.11.2018 translate all strings related to this fragment
-
     @Inject
     lateinit var presenter: AccountPresenter
 
@@ -105,7 +103,6 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
             UiIndicator.State.Error -> {
                 organization_group.visibility = View.GONE
                 progress_bar.visibility = View.GONE
-                // TODO: 18.11.2018 define error message or ignore?
             }
             UiIndicator.State.Idle -> {
                 organization_group.visibility = View.GONE
