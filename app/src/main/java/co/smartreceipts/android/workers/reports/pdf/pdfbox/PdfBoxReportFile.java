@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
@@ -33,7 +34,8 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
 
 
     public PdfBoxReportFile(@NonNull ReportResourcesManager reportResourcesManager,
-                            @NonNull UserPreferenceManager preferences) throws IOException {
+                            @NonNull UserPreferenceManager preferences,
+                            @NonNull DateFormatter dateFormatter) throws IOException {
 
         this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
 
@@ -45,7 +47,7 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
         fontManager.initialize();
 
         pdfBoxContext = new DefaultPdfBoxContext(reportResourcesManager.getLocalizedContext(),
-                fontManager, colorManager, preferences);
+                fontManager, colorManager, preferences, dateFormatter);
     }
 
 

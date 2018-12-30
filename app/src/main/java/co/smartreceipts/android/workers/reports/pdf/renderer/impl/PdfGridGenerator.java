@@ -9,6 +9,7 @@ import com.tom_roush.pdfbox.util.awt.AWTColor;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.filters.Filter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -39,6 +40,7 @@ public class PdfGridGenerator implements TableGenerator<List<Renderer>, Receipt>
     private final PdfBoxContext pdfBoxContext;
     private final PDDocument pdDocument;
     private final UserPreferenceManager userPreferenceManager;
+    private final DateFormatter dateFormatter;
     private final PdfBoxPageDecorations decorations;
     private final Filter<Receipt> filter;
     private final AWTColor color;
@@ -48,20 +50,31 @@ public class PdfGridGenerator implements TableGenerator<List<Renderer>, Receipt>
     private final float availableWidth;
     private final float availableHeight;
 
-    public PdfGridGenerator(@NonNull PdfBoxContext pdfBoxContext, @NonNull PDDocument pdDocument, @NonNull Filter<Receipt> filter,
-                            @NonNull PdfBoxPageDecorations decorations, float availableWidth, float availableHeight) {
+    public PdfGridGenerator(@NonNull PdfBoxContext pdfBoxContext,
+                            @NonNull PDDocument pdDocument,
+                            @NonNull Filter<Receipt> filter,
+                            @NonNull PdfBoxPageDecorations decorations,
+                            float availableWidth,
+                            float availableHeight) {
         this(pdfBoxContext, pdDocument, filter, decorations, pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.Small), DEFAULT_PADDING, availableWidth, availableHeight);
     }
 
-    public PdfGridGenerator(@NonNull PdfBoxContext pdfBoxContext, @NonNull PDDocument pdDocument, @NonNull Filter<Receipt> filter,
-                            @NonNull PdfBoxPageDecorations decorations, @NonNull AWTColor color, @NonNull PdfFontSpec fontSpec,
-                            @NonNull Padding padding, float availableWidth, float availableHeight) {
+    public PdfGridGenerator(@NonNull PdfBoxContext pdfBoxContext,
+                            @NonNull PDDocument pdDocument,
+                            @NonNull Filter<Receipt> filter,
+                            @NonNull PdfBoxPageDecorations decorations,
+                            @NonNull AWTColor color,
+                            @NonNull PdfFontSpec fontSpec,
+                            @NonNull Padding padding,
+                            float availableWidth,
+                            float availableHeight) {
         this.pdfBoxContext = Preconditions.checkNotNull(pdfBoxContext);
         this.pdDocument = Preconditions.checkNotNull(pdDocument);
         this.filter = Preconditions.checkNotNull(filter);
         this.decorations = Preconditions.checkNotNull(decorations);
         this.userPreferenceManager = Preconditions.checkNotNull(pdfBoxContext.getPreferences());
+        this.dateFormatter = Preconditions.checkNotNull(pdfBoxContext.getDateFormatter());
         this.color = Preconditions.checkNotNull(color);
         this.fontSpec = Preconditions.checkNotNull(fontSpec);
         this.padding = Preconditions.checkNotNull(padding);
@@ -99,7 +112,7 @@ public class PdfGridGenerator implements TableGenerator<List<Renderer>, Receipt>
                 if (receipt.hasPDF()) {
                     Logger.debug(this, "Adding existing pdf using the native renderer");
                     final PdfPDImageXFactory pdfFactory = new PdfPDImageXFactoryFactory(pdfBoxContext.getAndroidContext(), pdDocument, receipt.getFile()).get();
-                    final ReceiptLabelTextRenderer textRenderer = new ReceiptLabelTextRenderer(receipt, pdfBoxContext.getAndroidContext(), pdDocument, userPreferenceManager, color, fontSpec);
+                    final ReceiptLabelTextRenderer textRenderer = new ReceiptLabelTextRenderer(receipt, pdfBoxContext.getAndroidContext(), pdDocument, userPreferenceManager, dateFormatter, color, fontSpec);
                     final PDImageXRenderer imageRenderer = new PDImageXRenderer(pdfFactory);
                     final PdfGridRenderer pdfGridRenderer = new PdfGridRenderer(pdfFactory, availableWidth, availableHeight);
                     pdfGridRenderer.addRow(new GridRowRenderer(textRenderer));
@@ -109,7 +122,7 @@ public class PdfGridGenerator implements TableGenerator<List<Renderer>, Receipt>
                 } else {
                     Logger.debug(this, "Creating page for full page receipt.");
                     final GridReceiptsRendererFactory fullPageFactory = new GridReceiptsRendererFactory(pdfBoxContext.getAndroidContext(),
-                            pdfBoxContext.getPreferences(), pdDocument, decorations, FULL_PAGE_ROWS_COLS, FULL_PAGE_ROWS_COLS);
+                            pdfBoxContext.getPreferences(), dateFormatter, pdDocument, decorations, FULL_PAGE_ROWS_COLS, FULL_PAGE_ROWS_COLS);
                     fullPageFactory.addReceipt(receipt);
                     constructRendererAndAddToList(fullPageFactory, renderers);
                 }
@@ -117,7 +130,7 @@ public class PdfGridGenerator implements TableGenerator<List<Renderer>, Receipt>
                 if (rendererFactory == null) {
                     Logger.debug(this, "Creating new receipt grid for this pdf");
                     rendererFactory = new GridReceiptsRendererFactory(pdfBoxContext.getAndroidContext(),
-                            pdfBoxContext.getPreferences(), pdDocument, decorations);
+                            pdfBoxContext.getPreferences(), dateFormatter, pdDocument, decorations);
                 }
 
                 rendererFactory.addReceipt(receipt);

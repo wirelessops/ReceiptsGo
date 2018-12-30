@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -18,20 +19,25 @@ public abstract class AbstractReport implements Report {
     private final DatabaseHelper databaseHelper;
     private final UserPreferenceManager userPreferenceManager;
     private final StorageManager storageManager;
+    private final DateFormatter dateFormatter;
 
     protected AbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
-                             @NonNull PersistenceManager persistenceManager) {
+                             @NonNull PersistenceManager persistenceManager,
+                             @NonNull DateFormatter dateFormatter) {
         this(reportResourcesManager, persistenceManager.getDatabase(),
-                persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager());
+                persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(), dateFormatter);
     }
 
     protected AbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
-                             @NonNull DatabaseHelper db, @NonNull UserPreferenceManager preferences,
-                             @NonNull StorageManager storageManager) {
+                             @NonNull DatabaseHelper db,
+                             @NonNull UserPreferenceManager preferences,
+                             @NonNull StorageManager storageManager,
+                             @NonNull DateFormatter dateFormatter) {
         this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
         this.databaseHelper = Preconditions.checkNotNull(db);
         this.userPreferenceManager = Preconditions.checkNotNull(preferences);
         this.storageManager = Preconditions.checkNotNull(storageManager);
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
     }
 
     @NonNull
@@ -52,5 +58,10 @@ public abstract class AbstractReport implements Report {
     @NonNull
     protected final StorageManager getStorageManager() {
         return storageManager;
+    }
+
+    @NonNull
+    protected final DateFormatter getDateFormatter() {
+        return dateFormatter;
     }
 }

@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorManager;
@@ -19,17 +20,20 @@ public class DefaultPdfBoxContext implements PdfBoxContext {
     private final PdfFontManager fontManager;
     private final PdfColorManager colorManager;
     private final UserPreferenceManager preferences;
+    private final DateFormatter dateFormatter;
 
     private PDRectangle pageSize;
 
     public DefaultPdfBoxContext(@NonNull Context localizedContext,
                                 @NonNull PdfFontManager fontManager,
                                 @NonNull PdfColorManager colorManager,
-                                @NonNull UserPreferenceManager preferences) {
+                                @NonNull UserPreferenceManager preferences,
+                                @NonNull DateFormatter dateFormatter) {
         this.localizedContext = Preconditions.checkNotNull(localizedContext);
         this.fontManager = Preconditions.checkNotNull(fontManager);
         this.colorManager = Preconditions.checkNotNull(colorManager);
         this.preferences = Preconditions.checkNotNull(preferences);
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
 
         if (preferences.get(UserPreference.ReportOutput.DefaultPdfPageSize).equals(localizedContext.getString(R.string.pref_output_pdf_page_size_letter_entryValue))) {
             pageSize = PDRectangle.LETTER;
@@ -75,6 +79,12 @@ public class DefaultPdfBoxContext implements PdfBoxContext {
     @Override
     public UserPreferenceManager getPreferences() {
         return preferences;
+    }
+
+    @NonNull
+    @Override
+    public DateFormatter getDateFormatter() {
+        return dateFormatter;
     }
 
     @NonNull

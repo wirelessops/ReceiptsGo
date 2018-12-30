@@ -28,6 +28,7 @@ import java.util.List;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.filters.LegacyReceiptFilter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
@@ -88,6 +89,7 @@ public class EmailAssistant {
     private final PersistenceManager persistenceManager;
     private final Trip trip;
     private final PurchaseWallet purchaseWallet;
+    private final DateFormatter dateFormatter;
 
     private static Intent getEmailDeveloperIntent() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -122,13 +124,17 @@ public class EmailAssistant {
 
     public EmailAssistant(Context context, NavigationHandler navigationHandler,
                           ReportResourcesManager reportResourcesManager,
-                          PersistenceManager persistenceManager, Trip trip, PurchaseWallet purchaseWallet) {
+                          PersistenceManager persistenceManager,
+                          Trip trip,
+                          PurchaseWallet purchaseWallet,
+                          DateFormatter dateFormatter) {
         this.context = context;
         this.navigationHandler = navigationHandler;
         this.reportResourcesManager = reportResourcesManager;
         this.persistenceManager = persistenceManager;
         this.trip = trip;
         this.purchaseWallet = purchaseWallet;
+        this.dateFormatter = dateFormatter;
     }
 
     public void emailTrip(@NonNull EnumSet<EmailOptions> options) {
@@ -265,7 +271,7 @@ public class EmailAssistant {
             if (mOptions.contains(EmailOptions.PDF_FULL)) {
                 final Report pdfFullReport = new PdfBoxFullPdfReport(reportResourcesManager, mDB,
                         persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(),
-                        purchaseWallet);
+                        purchaseWallet, dateFormatter);
                 try {
                     mFiles[EmailOptions.PDF_FULL.getIndex()] = pdfFullReport.generate(trip);
                 } catch (ReportGenerationException e) {
@@ -277,7 +283,7 @@ public class EmailAssistant {
             }
 
             if (mOptions.contains(EmailOptions.PDF_IMAGES_ONLY)) {
-                final Report pdfImagesReport = new PdfBoxImagesOnlyReport(reportResourcesManager, persistenceManager);
+                final Report pdfImagesReport = new PdfBoxImagesOnlyReport(reportResourcesManager, persistenceManager, dateFormatter);
                 try {
                     mFiles[EmailOptions.PDF_IMAGES_ONLY.getIndex()] = pdfImagesReport.generate(trip);
                 } catch (ReportGenerationException e) {
@@ -507,7 +513,7 @@ public class EmailAssistant {
                 float y = spacing * 4;
                 canvas.drawText(trip.getName(), xPad / 2, y, brush);
                 y += spacing;
-                canvas.drawText(trip.getFormattedStartDate(context, persistenceManager.getPreferenceManager().get(UserPreference.General.DateSeparator)) + " -- " + trip.getFormattedEndDate(context, persistenceManager.getPreferenceManager().get(UserPreference.General.DateSeparator)), xPad / 2, y, brush);
+                canvas.drawText(dateFormatter.getFormattedDate(trip.getStartDate(), trip.getStartTimeZone()) + " -- " + dateFormatter.getFormattedDate(trip.getEndDate(), trip.getEndTimeZone()), xPad / 2, y, brush);
                 y += spacing;
                 y = background.getHeight() - yPad / 2 + spacing * 2;
                 canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_NAME) + ": " + receipt.getName(), xPad / 2, y, brush);
@@ -518,7 +524,7 @@ public class EmailAssistant {
                     canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_TAX) + ": " + receipt.getTax().getDecimalFormattedPrice() + " " + receipt.getPrice().getCurrencyCode(), xPad / 2, y, brush);
                     y += spacing;
                 }
-                canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_DATE) + ": " + receipt.getFormattedDate(context, persistenceManager.getPreferenceManager().get(UserPreference.General.DateSeparator)), xPad / 2, y, brush);
+                canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_DATE) + ": " + dateFormatter.getFormattedDate(receipt.getDate(), receipt.getTimeZone()), xPad / 2, y, brush);
                 y += spacing;
                 canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_CATEGORY) + ": " + receipt.getCategory().getName(), xPad / 2, y, brush);
                 y += spacing;

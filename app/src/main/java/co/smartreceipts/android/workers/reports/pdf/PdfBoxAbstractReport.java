@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -20,15 +21,17 @@ import wb.android.storage.StorageManager;
 public abstract class PdfBoxAbstractReport extends AbstractReport {
 
     public PdfBoxAbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
-                                @NonNull PersistenceManager persistenceManager) {
-        super(reportResourcesManager, persistenceManager);
+                                @NonNull PersistenceManager persistenceManager,
+                                @NonNull DateFormatter dateFormatter) {
+        super(reportResourcesManager, persistenceManager, dateFormatter);
     }
 
     public PdfBoxAbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
                                 @NonNull DatabaseHelper db,
                                 @NonNull UserPreferenceManager preferences,
-                                @NonNull StorageManager storageManager) {
-        super(reportResourcesManager, db, preferences, storageManager);
+                                @NonNull StorageManager storageManager,
+                                @NonNull DateFormatter dateFormatter) {
+        super(reportResourcesManager, db, preferences, storageManager, dateFormatter);
     }
 
     @NonNull
@@ -42,7 +45,7 @@ public abstract class PdfBoxAbstractReport extends AbstractReport {
 
             pdfStream = getStorageManager().getFOS(trip.getDirectory(), outputFileName);
 
-            PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(getReportResourcesManager(), getPreferences());
+            PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(getReportResourcesManager(), getPreferences(), getDateFormatter());
 
             createSections(trip, pdfBoxReportFile);
 

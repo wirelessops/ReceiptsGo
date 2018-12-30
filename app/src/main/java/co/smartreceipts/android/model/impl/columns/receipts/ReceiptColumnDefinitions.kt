@@ -2,6 +2,7 @@ package co.smartreceipts.android.model.impl.columns.receipts
 
 import android.support.annotation.StringRes
 import co.smartreceipts.android.R
+import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.comparators.ColumnNameComparator
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
@@ -20,11 +21,12 @@ import kotlin.collections.ArrayList
  * Provides specific definitions for all [co.smartreceipts.android.model.Receipt] [co.smartreceipts.android.model.Column]
  * objects
  */
-class ReceiptColumnDefinitions @Inject
-constructor(
+class ReceiptColumnDefinitions @Inject constructor(
     private val reportResourcesManager: ReportResourcesManager,
-    private val preferences: UserPreferenceManager
+    private val preferences: UserPreferenceManager,
+    private val dateFormatter: DateFormatter
 ) : ColumnDefinitions<Receipt>, ColumnFinder {
+
     private val actualDefinitions = values()
 
     /**
@@ -171,15 +173,15 @@ constructor(
             CATEGORY_NAME -> ReceiptCategoryNameColumn(id, syncState, customOrderId, uuid)
             USER_ID -> SettingUserIdColumn(id, syncState, preferences, customOrderId, uuid)
             REPORT_NAME -> ReportNameColumn(id, syncState, customOrderId, uuid)
-            REPORT_START_DATE -> ReportStartDateColumn(id, syncState, localizedContext, preferences, customOrderId, uuid)
-            REPORT_END_DATE -> ReportEndDateColumn(id, syncState, localizedContext, preferences, customOrderId, uuid)
+            REPORT_START_DATE -> ReportStartDateColumn(id, syncState, dateFormatter, customOrderId, uuid)
+            REPORT_END_DATE -> ReportEndDateColumn(id, syncState, dateFormatter, customOrderId, uuid)
             REPORT_COMMENT -> ReportCommentColumn(id, syncState, customOrderId, uuid)
             REPORT_COST_CENTER -> ReportCostCenterColumn(id, syncState, customOrderId, uuid)
             IMAGE_FILE_NAME -> ReceiptFileNameColumn(id, syncState, customOrderId, uuid)
             IMAGE_PATH -> ReceiptFilePathColumn(id, syncState, customOrderId, uuid)
             COMMENT -> ReceiptCommentColumn(id, syncState, customOrderId, uuid)
             CURRENCY -> ReceiptCurrencyCodeColumn(id, syncState, customOrderId, uuid)
-            DATE -> ReceiptDateColumn(id, syncState, localizedContext, preferences, customOrderId, uuid)
+            DATE -> ReceiptDateColumn(id, syncState, dateFormatter, customOrderId, uuid)
             NAME -> ReceiptNameColumn(id, syncState, customOrderId, uuid)
             PRICE -> ReceiptPriceColumn(id, syncState, customOrderId, uuid)
             PRICE_MINUS_TAX -> ReceiptPriceMinusTaxColumn(id, syncState, preferences, customOrderId, uuid)

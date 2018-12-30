@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryNameColumn;
@@ -56,6 +57,9 @@ public class CSVTableTest {
     UserPreferenceManager preferences;
 
     @Mock
+    DateFormatter dateFormatter;
+
+    @Mock
     SQLiteDatabase database;
 
     @Mock
@@ -77,7 +81,7 @@ public class CSVTableTest {
         MockitoAnnotations.initMocks(this);
 
         sqliteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
-        final ReceiptColumnDefinitions receiptColumnDefinitions = new ReceiptColumnDefinitions(reportResourcesManager, preferences);
+        final ReceiptColumnDefinitions receiptColumnDefinitions = new ReceiptColumnDefinitions(reportResourcesManager, preferences, dateFormatter);
         csvTable = new CSVTable(sqliteOpenHelper, receiptColumnDefinitions, orderingPreferencesManager);
 
         // Now create the table and insert some defaults

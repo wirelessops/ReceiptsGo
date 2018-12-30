@@ -21,6 +21,7 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
@@ -55,8 +56,12 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
 
     @Inject
     UserPreferenceManager preferenceManager;
+
     @Inject
     ReportResourcesManager reportResourcesManager;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     private CheckBox pdfFullCheckbox;
     private CheckBox pdfImagesCheckbox;
@@ -188,7 +193,7 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         }
 
         final EmailAssistant emailAssistant = new EmailAssistant(getActivity(), navigationHandler,
-                reportResourcesManager, persistenceManager, trip, purchaseWallet);
+                reportResourcesManager, persistenceManager, trip, purchaseWallet, dateFormatter);
         emailAssistant.emailTrip(options);
     }
 }

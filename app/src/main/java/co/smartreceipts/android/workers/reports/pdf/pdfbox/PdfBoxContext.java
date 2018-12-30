@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorManager;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontManager;
@@ -32,6 +33,9 @@ public interface PdfBoxContext {
 
     @NonNull
     UserPreferenceManager getPreferences();
+
+    @NonNull
+    DateFormatter getDateFormatter();
 
     @NonNull
     PdfFontManager getFontManager();

@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.util.awt.AWTColor;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -18,9 +19,14 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
 public class ReceiptLabelTextRenderer extends TextRenderer {
 
 
-    public ReceiptLabelTextRenderer(@NonNull Receipt receipt, @NonNull Context context, @NonNull PDDocument pdDocument,
-                                    @NonNull UserPreferenceManager userPreferenceManager, @NonNull AWTColor color, @NonNull PdfFontSpec fontSpec) {
-        super(context, pdDocument, new TextFormatter(context, userPreferenceManager).buildLegendForImage(receipt), color, fontSpec);
+    public ReceiptLabelTextRenderer(@NonNull Receipt receipt,
+                                    @NonNull Context context,
+                                    @NonNull PDDocument pdDocument,
+                                    @NonNull UserPreferenceManager userPreferenceManager,
+                                    @NonNull DateFormatter dateFormatter,
+                                    @NonNull AWTColor color,
+                                    @NonNull PdfFontSpec fontSpec) {
+        super(context, pdDocument, new TextFormatter(userPreferenceManager, dateFormatter).buildLegendForImage(receipt), color, fontSpec);
     }
 
     @VisibleForTesting
@@ -28,12 +34,13 @@ public class ReceiptLabelTextRenderer extends TextRenderer {
 
         private static final String SEP = " \u2022 ";
 
-        private final Context context;
         private final UserPreferenceManager userPreferenceManager;
+        private final DateFormatter dateFormatter;
 
-        public TextFormatter(@NonNull Context context, @NonNull UserPreferenceManager userPreferenceManager) {
-            this.context = Preconditions.checkNotNull(context.getApplicationContext());
+        public TextFormatter(@NonNull UserPreferenceManager userPreferenceManager,
+                             @NonNull DateFormatter dateFormatter) {
             this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
+            this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
         }
 
         @NonNull
@@ -47,8 +54,7 @@ public class ReceiptLabelTextRenderer extends TextRenderer {
                     : "";
 
             return num + SEP + receipt.getName() + SEP
-                    + receipt.getFormattedDate(context,
-                    userPreferenceManager.get(UserPreference.General.DateSeparator)) + extra;
+                    + dateFormatter.getFormattedDate(receipt.getDate(), receipt.getTimeZone()) + extra;
         }
     }
 }

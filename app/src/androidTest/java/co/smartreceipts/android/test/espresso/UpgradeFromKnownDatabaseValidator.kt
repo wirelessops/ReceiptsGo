@@ -9,6 +9,7 @@ import android.support.test.runner.AndroidJUnit4
 import android.util.Log
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.test.runner.BeforeApplicationOnCreate
 import co.smartreceipts.android.test.utils.TestLocaleToggler
 import co.smartreceipts.android.test.utils.TestResourceReader
@@ -115,11 +116,14 @@ abstract class UpgradeFromKnownDatabaseValidator {
 
     private lateinit var context: Context
 
+    private lateinit var dateFormatter: DateFormatter
+
     @Before
     @CallSuper
     fun setUp() {
         val application = activityTestRule.activity.application as SmartReceiptsApplication
         databaseHelper = application.databaseHelper
+        dateFormatter = application.dateFormatter
 
         // Set the Locale to en-US for consistency purposes
         val nonLocalizedContext = InstrumentationRegistry.getInstrumentation().targetContext
@@ -228,8 +232,8 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals(1, report1.id)
         assertEquals("Report 1", report1.name)
         assertEquals("Report 1", report1.directory.name)
-        assertEquals("11/16/16", report1.getFormattedStartDate(context, "/"))
-        assertEquals("11/20/16", report1.getFormattedEndDate(context, "/"))
+        assertEquals("11/16/16", dateFormatter.getFormattedDate(report1.startDate, report1.startTimeZone))
+        assertEquals("11/20/16", dateFormatter.getFormattedDate(report1.endDate, report1.endTimeZone))
         assertEquals("$45.00", report1.price.currencyFormattedPrice)
         assertEquals("USD", report1.tripCurrency.currencyCode)
         assertEquals("Comment", report1.comment)
@@ -255,8 +259,8 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals(2, report2.id)
         assertEquals("Report 2", report2.name)
         assertEquals("Report 2", report2.directory.name)
-        assertEquals("11/17/16", report2.getFormattedStartDate(context, "/"))
-        assertEquals("11/20/16", report2.getFormattedEndDate(context, "/"))
+        assertEquals("11/17/16", dateFormatter.getFormattedDate(report2.startDate, report2.startTimeZone))
+        assertEquals("11/20/16", dateFormatter.getFormattedDate(report2.endDate, report2.endTimeZone))
         assertEquals("$50.00", report2.price.currencyFormattedPrice)
         assertEquals("USD", report2.tripCurrency.currencyCode)
         assertEquals("", report2.comment)
@@ -288,8 +292,8 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals(3, report3.id)
         assertEquals("Report 3", report3.name)
         assertEquals("Report 3", report3.directory.name)
-        assertEquals("11/17/16", report3.getFormattedStartDate(context, "/"))
-        assertEquals("11/20/16", report3.getFormattedEndDate(context, "/"))
+        assertEquals("11/17/16", dateFormatter.getFormattedDate(report3.startDate, report3.startTimeZone))
+        assertEquals("11/20/16", dateFormatter.getFormattedDate(report3.endDate, report3.endTimeZone))
         assertEquals("$68.60", report3.price.currencyFormattedPrice)
         assertEquals("USD", report3.tripCurrency.currencyCode)
         assertEquals("", report3.comment)
@@ -324,7 +328,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("$3.00", distance.price.currencyFormattedPrice)
         assertEquals("USD", distance.price.currencyCode)
         assertEquals("Location", distance.location)
-        assertEquals("11/20/16", distance.getFormattedDate(context, "/"))
+        assertEquals("11/20/16", dateFormatter.getFormattedDate(distance.date, distance.timeZone))
         assertEquals("Comment", distance.comment)
 
         allDistances.addAll(report3Distances)
@@ -377,7 +381,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("USD", receipt.price.currencyCode)
         assertEquals("$0.00", receipt.tax.currencyFormattedPrice)
         assertEquals("USD", receipt.tax.currencyCode)
-        assertEquals(date, receipt.getFormattedDate(context, "/"))
+        assertEquals(date, dateFormatter.getFormattedDate(receipt.date, receipt.timeZone))
         assertEquals(category, receipt.category)
         assertEquals("", receipt.comment)
         assertEquals(PaymentMethod.NONE, receipt.paymentMethod)
@@ -396,7 +400,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("USD", receipt.price.currencyCode)
         assertEquals("$1.50", receipt.tax.currencyFormattedPrice)
         assertEquals("USD", receipt.tax.currencyCode)
-        assertEquals(date, receipt.getFormattedDate(context, "/"))
+        assertEquals(date, dateFormatter.getFormattedDate(receipt.date, receipt.timeZone))
         assertEquals(category, receipt.category)
         assertEquals("", receipt.comment)
         assertEquals(paymentMethod, receipt.paymentMethod)
@@ -415,7 +419,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("USD", receipt.price.currencyCode)
         assertEquals("$0.00", receipt.tax.currencyFormattedPrice)
         assertEquals("USD", receipt.tax.currencyCode)
-        assertEquals(date, receipt.getFormattedDate(context, "/"))
+        assertEquals(date, dateFormatter.getFormattedDate(receipt.date, receipt.timeZone))
         assertEquals(category, receipt.category)
         assertEquals("", receipt.comment)
         assertEquals(PaymentMethod.NONE, receipt.paymentMethod)
@@ -437,7 +441,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertTrue(receipt.price.exchangeRate.supportsExchangeRateFor("USD"))
         assertEquals("2.000000", receipt.price.exchangeRate.getDecimalFormattedExchangeRate("USD"))
         assertEquals("EUR", receipt.tax.currencyCode)
-        assertEquals("11/20/16", receipt.getFormattedDate(context, "/"))
+        assertEquals("11/20/16", dateFormatter.getFormattedDate(receipt.date, receipt.timeZone))
         assertEquals(category, receipt.category)
         assertEquals("Comment", receipt.comment)
         assertEquals(PaymentMethod.NONE, receipt.paymentMethod)

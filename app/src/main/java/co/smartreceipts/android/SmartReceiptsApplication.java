@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.crash.CrashReporter;
 import co.smartreceipts.android.aws.cognito.CognitoManager;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
 import co.smartreceipts.android.di.DaggerAppComponent;
@@ -64,9 +65,6 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
     @Inject
     DispatchingAndroidInjector<Service> serviceInjector;
-
-    @Inject
-    PersistenceManager persistenceManager;
 
     @Inject
     DatabaseHelper databaseHelper;
@@ -124,6 +122,9 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
     @Inject
     MemoryLeakMonitor memoryLeakMonitor;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     private AppComponent appComponent;
 
@@ -213,6 +214,17 @@ public class SmartReceiptsApplication extends Application implements HasActivity
     @VisibleForTesting
     public DatabaseHelper getDatabaseHelper() {
         return databaseHelper;
+    }
+
+    /**
+     * Similar to our use of {@link #getDatabaseHelper()} above, we supply this getter for our
+     * espresso test modules to simplify how we access this content
+     *
+     * @return the {@link DateFormatter}
+     */
+    @VisibleForTesting
+    public DateFormatter getDateFormatter() {
+        return dateFormatter;
     }
 
     private void init() {

@@ -39,6 +39,7 @@ import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
@@ -147,13 +148,10 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     UserPreferenceManager preferenceManager;
 
     @Inject
-    OrderingPreferencesManager orderingPreferencesManager;
+    DateFormatter dateFormatter;
 
     @Inject
     ReceiptsOrderer receiptsOrderer;
-
-    @Inject
-    ReceiptAttachmentManager receiptAttachmentManager;
 
     @Inject
     Picasso picasso;
@@ -207,7 +205,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
     public void onCreate(Bundle savedInstanceState) {
         Logger.debug(this, "onCreate");
         super.onCreate(savedInstanceState);
-        adapter = new ReceiptsAdapter(getContext(), preferenceManager, backupProvidersManager, navigationHandler, receiptsOrderer, picasso);
+        adapter = new ReceiptsAdapter(getContext(), preferenceManager, dateFormatter, backupProvidersManager, navigationHandler, receiptsOrderer, picasso);
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable(OUT_IMAGE_URI);
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);

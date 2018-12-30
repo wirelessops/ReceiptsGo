@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import co.smartreceipts.android.TestResourceReader;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
@@ -104,6 +105,8 @@ public class InteractivePdfBoxTest {
     @Mock
     ReportResourcesManager reportResourcesManager;
 
+    DateFormatter dateFormatter;
+
     /**
      * Base method, to be overridden by subclasses. The subclass must annotate the method
      * with the JUnit <code>@Before</code> annotation, and initialize the mocks.
@@ -114,6 +117,7 @@ public class InteractivePdfBoxTest {
 
         context = RuntimeEnvironment.application;
         testResourceReader = new TestResourceReader();
+        dateFormatter = new DateFormatter(context, userPreferenceManager);
 
         when(persistenceManager.getPreferenceManager()).thenReturn(userPreferenceManager);
 
@@ -479,12 +483,12 @@ public class InteractivePdfBoxTest {
     }
 
     private void writeFullReport(@NonNull Trip trip, @NonNull List<Receipt> receipts) throws Exception {
-        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager);
+        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager, dateFormatter);
 
         final ArrayList<Column<Receipt>> receiptColumns = new ArrayList<>();
         receiptColumns.add(new ReceiptNameColumn(1, new DefaultSyncState(), 0, UUID.randomUUID()));
         receiptColumns.add(new ReceiptPriceColumn(2, new DefaultSyncState(), 0, UUID.randomUUID()));
-        receiptColumns.add(new ReceiptDateColumn(3, new DefaultSyncState(), context, userPreferenceManager, 0, UUID.randomUUID()));
+        receiptColumns.add(new ReceiptDateColumn(3, new DefaultSyncState(), dateFormatter, 0, UUID.randomUUID()));
         receiptColumns.add(new ReceiptCategoryNameColumn(4, new DefaultSyncState(), 0, UUID.randomUUID()));
 
         final List<Column<Distance>> distanceColumns = new ArrayList<>();
@@ -519,7 +523,7 @@ public class InteractivePdfBoxTest {
     }
 
     private void writeImagesOnlyReport(@NonNull Trip trip, @NonNull List<Receipt> receipts) throws Exception {
-        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager);
+        final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager, dateFormatter);
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
         OutputStream outputStream = null;

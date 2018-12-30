@@ -10,6 +10,7 @@ import com.tom_roush.pdfbox.util.awt.AWTColor;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.log.Logger;
@@ -31,22 +32,31 @@ public class GridReceiptsRendererFactory {
 
     private final Context context;
     private final UserPreferenceManager userPreferenceManager;
+    private final DateFormatter dateFormatter;
     private final PDDocument pdDocument;
     private final PdfBoxPageDecorations decorations;
     private final List<Receipt> receipts = new ArrayList<>();
     private final int columns;
     private final int rows;
 
-    public GridReceiptsRendererFactory(@NonNull Context context, @NonNull UserPreferenceManager userPreferenceManager,
-                                       @NonNull PDDocument pdDocument, @NonNull PdfBoxPageDecorations decorations) {
-        this(context, userPreferenceManager, pdDocument, decorations, DEFAULT_NUMBER_COLUMNS, DEFAULT_NUMBER_ROWS);
+    public GridReceiptsRendererFactory(@NonNull Context context,
+                                       @NonNull UserPreferenceManager userPreferenceManager,
+                                       @NonNull DateFormatter dateFormatter,
+                                       @NonNull PDDocument pdDocument,
+                                       @NonNull PdfBoxPageDecorations decorations) {
+        this(context, userPreferenceManager, dateFormatter, pdDocument, decorations, DEFAULT_NUMBER_COLUMNS, DEFAULT_NUMBER_ROWS);
     }
 
-    public GridReceiptsRendererFactory(@NonNull Context context, @NonNull UserPreferenceManager userPreferenceManager,
-                                       @NonNull PDDocument pdDocument, @NonNull PdfBoxPageDecorations decorations,
-                                       int columns, int rows) {
+    public GridReceiptsRendererFactory(@NonNull Context context,
+                                       @NonNull UserPreferenceManager userPreferenceManager,
+                                       @NonNull DateFormatter dateFormatter,
+                                       @NonNull PDDocument pdDocument,
+                                       @NonNull PdfBoxPageDecorations decorations,
+                                       int columns,
+                                       int rows) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
         this.pdDocument = Preconditions.checkNotNull(pdDocument);
         this.decorations = Preconditions.checkNotNull(decorations);
         this.columns = columns;
@@ -81,7 +91,7 @@ public class GridReceiptsRendererFactory {
                     final Receipt receipt = receipts.get(index);
                     Preconditions.checkNotNull(receipt.getFile(), "All receipts must have an image file");
 
-                    labelRows.add(new ReceiptLabelTextRenderer(receipt, context, pdDocument, userPreferenceManager, color, fontSpec));
+                    labelRows.add(new ReceiptLabelTextRenderer(receipt, context, pdDocument, userPreferenceManager, dateFormatter, color, fontSpec));
                     if (receipt.hasImage()) {
                         imageRows.add(new PDImageXRenderer(new ImagePDImageXFactory(context, pdDocument, receipt.getFile())));
                     } else {

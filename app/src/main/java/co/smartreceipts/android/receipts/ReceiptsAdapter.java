@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -46,6 +47,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
     private final Context context;
     private final UserPreferenceManager preferences;
+    private final DateFormatter dateFormatter;
     private final BackupProvidersManager backupProvidersManager;
     private final NavigationHandler navigationHandler;
     private final ReceiptsOrderer receiptsOrderer;
@@ -63,12 +65,14 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
     public ReceiptsAdapter(@NonNull Context context,
                            @NonNull UserPreferenceManager preferenceManager,
+                           @NonNull DateFormatter dateFormatter,
                            @NonNull BackupProvidersManager backupProvidersManager,
                            @NonNull NavigationHandler navigationHandler,
                            @NonNull ReceiptsOrderer receiptsOrderer,
                            @NonNull Picasso picasso) {
-        this.preferences = Preconditions.checkNotNull(preferenceManager);
         this.context = Preconditions.checkNotNull(context);
+        this.preferences = Preconditions.checkNotNull(preferenceManager);
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
         this.backupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
         this.receiptsOrderer = Preconditions.checkNotNull(receiptsOrderer);
@@ -193,17 +197,15 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         Receipt previousReceipt = null;
 
         for (Receipt receipt : items) {
+            final String receiptDate = dateFormatter.getFormattedDate(receipt.getDate(), receipt.getTimeZone());
             if (previousReceipt != null) {
-                final String receiptDate = receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator));
-                final String previousReceiptDate = previousReceipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator));
+                final String previousReceiptDate = dateFormatter.getFormattedDate(previousReceipt.getDate(), previousReceipt.getTimeZone());
 
                 if (!receiptDate.equals(previousReceiptDate)) {
-                    listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(),
-                            receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
+                    listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(), receiptDate));
                 }
             } else {
-                listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(),
-                        receipt.getFormattedDate(context, preferences.get(UserPreference.General.DateSeparator))));
+                listItems.add(new ReceiptHeaderItem(receipt.getDate().getTime(), receiptDate));
             }
 
             listItems.add(new ReceiptContentItem(receipt));

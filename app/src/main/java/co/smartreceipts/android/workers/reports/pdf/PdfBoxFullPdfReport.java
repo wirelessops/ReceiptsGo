@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Distance;
@@ -27,10 +28,13 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
     private final GroupingController groupingController;
     private final PurchaseWallet purchaseWallet;
 
-    public PdfBoxFullPdfReport(ReportResourcesManager reportResourcesManager, DatabaseHelper db,
+    public PdfBoxFullPdfReport(ReportResourcesManager reportResourcesManager,
+                               DatabaseHelper db,
                                UserPreferenceManager preferences,
-                               StorageManager storageManager, PurchaseWallet purchaseWallet) {
-        super(reportResourcesManager, db, preferences, storageManager);
+                               StorageManager storageManager,
+                               PurchaseWallet purchaseWallet,
+                               DateFormatter dateFormatter) {
+        super(reportResourcesManager, db, preferences, storageManager, dateFormatter);
         this.groupingController = new GroupingController(db, reportResourcesManager.getLocalizedContext(), preferences);
         this.purchaseWallet = purchaseWallet;
     }

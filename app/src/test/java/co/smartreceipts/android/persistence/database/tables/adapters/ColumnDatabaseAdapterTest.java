@@ -13,6 +13,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.UUID;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
@@ -55,6 +56,9 @@ public class ColumnDatabaseAdapterTest {
     UserPreferenceManager preferences;
 
     @Mock
+    DateFormatter dateFormatter;
+
+    @Mock
     SyncStateAdapter syncStateAdapter;
 
     @Mock
@@ -72,7 +76,7 @@ public class ColumnDatabaseAdapterTest {
         final int uuidIndex = 4;
 
         receiptNameColumn = new ReceiptNameColumn(ID, getSyncState, CUSTOM_ORDER_ID, COLUMN_UUID);
-        ReceiptColumnDefinitions receiptColumnDefinitions = new ReceiptColumnDefinitions(reportResourcesManager, preferences);
+        ReceiptColumnDefinitions receiptColumnDefinitions = new ReceiptColumnDefinitions(reportResourcesManager, preferences, dateFormatter);
 
         when(reportResourcesManager.getLocalizedContext()).thenReturn(RuntimeEnvironment.systemContext);
 

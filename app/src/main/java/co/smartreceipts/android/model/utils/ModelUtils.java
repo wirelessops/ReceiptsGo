@@ -30,6 +30,7 @@ public class ModelUtils {
         throw new RuntimeException("This class uses static calls only. It cannot be instantiated");
     }
 
+    @NonNull
     public static String getFormattedDate(@NonNull java.util.Date date, @NonNull TimeZone timeZone, @NonNull Context context, @NonNull String separator) {
         return getFormattedDate(new Date(date.getTime()), timeZone, context, separator);
     }
@@ -44,6 +45,7 @@ public class ModelUtils {
      * @param separator - the date separator (e.g. "/", "-", ".")
      * @return the formatted date string for the start date
      */
+    @NonNull
     public static String getFormattedDate(@NonNull Date date, @NonNull TimeZone timeZone, @NonNull Context context, @NonNull String separator) {
         final java.text.DateFormat format = android.text.format.DateFormat.getDateFormat(context);
         format.setTimeZone(timeZone); // Hack to shift the timezone appropriately
@@ -58,6 +60,7 @@ public class ModelUtils {
      * @param number - the {@link BigDecimal} to format
      * @return the decimal formatted price {@link String}
      */
+    @NonNull
     public static String getDecimalFormattedValue(float number) {
         return getDecimalFormattedValue(BigDecimal.valueOf(number));
     }
@@ -104,6 +107,7 @@ public class ModelUtils {
      * @param currency - the {@link PriceCurrency} to use. If this is {@code null}, return {@link #getDecimalFormattedValue(BigDecimal)}
      * @return - the currency formatted price {@link String}
      */
+    @NonNull
     public static String getCurrencyFormattedValue(@NonNull BigDecimal decimal, @Nullable PriceCurrency currency) {
         return getCurrencyFormattedValue(decimal, currency, Price.DEFAULT_DECIMAL_PRECISION);
     }
@@ -116,7 +120,9 @@ public class ModelUtils {
      * @param decimalPrecision - the desired decimal precision to use (eg 2 => "$25.20", 3 => "$25.200")
      * @return - the currency formatted price {@link String}
      */
-    public static String getCurrencyFormattedValue(@NonNull BigDecimal decimal, @Nullable PriceCurrency currency,
+    @NonNull
+    public static String getCurrencyFormattedValue(@NonNull BigDecimal decimal,
+                                                   @Nullable PriceCurrency currency,
                                                    int decimalPrecision) {
         if (currency != null) {
             return currency.format(decimal, decimalPrecision);
@@ -133,6 +139,7 @@ public class ModelUtils {
      * @param currency - the {@link PriceCurrency} to use. If this is {@code null}, return {@link #getDecimalFormattedValue(BigDecimal)}
      * @return - the currency formatted price {@link String}
      */
+    @NonNull
     public static String getCurrencyCodeFormattedValue(@NonNull BigDecimal decimal, @Nullable PriceCurrency currency) {
         return getCurrencyCodeFormattedValue(decimal, currency, Price.DEFAULT_DECIMAL_PRECISION);
     }
@@ -145,7 +152,9 @@ public class ModelUtils {
      * @param decimalPrecision - the desired decimal precision to use (eg 2 => "USD25.20", 3 => "USD25.200")
      * @return - the currency formatted price {@link String}
      */
-    public static String getCurrencyCodeFormattedValue(@NonNull BigDecimal decimal, @Nullable PriceCurrency currency,
+    @NonNull
+    public static String getCurrencyCodeFormattedValue(@NonNull BigDecimal decimal,
+                                                       @Nullable PriceCurrency currency,
                                                        int decimalPrecision) {
         final StringBuilder stringBuilder = new StringBuilder();
         if (currency != null) {

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -17,14 +18,17 @@ import wb.android.storage.StorageManager;
 public class PdfBoxImagesOnlyReport extends PdfBoxAbstractReport {
 
     public PdfBoxImagesOnlyReport(@NonNull ReportResourcesManager reportResourcesManager,
-                                  @NonNull PersistenceManager persistenceManager) {
-        super(reportResourcesManager, persistenceManager);
+                                  @NonNull PersistenceManager persistenceManager,
+                                  DateFormatter dateFormatter) {
+        super(reportResourcesManager, persistenceManager, dateFormatter);
     }
 
     public PdfBoxImagesOnlyReport(@NonNull ReportResourcesManager reportResourcesManager,
-                                  @NonNull DatabaseHelper db, @NonNull UserPreferenceManager preferences,
-                                  @NonNull StorageManager storageManager) {
-        super(reportResourcesManager, db, preferences, storageManager);
+                                  @NonNull DatabaseHelper db,
+                                  @NonNull UserPreferenceManager preferences,
+                                  @NonNull StorageManager storageManager,
+                                  DateFormatter dateFormatter) {
+        super(reportResourcesManager, db, preferences, storageManager, dateFormatter);
     }
 
     @Override
