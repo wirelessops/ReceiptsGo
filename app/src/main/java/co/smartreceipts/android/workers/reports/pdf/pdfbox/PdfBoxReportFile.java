@@ -76,16 +76,18 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
 
     @NonNull
     @Override
-    public PdfBoxReceiptsTablePdfSection createReceiptsTableSection(
-            @NonNull Trip trip, @NonNull List<Receipt> receipts, @NonNull List<Column<Receipt>> columns,
-            @NonNull List<Distance> distances, @NonNull List<Column<Distance>> distanceColumns,
-            @NonNull List<SumCategoryGroupingResult> categpries,
-            @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
-            @NonNull List<CategoryGroupingResult> groupingResults,
-            @NonNull PurchaseWallet purchaseWallet) {
+    public PdfBoxReceiptsTablePdfSection createReceiptsTableSection(@NonNull Trip trip,
+                                                                    @NonNull List<Receipt> receipts,
+                                                                    @NonNull List<Column<Receipt>> columns,
+                                                                    @NonNull List<Distance> distances,
+                                                                    @NonNull List<Column<Distance>> distanceColumns,
+                                                                    @NonNull List<SumCategoryGroupingResult> categories,
+                                                                    @NonNull List<Column<SumCategoryGroupingResult>> categoryColumns,
+                                                                    @NonNull List<CategoryGroupingResult> groupingResults,
+                                                                    @NonNull PurchaseWallet purchaseWallet) {
 
         return new PdfBoxReceiptsTablePdfSection(pdfBoxContext, reportResourcesManager, trip,
-                receipts, columns, distances, distanceColumns, categpries, categoryColumns,
+                receipts, columns, distances, distanceColumns, categories, categoryColumns,
                 groupingResults, purchaseWallet);
     }
 

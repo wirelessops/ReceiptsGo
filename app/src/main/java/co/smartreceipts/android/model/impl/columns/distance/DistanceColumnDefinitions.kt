@@ -2,6 +2,7 @@ package co.smartreceipts.android.model.impl.columns.distance
 
 import android.support.annotation.StringRes
 import co.smartreceipts.android.R
+import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions.ActualDefinition.*
@@ -12,12 +13,12 @@ import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import java.util.*
 
 /**
- * Provides specific definitions for all [co.smartreceipts.android.model.Receipt] [co.smartreceipts.android.model.Column]
- * objects
+ * Provides specific definitions for all [Distance] [Column] objects
  */
 class DistanceColumnDefinitions(
     private val reportResourcesManager: ReportResourcesManager,
     private val preferences: UserPreferenceManager,
+    private val dateFormatter: DateFormatter,
     private val allowSpecialCharacters: Boolean
 ) : ColumnDefinitions<Distance> {
     private val actualDefinitions = values()
@@ -82,7 +83,7 @@ class DistanceColumnDefinitions(
             DISTANCE -> DistanceDistanceColumn(id, syncState)
             CURRENCY -> DistanceCurrencyColumn(id, syncState)
             RATE -> DistanceRateColumn(id, syncState)
-            DATE -> DistanceDateColumn(id, syncState, localizedContext, preferences)
+            DATE -> DistanceDateColumn(id, syncState, dateFormatter)
             COMMENT -> DistanceCommentColumn(id, syncState)
         }
     }

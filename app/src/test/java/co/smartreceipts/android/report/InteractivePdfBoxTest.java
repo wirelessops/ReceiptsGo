@@ -497,7 +497,7 @@ public class InteractivePdfBoxTest {
         distanceColumns.add(new DistanceDistanceColumn(3, new DefaultSyncState()));
         distanceColumns.add(new DistanceCurrencyColumn(4, new DefaultSyncState()));
         distanceColumns.add(new DistanceRateColumn(5, new DefaultSyncState()));
-        distanceColumns.add(new DistanceDateColumn(6, new DefaultSyncState(), context, userPreferenceManager));
+        distanceColumns.add(new DistanceDateColumn(6, new DefaultSyncState(), dateFormatter));
         distanceColumns.add(new DistanceCommentColumn(7, new DefaultSyncState()));
 
         final List<Column<SumCategoryGroupingResult>> summationColumns = new ArrayList<>();

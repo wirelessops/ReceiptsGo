@@ -306,7 +306,7 @@ public class EmailAssistant {
 
                     // Receipts table
                     if (mPreferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
-                        receiptsTableList.addAll(new DistanceToReceiptsConverter(context, mPreferenceManager).convert(distances));
+                        receiptsTableList.addAll(new DistanceToReceiptsConverter(context, dateFormatter).convert(distances));
                         Collections.sort(receiptsTableList, new ReceiptDateComparator());
                     }
 
@@ -318,7 +318,7 @@ public class EmailAssistant {
                             Collections.reverse(distances); // Reverse the list, so we print the most recent one first
 
                             // CSVs cannot print special characters
-                            final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(reportResourcesManager, mPreferenceManager, true);
+                            final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(reportResourcesManager, mPreferenceManager, dateFormatter, true);
                             final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
                             data += "\n\n";
                             data += new CsvTableGenerator<>(reportResourcesManager, distanceColumns,

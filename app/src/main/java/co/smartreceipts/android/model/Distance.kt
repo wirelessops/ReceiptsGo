@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model
 
-import android.content.Context
 import android.os.Parcelable
+import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.sync.model.SyncState
 import co.smartreceipts.android.sync.model.Syncable
@@ -36,13 +36,9 @@ class Distance(
      */
     val rate: BigDecimal,
     /**
-     * The [Date] on which this distance occurred
+     * The [DisplayableDate] on which this distance occurred
      */
-    val date: Date,
-    /**
-     * The [TimeZone] in which the date was set
-     */
-    val timeZone: TimeZone,
+    val displayableDate: DisplayableDate,
     /**
      * The user defined comment [String] for this receipt
      */
@@ -50,47 +46,43 @@ class Distance(
 ) : Keyed, Parcelable, Priceable, Comparable<Distance>, Syncable {
 
     /**
+     * The [Date] in which the [displayableDate] was set
+     */
+    val date: Date get() = displayableDate.date
+
+    /**
+     * The [TimeZone] in which the [displayableDate] was set
+     */
+    val timeZone: TimeZone get() = displayableDate.timeZone
+
+    /**
      * A "decimal-formatted" distance [String], which would appear to the end user as "25.20" or "25,20" instead of
      * showing naively as "25.2" or "25.2123144444"
      */
-    val decimalFormattedDistance: String
-        get() = ModelUtils.getDecimalFormattedValue(distance)
+    val decimalFormattedDistance: String get() = ModelUtils.getDecimalFormattedValue(distance)
 
     /**
      * A "decimal-formatted" rate [String], which would appear to the end user as "25.20" or "25,20" instead of
      * showing naively as "25.2"
      */
-    val decimalFormattedRate: String
-        get() = ModelUtils.getDecimalFormattedValue(rate, RATE_PRECISION)
+    val decimalFormattedRate: String get() = ModelUtils.getDecimalFormattedValue(rate, RATE_PRECISION)
 
     /**
      * The "currency-formatted" rate [String], which would appear as "$25.20" or "$25,20" as determined by the user's locale
      */
     val currencyFormattedRate: String
         get() {
-            val precision =
-                if (decimalFormattedRate.endsWith("0")) Price.DEFAULT_DECIMAL_PRECISION else RATE_PRECISION
+            val precision = if (decimalFormattedRate.endsWith("0")) Price.DEFAULT_DECIMAL_PRECISION else RATE_PRECISION
             return ModelUtils.getCurrencyFormattedValue(rate, price.currency, precision)
         }
 
 
-    /**
-     * Gets a formatted version of the date based on the timezone and locale for a given separator. In the US,
-     * we might expect to see a result like "10/23/2014" returned if we set the separator as "/"
-     *
-     * @param context   - the current [Context]
-     * @param separator - the date separator (e.g. "/", "-", ".")
-     * @return the formatted date string for this distance
-     */
-    fun getFormattedDate(context: Context, separator: String): String =
-        ModelUtils.getFormattedDate(date, timeZone, context, separator)
-
     override fun toString(): String {
-        return "Distance [uuid=$uuid, mLocation=$location, mDistance=$distance, mDate=$date, mTimezone=$timeZone, mRate=$rate, mPrice= $price, mComment=$comment]"
+        return "Distance [uuid=$uuid, location=$location, distance=$distance, displayableDate=$displayableDate, rate=$rate, price= $price, comment=$comment]"
     }
 
     override fun compareTo(other: Distance): Int {
-        return other.date.compareTo(date)
+        return other.displayableDate.date.compareTo(displayableDate.date)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -106,8 +98,7 @@ class Distance(
         if (distance != other.distance) return false
         if (rate != other.rate) return false
         if (price != other.price) return false
-        if (date != other.date) return false
-        if (timeZone != other.timeZone) return false
+        if (displayableDate != other.displayableDate) return false
         if (comment != other.comment) return false
 
         return true
@@ -121,8 +112,7 @@ class Distance(
         result = 31 * result + distance.hashCode()
         result = 31 * result + rate.hashCode()
         result = 31 * result + price.hashCode()
-        result = 31 * result + date.hashCode()
-        result = 31 * result + timeZone.hashCode()
+        result = 31 * result + displayableDate.hashCode()
         result = 31 * result + comment.hashCode()
         return result
     }

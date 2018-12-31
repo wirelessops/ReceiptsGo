@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.filters.LegacyReceiptFilter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;
@@ -80,7 +81,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         this.receiptColumns = Preconditions.checkNotNull(receiptColumns);
         this.distanceColumns = Preconditions.checkNotNull(distanceColumns);
         this.categoryColumns = Preconditions.checkNotNull(categoryColumns);
-        preferenceManager = Preconditions.checkNotNull(context.getPreferences());
+        this.preferenceManager = Preconditions.checkNotNull(context.getPreferences());
         this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
         this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
     }
@@ -280,7 +281,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
         final List<Receipt> receiptsTableList = new ArrayList<>(receipts);
         if (preferenceManager.get(UserPreference.Distance.PrintDistanceAsDailyReceiptInReports)) {
-            receiptsTableList.addAll(new DistanceToReceiptsConverter(pdfBoxContext.getAndroidContext(), preferenceManager).convert(distances));
+            receiptsTableList.addAll(new DistanceToReceiptsConverter(pdfBoxContext.getAndroidContext(), pdfBoxContext.getDateFormatter()).convert(distances));
             Collections.sort(receiptsTableList, new ReceiptDateComparator());
         }
 

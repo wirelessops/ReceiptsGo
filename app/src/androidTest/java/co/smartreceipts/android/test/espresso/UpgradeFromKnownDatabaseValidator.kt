@@ -328,7 +328,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("$3.00", distance.price.currencyFormattedPrice)
         assertEquals("USD", distance.price.currencyCode)
         assertEquals("Location", distance.location)
-        assertEquals("11/20/16", dateFormatter.getFormattedDate(distance.date, distance.timeZone))
+        assertEquals("11/20/16", dateFormatter.getFormattedDate(distance.displayableDate))
         assertEquals("Comment", distance.comment)
 
         allDistances.addAll(report3Distances)

@@ -4,53 +4,41 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.common.base.Preconditions;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
-import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.settings.catalog.UserPreference;
 
 /**
  * An implementation of the {@link ModelConverter} contract, which
  * allows us to print {@link co.smartreceipts.android.model.Distance} values in a receipt table. Distances
  * will be summed up based of a given day.
- *
- * @author williambaumann
  */
 public class DistanceToReceiptsConverter implements ModelConverter<Distance, Receipt> {
 
-    private final Context mContext;
-    private final String mDateSeparator;
-
-    /**
-     * Convenience constructor for this class.
-     *
-     * @param context - the current application {@link Context}
-     * @param preferences - the user's {@link UserPreferenceManager}
-     */
-    public DistanceToReceiptsConverter(@NonNull Context context, @NonNull UserPreferenceManager preferences) {
-        this(context, preferences.get(UserPreference.General.DateSeparator));
-    }
+    private final Context context;
+    private final DateFormatter dateFormatter;
 
     /**
      * Default constructor for this class.
      *
      * @param context - the current application {@link Context}
-     * @param dateSeparator - the user's preferred date separator (e.g. "/")
+     * @param dateFormatter - the {@link DateFormatter} for the user's preferred date settings
      */
-    public DistanceToReceiptsConverter(@NonNull Context context, @NonNull String dateSeparator) {
-        mContext = context.getApplicationContext();
-        mDateSeparator = dateSeparator;
+    public DistanceToReceiptsConverter(@NonNull Context context, @NonNull DateFormatter dateFormatter) {
+        this.context = context.getApplicationContext();
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
     }
-
 
     @Override
     @NonNull
@@ -60,7 +48,7 @@ public class DistanceToReceiptsConverter implements ModelConverter<Distance, Rec
         // First, let's separate our distances to find what occurs each day
         for (int i = 0; i < size; i++) {
             final Distance distance = distances.get(i);
-            final String formattedDate = distance.getFormattedDate(mContext, mDateSeparator);
+            final String formattedDate = dateFormatter.getFormattedDate(distance.getDisplayableDate());
             if (distancesPerDay.containsKey(formattedDate)) {
                 distancesPerDay.get(formattedDate).add(distance);
             }
@@ -101,7 +89,7 @@ public class DistanceToReceiptsConverter implements ModelConverter<Distance, Rec
             }
         }
         if (names.isEmpty()) {
-            factory.setName(mContext.getString(R.string.distance));
+            factory.setName(context.getString(R.string.distance));
         } else {
             factory.setName(TextUtils.join("; ", names));
         }
@@ -113,7 +101,7 @@ public class DistanceToReceiptsConverter implements ModelConverter<Distance, Rec
         factory.setFile(null);
         factory.setIsReimbursable(true);
         factory.setTimeZone(distance0.getTimeZone());
-        factory.setCategory(new CategoryBuilderFactory().setName(mContext.getString(R.string.distance)).build());
+        factory.setCategory(new CategoryBuilderFactory().setName(context.getString(R.string.distance)).build());
         factory.setCurrency(distance0.getTrip().getTripCurrency());
         factory.setPrice(new PriceBuilderFactory().setPriceables(distancesThisDay, distance0.getTrip().getTripCurrency()).build());
 

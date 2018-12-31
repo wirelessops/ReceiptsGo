@@ -6,6 +6,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.common.base.Preconditions;
+
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -13,8 +16,14 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 
 public class DistanceAdapter extends CardAdapter<Distance> {
 
-    public DistanceAdapter(@NonNull Context context, @NonNull UserPreferenceManager preferences, @NonNull BackupProvidersManager backupProvidersManager) {
+    private final DateFormatter dateFormatter;
+
+    public DistanceAdapter(@NonNull Context context,
+                           @NonNull UserPreferenceManager preferences,
+                           @NonNull BackupProvidersManager backupProvidersManager,
+                           @NonNull DateFormatter dateFormatter) {
         super(context, preferences, backupProvidersManager);
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
     }
 
     @Override
@@ -42,7 +51,7 @@ public class DistanceAdapter extends CardAdapter<Distance> {
 
     @Override
     protected void setCategory(TextView textView, Distance data) {
-        textView.setText(data.getFormattedDate(getContext(), getPreferences().get(UserPreference.General.DateSeparator)));
+        textView.setText(dateFormatter.getFormattedDate(data.getDisplayableDate()));
     }
 
     @Override

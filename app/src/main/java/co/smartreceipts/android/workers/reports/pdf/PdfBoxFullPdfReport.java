@@ -46,7 +46,7 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
         final List<Column<Receipt>> columns = getDatabase().getPDFTable().get().blockingGet();
 
         // Distance Table
-        final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(getReportResourcesManager(), getPreferences(), true);
+        final ColumnDefinitions<Distance> distanceColumnDefinitions = new DistanceColumnDefinitions(getReportResourcesManager(), getPreferences(), getDateFormatter(), true);
         final List<Distance> distances = new ArrayList<>(getDatabase().getDistanceTable().getBlocking(trip, false));
         final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
 

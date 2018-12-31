@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.adapters.DistanceAdapter;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
@@ -40,10 +41,15 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
 
     @Inject
     UserPreferenceManager preferenceManager;
+
     @Inject
     DistanceTableController distanceTableController;
+
     @Inject
     BackupProvidersManager backupProvidersManager;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     private Trip trip;
     private DistanceAdapter distanceAdapter;
@@ -66,8 +72,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        distanceAdapter = new DistanceAdapter(getActivity(), preferenceManager,
-                backupProvidersManager);
+        distanceAdapter = new DistanceAdapter(requireContext(), preferenceManager, backupProvidersManager, dateFormatter);
     }
 
 
