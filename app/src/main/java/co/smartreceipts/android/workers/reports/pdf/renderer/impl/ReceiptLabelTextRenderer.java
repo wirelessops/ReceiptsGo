@@ -54,7 +54,7 @@ public class ReceiptLabelTextRenderer extends TextRenderer {
                     : "";
 
             return num + SEP + receipt.getName() + SEP
-                    + dateFormatter.getFormattedDate(receipt.getDate(), receipt.getTimeZone()) + extra;
+                    + dateFormatter.getFormattedDate(receipt.getDisplayableDate()) + extra;
         }
     }
 }

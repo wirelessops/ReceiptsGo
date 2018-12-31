@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -20,6 +21,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
+import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
@@ -30,102 +32,99 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  */
 public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
 
-    private Trip _trip;
-    private PaymentMethod _paymentMethod;
-    private File _file;
-    private String _name;
-    private Category _category;
-    private String _comment;
-    private String _extraEditText1;
-    private String _extraEditText2;
-    private String _extraEditText3;
-    private final PriceBuilderFactory _priceBuilderFactory, _taxBuilderFactory;
-    private Date _date;
-    private TimeZone _timezone;
-    private int _id;
-    private int _index;
-    private boolean _isReimbursable, _isFullPage, _isSelected;
-    private Source _source;
-    private SyncState _syncState;
-    private long _order_id;
-    private UUID _uuid;
+    private Trip trip;
+    private PaymentMethod paymentMethod;
+    private File file;
+    private String name;
+    private Category category;
+    private String comment;
+    private String extraEditText1;
+    private String extraEditText2;
+    private String extraEditText3;
+    private final PriceBuilderFactory priceBuilderFactory, taxBuilderFactory;
+    private Date date;
+    private TimeZone timeZone;
+    private int id;
+    private int index;
+    private boolean isReimbursable, isFullPage, isSelected;
+    private SyncState syncState;
+    private long orderId;
+    private UUID uuid;
 
     public ReceiptBuilderFactory() {
         this(Keyed.MISSING_ID);
     }
 
     public ReceiptBuilderFactory(int id) {
-        _id = id;
-        _name = "";
-        _comment = "";
-        _priceBuilderFactory = new PriceBuilderFactory();
-        _taxBuilderFactory = new PriceBuilderFactory();
-        _date = new Date(System.currentTimeMillis());
-        _timezone = TimeZone.getDefault();
-        _index = -1;
-        _source = Source.Undefined;
-        _syncState = new DefaultSyncState();
-        _order_id = ReceiptsOrderer.Companion.getDefaultCustomOrderId(_date);
-        _uuid = Keyed.Companion.getMISSING_UUID();
+        this.id = id;
+        name = "";
+        comment = "";
+        priceBuilderFactory = new PriceBuilderFactory();
+        taxBuilderFactory = new PriceBuilderFactory();
+        date = new Date(System.currentTimeMillis());
+        timeZone = TimeZone.getDefault();
+        index = -1;
+        syncState = new DefaultSyncState();
+        orderId = ReceiptsOrderer.Companion.getDefaultCustomOrderId(date);
+        uuid = Keyed.Companion.getMISSING_UUID();
     }
 
     public ReceiptBuilderFactory(@NonNull Receipt receipt) {
-        _id = receipt.getId();
-        _trip = receipt.getTrip();
-        _name = receipt.getName();
-        _file = receipt.getFile();
-        _priceBuilderFactory = new PriceBuilderFactory().setPrice(receipt.getPrice());
-        _taxBuilderFactory = new PriceBuilderFactory().setPrice(receipt.getTax());
-        _date = (Date) receipt.getDate().clone();
-        _timezone = receipt.getTimeZone();
-        _category = receipt.getCategory();
-        _comment = receipt.getComment();
-        _paymentMethod = receipt.getPaymentMethod();
-        _isReimbursable = receipt.isReimbursable();
-        _isFullPage = receipt.isFullPage();
-        _isSelected = receipt.isSelected();
-        _extraEditText1 = receipt.getExtraEditText1();
-        _extraEditText2 = receipt.getExtraEditText2();
-        _extraEditText3 = receipt.getExtraEditText3();
-        _index = receipt.getIndex();
-        _source = receipt.getSource();
-        _syncState = receipt.getSyncState();
-        _order_id = receipt.getCustomOrderId();
-        _uuid = receipt.getUuid();
+        id = receipt.getId();
+        trip = receipt.getTrip();
+        name = receipt.getName();
+        file = receipt.getFile();
+        priceBuilderFactory = new PriceBuilderFactory().setPrice(receipt.getPrice());
+        taxBuilderFactory = new PriceBuilderFactory().setPrice(receipt.getTax());
+        date = (Date) receipt.getDate().clone();
+        timeZone = receipt.getTimeZone();
+        category = receipt.getCategory();
+        comment = receipt.getComment();
+        paymentMethod = receipt.getPaymentMethod();
+        isReimbursable = receipt.isReimbursable();
+        isFullPage = receipt.isFullPage();
+        isSelected = receipt.isSelected();
+        extraEditText1 = receipt.getExtraEditText1();
+        extraEditText2 = receipt.getExtraEditText2();
+        extraEditText3 = receipt.getExtraEditText3();
+        index = receipt.getIndex();
+        syncState = receipt.getSyncState();
+        orderId = receipt.getCustomOrderId();
+        uuid = receipt.getUuid();
     }
 
     public ReceiptBuilderFactory(int id, @NonNull Receipt receipt) {
         this(receipt);
-        _id = id;
+        this.id = id;
     }
 
     public ReceiptBuilderFactory setUuid(@NonNull UUID uuid) {
-        _uuid = uuid;
+        this.uuid = uuid;
         return this;
     }
 
     public ReceiptBuilderFactory setTrip(@NonNull Trip trip) {
-        _trip = trip;
+        this.trip = trip;
         return this;
     }
 
     public ReceiptBuilderFactory setPaymentMethod(@NonNull PaymentMethod method) {
-        _paymentMethod = method;
+        paymentMethod = method;
         return this;
     }
 
     public ReceiptBuilderFactory setName(@NonNull String name) {
-        _name = name;
+        this.name = name;
         return this;
     }
 
     public ReceiptBuilderFactory setCategory(@NonNull Category category) {
-        _category = category;
+        this.category = category;
         return this;
     }
 
     public ReceiptBuilderFactory setComment(@NonNull String comment) {
-        _comment = comment;
+        this.comment = comment;
         return this;
     }
 
@@ -136,28 +135,28 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
      * @return the {@link ReceiptBuilderFactory} instance for method chaining
      */
     public ReceiptBuilderFactory setPrice(String price) {
-        _priceBuilderFactory.setPrice(price);
+        priceBuilderFactory.setPrice(price);
         return this;
     }
 
     public ReceiptBuilderFactory setPrice(double price) {
-        _priceBuilderFactory.setPrice(price);
+        priceBuilderFactory.setPrice(price);
         return this;
     }
 
     public ReceiptBuilderFactory setPrice(BigDecimal price) {
-        _priceBuilderFactory.setPrice(price);
+        priceBuilderFactory.setPrice(price);
         return this;
     }
 
     public ReceiptBuilderFactory setPrice(Price price) {
-        _priceBuilderFactory.setPrice(price);
+        priceBuilderFactory.setPrice(price);
         return this;
     }
 
     public ReceiptBuilderFactory setExchangeRate(ExchangeRate exchangeRate) {
-        _priceBuilderFactory.setExchangeRate(exchangeRate);
-        _taxBuilderFactory.setExchangeRate(exchangeRate);
+        priceBuilderFactory.setExchangeRate(exchangeRate);
+        taxBuilderFactory.setExchangeRate(exchangeRate);
         return this;
     }
 
@@ -168,113 +167,126 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
      * @return the {@link ReceiptBuilderFactory} instance for method chaining
      */
     public ReceiptBuilderFactory setTax(String tax) {
-        _taxBuilderFactory.setPrice(tax);
+        taxBuilderFactory.setPrice(tax);
         return this;
     }
 
     public ReceiptBuilderFactory setTax(double tax) {
-        _taxBuilderFactory.setPrice(tax);
+        taxBuilderFactory.setPrice(tax);
         return this;
     }
 
     public ReceiptBuilderFactory setTax(Price tax) {
-        _taxBuilderFactory.setPrice(tax);
+        taxBuilderFactory.setPrice(tax);
         return this;
     }
 
     public ReceiptBuilderFactory setFile(File file) {
-        _file = file;
+        this.file = file;
         return this;
     }
 
     public ReceiptBuilderFactory setDate(Date date) {
-        _date = date;
+        this.date = date;
         return this;
     }
 
     public ReceiptBuilderFactory setDate(long datetime) {
-        _date = new Date(datetime);
+        date = new Date(datetime);
         return this;
     }
 
     public ReceiptBuilderFactory setTimeZone(@Nullable String timeZoneId) {
         if (timeZoneId != null) {
-            _timezone = TimeZone.getTimeZone(timeZoneId);
+            timeZone = TimeZone.getTimeZone(timeZoneId);
         }
         return this;
     }
 
     public ReceiptBuilderFactory setTimeZone(TimeZone timeZone) {
-        _timezone = timeZone;
+        this.timeZone = timeZone;
         return this;
     }
 
     public ReceiptBuilderFactory setIsReimbursable(boolean isReimbursable) {
-        _isReimbursable = isReimbursable;
+        this.isReimbursable = isReimbursable;
         return this;
     }
 
     public ReceiptBuilderFactory setIsFullPage(boolean isFullPage) {
-        _isFullPage = isFullPage;
+        this.isFullPage = isFullPage;
         return this;
     }
 
     public ReceiptBuilderFactory setIsSelected(boolean isSelected) {
-        _isSelected = isSelected;
+        this.isSelected = isSelected;
         return this;
     }
 
     public ReceiptBuilderFactory setCurrency(PriceCurrency currency) {
-        _priceBuilderFactory.setCurrency(currency);
-        _taxBuilderFactory.setCurrency(currency);
+        priceBuilderFactory.setCurrency(currency);
+        taxBuilderFactory.setCurrency(currency);
         return this;
     }
 
     public ReceiptBuilderFactory setCurrency(String currencyCode) {
-        _priceBuilderFactory.setCurrency(currencyCode);
-        _taxBuilderFactory.setCurrency(currencyCode);
+        priceBuilderFactory.setCurrency(currencyCode);
+        taxBuilderFactory.setCurrency(currencyCode);
         return this;
     }
 
     public ReceiptBuilderFactory setExtraEditText1(String extraEditText1) {
-        _extraEditText1 = extraEditText1;
+        if (!DatabaseHelper.NO_DATA.equals(extraEditText1)) {
+            this.extraEditText1 = extraEditText1;
+        } else {
+            this.extraEditText1 = null;
+        }
         return this;
     }
 
     public ReceiptBuilderFactory setExtraEditText2(String extraEditText2) {
-        _extraEditText2 = extraEditText2;
+        if (!DatabaseHelper.NO_DATA.equals(extraEditText2)) {
+            this.extraEditText2 = extraEditText2;
+        } else {
+            this.extraEditText2 = null;
+        }
         return this;
     }
 
     public ReceiptBuilderFactory setExtraEditText3(String extraEditText3) {
-        _extraEditText3 = extraEditText3;
+        if (!DatabaseHelper.NO_DATA.equals(extraEditText3)) {
+            this.extraEditText3 = extraEditText3;
+        } else {
+            this.extraEditText3 = null;
+        }
         return this;
     }
 
     public ReceiptBuilderFactory setIndex(int index) {
-        _index = index;
+        this.index = index;
         return this;
     }
 
     public ReceiptBuilderFactory setSyncState(@NonNull SyncState syncState) {
-        _syncState = Preconditions.checkNotNull(syncState);
+        this.syncState = Preconditions.checkNotNull(syncState);
         return this;
     }
 
     public ReceiptBuilderFactory setCustomOrderId(long order_id) {
-        _order_id = order_id;
+        orderId = order_id;
         return this;
     }
 
     @Override
     @NonNull
     public Receipt build() {
-        return new Receipt(_id, _uuid, _index, _trip, _file,
-                _paymentMethod == null ? PaymentMethod.Companion.getNONE() : _paymentMethod, _name,
-                _category == null ? new CategoryBuilderFactory().build() : _category, _comment,
-                _priceBuilderFactory.build(), _taxBuilderFactory.build(), _date, _timezone,
-                _isReimbursable, _isFullPage, _isSelected, _source, _extraEditText1,
-                _extraEditText2, _extraEditText3, _syncState, _order_id);
+        final DisplayableDate displayableDate = new DisplayableDate(date, timeZone);
+        return new Receipt(id, uuid, index, trip, file,
+                paymentMethod == null ? PaymentMethod.Companion.getNONE() : paymentMethod, name,
+                category == null ? new CategoryBuilderFactory().build() : category, comment,
+                priceBuilderFactory.build(), taxBuilderFactory.build(), displayableDate,
+                isReimbursable, isFullPage, isSelected, extraEditText1,
+                extraEditText2, extraEditText3, syncState, orderId);
     }
 
 }

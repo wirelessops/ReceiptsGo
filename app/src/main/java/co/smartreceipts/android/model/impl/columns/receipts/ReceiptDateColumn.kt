@@ -23,5 +23,5 @@ class ReceiptDateColumn(
         uuid
 ) {
 
-    override fun getValue(rowItem: Receipt): String = dateFormatter.getFormattedDate(rowItem.date, rowItem.timeZone)
+    override fun getValue(rowItem: Receipt): String = dateFormatter.getFormattedDate(rowItem.displayableDate)
 }

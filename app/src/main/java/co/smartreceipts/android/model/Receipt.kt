@@ -1,9 +1,7 @@
 package co.smartreceipts.android.model
 
-import android.content.Context
 import android.os.Parcelable
-import co.smartreceipts.android.model.utils.ModelUtils
-import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.sync.model.SyncState
 import co.smartreceipts.android.sync.model.Syncable
 import kotlinx.android.parcel.Parcelize
@@ -55,13 +53,9 @@ class Receipt constructor(
      */
     val tax: Price,
     /**
-     * The [Date] during which this receipt was taken
+     * The [DisplayableDate] during which this receipt occurred
      */
-    val date: Date,
-    /**
-     * The [TimeZone] in which the date was set
-     */
-    val timeZone: TimeZone,
+    val displayableDate: DisplayableDate,
     /**
      * Checks if the receipt was marked as Reimbursable (i.e. counting towards the total) or not
      */
@@ -75,19 +69,30 @@ class Receipt constructor(
      */
     val isSelected: Boolean,
     /**
-     * The [Source] from which this receipt was built for debugging purposes
+     * An extra [String], which certain white-label builds might have
      */
-    val source: Source,
-    private val extraEditTextOne: String?,
-    private val extraEditTextTwo: String?,
-    private val extraEditTextThree: String?,
+    val extraEditText1: String?,
+    /**
+     * An extra [String], which certain white-label builds might have
+     */
+    val extraEditText2: String?,
+    /**
+     * An extra [String], which certain white-label builds might have
+     */
+    val extraEditText3: String?,
     override val syncState: SyncState,
     override val customOrderId: Long
     ) : Keyed, Parcelable, Priceable, Draggable<Receipt>, Syncable {
 
-    val extraEditText1: String? = if (DatabaseHelper.NO_DATA == extraEditTextOne) null else extraEditTextOne
-    val extraEditText2: String? = if (DatabaseHelper.NO_DATA == extraEditTextTwo) null else extraEditTextTwo
-    val extraEditText3: String? = if (DatabaseHelper.NO_DATA == extraEditTextThree) null else extraEditTextThree
+    /**
+     * The [Date] in which the [displayableDate] was set
+     */
+    val date: Date get() = displayableDate.date
+
+    /**
+     * The [TimeZone] in which the [displayableDate] was set
+     */
+    val timeZone: TimeZone get() = displayableDate.timeZone
 
     /**
      * The name of this Receipt's file from [.getFile].
@@ -127,18 +132,6 @@ class Receipt constructor(
         return file?.name?.endsWith(".pdf", ignoreCase = true) ?: false
     }
 
-    /**
-     * Gets a formatted version of the date based on the timezone and locale for a given separator. In the US,
-     * we might expect to see a result like "10/23/2014" returned if we set the separator as "/"
-     *
-     * @param context   - the current [Context]
-     * @param separator - the date separator (e.g. "/", "-", ".")
-     * @return the formatted date string for this receipt
-     */
-    fun getFormattedDate(context: Context, separator: String): String {
-        return ModelUtils.getFormattedDate(date, timeZone, context, separator)
-    }
-
     fun hasExtraEditText1(): Boolean = extraEditText1 != null
 
     fun hasExtraEditText2(): Boolean = extraEditText2 != null
@@ -156,12 +149,10 @@ class Receipt constructor(
                 ", comment='" + comment + '\''.toString() +
                 ", category=" + category +
                 ", price=" + price.currencyFormattedPrice +
-                ", tax=" + tax +
-                ", date=" + date +
+                ", displayableDate=" + displayableDate +
                 ", timeZone=" + timeZone.id +
                 ", isReimbursable=" + isReimbursable +
                 ", isFullPage=" + isFullPage +
-                ", source=" + source +
                 ", extraEditText1='" + extraEditText1 + '\''.toString() +
                 ", extraEditText2='" + extraEditText2 + '\''.toString() +
                 ", extraEditText3='" + extraEditText3 + '\''.toString() +
@@ -190,8 +181,7 @@ class Receipt constructor(
         if (category != that.category) return false
         if (price != that.price) return false
         if (tax != that.tax) return false
-        if (date != that.date) return false
-        if (timeZone != that.timeZone) return false
+        if (displayableDate != that.displayableDate) return false
         if (if (extraEditText1 != null) extraEditText1 != that.extraEditText1 else that.extraEditText1 != null)
             return false
         if (if (extraEditText2 != null) extraEditText2 != that.extraEditText2 else that.extraEditText2 != null)
@@ -215,8 +205,7 @@ class Receipt constructor(
         result = 31 * result + category.hashCode()
         result = 31 * result + price.hashCode()
         result = 31 * result + tax.hashCode()
-        result = 31 * result + date.hashCode()
-        result = 31 * result + timeZone.hashCode()
+        result = 31 * result + displayableDate.hashCode()
         result = 31 * result + if (isReimbursable) 1 else 0
         result = 31 * result + if (isFullPage) 1 else 0
         result = 31 * result + (extraEditText1?.hashCode() ?: 0)
@@ -228,11 +217,11 @@ class Receipt constructor(
         return result
     }
 
-    override fun compareTo(receipt: Receipt): Int {
-        return if (customOrderId == receipt.customOrderId) {
-            receipt.date.compareTo(date)
+    override fun compareTo(other: Receipt): Int {
+        return if (customOrderId == other.customOrderId) {
+            other.date.compareTo(date)
         } else {
-            -java.lang.Long.compare(customOrderId, receipt.customOrderId)
+            -java.lang.Long.compare(customOrderId, other.customOrderId)
         }
     }
 

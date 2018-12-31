@@ -201,7 +201,6 @@ public class ReceiptDatabaseAdapterTest {
         when(mReceipt.getExtraEditText2()).thenReturn(EXTRA2);
         when(mReceipt.getExtraEditText3()).thenReturn(EXTRA3);
         when(mReceipt.getIndex()).thenReturn(DESCENDING_INDEX);
-        when(mReceipt.getSource()).thenReturn(Source.Undefined);
         when(mReceipt.getSyncState()).thenReturn(mSyncState);
         when(mReceipt.getUuid()).thenReturn(RECEIPT_UUID);
 
