@@ -180,7 +180,7 @@ public class EmailAssistant {
         emailIntent.putExtra(Intent.EXTRA_CC, cc);
         emailIntent.putExtra(Intent.EXTRA_BCC, bcc);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, new SmartReceiptsFormattableString(persistenceManager.getPreferenceManager().get(UserPreference.Email.Subject),
-                context, trip, persistenceManager.getPreferenceManager()).toString());
+                trip, persistenceManager.getPreferenceManager(), dateFormatter).toString());
         emailIntent.putExtra(Intent.EXTRA_TEXT, body);
 
         Logger.debug(this, "Built the send intent {} with extras {}.", emailIntent, emailIntent.getExtras());
@@ -513,7 +513,7 @@ public class EmailAssistant {
                 float y = spacing * 4;
                 canvas.drawText(trip.getName(), xPad / 2, y, brush);
                 y += spacing;
-                canvas.drawText(dateFormatter.getFormattedDate(trip.getStartDate(), trip.getStartTimeZone()) + " -- " + dateFormatter.getFormattedDate(trip.getEndDate(), trip.getEndTimeZone()), xPad / 2, y, brush);
+                canvas.drawText(dateFormatter.getFormattedDate(trip.getStartDisplayableDate()) + " -- " + dateFormatter.getFormattedDate(trip.getEndDisplayableDate()), xPad / 2, y, brush);
                 y += spacing;
                 y = background.getHeight() - yPad / 2 + spacing * 2;
                 canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_NAME) + ": " + receipt.getName(), xPad / 2, y, brush);

@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
@@ -24,107 +25,104 @@ import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
  */
 public final class TripBuilderFactory implements BuilderFactory<Trip> {
 
-    private int _id;
-    private UUID _uuid;
-    private File _dir;
-    private String _comment, _costCenter;
-    private Date _startDate, _endDate;
-    private TimeZone _startTimeZone, _endTimeZone;
-    private PriceCurrency _defaultCurrency;
-    private SyncState _syncState;
-    private Source _source;
+    private int id;
+    private UUID uuid;
+    private File dir;
+    private String comment, costCenter;
+    private Date startDate, endDate;
+    private TimeZone startTimeZone, endTimeZone;
+    private PriceCurrency defaultCurrency;
+    private SyncState syncState;
 
     public TripBuilderFactory() {
-        _id = Keyed.MISSING_ID;
-        _uuid = Keyed.Companion.getMISSING_UUID();
-        _dir = new File("");
-        _comment = "";
-        _costCenter = "";
-        _defaultCurrency = PriceCurrency.getDefaultCurrency();
-        _startDate = new Date(System.currentTimeMillis());
-        _endDate = _startDate;
-        _source = Source.Undefined;
-        _startTimeZone = TimeZone.getDefault();
-        _endTimeZone = TimeZone.getDefault();
-        _syncState = new DefaultSyncState();
+        id = Keyed.MISSING_ID;
+        uuid = Keyed.Companion.getMISSING_UUID();
+        dir = new File("");
+        comment = "";
+        costCenter = "";
+        defaultCurrency = PriceCurrency.getDefaultCurrency();
+        startDate = new Date(System.currentTimeMillis());
+        endDate = startDate;
+        startTimeZone = TimeZone.getDefault();
+        endTimeZone = TimeZone.getDefault();
+        syncState = new DefaultSyncState();
     }
 
     public TripBuilderFactory(@NonNull Trip trip) {
-        _id = trip.getId();
-        _uuid = trip.getUuid();
-        _dir = trip.getDirectory();
-        _comment = trip.getComment();
-        _costCenter = trip.getCostCenter();
-        _defaultCurrency = PriceCurrency.getInstance(trip.getDefaultCurrencyCode());
-        _startDate = trip.getStartDate();
-        _endDate = trip.getEndDate();
-        _source = trip.getSource();
-        _startTimeZone = trip.getStartTimeZone();
-        _endTimeZone = trip.getEndTimeZone();
-        _syncState = trip.getSyncState();
+        id = trip.getId();
+        uuid = trip.getUuid();
+        dir = trip.getDirectory();
+        comment = trip.getComment();
+        costCenter = trip.getCostCenter();
+        defaultCurrency = PriceCurrency.getInstance(trip.getDefaultCurrencyCode());
+        startDate = trip.getStartDate();
+        endDate = trip.getEndDate();
+        startTimeZone = trip.getStartTimeZone();
+        endTimeZone = trip.getEndTimeZone();
+        syncState = trip.getSyncState();
     }
 
     public TripBuilderFactory setId(int id) {
-        _id = id;
+        this.id = id;
         return this;
     }
 
     public TripBuilderFactory setUuid(UUID uuid) {
-        _uuid = uuid;
+        this.uuid = uuid;
         return this;
     }
 
     public TripBuilderFactory setDirectory(@NonNull File directory) {
-        _dir = directory;
+        dir = directory;
         return this;
     }
 
     public TripBuilderFactory setStartDate(@NonNull Date startDate) {
-        _startDate = Preconditions.checkNotNull(startDate);
+        this.startDate = Preconditions.checkNotNull(startDate);
         return this;
     }
 
     public TripBuilderFactory setStartDate(long startDate) {
-        _startDate = new Date(startDate);
+        this.startDate = new Date(startDate);
         return this;
     }
 
     public TripBuilderFactory setEndDate(@NonNull Date endDate) {
-        _endDate = Preconditions.checkNotNull(endDate);
+        this.endDate = Preconditions.checkNotNull(endDate);
         return this;
     }
 
     public TripBuilderFactory setEndDate(long endDate) {
-        _endDate = new Date(endDate);
+        this.endDate = new Date(endDate);
         return this;
     }
 
     public TripBuilderFactory setStartTimeZone(@NonNull TimeZone startTimeZone) {
-        _startTimeZone = Preconditions.checkNotNull(startTimeZone);
+        this.startTimeZone = Preconditions.checkNotNull(startTimeZone);
         return this;
     }
 
     public TripBuilderFactory setStartTimeZone(@Nullable String timeZoneId) {
         if (timeZoneId != null) {
-            _startTimeZone = TimeZone.getTimeZone(timeZoneId);
+            startTimeZone = TimeZone.getTimeZone(timeZoneId);
         }
         return this;
     }
 
     public TripBuilderFactory setEndTimeZone(@NonNull TimeZone endTimeZone) {
-        _endTimeZone = Preconditions.checkNotNull(endTimeZone);
+        this.endTimeZone = Preconditions.checkNotNull(endTimeZone);
         return this;
     }
 
     public TripBuilderFactory setEndTimeZone(@Nullable String timeZoneId) {
         if (timeZoneId != null) {
-            _endTimeZone = TimeZone.getTimeZone(timeZoneId);
+            endTimeZone = TimeZone.getTimeZone(timeZoneId);
         }
         return this;
     }
 
     public TripBuilderFactory setDefaultCurrency(@NonNull PriceCurrency currency) {
-        _defaultCurrency = Preconditions.checkNotNull(currency);
+        defaultCurrency = Preconditions.checkNotNull(currency);
         return this;
     }
 
@@ -132,43 +130,39 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         if (TextUtils.isEmpty(currencyCode)) {
             throw new IllegalArgumentException("The currency code cannot be null or empty");
         }
-        _defaultCurrency = PriceCurrency.getInstance(currencyCode);
+        defaultCurrency = PriceCurrency.getInstance(currencyCode);
         return this;
     }
 
     public TripBuilderFactory setDefaultCurrency(@Nullable String currencyCode, @NonNull String missingCodeDefault) {
         if (TextUtils.isEmpty(currencyCode)) {
-            _defaultCurrency = PriceCurrency.getInstance(missingCodeDefault);
+            defaultCurrency = PriceCurrency.getInstance(missingCodeDefault);
         } else {
-            _defaultCurrency = PriceCurrency.getInstance(currencyCode);
+            defaultCurrency = PriceCurrency.getInstance(currencyCode);
         }
         return this;
     }
 
     public TripBuilderFactory setComment(@Nullable String comment) {
-        _comment = comment != null ? comment : "";
+        this.comment = comment != null ? comment : "";
         return this;
     }
 
     public TripBuilderFactory setCostCenter(@Nullable String costCenter) {
-        _costCenter = costCenter != null ? costCenter : "";
-        return this;
-    }
-
-    public TripBuilderFactory setSourceAsCache() {
-        _source = Source.Cache;
+        this.costCenter = costCenter != null ? costCenter : "";
         return this;
     }
 
     public TripBuilderFactory setSyncState(@NonNull SyncState syncState) {
-        _syncState = Preconditions.checkNotNull(syncState);
+        this.syncState = Preconditions.checkNotNull(syncState);
         return this;
     }
 
     @Override
     @NonNull
     public Trip build() {
-        return new Trip(_id, _uuid, _dir, _startDate, _startTimeZone, _endDate, _endTimeZone, _defaultCurrency,
-                _comment, _costCenter, _source, _syncState);
+        final DisplayableDate startDisplayableDate = new DisplayableDate(startDate, startTimeZone);
+        final DisplayableDate endDisplayableDate = new DisplayableDate(endDate, endTimeZone);
+        return new Trip(id, uuid, dir, startDisplayableDate, endDisplayableDate, defaultCurrency, comment, costCenter, syncState);
     }
 }

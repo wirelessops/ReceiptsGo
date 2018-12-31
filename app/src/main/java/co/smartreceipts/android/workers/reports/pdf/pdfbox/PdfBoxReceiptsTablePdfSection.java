@@ -176,8 +176,8 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
         // Print the From: StartDate To: EndDate
         final String fromToPeriod = pdfBoxContext.getString(R.string.report_header_duration,
-                trip.getFormattedStartDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)),
-                trip.getFormattedEndDate(pdfBoxContext.getAndroidContext(), preferenceManager.get(UserPreference.General.DateSeparator)));
+                pdfBoxContext.getDateFormatter().getFormattedDate(trip.getStartDisplayableDate()),
+                pdfBoxContext.getDateFormatter().getFormattedDate(trip.getEndDisplayableDate()));
         headerRows.add(new GridRowRenderer(new TextRenderer(
                 pdfBoxContext.getAndroidContext(),
                 pdDocument,

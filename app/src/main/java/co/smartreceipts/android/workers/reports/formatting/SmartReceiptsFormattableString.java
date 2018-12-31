@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -16,20 +17,27 @@ public class SmartReceiptsFormattableString {
     private static final String REPORT_START = "%REPORT_START%";
     private static final String REPORT_END = "%REPORT_END%";
 
-    private final String mString;
-    private final Context mContext;
-    private final Trip mTrip;
-    private final UserPreferenceManager mPreferences;
+    private final String string;
+    private final Trip trip;
+    private final UserPreferenceManager preferences;
+    private final DateFormatter dateFormatter;
 
-    public SmartReceiptsFormattableString(@NonNull String string, @NonNull Context context, @NonNull Trip trip, @NonNull UserPreferenceManager preferences) {
-        mString = Preconditions.checkNotNull(string);
-        mContext = Preconditions.checkNotNull(context);
-        mTrip = Preconditions.checkNotNull(trip);
-        mPreferences = Preconditions.checkNotNull(preferences);
+    public SmartReceiptsFormattableString(@NonNull String string,
+                                          @NonNull Trip trip,
+                                          @NonNull UserPreferenceManager preferences,
+                                          @NonNull DateFormatter dateFormatter) {
+        this.string = Preconditions.checkNotNull(string);
+        this.trip = Preconditions.checkNotNull(trip);
+        this.preferences = Preconditions.checkNotNull(preferences);
+        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
     }
 
     @Override
     public String toString() {
-        return mString.replace(REPORT_NAME, mTrip.getName()).replace(USER_ID, mPreferences.get(UserPreference.ReportOutput.UserId)).replace(REPORT_START, mTrip.getFormattedStartDate(mContext, mPreferences.get(UserPreference.General.DateSeparator))).replace(REPORT_END, mTrip.getFormattedEndDate(mContext, mPreferences.get(UserPreference.General.DateSeparator)));
+        return string
+                .replace(REPORT_NAME, trip.getName())
+                .replace(USER_ID, preferences.get(UserPreference.ReportOutput.UserId))
+                .replace(REPORT_START, dateFormatter.getFormattedDate(trip.getStartDisplayableDate()))
+                .replace(REPORT_END, dateFormatter.getFormattedDate(trip.getEndDisplayableDate()));
     }
 }

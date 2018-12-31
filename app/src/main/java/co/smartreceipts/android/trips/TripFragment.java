@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripCardAdapter;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.fragments.WBListFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.LastTripMonitor;
@@ -89,6 +90,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Inject
     LastTripAutoNavigationTracker lastTripAutoNavigationTracker;
 
+    @Inject
+    DateFormatter dateFormatter;
+
     private TripCardAdapter tripCardAdapter;
     private ProgressBar progressBar;
     private TextView noDataAlert;
@@ -113,7 +117,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        tripCardAdapter = new TripCardAdapter(getActivity(), preferenceManager, backupProvidersManager);
+        tripCardAdapter = new TripCardAdapter(requireContext(), preferenceManager, backupProvidersManager, dateFormatter);
         if (savedInstanceState != null) {
             selectedTrip = savedInstanceState.getParcelable(OUT_SELECTED_TRIP);
             if (navigationHandler.isDualPane()) {

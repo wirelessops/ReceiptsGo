@@ -3,6 +3,7 @@ package co.smartreceipts.android.model
 import android.content.Context
 import android.os.Parcelable
 import co.smartreceipts.android.currency.PriceCurrency
+import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.sync.model.SyncState
@@ -22,21 +23,13 @@ class Trip @JvmOverloads constructor(
      */
     val directory: File,
     /**
-     * The [Date] upon which this trip began
+     * The [DisplayableDate] upon which this trip began
      */
-    val startDate: Date,
+    val startDisplayableDate: DisplayableDate,
     /**
-     * The [TimeZone] in which the start date was set
+     * The [DisplayableDate] upon which this trip will end
      */
-    val startTimeZone: TimeZone,
-    /**
-     * The [Date] upon which this trip will end
-     */
-    val endDate: Date,
-    /**
-     * The [TimeZone] in which the end date was set
-     */
-    val endTimeZone: TimeZone,
+    val endDisplayableDate: DisplayableDate,
     /**
      * The [PriceCurrency] which this trip is tracked in
      */
@@ -50,9 +43,8 @@ class Trip @JvmOverloads constructor(
      */
     val costCenter: String,
     /**
-     * The [Source] from which this trip was built for debugging purposes
+     * The [SyncState] to track the remote sync progress
      */
-    val source: Source = Source.Undefined,
     override val syncState: SyncState = DefaultSyncState(),
     /**
      * As the price of a trip exists as a function of it's receipt children (and not itself), [Price] must be var
@@ -67,45 +59,40 @@ class Trip @JvmOverloads constructor(
 ) : Keyed, Parcelable, Priceable, Comparable<Trip>, Syncable {
 
     /**
+     * The [Date] upon which this trip began
+     */
+    val startDate: Date get() = startDisplayableDate.date
+
+    /**
+     * The [TimeZone] in which the start date was set
+     */
+    val startTimeZone: TimeZone get() = startDisplayableDate.timeZone
+
+    /**
+     * The [Date] upon which this trip will end
+     */
+    val endDate: Date get() = endDisplayableDate.date
+
+    /**
+     * The [TimeZone] in which the end date was set
+     */
+    val endTimeZone: TimeZone get() = endDisplayableDate.timeZone
+
+    /**
      * The name of this trip (this will be the name of [.getDirectory]
      */
-    val name: String
-        get() = directory.name
+    val name: String get() = directory.name
 
     /**
      * The absolute path of this Trip's directory from [.getDirectory] and [File.getAbsolutePath]
      */
-    val directoryPath: String
-        get() = directory.absolutePath
+    val directoryPath: String get() = directory.absolutePath
 
     /**
      * The default currency code representation for this trip or [PriceCurrency.MISSING_CURRENCY]
      * if it cannot be found
      */
-    val defaultCurrencyCode: String
-        get() = tripCurrency.currencyCode
-
-    /**
-     * Gets a formatted version of the start date based on the timezone and locale for a given separator. In the US,
-     * we might expect to see a result like "10/23/2014" returned if we set the separator as "/"
-     *
-     * @param context   - the current [Context]
-     * @param separator - the date separator (e.g. "/", "-", ".")
-     * @return the formatted date string for the start date
-     */
-    fun getFormattedStartDate(context: Context, separator: String): String =
-        ModelUtils.getFormattedDate(startDate, startTimeZone, context, separator)
-
-    /**
-     * Gets a formatted version of the end date based on the timezone and locale for a given separator. In the US,
-     * we might expect to see a result like "10/23/2014" returned if we set the separator as "/"
-     *
-     * @param context   - the current [Context]
-     * @param separator - the date separator (e.g. "/", "-", ".")
-     * @return the formatted date string for the end date
-     */
-    fun getFormattedEndDate(context: Context, separator: String): String =
-        ModelUtils.getFormattedDate(endDate, endTimeZone, context, separator)
+    val defaultCurrencyCode: String get() = tripCurrency.currencyCode
 
     /**
      * Tests if a particular date is included with the bounds of this particular trip When performing the test, it uses
@@ -163,10 +150,8 @@ class Trip @JvmOverloads constructor(
         if (uuid != that.uuid) return false
         if (directory != that.directory) return false
         if (comment != that.comment) return false
-        if (startDate != that.startDate) return false
-        if (startTimeZone != that.startTimeZone) return false
-        if (endDate != that.endDate) return false
-        if (endTimeZone != that.endTimeZone) return false
+        if (startDisplayableDate != that.startDisplayableDate) return false
+        if (endDisplayableDate != that.endDisplayableDate) return false
         return if (tripCurrency != that.tripCurrency) false else costCenter == that.costCenter
 
     }
@@ -177,10 +162,8 @@ class Trip @JvmOverloads constructor(
         result = 31 * result + uuid.hashCode()
         result = 31 * result + directory.hashCode()
         result = 31 * result + comment.hashCode()
-        result = 31 * result + startDate.hashCode()
-        result = 31 * result + startTimeZone.hashCode()
-        result = 31 * result + endDate.hashCode()
-        result = 31 * result + endTimeZone.hashCode()
+        result = 31 * result + startDisplayableDate.hashCode()
+        result = 31 * result + endDisplayableDate.hashCode()
         result = 31 * result + tripCurrency.hashCode()
         result = 31 * result + costCenter.hashCode()
         return result
@@ -190,17 +173,14 @@ class Trip @JvmOverloads constructor(
         return "DefaultTripImpl{" +
                 "id=" + id +
                 ", uuid=" + uuid +
-                ", mReportDirectory=" + directory +
-                ", mComment='" + comment + '\''.toString() +
-                ", mCostCenter='" + costCenter + '\''.toString() +
-                ", mPrice=" + price +
-                ", mDailySubTotal=" + dailySubTotal +
-                ", mStartDate=" + startDate +
-                ", mEndDate=" + endDate +
-                ", mStartTimeZone=" + startTimeZone +
-                ", mEndTimeZone=" + endTimeZone +
-                ", mDefaultCurrency=" + tripCurrency +
-                ", mSource=" + source +
+                ", directory=" + directory +
+                ", comment='" + comment + '\''.toString() +
+                ", costCenter='" + costCenter + '\''.toString() +
+                ", price=" + price +
+                ", dailySubTotal=" + dailySubTotal +
+                ", startDisplayableDate=" + startDisplayableDate +
+                ", endDisplayableDate=" + endDisplayableDate +
+                ", tripCurrency=" + tripCurrency +
                 '}'.toString()
     }
 

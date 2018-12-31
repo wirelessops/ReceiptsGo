@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -36,10 +37,9 @@ public class DefaultObjects {
     public static Trip newDefaultTrip() {
         return new Trip(Keyed.MISSING_ID, Keyed.Companion.getMISSING_UUID(),
                 new File(new File("").getAbsolutePath()),
-                new Date(System.currentTimeMillis()), TimeZone.getDefault(),
-                new Date(System.currentTimeMillis()), TimeZone.getDefault(),
-                PriceCurrency.getDefaultCurrency(),"comment","costCenter",
-                Source.Undefined, newDefaultSyncState());
+                new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
+                new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
+                PriceCurrency.getDefaultCurrency(),"comment","costCenter", newDefaultSyncState());
     }
 
     @NonNull

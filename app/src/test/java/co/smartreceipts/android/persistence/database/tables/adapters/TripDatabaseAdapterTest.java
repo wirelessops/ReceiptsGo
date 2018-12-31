@@ -114,7 +114,6 @@ public class TripDatabaseAdapterTest {
         when(mTrip.getComment()).thenReturn(COMMENT);
         when(mTrip.getCostCenter()).thenReturn(COST_CENTER);
         when(mTrip.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mTrip.getSource()).thenReturn(Source.Undefined);
         when(mTrip.getSyncState()).thenReturn(mSyncState);
         when(mTrip.getUuid()).thenReturn(TRIP_UUID);
 
@@ -141,7 +140,6 @@ public class TripDatabaseAdapterTest {
                 .setComment(COMMENT)
                 .setCostCenter(COST_CENTER)
                 .setDefaultCurrency(CURRENCY_CODE, mPreferences.get(UserPreference.General.DefaultCurrency))
-                .setSourceAsCache()
                 .setSyncState(mSyncState)
                 .build();
         assertEquals(trip, mTripDatabaseAdapter.read(mCursor));
@@ -210,7 +208,6 @@ public class TripDatabaseAdapterTest {
                 .setComment(COMMENT)
                 .setCostCenter(COST_CENTER)
                 .setDefaultCurrency(CURRENCY_CODE, mPreferences.get(UserPreference.General.DefaultCurrency))
-                .setSourceAsCache()
                 .setSyncState(mGetSyncState)
                 .build();
         assertEquals(trip, mTripDatabaseAdapter.build(mTrip, ID, TRIP_UUID, mock(DatabaseOperationMetadata.class)));

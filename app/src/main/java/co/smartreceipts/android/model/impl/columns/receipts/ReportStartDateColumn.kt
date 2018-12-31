@@ -25,7 +25,7 @@ class ReportStartDateColumn(
 
     override fun getValue(rowItem: Receipt): String {
         val trip = rowItem.trip
-        return dateFormatter.getFormattedDate(trip.startDate, trip.startTimeZone)
+        return dateFormatter.getFormattedDate(trip.startDisplayableDate)
     }
 
 

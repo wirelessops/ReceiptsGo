@@ -4,7 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
+import com.google.common.base.Preconditions;
+
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -12,8 +15,14 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 
 public class TripCardAdapter extends CardAdapter<Trip> {
 
-	public TripCardAdapter(@NonNull Context context, @NonNull UserPreferenceManager preferences, @NonNull BackupProvidersManager backupProvidersManager) {
+    private final DateFormatter dateFormatter;
+
+	public TripCardAdapter(@NonNull Context context,
+						   @NonNull UserPreferenceManager preferences,
+						   @NonNull BackupProvidersManager backupProvidersManager,
+                           @NonNull DateFormatter dateFormatter) {
 		super(context, preferences, backupProvidersManager);
+		this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
 	}
 	
 	@Override
@@ -33,10 +42,9 @@ public class TripCardAdapter extends CardAdapter<Trip> {
 	
 	@Override
 	protected void setDateTextView(TextView textView, Trip data) {
-		final String dateSeparator = getPreferences().get(UserPreference.General.DateSeparator);
-		final String from = data.getFormattedStartDate(getContext(), dateSeparator);
-		final String to = data.getFormattedEndDate(getContext(), dateSeparator);
-		textView.setText(getContext().getString(R.string.trip_adapter_list_item_to, from, to));
+		final String start = dateFormatter.getFormattedDate(data.getStartDisplayableDate());
+		final String end = dateFormatter.getFormattedDate(data.getEndDisplayableDate());
+		textView.setText(getContext().getString(R.string.trip_adapter_list_item_to, start, end));
 	}
 
 }

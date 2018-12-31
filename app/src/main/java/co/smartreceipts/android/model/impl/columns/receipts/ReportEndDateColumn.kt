@@ -25,7 +25,7 @@ class ReportEndDateColumn(
 
     override fun getValue(rowItem: Receipt): String {
         val trip = rowItem.trip
-        return dateFormatter.getFormattedDate(trip.endDate, trip.endTimeZone)
+        return dateFormatter.getFormattedDate(trip.endDisplayableDate)
     }
 
     override fun getFooter(rows: List<Receipt>): String =

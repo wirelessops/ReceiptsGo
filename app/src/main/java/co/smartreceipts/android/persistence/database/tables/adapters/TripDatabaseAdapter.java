@@ -71,7 +71,6 @@ public final class TripDatabaseAdapter implements DatabaseAdapter<Trip> {
                 .setComment(comment)
                 .setCostCenter(costCenter)
                 .setDefaultCurrency(defaultCurrency, preferences.get(UserPreference.General.DefaultCurrency))
-                .setSourceAsCache()
                 .setSyncState(syncState)
                 .build();
     }
