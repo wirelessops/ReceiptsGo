@@ -15,7 +15,8 @@ import dagger.Provides;
                     SharedPreferencesModule.class,
                     ImageLoadingModule.class,
                     ConfigurationModule.class,
-                    AutoCompleteModule.class })
+                    AutoCompleteModule.class,
+                    RxModule.class })
 public class BaseAppModule {
 
     private final SmartReceiptsApplication application;

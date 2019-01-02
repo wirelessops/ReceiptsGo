@@ -33,6 +33,18 @@
     <string name="pref_general_default_currency_title">Default Currency</string>
     <string name="pref_general_default_date_separator_key" translatable="false">dateseparator</string>
     <string name="pref_general_default_date_separator_title">Default Date Separator</string>
+    <string name="pref_general_date_format_key" translatable="false">dateformat</string>
+    <string name="pref_general_date_format_title">Preferred Date Format</string>
+    <string name="pref_general_date_format_default_entryValue" translatable="false">Default</string>
+    <string name="pref_general_date_format_M_d_yyyy_entryValue" translatable="false">M_d_yyyy</string>
+    <string name="pref_general_date_format_d_M_yyyy_entryValue" translatable="false">d_M_yyyy</string>
+    <string name="pref_general_date_format_yyyy_MM_dd_entryValue" translatable="false">yyyy_MM_dd</string>
+    <string-array name="pref_general_date_format_entryValues">
+        <item>@string/pref_general_date_format_default_entryValue</item>
+        <item>@string/pref_general_date_format_M_d_yyyy_entryValue</item>
+        <item>@string/pref_general_date_format_d_M_yyyy_entryValue</item>
+        <item>@string/pref_general_date_format_yyyy_MM_dd_entryValue</item>
+    </string-array>
     <string name="pref_general_track_cost_center_key" translatable="false">trackcostcenter</string>
     <string name="pref_general_track_cost_center_title">Track Cost Center</string>
     <string name="pref_general_track_cost_center_summaryOn">Include Cost Center For Reports</string>

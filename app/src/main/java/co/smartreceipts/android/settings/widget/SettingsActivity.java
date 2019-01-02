@@ -21,10 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -35,6 +38,9 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.date.DateFormatter;
+import co.smartreceipts.android.date.DisplayableDate;
+import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
@@ -66,7 +72,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     Flex flex;
 
     @Inject
-    PersistenceManager persistenceManager;
+    DatabaseHelper databaseHelper;
+    
+    @Inject
+    UserPreferenceManager userPreferenceManager;
 
     @Inject
     PurchaseWallet purchaseWallet;
@@ -76,6 +85,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
 
     @Inject
     PurchaseManager purchaseManager;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
@@ -240,23 +252,41 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
 
     public void configurePreferencesGeneral(UniversalPreferences universal) {
         // Get the currency list
-        List<CharSequence> currencyList = persistenceManager.getDatabase().getCurrenciesList();
+        List<CharSequence> currencyList = databaseHelper.getCurrenciesList();
         CharSequence[] currencyArray = new CharSequence[currencyList.size()];
         currencyList.toArray(currencyArray);
 
         // Get the date separator list
-        final String defaultSeparator = persistenceManager.getPreferenceManager().get(UserPreference.General.DateSeparator);
-        final CharSequence[] dateSeparators = getDateSeparatorOptions(persistenceManager.getPreferenceManager());
+        final String defaultSeparator = userPreferenceManager.get(UserPreference.General.DateSeparator);
+        final CharSequence[] dateSeparators = getDateSeparatorOptions(userPreferenceManager);
 
-        // Set up the ListPreference data
-        ListPreference currencyPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_currency_key);
+        // Configure out currency list
+        final ListPreference currencyPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_currency_key);
         currencyPreference.setEntries(currencyArray);
         currencyPreference.setEntryValues(currencyArray);
-        currencyPreference.setValue(persistenceManager.getPreferenceManager().get(UserPreference.General.DefaultCurrency));
-        ListPreference dateSeparatorPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_date_separator_key);
+        currencyPreference.setValue(userPreferenceManager.get(UserPreference.General.DefaultCurrency));
+
+        // Configure the date separator list
+        final ListPreference dateSeparatorPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_date_separator_key);
         dateSeparatorPreference.setEntries(dateSeparators);
         dateSeparatorPreference.setEntryValues(dateSeparators);
         dateSeparatorPreference.setValue(defaultSeparator);
+
+        // Configure the date format options
+        final ListPreference dateFormatPreference = (ListPreference) universal.findPreference(R.string.pref_general_date_format_key);
+        final DateFormatter.DateFormatOption[] dateFormatOptions = DateFormatter.DateFormatOption.values();
+        final CharSequence[] dateFormatEntries = new CharSequence[dateFormatOptions.length];
+        final CharSequence[] dateFormatEntryValues = new CharSequence[dateFormatOptions.length];
+        final DisplayableDate today = new DisplayableDate(new Date(Calendar.getInstance().getTimeInMillis()), TimeZone.getDefault());
+        for (int i = 0; i < dateFormatOptions.length; i++) {
+            final DateFormatter.DateFormatOption dateFormatOption = dateFormatOptions[i];
+            dateFormatEntries[i] = dateFormatter.getFormattedDate(today, dateFormatOption);
+            dateFormatEntryValues[i] = getString(dateFormatOption.getStringResId());
+        }
+        final String dateFormatCurrentValue = userPreferenceManager.get(UserPreference.General.DateFormat);
+        dateFormatPreference.setEntries(dateFormatEntries);
+        dateFormatPreference.setEntryValues(dateFormatEntryValues);
+        dateFormatPreference.setValue(dateFormatCurrentValue);
     }
 
     private CharSequence[] getDateSeparatorOptions(UserPreferenceManager preferences) {
@@ -281,7 +311,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         universal.findPreference(R.string.pref_receipt_payment_methods_key).setOnPreferenceClickListener(this);
 
         // Here we restore our current values (easier than getting the FloatEditText stuff to work)
-        UserPreferenceManager preferences = persistenceManager.getPreferenceManager();
+        UserPreferenceManager preferences = userPreferenceManager;
         DefaultTaxPercentagePreference taxPercentagePreference = (DefaultTaxPercentagePreference) universal.findPreference(R.string.pref_receipt_tax_percent_key);
         taxPercentagePreference.setText(Float.toString(preferences.get(UserPreference.Receipts.DefaultTaxPercentage)));
         MinimumPriceEditTextPreference minimumPriceEditTextPreference = (MinimumPriceEditTextPreference) universal.findPreference(R.string.pref_receipt_minimum_receipts_price_key);

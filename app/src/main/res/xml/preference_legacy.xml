@@ -50,9 +50,13 @@
             android:key="@string/pref_general_default_currency_key"
             android:title="@string/pref_general_default_currency_title" />
         <wb.android.preferences.SummaryListPreference
-            android:defaultValue="@string/pref_general_default_date_separator_key"
             android:key="@string/pref_general_default_date_separator_key"
-            android:title="@string/pref_general_default_date_separator_title" />
+            android:title="@string/pref_general_default_date_separator_title"
+            android:defaultValue="@string/pref_general_default_date_separator_defaultValue" />
+        <wb.android.preferences.SummaryListPreference
+            android:key="@string/pref_general_date_format_key"
+            android:title="@string/pref_general_date_format_title"
+            android:defaultValue="@string/pref_general_date_format_defaultValue" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_general_track_cost_center_defaultValue"
             android:key="@string/pref_general_track_cost_center_key"

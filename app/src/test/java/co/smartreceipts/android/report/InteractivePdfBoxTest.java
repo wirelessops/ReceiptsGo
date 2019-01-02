@@ -68,6 +68,7 @@ import co.smartreceipts.android.utils.shadows.ShadowFontFileFinder;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import co.smartreceipts.android.workers.reports.pdf.renderer.text.FallbackTextRenderer;
+import io.reactivex.schedulers.Schedulers;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -117,7 +118,7 @@ public class InteractivePdfBoxTest {
 
         context = RuntimeEnvironment.application;
         testResourceReader = new TestResourceReader();
-        dateFormatter = new DateFormatter(context, userPreferenceManager);
+        dateFormatter = new DateFormatter(context, userPreferenceManager, Schedulers.trampoline());
 
         when(persistenceManager.getPreferenceManager()).thenReturn(userPreferenceManager);
 

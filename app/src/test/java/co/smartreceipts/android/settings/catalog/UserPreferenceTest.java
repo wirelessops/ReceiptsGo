@@ -25,6 +25,7 @@ public class UserPreferenceTest {
         Assert.assertTrue(userPreferences.contains(UserPreference.General.DefaultReportDuration));
         Assert.assertTrue(userPreferences.contains(UserPreference.General.DefaultCurrency));
         Assert.assertTrue(userPreferences.contains(UserPreference.General.DateSeparator));
+        Assert.assertTrue(userPreferences.contains(UserPreference.General.DateFormat));
         Assert.assertTrue(userPreferences.contains(UserPreference.General.IncludeCostCenter));
         Assert.assertTrue(userPreferences.contains(UserPreference.Receipts.MinimumReceiptPrice));
         Assert.assertTrue(userPreferences.contains(UserPreference.Receipts.DefaultTaxPercentage));
@@ -81,6 +82,10 @@ public class UserPreferenceTest {
         Assert.assertEquals(UserPreference.General.DateSeparator.getType(), String.class);
         Assert.assertEquals(name(UserPreference.General.DateSeparator), "dateseparator");
         Assert.assertEquals(UserPreference.General.DateSeparator.getDefaultValue(), R.string.pref_general_default_date_separator_defaultValue);
+
+        Assert.assertEquals(UserPreference.General.DateFormat.getType(), String.class);
+        Assert.assertEquals(name(UserPreference.General.DateFormat), "dateformat");
+        Assert.assertEquals(UserPreference.General.DateFormat.getDefaultValue(), R.string.pref_general_date_format_defaultValue);
 
         Assert.assertEquals(UserPreference.General.IncludeCostCenter.getType(), Boolean.class);
         Assert.assertEquals(name(UserPreference.General.IncludeCostCenter), "trackcostcenter");

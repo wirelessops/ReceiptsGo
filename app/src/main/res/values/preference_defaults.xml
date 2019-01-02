@@ -4,6 +4,7 @@
     <integer name="pref_general_trip_duration_defaultValue">3</integer>
     <string name="pref_general_default_currency_defaultValue" />
     <string name="pref_general_default_date_separator_defaultValue" />
+    <string name="pref_general_date_format_defaultValue">@string/pref_general_date_format_default_entryValue</string>
     <bool name="pref_general_track_cost_center_defaultValue">false</bool>
 
     <!-- ============== Preference Receipt ================ -->

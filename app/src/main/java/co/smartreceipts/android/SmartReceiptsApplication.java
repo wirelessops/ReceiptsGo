@@ -239,6 +239,7 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         flex.initialize();
         userPreferenceManager.initialize();
         orderingPreferencesManager.initialize();
+        dateFormatter.initialize();
         onLaunchDataPreFetcher.loadUserData();
         identityManager.initialize();
         pushManager.initialize();
@@ -247,8 +248,8 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         ocrManager.initialize();
         crashReporter.initialize();
         receiptsOrderer.initialize();
-        markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         picassoInitializer.initialize();
+        markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         memoryLeakMonitor.initialize();
 
         PDFBoxResourceLoader.init(getApplicationContext());

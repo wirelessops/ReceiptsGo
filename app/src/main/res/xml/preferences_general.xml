@@ -15,7 +15,11 @@
         <wb.android.preferences.SummaryListPreference
             android:key="@string/pref_general_default_date_separator_key"
             android:title="@string/pref_general_default_date_separator_title"
-            android:defaultValue="@string/pref_general_default_date_separator_key" />
+            android:defaultValue="@string/pref_general_default_date_separator_defaultValue" />
+        <wb.android.preferences.SummaryListPreference
+            android:key="@string/pref_general_date_format_key"
+            android:title="@string/pref_general_date_format_title"
+            android:defaultValue="@string/pref_general_date_format_defaultValue" />
         <CheckBoxPreference
             android:key="@string/pref_general_track_cost_center_key"
             android:title="@string/pref_general_track_cost_center_title"
