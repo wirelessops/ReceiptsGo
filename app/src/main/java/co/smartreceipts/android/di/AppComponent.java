@@ -4,9 +4,11 @@ import co.smartreceipts.android.SmartReceiptsApplication;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.push.PushManager;
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
 
 @ApplicationScope
 @Component(modules = {
+        AndroidInjectionModule.class,
         FlavorModule.class,
         GlobalBindingModule.class,
         BaseAppModule.class
