@@ -16,6 +16,7 @@ import dagger.Provides;
                     ImageLoadingModule.class,
                     ConfigurationModule.class,
                     AutoCompleteModule.class,
+                    ExecutorsModule.class,
                     RxModule.class })
 public class BaseAppModule {
 

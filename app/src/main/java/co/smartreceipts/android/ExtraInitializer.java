@@ -5,6 +5,9 @@ package co.smartreceipts.android;
  */
 public interface ExtraInitializer {
 
+    /**
+     * Initializes any extra items that may be required for this flavor to function properly
+     */
     void init();
 
 }

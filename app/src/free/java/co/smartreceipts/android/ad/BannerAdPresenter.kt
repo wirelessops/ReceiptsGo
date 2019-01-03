@@ -24,13 +24,11 @@ import javax.inject.Inject
 
 @ActivityScope
 class BannerAdPresenter @Inject constructor(private val context: Context,
-                                            private val purchaseWallet: PurchaseWallet,
+                                            private val adStatusTracker: AdStatusTracker,
                                             private val purchaseManager: PurchaseManager,
                                             private val userPreferenceManager: UserPreferenceManager,
                                             private val bannerAdViewFactory: BannerAdViewFactory,
                                             private val analytics: Analytics) : AdPresenter {
-
-
 
     private var adView: BannerAdView? = null
     private var upsellAdView: UpsellAdView? = null
@@ -67,7 +65,7 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
             })
 
             try {
-                adView?.loadAd(userPreferenceManager.get(UserPreference.Privacy.EnableAdPersonalization))
+                adView?.loadAd(userPreferenceManager[UserPreference.Privacy.EnableAdPersonalization])
             } catch (e: Exception) {
                 // Swallowing all exception b/c I'm lazy and don't want to handle activity finishing states or issues with 3p code
                 Logger.error(this, "Swallowing ad load exception... ", e)
@@ -107,7 +105,7 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
     }
 
     private fun executeIfWeAreShowingAds(adFunction: () -> Unit) {
-        if (!shouldShowAds(context)) {
+        if (!adStatusTracker.shouldShowAds()) {
             adView?.hide()
             upsellAdView?.hide()
             adContainer?.visibility = View.GONE
@@ -117,16 +115,4 @@ class BannerAdPresenter @Inject constructor(private val context: Context,
         }
     }
 
-    private fun shouldShowAds(activityContext: Context): Boolean {
-        val hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
-        val areAdsEnabledLocally = activityContext.getSharedPreferences(AD_PREFERENECES, 0).getBoolean(SHOW_AD, true)
-        return areAdsEnabledLocally && !hasProSubscription
-    }
-
-    companion object {
-
-        //Preference Identifiers - SubClasses Only
-        private val AD_PREFERENECES = SharedPreferenceDefinitions.SubclassAds.toString()
-        private val SHOW_AD = "pref1"
-    }
 }

@@ -226,6 +226,7 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         picassoInitializer.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         memoryLeakMonitor.initialize();
+        extraInitializer.init();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 
@@ -241,8 +242,6 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
         // Add launch count for rating prompt monitoring
         appRatingPreferencesStorage.incrementLaunchCount();
-
-        extraInitializer.init();
     }
 
 }

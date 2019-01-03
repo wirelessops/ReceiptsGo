@@ -1,15 +1,30 @@
 package co.smartreceipts.android;
 
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
+import java.util.concurrent.Executor;
+
 import javax.inject.Inject;
+
+import co.smartreceipts.android.ad.AdStatusTracker;
 
 public class ExtraInitializerFreeImpl implements ExtraInitializer {
 
+    private final Executor executor;
+    private final AdStatusTracker adStatusTracker;
+
     @Inject
-    public ExtraInitializerFreeImpl() {
+    public ExtraInitializerFreeImpl(@NonNull Executor executor,
+                                    @NonNull AdStatusTracker adStatusTracker) {
+        this.executor = Preconditions.checkNotNull(executor);
+        this.adStatusTracker = Preconditions.checkNotNull(adStatusTracker);
     }
 
     @Override
     public void init() {
-        // Intentional no-op
+        // Note: We call this in the background to pre-fetch and cache the results to avoid disk read violations
+        this.executor.execute(adStatusTracker::shouldShowAds);
     }
 }
