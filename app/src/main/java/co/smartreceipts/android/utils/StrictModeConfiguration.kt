@@ -50,7 +50,7 @@ object StrictModeConfiguration {
             if (!isWhiteListed) {
                 throw it
             } else {
-                Logger.warn(this, "Ignoring StrictMode Failure for WhiteListed Instant-Run violation", it)
+                Logger.warn(this, "Ignoring StrictMode Failure for WhiteListed Instant-Run violation", it.message)
             }
         })
 
