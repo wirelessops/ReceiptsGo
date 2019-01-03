@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import co.smartreceipts.android.widget.mvp.Presenter;
 
@@ -41,15 +42,24 @@ public class ReceiptCreateActionPresenter extends BasePresenter<ReceiptCreateAct
                 }));
 
         compositeDisposable.add(view.getCreateNewReceiptFromCameraButtonClicks()
-                .doOnNext(ignored -> analytics.record(Events.Receipts.AddPictureReceipt))
+                .doOnNext(ignored -> {
+                    Logger.info(this, "Launching camera for new receipt");
+                    analytics.record(Events.Receipts.AddPictureReceipt);
+                })
                 .subscribe(ignored -> view.createNewReceiptViaCamera()));
 
         compositeDisposable.add(view.getCreateNewReceiptFromPlainTextButtonClicks()
-                .doOnNext(ignored -> analytics.record(Events.Receipts.AddTextReceipt))
+                .doOnNext(ignored -> {
+                    Logger.info(this, "Launching new text receipt");
+                    analytics.record(Events.Receipts.AddTextReceipt);
+                })
                 .subscribe(ignored -> view.createNewReceiptViaPlainText()));
 
         compositeDisposable.add(view.getCreateNewReceiptFromImportedFileButtonClicks()
-                .doOnNext(ignored -> analytics.record(Events.Receipts.ImportPictureReceipt))
+                .doOnNext(ignored -> {
+                    Logger.info(this, "Launching import intent for new receipt");
+                    analytics.record(Events.Receipts.ImportPictureReceipt);
+                })
                 .subscribe(ignored -> view.createNewReceiptViaFileImport()));
     }
 
