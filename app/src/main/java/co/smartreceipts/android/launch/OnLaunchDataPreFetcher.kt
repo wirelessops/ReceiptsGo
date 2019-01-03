@@ -1,5 +1,6 @@
 package co.smartreceipts.android.launch
 
+import android.annotation.SuppressLint
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.persistence.LastTripMonitor
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
@@ -26,6 +27,7 @@ class OnLaunchDataPreFetcher @Inject constructor(private val tripTableController
     /**
      * Loads all trips and the receipt / distance entries for our last trip
      */
+    @SuppressLint("CheckResult")
     fun loadUserData() {
         tripTableController.get()
                 .subscribeOn(Schedulers.io())

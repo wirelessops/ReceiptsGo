@@ -1,6 +1,7 @@
 package co.smartreceipts.android.utils.leaks
 
 import android.app.Application
+import android.os.Build
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.utils.RobolectricMonitor
 import co.smartreceipts.android.utils.log.Logger
@@ -16,9 +17,11 @@ import javax.inject.Inject
 class MemoryLeakMonitor @Inject constructor(private val application: Application) {
 
     fun initialize() {
+
         when {
             RobolectricMonitor.areUnitTestsRunning() -> Logger.debug(this, "Ignoring LeakCanary as we're running unit tests...")
             LeakCanary.isInAnalyzerProcess(application) -> Logger.debug(this, "Ignoring this process as it's the LeakCanary analyzer one...")
+            (Build.VERSION_CODES.O .. Build.VERSION_CODES.P).contains(Build.VERSION.SDK_INT) -> Logger.debug(this, "Ignoring LeakCanary on Android {} due to an Android bug. See https://github.com/square/leakcanary/issues/1081", Build.VERSION.SDK_INT)
             else -> LeakCanary.install(application)
         }
     }
