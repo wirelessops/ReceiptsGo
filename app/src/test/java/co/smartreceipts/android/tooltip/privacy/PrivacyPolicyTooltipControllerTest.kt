@@ -2,9 +2,13 @@ package co.smartreceipts.android.tooltip.privacy
 
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
+import co.smartreceipts.android.model.Trip
+import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.tooltip.StaticTooltipView
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.utils.TestUtils
+import co.smartreceipts.android.utils.TripUtils
 import com.hadisatrio.optional.Optional
 import io.reactivex.Single
 
@@ -32,6 +36,12 @@ class PrivacyPolicyTooltipControllerTest {
     lateinit var store: PrivacyPolicyUserInteractionStore
 
     @Mock
+    lateinit var regionChecker: RegionChecker
+
+    @Mock
+    lateinit var tripTableController: TripTableController
+
+    @Mock
     lateinit var analytics: Analytics
 
     private val scheduler = Schedulers.trampoline()
@@ -39,16 +49,43 @@ class PrivacyPolicyTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        privacyPolicyTooltipController = PrivacyPolicyTooltipController(tooltipView, router, store, analytics, scheduler)
+        privacyPolicyTooltipController = PrivacyPolicyTooltipController(tooltipView, router, store, regionChecker, tripTableController, analytics, scheduler)
     }
 
     @Test
-    fun displayTooltipWithoutUserInteractions() {
+    fun displayTooltipWithoutUserInteractionsForEuUser() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
+        whenever(regionChecker.isInTheEuropeanUnion()).thenReturn(true)
         privacyPolicyTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
                 .assertValue(Optional.of(StaticTooltip.PrivacyPolicy))
+                .assertComplete()
+                .assertNoErrors()
+    }
+
+    @Test
+    fun displayTooltipWithoutUserInteractionsForNonEuUserWithMultipleTrips() {
+        whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
+        whenever(regionChecker.isInTheEuropeanUnion()).thenReturn(false)
+        whenever(tripTableController.get()).thenReturn(Single.just(arrayListOf(TripUtils.newDefaultTrip(), TripUtils.newDefaultTrip())))
+        privacyPolicyTooltipController.shouldDisplayTooltip()
+                .test()
+                .await()
+                .assertValue(Optional.of(StaticTooltip.PrivacyPolicy))
+                .assertComplete()
+                .assertNoErrors()
+    }
+
+    @Test
+    fun displayTooltipWithoutUserInteractionsForNonEuUserWithNoTrips() {
+        whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
+        whenever(regionChecker.isInTheEuropeanUnion()).thenReturn(false)
+        whenever(tripTableController.get()).thenReturn(Single.just(arrayListOf()))
+        privacyPolicyTooltipController.shouldDisplayTooltip()
+                .test()
+                .await()
+                .assertValue(Optional.absent())
                 .assertComplete()
                 .assertNoErrors()
     }

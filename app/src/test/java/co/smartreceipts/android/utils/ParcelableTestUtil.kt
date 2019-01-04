@@ -8,7 +8,6 @@ import android.support.annotation.VisibleForTesting
 /**
  * From https://proandroiddev.com/testing-parcelize-114510f44c9a
  */
-
 @VisibleForTesting
 inline fun <reified R : Parcelable> R.testParcel(): R {
     val bytes = marshallParcelable(this)
