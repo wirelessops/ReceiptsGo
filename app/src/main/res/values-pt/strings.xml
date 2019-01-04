@@ -197,7 +197,7 @@
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s para %2$s</string>
-    <string name="trip_no_data">Você não parece ter nenhum relatório definido no momento. Tente clicar no botão \'+\' para começar. \n\nO Smart Receipts permite criar relatórios de gastos, rastrear recibos em cada um deles e gerar rapidamente relatórios PDF e CSV para as totalizações. É fácil e rápido! Certifique-se de conferir o menu para personalizar as categorias, relatórios e outras configurações para adequá-las às suas necessidades.</string>
+    <string name="trip_no_data">Você não parece ter nenhum relatório definido no momento. Tente clicar no botão \'+\' para começar.</string>
 
     <!-- ================= Receipt Adapter =================== -->
     <string name="receipt_no_data">Parece que você ainda não tem nenhum recibo. Tente clicar no botão \'+\' para começar.</string>

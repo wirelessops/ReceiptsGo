@@ -197,7 +197,7 @@
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s hasta %2$s</string>
-    <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.\n\nSmart Receipts te permite crear informes de gastos, controlar los recibos de cada uno y generar rápidamente informes en PDF y CSV para los totales de tus recibos. ¡Es fácil y rápido! También, asegúrate de revisar el menú para personalizar las categorías, informes y otros ajustes para que se adapten mejor a tus necesidades.</string>
+    <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.</string>
 
     <!-- ================= Receipt Adapter =================== -->
     <string name="receipt_no_data">Parece que aún no tienes recibos. Intenta tocar el botón + (más) para comenzar…</string>

@@ -197,7 +197,7 @@
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s à %2$s</string>
-    <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.\n\nSmart Receipts vous permet de créer des notes de frais, de suivre les reçus dans chacune d’elle et de créer rapidement des rapports PDF et CSV pour la totalité de vos reçus. C’est rapide et facile ! Assurez-vous également de consulter le menu pour personnaliser les catégories, les rapports et d’autres paramètres pour qu’ils répondent mieux à vos besoins.</string>
+    <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.</string>
 
     <!-- ================= Receipt Adapter =================== -->
     <string name="receipt_no_data">Il semblerait que vous n\'ayez encore aucun reçu. Appuyez sur le bouton + (plus) pour commencer…</string>
