@@ -89,6 +89,7 @@ public final class Events {
         public static final Event ClickedGenerateReportTip = new DefaultEvent(Category.Informational, "ClickedGenerateReportTip");
         public static final Event ClickedBackupReminderTip = new DefaultEvent(Category.Informational, "ClickedBackupReminderTip");
         public static final Event ClickedPrivacyPolicyTip = new DefaultEvent(Category.Informational, "ClickedPrivacyPolicyTip");
+        public static final Event ClickedFirstReportHintTip = new DefaultEvent(Category.Informational, "ClickedFirstReportHintTip");
         public static final Event ClickedAutomaticBackupRecoveryHintTip = new DefaultEvent(Category.Informational, "ClickedAutomaticBackupRecoveryHintTip");
         public static final Event ClickedManageCategories = new DefaultEvent(Category.Informational, "ClickedManageCategories");
         public static final Event ClickedManagePaymentMethods = new DefaultEvent(Category.Informational, "ClickedManagePaymentMethods");

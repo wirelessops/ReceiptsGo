@@ -1,4 +1,4 @@
-package co.smartreceipts.android.tooltip.backup
+package co.smartreceipts.android.tooltip.report
 
 import android.content.SharedPreferences
 import co.smartreceipts.android.di.scopes.ApplicationScope
@@ -10,19 +10,19 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @ApplicationScope
-class AutomaticBackupRecoveryHintUserInteractionStore @Inject constructor(private val preferences: Lazy<SharedPreferences>,
-                                                                          @Named(RxSchedulers.IO) private val scheduler: Scheduler) {
+class FirstReportHintUserInteractionStore @Inject constructor(private val preferences: Lazy<SharedPreferences>,
+                                                              @Named(RxSchedulers.IO) private val scheduler: Scheduler) {
 
     fun hasUserInteractionOccurred(): Single<Boolean> {
         return Single.fromCallable { preferences.get().getBoolean(KEY, false) }
                 .subscribeOn(scheduler)
     }
 
-    fun setUserHasInteractedWithAutomaticBackupRecoveryHint(userInteractedWithThis: Boolean) {
+    fun setInteractionHasOccurred(userInteractedWithThis: Boolean) {
         preferences.get().edit().putBoolean(KEY, userInteractedWithThis).apply()
     }
 
     companion object {
-        private const val KEY = "user_clicked_automatic_backup_recovery_hint"
+        private const val KEY = "user_interacted_with_first_hint"
     }
 }

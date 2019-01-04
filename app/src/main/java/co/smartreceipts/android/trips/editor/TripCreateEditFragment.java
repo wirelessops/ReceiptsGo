@@ -32,6 +32,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter;
@@ -51,10 +54,15 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.tooltip.StaticTooltipView;
+import co.smartreceipts.android.tooltip.TooltipPresenter;
+import co.smartreceipts.android.tooltip.model.StaticTooltip;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.trips.editor.date.TripDateView;
 import co.smartreceipts.android.trips.editor.date.TripDatesPresenter;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
+import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.widget.tooltip.Tooltip;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -62,6 +70,7 @@ import wb.android.flex.Flex;
 
 public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         View.OnFocusChangeListener,
+        StaticTooltipView,
         CurrencyListEditorView,
         TripDateView,
         AutoCompleteView<Trip> {
@@ -86,21 +95,48 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Inject
     AutoCompletePresenter<Trip> tripAutoCompletePresenter;
 
-    TripDatesPresenter tripDatesPresenter;
+    @Inject
+    TooltipPresenter tooltipPresenter;
 
-    private AutoCompleteTextView nameBox;
-    private DateEditText startDateBox;
-    private DateEditText endDateBox;
-    private Spinner currencySpinner;
-    private AutoCompleteTextView commentBox;
-    private AutoCompleteTextView costCenterBox;
+    // Constructed Presenters
+    private TripDatesPresenter tripDatesPresenter;
+    private CurrencyListEditorPresenter currencyListEditorPresenter;
+    private DefaultCurrencyListEditorView defaultCurrencyListEditorView;
 
+    // Butterknife Fields
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.tooltip)
+    Tooltip tooltipView;
+
+    @BindView(R.id.dialog_tripmenu_name)
+    AutoCompleteTextView nameBox;
+
+    @BindView(R.id.dialog_tripmenu_start)
+    DateEditText startDateBox;
+
+    @BindView(R.id.dialog_tripmenu_end)
+    DateEditText endDateBox;
+
+    @BindView(R.id.dialog_tripmenu_currency)
+    Spinner currencySpinner;
+
+    @BindView(R.id.dialog_tripmenu_comment)
+    AutoCompleteTextView commentBox;
+
+    @BindView(R.id.dialog_tripmenu_cost_center)
+    AutoCompleteTextView costCenterBox;
+
+    @BindView(R.id.dialog_tripmenu_cost_center_layout)
+    View costCenterBoxLayout;
+
+    // Butterknife unbinding
+    private Unbinder unbinder;
+
+    // Misc Views
     private View focusedView;
 
-    // Presenters
-    private CurrencyListEditorPresenter currencyListEditorPresenter;
-
-    private DefaultCurrencyListEditorView defaultCurrencyListEditorView;
 
     public static TripCreateEditFragment newInstance() {
         return new TripCreateEditFragment();
@@ -142,8 +178,35 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViews(view);
+        this.unbinder = ButterKnife.bind(this, view);
 
+        // Apply white-label settings via our 'Flex' mechanism to update defaults
+        flex.applyCustomSettings(nameBox);
+        flex.applyCustomSettings(startDateBox);
+        flex.applyCustomSettings(endDateBox);
+        flex.applyCustomSettings(currencySpinner);
+        flex.applyCustomSettings(commentBox);
+        flex.applyCustomSettings(costCenterBox);
+
+        // Toolbar stuff
+        if (navigationHandler.isDualPane()) {
+            toolbar.setVisibility(View.GONE);
+        } else {
+            setSupportActionBar(toolbar);
+        }
+
+        // Show default dictionary with auto-complete
+        TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
+        nameBox.setKeyListener(input);
+
+        // Configure default separators
+        startDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+        endDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+
+        // Set Cost Center Visibility
+        costCenterBoxLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);
+
+        setKeyboardRelatedListeners();
     }
 
     @Override
@@ -176,6 +239,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         tripAutoCompletePresenter.subscribe();
         currencyListEditorPresenter.subscribe();
         tripDatesPresenter.subscribe();
+        tooltipPresenter.subscribe();
     }
 
     @Override
@@ -206,10 +270,19 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
     @Override
     public void onStop() {
+        tooltipPresenter.unsubscribe();
         tripAutoCompletePresenter.unsubscribe();
         currencyListEditorPresenter.unsubscribe();
         tripDatesPresenter.unsubscribe();
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Logger.debug(this, "onDestroyView");
+        focusedView = null;
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     @Override
@@ -218,38 +291,9 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         currencyListEditorPresenter.onSaveInstanceState(outState);
     }
 
-    private void initViews(View rootView) {
-        nameBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_name);
-        startDateBox = (DateEditText) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_start);
-        endDateBox = (DateEditText) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_end);
-        currencySpinner = (Spinner) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_currency);
-        commentBox = (AutoCompleteTextView) flex.getSubView(getActivity(), rootView, R.id.dialog_tripmenu_comment);
-
-        costCenterBox = rootView.findViewById(R.id.dialog_tripmenu_cost_center);
-        View costCenterBoxLayout = rootView.findViewById(R.id.dialog_tripmenu_cost_center_layout);
-        costCenterBoxLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);
-
-        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
-        if (navigationHandler.isDualPane()) {
-            toolbar.setVisibility(View.GONE);
-        } else {
-            setSupportActionBar(toolbar);
-        }
-
-        // Show default dictionary with auto-complete
-        TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
-        nameBox.setKeyListener(input);
-
-        // Configure default separators
-        startDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
-        endDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
-
-        setKeyboardRelatedListeners();
-    }
-
     private void fillFields() {
         if (getEditableItem() == null) { // new trip
-            //prefill the dates
+            //pre-fill the dates
             final Calendar startCalendar = Calendar.getInstance();
             startCalendar.set(Calendar.HOUR_OF_DAY, 0);
             startCalendar.set(Calendar.MINUTE, 0);
@@ -432,5 +476,56 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public Trip getEditableItem() {
         return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;
+    }
+
+    @NotNull
+    @Override
+    public List<StaticTooltip> getSupportedTooltips() {
+        return Collections.singletonList(StaticTooltip.FirstReportHint);
+    }
+
+    @Override
+    public void display(@NotNull StaticTooltip tooltip) {
+        tooltipView.setTooltip(tooltip);
+        if (tooltipView.getVisibility() != View.VISIBLE) {
+            tooltipView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideTooltip() {
+        if (tooltipView.getVisibility() != View.GONE) {
+            tooltipView.setVisibility(View.GONE);
+        }
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getTooltipClickStream() {
+        return tooltipView.getTooltipClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getButtonNoClickStream() {
+        return tooltipView.getButtonNoClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getButtonYesClickStream() {
+        return tooltipView.getButtonYesClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getButtonCancelClickStream() {
+        return tooltipView.getButtonCancelClickStream();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Object> getCloseIconClickStream() {
+        return tooltipView.getCloseIconClickStream();
     }
 }

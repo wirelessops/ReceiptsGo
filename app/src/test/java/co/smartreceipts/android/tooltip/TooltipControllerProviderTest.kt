@@ -4,6 +4,7 @@ import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserCo
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
+import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import org.junit.Before
 
 import org.junit.Assert.*
@@ -17,21 +18,25 @@ import javax.inject.Provider
 @RunWith(RobolectricTestRunner::class)
 class TooltipControllerProviderTest {
 
-    lateinit var tooltipControllerProvider: TooltipControllerProvider
+    private lateinit var tooltipControllerProvider: TooltipControllerProvider
 
     @Mock
-    lateinit var automaticBackupRecoveryHintUserController: AutomaticBackupRecoveryHintUserController
+    private lateinit var automaticBackupRecoveryHintUserController: AutomaticBackupRecoveryHintUserController
 
     @Mock
-    lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
+    private lateinit var firstReportHintTooltipController: FirstReportHintTooltipController
 
     @Mock
-    lateinit var appRatingTooltipController: AppRatingTooltipController
+    private lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
+
+    @Mock
+    private lateinit var appRatingTooltipController: AppRatingTooltipController
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         tooltipControllerProvider = TooltipControllerProvider(Provider { return@Provider automaticBackupRecoveryHintUserController },
+                                                              Provider { return@Provider firstReportHintTooltipController },
                                                               Provider { return@Provider privacyPolicyTooltipController },
                                                               Provider { return@Provider appRatingTooltipController })
     }
@@ -39,6 +44,11 @@ class TooltipControllerProviderTest {
     @Test
     fun getAutomaticBackupRecoveryHintUserController() {
         assertTrue(tooltipControllerProvider.get(StaticTooltip.AutomaticBackupRecoveryHint) is AutomaticBackupRecoveryHintUserController)
+    }
+
+    @Test
+    fun getFirstReportHintTooltipController() {
+        assertTrue(tooltipControllerProvider.get(StaticTooltip.FirstReportHint) is FirstReportHintTooltipController)
     }
 
     @Test
