@@ -1,5 +1,6 @@
 package co.smartreceipts.android.tooltip
 
+import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
@@ -19,6 +20,9 @@ class TooltipControllerProviderTest {
     lateinit var tooltipControllerProvider: TooltipControllerProvider
 
     @Mock
+    lateinit var automaticBackupRecoveryHintUserController: AutomaticBackupRecoveryHintUserController
+
+    @Mock
     lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
 
     @Mock
@@ -27,8 +31,14 @@ class TooltipControllerProviderTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        tooltipControllerProvider = TooltipControllerProvider(Provider { return@Provider privacyPolicyTooltipController },
+        tooltipControllerProvider = TooltipControllerProvider(Provider { return@Provider automaticBackupRecoveryHintUserController },
+                                                              Provider { return@Provider privacyPolicyTooltipController },
                                                               Provider { return@Provider appRatingTooltipController })
+    }
+
+    @Test
+    fun getAutomaticBackupRecoveryHintUserController() {
+        assertTrue(tooltipControllerProvider.get(StaticTooltip.AutomaticBackupRecoveryHint) is AutomaticBackupRecoveryHintUserController)
     }
 
     @Test

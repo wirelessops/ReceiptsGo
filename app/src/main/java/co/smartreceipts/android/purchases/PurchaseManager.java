@@ -144,6 +144,7 @@ public class PurchaseManager {
      * list of all entities that we own, and finally persisting all changes to our {@link PurchaseWallet}.
      */
     @SuppressLint("CheckResult")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void initialize(@NonNull Application application) {
         Logger.debug(PurchaseManager.this, "Initializing the purchase manager");
         application.registerActivityLifecycleCallbacks(new PurchaseManagerActivityLifecycleCallbacks(this));

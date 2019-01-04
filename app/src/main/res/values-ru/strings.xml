@@ -483,6 +483,7 @@
     <string name="tooltip_backup_info_message">%d дней с момента вашего последнего бэкапа</string>
     <string name="tooltip_import_info_message">Пожалуйста, выберите чек для вашего вложения</string>
     <string name="tooltip_review_privacy">Нажмите, чтобы просмотреть настройки конфиденциальности</string>
+    <string name="tooltip_automatic_backups_recovery_hint">Вы ранее настраивали автоматическое резервное копирование? Нажмите здесь, чтобы восстановить</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Добавьте свой первый чек чтобы увидеть графики.</string>

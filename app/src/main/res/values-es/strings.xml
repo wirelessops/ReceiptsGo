@@ -481,6 +481,7 @@
     <string name="tooltip_backup_info_message">%d días desde la última copia de seguridad</string>
     <string name="tooltip_import_info_message">Por favor, elija el recibo de su archivo adjunto</string>
     <string name="tooltip_review_privacy">Toca para revisar tu configuración de privacidad</string>
+    <string name="tooltip_automatic_backups_recovery_hint">¿Configuró previamente copias de seguridad automáticas? Toque aquí para restaurar</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Agregue sus primeros recibos para ver los gráficos.</string>

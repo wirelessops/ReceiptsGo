@@ -481,6 +481,7 @@
     <string name="tooltip_backup_info_message">%d dias desde o último backup</string>
     <string name="tooltip_import_info_message">Por favor, escolha o recibo para o seu anexo</string>
     <string name="tooltip_review_privacy">Toque para rever suas configurações de privacidade</string>
+    <string name="tooltip_automatic_backups_recovery_hint">Você configurou anteriormente backups automáticos? Toque aqui para restaurar</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Adicione seus primeiros recibos para ver gráficos.</string>

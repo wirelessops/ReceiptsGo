@@ -213,12 +213,12 @@ public class SmartReceiptsApplication extends Application implements HasActivity
 
         flex.initialize();
         userPreferenceManager.initialize();
+        purchaseManager.initialize(this);
         orderingPreferencesManager.initialize();
         dateFormatter.initialize();
         onLaunchDataPreFetcher.loadUserData();
         identityManager.initialize();
         pushManager.initialize();
-        purchaseManager.initialize(this);
         cognitoManager.initialize();
         ocrManager.initialize();
         crashReporter.initialize();

@@ -134,7 +134,7 @@ class TooltipPresenterTest {
         whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(StaticTooltip.RateThisApp)))
         whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(StaticTooltip.PrivacyPolicy)))
         tooltipPresenter.subscribe()
-        verify(view).display(StaticTooltip.PrivacyPolicy)
+        verify(view).display(StaticTooltip.RateThisApp)
     }
 
 }

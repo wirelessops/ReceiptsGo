@@ -333,7 +333,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @NotNull
     @Override
     public List<StaticTooltip> getSupportedTooltips() {
-        return Arrays.asList(StaticTooltip.PrivacyPolicy, StaticTooltip.RateThisApp);
+        return Arrays.asList(StaticTooltip.AutomaticBackupRecoveryHint, StaticTooltip.PrivacyPolicy, StaticTooltip.RateThisApp);
     }
 
     @Override

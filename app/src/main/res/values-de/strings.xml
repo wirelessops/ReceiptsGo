@@ -481,6 +481,7 @@
     <string name="tooltip_backup_info_message">%d Tage seit dein letztem Backup</string>
     <string name="tooltip_import_info_message">Bitte wählen Sie den Beleg für Ihren Anhang</string>
     <string name="tooltip_review_privacy">Tippen Sie hier, um Ihre Datenschutzeinstellungen zu überprüfen</string>
+    <string name="tooltip_automatic_backups_recovery_hint">Haben Sie zuvor automatische backups konfiguriert? Zum Wiederherstellen hier tippen</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Fügen Sie Ihre ersten Quittungen hinzu, um Grafiken zu sehen.</string>

@@ -481,6 +481,7 @@
     <string name="tooltip_backup_info_message">%d jours depuis votre dernière sauvegarde</string>
     <string name="tooltip_import_info_message">Veuillez choisir un reçu pour votre pièce jointe</string>
     <string name="tooltip_review_privacy">Appuyez pour examiner vos paramètres de confidentialité</string>
+    <string name="tooltip_automatic_backups_recovery_hint">Avez-vous déjà configuré des sauvegardes automatiques? Appuyez ici pour restaurer</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Ajoutez vos premiers reçus pour voir les graphiques.</string>

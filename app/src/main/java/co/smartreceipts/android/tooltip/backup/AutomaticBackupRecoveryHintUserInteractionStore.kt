@@ -1,4 +1,4 @@
-package co.smartreceipts.android.tooltip.privacy
+package co.smartreceipts.android.tooltip.backup
 
 import android.content.SharedPreferences
 import co.smartreceipts.android.di.scopes.ApplicationScope
@@ -10,19 +10,19 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @ApplicationScope
-class PrivacyPolicyUserInteractionStore @Inject constructor(private val preferences: Lazy<SharedPreferences>,
-                                                            @Named(RxSchedulers.IO) private val scheduler: Scheduler) {
+class AutomaticBackupRecoveryHintUserInteractionStore @Inject constructor(private val preferences: Lazy<SharedPreferences>,
+                                                                          @Named(RxSchedulers.IO) private val scheduler: Scheduler) {
 
     fun hasUserInteractionOccurred(): Single<Boolean> {
         return Single.fromCallable { preferences.get().getBoolean(KEY, false) }
                 .subscribeOn(scheduler)
     }
 
-    fun setUserHasInteractedWithPrivacyPolicy(hasUserInteractedWithPrivacyPolicy: Boolean) {
+    fun setUserHasInteractedWithAutomaticBackupRecoveryHint(hasUserInteractedWithPrivacyPolicy: Boolean) {
         preferences.get().edit().putBoolean(KEY, hasUserInteractedWithPrivacyPolicy).apply()
     }
 
     companion object {
-        private const val KEY = "user_click_privacy_prompt"
+        private const val KEY = "user_clicked_automatic_backup_recovery_hint"
     }
 }

@@ -1,20 +1,20 @@
-package co.smartreceipts.android.tooltip.privacy
+package co.smartreceipts.android.tooltip.backup
 
 import android.preference.PreferenceManager
 import co.smartreceipts.android.utils.TestLazy
 import io.reactivex.schedulers.Schedulers
 import org.junit.After
-
 import org.junit.Before
 import org.junit.Test
+
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class PrivacyPolicyUserInteractionStoreTest {
+class AutomaticBackupRecoveryHintUserInteractionStoreTest {
 
-    private lateinit var privacyPolicyUserInteractionStore: PrivacyPolicyUserInteractionStore
+    private lateinit var automaticBackupRecoveryHintUserInteractionStore: AutomaticBackupRecoveryHintUserInteractionStore
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
 
@@ -22,7 +22,7 @@ class PrivacyPolicyUserInteractionStoreTest {
 
     @Before
     fun setUp() {
-        privacyPolicyUserInteractionStore = PrivacyPolicyUserInteractionStore(TestLazy.create(sharedPreferences), scheduler)
+        automaticBackupRecoveryHintUserInteractionStore = AutomaticBackupRecoveryHintUserInteractionStore(TestLazy.create(sharedPreferences), scheduler)
     }
 
     @After
@@ -32,7 +32,7 @@ class PrivacyPolicyUserInteractionStoreTest {
 
     @Test
     fun hasUserInteractionOccurredDefaultsToFalse() {
-        privacyPolicyUserInteractionStore.hasUserInteractionOccurred()
+        automaticBackupRecoveryHintUserInteractionStore.hasUserInteractionOccurred()
                 .test()
                 .await()
                 .assertValue(false)
@@ -42,15 +42,15 @@ class PrivacyPolicyUserInteractionStoreTest {
 
     @Test
     fun setUserHasInteractedWithPrivacyPolicy() {
-        privacyPolicyUserInteractionStore.setUserHasInteractedWithPrivacyPolicy(true)
-        privacyPolicyUserInteractionStore.hasUserInteractionOccurred()
+        automaticBackupRecoveryHintUserInteractionStore.setUserHasInteractedWithAutomaticBackupRecoveryHint(true)
+        automaticBackupRecoveryHintUserInteractionStore.hasUserInteractionOccurred()
                 .test()
                 .await()
                 .assertValue(true)
                 .assertComplete()
                 .assertNoErrors()
 
-        val newInstance = PrivacyPolicyUserInteractionStore(TestLazy.create(sharedPreferences), scheduler)
+        val newInstance = AutomaticBackupRecoveryHintUserInteractionStore(TestLazy.create(sharedPreferences), scheduler)
         newInstance.hasUserInteractionOccurred()
                 .test()
                 .await()

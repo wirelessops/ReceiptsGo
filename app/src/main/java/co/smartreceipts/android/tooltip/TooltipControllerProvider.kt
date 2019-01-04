@@ -1,6 +1,7 @@
 package co.smartreceipts.android.tooltip
 
 import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
@@ -11,7 +12,8 @@ import javax.inject.Provider
  * Manages the process of mapping a given [StaticTooltip] to a [TooltipController] implementation
  */
 @FragmentScope
-class TooltipControllerProvider @Inject constructor(private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
+class TooltipControllerProvider @Inject constructor(private val automaticBackupRecoveryHintTooltipProvider: Provider<AutomaticBackupRecoveryHintUserController>,
+                                                    private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
                                                     private val appRatingTooltipProvider: Provider<AppRatingTooltipController>) {
 
     /**
@@ -22,6 +24,7 @@ class TooltipControllerProvider @Inject constructor(private val privacyPolicyToo
      */
     fun get(tooltip: StaticTooltip): TooltipController {
         return when (tooltip) {
+            StaticTooltip.AutomaticBackupRecoveryHint -> automaticBackupRecoveryHintTooltipProvider.get()
             StaticTooltip.PrivacyPolicy -> privacyPolicyTooltipProvider.get()
             StaticTooltip.RateThisApp -> appRatingTooltipProvider.get()
         }

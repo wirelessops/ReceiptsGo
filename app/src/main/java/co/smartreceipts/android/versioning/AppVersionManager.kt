@@ -1,38 +1,42 @@
 package co.smartreceipts.android.versioning
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.annotation.AnyThread
+import android.support.v4.content.pm.PackageInfoCompat
 import android.util.Pair
 import co.smartreceipts.android.di.scopes.ApplicationScope
 
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Monitors the application version code and triggers callbacks to [VersionUpgradedListener] whenever
  * an upgrade occurs
  */
 @ApplicationScope
-class AppVersionManager internal constructor(private val context: Context,
-                                             private val userPreferenceManager: UserPreferenceManager,
-                                             private val appVersionUpgradesList: AppVersionUpgradesList,
-                                             private val onLaunchScheduler: Scheduler) {
+class AppVersionManager @Inject constructor(private val context: Context,
+                                            private val userPreferenceManager: UserPreferenceManager,
+                                            private val appVersionUpgradesList: AppVersionUpgradesList,
+                                            @Named(RxSchedulers.IO) private val onLaunchScheduler: Scheduler) {
 
-    @Inject
-    constructor(context: Context,
-                userPreferenceManager: UserPreferenceManager,
-                appVersionUpgradesList: AppVersionUpgradesList) : this(context, userPreferenceManager,appVersionUpgradesList,  Schedulers.io())
-
+    @SuppressLint("CheckResult")
     @AnyThread
     fun onLaunch() {
         Observable.combineLatest(userPreferenceManager.getObservable(UserPreference.Internal.ApplicationVersionCode),
-                Observable.fromCallable { context.packageManager.getPackageInfo(context.packageName, 0).versionCode },
+                Observable.fromCallable {
+                    val longVersionCode = PackageInfoCompat.getLongVersionCode(context.packageManager.getPackageInfo(context.packageName, 0))
+                    // We don't use the long version code (most significant 32 digits of the long),
+                    // so we just ignore this by taking the lower 32 bytes (the standard version code)
+                    return@fromCallable longVersionCode.toInt()
+                },
                 BiFunction<Int, Int, Pair<Int, Int>> { oldVersion, newVersion ->
                     Pair(oldVersion, newVersion)
                 })
@@ -42,7 +46,7 @@ class AppVersionManager internal constructor(private val context: Context,
                     val newVersion = it.second
                     if (newVersion > oldVersion) {
                         Logger.info(this, "Upgrading the app from version {} to {}", oldVersion, newVersion)
-                        userPreferenceManager.set(UserPreference.Internal.ApplicationVersionCode, newVersion)
+                        userPreferenceManager[UserPreference.Internal.ApplicationVersionCode] = newVersion
                         appVersionUpgradesList.getUpgradeListeners().forEach { listener ->
                             listener.onVersionUpgrade(oldVersion, newVersion)
                         }

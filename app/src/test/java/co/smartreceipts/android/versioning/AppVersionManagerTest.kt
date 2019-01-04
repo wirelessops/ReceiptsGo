@@ -3,12 +3,14 @@ package co.smartreceipts.android.versioning
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
+import org.junit.Ignore
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,6 +19,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
@@ -66,7 +69,7 @@ class AppVersionManagerTest {
 
         appVersionManager.onLaunch()
         verifyZeroInteractions(versionUpgradedListener1, versionUpgradedListener2)
-        verify(userPreferenceManager, never()).set(UserPreference.Internal.ApplicationVersionCode, newVersion)
+        verify(userPreferenceManager, never())[UserPreference.Internal.ApplicationVersionCode] = newVersion
     }
 
     @Test
@@ -77,7 +80,32 @@ class AppVersionManagerTest {
         appVersionManager.onLaunch()
         verify(versionUpgradedListener1).onVersionUpgrade(OLD_VERSION, newVersion)
         verify(versionUpgradedListener2).onVersionUpgrade(OLD_VERSION, newVersion)
-        verify(userPreferenceManager).set(UserPreference.Internal.ApplicationVersionCode, newVersion)
+        verify(userPreferenceManager)[UserPreference.Internal.ApplicationVersionCode] = newVersion
+    }
+
+    @Test
+    @Config(sdk = [Build.VERSION_CODES.P])
+    @Ignore("Ignoring until we upgrade to Robolectric 4.x")
+    fun onLaunchWithNewVersionThatIsTheSameAsTheOldUsingSdk28() {
+        val newVersion = OLD_VERSION
+        packageInfo.longVersionCode = newVersion.toLong()
+
+        appVersionManager.onLaunch()
+        verifyZeroInteractions(versionUpgradedListener1, versionUpgradedListener2)
+        verify(userPreferenceManager, never())[UserPreference.Internal.ApplicationVersionCode] = newVersion
+    }
+
+    @Test
+    @Config(sdk = [Build.VERSION_CODES.P])
+    @Ignore("Ignoring until we upgrade to Robolectric 4.x")
+    fun onLaunchWithNewVersionThatIsAboveTheOldUsingSdk28() {
+        val newVersion = OLD_VERSION + 1
+        packageInfo.longVersionCode = newVersion.toLong()
+
+        appVersionManager.onLaunch()
+        verify(versionUpgradedListener1).onVersionUpgrade(OLD_VERSION, newVersion)
+        verify(versionUpgradedListener2).onVersionUpgrade(OLD_VERSION, newVersion)
+        verify(userPreferenceManager)[UserPreference.Internal.ApplicationVersionCode] = newVersion
     }
 
     @Test
@@ -87,7 +115,7 @@ class AppVersionManagerTest {
 
         appVersionManager.onLaunch()
         verifyZeroInteractions(versionUpgradedListener1, versionUpgradedListener2)
-        verify(userPreferenceManager, never()).set(UserPreference.Internal.ApplicationVersionCode, newVersion)
+        verify(userPreferenceManager, never())[UserPreference.Internal.ApplicationVersionCode] = newVersion
     }
 
 }

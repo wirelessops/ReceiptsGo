@@ -24,7 +24,8 @@ enum class StaticTooltip(val type: TooltipType,
                          val showCloseIcon: Boolean,
                          val showCancelButton: Boolean) {
 
-    PrivacyPolicy(TooltipType.Informational, 100, R.string.tooltip_review_privacy, false, true, false),
+    AutomaticBackupRecoveryHint(TooltipType.Informational, 100, R.string.tooltip_automatic_backups_recovery_hint, false, true, false),
+    PrivacyPolicy(TooltipType.Informational, 10, R.string.tooltip_review_privacy, false, true, false),
     RateThisApp(TooltipType.Question, 50, R.string.rating_tooltip_text, false, false, false)
 
 }

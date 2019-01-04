@@ -39,7 +39,7 @@ class TooltipPresenter @Inject constructor(view: StaticTooltipView,
                     return@fromCallable tooltipSingles
                 }.flatMap { tooltipSingles ->
                     if (tooltipSingles.isNotEmpty()) {
-                        return@flatMap Single.zip(tooltipSingles, { optionalTooltipsArrayAsObjects ->
+                        return@flatMap Single.zip(tooltipSingles) { optionalTooltipsArrayAsObjects ->
                             var result = Optional.absent<StaticTooltip>()
                             optionalTooltipsArrayAsObjects.forEach {
                                 @Suppress("UNCHECKED_CAST")
@@ -51,7 +51,7 @@ class TooltipPresenter @Inject constructor(view: StaticTooltipView,
                                 }
                             }
                             return@zip result
-                        })
+                        }
                     } else {
                         // Don't zip an empty list
                         return@flatMap Single.just(Optional.absent<StaticTooltip>())

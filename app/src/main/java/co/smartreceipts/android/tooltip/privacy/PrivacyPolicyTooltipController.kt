@@ -12,12 +12,13 @@ import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * An implementation of the [TooltipController] contract to display a Privacy Policy tooltip
@@ -26,7 +27,8 @@ import javax.inject.Inject
 class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView: StaticTooltipView,
                                                          private val router: PrivacyPolicyRouter,
                                                          private val store: PrivacyPolicyUserInteractionStore,
-                                                         private val analytics: Analytics) : TooltipController {
+                                                         private val analytics: Analytics,
+                                                         @Named(RxSchedulers.IO) private val scheduler: Scheduler) : TooltipController {
 
     @UiThread
     override fun shouldDisplayTooltip(): Single<Optional<StaticTooltip>> {
@@ -40,7 +42,7 @@ class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView
             store.setUserHasInteractedWithPrivacyPolicy(true)
             analytics.record(Events.Informational.ClickedPrivacyPolicyTip)
             Logger.info(this@PrivacyPolicyTooltipController, "User interacted with the privacy policy settings information")
-        }.subscribeOn(Schedulers.io())
+        }.subscribeOn(scheduler)
     }
 
     @UiThread

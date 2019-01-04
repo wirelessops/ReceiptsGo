@@ -11,7 +11,8 @@ enum class TooltipType {
     Informational,
 
     /**
-     * Indicates that this tooltip is asking an explicit question of this end user
+     * Indicates that this tooltip is asking an explicit question of this end user. This type
+     * differs from [Informational] in that it can multiple distinct actions (e.g. Yes, No).
      */
     Question,
 

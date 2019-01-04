@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import com.nhaarman.mockito_kotlin.*
+import io.reactivex.schedulers.Schedulers
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 
@@ -33,10 +34,12 @@ class PrivacyPolicyTooltipControllerTest {
     @Mock
     lateinit var analytics: Analytics
 
+    private val scheduler = Schedulers.trampoline()
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        privacyPolicyTooltipController = PrivacyPolicyTooltipController(tooltipView, router, store, analytics)
+        privacyPolicyTooltipController = PrivacyPolicyTooltipController(tooltipView, router, store, analytics, scheduler)
     }
 
     @Test

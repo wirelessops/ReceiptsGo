@@ -503,6 +503,7 @@
     <string name="tooltip_no_backups_info_message">תזכורת: גבה את המידע שלך באופן קבוע</string>
     <string name="tooltip_import_info_message">אנא בחר קבלה עבור הקובץ המצורף שלך</string>
     <string name="tooltip_review_privacy">לחץ לעיון של הגדרות הפרטיות שלך</string>
+    <string name="tooltip_automatic_backups_recovery_hint">האם הגדרת בעבר גיבויים אוטומטיים? הקש כאן כדי לשחזר</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">הוסף קבלות ראשונות על מנת לצפות בגרפים</string>
