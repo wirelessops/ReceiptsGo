@@ -61,6 +61,7 @@ import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
 import co.smartreceipts.android.fragments.ReceiptInputCache;
@@ -145,6 +146,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Inject
     UserPreferenceManager userPreferenceManager;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     @Inject
     ReceiptCreateEditFragmentPresenter presenter;
@@ -364,7 +368,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
         // Outline date defaults
         dateBox.setFocusableInTouchMode(false);
-        dateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+        dateBox.setDateFormatter(dateFormatter);
     }
 
     @Override

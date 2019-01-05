@@ -48,6 +48,7 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
@@ -88,6 +89,9 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
     @Inject
     DatabaseHelper database;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     @Inject
     TripCreateEditFragmentPresenter presenter;
@@ -200,8 +204,8 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         nameBox.setKeyListener(input);
 
         // Configure default separators
-        startDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
-        endDateBox.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+        startDateBox.setDateFormatter(dateFormatter);
+        endDateBox.setDateFormatter(dateFormatter);
 
         // Set Cost Center Visibility
         costCenterBoxLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);

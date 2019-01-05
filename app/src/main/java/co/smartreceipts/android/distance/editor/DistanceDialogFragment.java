@@ -45,6 +45,7 @@ import co.smartreceipts.android.autocomplete.distance.DistanceAutoCompleteField;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
+import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.model.Distance;
@@ -78,6 +79,9 @@ public class DistanceDialogFragment extends DialogFragment implements Editor<Dis
 
     @Inject
     UserPreferenceManager userPreferenceManager;
+
+    @Inject
+    DateFormatter dateFormatter;
 
     @Inject
     AutoCompletePresenter<Distance> distanceAutoCompletePresenter;
@@ -206,7 +210,7 @@ public class DistanceDialogFragment extends DialogFragment implements Editor<Dis
             builder.setTitle(getString(R.string.dialog_mileage_title_create));
             builder.setPositiveButton(getString(R.string.dialog_mileage_positive_create), this);
             dateEditText.setDate(suggestedDate);
-            dateEditText.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+            dateEditText.setDateFormatter(dateFormatter);
             final float distanceRate = userPreferenceManager.get(UserPreference.Distance.DefaultDistanceRate);
             if (distanceRate > 0) {
                 rateEditText.setText(ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(distanceRate), Distance.RATE_PRECISION));
@@ -223,7 +227,7 @@ public class DistanceDialogFragment extends DialogFragment implements Editor<Dis
             commentEditText.setText(updateableDistance.getComment());
             dateEditText.setDate(updateableDistance.getDate());
             dateEditText.setTimeZone(updateableDistance.getTimeZone());
-            dateEditText.setDateSeparator(userPreferenceManager.get(UserPreference.General.DateSeparator));
+            dateEditText.setDateFormatter(dateFormatter);
         }
         builder.setNegativeButton(android.R.string.cancel, this);
 

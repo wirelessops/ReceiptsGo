@@ -29,7 +29,7 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
 
 	private Date date = new Date(Calendar.getInstance().getTimeInMillis());
     private TimeZone timeZone = TimeZone.getDefault();
-    private String dateSeparator = "/";
+    private DateFormatter dateFormatter;
     private DatePickerDialog datePickerDialog = null;
 
 	public DateEditText(Context context) {
@@ -54,7 +54,9 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
 
     public void setDate(@NonNull Date date) {
         this.date = Preconditions.checkNotNull(date);
-        setText(ModelUtils.getFormattedDate(date, timeZone, getContext(), dateSeparator));
+        if (dateFormatter != null) {
+            setText(dateFormatter.getFormattedDate(date, timeZone));
+        }
     }
 
     @NonNull
@@ -64,17 +66,22 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
 
     public void setTimeZone(@NonNull TimeZone timeZone) {
         this.timeZone = Preconditions.checkNotNull(timeZone);
-        setText(ModelUtils.getFormattedDate(date, timeZone, getContext(), dateSeparator));
+        if (dateFormatter != null) {
+            setText(dateFormatter.getFormattedDate(date, timeZone));
+        }
     }
 
-    @NonNull
-    public String getDateSeparator() {
-        return dateSeparator;
-    }
-
-    public void setDateSeparator(@NonNull String dateSeparator) {
-        this.dateSeparator = Preconditions.checkNotNull(dateSeparator);
-        setText(ModelUtils.getFormattedDate(date, timeZone, getContext(), dateSeparator));
+    /**
+     * Supplies an instance of a {@link DateFormatter} to our view for rendering the dates.
+     * Technically this isn't the best design pattern, and we should probably look to set the text
+     * here via a separate class, but I don't feel like re-writing this for something simple, so
+     * we'll just do it live.
+     *
+     * @param dateFormatter the {@link DateFormatter} instance
+     */
+    public void setDateFormatter(@NonNull DateFormatter dateFormatter) {
+	    this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
+        setText(dateFormatter.getFormattedDate(date, timeZone));
     }
 
     @Override
@@ -109,7 +116,7 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
     public Parcelable onSaveInstanceState() {
         final Parcelable superDate = super.onSaveInstanceState();
         if (superDate != null) {
-            return new SavedState(superDate, date, timeZone, dateSeparator, datePickerDialog);
+            return new SavedState(superDate, date, timeZone, datePickerDialog);
         } else {
             return null;
         }
@@ -122,7 +129,6 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
             super.onRestoreInstanceState(savedState.getSuperState());
             date = savedState.getDate();
             timeZone = savedState.getTimeZone();
-            dateSeparator = savedState.getDateSeparator();
             if (savedState.wasDialogShowing()) {
                 launchCalendarDialog(savedState);
             }
@@ -161,7 +167,6 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
 
         private final Date savedStateDate;
         private final TimeZone savedStateTimeZone;
-        private final String savedStateDateSeparator;
         private final boolean savedStatesWasDialogShowing;
         private final int year;
         private final int monthOfYear;
@@ -171,12 +176,10 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
         public SavedState(@NonNull Parcelable superState,
                           @NonNull Date savedStateDate,
                           @NonNull TimeZone savedStateTimeZone,
-                          @NonNull String savedStateDateSeparator,
                           @Nullable DatePickerDialog datePickerDialog) {
             super(superState);
             this.savedStateDate = Preconditions.checkNotNull(savedStateDate);
             this.savedStateTimeZone = Preconditions.checkNotNull(savedStateTimeZone);
-            this.savedStateDateSeparator = Preconditions.checkNotNull(savedStateDateSeparator);
             this.savedStatesWasDialogShowing = datePickerDialog != null;
             if (this.savedStatesWasDialogShowing) {
                 final DatePicker datePicker = datePickerDialog.getDatePicker();
@@ -194,7 +197,6 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
             super(in);
             savedStateDate = (Date) in.readSerializable();
             savedStateTimeZone = (TimeZone) in.readSerializable();
-            savedStateDateSeparator = in.readString();
             savedStatesWasDialogShowing = (in.readByte() != 0);
             year = in.readInt();
             monthOfYear = in.readInt();
@@ -209,11 +211,6 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
         @NonNull
         TimeZone getTimeZone() {
             return savedStateTimeZone;
-        }
-
-        @NonNull
-        String getDateSeparator() {
-            return savedStateDateSeparator;
         }
 
         boolean wasDialogShowing() {
@@ -237,7 +234,6 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
             super.writeToParcel(out, flags);
             out.writeSerializable(savedStateDate);
             out.writeSerializable(savedStateTimeZone);
-            out.writeString(savedStateDateSeparator);
             out.writeByte((byte) (savedStatesWasDialogShowing ? 1 : 0));
             out.writeInt(year);
             out.writeInt(monthOfYear);
