@@ -52,6 +52,7 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
                 })
                 .subscribeOn(scheduler)
                 .map { showTooltip -> if (showTooltip) Optional.of(StaticTooltip.AutomaticBackupRecoveryHint) else Optional.absent() }
+                .onErrorReturnItem(Optional.absent())
     }
 
     @AnyThread
