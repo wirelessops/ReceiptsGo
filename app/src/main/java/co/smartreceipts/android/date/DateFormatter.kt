@@ -163,7 +163,7 @@ class DateFormatter @Inject constructor(private val context: Context,
         val dateFormatThreadLocal = threadLocalCache.getOrPut(timeZone) {
             return@getOrPut DateFormatThreadLocal(getDateFormat(dateFormatOption, timeZone))
         }
-        val dateFormat = dateFormatThreadLocal.get()
+        val dateFormat = dateFormatThreadLocal.get()!!
         return dateFormat.format(date)
     }
 
@@ -208,9 +208,9 @@ class DateFormatter @Inject constructor(private val context: Context,
      */
     private fun getDateFormat(dateFormatOption: DateFormatOption, timeZone: TimeZone) : DateFormat {
         val formatString = when (dateFormatOption) {
-            DateFormatOption.M_d_yyyy -> "M${separator}d${separator}YYYY"
-            DateFormatOption.d_M_yyyy -> "d${separator}M${separator}YYYY"
-            DateFormatOption.yyyy_MM_dd -> "YYYY${separator}MM${separator}dd"
+            DateFormatOption.M_d_yyyy -> "M${separator}d${separator}yyyy"
+            DateFormatOption.d_M_yyyy -> "d${separator}M${separator}yyyy"
+            DateFormatOption.yyyy_MM_dd -> "yyyy${separator}MM${separator}dd"
             DateFormatOption.Default -> {
                 // For the default option, we get the system default and replace it's separator with the user preference
                 val systemDefaultDateFormat = android.text.format.DateFormat.getDateFormat(context) as SimpleDateFormat
