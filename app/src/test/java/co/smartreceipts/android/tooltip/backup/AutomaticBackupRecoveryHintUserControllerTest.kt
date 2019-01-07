@@ -72,6 +72,19 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     }
 
     @Test
+    fun doNotDisplayTooltipWhenThePurchaseManagerThrowsAnError() {
+        whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
+        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true)
+        whenever(purchaseManager.allOwnedPurchases).thenReturn(Observable.error(Exception("test")))
+        automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
+                .test()
+                .await()
+                .assertValue(Optional.absent())
+                .assertComplete()
+                .assertNoErrors()
+    }
+
+    @Test
     fun doNotDisplayTooltipWithNoInteractionsAndNoPlusSubscription() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
         whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(false)
