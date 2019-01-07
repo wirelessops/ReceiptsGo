@@ -82,6 +82,12 @@
 
     <!-- Text Styles go below -->
 
+    <style name="Widget.SmartReceipts.TextView.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">?android:textColorHint</item>
+        <item name="android:paddingLeft">@dimen/margin_tiniest</item>
+        <item name="android:paddingRight">@dimen/margin_tiniest</item>
+    </style>
+
     <style name="Widget.SmartReceipts.TextView.Title">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>

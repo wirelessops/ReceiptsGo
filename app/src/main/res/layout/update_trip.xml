@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,122 +22,177 @@
         android:isScrollContainer="false"
         android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/padding_large">
 
-            <AutoCompleteTextView
-                android:id="@+id/dialog_tripmenu_name"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/trip_input_name_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/DIALOG_TRIPMENU_HINT_NAME"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:maxLength="50"
-                android:minHeight="@dimen/default_input_row_size"
-                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
-                android:textStyle="bold">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
 
-                <!--<requestFocus />-->
-            </AutoCompleteTextView>
+                <AutoCompleteTextView
+                    android:id="@+id/dialog_tripmenu_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLength="50"
+                    android:minHeight="@dimen/default_input_row_size"
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                    android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/trip_input_guide_image_start_date"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_TRIPMENU_HINT_START"
+                app:layout_constraintBottom_toBottomOf="@+id/trip_input_start_date_wrapper"
+                app:layout_constraintEnd_toStartOf="@+id/trip_input_start_date_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/trip_input_start_date_wrapper"
+                app:srcCompat="@drawable/ic_date" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/trip_input_start_date_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                android:minHeight="@dimen/default_input_row_size"
-                android:orientation="horizontal">
-
-                <ImageView
-                    style="@style/Widget.SmartReceipts.GuideImage"
-                    android:src="@drawable/ic_date" />
+                android:hint="@string/DIALOG_TRIPMENU_HINT_START"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/trip_input_guide_image_start_date"
+                app:layout_constraintTop_toBottomOf="@id/trip_input_name_wrapper">
 
                 <co.smartreceipts.android.date.DateEditText
                     android:id="@+id/dialog_tripmenu_start"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/DIALOG_TRIPMENU_HINT_START"
+                    android:minHeight="@dimen/default_input_row_size"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/trip_input_guide_image_end_date"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_TRIPMENU_HINT_END"
+                app:layout_constraintBottom_toBottomOf="@+id/trip_input_end_date_wrapper"
+                app:layout_constraintEnd_toStartOf="@+id/trip_input_end_date_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/trip_input_end_date_wrapper"
+                app:srcCompat="@drawable/ic_date" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/trip_input_end_date_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                android:minHeight="@dimen/default_input_row_size"
-                android:orientation="horizontal">
-
-                <ImageView
-                    style="@style/Widget.SmartReceipts.GuideImage"
-                    android:src="@drawable/ic_date" />
+                android:hint="@string/DIALOG_TRIPMENU_HINT_END"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/trip_input_guide_image_end_date"
+                app:layout_constraintTop_toBottomOf="@id/trip_input_start_date_wrapper">
 
                 <co.smartreceipts.android.date.DateEditText
                     android:id="@+id/dialog_tripmenu_end"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/DIALOG_TRIPMENU_HINT_END"
+                    android:minHeight="@dimen/default_input_row_size"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/trip_input_guide_image_currency"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
+                app:layout_constraintBottom_toBottomOf="@+id/dialog_tripmenu_currency"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_tripmenu_currency"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/trip_input_caption_currency"
+                android:src="@drawable/ic_money" />
+
+            <TextView
+                android:id="@+id/trip_input_caption_currency"
+                style="@style/Widget.SmartReceipts.TextView.Caption"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
+                android:text="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
+                app:layout_constraintStart_toStartOf="@id/dialog_tripmenu_currency"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trip_input_end_date_wrapper" />
+
+            <Spinner
+                android:id="@+id/dialog_tripmenu_currency"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:prompt="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
+                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                 android:minHeight="@dimen/default_input_row_size"
-                android:orientation="horizontal">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/trip_input_guide_image_currency"
+                app:layout_constraintTop_toBottomOf="@id/trip_input_caption_currency" />
 
-                <ImageView
-                    style="@style/Widget.SmartReceipts.GuideImage"
-                    android:src="@drawable/ic_money" />
+            <ImageView
+                android:id="@+id/trip_input_guide_image_comment"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                app:layout_constraintBottom_toBottomOf="@+id/trip_input_comment_wrapper"
+                app:layout_constraintEnd_toStartOf="@+id/trip_input_comment_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/trip_input_comment_wrapper"
+                app:srcCompat="@drawable/ic_comment" />
 
-                <Spinner
-                    android:id="@+id/dialog_tripmenu_currency"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="1dp"
-                    android:drawSelectorOnTop="true"
-                    android:prompt="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/trip_input_comment_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                android:minHeight="@dimen/default_input_row_size"
-                android:orientation="horizontal">
-
-                <ImageView
-                    style="@style/Widget.SmartReceipts.GuideImage"
-                    android:src="@drawable/ic_comment" />
+                android:hint="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/trip_input_guide_image_comment"
+                app:layout_constraintTop_toBottomOf="@id/dialog_tripmenu_currency" >
 
                 <AutoCompleteTextView
                     android:id="@+id/dialog_tripmenu_comment"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
                     android:completionThreshold="1"
-                    android:hint="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
                     android:inputType="textCapSentences"
                     android:imeOptions="actionNext"
+                    android:minHeight="@dimen/default_input_row_size"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
-            </LinearLayout>
+
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/dialog_tripmenu_cost_center_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:minHeight="@dimen/default_input_row_size"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trip_input_comment_wrapper" >
 
                 <ImageView
                     style="@style/Widget.SmartReceipts.GuideImage"
+                    android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COST_CENTER"
                     android:src="@drawable/ic_category" />
 
                 <AutoCompleteTextView
@@ -145,11 +201,13 @@
                     android:layout_height="wrap_content"
                     android:completionThreshold="1"
                     android:hint="@string/DIALOG_RECEIPTMENU_HINT_COST_CENTER"
+                    android:minHeight="@dimen/default_input_row_size"
                     android:inputType="textCapSentences"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+
             </LinearLayout>
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
 </LinearLayout>

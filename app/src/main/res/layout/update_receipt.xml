@@ -234,8 +234,9 @@
             <Spinner
                 android:id="@+id/DIALOG_RECEIPTMENU_CATEGORY"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/default_input_row_size"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
+                android:minHeight="@dimen/margin_tiny"
                 android:drawSelectorOnTop="true"
                 android:prompt="@string/DIALOG_RECEIPTMENU_HINT_CATEGORY"
                 android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
