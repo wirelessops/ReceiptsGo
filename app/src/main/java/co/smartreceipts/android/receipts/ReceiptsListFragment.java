@@ -452,7 +452,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         activityFileResultLocator.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
 
         if (resultCode != Activity.RESULT_OK) {
-            loadingProgress.setVisibility(View.GONE);
+            if (loadingProgress != null) {
+                loadingProgress.setVisibility(View.GONE);
+            }
         }
     }
 
