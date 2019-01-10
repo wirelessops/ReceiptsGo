@@ -3,7 +3,7 @@ package co.smartreceipts.android.tooltip
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
-import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
+import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import org.junit.Before
 
@@ -30,7 +30,7 @@ class TooltipControllerProviderTest {
     private lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
 
     @Mock
-    private lateinit var appRatingTooltipController: AppRatingTooltipController
+    private lateinit var rateThisAppTooltipController: RateThisAppTooltipController
 
     @Before
     fun setUp() {
@@ -38,7 +38,7 @@ class TooltipControllerProviderTest {
         tooltipControllerProvider = TooltipControllerProvider(Provider { return@Provider automaticBackupRecoveryHintUserController },
                                                               Provider { return@Provider firstReportHintTooltipController },
                                                               Provider { return@Provider privacyPolicyTooltipController },
-                                                              Provider { return@Provider appRatingTooltipController })
+                                                              Provider { return@Provider rateThisAppTooltipController })
     }
 
     @Test
@@ -58,7 +58,7 @@ class TooltipControllerProviderTest {
 
     @Test
     fun getAppRatingTooltipController() {
-        assertTrue(tooltipControllerProvider.get(TooltipType.RateThisApp) is AppRatingTooltipController)
+        assertTrue(tooltipControllerProvider.get(TooltipType.RateThisApp) is RateThisAppTooltipController)
     }
 
 }

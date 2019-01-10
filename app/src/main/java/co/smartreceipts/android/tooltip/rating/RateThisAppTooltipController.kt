@@ -25,11 +25,11 @@ import javax.inject.Inject
  * An implementation of the [TooltipController] contract to display a "Rate This App" tooltip
  */
 @FragmentScope
-class AppRatingTooltipController @Inject constructor(private val context: Context,
-                                                     private val tooltipView: TooltipView,
-                                                     private var router: AppRatingTooltipRouter,
-                                                     private val appRatingManager: AppRatingManager,
-                                                     private val analytics: Analytics) : TooltipController {
+class RateThisAppTooltipController @Inject constructor(private val context: Context,
+                                                       private val tooltipView: TooltipView,
+                                                       private var router: AppRatingTooltipRouter,
+                                                       private val appRatingManager: AppRatingManager,
+                                                       private val analytics: Analytics) : TooltipController {
 
     @UiThread
     override fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>> {

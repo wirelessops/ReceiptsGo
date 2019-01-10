@@ -22,13 +22,13 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class AppRatingTooltipControllerTest {
+class RateThisAppTooltipControllerTest {
 
     companion object {
         private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, RuntimeEnvironment.application.getString(R.string.rating_tooltip_text))
     }
     
-    lateinit var controller: AppRatingTooltipController
+    lateinit var controller: RateThisAppTooltipController
     
     @Mock
     lateinit var tooltipView: TooltipView
@@ -45,7 +45,7 @@ class AppRatingTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        controller = AppRatingTooltipController(RuntimeEnvironment.application, tooltipView, router, appRatingManager, analytics)
+        controller = RateThisAppTooltipController(RuntimeEnvironment.application, tooltipView, router, appRatingManager, analytics)
     }
 
     @Test

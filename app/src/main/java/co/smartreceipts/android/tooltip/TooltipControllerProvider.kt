@@ -4,7 +4,7 @@ import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
-import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
+import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import javax.inject.Inject
 import javax.inject.Provider
@@ -19,7 +19,7 @@ import javax.inject.Provider
 class TooltipControllerProvider @Inject constructor(private val automaticBackupRecoveryHintTooltipProvider: Provider<AutomaticBackupRecoveryHintUserController>,
                                                     private val firstReportHintTooltipProvider: Provider<FirstReportHintTooltipController>,
                                                     private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
-                                                    private val appRatingTooltipProvider: Provider<AppRatingTooltipController>) {
+                                                    private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>) {
 
     /**
      * Fetches the appropriate [TooltipController] for a given [TooltipType]
@@ -32,7 +32,7 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
             TooltipType.AutomaticBackupRecoveryHint -> automaticBackupRecoveryHintTooltipProvider.get()
             TooltipType.FirstReportHint -> firstReportHintTooltipProvider.get()
             TooltipType.PrivacyPolicy -> privacyPolicyTooltipProvider.get()
-            TooltipType.RateThisApp -> appRatingTooltipProvider.get()
+            TooltipType.RateThisApp -> rateThisAppTooltipProvider.get()
         }
     }
 }
