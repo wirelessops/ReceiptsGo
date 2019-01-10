@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.IdentityManager;
@@ -190,13 +189,8 @@ public class OcrInformationalTooltipInteractorTest {
 
     @Test
     public void dismissTooltip() {
-        interactor.markTooltipDismissed();
+        interactor.markTooltipInteraction();
         verify(stateTracker).setShouldShowOcrInfo(false);
     }
 
-    @Test
-    public void showOcrInformation() {
-        interactor.markTooltipShown();
-        verify(stateTracker).setShouldShowOcrInfo(false);
-    }
 }

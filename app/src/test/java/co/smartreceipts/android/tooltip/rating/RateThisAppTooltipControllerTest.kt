@@ -34,7 +34,7 @@ class RateThisAppTooltipControllerTest {
     lateinit var tooltipView: TooltipView
     
     @Mock
-    lateinit var router: AppRatingTooltipRouter
+    lateinit var router: RateThisAppTooltipRouter
     
     @Mock
     lateinit var appRatingManager: AppRatingManager

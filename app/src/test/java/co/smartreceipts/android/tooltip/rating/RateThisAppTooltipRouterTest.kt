@@ -14,9 +14,9 @@ import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class AppRatingTooltipRouterTest {
+class RateThisAppTooltipRouterTest {
 
-    lateinit var router: AppRatingTooltipRouter
+    lateinit var router: RateThisAppTooltipRouter
 
     @Mock
     lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
@@ -24,7 +24,7 @@ class AppRatingTooltipRouterTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        router = AppRatingTooltipRouter(navigationHandler)
+        router = RateThisAppTooltipRouter(navigationHandler)
     }
 
     @Test

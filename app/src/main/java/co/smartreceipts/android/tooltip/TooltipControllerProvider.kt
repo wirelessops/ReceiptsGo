@@ -1,6 +1,7 @@
 package co.smartreceipts.android.tooltip
 
 import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationTooltipController
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
@@ -19,7 +20,8 @@ import javax.inject.Provider
 class TooltipControllerProvider @Inject constructor(private val automaticBackupRecoveryHintTooltipProvider: Provider<AutomaticBackupRecoveryHintUserController>,
                                                     private val firstReportHintTooltipProvider: Provider<FirstReportHintTooltipController>,
                                                     private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
-                                                    private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>) {
+                                                    private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>,
+                                                    private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>) {
 
     /**
      * Fetches the appropriate [TooltipController] for a given [TooltipType]
@@ -33,6 +35,7 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
             TooltipType.FirstReportHint -> firstReportHintTooltipProvider.get()
             TooltipType.PrivacyPolicy -> privacyPolicyTooltipProvider.get()
             TooltipType.RateThisApp -> rateThisAppTooltipProvider.get()
+            TooltipType.OcrInformation -> ocrInformationTooltipProvider.get()
         }
     }
 }

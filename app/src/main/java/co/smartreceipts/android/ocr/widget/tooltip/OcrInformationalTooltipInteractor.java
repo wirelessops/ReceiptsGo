@@ -65,6 +65,7 @@ public class OcrInformationalTooltipInteractor {
      * Initializes the tooltip tracking logic, so it can begin monitoring the remaining count of OCR scans
      */
     @SuppressLint("CheckResult")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void initialize() {
         ocrPurchaseTracker.getRemainingScansStream()
                 .subscribeOn(scheduler)
@@ -82,6 +83,10 @@ public class OcrInformationalTooltipInteractor {
                 });
     }
 
+    /**
+     * @return an {@link Observable}, which will emit a {@link OcrTooltipMessageType} or empty if
+     * it is not appropriate to display one
+     */
     @NonNull
     public Observable<OcrTooltipMessageType> getShowOcrTooltip() {
         // configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)
@@ -115,15 +120,9 @@ public class OcrInformationalTooltipInteractor {
                 });
     }
 
-    public void markTooltipDismissed() {
-        Logger.info(this, "Dismissing OCR Tooltip");
+    public void markTooltipInteraction() {
         stateTracker.setShouldShowOcrInfo(false);
         analytics.record(Events.Ocr.OcrInfoTooltipDismiss);
     }
 
-    public void markTooltipShown() {
-        Logger.info(this, "Displaying OCR Configuration Fragment");
-        stateTracker.setShouldShowOcrInfo(false);
-        analytics.record(Events.Ocr.OcrInfoTooltipOpen);
-    }
 }

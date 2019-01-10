@@ -15,6 +15,7 @@ import co.smartreceipts.android.identity.widget.login.LoginFragment;
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment;
 import co.smartreceipts.android.ocr.widget.di.OcrConfigurationModule;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
+import co.smartreceipts.android.ocr.widget.tooltip.di.OcrInformationalTooltipFragmentModule;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
 import co.smartreceipts.android.receipts.di.ReceiptsListModule;
@@ -83,7 +84,7 @@ public abstract class SmartReceiptsActivityBindingModule {
     public abstract ReportInfoFragment reportInfoFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = OcrInformationalTooltipFragmentModule.class)
     public abstract OcrInformationalTooltipFragment ocrInformationalTooltipFragment();
 
     @FragmentScope

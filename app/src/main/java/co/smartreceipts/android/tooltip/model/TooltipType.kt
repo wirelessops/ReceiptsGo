@@ -17,6 +17,7 @@ enum class TooltipType(val displayStyle: TooltipDisplayStyle,
     AutomaticBackupRecoveryHint(TooltipDisplayStyle.Informational, 100, false, true, false),
     FirstReportHint(TooltipDisplayStyle.Informational, 75, false, true, false),
     RateThisApp(TooltipDisplayStyle.Question, 50, false, false, false),
-    PrivacyPolicy(TooltipDisplayStyle.Informational, 10, false, true, false)
+    PrivacyPolicy(TooltipDisplayStyle.Informational, 10, false, true, false),
+    OcrInformation(TooltipDisplayStyle.Informational, 5, false, true, false)
 
 }

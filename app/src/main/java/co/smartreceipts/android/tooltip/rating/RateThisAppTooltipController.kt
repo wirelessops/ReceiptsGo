@@ -27,7 +27,7 @@ import javax.inject.Inject
 @FragmentScope
 class RateThisAppTooltipController @Inject constructor(private val context: Context,
                                                        private val tooltipView: TooltipView,
-                                                       private var router: AppRatingTooltipRouter,
+                                                       private var router: RateThisAppTooltipRouter,
                                                        private val appRatingManager: AppRatingManager,
                                                        private val analytics: Analytics) : TooltipController {
 

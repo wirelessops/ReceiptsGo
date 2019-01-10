@@ -1,5 +1,6 @@
 package co.smartreceipts.android.tooltip
 
+import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationTooltipController
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
@@ -32,13 +33,17 @@ class TooltipControllerProviderTest {
     @Mock
     private lateinit var rateThisAppTooltipController: RateThisAppTooltipController
 
+    @Mock
+    private lateinit var ocrInformationTooltipController: OcrInformationTooltipController
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         tooltipControllerProvider = TooltipControllerProvider(Provider { return@Provider automaticBackupRecoveryHintUserController },
                                                               Provider { return@Provider firstReportHintTooltipController },
                                                               Provider { return@Provider privacyPolicyTooltipController },
-                                                              Provider { return@Provider rateThisAppTooltipController })
+                                                              Provider { return@Provider rateThisAppTooltipController },
+                                                              Provider { return@Provider ocrInformationTooltipController })
     }
 
     @Test
