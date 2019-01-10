@@ -10,7 +10,7 @@ import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
@@ -29,7 +29,7 @@ import javax.inject.Named
  * recover a previous automatic backup
  */
 @FragmentScope
-class AutomaticBackupRecoveryHintUserController @Inject constructor(private val tooltipView: StaticTooltipView,
+class AutomaticBackupRecoveryHintUserController @Inject constructor(private val tooltipView: TooltipView,
                                                                     private val router: AutomaticBackupRecoveryHintRouter,
                                                                     private val store: AutomaticBackupRecoveryHintUserInteractionStore,
                                                                     private val purchaseWallet: PurchaseWallet,

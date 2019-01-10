@@ -8,7 +8,7 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
@@ -31,7 +31,7 @@ import javax.inject.Named
  *  - The user has no reports (indicating that they're new to the app)
  */
 @FragmentScope
-class FirstReportHintTooltipController @Inject constructor(private val tooltipView: StaticTooltipView,
+class FirstReportHintTooltipController @Inject constructor(private val tooltipView: TooltipView,
                                                            private val store: FirstReportHintUserInteractionStore,
                                                            private val tripTableController: TripTableController,
                                                            private val analytics: Analytics,

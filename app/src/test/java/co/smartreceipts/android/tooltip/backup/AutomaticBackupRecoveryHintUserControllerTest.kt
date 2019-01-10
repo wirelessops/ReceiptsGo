@@ -5,12 +5,9 @@ import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
-import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyRouter
-import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
-import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyUserInteractionStore
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
@@ -18,7 +15,6 @@ import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.Test
@@ -33,7 +29,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     private lateinit var automaticBackupRecoveryHintUserController: AutomaticBackupRecoveryHintUserController
 
     @Mock
-    private lateinit var tooltipView: StaticTooltipView
+    private lateinit var tooltipView: TooltipView
 
     @Mock
     private lateinit var router: AutomaticBackupRecoveryHintRouter

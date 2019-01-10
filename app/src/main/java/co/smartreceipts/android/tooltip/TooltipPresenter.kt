@@ -11,21 +11,19 @@ import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import co.smartreceipts.android.widget.mvp.Presenter
 import com.hadisatrio.optional.Optional
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import java.util.*
 import javax.inject.Inject
 
 /**
- * Implements the [Presenter] contract to display a [StaticTooltipView]
+ * Implements the [Presenter] contract to display a [TooltipView]
  */
 @FragmentScope
-class TooltipPresenter @Inject constructor(view: StaticTooltipView,
+class TooltipPresenter @Inject constructor(view: TooltipView,
                                            private val tooltipControllerProvider: TooltipControllerProvider,
-                                           private val analytics: Analytics) : BasePresenter<StaticTooltipView>(view) {
+                                           private val analytics: Analytics) : BasePresenter<TooltipView>(view) {
 
     private var activeTooltipController: TooltipController? = null
 

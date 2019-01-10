@@ -42,7 +42,7 @@ import co.smartreceipts.android.purchases.plus.SmartReceiptsTitle;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.tooltip.StaticTooltipView;
+import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.model.StaticTooltip;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
@@ -56,7 +56,7 @@ import io.reactivex.Observable;
 import wb.android.flex.Flex;
 
 public class TripFragment extends WBListFragment implements TableEventsListener<Trip>,
-        AdapterView.OnItemLongClickListener, StaticTooltipView, ViewReceiptsInTripRouter {
+        AdapterView.OnItemLongClickListener, TooltipView, ViewReceiptsInTripRouter {
 
     private static final String OUT_SELECTED_TRIP = "out_selected_trip";
 

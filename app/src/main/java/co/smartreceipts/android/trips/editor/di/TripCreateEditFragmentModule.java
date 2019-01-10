@@ -3,7 +3,7 @@ package co.smartreceipts.android.trips.editor.di;
 import co.smartreceipts.android.autocomplete.AutoCompleteView;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.tooltip.StaticTooltipView;
+import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 import dagger.Binds;
 import dagger.Module;
@@ -18,6 +18,6 @@ public abstract class TripCreateEditFragmentModule {
     abstract AutoCompleteView<Trip> providesReceiptAutoCompleteView(TripCreateEditFragment fragment);
 
     @Binds
-    abstract StaticTooltipView providesStaticTooltipView(TripCreateEditFragment fragment);
+    abstract TooltipView providesTooltipView(TripCreateEditFragment fragment);
 
 }

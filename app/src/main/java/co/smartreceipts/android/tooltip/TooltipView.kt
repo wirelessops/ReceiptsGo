@@ -6,7 +6,7 @@ import io.reactivex.Observable
 /**
  * Defines a view contract for displaying tooltips to the end user
  */
-interface StaticTooltipView {
+interface TooltipView {
 
     /**
      * @return a [List] of available [StaticTooltip] that can be displayed

@@ -3,7 +3,7 @@ package co.smartreceipts.android.tooltip.report
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.TripUtils
@@ -27,7 +27,7 @@ class FirstReportHintTooltipControllerTest  {
     private lateinit var firstReportHintTooltipController: FirstReportHintTooltipController
 
     @Mock
-    private lateinit var tooltipView: StaticTooltipView
+    private lateinit var tooltipView: TooltipView
 
     @Mock
     private lateinit var store: FirstReportHintUserInteractionStore

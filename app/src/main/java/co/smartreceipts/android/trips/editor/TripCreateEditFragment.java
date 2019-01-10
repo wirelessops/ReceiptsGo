@@ -54,8 +54,7 @@ import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.tooltip.StaticTooltipView;
+import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.model.StaticTooltip;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
@@ -71,7 +70,7 @@ import wb.android.flex.Flex;
 
 public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         View.OnFocusChangeListener,
-        StaticTooltipView,
+        TooltipView,
         CurrencyListEditorView,
         TripDateView,
         AutoCompleteView<Trip> {

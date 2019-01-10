@@ -3,7 +3,7 @@ package co.smartreceipts.android.tooltip.rating
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.rating.AppRatingManager
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import com.hadisatrio.optional.Optional
@@ -24,7 +24,7 @@ class AppRatingTooltipControllerTest {
     lateinit var controller: AppRatingTooltipController
     
     @Mock
-    lateinit var tooltipView: StaticTooltipView
+    lateinit var tooltipView: TooltipView
     
     @Mock
     lateinit var router: AppRatingTooltipRouter

@@ -8,7 +8,7 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
@@ -35,7 +35,7 @@ import javax.inject.Named
  *  how to use the app, since we have a lot of settings)
  */
 @FragmentScope
-class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView: StaticTooltipView,
+class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView: TooltipView,
                                                          private val router: PrivacyPolicyRouter,
                                                          private val store: PrivacyPolicyUserInteractionStore,
                                                          private val regionChecker: RegionChecker,

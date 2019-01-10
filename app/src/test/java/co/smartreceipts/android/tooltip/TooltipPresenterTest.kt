@@ -23,7 +23,7 @@ class TooltipPresenterTest {
     lateinit var tooltipPresenter: TooltipPresenter
 
     @Mock
-    lateinit var view: StaticTooltipView
+    lateinit var view: TooltipView
 
     @Mock
     lateinit var tooltipControllerProvider: TooltipControllerProvider

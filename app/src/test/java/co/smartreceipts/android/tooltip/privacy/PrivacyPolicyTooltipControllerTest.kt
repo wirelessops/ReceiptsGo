@@ -2,12 +2,10 @@ package co.smartreceipts.android.tooltip.privacy
 
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
-import co.smartreceipts.android.utils.TestUtils
 import co.smartreceipts.android.utils.TripUtils
 import com.hadisatrio.optional.Optional
 import io.reactivex.Single
@@ -27,7 +25,7 @@ class PrivacyPolicyTooltipControllerTest {
     private lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
 
     @Mock
-    private lateinit var tooltipView: StaticTooltipView
+    private lateinit var tooltipView: TooltipView
 
     @Mock
     private lateinit var router: PrivacyPolicyRouter

@@ -6,14 +6,13 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.rating.AppRatingManager
-import co.smartreceipts.android.tooltip.StaticTooltipView
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.StaticTooltip
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +22,7 @@ import javax.inject.Inject
  * An implementation of the [TooltipController] contract to display a "Rate This App" tooltip
  */
 @FragmentScope
-class AppRatingTooltipController @Inject constructor(private val tooltipView: StaticTooltipView,
+class AppRatingTooltipController @Inject constructor(private val tooltipView: TooltipView,
                                                      private var router: AppRatingTooltipRouter,
                                                      private val appRatingManager: AppRatingManager,
                                                      private val analytics: Analytics) : TooltipController {
