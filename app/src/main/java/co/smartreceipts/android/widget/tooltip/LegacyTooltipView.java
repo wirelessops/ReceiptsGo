@@ -5,7 +5,11 @@ import android.support.annotation.NonNull;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator;
 import io.reactivex.Observable;
 
-public interface TooltipView {
+/**
+ * @deprecated Please use the {@link co.smartreceipts.android.tooltip.StaticTooltipView} instead
+ */
+@Deprecated
+public interface LegacyTooltipView {
 
     void present(ReportTooltipUiIndicator uiIndicator);
 

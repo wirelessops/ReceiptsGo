@@ -14,14 +14,14 @@ import co.smartreceipts.android.sync.BackupProviderChangeListener;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.log.Logger;
-import co.smartreceipts.android.widget.tooltip.TooltipView;
+import co.smartreceipts.android.widget.tooltip.LegacyTooltipView;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @FragmentScope
-public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, ReportTooltipInteractor<? extends FragmentActivity>> implements BackupProviderChangeListener {
+public class ReportTooltipPresenter extends BaseViperPresenter<LegacyTooltipView, ReportTooltipInteractor<? extends FragmentActivity>> implements BackupProviderChangeListener {
 
     private final BackupProvidersManager backupProvidersManager;
     private final Analytics analytics;
@@ -30,7 +30,7 @@ public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, Repo
 
     @SuppressWarnings("unchecked")
     @Inject
-    public ReportTooltipPresenter(@NonNull TooltipView view,
+    public ReportTooltipPresenter(@NonNull LegacyTooltipView view,
                                   @NonNull ReportTooltipInteractor interactor,
                                   @NonNull BackupProvidersManager backupProvidersManager,
                                   @NonNull Analytics analytics) {
@@ -38,7 +38,7 @@ public class ReportTooltipPresenter extends BaseViperPresenter<TooltipView, Repo
     }
 
     @SuppressWarnings("unchecked")
-    public ReportTooltipPresenter(@NonNull TooltipView view,
+    public ReportTooltipPresenter(@NonNull LegacyTooltipView view,
                                   @NonNull ReportTooltipInteractor interactor,
                                   @NonNull BackupProvidersManager backupProvidersManager,
                                   @NonNull Analytics analytics,

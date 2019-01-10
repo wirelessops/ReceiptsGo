@@ -5,7 +5,6 @@ import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.tooltip.StaticTooltipView;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
-import co.smartreceipts.android.widget.tooltip.TooltipView;
 import dagger.Binds;
 import dagger.Module;
 

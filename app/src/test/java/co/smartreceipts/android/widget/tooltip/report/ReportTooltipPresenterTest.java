@@ -3,7 +3,6 @@ package co.smartreceipts.android.widget.tooltip.report;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -12,7 +11,7 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.android.widget.tooltip.TooltipView;
+import co.smartreceipts.android.widget.tooltip.LegacyTooltipView;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -28,7 +27,7 @@ public class ReportTooltipPresenterTest {
     ReportTooltipPresenter presenter;
 
     @Mock
-    TooltipView tooltipView;
+    LegacyTooltipView tooltipView;
 
     @Mock
     ReportTooltipInteractor interactor;

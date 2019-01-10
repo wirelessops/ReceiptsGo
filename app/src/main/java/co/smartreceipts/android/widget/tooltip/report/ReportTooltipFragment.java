@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
-import co.smartreceipts.android.widget.tooltip.TooltipView;
+import co.smartreceipts.android.widget.tooltip.LegacyTooltipView;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
 import dagger.android.support.AndroidSupportInjection;
@@ -29,7 +29,7 @@ import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndi
 import static co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State.SyncError;
 
 
-public class ReportTooltipFragment extends Fragment implements TooltipView {
+public class ReportTooltipFragment extends Fragment implements LegacyTooltipView {
 
     @Inject
     ReportTooltipPresenter presenter;
