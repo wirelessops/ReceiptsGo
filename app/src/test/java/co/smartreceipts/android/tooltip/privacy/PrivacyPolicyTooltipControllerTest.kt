@@ -1,5 +1,6 @@
 package co.smartreceipts.android.tooltip.privacy
 
+import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
@@ -19,9 +20,14 @@ import com.nhaarman.mockito_kotlin.*
 import io.reactivex.schedulers.Schedulers
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class PrivacyPolicyTooltipControllerTest {
+
+    companion object {
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.PrivacyPolicy, RuntimeEnvironment.application.getString(R.string.tooltip_review_privacy))
+    }
 
     private lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
 
@@ -48,7 +54,7 @@ class PrivacyPolicyTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        privacyPolicyTooltipController = PrivacyPolicyTooltipController(tooltipView, router, store, regionChecker, tripTableController, analytics, scheduler)
+        privacyPolicyTooltipController = PrivacyPolicyTooltipController(RuntimeEnvironment.application, tooltipView, router, store, regionChecker, tripTableController, analytics, scheduler)
     }
 
     @Test
@@ -58,7 +64,7 @@ class PrivacyPolicyTooltipControllerTest {
         privacyPolicyTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy))
+                .assertValue(Optional.of(TOOLTIP_METADATA))
                 .assertComplete()
                 .assertNoErrors()
     }
@@ -71,7 +77,7 @@ class PrivacyPolicyTooltipControllerTest {
         privacyPolicyTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy))
+                .assertValue(Optional.of(TOOLTIP_METADATA))
                 .assertComplete()
                 .assertNoErrors()
     }

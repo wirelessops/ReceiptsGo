@@ -1,5 +1,6 @@
 package co.smartreceipts.android.tooltip.backup
 
+import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.purchases.PurchaseManager
@@ -23,9 +24,14 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class AutomaticBackupRecoveryHintUserControllerTest {
+
+    companion object {
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.AutomaticBackupRecoveryHint, RuntimeEnvironment.application.getString(R.string.tooltip_automatic_backups_recovery_hint))
+    }
 
     private lateinit var automaticBackupRecoveryHintUserController: AutomaticBackupRecoveryHintUserController
 
@@ -53,7 +59,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         whenever(purchaseManager.allOwnedPurchases).thenReturn(Observable.just(emptySet()))
-        automaticBackupRecoveryHintUserController = AutomaticBackupRecoveryHintUserController(tooltipView, router, store, purchaseWallet, purchaseManager, analytics, scheduler)
+        automaticBackupRecoveryHintUserController = AutomaticBackupRecoveryHintUserController(RuntimeEnvironment.application, tooltipView, router, store, purchaseWallet, purchaseManager, analytics, scheduler)
     }
 
     @Test
@@ -63,7 +69,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of<TooltipMetadata>(TooltipType.AutomaticBackupRecoveryHint))
+                .assertValue(Optional.of(TOOLTIP_METADATA))
                 .assertComplete()
                 .assertNoErrors()
     }

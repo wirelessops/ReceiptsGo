@@ -1,5 +1,6 @@
 package co.smartreceipts.android.tooltip
 
+import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
@@ -17,9 +18,15 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class TooltipPresenterTest {
+
+    companion object {
+        private val RATE_THIS_APP_TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, RuntimeEnvironment.application.getString(R.string.rating_tooltip_text))
+        private val PRIVACY_POLICY_TOOLTIP_METADATA = TooltipMetadata(TooltipType.PrivacyPolicy, RuntimeEnvironment.application.getString(R.string.tooltip_review_privacy))
+    }
 
     lateinit var tooltipPresenter: TooltipPresenter
 
@@ -98,9 +105,9 @@ class TooltipPresenterTest {
 
     @Test
     fun clicksAreHandledWhenThePrivacyTooltipIsShown() {
-        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy)))
+        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(PRIVACY_POLICY_TOOLTIP_METADATA)))
         tooltipPresenter.subscribe()
-        verify(view).display(TooltipType.PrivacyPolicy)
+        verify(view).display(PRIVACY_POLICY_TOOLTIP_METADATA)
         tooltipClickStream.onNext(Any())
         buttonNoClickStream.onNext(Any())
         buttonYesClickStream.onNext(Any())
@@ -115,9 +122,9 @@ class TooltipPresenterTest {
 
     @Test
     fun clicksAreHandledWhenTheRateTooltipIsShown() {
-        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.RateThisApp)))
+        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(RATE_THIS_APP_TOOLTIP_METADATA)))
         tooltipPresenter.subscribe()
-        verify(view).display(TooltipType.RateThisApp)
+        verify(view).display(RATE_THIS_APP_TOOLTIP_METADATA)
         tooltipClickStream.onNext(Any())
         buttonNoClickStream.onNext(Any())
         buttonYesClickStream.onNext(Any())
@@ -132,10 +139,10 @@ class TooltipPresenterTest {
 
     @Test
     fun verifyTheHigherPriorityTooltipWins() {
-        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.RateThisApp)))
-        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy)))
+        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(RATE_THIS_APP_TOOLTIP_METADATA)))
+        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(PRIVACY_POLICY_TOOLTIP_METADATA)))
         tooltipPresenter.subscribe()
-        verify(view).display(TooltipType.RateThisApp)
+        verify(view).display(RATE_THIS_APP_TOOLTIP_METADATA)
     }
 
 }

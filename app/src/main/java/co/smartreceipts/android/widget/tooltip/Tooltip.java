@@ -102,7 +102,7 @@ public class Tooltip extends RelativeLayout {
         }
 
         // All tooltips must have a message (otherwise there's no reason to show them)
-        messageText.setText(tooltip.getMessageResourceId());
+        messageText.setText(tooltip.getMessage());
         messageText.setVisibility(VISIBLE);
 
         if (tooltip.getShowWarningIcon()) {

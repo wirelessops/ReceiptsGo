@@ -1,7 +1,9 @@
 package co.smartreceipts.android.tooltip.report
 
+import android.content.Context
 import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
+import co.smartreceipts.android.R
 import com.hadisatrio.optional.Optional
 
 import co.smartreceipts.android.analytics.Analytics
@@ -32,7 +34,8 @@ import javax.inject.Named
  *  - The user has no reports (indicating that they're new to the app)
  */
 @FragmentScope
-class FirstReportHintTooltipController @Inject constructor(private val tooltipView: TooltipView,
+class FirstReportHintTooltipController @Inject constructor(private val context: Context,
+                                                           private val tooltipView: TooltipView,
                                                            private val store: FirstReportHintUserInteractionStore,
                                                            private val tripTableController: TripTableController,
                                                            private val analytics: Analytics,
@@ -55,7 +58,7 @@ class FirstReportHintTooltipController @Inject constructor(private val tooltipVi
                                         return@map Optional.absent<TooltipMetadata>()
                                     } else {
                                         Logger.info(this, "This user has no trips and has never interacted with the report hint. Indicating that we can display it")
-                                        return@map Optional.of<TooltipMetadata>(TooltipType.FirstReportHint)
+                                        return@map Optional.of(newTooltipMetadata())
                                     }
                                 }
                     }
@@ -78,6 +81,10 @@ class FirstReportHintTooltipController @Inject constructor(private val tooltipVi
                 tooltipView.hideTooltip()
             }
         }
+    }
+
+    private fun newTooltipMetadata() : TooltipMetadata {
+        return TooltipMetadata(TooltipType.FirstReportHint, context.getString(R.string.tooltip_first_report_hint))
     }
 
 }

@@ -1,7 +1,9 @@
 package co.smartreceipts.android.tooltip.backup
 
+import android.content.Context
 import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
+import co.smartreceipts.android.R
 import com.hadisatrio.optional.Optional
 
 import co.smartreceipts.android.analytics.Analytics
@@ -30,7 +32,8 @@ import javax.inject.Named
  * recover a previous automatic backup
  */
 @FragmentScope
-class AutomaticBackupRecoveryHintUserController @Inject constructor(private val tooltipView: TooltipView,
+class AutomaticBackupRecoveryHintUserController @Inject constructor(private val context: Context,
+                                                                    private val tooltipView: TooltipView,
                                                                     private val router: AutomaticBackupRecoveryHintRouter,
                                                                     private val store: AutomaticBackupRecoveryHintUserInteractionStore,
                                                                     private val purchaseWallet: PurchaseWallet,
@@ -52,7 +55,7 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
                     return@BiFunction userOwnsPlus and !userInteractionHasOccurred
                 })
                 .subscribeOn(scheduler)
-                .map { showTooltip -> if (showTooltip) Optional.of<TooltipMetadata>(TooltipType.AutomaticBackupRecoveryHint) else Optional.absent() }
+                .map { showTooltip -> if (showTooltip) Optional.of(newTooltipMetadata()) else Optional.absent() }
                 .onErrorReturnItem(Optional.absent())
     }
 
@@ -73,6 +76,10 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
                 router.navigateToAutomaticBackupConfiguration()
             }
         }
+    }
+
+    private fun newTooltipMetadata() : TooltipMetadata {
+        return TooltipMetadata(TooltipType.AutomaticBackupRecoveryHint, context.getString(R.string.tooltip_automatic_backups_recovery_hint))
     }
 
 }

@@ -1,7 +1,9 @@
 package co.smartreceipts.android.tooltip.privacy
 
+import android.content.Context
 import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
+import co.smartreceipts.android.R
 import com.hadisatrio.optional.Optional
 
 import co.smartreceipts.android.analytics.Analytics
@@ -36,7 +38,8 @@ import javax.inject.Named
  *  how to use the app, since we have a lot of settings)
  */
 @FragmentScope
-class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView: TooltipView,
+class PrivacyPolicyTooltipController @Inject constructor(private val context: Context,
+                                                         private val tooltipView: TooltipView,
                                                          private val router: PrivacyPolicyRouter,
                                                          private val store: PrivacyPolicyUserInteractionStore,
                                                          private val regionChecker: RegionChecker,
@@ -54,14 +57,14 @@ class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView
                     } else {
                         if (regionChecker.isInTheEuropeanUnion()) {
                             Logger.debug(this, "The user is in the EU. Indicating that we can display the privacy tooltip...")
-                            return@flatMap Single.just(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy))
+                            return@flatMap Single.just(Optional.of(newTooltipMetadata()))
                         } else {
                             return@flatMap tripTableController.get()
                                     .map { trips -> trips.size }
                                     .map { tripCount ->
                                         if (tripCount > 0) {
                                             Logger.debug(this, "The user is NOT in the EU but we have at least one trip. Indicating that we can display the privacy tooltip...")
-                                            return@map Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy)
+                                            return@map Optional.of(newTooltipMetadata())
                                         } else {
                                             Logger.debug(this, "The user is NOT in the EU and we have no trips. Ignoring the privacy tooltip for now...")
                                             return@map Optional.absent<TooltipMetadata>()
@@ -89,6 +92,10 @@ class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView
                 router.navigateToPrivacyPolicyControls()
             }
         }
+    }
+
+    private fun newTooltipMetadata() : TooltipMetadata {
+        return TooltipMetadata(TooltipType.PrivacyPolicy, context.getString(R.string.tooltip_review_privacy))
     }
 
 }

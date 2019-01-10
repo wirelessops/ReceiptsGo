@@ -1,5 +1,6 @@
 package co.smartreceipts.android.tooltip.report
 
+import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
@@ -21,9 +22,14 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class FirstReportHintTooltipControllerTest  {
+
+    companion object {
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.FirstReportHint, RuntimeEnvironment.application.getString(R.string.tooltip_first_report_hint))
+    }
 
     private lateinit var firstReportHintTooltipController: FirstReportHintTooltipController
 
@@ -44,7 +50,7 @@ class FirstReportHintTooltipControllerTest  {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        firstReportHintTooltipController = FirstReportHintTooltipController(tooltipView, store, tripTableController, analytics, scheduler)
+        firstReportHintTooltipController = FirstReportHintTooltipController(RuntimeEnvironment.application, tooltipView, store, tripTableController, analytics, scheduler)
     }
 
     @Test
@@ -66,7 +72,7 @@ class FirstReportHintTooltipControllerTest  {
         firstReportHintTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of<TooltipMetadata>(TooltipType.FirstReportHint))
+                .assertValue(Optional.of(TOOLTIP_METADATA))
                 .assertComplete()
                 .assertNoErrors()
     }

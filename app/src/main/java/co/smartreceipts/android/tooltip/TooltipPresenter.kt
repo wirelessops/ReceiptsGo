@@ -39,10 +39,10 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                 }.flatMap { tooltipSingles ->
                     if (tooltipSingles.isNotEmpty()) {
                         return@flatMap Single.zip(tooltipSingles) { optionalTooltipsArrayAsObjects ->
-                            var result = Optional.absent<TooltipType>()
+                            var result = Optional.absent<TooltipMetadata>()
                             optionalTooltipsArrayAsObjects.forEach {
                                 @Suppress("UNCHECKED_CAST")
-                                val optionalTooltip: Optional<TooltipType> = it as Optional<TooltipType>
+                                val optionalTooltip: Optional<TooltipMetadata> = it as Optional<TooltipMetadata>
                                 if (optionalTooltip.isPresent) {
                                     if (!result.isPresent || optionalTooltip.get().priority > result.get().priority) {
                                         result = optionalTooltip
@@ -53,7 +53,7 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                         }
                     } else {
                         // Don't zip an empty list
-                        return@flatMap Single.just(Optional.absent<TooltipType>())
+                        return@flatMap Single.just(Optional.absent<TooltipMetadata>())
                     }
                 }
                 .filter {
@@ -65,7 +65,7 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                 .doOnSuccess {
                     Logger.info(this, "Displaying tooltip: {}", it)
                     analytics.record(DefaultDataPointEvent(Events.Informational.DisplayingTooltip).addDataPoint(DataPoint("tooltip", it)))
-                    this.activeTooltipController = tooltipControllerProvider.get(it)
+                    this.activeTooltipController = tooltipControllerProvider.get(it.tooltipType)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { view.display(it) }

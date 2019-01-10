@@ -1,12 +1,13 @@
 package co.smartreceipts.android.tooltip.rating
 
+import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.rating.AppRatingManager
 import co.smartreceipts.android.tooltip.TooltipView
-import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
+import co.smartreceipts.android.tooltip.model.TooltipType
 import com.hadisatrio.optional.Optional
 import io.reactivex.Single
 import org.junit.Before
@@ -18,9 +19,14 @@ import org.mockito.Mockito
 import com.nhaarman.mockito_kotlin.*
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class AppRatingTooltipControllerTest {
+
+    companion object {
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, RuntimeEnvironment.application.getString(R.string.rating_tooltip_text))
+    }
     
     lateinit var controller: AppRatingTooltipController
     
@@ -39,7 +45,7 @@ class AppRatingTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        controller = AppRatingTooltipController(tooltipView, router, appRatingManager, analytics)
+        controller = AppRatingTooltipController(RuntimeEnvironment.application, tooltipView, router, appRatingManager, analytics)
     }
 
     @Test
@@ -48,7 +54,7 @@ class AppRatingTooltipControllerTest {
         controller.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of<TooltipMetadata>(TooltipType.RateThisApp))
+                .assertValue(Optional.of(TOOLTIP_METADATA))
                 .assertComplete()
                 .assertNoErrors()
     }
