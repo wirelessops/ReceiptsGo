@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.tooltip.model.StaticTooltip;
+import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
@@ -83,7 +83,7 @@ public class Tooltip extends RelativeLayout {
         return closeIconClickStream;
     }
 
-    public void setTooltip(@NonNull StaticTooltip tooltip) {
+    public void setTooltip(@NonNull TooltipMetadata tooltip) {
         // Initially hide the "yes/no" question buttons
         buttonNo.setVisibility(GONE);
         buttonYes.setVisibility(GONE);

@@ -10,7 +10,10 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 /**
- * Manages the process of mapping a given [StaticTooltip] to a [TooltipController] implementation
+ * Manages the process of mapping a given [StaticTooltip] to a [TooltipController] implementation.
+ *
+ * Note: This exists as the [FragmentScope], since each of our [TooltipController] instances is
+ * also tied to that scope
  */
 @FragmentScope
 class TooltipControllerProvider @Inject constructor(private val automaticBackupRecoveryHintTooltipProvider: Provider<AutomaticBackupRecoveryHintUserController>,

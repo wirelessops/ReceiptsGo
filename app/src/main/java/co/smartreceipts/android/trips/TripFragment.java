@@ -45,6 +45,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.model.StaticTooltip;
+import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
@@ -339,7 +340,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void display(@NotNull StaticTooltip tooltip) {
+    public void display(@NotNull TooltipMetadata tooltip) {
         tooltipView.setTooltip(tooltip);
         if (tooltipView.getVisibility() != View.VISIBLE) {
             tooltipView.setVisibility(View.VISIBLE);

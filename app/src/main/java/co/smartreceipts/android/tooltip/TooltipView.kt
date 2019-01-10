@@ -1,6 +1,7 @@
 package co.smartreceipts.android.tooltip
 
 import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import io.reactivex.Observable
 
 /**
@@ -14,12 +15,12 @@ interface TooltipView {
     fun getSupportedTooltips(): List<StaticTooltip>
 
     /**
-     * Informs our UI to display a [StaticTooltip]
+     * Informs our UI to display a [TooltipMetadata]
      */
-    fun display(tooltip: StaticTooltip)
+    fun display(tooltip: TooltipMetadata)
 
     /**
-     * Informs our UI to hide our [StaticTooltip] (if one is visible)
+     * Informs our UI to hide our [TooltipMetadata] (if one is visible)
      */
     fun hideTooltip()
 

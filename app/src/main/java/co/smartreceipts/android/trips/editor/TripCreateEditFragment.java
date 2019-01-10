@@ -57,6 +57,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.model.StaticTooltip;
+import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.trips.editor.date.TripDateView;
 import co.smartreceipts.android.trips.editor.date.TripDatesPresenter;
@@ -488,7 +489,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     }
 
     @Override
-    public void display(@NotNull StaticTooltip tooltip) {
+    public void display(@NotNull TooltipMetadata tooltip) {
         tooltipView.setTooltip(tooltip);
         if (tooltipView.getVisibility() != View.VISIBLE) {
             tooltipView.setVisibility(View.VISIBLE);
