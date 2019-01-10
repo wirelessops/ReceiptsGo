@@ -12,6 +12,7 @@ import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Completable
@@ -38,23 +39,23 @@ class FirstReportHintTooltipController @Inject constructor(private val tooltipVi
                                                            @Named(RxSchedulers.IO) private val scheduler: Scheduler) : TooltipController {
 
     @UiThread
-    override fun shouldDisplayTooltip(): Single<Optional<TooltipType>> {
+    override fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>> {
         return store.hasUserInteractionOccurred()
                 .subscribeOn(scheduler)
                 .flatMap { hasUserInteractionOccurred ->
                     if (hasUserInteractionOccurred) {
                         Logger.debug(this, "This user has interacted with the first report hint tooltip before. Ignoring.")
-                        return@flatMap Single.just<Optional<TooltipType>>(Optional.absent())
+                        return@flatMap Single.just<Optional<TooltipMetadata>>(Optional.absent())
                     } else {
                         tripTableController.get()
                                 .map { trips -> trips.size }
                                 .map { tripsCount ->
                                     if (tripsCount > 0) {
                                         Logger.debug(this, "This user has existing trips. Ignoring the first report hint tooltip")
-                                        return@map Optional.absent<TooltipType>()
+                                        return@map Optional.absent<TooltipMetadata>()
                                     } else {
                                         Logger.info(this, "This user has no trips and has never interacted with the report hint. Indicating that we can display it")
-                                        return@map Optional.of(TooltipType.FirstReportHint)
+                                        return@map Optional.of<TooltipMetadata>(TooltipType.FirstReportHint)
                                     }
                                 }
                     }

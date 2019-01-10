@@ -7,6 +7,7 @@ import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import co.smartreceipts.android.widget.mvp.Presenter
@@ -30,7 +31,7 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
     override fun subscribe() {
         // Determine if we have a tooltip to display and show the highest priority one if so
         compositeDisposable.add(Single.fromCallable {
-                    val tooltipSingles = ArrayList<Single<Optional<TooltipType>>>()
+                    val tooltipSingles = ArrayList<Single<Optional<TooltipMetadata>>>()
                     view.getSupportedTooltips().forEach {
                         tooltipSingles.add(tooltipControllerProvider.get(it).shouldDisplayTooltip())
                     }

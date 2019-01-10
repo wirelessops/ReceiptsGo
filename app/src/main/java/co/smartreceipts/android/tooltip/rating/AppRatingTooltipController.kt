@@ -10,6 +10,7 @@ import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.utils.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
@@ -28,9 +29,9 @@ class AppRatingTooltipController @Inject constructor(private val tooltipView: To
                                                      private val analytics: Analytics) : TooltipController {
 
     @UiThread
-    override fun shouldDisplayTooltip(): Single<Optional<TooltipType>> {
+    override fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>> {
         return appRatingManager.checkIfNeedToAskRating()
-                .map { shouldShow -> if (shouldShow) Optional.of(TooltipType.RateThisApp) else Optional.absent() }
+                .map { shouldShow -> if (shouldShow) Optional.of<TooltipMetadata>(TooltipType.RateThisApp) else Optional.absent() }
                 .doOnSuccess{
                     if (it.isPresent) {
                         analytics.record(Events.Ratings.RatingPromptShown)

@@ -2,7 +2,7 @@ package co.smartreceipts.android.tooltip
 
 import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
-import co.smartreceipts.android.tooltip.model.TooltipType
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
@@ -16,10 +16,10 @@ interface TooltipController {
 
     /**
      * @return a [Single], which will emit an [Optional] that will contain the appropriate
-     * [TooltipType] if we should display this item
+     * [TooltipMetadata] if we should display this item
      */
     @UiThread
-    fun shouldDisplayTooltip(): Single<Optional<TooltipType>>
+    fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>>
 
     /**
      * This method exists to allow implementers of this contract decide if background thread

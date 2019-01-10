@@ -3,6 +3,7 @@ package co.smartreceipts.android.tooltip
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable
@@ -97,7 +98,7 @@ class TooltipPresenterTest {
 
     @Test
     fun clicksAreHandledWhenThePrivacyTooltipIsShown() {
-        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.PrivacyPolicy)))
+        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy)))
         tooltipPresenter.subscribe()
         verify(view).display(TooltipType.PrivacyPolicy)
         tooltipClickStream.onNext(Any())
@@ -114,7 +115,7 @@ class TooltipPresenterTest {
 
     @Test
     fun clicksAreHandledWhenTheRateTooltipIsShown() {
-        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.RateThisApp)))
+        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.RateThisApp)))
         tooltipPresenter.subscribe()
         verify(view).display(TooltipType.RateThisApp)
         tooltipClickStream.onNext(Any())
@@ -131,8 +132,8 @@ class TooltipPresenterTest {
 
     @Test
     fun verifyTheHigherPriorityTooltipWins() {
-        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.RateThisApp)))
-        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.PrivacyPolicy)))
+        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.RateThisApp)))
+        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy)))
         tooltipPresenter.subscribe()
         verify(view).display(TooltipType.RateThisApp)
     }

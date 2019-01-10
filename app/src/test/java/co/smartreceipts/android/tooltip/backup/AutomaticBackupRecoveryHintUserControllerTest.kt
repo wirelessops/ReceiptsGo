@@ -8,6 +8,7 @@ import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
@@ -62,7 +63,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of(TooltipType.AutomaticBackupRecoveryHint))
+                .assertValue(Optional.of<TooltipMetadata>(TooltipType.AutomaticBackupRecoveryHint))
                 .assertComplete()
                 .assertNoErrors()
     }

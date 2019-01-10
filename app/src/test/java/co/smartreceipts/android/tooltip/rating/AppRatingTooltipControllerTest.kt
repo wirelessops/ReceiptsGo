@@ -6,6 +6,7 @@ import co.smartreceipts.android.rating.AppRatingManager
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import com.hadisatrio.optional.Optional
 import io.reactivex.Single
 import org.junit.Before
@@ -47,7 +48,7 @@ class AppRatingTooltipControllerTest {
         controller.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of(TooltipType.RateThisApp))
+                .assertValue(Optional.of<TooltipMetadata>(TooltipType.RateThisApp))
                 .assertComplete()
                 .assertNoErrors()
     }

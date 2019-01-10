@@ -6,6 +6,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
+import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.utils.TripUtils
 import com.hadisatrio.optional.Optional
 import io.reactivex.Single
@@ -57,7 +58,7 @@ class PrivacyPolicyTooltipControllerTest {
         privacyPolicyTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of(TooltipType.PrivacyPolicy))
+                .assertValue(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy))
                 .assertComplete()
                 .assertNoErrors()
     }
@@ -70,7 +71,7 @@ class PrivacyPolicyTooltipControllerTest {
         privacyPolicyTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of(TooltipType.PrivacyPolicy))
+                .assertValue(Optional.of<TooltipMetadata>(TooltipType.PrivacyPolicy))
                 .assertComplete()
                 .assertNoErrors()
     }
