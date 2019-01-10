@@ -10,7 +10,7 @@ import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
@@ -44,26 +44,26 @@ class PrivacyPolicyTooltipController @Inject constructor(private val tooltipView
                                                          @Named(RxSchedulers.IO) private val scheduler: Scheduler) : TooltipController {
 
     @UiThread
-    override fun shouldDisplayTooltip(): Single<Optional<StaticTooltip>> {
+    override fun shouldDisplayTooltip(): Single<Optional<TooltipType>> {
         return store.hasUserInteractionOccurred()
                 .flatMap { hasUserInteractionOccurred ->
                     if (hasUserInteractionOccurred) {
                         // If an interaction has already occurred, don't show the privacy tooltip again
-                        return@flatMap Single.just<Optional<StaticTooltip>>(Optional.absent())
+                        return@flatMap Single.just<Optional<TooltipType>>(Optional.absent())
                     } else {
                         if (regionChecker.isInTheEuropeanUnion()) {
                             Logger.debug(this, "The user is in the EU. Indicating that we can display the privacy tooltip...")
-                            return@flatMap Single.just(Optional.of(StaticTooltip.PrivacyPolicy))
+                            return@flatMap Single.just(Optional.of(TooltipType.PrivacyPolicy))
                         } else {
                             return@flatMap tripTableController.get()
                                     .map { trips -> trips.size }
                                     .map { tripCount ->
                                         if (tripCount > 0) {
                                             Logger.debug(this, "The user is NOT in the EU but we have at least one trip. Indicating that we can display the privacy tooltip...")
-                                            return@map Optional.of(StaticTooltip.PrivacyPolicy)
+                                            return@map Optional.of(TooltipType.PrivacyPolicy)
                                         } else {
                                             Logger.debug(this, "The user is NOT in the EU and we have no trips. Ignoring the privacy tooltip for now...")
-                                            return@map Optional.absent<StaticTooltip>()
+                                            return@map Optional.absent<TooltipType>()
                                         }
                                     }
                         }

@@ -12,7 +12,7 @@ import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
@@ -38,7 +38,7 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
                                                                     @Named(RxSchedulers.IO) private val scheduler: Scheduler) : TooltipController {
 
     @UiThread
-    override fun shouldDisplayTooltip(): Single<Optional<StaticTooltip>> {
+    override fun shouldDisplayTooltip(): Single<Optional<TooltipType>> {
         // Note: We fetch allOwnedPurchases first to ensure that the purchaseWallet is properly initialized
         val userOwnsSmartReceiptsPlusSingle = purchaseManager.allOwnedPurchases
                 .map {
@@ -51,7 +51,7 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
                     return@BiFunction userOwnsPlus and !userInteractionHasOccurred
                 })
                 .subscribeOn(scheduler)
-                .map { showTooltip -> if (showTooltip) Optional.of(StaticTooltip.AutomaticBackupRecoveryHint) else Optional.absent() }
+                .map { showTooltip -> if (showTooltip) Optional.of(TooltipType.AutomaticBackupRecoveryHint) else Optional.absent() }
                 .onErrorReturnItem(Optional.absent())
     }
 

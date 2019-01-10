@@ -2,7 +2,7 @@ package co.smartreceipts.android.tooltip
 
 import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 /**
- * Manages the process of mapping a given [StaticTooltip] to a [TooltipController] implementation.
+ * Manages the process of mapping a given [TooltipType] to a [TooltipController] implementation.
  *
  * Note: This exists as the [FragmentScope], since each of our [TooltipController] instances is
  * also tied to that scope
@@ -22,17 +22,17 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
                                                     private val appRatingTooltipProvider: Provider<AppRatingTooltipController>) {
 
     /**
-     * Fetches the appropriate [TooltipController] for a given [StaticTooltip]
+     * Fetches the appropriate [TooltipController] for a given [TooltipType]
      *
-     * @param tooltip the [StaticTooltip] to determine if we should display
+     * @param tooltip the [TooltipType] to determine if we should display
      * @return the corresponding [TooltipController]
      */
-    fun get(tooltip: StaticTooltip): TooltipController {
+    fun get(tooltip: TooltipType): TooltipController {
         return when (tooltip) {
-            StaticTooltip.AutomaticBackupRecoveryHint -> automaticBackupRecoveryHintTooltipProvider.get()
-            StaticTooltip.FirstReportHint -> firstReportHintTooltipProvider.get()
-            StaticTooltip.PrivacyPolicy -> privacyPolicyTooltipProvider.get()
-            StaticTooltip.RateThisApp -> appRatingTooltipProvider.get()
+            TooltipType.AutomaticBackupRecoveryHint -> automaticBackupRecoveryHintTooltipProvider.get()
+            TooltipType.FirstReportHint -> firstReportHintTooltipProvider.get()
+            TooltipType.PrivacyPolicy -> privacyPolicyTooltipProvider.get()
+            TooltipType.RateThisApp -> appRatingTooltipProvider.get()
         }
     }
 }

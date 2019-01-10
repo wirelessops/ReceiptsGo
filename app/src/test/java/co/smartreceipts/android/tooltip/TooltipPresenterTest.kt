@@ -1,7 +1,7 @@
 package co.smartreceipts.android.tooltip
 
 import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.*
@@ -52,8 +52,8 @@ class TooltipPresenterTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(tooltipControllerProvider.get(StaticTooltip.RateThisApp)).thenReturn(rateThisAppController)
-        whenever(tooltipControllerProvider.get(StaticTooltip.PrivacyPolicy)).thenReturn(privacyPolicyController)
+        whenever(tooltipControllerProvider.get(TooltipType.RateThisApp)).thenReturn(rateThisAppController)
+        whenever(tooltipControllerProvider.get(TooltipType.PrivacyPolicy)).thenReturn(privacyPolicyController)
         whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.absent()))
         whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.absent()))
         whenever(rateThisAppController.handleTooltipInteraction(any())).thenReturn(Completable.complete())
@@ -61,7 +61,7 @@ class TooltipPresenterTest {
         whenever(rateThisAppController.consumeTooltipInteraction()).thenReturn(rateThisAppTooltipInteractionConsumer)
         whenever(privacyPolicyController.consumeTooltipInteraction()).thenReturn(privacyPolicyTooltipInteractionConsumer)
 
-        whenever(view.getSupportedTooltips()).thenReturn(arrayListOf(StaticTooltip.RateThisApp, StaticTooltip.PrivacyPolicy))
+        whenever(view.getSupportedTooltips()).thenReturn(arrayListOf(TooltipType.RateThisApp, TooltipType.PrivacyPolicy))
         whenever(view.getTooltipClickStream()).thenReturn(tooltipClickStream)
         whenever(view.getButtonNoClickStream()).thenReturn(buttonNoClickStream)
         whenever(view.getButtonYesClickStream()).thenReturn(buttonYesClickStream)
@@ -97,9 +97,9 @@ class TooltipPresenterTest {
 
     @Test
     fun clicksAreHandledWhenThePrivacyTooltipIsShown() {
-        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(StaticTooltip.PrivacyPolicy)))
+        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.PrivacyPolicy)))
         tooltipPresenter.subscribe()
-        verify(view).display(StaticTooltip.PrivacyPolicy)
+        verify(view).display(TooltipType.PrivacyPolicy)
         tooltipClickStream.onNext(Any())
         buttonNoClickStream.onNext(Any())
         buttonYesClickStream.onNext(Any())
@@ -114,9 +114,9 @@ class TooltipPresenterTest {
 
     @Test
     fun clicksAreHandledWhenTheRateTooltipIsShown() {
-        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(StaticTooltip.RateThisApp)))
+        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.RateThisApp)))
         tooltipPresenter.subscribe()
-        verify(view).display(StaticTooltip.RateThisApp)
+        verify(view).display(TooltipType.RateThisApp)
         tooltipClickStream.onNext(Any())
         buttonNoClickStream.onNext(Any())
         buttonYesClickStream.onNext(Any())
@@ -131,10 +131,10 @@ class TooltipPresenterTest {
 
     @Test
     fun verifyTheHigherPriorityTooltipWins() {
-        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(StaticTooltip.RateThisApp)))
-        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(StaticTooltip.PrivacyPolicy)))
+        whenever(rateThisAppController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.RateThisApp)))
+        whenever(privacyPolicyController.shouldDisplayTooltip()).thenReturn(Single.just(Optional.of(TooltipType.PrivacyPolicy)))
         tooltipPresenter.subscribe()
-        verify(view).display(StaticTooltip.RateThisApp)
+        verify(view).display(TooltipType.RateThisApp)
     }
 
 }

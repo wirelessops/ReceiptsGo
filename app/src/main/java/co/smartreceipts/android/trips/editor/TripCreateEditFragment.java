@@ -56,7 +56,7 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
-import co.smartreceipts.android.tooltip.model.StaticTooltip;
+import co.smartreceipts.android.tooltip.model.TooltipType;
 import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.trips.editor.date.TripDateView;
@@ -484,8 +484,8 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
     @NotNull
     @Override
-    public List<StaticTooltip> getSupportedTooltips() {
-        return Collections.singletonList(StaticTooltip.FirstReportHint);
+    public List<TooltipType> getSupportedTooltips() {
+        return Collections.singletonList(TooltipType.FirstReportHint);
     }
 
     @Override

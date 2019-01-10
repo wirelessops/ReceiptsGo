@@ -5,7 +5,7 @@ import co.smartreceipts.android.analytics.events.DataPoint
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.di.scopes.FragmentScope
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
@@ -30,7 +30,7 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
     override fun subscribe() {
         // Determine if we have a tooltip to display and show the highest priority one if so
         compositeDisposable.add(Single.fromCallable {
-                    val tooltipSingles = ArrayList<Single<Optional<StaticTooltip>>>()
+                    val tooltipSingles = ArrayList<Single<Optional<TooltipType>>>()
                     view.getSupportedTooltips().forEach {
                         tooltipSingles.add(tooltipControllerProvider.get(it).shouldDisplayTooltip())
                     }
@@ -38,10 +38,10 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                 }.flatMap { tooltipSingles ->
                     if (tooltipSingles.isNotEmpty()) {
                         return@flatMap Single.zip(tooltipSingles) { optionalTooltipsArrayAsObjects ->
-                            var result = Optional.absent<StaticTooltip>()
+                            var result = Optional.absent<TooltipType>()
                             optionalTooltipsArrayAsObjects.forEach {
                                 @Suppress("UNCHECKED_CAST")
-                                val optionalTooltip: Optional<StaticTooltip> = it as Optional<StaticTooltip>
+                                val optionalTooltip: Optional<TooltipType> = it as Optional<TooltipType>
                                 if (optionalTooltip.isPresent) {
                                     if (!result.isPresent || optionalTooltip.get().priority > result.get().priority) {
                                         result = optionalTooltip
@@ -52,7 +52,7 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                         }
                     } else {
                         // Don't zip an empty list
-                        return@flatMap Single.just(Optional.absent<StaticTooltip>())
+                        return@flatMap Single.just(Optional.absent<TooltipType>())
                     }
                 }
                 .filter {

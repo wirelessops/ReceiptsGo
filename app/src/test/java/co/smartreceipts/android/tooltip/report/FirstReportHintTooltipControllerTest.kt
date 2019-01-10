@@ -4,7 +4,7 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.tooltip.TooltipView
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.utils.TripUtils
 import com.hadisatrio.optional.Optional
@@ -65,7 +65,7 @@ class FirstReportHintTooltipControllerTest  {
         firstReportHintTooltipController.shouldDisplayTooltip()
                 .test()
                 .await()
-                .assertValue(Optional.of(StaticTooltip.FirstReportHint))
+                .assertValue(Optional.of(TooltipType.FirstReportHint))
                 .assertComplete()
                 .assertNoErrors()
     }

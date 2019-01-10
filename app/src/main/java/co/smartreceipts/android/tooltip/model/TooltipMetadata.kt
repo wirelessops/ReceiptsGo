@@ -8,9 +8,9 @@ import android.support.annotation.StringRes
 interface TooltipMetadata {
 
     /**
-     * @return the [TooltipType] to display
+     * @return the [TooltipDisplayStyle] to display
      */
-    val type: TooltipType
+    val displayStyle: TooltipDisplayStyle
 
     /**
      * @return the priority. Higher priorities outweigh lower ones (i.e. higher ones will be

@@ -88,7 +88,7 @@ public class Tooltip extends RelativeLayout {
         buttonNo.setVisibility(GONE);
         buttonYes.setVisibility(GONE);
 
-        switch (tooltip.getType()) {
+        switch (tooltip.getDisplayStyle()) {
             case Question:
                 // Display these again if and only if a question
                 buttonNo.setVisibility(VISIBLE);

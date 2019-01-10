@@ -1,7 +1,7 @@
 package co.smartreceipts.android.tooltip
 
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
-import co.smartreceipts.android.tooltip.model.StaticTooltip
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.AppRatingTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
@@ -43,22 +43,22 @@ class TooltipControllerProviderTest {
 
     @Test
     fun getAutomaticBackupRecoveryHintUserController() {
-        assertTrue(tooltipControllerProvider.get(StaticTooltip.AutomaticBackupRecoveryHint) is AutomaticBackupRecoveryHintUserController)
+        assertTrue(tooltipControllerProvider.get(TooltipType.AutomaticBackupRecoveryHint) is AutomaticBackupRecoveryHintUserController)
     }
 
     @Test
     fun getFirstReportHintTooltipController() {
-        assertTrue(tooltipControllerProvider.get(StaticTooltip.FirstReportHint) is FirstReportHintTooltipController)
+        assertTrue(tooltipControllerProvider.get(TooltipType.FirstReportHint) is FirstReportHintTooltipController)
     }
 
     @Test
     fun getPrivacyPolicyTooltipController() {
-        assertTrue(tooltipControllerProvider.get(StaticTooltip.PrivacyPolicy) is PrivacyPolicyTooltipController)
+        assertTrue(tooltipControllerProvider.get(TooltipType.PrivacyPolicy) is PrivacyPolicyTooltipController)
     }
 
     @Test
     fun getAppRatingTooltipController() {
-        assertTrue(tooltipControllerProvider.get(StaticTooltip.RateThisApp) is AppRatingTooltipController)
+        assertTrue(tooltipControllerProvider.get(TooltipType.RateThisApp) is AppRatingTooltipController)
     }
 
 }
