@@ -43,13 +43,29 @@ data class TooltipMetadata(
          *
          * @return if an explicit 'Cancel' button should appear.
          */
-        val showCancelButton: Boolean
+        val showCancelButton: Boolean,
+
+        /**
+         * In the event that we have multiple tooltips, which are valid to present at a particular
+         * instance, so use this to allow subsequent (i.e. lower priority ones) to appear after an
+         * interaction occurs with the first one
+         *
+         * @return true if we will allow the next tooltip to display
+         */
+        val allowNextTooltipToAppearAfterInteraction: Boolean
 ) {
 
     /**
      * A convenience constructor, which uses the tooltip values when building this class
      */
-    constructor(tooltipType: TooltipType,
-                message: String) : this(tooltipType, tooltipType.displayStyle, tooltipType.priority, message, tooltipType.showWarningIcon, tooltipType.showCloseIcon, tooltipType.showCancelButton)
+    constructor(tooltipType: TooltipType, message: String) : this(
+            tooltipType,
+            tooltipType.displayStyle,
+            tooltipType.priority,
+            message,
+            tooltipType.showWarningIcon,
+            tooltipType.showCloseIcon,
+            tooltipType.showCancelButton,
+            tooltipType.allowNextTooltipToAppearAfterInteraction)
 
 }

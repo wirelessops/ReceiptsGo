@@ -5,7 +5,6 @@ import co.smartreceipts.android.analytics.events.DataPoint
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.di.scopes.FragmentScope
-import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.utils.log.Logger
@@ -15,6 +14,7 @@ import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.subjects.PublishSubject
 import java.util.*
 import javax.inject.Inject
 
@@ -26,16 +26,25 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                                            private val tooltipControllerProvider: TooltipControllerProvider,
                                            private val analytics: Analytics) : BasePresenter<TooltipView>(view) {
 
+    /**
+     * We use this to emit an event, whenever the user interacts with a [TooltipMetadata] where
+     */
+    private val onInteractionStream = PublishSubject.create<Any>()
+
+    private var activeTooltip: TooltipMetadata? = null
     private var activeTooltipController: TooltipController? = null
 
     override fun subscribe() {
         // Determine if we have a tooltip to display and show the highest priority one if so
-        compositeDisposable.add(Single.fromCallable {
-                    val tooltipSingles = ArrayList<Single<Optional<TooltipMetadata>>>()
-                    view.getSupportedTooltips().forEach {
-                        tooltipSingles.add(tooltipControllerProvider.get(it).shouldDisplayTooltip())
+        compositeDisposable.add(onInteractionStream.startWith(Any())
+                .flatMap { _ ->
+                    return@flatMap Observable.fromCallable {
+                        val tooltipSingles = ArrayList<Single<Optional<TooltipMetadata>>>()
+                        view.getSupportedTooltips().forEach {
+                            tooltipSingles.add(tooltipControllerProvider.get(it).shouldDisplayTooltip())
+                        }
+                        return@fromCallable tooltipSingles
                     }
-                    return@fromCallable tooltipSingles
                 }.flatMap { tooltipSingles ->
                     if (tooltipSingles.isNotEmpty()) {
                         return@flatMap Single.zip(tooltipSingles) { optionalTooltipsArrayAsObjects ->
@@ -50,21 +59,23 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                                 }
                             }
                             return@zip result
-                        }
+                        }.toObservable()
                     } else {
                         // Don't zip an empty list
-                        return@flatMap Single.just(Optional.absent<TooltipMetadata>())
+                        return@flatMap Observable.just(Optional.absent<TooltipMetadata>())
                     }
                 }
+                .onErrorReturnItem(Optional.absent<TooltipMetadata>())
                 .filter {
                     return@filter it.isPresent
                 }
                 .map {
                     return@map it.get()
                 }
-                .doOnSuccess {
+                .doOnNext {
                     Logger.info(this, "Displaying tooltip: {}", it)
                     analytics.record(DefaultDataPointEvent(Events.Informational.DisplayingTooltip).addDataPoint(DataPoint("tooltip", it)))
+                    this.activeTooltip = it
                     this.activeTooltipController = tooltipControllerProvider.get(it.tooltipType)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -84,7 +95,7 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
         // Handle each click as appropriate for a given tooltip controller
         compositeDisposable.add(Observable.merge(supportedInteractions)
                 .filter { _ ->
-                    return@filter activeTooltipController != null
+                    return@filter activeTooltip != null && activeTooltipController != null
                 }
                 .flatMap {
                     return@flatMap activeTooltipController!!.handleTooltipInteraction(it).andThen(Observable.just(it))
@@ -93,6 +104,13 @@ class TooltipPresenter @Inject constructor(view: TooltipView,
                 .subscribe {
                     // This consumer may be null here, so we use this as a safety mechanism
                     activeTooltipController?.consumeTooltipInteraction()?.accept(it)
+
+                    // After we've consumed this interaction, check if we allow a subsequent item and post if so
+                    activeTooltip?.let { activeTooltipMetadata ->
+                        if (activeTooltipMetadata.allowNextTooltipToAppearAfterInteraction) {
+                            onInteractionStream.onNext(Any())
+                        }
+                    }
                 }
         )
 

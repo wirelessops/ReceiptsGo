@@ -12,12 +12,13 @@ enum class TooltipType(val displayStyle: TooltipDisplayStyle,
                        val priority: Int,
                        val showWarningIcon: Boolean,
                        val showCloseIcon: Boolean,
-                       val showCancelButton: Boolean) {
+                       val showCancelButton: Boolean,
+                       val allowNextTooltipToAppearAfterInteraction: Boolean) {
 
-    AutomaticBackupRecoveryHint(TooltipDisplayStyle.Informational, 100, false, true, false),
-    FirstReportHint(TooltipDisplayStyle.Informational, 75, false, true, false),
-    RateThisApp(TooltipDisplayStyle.Question, 50, false, false, false),
-    PrivacyPolicy(TooltipDisplayStyle.Informational, 10, false, true, false),
-    OcrInformation(TooltipDisplayStyle.Informational, 5, false, true, false)
+    AutomaticBackupRecoveryHint(TooltipDisplayStyle.Informational, 100, false, true, false, false),
+    FirstReportHint(TooltipDisplayStyle.Informational, 75, false, true, false, false),
+    RateThisApp(TooltipDisplayStyle.Question, 50, false, false, false, false),
+    PrivacyPolicy(TooltipDisplayStyle.Informational, 10, false, true, false, false),
+    OcrInformation(TooltipDisplayStyle.Informational, 5, false, true, false, false)
 
 }
