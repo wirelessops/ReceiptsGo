@@ -6,6 +6,7 @@ import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserCo
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptUseTaxesQuestionTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import javax.inject.Inject
 import javax.inject.Provider
@@ -21,7 +22,8 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
                                                     private val firstReportHintTooltipProvider: Provider<FirstReportHintTooltipController>,
                                                     private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
                                                     private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>,
-                                                    private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>) {
+                                                    private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>,
+                                                    private val firstReceiptUseTaxesQuestionTooltipProvider: Provider<FirstReceiptUseTaxesQuestionTooltipController>) {
 
     /**
      * Fetches the appropriate [TooltipController] for a given [TooltipType]
@@ -36,6 +38,7 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
             TooltipType.PrivacyPolicy -> privacyPolicyTooltipProvider.get()
             TooltipType.RateThisApp -> rateThisAppTooltipProvider.get()
             TooltipType.OcrInformation -> ocrInformationTooltipProvider.get()
+            TooltipType.FirstReceiptUseTaxesQuestion -> firstReceiptUseTaxesQuestionTooltipProvider.get()
         }
     }
 }

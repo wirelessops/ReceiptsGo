@@ -359,7 +359,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                             }
                 }
                 .doOnError {
-                    Logger.info(this, "Failed re-ordered this receipts list by date to custom order id", it)
+                    Logger.warn(this, "Failed re-ordered this receipts list by date to custom order id", it)
                 }
                 .doOnComplete {
                     Logger.info(this, "Successfully re-ordered {} receipts by date to custom order id", receipts.size)

@@ -18,8 +18,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 /**
- * Provides specific definitions for all [co.smartreceipts.android.model.Receipt] [co.smartreceipts.android.model.Column]
- * objects
+ * Provides specific definitions for all [Receipt] [Column] objects
  */
 class ReceiptColumnDefinitions @Inject constructor(
     private val reportResourcesManager: ReportResourcesManager,
@@ -158,7 +157,7 @@ class ReceiptColumnDefinitions @Inject constructor(
         return -1
     }
 
-    public fun getColumnFromDefinition(
+    fun getColumnFromDefinition(
         definition: ActualDefinition,
         id: Int = Keyed.MISSING_ID,
         syncState: SyncState = DefaultSyncState(),

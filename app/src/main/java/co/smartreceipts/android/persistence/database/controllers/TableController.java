@@ -55,9 +55,9 @@ public interface TableController<ModelType> {
      *
      * @param modelType the object to insert
      * @param databaseOperationMetadata metadata about this particular database operation
-//     * @return a hot {@link Observable} that will return the result of this operation
+     * @return a hot {@link Observable} that will return the result of this operation
      */
-    /*Observable<ModelType>*/void insert(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata);
+    Observable<Optional<ModelType>> insert(@NonNull ModelType modelType, @NonNull DatabaseOperationMetadata databaseOperationMetadata);
 
     /**
      * Returns a stream of all insertions submitted to {@link #insert(Object, DatabaseOperationMetadata)}

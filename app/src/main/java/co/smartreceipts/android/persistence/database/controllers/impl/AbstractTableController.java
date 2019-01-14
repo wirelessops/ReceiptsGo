@@ -134,8 +134,11 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
     }
 
     @Override
-    public void insert(@NonNull final ModelType modelType, @NonNull final DatabaseOperationMetadata databaseOperationMetadata) {
-        Logger.info(this, "#insert: {}", modelType);
+    public Observable<Optional<ModelType>> insert(@NonNull final ModelType modelType, @NonNull final DatabaseOperationMetadata databaseOperationMetadata) {
+        Logger.info(this, "#insert: {}", modelType.getUuid());
+
+        // Note: This is just a hacked place-holder to ensure that the #insert operation runs hot, since this is required for certain legacy flows
+        final Subject<Optional<ModelType>> insertSubject = PublishSubject.create();
 
         mTableActionAlterations.preInsert(modelType)
                 .subscribeOn(mSubscribeOnScheduler)
@@ -152,7 +155,10 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
                 })
                 .map(Optional::of)
                 .onErrorReturnItem(Optional.absent())
-                .subscribe();
+                .toObservable()
+                .subscribe(insertSubject);
+
+        return insertSubject;
     }
 
     @NonNull
@@ -164,7 +170,9 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
     @NonNull
     @Override
     public Observable<Optional<ModelType>> update(@NonNull final ModelType oldModelType, @NonNull ModelType newModelType, @NonNull final DatabaseOperationMetadata databaseOperationMetadata) {
-        Logger.info(this, "#update: {}; {}", oldModelType, newModelType);
+        Logger.info(this, "#update: {}; {}", oldModelType.getUuid(), newModelType.getUuid());
+
+        // Note: This is just a hacked place-holder to ensure that the #update operation runs hot, since this is required for certain legacy flows
         final Subject<Optional<ModelType>> updateSubject = PublishSubject.create();
 
         mTableActionAlterations.preUpdate(oldModelType, newModelType)
@@ -195,7 +203,7 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
 
     @Override
     public synchronized void delete(@NonNull final ModelType modelType, @NonNull final DatabaseOperationMetadata databaseOperationMetadata) {
-        Logger.info(this, "#delete: {}", modelType);
+        Logger.info(this, "#delete: {}", modelType.getUuid());
 
         mTableActionAlterations.preDelete(modelType)
                 .subscribeOn(mSubscribeOnScheduler)

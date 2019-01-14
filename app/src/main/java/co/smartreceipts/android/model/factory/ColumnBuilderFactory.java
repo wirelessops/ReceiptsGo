@@ -34,6 +34,15 @@ public final class ColumnBuilderFactory<T> implements BuilderFactory<Column<T>> 
         customOrderId = 0;
     }
 
+    public ColumnBuilderFactory(@NonNull ColumnDefinitions<T> columnDefinitions, @NonNull Column<T> column) {
+        this.columnDefinitions = columnDefinitions;
+        id = column.getId();
+        uuid = column.getUuid();
+        columnType = column.getType();
+        syncState = column.getSyncState();
+        customOrderId = column.getCustomOrderId();
+    }
+
     public ColumnBuilderFactory<T> setColumnId(int id) {
         this.id = id;
         return this;
