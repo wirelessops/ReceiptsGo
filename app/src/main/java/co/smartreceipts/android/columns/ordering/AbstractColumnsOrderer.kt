@@ -25,7 +25,8 @@ abstract class AbstractColumnsOrderer(private val columnTableController: ColumnT
     /**
      * Inserts a given column definition, [definitionToInsert], after another column ([after]), which
      * may be in our current list. If [after] is not in our list, we will add [definitionToInsert] to
-     * the end of the list
+     * the end of the list. In the event that the list contains multiple instances of [after], we
+     * insert [definitionToInsert] after the first instance
      *
      * @param definitionToInsert the definition to add to our list
      * @param after the item to add [definitionToInsert] after
