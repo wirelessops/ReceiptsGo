@@ -17,7 +17,10 @@ import co.smartreceipts.android.widget.tooltip.Tooltip
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 
-class OcrInformationalTooltipFragment : Fragment(), TooltipView {
+/**
+ * Acts as a dedicated fragment for showing a tooltip when editing/creating a receipt.
+ */
+class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
 
     @Inject
     internal lateinit var tooltipPresenter: TooltipPresenter
@@ -45,7 +48,7 @@ class OcrInformationalTooltipFragment : Fragment(), TooltipView {
     }
 
     override fun getSupportedTooltips(): List<TooltipType> {
-        return listOf(TooltipType.OcrInformation)
+        return listOf(TooltipType.FirstReceiptUseTaxesQuestion, TooltipType.OcrInformation)
     }
 
     override fun display(tooltip: TooltipMetadata) {

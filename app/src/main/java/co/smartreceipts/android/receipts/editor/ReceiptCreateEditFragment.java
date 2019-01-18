@@ -63,7 +63,6 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateFormatter;
-import co.smartreceipts.android.di.RxModule;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
 import co.smartreceipts.android.fragments.ReceiptInputCache;
@@ -79,7 +78,7 @@ import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.util.OcrResponseParser;
-import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipFragment;
+import co.smartreceipts.android.ocr.widget.tooltip.ReceiptCreateEditFragmentTooltipFragment;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
@@ -95,7 +94,6 @@ import co.smartreceipts.android.receipts.editor.pricing.ReceiptPricingPresenter;
 import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarPresenter;
 import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarView;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
@@ -318,7 +316,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
         if (savedInstanceState == null) {
             if (isNewReceipt()) {
-                new ChildFragmentNavigationHandler(this).addChild(new OcrInformationalTooltipFragment(), R.id.update_receipt_tooltip);
+                new ChildFragmentNavigationHandler(this).addChild(new ReceiptCreateEditFragmentTooltipFragment(), R.id.update_receipt_tooltip);
             }
         }
 
