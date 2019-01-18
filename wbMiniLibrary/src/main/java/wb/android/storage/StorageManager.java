@@ -746,17 +746,27 @@ public class StorageManager {
 			Enumeration<? extends ZipEntry> e = archive.entries();
 			while (e.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) e.nextElement();
-				File file = new File(extractTo, entry.getName());
+				File file;
+				if ("receipts.db-wal".equals(entry.getName())) {
+					// A hack to make this work for WAL files
+					// TODO: Generalize this behavior whenever we re-write this class
+					file = new File(extractTo, "receipts_backup.db-wal");
+				} else {
+					file = new File(extractTo, entry.getName());
+				}
 				if (entry.getName().endsWith(".zip"))
 					continue; // Fix in the future. Currently, just ignore nested .zip files
 				File parent = file.getParentFile();
-				if (!parent.exists())
+				if (!parent.exists()) {
 					parent.mkdirs();
-				if (entry.isDirectory())
+				}
+				if (entry.isDirectory()) {
 					file.mkdirs();
+				}
 				else {
-					if (!overwrite && file.exists())
+					if (!overwrite && file.exists()) {
 						continue;
+					}
 					delete(file); // Remove the existing file before overwriting
 					in = archive.getInputStream(entry);
 					out = new BufferedOutputStream(new FileOutputStream(file));

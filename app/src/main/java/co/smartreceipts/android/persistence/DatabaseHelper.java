@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.hadisatrio.optional.Optional;
 
@@ -169,6 +170,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
+        try {
+            // We disable WAL to simplify our backup structure
+            db.disableWriteAheadLogging();
+        } catch (IllegalStateException e) {
+            Logger.error(this, "Failed to disable WAL");
+        }
         mIsDBOpen = true;
     }
 
