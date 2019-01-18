@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -62,6 +63,7 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateFormatter;
+import co.smartreceipts.android.di.RxModule;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
 import co.smartreceipts.android.fragments.ReceiptInputCache;
@@ -97,12 +99,14 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.android.utils.rx.RxSchedulers;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.rxbinding2.RxTextViewExtensions;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.functions.Consumer;
 import wb.android.flex.Flex;
 
@@ -161,6 +165,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Inject
     ReceiptsEditorToolbarPresenter receiptsEditorToolbarPresenter;
+
+    @Inject
+    @Named(RxSchedulers.IO)
+    Scheduler ioScheduler;
+
+    @Inject
+    @Named(RxSchedulers.MAIN)
+    Scheduler mainScheduler;
 
     // Butterknife Fields
     @BindView(R.id.toolbar)
@@ -281,7 +293,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
         final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getEditableItem());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
-        receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getEditableItem(), savedInstanceState);
+        receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getEditableItem(), savedInstanceState, ioScheduler, mainScheduler);
         currencyExchangeRateEditorPresenter = new CurrencyExchangeRateEditorPresenter(this, this, defaultCurrencyListEditorView, this, exchangeRateServiceManager, database, getParentTrip(), getEditableItem(), savedInstanceState);
     }
 
