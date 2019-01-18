@@ -29,30 +29,34 @@ object StrictModeConfiguration {
             threadPolicyBuilder.detectResourceMismatches()
         }
 
-        // We use a custom policy to white-list specific failures
-        threadPolicyBuilder.penaltyListener(Executors.newSingleThreadExecutor(), StrictMode.OnThreadViolationListener {
-            // This we use this to check for a strict mode violation that occurs due to instant run
-            // https://stackoverflow.com/questions/51021362/strictmode-disk-read-violation-on-empty-activitys-setcontentview
-            val stackTrace = it.stackTrace.asList()
-            stackTrace.reversed()
-            stackTrace.subList(0, Math.min(stackTrace.size, MAX_STACK_DEPTH_TO_CHECK))
-            var hasInflationTraceElement = false
-            var hasDexTraceElement = false
-            stackTrace.forEach { stackTraceElement ->
-                if (stackTraceElement.toString().contains("LayoutInflater.createView")) {
-                    hasInflationTraceElement = true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // We use a custom policy to white-list specific failures
+            threadPolicyBuilder.penaltyListener(Executors.newSingleThreadExecutor(), StrictMode.OnThreadViolationListener {
+                // This we use this to check for a strict mode violation that occurs due to instant run
+                // https://stackoverflow.com/questions/51021362/strictmode-disk-read-violation-on-empty-activitys-setcontentview
+                val stackTrace = it.stackTrace.asList()
+                stackTrace.reversed()
+                stackTrace.subList(0, Math.min(stackTrace.size, MAX_STACK_DEPTH_TO_CHECK))
+                var hasInflationTraceElement = false
+                var hasDexTraceElement = false
+                stackTrace.forEach { stackTraceElement ->
+                    if (stackTraceElement.toString().contains("LayoutInflater.createView")) {
+                        hasInflationTraceElement = true
+                    }
+                    if (stackTraceElement.toString().contains("BaseDexClassLoader.findClass")) {
+                        hasDexTraceElement = true
+                    }
                 }
-                if (stackTraceElement.toString().contains("BaseDexClassLoader.findClass")) {
-                    hasDexTraceElement = true
+                val isWhiteListed = hasInflationTraceElement and hasDexTraceElement
+                if (!isWhiteListed) {
+                    throw it
+                } else {
+                    Logger.warn(this, "Ignoring StrictMode Failure for WhiteListed Instant-Run violation", it.message)
                 }
-            }
-            val isWhiteListed = hasInflationTraceElement and hasDexTraceElement
-            if (!isWhiteListed) {
-                throw it
-            } else {
-                Logger.warn(this, "Ignoring StrictMode Failure for WhiteListed Instant-Run violation", it.message)
-            }
-        })
+            })
+        } else {
+            threadPolicyBuilder.penaltyDeath()
+        }
 
         threadPolicyBuilder.build()
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
