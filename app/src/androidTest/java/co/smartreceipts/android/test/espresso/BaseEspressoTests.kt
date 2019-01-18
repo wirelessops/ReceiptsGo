@@ -14,6 +14,7 @@ import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -54,6 +55,8 @@ class BaseEspressoTests {
         // Create a trip, entitled "Test"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
+
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1)) // Wait a seconds to ensure that everything loaded
 
         // Up Button Navigation
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
