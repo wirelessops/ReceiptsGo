@@ -6,6 +6,7 @@ import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserCo
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
+import co.smartreceipts.android.tooltip.receipt.paymentmethods.FirstReceiptUsePaymentMethodsQuestionTooltipController
 import co.smartreceipts.android.tooltip.receipt.taxes.FirstReceiptUseTaxesQuestionTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import javax.inject.Inject
@@ -23,7 +24,8 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
                                                     private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
                                                     private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>,
                                                     private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>,
-                                                    private val firstReceiptUseTaxesQuestionTooltipProvider: Provider<FirstReceiptUseTaxesQuestionTooltipController>) {
+                                                    private val firstReceiptUseTaxesQuestionTooltipProvider: Provider<FirstReceiptUseTaxesQuestionTooltipController>,
+                                                    private val firstReceiptUsePaymentMethodsQuestionTooltipProvider: Provider<FirstReceiptUsePaymentMethodsQuestionTooltipController>) {
 
     /**
      * Fetches the appropriate [TooltipController] for a given [TooltipType]
@@ -39,6 +41,7 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
             TooltipType.RateThisApp -> rateThisAppTooltipProvider.get()
             TooltipType.OcrInformation -> ocrInformationTooltipProvider.get()
             TooltipType.FirstReceiptUseTaxesQuestion -> firstReceiptUseTaxesQuestionTooltipProvider.get()
+            TooltipType.FirstReceiptUsePaymentMethodsQuestion -> firstReceiptUsePaymentMethodsQuestionTooltipProvider.get()
         }
     }
 }

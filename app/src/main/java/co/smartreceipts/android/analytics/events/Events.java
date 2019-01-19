@@ -92,6 +92,8 @@ public final class Events {
         public static final Event ClickedFirstReportHintTip = new DefaultEvent(Category.Informational, "ClickedFirstReportHintTip");
         public static final Event ClickedTaxQuestionTipYes = new DefaultEvent(Category.Informational, "ClickedTaxQuestionTipYes");
         public static final Event ClickedTaxQuestionTipNo = new DefaultEvent(Category.Informational, "ClickedTaxQuestionTipNo");
+        public static final Event ClickedPaymentMethodsQuestionTipYes = new DefaultEvent(Category.Informational, "ClickedPaymentMethodsQuestionTipYes");
+        public static final Event ClickedPaymentMethodsQuestionTipNo = new DefaultEvent(Category.Informational, "ClickedPaymentMethodsQuestionTipNo");
         public static final Event ClickedAutomaticBackupRecoveryHintTip = new DefaultEvent(Category.Informational, "ClickedAutomaticBackupRecoveryHintTip");
         public static final Event ClickedManageCategories = new DefaultEvent(Category.Informational, "ClickedManageCategories");
         public static final Event ClickedManagePaymentMethods = new DefaultEvent(Category.Informational, "ClickedManagePaymentMethods");

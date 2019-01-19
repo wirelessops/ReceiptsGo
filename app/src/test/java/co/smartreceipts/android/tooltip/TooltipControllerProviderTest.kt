@@ -5,6 +5,7 @@ import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserCo
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
+import co.smartreceipts.android.tooltip.receipt.paymentmethods.FirstReceiptUsePaymentMethodsQuestionTooltipController
 import co.smartreceipts.android.tooltip.receipt.taxes.FirstReceiptUseTaxesQuestionTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import org.junit.Before
@@ -40,6 +41,9 @@ class TooltipControllerProviderTest {
     @Mock
     private lateinit var firstReceiptUseTaxesQuestionTooltipController: FirstReceiptUseTaxesQuestionTooltipController
 
+    @Mock
+    private lateinit var firstReceiptUsePaymentMethodsQuestionTooltipProvider: FirstReceiptUsePaymentMethodsQuestionTooltipController
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -48,7 +52,8 @@ class TooltipControllerProviderTest {
                                                               Provider { return@Provider privacyPolicyTooltipController },
                                                               Provider { return@Provider rateThisAppTooltipController },
                                                               Provider { return@Provider ocrInformationTooltipController },
-                                                              Provider { return@Provider firstReceiptUseTaxesQuestionTooltipController })
+                                                              Provider { return@Provider firstReceiptUseTaxesQuestionTooltipController },
+                                                              Provider { return@Provider firstReceiptUsePaymentMethodsQuestionTooltipProvider })
     }
 
     @Test
@@ -79,6 +84,11 @@ class TooltipControllerProviderTest {
     @Test
     fun getFirstReceiptUseTaxesTooltipController() {
         assertTrue(tooltipControllerProvider.get(TooltipType.FirstReceiptUseTaxesQuestion) is FirstReceiptUseTaxesQuestionTooltipController)
+    }
+
+    @Test
+    fun getFirstReceiptUsePaymentMethodsQuestionTooltipController() {
+        assertTrue(tooltipControllerProvider.get(TooltipType.FirstReceiptUsePaymentMethodsQuestion) is FirstReceiptUsePaymentMethodsQuestionTooltipController)
     }
 
 }
