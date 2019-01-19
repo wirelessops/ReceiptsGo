@@ -1,6 +1,7 @@
 package co.smartreceipts.android.tooltip.receipt
 
 import android.preference.PreferenceManager
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import co.smartreceipts.android.utils.TestLazy
 import io.reactivex.schedulers.Schedulers
 import org.junit.After

@@ -3,7 +3,6 @@ package co.smartreceipts.android.versioning
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintVersionUpgradedListener
 import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsVersionUpgradedListener
-import java.util.*
 import javax.inject.Inject
 
 /**

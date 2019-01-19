@@ -1,4 +1,4 @@
-package co.smartreceipts.android.tooltip.receipt
+package co.smartreceipts.android.tooltip.receipt.taxes
 
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
@@ -12,6 +12,7 @@ import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipType
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify

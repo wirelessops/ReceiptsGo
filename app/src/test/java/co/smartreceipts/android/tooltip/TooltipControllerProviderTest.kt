@@ -5,7 +5,7 @@ import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserCo
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
-import co.smartreceipts.android.tooltip.receipt.FirstReceiptUseTaxesQuestionTooltipController
+import co.smartreceipts.android.tooltip.receipt.taxes.FirstReceiptUseTaxesQuestionTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import org.junit.Before
 

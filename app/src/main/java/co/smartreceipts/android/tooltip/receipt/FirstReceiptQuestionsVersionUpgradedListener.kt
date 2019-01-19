@@ -1,6 +1,7 @@
 package co.smartreceipts.android.tooltip.receipt
 
 import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.versioning.VersionUpgradedListener
 import javax.inject.Inject

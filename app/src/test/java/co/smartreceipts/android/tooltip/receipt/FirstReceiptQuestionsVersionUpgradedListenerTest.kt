@@ -1,5 +1,7 @@
 package co.smartreceipts.android.tooltip.receipt
 
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsVersionUpgradedListener
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import org.junit.Before

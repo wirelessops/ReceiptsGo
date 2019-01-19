@@ -1,4 +1,4 @@
-package co.smartreceipts.android.tooltip.receipt
+package co.smartreceipts.android.tooltip.receipt.taxes
 
 import android.content.Context
 import android.support.annotation.AnyThread
@@ -19,6 +19,7 @@ import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
+import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Completable
