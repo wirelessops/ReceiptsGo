@@ -8,6 +8,21 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
+
+    <!--
+        Please note that we explicitly disable allowBackup for auto-backup above:
+        https://developer.android.com/guide/topics/data/autobackup.html
+        Here's why:
+        1. Backups have a 25MB quota. Because SmartReceipts saves images, it will quickly exceed this
+        2. We can break our native syncing solution as follows:
+             - The user uploads the database and Google Drive metadata
+             - The user uninstalls and restores the app
+             - In some situations, shared preferences will be synced but not the database (eg if we're at the 25MB quota)
+             - As a result, we attempt to restore the drive metadata and an empty database. We then upload
+               the empty database, which causes the user to lose his/her data.
+             - While this can be disabled via a "my_backup_rules.xml" definition, the 25MB quota is going to cause
+               us issues anyway. As a result, I'm disabling this entirely
+    -->
     <application
         tools:replace="android:icon,android:label,android:theme"
         android:label="@string/sr_app_name"
@@ -21,19 +36,11 @@
         tools:ignore="UnusedAttribute">
 
         <!--
-            Please note that we explicitly disable allowBackup for auto-backup above:
-            https://developer.android.com/guide/topics/data/autobackup.html
-            Here's why:
-            1. Backups have a 25MB quota. Because SmartReceipts saves images, it will quickly exceed this
-            2. We can break our native syncing solution as follows:
-                 - The user uploads the database and Google Drive metadata
-                 - The user uninstalls and restores the app
-                 - In some situations, shared preferences will be synced but not the database (eg if we're at the 25MB quota)
-                 - As a result, we attempt to restore the drive metadata and an empty database. We then upload
-                   the empty database, which causes the user to lose his/her data.
-                 - While this can be disabled via a "my_backup_rules.xml" definition, the 25MB quota is going to cause
-                   us issues anyway. As a result, I'm disabling this entirely
+            https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library
+            If your app is targeting API level 28 (Android 9.0) or above, you must include the following declaration within
+            the <application> element of AndroidManifest.xml.
         -->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
         <activity android:name=".activities.SmartReceiptsActivity"
                   android:label="@string/sr_app_name"
@@ -83,7 +90,7 @@
 
             <!-- ****Do not nest these filters!! They will not work if so. *** -->
             <!-- Filter to open file with gmail version 4.2 -->
-            <intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/smr" android:pathPattern=".*\\.smr"  android:host="*"
@@ -91,7 +98,7 @@
             </intent-filter>
 
             <!-- This seems to be the "key" one for SMRs -->
-            <intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/octet-stream" android:pathPattern=".*\\.smr" android:host="*"
@@ -99,7 +106,7 @@
             </intent-filter>
 
             <!-- A fallback one for zip mime types -->
-            <intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/zip" android:pathPattern=".*\\.smr" android:host="*"
