@@ -24,6 +24,6 @@ class ColumnJsonAdapter(private val definitions: ColumnDefinitions<Receipt>) {
     @JsonClass(generateAdapter = true)
     data class ColumnJson(
         @Json(name = "uuid") val uuid: String,
-        @Json(name = "column_type") val columnType: Int = 1 // TODO: 19.10.2018 mocked server data
+        @Json(name = "column_type") val columnType: Int
     )
 }

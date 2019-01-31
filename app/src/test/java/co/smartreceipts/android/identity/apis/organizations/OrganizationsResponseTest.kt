@@ -90,7 +90,7 @@ class OrganizationsResponseTest {
                 "CSVColumns": [
                     {
                         "uuid": "fff24e83-fe5a-47b5-86fa-376d449fe348",
-                        "column_type": 1
+                        "column_type": 5
                     }
                 ],
                 "PDFColumns": [
@@ -125,7 +125,7 @@ class OrganizationsResponseTest {
 
     @Before
     fun setUp() {
-        whenever(receiptColumnDefinitions.getColumn(any(), eq(1), any(), any(), eq(UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348"))))
+        whenever(receiptColumnDefinitions.getColumn(any(), eq(5), any(), any(), eq(UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348"))))
             .thenReturn(ReceiptCategoryCodeColumn(-1, DefaultSyncState(), 0, UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348")))
 
         whenever(receiptColumnDefinitions.getColumn(any(), eq(1), any(), any(), eq(UUID.fromString("bec00e55-80ad-4147-9c39-9d4a5acb635f"))))
@@ -201,7 +201,7 @@ class OrganizationsResponseTest {
         assertNotNull(appSettings)
         assertNotNull(appSettings.categories)
         assertNotNull(appSettings.paymentMethods)
-        assertNotNull(appSettings.settings)
+        assertNotNull(appSettings.preferences)
         assertNotNull(appSettings.configurations)
 
 
@@ -212,9 +212,9 @@ class OrganizationsResponseTest {
 
 
         // Testing Settings section
-        val settings = appSettings.settings
+        val settings = appSettings.preferences
         assertNotNull(settings)
-        val jsonObject = settings.jsonObject
+        val jsonObject = settings.preferencesJson
 
         assertTrue(jsonObject.has("TripDuration") && jsonObject.getInt("TripDuration") == 8)
         assertTrue(jsonObject.has("isocurr") && !jsonObject.isNull("isocurr") && jsonObject.getString("isocurr") == "AED")
