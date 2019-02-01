@@ -39,6 +39,7 @@ object StrictModeConfiguration {
                 stackTrace.subList(0, Math.min(stackTrace.size, MAX_STACK_DEPTH_TO_CHECK))
                 var hasInflationTraceElement = false
                 var hasDexTraceElement = false
+                var hasPreferenceManagerInflation = false
                 stackTrace.forEach { stackTraceElement ->
                     if (stackTraceElement.toString().contains("LayoutInflater.createView")) {
                         hasInflationTraceElement = true
@@ -46,12 +47,15 @@ object StrictModeConfiguration {
                     if (stackTraceElement.toString().contains("BaseDexClassLoader.findClass")) {
                         hasDexTraceElement = true
                     }
+                    if (stackTraceElement.toString().contains("PreferenceManager.inflateFromResource")) {
+                        hasPreferenceManagerInflation = true
+                    }
                 }
-                val isWhiteListed = hasInflationTraceElement and hasDexTraceElement
+                val isWhiteListed = (hasInflationTraceElement and hasDexTraceElement) or hasPreferenceManagerInflation
                 if (!isWhiteListed) {
                     throw it
                 } else {
-                    Logger.warn(this, "Ignoring StrictMode Failure for WhiteListed Instant-Run violation", it.message)
+                    Logger.warn(this, "Ignoring StrictMode Failure for WhiteListed violation", it.message)
                 }
             })
         } else {

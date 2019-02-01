@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -38,6 +39,9 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.android.currency.widget.CurrencyCodeSupplier;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
+import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -55,13 +59,19 @@ import co.smartreceipts.android.utils.log.LogConstants;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.AndroidInjection;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import wb.android.flex.Flex;
 import wb.android.preferences.PlusCheckBoxPreference;
 import wb.android.preferences.SummaryEditTextPreference;
 
-public class SettingsActivity extends AppCompatPreferenceActivity implements OnPreferenceClickListener, UniversalPreferences, PurchaseEventsListener {
+public class SettingsActivity extends AppCompatPreferenceActivity implements
+        OnPreferenceClickListener,
+        UniversalPreferences,
+        PurchaseEventsListener,
+        CurrencyListEditorView {
 
     public static final String EXTRA_GO_TO_CATEGORY = "GO_TO_CATEGORY";
 
@@ -92,6 +102,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
     private boolean isUsingHeaders;
+
+    // Currency stuff
+    private CurrencyListEditorPresenter currencyListEditorPresenter;
+    private ListPreference currencyPreference;
 
     /**
      * Ugly hack to determine if a fragment header is currently showing or not. See if I can replace by counting the
@@ -132,6 +146,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             configurePreferencesPrivacy(this);
         }
 
+        currencyListEditorPresenter = new CurrencyListEditorPresenter(this, databaseHelper, () -> userPreferenceManager.get(UserPreference.General.DefaultCurrency), savedInstanceState);
         purchaseManager.addEventListener(this);
 
 
@@ -168,6 +183,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     @Override
     protected void onStart() {
         super.onStart();
+        currencyListEditorPresenter.subscribe();
+        compositeDisposable = new CompositeDisposable();
+        compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(inAppPurchases -> {
+                    Logger.info(SettingsActivity.this, "The following purchases are available: {}", availablePurchases);
+                    availablePurchases = inAppPurchases;
+                }, throwable -> Logger.warn(SettingsActivity.this, "Failed to retrieve purchases for this session.", throwable)));
     }
 
     @Override
@@ -178,13 +201,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
             actionBar.setTitle(R.string.menu_main_settings);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(inAppPurchases -> {
-                    Logger.info(SettingsActivity.this, "The following purchases are available: {}", availablePurchases);
-                    availablePurchases = inAppPurchases;
-                }, throwable -> Logger.warn(SettingsActivity.this, "Failed to retrieve purchases for this session.", throwable)));
     }
 
     public void onBuildHeaders(List<Header> target) {
@@ -229,9 +245,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     }
 
     @Override
-    protected void onPause() {
+    protected void onStop() {
         compositeDisposable.clear();
-        super.onPause();
+        currencyListEditorPresenter.unsubscribe();
+        super.onStop();
     }
 
     @Override
@@ -251,20 +268,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     }
 
     public void configurePreferencesGeneral(UniversalPreferences universal) {
-        // Get the currency list
-        List<CharSequence> currencyList = databaseHelper.getCurrenciesList();
-        CharSequence[] currencyArray = new CharSequence[currencyList.size()];
-        currencyList.toArray(currencyArray);
-
         // Get the date separator list
         final String defaultSeparator = userPreferenceManager.get(UserPreference.General.DateSeparator);
         final CharSequence[] dateSeparators = getDateSeparatorOptions(userPreferenceManager);
 
         // Configure out currency list
-        final ListPreference currencyPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_currency_key);
-        currencyPreference.setEntries(currencyArray);
-        currencyPreference.setEntryValues(currencyArray);
-        currencyPreference.setValue(userPreferenceManager.get(UserPreference.General.DefaultCurrency));
+        currencyPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_currency_key);
 
         // Configure the date separator list
         final ListPreference dateSeparatorPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_date_separator_key);
@@ -292,10 +301,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
     private CharSequence[] getDateSeparatorOptions(UserPreferenceManager preferences) {
         final int definedDateSeparatorCount = 3;
         CharSequence[] dateSeparators;
-        final String defaultSepartor = preferences.get(UserPreference.General.DateSeparator);
-        if (!defaultSepartor.equals("-") && !defaultSepartor.equals("/")) {
+        final String defaultSeparator = preferences.get(UserPreference.General.DateSeparator);
+        if (!defaultSeparator.equals("-") && !defaultSeparator.equals("/")) {
             dateSeparators = new CharSequence[definedDateSeparatorCount + 1];
-            dateSeparators[definedDateSeparatorCount] = defaultSepartor;
+            dateSeparators[definedDateSeparatorCount] = defaultSeparator;
         } else {
             dateSeparators = new CharSequence[definedDateSeparatorCount];
         }
@@ -355,14 +364,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         subjectPreference.setDefaultValue(flex.getString(this, R.string.EMAIL_DATA_SUBJECT));
     }
 
+    @SuppressWarnings("unused")
     public void configurePreferencesCamera(UniversalPreferences universal) {
 
     }
 
+    @SuppressWarnings("unused")
     public void configurePreferencesLayoutCustomizations(UniversalPreferences universal) {
 
     }
 
+    @SuppressWarnings("unused")
     public void configurePreferencesDistance(UniversalPreferences universal) {
 
     }
@@ -515,4 +527,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements OnP
         }
     }
 
+    @NonNull
+    @Override
+    public Consumer<? super List<CharSequence>> displayCurrencies() {
+        return currencies -> {
+            final CharSequence[] currencyArray = new CharSequence[currencies.size()];
+            currencies.toArray(currencyArray);
+            currencyPreference.setEntries(currencyArray);
+            currencyPreference.setEntryValues(currencyArray);
+        };
+    }
+
+    @NonNull
+    @Override
+    public Consumer<? super Integer> displayCurrencySelection() {
+        return currencyIndex -> currencyPreference.setValueIndex(currencyIndex);
+    }
+
+    @NonNull
+    @Override
+    public Observable<Integer> currencyClicks() {
+        // Intentionally empty as interactions are handled by the prefs themselves
+        return Observable.empty();
+    }
 }
