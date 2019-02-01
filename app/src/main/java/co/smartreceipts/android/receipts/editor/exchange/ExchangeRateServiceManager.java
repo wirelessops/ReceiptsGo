@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.GsonBuilder;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -71,7 +72,8 @@ public class ExchangeRateServiceManager {
      * EUR/USD, EUR would refer to the base currency code (ie receipt one), and USD would refer to the quote currency
      * code (ie trip one)
      *
-     * @param date the desired {@link Date} to get the currency for
+     * @param date the desired {@link Date} to get the currency for. If this date is in the future, it will fetch
+     *             for the current one
      * @param baseCurrencyCode the base currency code
      * @param quoteCurrencyCode the quote currency code
      * @return an {@link Observable} that will emit a {@link UiIndicator}, which may contain a {@link ExchangeRate}
@@ -81,10 +83,18 @@ public class ExchangeRateServiceManager {
     public Observable<UiIndicator<ExchangeRate>> getExchangeRate(@NonNull Date date, @NonNull String baseCurrencyCode, @NonNull String quoteCurrencyCode) {
         return Observable.just(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus))
                 .filter(hasPlusSubscription -> hasPlusSubscription)
-                .flatMap(hasPlusSubscription ->
-                        exchangeRateService.getExchangeRate(date, context.getString(R.string.exchange_rate_key), baseCurrencyCode)
+                .map(ignored -> {
+                    final Date today = new Date(Calendar.getInstance().getTimeInMillis());
+                    if (date.after(today)) {
+                        return today;
+                    } else {
+                        return date;
+                    }
+                })
+                .flatMap(dateAsTodayOrEarlier ->
+                        exchangeRateService.getExchangeRate(dateAsTodayOrEarlier, context.getString(R.string.exchange_rate_key), baseCurrencyCode)
                         .doOnSubscribe(ignored -> {
-                            Logger.info(ExchangeRateServiceManager.this, "Fetching the exchange rate for {} on {}", baseCurrencyCode, date);
+                            Logger.info(ExchangeRateServiceManager.this, "Fetching the exchange rate for {} on {}", baseCurrencyCode, dateAsTodayOrEarlier);
                             analytics.record(Events.Receipts.RequestExchangeRate);
                         })
                         .flatMap(exchangeRate -> {
@@ -103,7 +113,7 @@ public class ExchangeRateServiceManager {
                             }
                         })
                         .doOnNext(exchangeRate -> {
-                            Logger.info(ExchangeRateServiceManager.this, "Successfully fetched the exchange rate for {} on {}", baseCurrencyCode, date);
+                            Logger.info(ExchangeRateServiceManager.this, "Successfully fetched the exchange rate for {} on {}", baseCurrencyCode, dateAsTodayOrEarlier);
                             analytics.record(Events.Receipts.RequestExchangeRateSuccess);
                         })
                         .map(UiIndicator::success)
@@ -119,7 +129,8 @@ public class ExchangeRateServiceManager {
      * {@link #getExchangeRate(Date, String, String)}.
      * </p>
      *
-     * @param date the desired {@link Date} to get the currency for
+     * @param date the desired {@link Date} to get the currency for. If this date is in the future, it will fetch
+     *             for the current one
      * @param baseCurrencyCode the base currency code
      * @param quoteCurrencyCode the quote currency code
      * @return an {@link Observable} that will emit a {@link UiIndicator}, which may contain a {@link ExchangeRate}
