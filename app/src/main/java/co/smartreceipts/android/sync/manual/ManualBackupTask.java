@@ -17,6 +17,7 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
 import co.smartreceipts.android.utils.log.Logger;
+import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -32,24 +33,26 @@ public class ManualBackupTask {
     private static final String DATABASE_JOURNAL = "receipts.db-journal";
 
     private final Context context;
-    private final SmartReceiptsTemporaryFileCache smartReceiptsTemporaryFileCache;
+    private final Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy;
     private final PersistenceManager persistenceManager;
     private final Scheduler observeonscheduler;
     private final Scheduler subscribeOnScheduler;
     private ReplaySubject<File> backupBehaviorSubject;
 
     @Inject
-    ManualBackupTask(@NonNull Context context, @NonNull PersistenceManager persistenceManager) {
-        this(context, new SmartReceiptsTemporaryFileCache(context), persistenceManager, Schedulers.io(), Schedulers.io());
+    ManualBackupTask(@NonNull Context context,
+                     @NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
+                     @NonNull PersistenceManager persistenceManager) {
+        this(context, smartReceiptsTemporaryFileCacheLazy, persistenceManager, Schedulers.io(), Schedulers.io());
     }
 
     ManualBackupTask(@NonNull Context context,
-                     @NonNull SmartReceiptsTemporaryFileCache smartReceiptsTemporaryFileCache,
+                     @NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
                      @NonNull PersistenceManager persistenceManager,
                      @NonNull Scheduler observeOnScheduler,
                      @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
-        this.smartReceiptsTemporaryFileCache = Preconditions.checkNotNull(smartReceiptsTemporaryFileCache);
+        this.smartReceiptsTemporaryFileCacheLazy = Preconditions.checkNotNull(smartReceiptsTemporaryFileCacheLazy);
         this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
         this.observeonscheduler = Preconditions.checkNotNull(observeOnScheduler);
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
@@ -105,7 +108,7 @@ public class ManualBackupTask {
 
             // Finish
             File zip = external.zipBuffered(8192, new BackupFileFilter());
-            File backupFile = smartReceiptsTemporaryFileCache.getExternalCacheFile(EXPORT_FILENAME);
+            File backupFile = smartReceiptsTemporaryFileCacheLazy.get().getExternalCacheFile(EXPORT_FILENAME);
 
             if (zip.renameTo(backupFile)) {
                 return backupFile;

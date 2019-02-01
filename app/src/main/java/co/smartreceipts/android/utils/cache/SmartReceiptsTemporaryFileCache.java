@@ -30,6 +30,7 @@ public class SmartReceiptsTemporaryFileCache {
     private final File internalTemporaryCacheFolder;
     private final File externalTemporaryCacheFolder;
 
+    @Inject
     public SmartReceiptsTemporaryFileCache(@NonNull Context context) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.storageManager = StorageManager.getInstance(context);
