@@ -158,7 +158,6 @@ class Receipt constructor(
                 ", extraEditText3='" + extraEditText3 + '\''.toString() +
                 ", isSelected=" + isSelected +
                 ", file=" + file +
-                ", fileLastModifiedTime=" + fileLastModifiedTime +
                 ", customOrderId=" + customOrderId +
                 '}'.toString()
     }

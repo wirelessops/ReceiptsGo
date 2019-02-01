@@ -176,6 +176,7 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
         final Subject<Optional<ModelType>> updateSubject = PublishSubject.create();
 
         mTableActionAlterations.preUpdate(oldModelType, newModelType)
+                .subscribeOn(mSubscribeOnScheduler)
                 .flatMap(updatedItem -> mTable.update(oldModelType, updatedItem, databaseOperationMetadata))
                 .flatMap(modelType -> mTableActionAlterations.postUpdate(oldModelType, modelType))
                 .doOnSuccess(updatedItem -> {
