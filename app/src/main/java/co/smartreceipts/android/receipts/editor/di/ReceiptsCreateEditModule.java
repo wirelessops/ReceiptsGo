@@ -7,6 +7,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorView;
+import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsView;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
 import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarView;
 import dagger.Binds;
@@ -35,5 +36,8 @@ public abstract class ReceiptsCreateEditModule {
 
     @Binds
     abstract ReceiptsEditorToolbarView providesReceiptsEditorToolbarView(ReceiptCreateEditFragment fragment);
+
+    @Binds
+    abstract PaymentMethodsView providesPaymentMethodsView(ReceiptCreateEditFragment fragment);
     
 }

@@ -89,6 +89,8 @@ import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorPresenter;
 import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorView;
 import co.smartreceipts.android.receipts.editor.exchange.ExchangeRateServiceManager;
+import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsPresenter;
+import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsView;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
 import co.smartreceipts.android.receipts.editor.pricing.ReceiptPricingPresenter;
 import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarPresenter;
@@ -117,7 +119,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         CurrencyExchangeRateEditorView,
         SamsungDecimalInputView,
         AutoCompleteView<Receipt>,
-        ReceiptsEditorToolbarView {
+        ReceiptsEditorToolbarView,
+        PaymentMethodsView  {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -163,6 +166,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Inject
     ReceiptsEditorToolbarPresenter receiptsEditorToolbarPresenter;
+
+    @Inject
+    PaymentMethodsPresenter paymentMethodsPresenter;
 
     @Inject
     @Named(RxSchedulers.IO)
@@ -527,13 +533,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             @Override
             public void onGetSuccess(@NonNull List<PaymentMethod> list) {
                 if (isAdded()) {
+                    // TODO: Move to payment methods presenter
                     List<PaymentMethod> paymentMethods = new ArrayList<>(list);
                     paymentMethods.add(PaymentMethod.Companion.getNONE());
-
                     paymentMethodsAdapter.update(paymentMethods);
                     paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
                     if (presenter.isUsePaymentMethods()) {
-                        ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
                         if (getEditableItem() != null) {
                             // Here we manually loop through all payment methods and check for id == id in case the user changed this via "Manage"
                             final PaymentMethod receiptPaymentMethod = getEditableItem().getPaymentMethod();
@@ -545,8 +550,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                                 }
                             }
                         }
-                    } else {
-                        ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.GONE));
                     }
                 }
             }
@@ -564,6 +567,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         receiptPricingPresenter.subscribe();
         currencyExchangeRateEditorPresenter.subscribe();
         receiptsEditorToolbarPresenter.subscribe();
+        paymentMethodsPresenter.subscribe();
 
         // Attempt to update our lists in case they were changed in the background
         categoriesTableController.get();
@@ -635,6 +639,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Override
     public void onStop() {
+        paymentMethodsPresenter.unsubscribe();
         receiptsEditorToolbarPresenter.unsubscribe();
         receiptPricingPresenter.unsubscribe();
         currencyListEditorPresenter.unsubscribe();
@@ -934,6 +939,18 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
+    }
+
+    @NonNull
+    @Override
+    public Consumer<? super Boolean> togglePaymentMethodFieldVisibility() {
+        return isVisible -> {
+            if (isVisible) {
+                ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
+            } else {
+                ButterKnife.apply(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.GONE));
+            }
+        };
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {
