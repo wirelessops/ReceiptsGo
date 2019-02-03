@@ -2,9 +2,9 @@ package co.smartreceipts.android.identity.widget.account
 
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.IdentityManager
-import co.smartreceipts.android.identity.OrganizationManager
 import co.smartreceipts.android.identity.apis.organizations.Organization
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
+import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.widget.model.UiIndicator
 import io.reactivex.Observable

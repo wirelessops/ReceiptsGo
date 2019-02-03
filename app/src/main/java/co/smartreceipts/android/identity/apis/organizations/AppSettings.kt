@@ -11,12 +11,12 @@ import org.json.JSONObject
 @JsonClass(generateAdapter = true)
 class AppSettings(
     @Json(name = "Configurations") val configurations: Configurations,
-    @Json(name = "Settings") val settings: OrganizationSettings,
+    @Json(name = "Settings") val preferences: OrganizationPreferences,
     @Json(name = "Categories") val categories: List<Category>,
     @Json(name = "PaymentMethods") val paymentMethods: List<PaymentMethod>,
     @Json(name = "CSVColumns") val csvColumns: List<Column<Receipt>>,
     @Json(name = "PDFColumns") val pdfColumns: List<Column<Receipt>>
 ) {
 
-    data class OrganizationSettings(val jsonObject: JSONObject)
+    data class OrganizationPreferences(val preferencesJson: JSONObject)
 }

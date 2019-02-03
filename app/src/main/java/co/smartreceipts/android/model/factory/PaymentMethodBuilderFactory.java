@@ -34,6 +34,14 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
         _customOrderId = 0;
     }
 
+    public PaymentMethodBuilderFactory(final PaymentMethod paymentMethod) {
+        _id = paymentMethod.getId();
+        _uuid = paymentMethod.getUuid();
+        _method = paymentMethod.getMethod();
+        _syncState = paymentMethod.getSyncState();
+        _customOrderId = paymentMethod.getCustomOrderId();
+    }
+
     /**
      * Defines the primary key id for this object
      *
