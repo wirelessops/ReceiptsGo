@@ -93,21 +93,20 @@ class AppSettingsSynchronizer @Inject constructor(
             : Single<Boolean> {
         return tableController.get()
             .flatMap { appItems ->
-                if (appItems.size != organizationItems.size) {
-                    return@flatMap Single.just(false)
-                }
-
+                Logger.debug(this, "Comparing app settings with organization...")
                 for (organizationItem in organizationItems) {
                     var foundSame = false
 
                     for (appItem in appItems) {
                         if (equals(appItem, organizationItem)) {
                             foundSame = true
+                            Logger.debug(this, "Found same item: $appItem")
                             break
                         }
                     }
 
                     if (!foundSame) {
+                        Logger.debug(this, "Didn't find item: $organizationItem")
                         return@flatMap Single.just(false)
                     }
                 }

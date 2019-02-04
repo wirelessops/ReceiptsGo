@@ -33,9 +33,9 @@ class OrganizationManager @Inject constructor(
             .map { it.organizations[0] }
             .flatMap { organization ->
                 if (organization.error.hasError) {
-                    return@flatMap Maybe.error<Organization>(ApiValidationException(TextUtils.join(", ", organization.error.errors)))
+                    Maybe.error<Organization>(ApiValidationException(TextUtils.join(", ", organization.error.errors)))
                 } else {
-                    return@flatMap Maybe.just(organization)
+                    Maybe.just(organization)
                 }
             }
     }

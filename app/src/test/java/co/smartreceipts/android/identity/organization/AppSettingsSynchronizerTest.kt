@@ -108,8 +108,16 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun checkColumnsWhenSameTest() {
-        // Note: while checking columnss, we need to check just uuid+type
+        // Note: while checking columns, we need to check just uuid+type
         appSettingsSynchronizer.checkCsvColumnsMatch(arrayListOf(column2, column1)).test()
+            .assertNoErrors()
+            .assertComplete()
+            .assertResult(true)
+    }
+
+    @Test
+    fun checkColumnsWhenSameButDifferentSizeTest() {
+        appSettingsSynchronizer.checkCsvColumnsMatch(arrayListOf(column2)).test()
             .assertNoErrors()
             .assertComplete()
             .assertResult(true)
