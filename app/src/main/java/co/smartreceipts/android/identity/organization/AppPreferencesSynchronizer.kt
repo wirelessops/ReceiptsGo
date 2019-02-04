@@ -91,9 +91,11 @@ class AppPreferencesSynchronizer @Inject constructor(private val userPreferenceM
                 else -> throw Exception("Unsupported organization setting type ${toPreference.type} for $preferenceName")
             }
 
-            Logger.debug(this, "Checking organization preferences: app: \'{}\', organization: \'{}\'", preferenceName, preferenceValue)
+            val appPreferenceValue = userPreferenceManager[toPreference]
+            Logger.debug(this, "Checking organization preference \'{}\'. app: '{}', organization: \'{}\'", preferenceName,
+                appPreferenceValue, preferenceValue)
 
-            val equals = userPreferenceManager[toPreference] == preferenceValue
+            val equals = appPreferenceValue == preferenceValue
             if (!equals && apply) {
                 Logger.debug(this, "Applying organization preferences: set \'{}\' to \'{}\'", preferenceName, preferenceValue)
                 userPreferenceManager[toPreference] = preferenceValue
