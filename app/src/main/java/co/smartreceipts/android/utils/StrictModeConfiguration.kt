@@ -59,7 +59,7 @@ object StrictModeConfiguration {
                 }
             })
         } else {
-            threadPolicyBuilder.penaltyDeath()
+            threadPolicyBuilder.penaltyLog()
         }
 
         threadPolicyBuilder.build()
