@@ -100,13 +100,13 @@ class AppSettingsSynchronizer @Inject constructor(
                     for (appItem in appItems) {
                         if (equals(appItem, organizationItem)) {
                             foundSame = true
-                            Logger.debug(this, "Found same item: $appItem")
+                            Logger.debug(this, "Found same item: {}", appItem)
                             break
                         }
                     }
 
                     if (!foundSame) {
-                        Logger.debug(this, "Didn't find item: $organizationItem")
+                        Logger.debug(this, "Didn't find item: {}", organizationItem)
                         return@flatMap Single.just(false)
                     }
                 }
@@ -128,20 +128,20 @@ class AppSettingsSynchronizer @Inject constructor(
 
                         if (equals(appItem, organizationItem)) { // app contains same item
                             found = true
-                            Logger.debug(this, "Found organization's item: $appItem")
+                            Logger.debug(this, "Found organization's item: {}", appItem)
                             break
                         }
 
                         if (appItem.uuid == organizationItem.uuid) { // app contains changed item, need to update it
                             found = true
-                            Logger.debug(this, "Found changed organization's item: $appItem, updating...")
+                            Logger.debug(this, "Found changed organization's item: {}, updating...", appItem)
                             tableController.update(appItem, organizationItem, DatabaseOperationMetadata())
                             break
                         }
                     }
 
                     if (!found) { // app doesn't contain this item, need to insert
-                        Logger.debug(this, "Didn't find organization's item: $organizationItem, inserting...")
+                        Logger.debug(this, "Didn't find organization's item: {}, inserting...", organizationItem)
                         tableController.insert(organizationItem, DatabaseOperationMetadata())
                     }
                 }

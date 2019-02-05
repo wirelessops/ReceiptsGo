@@ -30,7 +30,7 @@ class AppPreferencesSynchronizer @Inject constructor(private val userPreferenceM
                     .map<Boolean> { it.get() }
                     .contains(false)
             }
-            .map { someSettingsDontMach -> !someSettingsDontMach }
+            .map { someSettingsDontMatch -> !someSettingsDontMatch }
     }
 
     internal fun applyOrganizationPreferences(organizationSettings: AppSettings.OrganizationPreferences): Completable {
