@@ -43,6 +43,11 @@ class AccountPresenter @Inject constructor(view: AccountView, interactor: Accoun
                 .subscribe { indicator -> view.presentApplyingResult(indicator) }
         )
 
+
+        compositeDisposable.add(interactor.getOcrRemainingScansStream()
+            .subscribe(view::presentOcrScans)
+        )
+
     }
 
 }

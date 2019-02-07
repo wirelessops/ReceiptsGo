@@ -30,6 +30,7 @@ class AccountPresenterTest {
 
         whenever(interactor.getEmail()).thenReturn(EmailAddress(EMAIL))
         whenever(interactor.getOrganization()).thenReturn(Observable.just(UiIndicator.loading(), UiIndicator.idle()))
+        whenever(interactor.getOcrRemainingScansStream()).thenReturn(Observable.just(5))
 
         presenter = AccountPresenter(view, interactor)
     }
@@ -66,5 +67,12 @@ class AccountPresenterTest {
         verify(view).presentOrganization(UiIndicator.success(organizationModel))
 
         verify(interactor, times(1)).getOrganization()
+    }
+
+    @Test
+    fun presentOcrScansTest() {
+        presenter.subscribe()
+
+        verify(view).presentOcrScans(5)
     }
 }

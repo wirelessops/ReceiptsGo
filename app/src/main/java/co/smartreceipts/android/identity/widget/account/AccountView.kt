@@ -16,5 +16,7 @@ interface AccountView {
 
     fun presentApplyingResult(uiIndicator: UiIndicator<Unit>)
 
+    fun presentOcrScans(remainingScans: Int)
+
     fun updateProperScreen()
 }

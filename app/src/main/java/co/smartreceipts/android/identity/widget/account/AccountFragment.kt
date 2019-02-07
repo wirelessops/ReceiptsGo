@@ -9,7 +9,6 @@ import android.widget.Toast
 import co.smartreceipts.android.R
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.identity.widget.NeedsLoginFragment
-import co.smartreceipts.android.identity.widget.NeedsLoginRouter
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.support.AndroidSupportInjection
@@ -24,7 +23,7 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
     lateinit var presenter: AccountPresenter
 
     @Inject
-    lateinit var router: NeedsLoginRouter
+    lateinit var router: AccountRouter
 
 
     override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
@@ -124,6 +123,14 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
                 throw IllegalStateException("Applying settings must return only Success or Error result")
             }
         }
+    }
+
+    override fun presentOcrScans(remainingScans: Int) {
+        ocr_scans_remaining.text = getString(R.string.ocr_configuration_scans_remaining, remainingScans)
+
+        val listener: View.OnClickListener = View.OnClickListener { router.navigateToOcrFragment() }
+        ocr_scans_remaining.setOnClickListener(listener)
+        ocr_label.setOnClickListener(listener)
     }
 
     private fun showOrganization(organizationModel: AccountInteractor.OrganizationModel) {

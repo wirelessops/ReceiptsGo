@@ -5,11 +5,13 @@ import co.smartreceipts.android.identity.apis.organizations.Organization
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertEquals
@@ -26,12 +28,13 @@ class AccountInteractorTest {
 
     private val identityManager = mock<IdentityManager>()
     private val organizationManager = mock<OrganizationManager>()
+    private val ocrPurchaseTracker = mock<OcrPurchaseTracker>()
     private val organization = mock<Organization>()
 
 
     @Before
     fun setUp() {
-        interactor = AccountInteractor(identityManager, organizationManager, Schedulers.trampoline(), Schedulers.trampoline())
+        interactor = AccountInteractor(identityManager, organizationManager, ocrPurchaseTracker, Schedulers.trampoline(), Schedulers.trampoline())
     }
 
     @Test
@@ -102,6 +105,17 @@ class AccountInteractorTest {
         testObserver.assertComplete()
             .assertNoErrors()
             .assertValues(UiIndicator.error())
+    }
+
+    @Test
+    fun getOcrRemainingScansStreamTest() {
+        whenever(ocrPurchaseTracker.remainingScansStream).thenReturn(Observable.just(5))
+
+        val testObserver = interactor.getOcrRemainingScansStream().test()
+        testObserver.awaitTerminalEvent()
+        testObserver.assertComplete()
+            .assertNoErrors()
+            .assertResult(5)
     }
 
 

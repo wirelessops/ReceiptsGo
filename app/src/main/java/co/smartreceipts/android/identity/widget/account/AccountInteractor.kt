@@ -6,6 +6,7 @@ import co.smartreceipts.android.identity.apis.organizations.Organization
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.widget.model.UiIndicator
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -18,13 +19,14 @@ import javax.inject.Inject
 class AccountInteractor constructor(
     private val identityManager: IdentityManager,
     private val organizationManager: OrganizationManager,
+    private val ocrPurchaseTracker: OcrPurchaseTracker,
     private val subscribeOnScheduler: Scheduler = Schedulers.io(),
     private val observeOnScheduler: Scheduler = AndroidSchedulers.mainThread()
 ) {
 
     @Inject
-    constructor(identityManager: IdentityManager, organizationManager: OrganizationManager) :
-            this(identityManager, organizationManager, Schedulers.io(), AndroidSchedulers.mainThread())
+    constructor(identityManager: IdentityManager, organizationManager: OrganizationManager, ocrPurchaseTracker: OcrPurchaseTracker) :
+            this(identityManager, organizationManager, ocrPurchaseTracker, Schedulers.io(), AndroidSchedulers.mainThread())
 
 
     fun logOut() = identityManager.logOut()
@@ -57,9 +59,9 @@ class AccountInteractor constructor(
             .observeOn(observeOnScheduler)
     }
 
-    private fun getUserRole(organization: Organization): OrganizationUser.UserRole {
-        // TODO: 12.11.2018 implement getting real user role
-        return OrganizationUser.UserRole.USER
+    fun getOcrRemainingScansStream(): Observable<Int> {
+        return ocrPurchaseTracker.remainingScansStream
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     fun applyOrganizationSettings(organization: Organization): Observable<UiIndicator<Unit>> {
@@ -75,6 +77,10 @@ class AccountInteractor constructor(
             .observeOn(observeOnScheduler)
     }
 
+    private fun getUserRole(organization: Organization): OrganizationUser.UserRole {
+        // TODO: 12.11.2018 implement getting real user role
+        return OrganizationUser.UserRole.USER
+    }
 
     data class OrganizationModel(
         val organization: Organization,

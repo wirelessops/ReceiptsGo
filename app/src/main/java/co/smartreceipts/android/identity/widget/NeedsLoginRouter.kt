@@ -8,7 +8,7 @@ import co.smartreceipts.android.utils.log.Logger
 import javax.inject.Inject
 
 @FragmentScope
-class NeedsLoginRouter @Inject constructor(private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
+open class NeedsLoginRouter @Inject constructor(protected val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
                                            private val identityManager: IdentityManager) {
 
     /**
