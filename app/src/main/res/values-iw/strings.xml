@@ -67,7 +67,7 @@
     <string name="report_info_generate">ייצר</string>
 
     <!-- ============= Report Generation ============== -->
-    <string name="report_header_duration">%2$s :אל s%1$ :מאת</string>
+    <string name="report_header_duration">%2$s :אל %1$s :מאת</string>
     <string name="report_header_receipts_total">%s :סה״כ קבלות</string>
     <string name="report_header_receipts_total_tax">%s :סה״כ מס</string>
     <string name="report_header_receipts_total_no_tax">%s :סה״כ קבלות (ללא מס)</string>
