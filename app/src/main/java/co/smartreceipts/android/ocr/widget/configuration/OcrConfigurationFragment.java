@@ -63,8 +63,6 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     private String delayedPurchaseId = null;
     private PublishSubject<String> delayedPurchaseIdSubject = PublishSubject.create();
 
-    // TODO: 12.02.2019 fix "null" in toolbar when user isn't logged in
-
     public static OcrConfigurationFragment newInstance() {
         return new OcrConfigurationFragment();
     }
@@ -165,7 +163,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public void present(@Nullable EmailAddress emailAddress) {
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
+        if (actionBar != null && emailAddress != null) {
             actionBar.setSubtitle(getContext().getString(R.string.ocr_configuration_my_account, emailAddress));
         }
     }
