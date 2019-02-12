@@ -76,6 +76,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (savedInstanceState == null) {
             analytics.record(Events.Ocr.OcrViewConfigurationPage);
