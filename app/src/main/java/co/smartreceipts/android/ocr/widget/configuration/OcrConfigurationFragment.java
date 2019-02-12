@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -30,21 +31,22 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.identity.store.EmailAddress;
-import co.smartreceipts.android.identity.widget.NeedsLoginFragment;
-import co.smartreceipts.android.identity.widget.NeedsLoginRouter;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 
-public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrConfigurationView {
+public class OcrConfigurationFragment extends Fragment implements OcrConfigurationView {
+
+    private static String OUT_STRING_DELAYED_PURCHASE = "out_string_delayed_purchase_id";
 
     @Inject
     OcrConfigurationPresenter presenter;
 
     @Inject
-    NeedsLoginRouter router;
+    OcrConfigurationRouter router;
 
     @Inject
     Analytics analytics;
@@ -57,6 +59,11 @@ public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrC
 
     private OcrPurchasesListAdapter ocrPurchasesListAdapter;
     private Unbinder unbinder;
+
+    private String delayedPurchaseId = null;
+    private PublishSubject<String> delayedPurchaseIdSubject = PublishSubject.create();
+
+    // TODO: 12.02.2019 fix "null" in toolbar when user isn't logged in
 
     public static OcrConfigurationFragment newInstance() {
         return new OcrConfigurationFragment();
@@ -74,7 +81,16 @@ public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrC
 
         if (savedInstanceState == null) {
             analytics.record(Events.Ocr.OcrViewConfigurationPage);
+        } else {
+            delayedPurchaseId = savedInstanceState.getString(OUT_STRING_DELAYED_PURCHASE, null);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(OUT_STRING_DELAYED_PURCHASE, delayedPurchaseId);
     }
 
     @SuppressLint("InflateParams")
@@ -119,13 +135,17 @@ public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrC
     public void onResume() {
         Logger.debug(this, "onResume");
         super.onResume();
-        setWasPreviouslySentToLogin(router.navigateToProperLocation(getWasPreviouslySentToLogin()));
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         presenter.subscribe();
+
+        if (delayedPurchaseId != null) {
+            delayedPurchaseIdSubject.onNext(delayedPurchaseId);
+            delayedPurchaseId = null;
+        }
     }
 
     @Override
@@ -163,6 +183,13 @@ public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrC
         ocrPurchasesListAdapter.setAvailablePurchases(availablePurchases);
     }
 
+    @Override
+    public void delayPurchaseAndPresentNeedToLogin(String delayedPurchaseId) {
+        this.delayedPurchaseId = delayedPurchaseId;
+        router.navigateToLoginScreen();
+    }
+
+
     @NonNull
     @Override
     public Observable<Boolean> getOcrIsEnabledCheckboxChanged() {
@@ -191,5 +218,10 @@ public class OcrConfigurationFragment extends NeedsLoginFragment implements OcrC
     @Override
     public Consumer<? super Boolean> getAllowUsToSaveImagesRemotelyConsumer() {
         return RxCompoundButton.checked(allowUsToSaveImagesRemotelyCheckbox);
+    }
+
+    @Override
+    public Observable<String> getDelayedPurchaseIdStream() {
+        return delayedPurchaseIdSubject;
     }
 }

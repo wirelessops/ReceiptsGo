@@ -28,6 +28,17 @@ public interface OcrConfigurationView {
     void present(@NonNull List<AvailablePurchase> availablePurchases);
 
     /**
+     * Saves purchase and navigates user to login screen
+     */
+    void delayPurchaseAndPresentNeedToLogin(String delayedPurchaseId);
+
+    /**
+     *
+     * @return an {@link Observable} that will emit a delayed purchase id if it was saved before
+     */
+    Observable<String> getDelayedPurchaseIdStream();
+
+    /**
      * @return an {@link Observable} that will emit a value as to whether the user elects enabled or
      * disable OCR
      */

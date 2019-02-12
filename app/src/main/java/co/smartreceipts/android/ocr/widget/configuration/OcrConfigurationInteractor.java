@@ -21,6 +21,7 @@ import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.purchases.model.ConsumablePurchase;
+import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -55,6 +56,10 @@ public class OcrConfigurationInteractor {
         return identityManager.getEmail();
     }
 
+    public boolean isUserLoggedIn() {
+        return identityManager.isLoggedIn();
+    }
+
     @NonNull
     public Observable<Integer> getRemainingScansStream() {
         return ocrPurchaseTracker.getRemainingScansStream()
@@ -70,10 +75,10 @@ public class OcrConfigurationInteractor {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void startOcrPurchase(@NonNull AvailablePurchase availablePurchase) {
-        if (availablePurchase.getInAppPurchase() != null) {
-            analytics.record(new DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(new DataPoint("sku", availablePurchase.getInAppPurchase())));
-            purchaseManager.initiatePurchase(availablePurchase.getInAppPurchase(), PurchaseSource.Ocr);
+    public void startOcrPurchase(InAppPurchase inAppPurchase) {
+        if (inAppPurchase != null) {
+            analytics.record(new DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(new DataPoint("sku", inAppPurchase)));
+            purchaseManager.initiatePurchase(inAppPurchase, PurchaseSource.Ocr);
         } else {
             Logger.error(this, "Unexpected state in which the in app purchase is null");
         }

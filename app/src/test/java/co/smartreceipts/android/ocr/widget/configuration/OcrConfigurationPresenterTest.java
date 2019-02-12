@@ -60,10 +60,12 @@ public class OcrConfigurationPresenterTest {
         when(interactor.getAllowUsToSaveImagesRemotely()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
         when(interactor.getRemainingScansStream()).thenReturn(Observable.just(REMAINING_SCANS));
         when(interactor.getAvailableOcrPurchases()).thenReturn(Single.just(Collections.singletonList(availablePurchase)));
+        when(interactor.isUserLoggedIn()).thenReturn(true);
 
         when(view.getOcrIsEnabledCheckboxChanged()).thenReturn(Observable.just(OCR_IS_ENABLED));
         when(view.getAllowUsToSaveImagesRemotelyCheckboxChanged()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
         when(view.getAvailablePurchaseClicks()).thenReturn(Observable.just(availablePurchase));
+        when(view.getDelayedPurchaseIdStream()).thenReturn(Observable.empty());
         doReturn(ocrIsEnabledConsumer).when(view).getOcrIsEnabledConsumer();
         doReturn(allowUsToSaveImagesRemotelyConsumer).when(view).getAllowUsToSaveImagesRemotelyConsumer();
     }
@@ -94,7 +96,7 @@ public class OcrConfigurationPresenterTest {
         verify(view).present(Collections.singletonList(availablePurchase));
 
         // Interacts with purchase clicks
-        verify(interactor).startOcrPurchase(availablePurchase);
+        verify(interactor).startOcrPurchase(availablePurchase.getInAppPurchase());
     }
 
 }

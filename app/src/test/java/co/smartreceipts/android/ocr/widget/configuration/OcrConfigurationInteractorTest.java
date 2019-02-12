@@ -138,7 +138,7 @@ public class OcrConfigurationInteractorTest {
     @Test
     public void startOcrPurchase() {
         when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
-        interactor.startOcrPurchase(availablePurchase);
+        interactor.startOcrPurchase(availablePurchase.getInAppPurchase());
         verify(purchaseManager).initiatePurchase(InAppPurchase.OcrScans50, PurchaseSource.Ocr);
     }
 

@@ -2,13 +2,13 @@ package co.smartreceipts.android.identity.widget.account
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.Toast
 import co.smartreceipts.android.R
 import co.smartreceipts.android.identity.store.EmailAddress
-import co.smartreceipts.android.identity.widget.NeedsLoginFragment
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.support.AndroidSupportInjection
@@ -17,13 +17,15 @@ import kotlinx.android.synthetic.main.account_info_fragment.*
 import javax.inject.Inject
 
 
-class AccountFragment : NeedsLoginFragment(), AccountView {
+class AccountFragment : Fragment(), AccountView {
 
     @Inject
     lateinit var presenter: AccountPresenter
 
     @Inject
     lateinit var router: AccountRouter
+
+    private var wasPreviouslySentToLogin: Boolean = false
 
 
     override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
@@ -33,6 +35,15 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+        if (savedInstanceState != null) {
+            wasPreviouslySentToLogin = savedInstanceState.getBoolean(OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -80,6 +91,11 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
         this.presenter.unsubscribe()
 
         super.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN, wasPreviouslySentToLogin)
     }
 
     override fun updateProperScreen() {
@@ -147,6 +163,8 @@ class AccountFragment : NeedsLoginFragment(), AccountView {
 
     companion object {
         @JvmStatic fun newInstance() = AccountFragment()
+
+        const val OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN = "out_bool_was_previously_sent_to_login_screen"
     }
 
 }
