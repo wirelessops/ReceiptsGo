@@ -1,0 +1,68 @@
+package co.smartreceipts.android.ocr.widget.configuration
+
+import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.android.widget.viper.BaseViperPresenter
+import javax.inject.Inject
+
+@FragmentScope
+class OcrConfigurationPresenter @Inject
+constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) :
+    BaseViperPresenter<OcrConfigurationView, OcrConfigurationInteractor>(view, interactor) {
+
+    override fun subscribe() {
+        view.present(interactor.email)
+
+        // Set the current checkbox values
+        compositeDisposable.add(
+            interactor.getOcrIsEnabled()
+                .subscribe(view.ocrIsEnabledConsumer)
+        )
+        compositeDisposable.add(
+            interactor.getAllowUsToSaveImagesRemotely()
+                .subscribe(view.allowUsToSaveImagesRemotelyConsumer)
+        )
+
+        // Persist values from checkbox toggling
+        compositeDisposable.add(view.ocrIsEnabledCheckboxChanged
+            .doOnNext { Logger.debug(this, "Updating ocrIsEnabled setting: {}", it) }
+            .subscribe { interactor.setOcrIsEnabled(it) }
+        )
+        compositeDisposable.add(view.allowUsToSaveImagesRemotelyCheckboxChanged
+            .doOnNext { Logger.debug(this, "Updating saveImagesRemotely setting: {}", it) }
+            .subscribe { interactor.setAllowUsToSaveImagesRemotely(it) }
+        )
+
+        // Show remaining scans
+        compositeDisposable.add(interactor.getRemainingScansStream()
+            .subscribe { view.present(it) }
+        )
+
+        // Show available purchases list
+        compositeDisposable.add(interactor.getAvailableOcrPurchases()
+            .doOnSuccess { Logger.info(this, "Presenting list of purchases: {}.", it) }
+            .subscribe({ view.present(it) },
+                { throwable -> Logger.warn(this, "Failed to get available purchases.", throwable) })
+        )
+
+        // Track user purchase clicks
+        compositeDisposable.add(view.availablePurchaseClicks
+            .doOnNext { Logger.info(this, "User clicked to buy purchase: {}.", it) }
+            .subscribe { availablePurchase ->
+                if (interactor.isUserLoggedIn) {
+                    interactor.startOcrPurchase(availablePurchase.getInAppPurchase())
+                } else {
+                    view.delayPurchaseAndPresentNeedToLogin(availablePurchase.getInAppPurchase()!!.sku)
+                }
+            })
+
+        compositeDisposable.add(view.delayedPurchaseIdStream
+            .subscribe { purchaseId ->
+                if (interactor.isUserLoggedIn) {
+                    interactor.startOcrPurchase(InAppPurchase.from(purchaseId))
+                }
+            })
+    }
+
+}
