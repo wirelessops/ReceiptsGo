@@ -191,13 +191,13 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @NonNull
     @Override
-    public Observable<Boolean> getOcrIsEnabledCheckboxChanged() {
+    public Observable<Boolean> getOcrIsEnabledCheckboxStream() {
         return RxCompoundButton.checkedChanges(ocrIsEnabledCheckbox);
     }
 
     @NonNull
     @Override
-    public Observable<Boolean> getAllowUsToSaveImagesRemotelyCheckboxChanged() {
+    public Observable<Boolean> getAllowUsToSaveImagesRemotelyCheckboxStream() {
         return RxCompoundButton.checkedChanges(allowUsToSaveImagesRemotelyCheckbox);
     }
 

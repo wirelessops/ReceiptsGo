@@ -25,11 +25,11 @@ constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) 
         )
 
         // Persist values from checkbox toggling
-        compositeDisposable.add(view.ocrIsEnabledCheckboxChanged
+        compositeDisposable.add(view.ocrIsEnabledCheckboxStream
             .doOnNext { Logger.debug(this, "Updating ocrIsEnabled setting: {}", it) }
             .subscribe { interactor.setOcrIsEnabled(it) }
         )
-        compositeDisposable.add(view.allowUsToSaveImagesRemotelyCheckboxChanged
+        compositeDisposable.add(view.allowUsToSaveImagesRemotelyCheckboxStream
             .doOnNext { Logger.debug(this, "Updating saveImagesRemotely setting: {}", it) }
             .subscribe { interactor.setAllowUsToSaveImagesRemotely(it) }
         )
