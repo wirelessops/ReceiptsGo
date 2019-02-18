@@ -7,6 +7,8 @@ import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
 import co.smartreceipts.android.widget.model.UiIndicator
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -20,14 +22,19 @@ class AccountInteractor constructor(
     private val identityManager: IdentityManager,
     private val organizationManager: OrganizationManager,
     private val ocrPurchaseTracker: OcrPurchaseTracker,
+    private val remoteSubscriptionManager: RemoteSubscriptionManager,
     private val subscribeOnScheduler: Scheduler = Schedulers.io(),
     private val observeOnScheduler: Scheduler = AndroidSchedulers.mainThread()
 ) {
 
     @Inject
-    constructor(identityManager: IdentityManager, organizationManager: OrganizationManager, ocrPurchaseTracker: OcrPurchaseTracker) :
-            this(identityManager, organizationManager, ocrPurchaseTracker, Schedulers.io(), AndroidSchedulers.mainThread())
-
+    constructor(
+        identityManager: IdentityManager, organizationManager: OrganizationManager, ocrPurchaseTracker: OcrPurchaseTracker,
+        remoteSubscriptionManager: RemoteSubscriptionManager
+    ) : this(
+        identityManager, organizationManager, ocrPurchaseTracker, remoteSubscriptionManager, Schedulers.io(),
+        AndroidSchedulers.mainThread()
+    )
 
     fun logOut() = identityManager.logOut()
 
@@ -61,7 +68,16 @@ class AccountInteractor constructor(
 
     fun getOcrRemainingScansStream(): Observable<Int> {
         return ocrPurchaseTracker.remainingScansStream
-            .observeOn(AndroidSchedulers.mainThread());
+            .observeOn(observeOnScheduler)
+    }
+
+    fun getSubscriptionsStream(): Observable<List<RemoteSubscription>> {
+        return remoteSubscriptionManager.getNewRemoteSubscriptions()
+            .filter { !it.isEmpty() }
+            .map { it.toList() }
+            .subscribeOn(subscribeOnScheduler)
+            .observeOn(observeOnScheduler)
+
     }
 
     fun applyOrganizationSettings(organization: Organization): Observable<UiIndicator<Unit>> {

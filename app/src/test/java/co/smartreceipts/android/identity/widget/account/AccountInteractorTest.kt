@@ -6,6 +6,9 @@ import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -19,6 +22,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class AccountInteractorTest {
@@ -28,13 +32,17 @@ class AccountInteractorTest {
 
     private val identityManager = mock<IdentityManager>()
     private val organizationManager = mock<OrganizationManager>()
+    private val remoteSubscriptionManager = mock<RemoteSubscriptionManager>()
     private val ocrPurchaseTracker = mock<OcrPurchaseTracker>()
     private val organization = mock<Organization>()
 
 
     @Before
     fun setUp() {
-        interactor = AccountInteractor(identityManager, organizationManager, ocrPurchaseTracker, Schedulers.trampoline(), Schedulers.trampoline())
+        interactor = AccountInteractor(
+            identityManager, organizationManager, ocrPurchaseTracker, remoteSubscriptionManager,
+            Schedulers.trampoline(), Schedulers.trampoline()
+        )
     }
 
     @Test
@@ -116,6 +124,35 @@ class AccountInteractorTest {
         testObserver.assertComplete()
             .assertNoErrors()
             .assertResult(5)
+    }
+
+    @Test
+    fun getSubscriptionsEmptyTest() {
+        whenever(remoteSubscriptionManager.getNewRemoteSubscriptions()).thenReturn(Observable.just(Collections.emptySet()))
+
+        val testObserver = interactor.getSubscriptionsStream().test()
+        testObserver.awaitTerminalEvent()
+        testObserver.assertComplete()
+            .assertNoErrors()
+            .assertNoValues()
+    }
+
+    @Test
+    fun getSubscriptionsTest() {
+
+        val list = listOf(
+            RemoteSubscription(5, InAppPurchase.SmartReceiptsPlus, Date()),
+            RemoteSubscription(6, InAppPurchase.OcrScans10, Date())
+        )
+
+        whenever(remoteSubscriptionManager.getNewRemoteSubscriptions()).thenReturn(Observable.just(list.toSet()))
+
+        val testObserver = interactor.getSubscriptionsStream().test()
+        testObserver.awaitTerminalEvent()
+
+        testObserver.assertComplete()
+            .assertNoErrors()
+            .assertResult(list)
     }
 
 

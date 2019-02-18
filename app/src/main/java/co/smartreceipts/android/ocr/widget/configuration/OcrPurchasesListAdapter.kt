@@ -62,12 +62,12 @@ class OcrPurchasesListAdapter(private val headerView: View) : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
-    private class HeaderViewHolder internal constructor(internal val headerView: View) : RecyclerView.ViewHolder(headerView)
+    private class HeaderViewHolder internal constructor(headerView: View) : RecyclerView.ViewHolder(headerView)
 
     internal class ItemViewHolder(var parentView: View) : RecyclerView.ViewHolder(parentView) {
-        var purchaseName: TextView = parentView.purchase_name
-        var purchaseDescription: TextView = parentView.purchase_description
-        var purchasePrice: TextView = parentView.purchase_price
+        val purchaseName: TextView = parentView.purchase_name
+        val purchaseDescription: TextView = parentView.purchase_description
+        val purchasePrice: TextView = parentView.purchase_price
     }
 
     companion object {

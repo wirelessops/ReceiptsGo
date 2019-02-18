@@ -13,7 +13,6 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
-
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -44,8 +43,7 @@ class RemoteSubscriptionManagerTest {
     @Mock
     private lateinit var subscriptionsApiResponse: SubscriptionsApiResponse
 
-    @Mock
-    private lateinit var subscriptionSet: Set<RemoteSubscription>
+    private val subscriptionSet: Set<RemoteSubscription> = setOf(RemoteSubscription(5, InAppPurchase.SmartReceiptsPlus, Date()))
 
     private val signInStream = PublishSubject.create<Boolean>()
 
@@ -56,32 +54,40 @@ class RemoteSubscriptionManagerTest {
         whenever(subscriptionsApiService.getSubscriptions()).thenReturn(Observable.just(subscriptionsApiResponse))
         whenever(identityManager.isLoggedInStream).thenReturn(signInStream)
         whenever(subscriptionApiResponseValidator.getActiveSubscriptions(subscriptionsApiResponse)).thenReturn(subscriptionSet)
-        remoteSubscriptionManager = RemoteSubscriptionManager(purchaseWallet, webServiceManager, identityManager, subscriptionApiResponseValidator, Schedulers.trampoline())
+        remoteSubscriptionManager = RemoteSubscriptionManager(
+            purchaseWallet, webServiceManager, identityManager, subscriptionApiResponseValidator, Schedulers.trampoline()
+        )
     }
 
     @Test
     fun initializeWhenSignedInAndPlusIsNotOwned() {
         whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(false, true)
-        val testSubscriber = remoteSubscriptionManager.getNewRemotePurchases().test()
+
+        val testSubscriber = remoteSubscriptionManager.getNewRemoteSubscriptions().test()
+
         signInStream.onNext(true)
-        testSubscriber.assertValue(Collections.singleton(InAppPurchase.SmartReceiptsPlus))
-        testSubscriber.assertNoErrors()
+
+        testSubscriber.assertValue(subscriptionSet)
+            .assertNoErrors()
         verify(purchaseWallet).updateRemotePurchases(subscriptionSet)
     }
 
     @Test
     fun initializeWhenSignedInAndPlusIsOwned() {
-        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn( true)
-        val testSubscriber = remoteSubscriptionManager.getNewRemotePurchases().test()
+        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true)
+
+        val testSubscriber = remoteSubscriptionManager.getNewRemoteSubscriptions().test()
+
         signInStream.onNext(true)
+
         testSubscriber.assertValue(Collections.emptySet())
-        testSubscriber.assertNoErrors()
+            .assertNoErrors()
         verify(purchaseWallet).updateRemotePurchases(subscriptionSet)
     }
 
     @Test
     fun initializeWhenNotSignedIn() {
-        val testSubscriber = remoteSubscriptionManager.getNewRemotePurchases().test()
+        val testSubscriber = remoteSubscriptionManager.getNewRemoteSubscriptions().test()
         signInStream.onNext(false)
         testSubscriber.assertNoValues()
         testSubscriber.assertNoErrors()
@@ -91,7 +97,7 @@ class RemoteSubscriptionManagerTest {
     @Test
     fun initializeWithError() {
         whenever(subscriptionsApiService.getSubscriptions()).thenReturn(Observable.error(Exception("Test")))
-        val testSubscriber = remoteSubscriptionManager.getNewRemotePurchases().test()
+        val testSubscriber = remoteSubscriptionManager.getNewRemoteSubscriptions().test()
         signInStream.onNext(true)
         testSubscriber.assertValue(Collections.emptySet())
         testSubscriber.assertNoErrors()

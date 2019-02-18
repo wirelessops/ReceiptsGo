@@ -48,6 +48,11 @@ class AccountPresenter @Inject constructor(view: AccountView, interactor: Accoun
             .subscribe(view::presentOcrScans)
         )
 
+        compositeDisposable.add(interactor.getSubscriptionsStream()
+            .subscribe{view.presentSubscriptions(it)}
+
+        )
+
     }
 
 }

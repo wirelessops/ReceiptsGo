@@ -4,16 +4,21 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.Toast
 import co.smartreceipts.android.R
+import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.android.identity.widget.account.subscriptions.SubscriptionsListAdapter
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.account_info_fragment.*
+import kotlinx.android.synthetic.main.account_info_fragment.view.*
 import javax.inject.Inject
 
 
@@ -25,7 +30,12 @@ class AccountFragment : Fragment(), AccountView {
     @Inject
     lateinit var router: AccountRouter
 
+    @Inject
+    lateinit var dateFormatter: DateFormatter
+
     private var wasPreviouslySentToLogin: Boolean = false
+
+    private lateinit var subscriptionsAdapter: SubscriptionsListAdapter
 
 
     override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
@@ -47,7 +57,16 @@ class AccountFragment : Fragment(), AccountView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.account_info_fragment, container, false)
+        val view = inflater.inflate(R.layout.account_info_fragment, container, false)
+
+        subscriptionsAdapter = SubscriptionsListAdapter(dateFormatter)
+
+        view.subscriptions_list.apply {
+            layoutManager = LinearLayoutManager(getContext());
+            adapter = subscriptionsAdapter
+        }
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -147,6 +166,12 @@ class AccountFragment : Fragment(), AccountView {
         val listener: View.OnClickListener = View.OnClickListener { router.navigateToOcrFragment() }
         ocr_scans_remaining.setOnClickListener(listener)
         ocr_label.setOnClickListener(listener)
+    }
+
+    override fun presentSubscriptions(subscriptions: List<RemoteSubscription>) {
+        subscriptions_group.visibility = View.VISIBLE
+
+        subscriptionsAdapter.setSubscriptions(subscriptions)
     }
 
     private fun showOrganization(organizationModel: AccountInteractor.OrganizationModel) {

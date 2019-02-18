@@ -4,7 +4,6 @@ import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.IdentityManager
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiService
-import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.android.utils.log.Logger
 import io.reactivex.Observable
@@ -30,10 +29,10 @@ class RemoteSubscriptionManager constructor(private val purchaseWallet: Purchase
     /**
      * Fetches all new remote subscriptions that are associated with this account.
      *
-     * @return an [Observable], which will emit a [Set] of [InAppPurchase] instances that are new
+     * @return an [Observable], which will emit a [Set] of [RemoteSubscription] instances that are new
      * to this account.
      */
-    fun getNewRemotePurchases() : Observable<Set<InAppPurchase>> {
+    fun getNewRemoteSubscriptions() : Observable<Set<RemoteSubscription>> {
         return identityManager.isLoggedInStream
                 .subscribeOn(subscribeOnScheduler)
                 .flatMap { isSignedIn ->
@@ -51,16 +50,26 @@ class RemoteSubscriptionManager constructor(private val purchaseWallet: Purchase
                     Logger.info(this, "Successfully fetched {} remote subscriptions from our APIs.", it.size)
                 }
                 .flatMap {
-                    // Note: This was super lazily done.
-                    // If we ever add support for multiple subscription types, we should make this cleaner
-                    val havePlusSubscriptionBefore = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
-                    purchaseWallet.updateRemotePurchases(it)
-                    val hasPlusSubscriptionAfter = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
-                    if (!havePlusSubscriptionBefore && hasPlusSubscriptionAfter) {
-                        Observable.just(Collections.singleton(InAppPurchase.SmartReceiptsPlus))
-                    } else {
-                        Observable.just(Collections.emptySet())
+                    // TODO: 15.02.2019 Will, please check if this logic correct
+                    val missedSubscriptions: MutableSet<RemoteSubscription> = mutableSetOf()
+                    val resultNewSubscriptions: MutableSet<RemoteSubscription> = mutableSetOf()
+
+                    for (remoteSubscription in it) {
+                        if (!purchaseWallet.hasActivePurchase(remoteSubscription.inAppPurchase)) {
+                            missedSubscriptions.add(remoteSubscription)
+                        }
                     }
+
+                    purchaseWallet.updateRemotePurchases(it)
+
+                    for (missedSubscription in missedSubscriptions) {
+                        if (purchaseWallet.hasActivePurchase(missedSubscription.inAppPurchase)) {
+                            resultNewSubscriptions.add(missedSubscription)
+                        }
+                    }
+
+
+                    Observable.just(resultNewSubscriptions.toSet())
                 }
                 .doOnError {
                     Logger.error(this, "Failed to fetch our remote subscriptions: {}", it.message)

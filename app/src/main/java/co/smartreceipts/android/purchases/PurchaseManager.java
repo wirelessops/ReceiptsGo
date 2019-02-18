@@ -45,6 +45,7 @@ import co.smartreceipts.android.purchases.model.ManagedProductFactory;
 import co.smartreceipts.android.purchases.model.Subscription;
 import co.smartreceipts.android.purchases.rx.RxInAppBillingServiceConnection;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
+import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.utils.log.Logger;
@@ -161,11 +162,11 @@ public class PurchaseManager {
                         throwable -> Logger.error(PurchaseManager.this, "Failed to initialize all user owned purchases.", throwable));
 
         // Fetch all of our remote subscriptions and notify if appropriate
-        remoteSubscriptionManager.getNewRemotePurchases()
-                .subscribe(newInAppPurchases -> {
-                    for (InAppPurchase newInAppPurchase : newInAppPurchases) {
+        remoteSubscriptionManager.getNewRemoteSubscriptions()
+                .subscribe(newInAppSubscriptions -> {
+                    for (RemoteSubscription newRemoteSubscription : newInAppSubscriptions) {
                         for (final PurchaseEventsListener listener : listeners) {
-                            listener.onPurchaseSuccess(newInAppPurchase, PurchaseSource.Remote);
+                            listener.onPurchaseSuccess(newRemoteSubscription.getInAppPurchase(), PurchaseSource.Remote);
                         }
                     }
                 }, throwable -> Logger.error(this, "Failed to fetch our remote subscriptions"));

@@ -69,7 +69,7 @@
                 android:id="@+id/ocr_divider"
                 style="@style/Widget.View.Divider.Horizontal"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:paddingBottom="@dimen/padding_large"
+                android:layout_marginBottom="@dimen/padding_large"
                 app:layout_constraintTop_toBottomOf="@id/login_field_email" />
 
             <TextView
@@ -97,6 +97,41 @@
 
 
             <android.support.constraint.Group
+                android:id="@+id/subscriptions_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="subscriptions_divider, subscriptions_label, subscriptions_list"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/subscriptions_divider"
+                style="@style/Widget.View.Divider.Horizontal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/padding_large"
+                app:layout_constraintTop_toBottomOf="@id/ocr_scans_remaining" />
+
+            <TextView
+                android:id="@+id/subscriptions_label"
+                style="@style/Widget.SmartReceipts.TextView.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_large"
+                android:text="@string/subscriptions_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subscriptions_divider" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/subscriptions_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subscriptions_label" />
+
+            <android.support.constraint.Group
                 android:id="@+id/organization_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,8 +142,9 @@
             <View
                 android:id="@+id/organization_divider"
                 style="@style/Widget.View.Divider.Horizontal"
-                android:layout_marginVertical="@dimen/margin_normal"
-                app:layout_constraintTop_toBottomOf="@id/ocr_scans_remaining" />
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/padding_large"
+                app:layout_constraintTop_toBottomOf="@id/subscriptions_list" />
 
             <TextView
                 android:id="@+id/organization_label"
