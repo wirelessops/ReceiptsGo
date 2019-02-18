@@ -56,6 +56,10 @@
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart-Plus-Receipts</string>
 
+    <!-- ============= Subscription Info ============== -->
+    <string name="subscriptions_label">Ihre Abonnements:</string>
+    <string name="subscription_expiration">Haltbarkeitsdatum: %s</string>
+
     <!-- ================ No More Ads ================= -->
     <string name="missing_ad_suggest_removal_upsell">Werbung entfernen? Tippen Sie, um eine anzeigenfreie Testversion zu starten</string>
 
