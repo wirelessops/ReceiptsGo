@@ -40,10 +40,6 @@ public class PersistenceManager {
         this.database = Preconditions.checkNotNull(database);
     }
 
-    public void onDestroy() {
-		database.onDestroy();
-	}
-
 	public DatabaseHelper getDatabase() {
 		return database;
 	}

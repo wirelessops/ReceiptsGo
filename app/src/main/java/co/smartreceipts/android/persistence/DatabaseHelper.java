@@ -12,6 +12,8 @@ import com.hadisatrio.optional.Optional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.date.DateUtils;
@@ -52,6 +54,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // InstanceVar
     private static DatabaseHelper INSTANCE = null;
+
+    private static final Executor DATABASE_CLOSE_EXECUTOR = Executors.newSingleThreadExecutor();
 
 
     // Caching Vars
@@ -190,18 +194,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void onDestroy() {
-        try {
-            this.close();
-        } catch (Exception e) {
-            // This can be called from finalize, so operate cautiously
-            Logger.error(this, e);
-        }
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        onDestroy(); // Close our resources if we still need
-        super.finalize();
+        DATABASE_CLOSE_EXECUTOR.execute(() -> {
+            try {
+                this.close();
+            } catch (Exception e) {
+                // This can be called from finalize, so operate cautiously
+                Logger.error(this, e);
+            }
+        });
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////////
