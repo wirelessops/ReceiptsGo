@@ -508,5 +508,6 @@
     <string name="organization_label">Ваша организация:</string>
     <string name="organization_update_success">Организация успешно обновлена</string>
     <string name="organization_update_error">При обновлении организации что-то пошло не так</string>
+    <string name="organization_update">Обновить настройки организации</string>
 
 </resources>

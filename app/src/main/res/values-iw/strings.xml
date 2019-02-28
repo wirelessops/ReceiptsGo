@@ -526,5 +526,6 @@
     <string name="organization_label">הארגון שלך:</string>
     <string name="organization_update_success">הארגון עודכן בהצלחה</string>
     <string name="organization_update_error">משהו השתבש במהלך עדכון הארגון</string>
+    <string name="organization_update">עדכן הגדרות ארגון</string>
 
 </resources>

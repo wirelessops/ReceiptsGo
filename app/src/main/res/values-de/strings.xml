@@ -506,5 +506,6 @@
     <string name="organization_label">Deine Organisation:</string>
     <string name="organization_update_success">Organisation erfolgreich aktualisiert</string>
     <string name="organization_update_error">Beim Aktualisieren der Organisation ist ein Fehler aufgetreten</string>
+    <string name="organization_update">Aktualisieren Sie die Organisationseinstellungen</string>
 
 </resources>
