@@ -506,5 +506,7 @@
     <string name="organization_apply_success">Настройки были успешно применены</string>
     <string name="logged_in_as">Вы вошли как:</string>
     <string name="organization_label">Ваша организация:</string>
+    <string name="organization_update_success">Организация успешно обновлена</string>
+    <string name="organization_update_error">При обновлении организации что-то пошло не так</string>
 
 </resources>

@@ -504,5 +504,7 @@
     <string name="organization_apply_success">Los ajustes se aplicaron con éxito</string>
     <string name="logged_in_as">Conectado como:</string>
     <string name="organization_label">Tu organización:</string>
+    <string name="organization_update_success">Organización actualizada con éxito</string>
+    <string name="organization_update_error">Algo salió mal al actualizar la organización</string>
 
 </resources>

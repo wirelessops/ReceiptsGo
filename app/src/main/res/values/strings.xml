@@ -522,5 +522,7 @@
     <string name="organization_apply_success">Settings were applied successfully</string>
     <string name="logged_in_as">Logged in as:</string>
     <string name="organization_label">Your organization:</string>
+    <string name="organization_update_success">Organization updated successfully</string>
+    <string name="organization_update_error">Something went wrong while updating organization</string>
 
 </resources>
