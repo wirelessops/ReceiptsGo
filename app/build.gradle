@@ -1,9 +1,13 @@
+plugins {
+    id("com.android.application")
+    id("com.github.triplet.play") version "2.1.0"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
-
 
 androidExtensions {
     experimental = true
@@ -27,6 +31,16 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
+    signingConfigs {
+        release {
+            // You need to specify either an absolute path or include the
+            // keystore file in the same directory as the build.gradle file.
+            storeFile file("../upload_key.jks")
+            storePassword System.getenv("KEY_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
     buildTypes {
         debug {
             minifyEnabled true
@@ -35,6 +49,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             useProguard false
@@ -119,7 +134,7 @@ android {
 
         implementation "com.android.support:multidex:$MULTIDEX_VERSION"
 
-		implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
+        implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
         implementation "com.google.android.gms:play-services-drive:$DRIVE_API_VERSION"
         implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
@@ -240,5 +255,12 @@ task translateToIOS << {
          executable "${rootDir}/scripts/barebones-locale-tool.sh"
      }
  }
+
+play {
+    serviceAccountCredentials = file("GPLAY_KEY.json")
+    track = "beta"
+    userFraction = 0.05
+    releaseStatus = "completed"
+}
 
 preBuild.dependsOn secretsExtraction
