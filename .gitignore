@@ -4,6 +4,7 @@
 ads.xml
 analytics.xml
 secrets.xml
+upload_key.jks
 
 #################
 ## Android Studio
