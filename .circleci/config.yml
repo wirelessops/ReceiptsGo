@@ -33,7 +33,7 @@ jobs:
              git add ../app/build.gradle
              git commit -m "Bumping Project Version [ci skip]"
              cd ..
-             git push https://${GITHUB_API_TOKEN}@github.com/tomgs/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
+             git push https://${GITHUB_API_TOKEN}@github.com/wbaumann/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
       - run:
           name: Get JSON & GPG Keys From Env-Var
           command: |
@@ -59,7 +59,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Assemble Bundles & Run Tests
-          command: ./gradlew clean bundleFreeRelease bundlePlusFlavorRelease
+          command: ./gradlew clean test bundleFreeRelease bundlePlusFlavorRelease
       - run:
           name: Publish Free Beta Version To Play Store
           command: ./gradlew publishFreeReleaseBundle
