@@ -259,7 +259,7 @@ task translateToIOS << {
 play {
     serviceAccountCredentials = file("GPLAY_KEY.json")
     track = "beta"
-    userFraction = 0.05
+    userFraction = 100
     releaseStatus = "completed"
 }
 
