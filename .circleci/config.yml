@@ -1,0 +1,74 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - /release_.*/
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-25
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - run:
+          name: Wait 900 Seconds (15 Minutes - To Wait For Additional Commits)
+          command: sleep 900
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+#      - run:
+#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+#         command: sudo chmod +x ./gradlew
+      - run:
+          name: Bump Version & Push To Repo
+          command: |
+             cd scripts
+             ./version-bumper.sh
+             printf "\n"
+             echo "-- Pushing To Github --"
+             printf "\n"
+             git config credential.helper 'cache --timeout=120'
+             git config user.email ${GITHUB_EMAIL}
+             git config user.name ${GITHUB_USERNAME}
+             git add ../app/build.gradle
+             git commit -m "Bumping Project Version [ci skip]"
+             cd ..
+             git push https://${GITHUB_API_TOKEN}@github.com/tomgs/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
+      - run:
+          name: Get JSON & GPG Keys From Env-Var
+          command: |
+             echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
+             echo -e $GPG_KEY > smart_receipts_key.asc
+      - run:
+          name: Import gpg key into gpg, decrypt secrets
+          command: |
+             gpg --import smart_receipts_key.asc
+             gpg --decrypt secrets.tar.gpg > secrets.tar
+             tar -vxf secrets.tar
+             rm secrets.tar
+      - run:
+          name: Approve SDK Licenses
+          # Captures SIGPIPE 141 error but still allow repeating "y" to accept all licenses
+          command: yes | sdkmanager --licenses || if [ $? -ne '141' ]; then exit $?; fi;
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Assemble Bundles & Run Tests
+          command: ./gradlew clean bundleFreeRelease bundlePlusFlavorRelease
+      - run:
+          name: Publish Free Beta Version To Play Store
+          command: ./gradlew publishFreeReleaseBundle
+      - run:
+          name: Publish Plus Beta Version To Play Store
+          command: ./gradlew publishPlusFlavorReleaseBundle
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: app/build/reports
+          destination: reports
+      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: app/build/test-results
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
