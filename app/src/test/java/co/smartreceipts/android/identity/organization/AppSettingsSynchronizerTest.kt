@@ -1,5 +1,7 @@
 package co.smartreceipts.android.identity.organization
 
+import co.smartreceipts.android.identity.apis.organizations.AppSettings
+import co.smartreceipts.android.identity.apis.organizations.Configurations
 import co.smartreceipts.android.model.Column
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
@@ -13,6 +15,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMet
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
+import org.json.JSONObject
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -46,11 +49,7 @@ class AppSettingsSynchronizerTest {
     fun setUp() {
         appSettingsSynchronizer =
             AppSettingsSynchronizer(
-                categoriesTableController,
-                paymentMethodsTableController,
-                csvTableController,
-                pdfTableController,
-                preferencesSynchronizer
+                categoriesTableController, paymentMethodsTableController, csvTableController, pdfTableController, preferencesSynchronizer
             )
 
         whenever(categoriesTableController.get()).thenReturn(Single.just(arrayListOf(category1, category2)))
@@ -60,10 +59,30 @@ class AppSettingsSynchronizerTest {
     }
 
     @Test
+    fun getCurrentAppSettingsTest() {
+        val jsonObject = JSONObject()
+        whenever(preferencesSynchronizer.getAppPreferences()).thenReturn(Single.just(jsonObject))
+
+        val appSettings = AppSettings(
+            Configurations(), AppSettings.OrganizationPreferences((jsonObject)), arrayListOf(category1, category2),
+            arrayListOf(paymentMethod1, paymentMethod2), arrayListOf(column1, column2), arrayListOf(column1, column2)
+        )
+
+        val testObserver = appSettingsSynchronizer.getCurrentAppSettings().test()
+        testObserver.awaitTerminalEvent()
+        testObserver.assertNoErrors()
+            .assertComplete()
+            .assertResult(appSettings)
+    }
+
+    @Test
     fun checkCategoriesWhenSameTest() {
         // Note: while checking categories, we need to check just uuid+name+code (ignore id because it's local)
-        appSettingsSynchronizer.checkCategoriesMatch(arrayListOf(category2, CategoryBuilderFactory(category1).setId(152).build()))
-            .test()
+        val testObserver =
+            appSettingsSynchronizer.checkCategoriesMatch(arrayListOf(category2, CategoryBuilderFactory(category1).setId(152).build()))
+                .test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(true)
@@ -71,10 +90,14 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun checkCategoriesWhenNotSameTest() {
-        appSettingsSynchronizer.checkCategoriesMatch(
-            arrayListOf(category2, CategoryBuilderFactory(category1).setUuid(UUID.randomUUID()).build())
-        )
-            .test()
+        val testObserver = appSettingsSynchronizer.checkCategoriesMatch(
+            arrayListOf(
+                category2,
+                CategoryBuilderFactory(category1).setUuid(UUID.randomUUID()).build()
+            )
+        ).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(false)
@@ -83,13 +106,15 @@ class AppSettingsSynchronizerTest {
     @Test
     fun checkPaymentMethodsWhenSameTest() {
         // Note: while checking payment methods, we need to check just uuid+method (ignore id because it's local)
-        appSettingsSynchronizer.checkPaymentMethodsMatch(
+        val testObserver = appSettingsSynchronizer.checkPaymentMethodsMatch(
             arrayListOf(
                 paymentMethod2,
                 PaymentMethodBuilderFactory(paymentMethod1).setId(152).build()
             )
         )
             .test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(true)
@@ -97,10 +122,12 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun checkPaymentMethodsWhenNotSameTest() {
-        appSettingsSynchronizer.checkPaymentMethodsMatch(
+        val testObserver = appSettingsSynchronizer.checkPaymentMethodsMatch(
             arrayListOf(paymentMethod2, PaymentMethodBuilderFactory(paymentMethod1).setUuid(UUID.randomUUID()).build())
         )
             .test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(false)
@@ -109,7 +136,9 @@ class AppSettingsSynchronizerTest {
     @Test
     fun checkColumnsWhenSameTest() {
         // Note: while checking columns, we need to check just uuid+type
-        appSettingsSynchronizer.checkCsvColumnsMatch(arrayListOf(column2, column1)).test()
+        val testObserver = appSettingsSynchronizer.checkCsvColumnsMatch(arrayListOf(column2, column1)).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(true)
@@ -117,7 +146,9 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun checkColumnsWhenSameButDifferentSizeTest() {
-        appSettingsSynchronizer.checkCsvColumnsMatch(arrayListOf(column2)).test()
+        val testObserver = appSettingsSynchronizer.checkCsvColumnsMatch(arrayListOf(column2)).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(true)
@@ -125,7 +156,9 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun checkColumnsWhenNotSameTest() {
-        appSettingsSynchronizer.checkPdfColumnsMatch(arrayListOf(column2, column3)).test()
+        val testObserver = appSettingsSynchronizer.checkPdfColumnsMatch(arrayListOf(column2, column3)).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
             .assertResult(false)
@@ -133,7 +166,9 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun applyCategoriesWhenSame() {
-        appSettingsSynchronizer.applyCategories(arrayListOf(category2, category1)).test()
+        val testObserver = appSettingsSynchronizer.applyCategories(arrayListOf(category2, category1)).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
 
@@ -144,7 +179,9 @@ class AppSettingsSynchronizerTest {
     @Test
     fun applyCategoriesWhenChanged() {
         val category2Changed = CategoryBuilderFactory(category2).setName("another name").build()
-        appSettingsSynchronizer.applyCategories(arrayListOf(category1, category2Changed)).test()
+        val testObserver = appSettingsSynchronizer.applyCategories(arrayListOf(category1, category2Changed)).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
 
@@ -155,7 +192,9 @@ class AppSettingsSynchronizerTest {
     @Test
     fun applyCategoriesWhenNotFound() {
         val category3 = CategoryBuilderFactory().build()
-        appSettingsSynchronizer.applyCategories(arrayListOf(category1, category3)).test()
+        val testObserver = appSettingsSynchronizer.applyCategories(arrayListOf(category1, category3)).test()
+        testObserver.awaitTerminalEvent()
+        testObserver
             .assertNoErrors()
             .assertComplete()
 

@@ -16,6 +16,25 @@ import javax.inject.Inject
 @ApplicationScope
 class AppPreferencesSynchronizer @Inject constructor(private val userPreferenceManager: UserPreferenceManager) {
 
+
+    /**
+     * @return Single that emits JSONObject with all app's preferences
+     */
+    internal fun getAppPreferences(): Single<JSONObject> {
+        val appPreferencesMap: MutableMap<String, Any> = mutableMapOf()
+
+        return userPreferenceManager.userPreferencesSingle
+            .flatMap { userPreferences ->
+                for (userPreference in userPreferences) {
+                    val prefName = userPreferenceManager.name(userPreference)
+                    appPreferencesMap[prefName] = userPreferenceManager.get(userPreference)
+
+                }
+                Single.just(appPreferencesMap)
+            }
+            .map { JSONObject(it) }
+    }
+
     /**
      * @param organizationPreferences Organization app preferences
      * @return Single that emits {true} if organization app preferences match the app preferences, else emits {false}

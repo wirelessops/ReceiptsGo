@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Toast
 import co.smartreceipts.android.R
 import co.smartreceipts.android.date.DateFormatter
+import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.identity.widget.account.subscriptions.SubscriptionsListAdapter
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
@@ -40,6 +41,7 @@ class AccountFragment : Fragment(), AccountView {
 
     override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
     override val applySettingsClicks: Observable<Any> get() = RxView.clicks(organization_caution)
+    override val updateSettingsClicks: Observable<Any> get() = RxView.clicks(organization_update_button)
 
 
     override fun onAttach(context: Context?) {
@@ -150,12 +152,34 @@ class AccountFragment : Fragment(), AccountView {
             UiIndicator.State.Success -> {
                 Toast.makeText(context, getString(R.string.organization_apply_success), Toast.LENGTH_SHORT).show()
                 organization_caution.visibility = View.GONE
+                organization_update_button.visibility = View.GONE
             }
             UiIndicator.State.Error -> {
                 Toast.makeText(context, getString(R.string.organization_apply_error), Toast.LENGTH_SHORT).show()
             }
             else -> {
                 throw IllegalStateException("Applying settings must return only Success or Error result")
+            }
+        }
+    }
+
+    override fun presentUpdatingResult(uiIndicator: UiIndicator<Unit>) {
+        when (uiIndicator.state) {
+            UiIndicator.State.Loading -> {
+                progress_bar.visibility = View.VISIBLE
+            }
+            UiIndicator.State.Success -> {
+                Toast.makeText(context, getString(R.string.organization_update_success), Toast.LENGTH_SHORT).show()
+                progress_bar.visibility = View.GONE
+                organization_update_button.visibility = View.GONE
+                organization_caution.visibility = View.GONE
+            }
+            UiIndicator.State.Error -> {
+                progress_bar.visibility = View.GONE
+                Toast.makeText(context, getString(R.string.organization_update_error), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                throw IllegalStateException("Updating organization settings must return only Success or Error result")
             }
         }
     }
@@ -182,7 +206,12 @@ class AccountFragment : Fragment(), AccountView {
 
         when {
             organizationModel.settingsMatch -> organization_caution.visibility = View.GONE
-            else -> organization_caution.visibility = View.VISIBLE
+            else -> {
+                organization_caution.visibility = View.VISIBLE
+                if (organizationModel.userRole == OrganizationUser.UserRole.ADMIN) {
+                    organization_update_button.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

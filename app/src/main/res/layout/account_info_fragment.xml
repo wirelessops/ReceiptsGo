@@ -193,6 +193,17 @@
                 app:layout_constraintTop_toBottomOf="@id/user_role"
                 tools:visibility="visible" />
 
+            <Button
+                android:id="@+id/organization_update_button"
+                style="@style/Widget.SmartReceipts.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:text="@string/organization_update"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/organization_caution"
+                tools:visibility="visible" />
+
 
         </android.support.constraint.ConstraintLayout>
 

@@ -11,11 +11,16 @@ interface AccountView {
 
     val applySettingsClicks: Observable<Any>
 
+    val updateSettingsClicks: Observable<Any>
+
+
     fun presentEmail(emailAddress: EmailAddress)
 
     fun presentOrganization(uiIndicator: UiIndicator<AccountInteractor.OrganizationModel>)
 
     fun presentApplyingResult(uiIndicator: UiIndicator<Unit>)
+
+    fun presentUpdatingResult(uiIndicator: UiIndicator<Unit>)
 
     fun presentOcrScans(remainingScans: Int)
 

@@ -93,9 +93,20 @@ class AccountInteractor constructor(
             .observeOn(observeOnScheduler)
     }
 
+    fun updateOrganizationSettings(organization: Organization): Observable<UiIndicator<Unit>> {
+
+        return Observable.concat(Observable.just(UiIndicator.loading<Unit>()),
+            organizationManager.updateOrganizationSettings(organization)
+                .flatMapObservable<UiIndicator<Unit>> { Observable.just(if (it) UiIndicator.success() else UiIndicator.error()) }
+                .subscribeOn(subscribeOnScheduler)
+                .observeOn(observeOnScheduler)
+        )
+
+    }
+
     private fun getUserRole(organization: Organization): OrganizationUser.UserRole {
         // TODO: 12.11.2018 implement getting real user role
-        return OrganizationUser.UserRole.USER
+        return OrganizationUser.UserRole.ADMIN
     }
 
     data class OrganizationModel(

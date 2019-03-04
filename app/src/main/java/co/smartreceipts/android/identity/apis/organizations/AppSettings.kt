@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
 import org.json.JSONObject
 
 @JsonClass(generateAdapter = true)
-class AppSettings(
+data class AppSettings(
     @Json(name = "Configurations") val configurations: Configurations,
     @Json(name = "Settings") val preferences: OrganizationPreferences,
     @Json(name = "Categories") val categories: List<Category>,

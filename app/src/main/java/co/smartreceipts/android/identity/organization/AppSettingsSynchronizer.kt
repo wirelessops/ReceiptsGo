@@ -2,6 +2,7 @@ package co.smartreceipts.android.identity.organization
 
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.apis.organizations.AppSettings
+import co.smartreceipts.android.identity.apis.organizations.Configurations
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.controllers.impl.CSVTableController
@@ -12,6 +13,8 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.utils.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.functions.Function5
+import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -23,6 +26,31 @@ class AppSettingsSynchronizer @Inject constructor(
     private val pdfTableController: PDFTableController,
     private val preferencesSynchronizer: AppPreferencesSynchronizer
 ) {
+
+    /**
+     * @return Single that emits current app's AppSettings
+     */
+    internal fun getCurrentAppSettings(): Single<AppSettings> {
+
+        return Single.zip(
+            preferencesSynchronizer.getAppPreferences(),
+            categoriesTableController.get(),
+            paymentMethodsTableController.get(),
+            csvTableController.get(),
+            pdfTableController.get(),
+            Function5<JSONObject, List<Category>, List<PaymentMethod>, List<Column<Receipt>>, List<Column<Receipt>>, AppSettings> { preferencesJson, categories, paymentMethods, csvColumns, pdfColumns ->
+                AppSettings(
+                    Configurations(), // TODO: 18.02.2019 Configurations are not defined in the app
+                    AppSettings.OrganizationPreferences(preferencesJson),
+                    categories,
+                    paymentMethods,
+                    csvColumns,
+                    pdfColumns
+                )
+            }
+        )
+
+    }
 
     /**
      * @return Single that emits {true} if argument categories match app categories, else emits {false}
@@ -85,11 +113,7 @@ class AppSettingsSynchronizer @Inject constructor(
     }
 
 
-    private fun <T> checkListMatch(
-        organizationItems: List<T>,
-        tableController: TableController<T>,
-        equals: (o1: T, o2: T) -> Boolean
-    )
+    private fun <T> checkListMatch(organizationItems: List<T>, tableController: TableController<T>, equals: (o1: T, o2: T) -> Boolean)
             : Single<Boolean> {
         return tableController.get()
             .flatMap { appItems ->
@@ -115,9 +139,8 @@ class AppSettingsSynchronizer @Inject constructor(
             }
     }
 
-    private fun <T : Keyed> applyList(
-        organizationItems: List<T>, tableController: TableController<T>, equals: (o1: T, o2: T) -> Boolean
-    ): Completable {
+    private fun <T : Keyed> applyList(organizationItems: List<T>, tableController: TableController<T>, equals: (o1: T, o2: T) -> Boolean)
+            : Completable {
 
         return tableController.get()
             .flatMapCompletable { appItems ->

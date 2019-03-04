@@ -169,6 +169,26 @@ class AppPreferencesSynchronizerTest {
         verify(userPreferencesManager, never()).set(eq(UserPreference.Receipts.MinimumReceiptPrice), any())
     }
 
+    @Test
+    fun getAppPreferencesTest() {
+        prepareForSimplifiedResponse()
+
+        // check preferences with different types: Integer, String, Boolean, Float
+        whenever(userPreferencesManager.userPreferencesSingle).thenReturn(
+            Single.just(
+                listOf(
+                    UserPreference.General.DefaultReportDuration, UserPreference.General.DefaultCurrency,
+                    UserPreference.General.IncludeCostCenter, UserPreference.Receipts.MinimumReceiptPrice
+                )
+            )
+        )
+
+        appPreferencesSynchronizer.getAppPreferences().test()
+            .assertComplete()
+            .assertNoErrors()
+            .assertValue {result: JSONObject -> result.toString() == appPreferencesJsonObject.toString() }
+    }
+
 
     private fun prepareForSimplifiedResponse() {
         val context = RuntimeEnvironment.application
@@ -246,6 +266,18 @@ class AppPreferencesSynchronizerTest {
                     "isocurr": "str",
                     "trackcostcenter": true,
                     "TaxPercentage": null,
+                    "MinReceiptPrice": 5.5
+            }
+        """
+        )
+
+        @Language("JSON")
+        private val appPreferencesJsonObject = JSONObject(
+            """
+            {
+                    "TripDuration": 6,
+                    "isocurr": "str",
+                    "trackcostcenter": true,
                     "MinReceiptPrice": 5.5
             }
         """

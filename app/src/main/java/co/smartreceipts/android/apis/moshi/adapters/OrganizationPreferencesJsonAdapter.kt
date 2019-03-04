@@ -13,5 +13,5 @@ class OrganizationPreferencesJsonAdapter {
     fun fromJson(reader: JsonReader): OrganizationPreferences = OrganizationPreferences(JSONObject(reader.readJsonValue() as Map<String, Any>))
 
     @ToJson
-    fun settingsToJson(organizationSettings: OrganizationPreferences): String = organizationSettings.preferencesJson.toString()
+    fun settingsToJson(organizationPreferences: OrganizationPreferences): String = organizationPreferences.preferencesJson.toString()
 }

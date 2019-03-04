@@ -30,6 +30,7 @@ class AccountPresenterTest {
     fun setUp() {
         whenever(view.applySettingsClicks).thenReturn(Observable.never())
         whenever(view.logoutButtonClicks).thenReturn(Observable.never())
+        whenever(view.updateSettingsClicks).thenReturn(Observable.never())
 
         whenever(interactor.getEmail()).thenReturn(EmailAddress(EMAIL))
         whenever(interactor.getOrganization()).thenReturn(Observable.just(UiIndicator.loading(), UiIndicator.idle()))

@@ -58,7 +58,7 @@ class AccountInteractorTest {
         whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.just(organization))
         whenever(organizationManager.checkOrganizationSettingsMatch(organization)).thenReturn(Single.just(false))
 
-        val expectedOrganizationModel = AccountInteractor.OrganizationModel(organization, OrganizationUser.UserRole.USER, false)
+        val expectedOrganizationModel = AccountInteractor.OrganizationModel(organization, OrganizationUser.UserRole.ADMIN, false)
 
         val testObserver = interactor.getOrganization().test()
         testObserver.awaitTerminalEvent()
@@ -155,5 +155,29 @@ class AccountInteractorTest {
             .assertResult(list)
     }
 
+    @Test
+    fun updateOrganizationSettingsTest() {
+        whenever(organizationManager.updateOrganizationSettings(organization)).thenReturn(Single.just(true))
 
+        val testObserver = interactor.updateOrganizationSettings(organization).test()
+        testObserver.awaitTerminalEvent()
+
+        testObserver.assertComplete()
+            .assertNoErrors()
+            .assertValueCount(2)
+            .assertValues(UiIndicator.loading(), UiIndicator.success())
+    }
+
+    @Test
+    fun updateOrganizationSettingsErrorTest() {
+        whenever(organizationManager.updateOrganizationSettings(organization)).thenReturn(Single.just(false))
+
+        val testObserver = interactor.updateOrganizationSettings(organization).test()
+        testObserver.awaitTerminalEvent()
+
+        testObserver.assertComplete()
+            .assertNoErrors()
+            .assertValueCount(2)
+            .assertValues(UiIndicator.loading(), UiIndicator.error())
+    }
 }

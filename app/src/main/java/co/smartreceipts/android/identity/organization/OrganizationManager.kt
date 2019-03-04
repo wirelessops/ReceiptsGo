@@ -94,5 +94,12 @@ class OrganizationManager @Inject constructor(
         )
     }
 
+    fun updateOrganizationSettings(organization: Organization): Single<Boolean> {
+        // TODO: 19.02.2019 mocked. add web service
+        return appSettingsSynchronizer.getCurrentAppSettings()
+            .flatMap { Single.just(false) }
+
+    }
+
 
 }

@@ -53,6 +53,14 @@ class AccountPresenter @Inject constructor(view: AccountView, interactor: Accoun
 
         )
 
+        compositeDisposable.add(
+            view.updateSettingsClicks
+                .flatMap { organizationSubject
+                    .flatMap{organization: Organization -> interactor.updateOrganizationSettings(organization)}
+                }
+                .subscribe(view::presentUpdatingResult)
+        )
+
     }
 
 }
