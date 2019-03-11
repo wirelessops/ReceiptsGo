@@ -105,6 +105,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
 
     // Currency stuff
     private CurrencyListEditorPresenter currencyListEditorPresenter;
+    private Bundle savedInstanceState;
     private ListPreference currencyPreference;
 
     /**
@@ -119,6 +120,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         AndroidInjection.inject(this);
 
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
         isUsingHeaders = getResources().getBoolean(R.bool.isTablet);
 
         if (!isUsingHeaders) {
@@ -146,7 +148,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             configurePreferencesPrivacy(this);
         }
 
-        currencyListEditorPresenter = new CurrencyListEditorPresenter(this, databaseHelper, () -> userPreferenceManager.get(UserPreference.General.DefaultCurrency), savedInstanceState);
         purchaseManager.addEventListener(this);
 
 
@@ -183,7 +184,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        currencyListEditorPresenter.subscribe();
         compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -247,7 +247,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     @Override
     protected void onStop() {
         compositeDisposable.clear();
-        currencyListEditorPresenter.unsubscribe();
+        if (currencyListEditorPresenter != null) {
+            currencyListEditorPresenter.unsubscribe();
+        }
         super.onStop();
     }
 
@@ -274,6 +276,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
 
         // Configure out currency list
         currencyPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_currency_key);
+        currencyListEditorPresenter = new CurrencyListEditorPresenter(this, databaseHelper, () -> userPreferenceManager.get(UserPreference.General.DefaultCurrency), savedInstanceState);
+        currencyListEditorPresenter.subscribe();
 
         // Configure the date separator list
         final ListPreference dateSeparatorPreference = (ListPreference) universal.findPreference(R.string.pref_general_default_date_separator_key);
