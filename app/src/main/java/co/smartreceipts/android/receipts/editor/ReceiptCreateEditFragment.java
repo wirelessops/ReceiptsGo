@@ -676,7 +676,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             final String currency = currencySpinner.getSelectedItem().toString();
             final String price = priceBox.getText().toString();
             final String tax = taxBox.getText().toString();
-            final String exchangeRate = exchangeRateBox.getText().toString();
+            final String exchangeRate = exchangeRateBox.getText() != null ? exchangeRateBox.getText().toString() : "";
             final String comment = commentBox.getText().toString();
             final PaymentMethod paymentMethod = (PaymentMethod) (presenter.isUsePaymentMethods() ? paymentMethodsSpinner.getSelectedItem() : null);
             final String extraText1 = (extraEditText1 == null) ? null : extraEditText1.getText().toString();
