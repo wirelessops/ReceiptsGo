@@ -24,7 +24,7 @@ import co.smartreceipts.android.model.utils.ModelUtils;
  */
 public class ExchangeRate implements Serializable {
 
-    public static final int PRECISION = 4;
+    public static final int PRECISION = 6;
 
     private final String base;
     private final Map<String, Double> rates;
