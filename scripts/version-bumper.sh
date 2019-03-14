@@ -69,4 +69,3 @@ else
 	echo "BUMPING FAILED!"
 fi
 echo "Required: $bumpedVersionName | Actual: $fullVersion"
-echo "Done!"
