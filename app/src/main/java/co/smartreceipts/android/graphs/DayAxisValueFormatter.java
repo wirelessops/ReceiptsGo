@@ -8,6 +8,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class DayAxisValueFormatter implements IAxisValueFormatter {
 
@@ -25,7 +26,8 @@ public class DayAxisValueFormatter implements IAxisValueFormatter {
 
         try { // Hack for sometimes appearing IndexOutOfBoundsException from MPAndroidCharts lib
             final int days = (int) value;
-            calendar.set(Calendar.DAY_OF_YEAR, days);
+            calendar.setTimeInMillis(TimeUnit.DAYS.toMillis(days));
+
             return dateFormat.format(calendar.getTime());
         } catch (IndexOutOfBoundsException e) {
             return "";

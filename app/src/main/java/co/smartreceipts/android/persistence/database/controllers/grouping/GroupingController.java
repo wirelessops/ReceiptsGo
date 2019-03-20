@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -15,12 +16,12 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
+import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.ImmutableNetPriceImpl;
-import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
@@ -116,7 +117,7 @@ public class GroupingController {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(receipt.getDate());
                     calendar.setTimeZone(receipt.getTimeZone());
-                    return calendar.get(Calendar.DAY_OF_YEAR);
+                    return (int) TimeUnit.MILLISECONDS.toDays(calendar.getTimeInMillis());
                 })
                 .flatMap(dateReceiptGroupedObservable -> dateReceiptGroupedObservable
                         .toList()

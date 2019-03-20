@@ -50,7 +50,6 @@ class RemoteSubscriptionManager constructor(private val purchaseWallet: Purchase
                     Logger.info(this, "Successfully fetched {} remote subscriptions from our APIs.", it.size)
                 }
                 .flatMap {
-                    // TODO: 15.02.2019 Will, please check if this logic correct
                     val missedSubscriptions: MutableSet<RemoteSubscription> = mutableSetOf()
                     val resultNewSubscriptions: MutableSet<RemoteSubscription> = mutableSetOf()
 
