@@ -175,6 +175,7 @@
         <item name="android:layout_height">@dimen/guide_image_size</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
+        <item name="android:tint">@color/card_image_tint</item>
         <item name="android:layout_marginRight">@dimen/guide_image_margin</item>
     </style>
 

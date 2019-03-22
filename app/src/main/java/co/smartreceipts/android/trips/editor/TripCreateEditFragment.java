@@ -254,7 +254,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_cancel);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_24dp);
             actionBar.setTitle((getEditableItem() == null) ? getFlexString(R.string.DIALOG_TRIPMENU_TITLE_NEW) : getFlexString(R.string.DIALOG_TRIPMENU_TITLE_EDIT));
             actionBar.setSubtitle("");
         }

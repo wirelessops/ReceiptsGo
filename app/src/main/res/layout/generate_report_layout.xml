@@ -73,5 +73,5 @@
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/receipt_action_send"
         style="@style/Widget.SmartReceipts.FloatingActionButton"
-        android:src="@drawable/ic_action_send" />
+        android:src="@drawable/ic_send_24dp" />
 </RelativeLayout>

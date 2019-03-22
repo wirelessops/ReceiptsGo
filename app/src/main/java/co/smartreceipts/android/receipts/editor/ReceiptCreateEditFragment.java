@@ -575,7 +575,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_cancel);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_24dp);
             actionBar.setSubtitle("");
         }
     }

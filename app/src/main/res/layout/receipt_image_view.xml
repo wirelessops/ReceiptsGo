@@ -36,7 +36,7 @@
 		    <ImageView
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:src="@drawable/ic_rotate_ccw"
+			    android:src="@drawable/ic_rotate_left_24dp"
 			    android:contentDescription="@string/menu_receiptimage_rotate_ccw" />
 		    <TextView
 		        android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
 		    <ImageView
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:src="@drawable/ic_camera_retake"
+			    android:src="@drawable/ic_photo_camera_white_24dp"
 			    android:contentDescription="@string/menu_receiptimage_retake" />
 		    <TextView
 		        android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
 		    <ImageView
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:src="@drawable/ic_rotate_cw"
+			    android:src="@drawable/ic_rotate_right_24dp"
 			    android:contentDescription="@string/menu_receiptimage_rotate_cw" />
 		    <TextView
 		        android:layout_width="wrap_content"

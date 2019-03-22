@@ -2,13 +2,11 @@ package co.smartreceipts.android.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
@@ -157,7 +155,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
         if (userRetryActionEnabled) {
             switch (state) {
                 case Ready:
-                    drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh, getContext().getTheme());
+                    drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh_24dp, getContext().getTheme());
                     setHint(originalHint);
                     break;
                 case Loading:
@@ -165,7 +163,7 @@ public class NetworkRequestAwareEditText extends AppCompatEditText {
                     setHint(originalHint);
                     break;
                 case Failure:
-                    drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh, getContext().getTheme());
+                    drawableEnd = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_refresh_24dp, getContext().getTheme());
                     setHint(failedHint);
                     break;
                 case Success:

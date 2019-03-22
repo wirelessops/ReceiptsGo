@@ -38,7 +38,6 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:padding="@dimen/padding_large">
 
             <android.support.design.widget.TextInputLayout
@@ -72,7 +71,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/receipt_input_price_wrapper"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/receipt_input_price_wrapper"
-                app:srcCompat="@drawable/ic_money" />
+                android:src="@drawable/ic_receipt_white_24dp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/receipt_input_price_wrapper"
@@ -151,7 +150,7 @@
                 app:layout_constraintEnd_toStartOf="@id/receipt_input_exchange_rate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/receipt_input_exchange_rate"
-                app:srcCompat="@drawable/ic_exchange_rate"
+                android:src="@drawable/ic_exchange_rate_24dp"
                 tools:visibility="visible" />
 
             <co.smartreceipts.android.widget.NetworkRequestAwareEditText
@@ -207,7 +206,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/DIALOG_RECEIPTMENU_DATE"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/DIALOG_RECEIPTMENU_DATE"
-                app:srcCompat="@drawable/ic_date" />
+                android:src="@drawable/ic_date_24dp"/>
 
             <co.smartreceipts.android.date.DateEditText
                 android:id="@+id/DIALOG_RECEIPTMENU_DATE"
@@ -229,7 +228,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/DIALOG_RECEIPTMENU_CATEGORY"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/DIALOG_RECEIPTMENU_CATEGORY"
-                app:srcCompat="@drawable/ic_category" />
+                android:src="@drawable/ic_category_24dp" />
 
             <Spinner
                 android:id="@+id/DIALOG_RECEIPTMENU_CATEGORY"
@@ -252,7 +251,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/DIALOG_RECEIPTMENU_COMMENT"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/DIALOG_RECEIPTMENU_COMMENT"
-                app:srcCompat="@drawable/ic_comment" />
+                android:src="@drawable/ic_comment_24dp" />
 
             <AutoCompleteTextView
                 android:id="@+id/DIALOG_RECEIPTMENU_COMMENT"
@@ -276,7 +275,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/receipt_input_payment_method"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/receipt_input_payment_method"
-                app:srcCompat="@drawable/ic_payment_method" />
+                app:srcCompat="@drawable/ic_credit_card_24dp" />
 
             <Spinner
                 android:id="@+id/receipt_input_payment_method"
