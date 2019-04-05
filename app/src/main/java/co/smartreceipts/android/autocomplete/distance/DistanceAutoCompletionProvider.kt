@@ -19,6 +19,6 @@ class DistanceAutoCompletionProvider(override val autoCompletionType: Class<Dist
 
     @Inject
     constructor(tableController: DistanceTableController) :
-            this(Distance::class.java, tableController, Arrays.asList(DistanceAutoCompleteField.Location))
+            this(Distance::class.java, tableController, Arrays.asList(DistanceAutoCompleteField.Location, DistanceAutoCompleteField.Comment))
 
 }

@@ -20,9 +20,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.DistanceAdapter;
 import co.smartreceipts.android.date.DateFormatter;
-import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
@@ -50,6 +50,9 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
 
     @Inject
     DateFormatter dateFormatter;
+
+    @Inject
+    NavigationHandler navigationHandler;
 
     private Trip trip;
     private DistanceAdapter distanceAdapter;
@@ -81,15 +84,10 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
         Logger.debug(this, "onCreateView");
         final View view = inflater.inflate(R.layout.report_distance_list, container, false);
         progressDialog = view.findViewById(R.id.progress);
-        noDataAlert = (TextView) view.findViewById(R.id.no_data);
+        noDataAlert = view.findViewById(R.id.no_data);
         noDataAlert.setText(R.string.distance_no_data);
-        view.findViewById(R.id.distance_action_new).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final DistanceDialogFragment dialog = (lastInsertedDistance == null) ? DistanceDialogFragment.newInstance(trip) : DistanceDialogFragment.newInstance(trip, lastInsertedDistance.getDate());
-                dialog.show(getFragmentManager(), DistanceDialogFragment.TAG);
-            }
-        });
+        view.findViewById(R.id.distance_action_new).setOnClickListener(v ->
+                navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate()));
         return view;
     }
 
@@ -132,9 +130,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Distance distance = distanceAdapter.getItem(position);
-        final DistanceDialogFragment dialog = DistanceDialogFragment.newInstance(trip, distance);
-        dialog.show(getFragmentManager(), DistanceDialogFragment.TAG);
-        getFragmentManager().executePendingTransactions();
+        navigationHandler.navigateToEditDistanceFragment(trip, distance);
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.google.common.base.Preconditions;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
+import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
@@ -92,6 +94,22 @@ public class NavigationHandler<T extends FragmentActivity> {
             replaceFragment(fragmentProvider.newEditReceiptFragment(trip, receiptToEdit), R.id.content_details);
         } else {
             replaceFragment(fragmentProvider.newEditReceiptFragment(trip, receiptToEdit), R.id.content_list);
+        }
+    }
+
+    public void navigateToCreateNewDistanceFragment(@NonNull Trip trip, @Nullable Date suggestedDate) {
+        if (isDualPane) {
+            replaceFragmentWithAnimation(fragmentProvider.newCreateDistanceFragment(trip, suggestedDate), R.id.content_details, R.anim.enter_from_bottom, DO_NOT_ANIM);
+        } else {
+            replaceFragmentWithAnimation(fragmentProvider.newCreateDistanceFragment(trip, suggestedDate), R.id.content_list, R.anim.enter_from_bottom, DO_NOT_ANIM);
+        }
+    }
+
+    public void navigateToEditDistanceFragment(@NonNull Trip trip, @NonNull Distance distance) {
+        if (isDualPane) {
+            replaceFragment(fragmentProvider.newEditDistanceFragment(trip, distance), R.id.content_details);
+        } else {
+            replaceFragment(fragmentProvider.newEditDistanceFragment(trip, distance), R.id.content_list);
         }
     }
 

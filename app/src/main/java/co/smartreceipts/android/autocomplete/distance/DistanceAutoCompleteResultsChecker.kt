@@ -16,6 +16,7 @@ class DistanceAutoCompleteResultsChecker @Inject constructor() : AutoCompleteRes
     override fun matchesInput(input: CharSequence, field: AutoCompleteField, item: Distance): Boolean {
         return when (field) {
             DistanceAutoCompleteField.Location -> item.location.startsWith(input)
+            DistanceAutoCompleteField.Comment -> item.comment.startsWith(input)
             else -> false
         }
     }
@@ -23,6 +24,7 @@ class DistanceAutoCompleteResultsChecker @Inject constructor() : AutoCompleteRes
     override fun getValue(field: AutoCompleteField, item: Distance): CharSequence {
         return when (field) {
             DistanceAutoCompleteField.Location -> item.location.trim()
+            DistanceAutoCompleteField.Comment -> item.comment.trim()
             else -> throw IllegalArgumentException("Unknown field type: $field")
         }
     }

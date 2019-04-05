@@ -1,0 +1,258 @@
+package co.smartreceipts.android.distance.editor
+
+import android.app.AlertDialog
+import android.content.Context
+import android.os.Bundle
+import android.support.v7.widget.Toolbar
+import android.view.*
+import android.widget.Toast
+import co.smartreceipts.android.R
+import co.smartreceipts.android.activities.NavigationHandler
+import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter
+import co.smartreceipts.android.autocomplete.AutoCompleteField
+import co.smartreceipts.android.autocomplete.AutoCompleteResult
+import co.smartreceipts.android.autocomplete.distance.DistanceAutoCompleteField
+import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter
+import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView
+import co.smartreceipts.android.date.DateFormatter
+import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier
+import co.smartreceipts.android.fragments.WBFragment
+import co.smartreceipts.android.model.Distance
+import co.smartreceipts.android.model.Trip
+import co.smartreceipts.android.model.factory.DistanceBuilderFactory
+import co.smartreceipts.android.model.utils.ModelUtils
+import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.android.utils.SoftKeyboardManager
+import co.smartreceipts.android.widget.model.UiIndicator
+import com.jakewharton.rxbinding2.widget.RxTextView
+import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
+import kotlinx.android.synthetic.main.update_distance.*
+import java.math.BigDecimal
+import java.sql.Date
+import java.util.*
+import javax.inject.Inject
+
+class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
+
+    @Inject
+    lateinit var presenter: DistanceCreateEditPresenter
+
+    @Inject
+    lateinit var database: DatabaseHelper
+
+    @Inject
+    lateinit var dateFormatter: DateFormatter
+
+    @Inject
+    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+
+    override val editableItem: Distance?
+        get() = arguments?.getParcelable(Distance.PARCEL_KEY)
+
+    private val parentTrip: Trip
+        get() = arguments?.getParcelable(Trip.PARCEL_KEY) ?: throw IllegalStateException("Distance can't exist without parent trip")
+
+    private var suggestedDate: Date = Date(Calendar.getInstance().timeInMillis)
+
+    private lateinit var currencyListEditorPresenter: CurrencyListEditorPresenter
+
+    private val createDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+    private val updateDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+    private val deleteDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+
+    // TODO: 02.04.2019 handle keyboard & focusable views properly
+    // TODO: 05.04.2019 fix bug: generate -> graphics = empty state
+
+    override fun getDeleteDistanceClicks(): Observable<Distance> = deleteDistanceClicks
+    override fun getUpdateDistanceClicks(): Observable<Distance> = updateDistanceClicks
+    override fun getCreateDistanceClicks(): Observable<Distance> = createDistanceClicks
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+
+        if (savedInstanceState != null) {
+            suggestedDate = Date(arguments?.getLong(ARG_SUGGESTED_DATE, suggestedDate.time) ?: suggestedDate.time)
+        }
+
+        currencyListEditorPresenter =
+            CurrencyListEditorPresenter(
+                DefaultCurrencyListEditorView(requireContext()) { spinner_currency },
+                database,
+                DistanceCurrencyCodeSupplier(parentTrip, editableItem),
+                savedInstanceState
+            )
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.update_distance, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Toolbar stuff
+        when {
+            navigationHandler.isDualPane -> toolbar.visibility = View.GONE
+            else -> setSupportActionBar(toolbar as Toolbar)
+        }
+
+        supportActionBar?.apply {
+            setHomeButtonEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_clear_24dp)
+            setTitle(if (editableItem == null) R.string.dialog_mileage_title_create else R.string.dialog_mileage_title_update)
+            subtitle = ""
+        }
+
+        text_distance_date.apply {
+            isFocusable = false
+            isFocusableInTouchMode = false
+            setDateFormatter(dateFormatter)
+        }
+
+        if (editableItem == null) {
+            // New Distance
+            text_distance_date.date = suggestedDate
+            text_distance_rate.setText(presenter.getDefaultDistanceRate())
+
+            text_distance_value.setOnFocusChangeListener { v, hasFocus -> SoftKeyboardManager.showKeyboard(v) }
+        } else {
+            // Update distance
+            text_distance_value.setText(editableItem!!.decimalFormattedDistance)
+            text_distance_rate.setText(editableItem!!.decimalFormattedRate)
+            text_distance_location.setText(editableItem!!.location)
+            text_distance_comment.setText(editableItem!!.comment)
+            text_distance_date.date = editableItem!!.date
+            text_distance_date.timeZone = editableItem!!.timeZone
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.subscribe()
+        currencyListEditorPresenter.subscribe()
+    }
+
+    override fun onStop() {
+        presenter.unsubscribe()
+        currencyListEditorPresenter.unsubscribe()
+        super.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        currencyListEditorPresenter.onSaveInstanceState(outState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(if (editableItem == null) R.menu.menu_save else R.menu.menu_save_delete, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                navigationHandler.navigateBack()
+                return true
+            }
+            R.id.action_save -> {
+                when {
+                    editableItem != null -> updateDistanceClicks.onNext(constructDistance())
+                    else -> createDistanceClicks.onNext(constructDistance())
+                }
+                return true
+            }
+            R.id.action_delete -> {
+                showDeleteDialog()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun present(uiIndicator: UiIndicator<Int>) {
+        when {
+            uiIndicator.state == UiIndicator.State.Success -> navigationHandler.navigateBack()
+            else -> if (uiIndicator.state == UiIndicator.State.Error && uiIndicator.data.isPresent) {
+                Toast.makeText(requireContext(), uiIndicator.data.get(), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+
+    private fun constructDistance(): Distance {
+        val distanceBuilder: DistanceBuilderFactory = when (editableItem) {
+            null -> DistanceBuilderFactory()
+                .setDistance(ModelUtils.tryParse(text_distance_value.text.toString(), BigDecimal.ZERO))
+                .setRate(ModelUtils.tryParse(text_distance_rate.text.toString(), BigDecimal.ZERO))
+            else -> DistanceBuilderFactory(editableItem!!)
+                .setDistance(ModelUtils.tryParse(text_distance_value.text.toString(), editableItem!!.distance))
+                .setRate(ModelUtils.tryParse(text_distance_rate.text.toString(), editableItem!!.rate))
+        }
+
+        return distanceBuilder
+            .setTrip(parentTrip)
+            .setLocation(text_distance_location.text.toString())
+            .setDate(text_distance_date.date)
+            .setTimezone(text_distance_date.timeZone)
+            .setCurrency(spinner_currency.selectedItem.toString())
+            .setComment(text_distance_comment.text.toString())
+            .build()
+    }
+
+    private fun showDeleteDialog() {
+        AlertDialog.Builder(activity)
+            .setTitle(getString(R.string.delete_item, editableItem!!.location))
+            .setMessage(R.string.delete_sync_information)
+            .setCancelable(true)
+            .setPositiveButton(R.string.delete) { _, _ -> deleteDistanceClicks.onNext(editableItem!!) }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> }
+            .show()
+    }
+
+
+    override fun getTextChangeStream(field: AutoCompleteField): Observable<CharSequence> {
+        return when (field) {
+            DistanceAutoCompleteField.Location -> RxTextView.textChanges(text_distance_location)
+            DistanceAutoCompleteField.Comment -> RxTextView.textChanges(text_distance_comment)
+            else -> throw IllegalArgumentException("Unsupported field type: $field")
+        }
+    }
+
+    override fun displayAutoCompleteResults(field: AutoCompleteField, autoCompleteResults: List<AutoCompleteResult<Distance>>) {
+        if (isAdded) {
+            val resultsAdapter = AutoCompleteArrayAdapter(requireContext(), autoCompleteResults)
+            when (field) {
+                DistanceAutoCompleteField.Location -> {
+                    text_distance_location.setAdapter(resultsAdapter)
+                    text_distance_location.showDropDown()
+                }
+                DistanceAutoCompleteField.Comment -> {
+                    text_distance_comment.setAdapter(resultsAdapter)
+                    text_distance_comment.showDropDown()
+                }
+                else -> throw IllegalArgumentException("Unsupported field type: $field")
+            }
+        }
+    }
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = DistanceCreateEditFragment()
+
+        const val ARG_SUGGESTED_DATE = "arg_suggested_date"
+
+    }
+
+}

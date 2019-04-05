@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/update_distance_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:isScrollContainer="false"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintVertical_bias="0.0">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_large">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/distance_value_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/distance_distance_field"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/text_distance_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:imeOptions="actionNext"
+                    android:inputType="number|numberSigned|numberDecimal"
+                    android:singleLine="true"
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                    android:textStyle="bold" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/image_guide_price"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_PRICE_SHORT"
+                app:layout_constraintBottom_toBottomOf="@+id/text_distance_rate_wrapper"
+                app:layout_constraintEnd_toStartOf="@id/text_distance_rate_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_distance_rate_wrapper"
+                android:src="@drawable/ic_receipt_white_24dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_distance_rate_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/distance_rate_field"
+                app:layout_constraintStart_toEndOf="@id/image_guide_price"
+                app:layout_constraintEnd_toStartOf="@id/spinner_currency"
+                app:layout_constraintTop_toBottomOf="@id/distance_value_wrapper">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/text_distance_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number|numberDecimal"
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spinner_currency"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:drawSelectorOnTop="true"
+                android:prompt="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
+                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                app:layout_constraintBottom_toBottomOf="@id/text_distance_rate_wrapper"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/text_distance_rate_wrapper"
+                app:layout_constraintTop_toTopOf="@id/text_distance_rate_wrapper" />
+
+            <ImageView
+                android:id="@+id/image_guide_location"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                app:layout_constraintBottom_toBottomOf="@id/text_distance_location"
+                app:layout_constraintEnd_toStartOf="@id/text_distance_location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_distance_location"
+                android:src="@drawable/ic_location_24dp"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/text_distance_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:completionThreshold="1"
+                android:hint="@string/distance_location_field"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_guide_location"
+                app:layout_constraintTop_toBottomOf="@+id/text_distance_rate_wrapper" />
+
+            <ImageView
+                android:id="@+id/image_guide_date"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_DATE"
+                app:layout_constraintBottom_toBottomOf="@id/text_distance_date"
+                app:layout_constraintEnd_toStartOf="@id/text_distance_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_distance_date"
+                android:src="@drawable/ic_date_24dp"/>
+
+            <co.smartreceipts.android.date.DateEditText
+                android:id="@+id/text_distance_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:hint="@string/distance_date_field"
+                android:maxLines="1"
+                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_guide_date"
+                app:layout_constraintTop_toBottomOf="@id/text_distance_location" />
+
+            <ImageView
+                android:id="@+id/image_guide_comment"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                app:layout_constraintBottom_toBottomOf="@id/text_distance_comment"
+                app:layout_constraintEnd_toStartOf="@id/text_distance_comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_distance_comment"
+                android:src="@drawable/ic_comment_24dp"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/text_distance_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:completionThreshold="1"
+                android:hint="@string/distance_comment_field"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_guide_comment"
+                app:layout_constraintTop_toBottomOf="@id/text_distance_date" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

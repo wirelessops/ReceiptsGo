@@ -1,8 +1,8 @@
 package co.smartreceipts.android.di;
 
 import co.smartreceipts.android.di.scopes.FragmentScope;
-import co.smartreceipts.android.distance.editor.DistanceDialogFragment;
-import co.smartreceipts.android.distance.editor.di.DistanceDialogFragmentModule;
+import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment;
+import co.smartreceipts.android.distance.editor.di.DistanceCreateEditFragmentModule;
 import co.smartreceipts.android.fragments.DistanceFragment;
 import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
@@ -68,8 +68,8 @@ public abstract class SmartReceiptsActivityBindingModule {
     public abstract DistanceFragment distanceFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = DistanceDialogFragmentModule.class)
-    public abstract DistanceDialogFragment distanceDialogFragment();
+    @ContributesAndroidInjector(modules = DistanceCreateEditFragmentModule.class)
+    public abstract DistanceCreateEditFragment distanceCreateEditFragment();
 
     @FragmentScope
     @ContributesAndroidInjector

@@ -54,13 +54,13 @@ public class DeleteReceiptDialogFragment extends DialogFragment implements Dialo
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.delete_item, receipt.getName()));
-        builder.setMessage(R.string.delete_sync_information);
-        builder.setCancelable(true);
-        builder.setPositiveButton(R.string.delete, this);
-        builder.setNegativeButton(android.R.string.cancel, this);
-        return builder.show();
+        return new AlertDialog.Builder(getContext())
+                .setTitle(getString(R.string.delete_item, receipt.getName()))
+                .setMessage(R.string.delete_sync_information)
+                .setCancelable(true)
+                .setPositiveButton(R.string.delete, this)
+                .setNegativeButton(android.R.string.cancel, this)
+                .show();
     }
 
     @Override
