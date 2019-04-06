@@ -100,7 +100,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
         }
 
         viewPager = view.findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(2); // Set this to 2, since we're always two away from the receipts page
+        viewPager.setOffscreenPageLimit(3); // Set this to 3, since we have 4 tabs
         tabLayout = view.findViewById(R.id.tabs);
 
         viewPager.setAdapter(fragmentPagerAdapter);
