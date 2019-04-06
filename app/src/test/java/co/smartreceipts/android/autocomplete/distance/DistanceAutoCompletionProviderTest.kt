@@ -2,9 +2,8 @@ package co.smartreceipts.android.autocomplete.distance
 
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
-
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -37,6 +36,6 @@ class DistanceAutoCompletionProviderTest {
 
     @Test
     fun getSupportedAutoCompleteFields() {
-        assertEquals(listOf(DistanceAutoCompleteField.Location), provider.supportedAutoCompleteFields)
+        assertEquals(listOf(DistanceAutoCompleteField.Location, DistanceAutoCompleteField.Comment), provider.supportedAutoCompleteFields)
     }
 }

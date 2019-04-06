@@ -62,15 +62,19 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     private var focusedView: View? = null
 
-    private val createDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
-    private val updateDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
-    private val deleteDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+    override val createDistanceClicks: Observable<Distance>
+        get() = _createDistanceClicks
 
-    // TODO: 05.04.2019 fix bug: generate -> graphics = empty state
+    override val updateDistanceClicks: Observable<Distance>
+        get() = _updateDistanceClicks
 
-    override fun getDeleteDistanceClicks(): Observable<Distance> = deleteDistanceClicks
-    override fun getUpdateDistanceClicks(): Observable<Distance> = updateDistanceClicks
-    override fun getCreateDistanceClicks(): Observable<Distance> = createDistanceClicks
+    override val deleteDistanceClicks: Observable<Distance>
+        get() = _deleteDistanceClicks
+
+    private val _createDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+    private val _updateDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+    private val _deleteDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
+
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -181,8 +185,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             }
             R.id.action_save -> {
                 when {
-                    editableItem != null -> updateDistanceClicks.onNext(constructDistance())
-                    else -> createDistanceClicks.onNext(constructDistance())
+                    editableItem != null -> _updateDistanceClicks.onNext(constructDistance())
+                    else -> _createDistanceClicks.onNext(constructDistance())
                 }
                 return true
             }
@@ -255,7 +259,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             .setTitle(getString(R.string.delete_item, editableItem!!.location))
             .setMessage(R.string.delete_sync_information)
             .setCancelable(true)
-            .setPositiveButton(R.string.delete) { _, _ -> deleteDistanceClicks.onNext(editableItem!!) }
+            .setPositiveButton(R.string.delete) { _, _ -> _deleteDistanceClicks.onNext(editableItem!!) }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .show()
     }

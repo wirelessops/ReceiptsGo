@@ -30,9 +30,9 @@ class DistanceCreateEditPresenterTest {
 
     @Before
     fun setUp() {
-        whenever(view.getCreateDistanceClicks()).thenReturn(Observable.never())
-        whenever(view.getDeleteDistanceClicks()).thenReturn(Observable.never())
-        whenever(view.getUpdateDistanceClicks()).thenReturn(Observable.never())
+        whenever(view.createDistanceClicks).thenReturn(Observable.never())
+        whenever(view.deleteDistanceClicks).thenReturn(Observable.never())
+        whenever(view.updateDistanceClicks).thenReturn(Observable.never())
         whenever(view.editableItem).thenReturn((distance))
 
         doNothing().whenever(interactor).deleteDistance(distance)
@@ -44,7 +44,7 @@ class DistanceCreateEditPresenterTest {
 
     @Test
     fun deleteDistanceTest() {
-        whenever(view.getDeleteDistanceClicks()).thenReturn(Observable.just(distance))
+        whenever(view.deleteDistanceClicks).thenReturn(Observable.just(distance))
 
         presenter.subscribe()
 
@@ -54,7 +54,7 @@ class DistanceCreateEditPresenterTest {
 
     @Test
     fun createDistanceTest() {
-        whenever(view.getCreateDistanceClicks()).thenReturn(Observable.just(distance))
+        whenever(view.createDistanceClicks).thenReturn(Observable.just(distance))
 
         presenter.subscribe()
 
@@ -64,7 +64,7 @@ class DistanceCreateEditPresenterTest {
 
     @Test
     fun updateDistanceTest() {
-        whenever(view.getUpdateDistanceClicks()).thenReturn(Observable.just(newDistance))
+        whenever(view.updateDistanceClicks).thenReturn(Observable.just(newDistance))
 
         presenter.subscribe()
 
@@ -74,7 +74,7 @@ class DistanceCreateEditPresenterTest {
 
     @Test
     fun updateDistanceErrorTest() {
-        whenever(view.getUpdateDistanceClicks()).thenReturn(Observable.just(newDistance))
+        whenever(view.updateDistanceClicks).thenReturn(Observable.just(newDistance))
         whenever(interactor.updateDistance(distance, newDistance)).thenReturn(Observable.just(Optional.absent()))
 
         presenter.subscribe()

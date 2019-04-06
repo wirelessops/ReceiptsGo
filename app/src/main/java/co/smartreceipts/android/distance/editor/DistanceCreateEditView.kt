@@ -8,12 +8,12 @@ import io.reactivex.Observable
 
 interface DistanceCreateEditView : Editor<Distance>, AutoCompleteView<Distance> {
 
+    val createDistanceClicks: Observable<Distance>
 
-    fun getUpdateDistanceClicks() : Observable<Distance>
+    val updateDistanceClicks: Observable<Distance>
 
-    fun getCreateDistanceClicks() : Observable<Distance>
+    val deleteDistanceClicks: Observable<Distance>
 
-    fun getDeleteDistanceClicks() : Observable<Distance>
 
     fun present(uiIndicator: UiIndicator<Int>)
 }

@@ -21,7 +21,7 @@ class DistanceCreateEditPresenter @Inject constructor(
 
         distanceAutoCompletePresenter.subscribe()
 
-        compositeDisposable.add(view.getCreateDistanceClicks()
+        compositeDisposable.add(view.createDistanceClicks
             .distinctUntilChanged()
             .flatMap { interactor.createDistance(it) }
             .map { result ->
@@ -32,7 +32,7 @@ class DistanceCreateEditPresenter @Inject constructor(
             }
             .subscribe { view.present(it) })
 
-        compositeDisposable.add(view.getUpdateDistanceClicks()
+        compositeDisposable.add(view.updateDistanceClicks
             .filter { view.editableItem != null }
             .distinctUntilChanged()
             .flatMap { interactor.updateDistance(view.editableItem!!, it) }
@@ -44,7 +44,7 @@ class DistanceCreateEditPresenter @Inject constructor(
             }
             .subscribe { view.present(it) })
 
-        compositeDisposable.add(view.getDeleteDistanceClicks()
+        compositeDisposable.add(view.deleteDistanceClicks
             .distinctUntilChanged()
             .doOnNext { interactor.deleteDistance(it) }
             .subscribe { view.present(UiIndicator.success()) })
