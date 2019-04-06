@@ -36,7 +36,7 @@ import java.sql.Date
 import java.util.*
 import javax.inject.Inject
 
-class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
+class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.OnFocusChangeListener {
 
     @Inject
     lateinit var presenter: DistanceCreateEditPresenter
@@ -60,11 +60,12 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
 
     private lateinit var currencyListEditorPresenter: CurrencyListEditorPresenter
 
+    private var focusedView: View? = null
+
     private val createDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
     private val updateDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
     private val deleteDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
 
-    // TODO: 02.04.2019 handle keyboard & focusable views properly
     // TODO: 05.04.2019 fix bug: generate -> graphics = empty state
 
     override fun getDeleteDistanceClicks(): Observable<Distance> = deleteDistanceClicks
@@ -74,6 +75,24 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+    }
+
+    override fun onFocusChange(view: View, hasFocus: Boolean) {
+        focusedView = if (hasFocus) view else null
+        if (editableItem == null && hasFocus) {
+            // Only launch if we have focus and it's a new distance
+            SoftKeyboardManager.showKeyboard(view)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        focusedView?.requestFocus() // Make sure we're focused on the right view
+    }
+
+    override fun onPause() {
+        SoftKeyboardManager.hideKeyboard(focusedView)
+        super.onPause()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +119,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        setUpFocusBehavior()
 
         // Toolbar stuff
         when {
@@ -115,18 +136,11 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
             subtitle = ""
         }
 
-        text_distance_date.apply {
-            isFocusable = false
-            isFocusableInTouchMode = false
-            setDateFormatter(dateFormatter)
-        }
 
         if (editableItem == null) {
             // New Distance
             text_distance_date.date = suggestedDate
             text_distance_rate.setText(presenter.getDefaultDistanceRate())
-
-            text_distance_value.setOnFocusChangeListener { v, hasFocus -> SoftKeyboardManager.showKeyboard(v) }
         } else {
             // Update distance
             text_distance_value.setText(editableItem!!.decimalFormattedDistance)
@@ -187,6 +201,32 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView {
                 Toast.makeText(requireContext(), uiIndicator.data.get(), Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun setUpFocusBehavior() {
+        text_distance_value.onFocusChangeListener = this
+        text_distance_rate.onFocusChangeListener = this
+        text_distance_location.onFocusChangeListener = this
+        text_distance_date.onFocusChangeListener = this
+        spinner_currency.onFocusChangeListener = this
+        text_distance_comment.onFocusChangeListener = this
+
+        // And ensure that we do not show the keyboard when clicking these views
+        val hideSoftKeyboardOnTouchListener = SoftKeyboardManager.HideSoftKeyboardOnTouchListener()
+        spinner_currency.setOnTouchListener(hideSoftKeyboardOnTouchListener)
+
+        text_distance_date.apply {
+            isFocusable = false
+            isFocusableInTouchMode = false
+            setDateFormatter(dateFormatter)
+            setOnTouchListener(hideSoftKeyboardOnTouchListener)
+        }
+
+        // Focused View
+        if (focusedView == null) {
+            focusedView = text_distance_value
+        }
+
     }
 
 
