@@ -79,7 +79,7 @@ public class ReceiptTableActionAlterations extends StubTableActionAlterations<Re
                         // If the receipt date/timezone changed, update the custom order id
                         // Note: This approach isn't as strictly correct as the reorderReceiptsInList option, but it greatly simplifies our dependency chain
                         // Since this is relatively rare (and can lead to a cyclic dependency), we use this to get the best guess for the next one
-                        final long customOrderId = ReceiptsOrderer.getCustomOrderId(oldReceipt, existingReceipts);
+                        final long customOrderId = ReceiptsOrderer.getCustomOrderId(newReceipt, existingReceipts);
                         factory.setCustomOrderId(customOrderId);
                     }
 
