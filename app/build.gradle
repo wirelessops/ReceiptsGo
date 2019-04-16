@@ -91,10 +91,12 @@ android {
             applicationId "wb.receiptspro"
             dimension "versionType"
         }
+        /*
         fireDepartmentFlavor {
             applicationId "co.smartreceipts.fire.department.tracker.android"
             dimension "versionType"
         }
+        */
     }
 
     lintOptions {
