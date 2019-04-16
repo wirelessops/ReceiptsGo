@@ -17,7 +17,6 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -31,7 +30,11 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
+
     signingConfigs {
+        debug {
+            storeFile file("../keystore/debug.keystore")
+        }
         release {
             // You need to specify either an absolute path or include the
             // keystore file in the same directory as the build.gradle file.
@@ -91,12 +94,6 @@ android {
         fireDepartmentFlavor {
             applicationId "co.smartreceipts.fire.department.tracker.android"
             dimension "versionType"
-        }
-    }
-
-    signingConfigs {
-        debug {
-            storeFile file("../keystore/debug.keystore")
         }
     }
 
