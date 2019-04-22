@@ -64,6 +64,7 @@ class ReceiptColumnDefinitions @Inject constructor(
         INDEX(25, R.string.column_item_index, R.string.original_column_item_index_en_us_name),
         ID(26, R.string.column_item_id, R.string.original_column_item_id_en_us_name),
         PAYMENT_METHOD(27, R.string.column_item_payment_method, R.string.original_column_item_payment_method_en_us_name),
+        PRICE_WITH_CURRENCY(28, R.string.RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY),
 
         EXTRA_EDITTEXT_1(100, R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1),
         EXTRA_EDITTEXT_2(101, R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2),
@@ -185,6 +186,7 @@ class ReceiptColumnDefinitions @Inject constructor(
             PRICE -> ReceiptPriceColumn(id, syncState, customOrderId, uuid)
             PRICE_MINUS_TAX -> ReceiptPriceMinusTaxColumn(id, syncState, preferences, customOrderId, uuid)
             PRICE_EXCHANGED -> ReceiptExchangedPriceColumn(id, syncState, localizedContext, customOrderId, uuid)
+            PRICE_WITH_CURRENCY -> ReceiptPriceWithCurrencyColumn(id, syncState, customOrderId, uuid)
             TAX -> ReceiptTaxColumn(id, syncState, customOrderId, uuid)
             TAX_EXCHANGED -> ReceiptExchangedTaxColumn(id, syncState, localizedContext, customOrderId, uuid)
             PRICE_PLUS_TAX_EXCHANGED -> ReceiptNetExchangedPricePlusTaxColumn(id, syncState, localizedContext, preferences, customOrderId, uuid)

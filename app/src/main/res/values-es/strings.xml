@@ -347,6 +347,7 @@
     <!-- ================= RECEIPTMENU_FIELDS =================== -->
     <string name="RECEIPTMENU_FIELD_NAME">Nombre</string>
     <string name="RECEIPTMENU_FIELD_PRICE">Precio</string>
+    <string name="RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY">Precio con el símbolo de moneda</string>
     <string name="RECEIPTMENU_FIELD_TAX">Impuesto</string>
     <string name="RECEIPTMENU_FIELD_CURRENCY">Moneda</string>
     <string name="RECEIPTMENU_FIELD_DATE">Fecha</string>

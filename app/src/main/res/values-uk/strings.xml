@@ -349,6 +349,7 @@
     <!-- ================= RECEIPTMENU_FIELDS =================== -->
     <string name="RECEIPTMENU_FIELD_NAME">Назва</string>
     <string name="RECEIPTMENU_FIELD_PRICE">Вартість</string>
+    <string name="RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY">Вартість з символом валюти</string>
     <string name="RECEIPTMENU_FIELD_TAX">Податок</string>
     <string name="RECEIPTMENU_FIELD_CURRENCY">Валюта</string>
     <string name="RECEIPTMENU_FIELD_DATE">Дата</string>

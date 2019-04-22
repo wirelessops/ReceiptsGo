@@ -379,6 +379,7 @@
     <!-- ================= RECEIPTMENU_FIELDS =================== -->
     <string name="RECEIPTMENU_FIELD_NAME">שם</string>
     <string name="RECEIPTMENU_FIELD_PRICE">מחיר</string>
+    <string name="RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY">מחיר עם סמל מטבע</string>
     <string name="RECEIPTMENU_FIELD_TAX">מס</string>
     <string name="RECEIPTMENU_FIELD_CURRENCY">מטבע</string>
     <string name="RECEIPTMENU_FIELD_DATE">תאריך</string>
