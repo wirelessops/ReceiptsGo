@@ -297,7 +297,7 @@ public class EmailAssistant {
 
                     final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
                     final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<Receipt>(reportResourcesManager,
-                            csvColumns, true, false, new LegacyReceiptFilter(mPreferenceManager));
+                            csvColumns, true, true, new LegacyReceiptFilter(mPreferenceManager));
 
                     String data;
 
