@@ -7,17 +7,17 @@
 
     <style name="Widget.SmartReceipts">
     </style>
-    
+
     <style name="Widget.SmartReceipts.PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/purple_selector</item>
     </style>
-    
+
     <style name="Widget.View.Divider.Horizontal" parent="Widget">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
         <item name="android:background">?android:attr/listDivider</item>
 	</style>
-	
+
     <style name="Widget.View.Divider.Vertical" parent="Widget">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -27,18 +27,18 @@
     <style name="Widget.SmartReceipts.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/smart_receipts_colorAccent</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.RelativeLayout" parent="Widget">
         <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">match_parent</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.RelativeLayout.SlidingPane" parent="Widget.SmartReceipts.RelativeLayout">
 	    <!-- This color is needed here to make the SlidingPane look nice when dragging out
 	    	 The cost of doing so is overdraw... Have to see if there's a better way        -->
 	    <item name="android:background">@color/list_background</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.RelativeLayout.Card" parent="Widget.SmartReceipts.RelativeLayout">
         <item name="android:layout_height">wrap_content</item>
 	    <item name="android:padding">@dimen/card_padding</item>
@@ -55,22 +55,22 @@
  		<item name="android:clipToPadding">false</item>
     	<item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.ProgressBar" parent="Widget">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.ProgressBar.Loading" parent="Widget.SmartReceipts.ProgressBar">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.TextView" parent="Widget">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="Widget.SmartReceipts.TextView.NoData" parent="Widget.SmartReceipts.TextView">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
@@ -177,6 +177,14 @@
         <item name="android:gravity">center</item>
         <item name="android:tint">@color/card_image_tint</item>
         <item name="android:layout_marginRight">@dimen/guide_image_margin</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.Spinner">
+        <item name="android:background">@drawable/spinner_selector</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginBottom">7dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
 </resources>
