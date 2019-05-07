@@ -11,9 +11,13 @@ import com.google.android.gms.drive.DriveId;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -224,13 +228,13 @@ public class DriveRestoreDataManager {
     private Observable<PartialReceipt> getPartialReceipts(@NonNull final File temporaryDatabaseFile) {
         Preconditions.checkNotNull(temporaryDatabaseFile);
 
-        return Observable.create(emitter -> {
+        return Observable.fromCallable(() -> {
             SQLiteDatabase importDb = null;
             Cursor receiptsCursor = null;
             Cursor tripsCursor = null;
             try {
+                final List<PartialReceipt> partialReceipts = new ArrayList<>();
                 importDb = SQLiteDatabase.openDatabase(temporaryDatabaseFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-
                 if (importDb.getVersion() < 19) { // using old approach (receipts reference to trip name)
                     final String[] selection = new String[]{AbstractSqlTable.COLUMN_DRIVE_SYNC_ID, ReceiptsTable.COLUMN_PARENT, ReceiptsTable.COLUMN_PATH};
                     receiptsCursor = importDb.query(ReceiptsTable.TABLE_NAME, selection, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " IS NOT NULL AND " + ReceiptsTable.COLUMN_PATH + " IS NOT NULL AND " + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " = ?", new String[]{Integer.toString(0)}, null, null, null);
@@ -244,7 +248,7 @@ public class DriveRestoreDataManager {
                             final String parent = receiptsCursor.getString(parentIndex);
                             final String path = receiptsCursor.getString(pathIndex);
                             if (driveId != null && parent != null && !TextUtils.isEmpty(path) && !DatabaseHelper.NO_DATA.equals(path)) {
-                                emitter.onNext(new PartialReceipt(driveId, parent, path));
+                                partialReceipts.add(new PartialReceipt(driveId, parent, path));
                             }
                         }
                         while (receiptsCursor.moveToNext());
@@ -261,36 +265,32 @@ public class DriveRestoreDataManager {
                             final String path = receiptsCursor.getString(pathIndex);
                             final int parentId = receiptsCursor.getInt(parentIdIndex);
 
-                            // getting trip name by id (trip name is unique column)
-                            tripsCursor = importDb.query(TripsTable.TABLE_NAME, new String[]{TripsTable.COLUMN_NAME},
-                                    TripsTable.COLUMN_ID + " = ?", new String[]{Integer.toString(parentId)}, null, null, null, "1");
+                            try {
+                                // getting trip name by id (trip name is unique column)
+                                tripsCursor = importDb.query(TripsTable.TABLE_NAME, new String[]{TripsTable.COLUMN_NAME},
+                                        TripsTable.COLUMN_ID + " = ?", new String[]{Integer.toString(parentId)}, null, null, null, "1");
 
-                            if (tripsCursor != null && tripsCursor.moveToFirst()) {
-                                final int tripNameIndex = tripsCursor.getColumnIndex(TripsTable.COLUMN_NAME);
-                                final String tripName = tripsCursor.getString(tripNameIndex);
+                                if (tripsCursor != null && tripsCursor.moveToFirst()) {
+                                    final int tripNameIndex = tripsCursor.getColumnIndex(TripsTable.COLUMN_NAME);
+                                    final String tripName = tripsCursor.getString(tripNameIndex);
 
-                                if (driveId != null && tripName != null && !TextUtils.isEmpty(path) && !DatabaseHelper.NO_DATA.equals(path)) {
-                                    emitter.onNext(new PartialReceipt(driveId, tripName, path));
+                                    if (driveId != null && tripName != null && !TextUtils.isEmpty(path) && !DatabaseHelper.NO_DATA.equals(path)) {
+                                        partialReceipts.add(new PartialReceipt(driveId, tripName, path));
+                                    }
                                 }
+                            } finally {
+                                IOUtils.closeQuietly(tripsCursor);
                             }
-
                         }
                         while (receiptsCursor.moveToNext());
                     }
                 }
-                emitter.onComplete();
+                return partialReceipts;
             } finally {
-                if (importDb != null) {
-                    importDb.close();
-                }
-                if (receiptsCursor != null) {
-                    receiptsCursor.close();
-                }
-                if (tripsCursor != null) {
-                    tripsCursor.close();
-                }
+                IOUtils.closeQuietly(importDb);
+                IOUtils.closeQuietly(receiptsCursor);
             }
-        });
+        }).flatMapIterable(items -> items);
     }
 
     private Single<PartialReceipt> createParentFolderIfNeeded(@NonNull final PartialReceipt partialReceipt, @NonNull final File inDirectory) {
