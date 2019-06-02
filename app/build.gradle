@@ -173,8 +173,8 @@ android {
         // implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
         implementation "com.github.wbaumann:MPAndroidChart:$MP_ANDROID_CHART_FORK_WITH_FIXES_VERSION"
 
-        implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar"){
-            transitive=true
+        implementation("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar") {
+            transitive = true
         }
 
         implementation "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
@@ -224,23 +224,36 @@ android {
 task secretsExtraction << {
     description "Allows us to extract our secrets if we have a local decrpytion key"
     println "Running our secrets extractor to attempt to replace our placeholder files"
-    exec {
-        workingDir rootDir
-        executable "chmod"
-        args = ["+x", "${rootDir}/scripts/secrets_extractor.sh"]
+
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) { // windows
+
+        exec {
+            workingDir rootDir
+            commandLine 'cmd','/c','scripts\\secrets_extractor.bat'
+        }
+
+    } else { // mac
+
+        exec {
+            workingDir rootDir
+            executable "chmod"
+            args = ["+x", "${rootDir}/scripts/secrets_extractor.sh"]
+        }
+
+        exec {
+            workingDir rootDir
+            executable "${rootDir}/scripts/secrets_extractor.sh"
+            // Note: We currently do NOT validate that this succeeds when creating a release build.
+            // We should add this extra fail-safe to help verify that we do not release a fault build.
+        }
+        println ""
+        println ""
     }
-    exec {
-        workingDir rootDir
-        executable "${rootDir}/scripts/secrets_extractor.sh"
-        // Note: We currently do NOT validate that this succeeds when creating a release build.
-        // We should add this extra fail-safe to help verify that we do not release a fault build.
-    }
-    println ""
-    println ""
+
 }
 
 task translateToIOS << {
-     description "Twine-translate Android .xml locale files to iOS, check for differences in iOS GitHub repo, create pull request for the iOS repo with the new translations if need be"
+    description "Twine-translate Android .xml locale files to iOS, check for differences in iOS GitHub repo, create pull request for the iOS repo with the new translations if need be"
      exec {
          workingDir rootDir
          executable "chmod"
@@ -251,7 +264,7 @@ task translateToIOS << {
          workingDir rootDir
          executable "${rootDir}/scripts/barebones-locale-tool.sh"
      }
- }
+}
 
 play {
     serviceAccountCredentials = file("GPLAY_KEY.json")
