@@ -392,8 +392,13 @@ public class EmailAssistant {
             }
 
             if (mOptions.contains(EmailOptions.ZIP_WITH_METADATA)) {
-                mStorageManager.delete(dir, dir.getName() + ".zip");
-                dir = mStorageManager.mkdir(trip.getDirectory(), trip.getName());
+                if (mOptions.contains(EmailOptions.ZIP)) {
+                    mStorageManager.delete(dir, dir.getName() + "_stamped" + ".zip");
+                    dir = mStorageManager.mkdir(trip.getDirectory(), trip.getName() + "_stamped");
+                } else {
+                    mStorageManager.delete(dir, dir.getName() + ".zip");
+                    dir = mStorageManager.mkdir(trip.getDirectory(), trip.getName());
+                }
                 for (int i = 0; i < len; i++) {
                     final Receipt receipt = receipts.get(i);
 
