@@ -45,7 +45,12 @@ notifications:
 before_install:
 #- sudo add-apt-repository -y ppa:cpick/hub # adding ubuntu repo for downloading hub
 - sudo apt-get -y update # get latest versions of dependencies before installing hub
-- sudo apt-get -y install linuxbrew-wrapper
+#- sudo apt-get -y install linuxbrew-wrapper
+- sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+- test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+- test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+- test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+- echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 - sudo linuxbrew -y install hub
 #- sudo apt-get -y install hub # install hub
 - gem install twine # install hub
