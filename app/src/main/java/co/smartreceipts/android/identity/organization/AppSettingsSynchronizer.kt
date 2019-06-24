@@ -14,7 +14,6 @@ import co.smartreceipts.android.utils.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function5
-import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -38,10 +37,10 @@ class AppSettingsSynchronizer @Inject constructor(
             paymentMethodsTableController.get(),
             csvTableController.get(),
             pdfTableController.get(),
-            Function5<JSONObject, List<Category>, List<PaymentMethod>, List<Column<Receipt>>, List<Column<Receipt>>, AppSettings> { preferencesJson, categories, paymentMethods, csvColumns, pdfColumns ->
+            Function5<Map<String, Any>, List<Category>, List<PaymentMethod>, List<Column<Receipt>>, List<Column<Receipt>>, AppSettings> { preferencesMap, categories, paymentMethods, csvColumns, pdfColumns ->
                 AppSettings(
                     Configurations(), // TODO: 18.02.2019 Configurations are not defined in the app
-                    AppSettings.OrganizationPreferences(preferencesJson),
+                    preferencesMap,
                     categories,
                     paymentMethods,
                     csvColumns,
@@ -104,11 +103,11 @@ class AppSettingsSynchronizer @Inject constructor(
     }
 
 
-    internal fun checkOrganizationPreferencesMatch(organizationSettings: AppSettings.OrganizationPreferences): Single<Boolean> {
+    internal fun checkOrganizationPreferencesMatch(organizationSettings: Map<String, Any?>): Single<Boolean> {
         return preferencesSynchronizer.checkOrganizationPreferencesMatch(organizationSettings)
     }
 
-    internal fun applyOrganizationPreferences(organizationSettings: AppSettings.OrganizationPreferences): Completable {
+    internal fun applyOrganizationPreferences(organizationSettings: Map<String, Any?>): Completable {
         return preferencesSynchronizer.applyOrganizationPreferences(organizationSettings)
     }
 

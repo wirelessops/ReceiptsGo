@@ -56,7 +56,7 @@ class UserPreferenceManagerTest {
         assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name)))
         assertEquals("USD", preferences.getString(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name), null))
         assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name)))
-        assertEquals((-java.lang.Float.MAX_VALUE).toDouble(), preferences.getFloat(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
+        assertEquals(UserPreferenceManager.MIN_RECEIPT_PRICE.toDouble(), preferences.getFloat(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
         assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.ReportOutput.PreferredReportLanguage.name)))
     }
 
@@ -70,7 +70,7 @@ class UserPreferenceManagerTest {
         assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name)))
         assertEquals("USD", preferences.getString(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name), null))
         assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name)))
-        assertEquals((-java.lang.Float.MAX_VALUE).toDouble(), preferences.getFloat(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
+        assertEquals(UserPreferenceManager.MIN_RECEIPT_PRICE.toDouble(), preferences.getFloat(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
 
         // Assert that we haven't set the locale (we'll use the default instead)
         assertFalse(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.ReportOutput.PreferredReportLanguage.name)))

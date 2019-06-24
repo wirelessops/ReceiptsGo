@@ -5,9 +5,7 @@ import co.smartreceipts.android.apis.ApiValidationException
 import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.config.ConfigurationManager
 import co.smartreceipts.android.di.scopes.ApplicationScope
-import co.smartreceipts.android.identity.apis.organizations.Organization
-import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse
-import co.smartreceipts.android.identity.apis.organizations.OrganizationsService
+import co.smartreceipts.android.identity.apis.organizations.*
 import co.smartreceipts.android.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import co.smartreceipts.android.utils.log.Logger
@@ -95,10 +93,22 @@ class OrganizationManager @Inject constructor(
     }
 
     fun updateOrganizationSettings(organization: Organization): Single<Boolean> {
-        // TODO: 19.02.2019 mocked. add web service
-        return appSettingsSynchronizer.getCurrentAppSettings()
-            .flatMap { Single.just(false) }
+        return updateOrganizationApiRequest(organization)
+            .map { true }
+            .onErrorReturn { false }
 
+    }
+
+    private fun updateOrganizationApiRequest(organization: Organization): Single<OrganizationsResponse> {
+        return if (identityStore.isLoggedIn) {
+            val service = webServiceManager.getService(OrganizationsService::class.java)
+
+            appSettingsSynchronizer.getCurrentAppSettings()
+                .flatMapObservable { settings: AppSettings -> service.updateOrganization(organization.id, AppSettingsPutWrapper(settings)) }
+                .lastOrError()
+        } else {
+            throw IllegalStateException("Cannot update organizations until user is logged in")
+        }
     }
 
 

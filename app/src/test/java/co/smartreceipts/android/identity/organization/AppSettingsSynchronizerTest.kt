@@ -15,7 +15,6 @@ import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMet
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
-import org.json.JSONObject
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,11 +59,11 @@ class AppSettingsSynchronizerTest {
 
     @Test
     fun getCurrentAppSettingsTest() {
-        val jsonObject = JSONObject()
-        whenever(preferencesSynchronizer.getAppPreferences()).thenReturn(Single.just(jsonObject))
+        val prefsMap = emptyMap<String, Any>()
+        whenever(preferencesSynchronizer.getAppPreferences()).thenReturn(Single.just(prefsMap))
 
         val appSettings = AppSettings(
-            Configurations(), AppSettings.OrganizationPreferences((jsonObject)), arrayListOf(category1, category2),
+            Configurations(), prefsMap, arrayListOf(category1, category2),
             arrayListOf(paymentMethod1, paymentMethod2), arrayListOf(column1, column2), arrayListOf(column1, column2)
         )
 

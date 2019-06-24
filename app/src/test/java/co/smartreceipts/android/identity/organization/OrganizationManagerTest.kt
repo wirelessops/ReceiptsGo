@@ -7,6 +7,7 @@ import co.smartreceipts.android.identity.apis.organizations.*
 import co.smartreceipts.android.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
@@ -34,6 +35,7 @@ class OrganizationManagerTest {
     private val organization2 = mock<Organization>()
     private val orgError = mock<Error>()
     private val orgSettings = mock<AppSettings>()
+    private val appSettings = mock<AppSettings>()
 
     @Before
     fun setUp() {
@@ -66,6 +68,7 @@ class OrganizationManagerTest {
         whenever(appSettingsSynchronizer.checkCsvColumnsMatch(any())).thenReturn(Single.just(true))
         whenever(appSettingsSynchronizer.checkPdfColumnsMatch(any())).thenReturn(Single.just(true))
         whenever(appSettingsSynchronizer.checkOrganizationPreferencesMatch(any())).thenReturn(Single.just(true))
+        whenever(appSettingsSynchronizer.getCurrentAppSettings()).thenReturn(Single.just(appSettings))
     }
 
     @Test
@@ -198,6 +201,27 @@ class OrganizationManagerTest {
         organizationManager.applyOrganizationSettings(organization1).test()
             .assertNotComplete()
             .assertError(Exception::class.java)
+    }
+
+    @Test
+    fun updateOrganizationSuccess() {
+        whenever(service.updateOrganization(eq(organization1.id), any())).thenReturn(Observable.just(organizationsResponse))
+
+        organizationManager.updateOrganizationSettings(organization1).test()
+            .assertComplete()
+            .assertNoErrors()
+            .assertResult(true)
+
+    }
+
+    @Test
+    fun updateOrganizationError() {
+        whenever(service.updateOrganization(eq(organization1.id), any())).thenReturn(Observable.error(java.lang.Exception()))
+
+        organizationManager.updateOrganizationSettings(organization1).test()
+            .assertComplete()
+            .assertNoErrors()
+            .assertResult(false)
     }
 
 
