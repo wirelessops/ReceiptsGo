@@ -45,13 +45,13 @@ notifications:
 before_install:
 #- sudo add-apt-repository -y ppa:cpick/hub # adding ubuntu repo for downloading hub
 - sudo apt-get -y update # get latest versions of dependencies before installing hub
-#- sudo apt-get -y install linuxbrew-wrapper
-- sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-- test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-- test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-- test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
-- echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
-- sudo linuxbrew -y install hub
+- HUB_DIST=linux-amd64 HUB_VERSION=`curl -w "%{url_effective}\n" -I -L -s -S github.com/github/hub/releases/latest -o /dev/null | awk -F'releases/tag/v' '{ print $2 }'`; curl "https://github.com/github/hub/releases/download/v$HUB_VERSION/hub-$HUB_DIST-$HUB_VERSION.tgz" -L | tar xvz && sudo ./hub-$HUB_DIST-$HUB_VERSION/install && rm -r ./hub-$HUB_DIST-$HUB_VERSION
+#- sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+#- test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+#- test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+#- test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+#- echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+#- sudo linuxbrew -y install hub
 #- sudo apt-get -y install hub # install hub
 - gem install twine # install hub
 - mkdir "$ANDROID_HOME/licenses" || true
