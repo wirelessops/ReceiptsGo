@@ -44,7 +44,7 @@ notifications:
 
 before_install:
 - sudo add-apt-repository -y ppa:cpick/hub # adding ubuntu repo for downloading hub
-- sudo apt-get -y update # get latest versions of dependencies before installing hub
+- sudo apt-get -y update --option Acquire::Retries=100 --option Acquire::http::Timeout="60" # get latest versions of dependencies before installing hub
 - sudo apt-get -y install hub # install hub
 - gem install twine # install hub
 - mkdir "$ANDROID_HOME/licenses" || true
