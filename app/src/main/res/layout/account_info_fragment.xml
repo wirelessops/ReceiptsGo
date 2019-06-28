@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="organization_divider, organization_label, organization_name, user_role"
+                app:constraint_referenced_ids="organization_divider, organizations_label, organizations_list"
                 tools:visibility="visible" />
 
             <View
@@ -147,62 +147,23 @@
                 app:layout_constraintTop_toBottomOf="@id/subscriptions_list" />
 
             <TextView
-                android:id="@+id/organization_label"
+                android:id="@+id/organizations_label"
                 style="@style/Widget.SmartReceipts.TextView.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:text="@string/organization_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/organization_divider" />
 
-            <TextView
-                android:id="@+id/organization_name"
-                style="@style/Widget.SmartReceipts.TextView.Body2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_tiny"
-                android:ellipsize="end"
-                app:layout_constraintEnd_toStartOf="@id/user_role"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/organization_label"
-                tools:text="Organization Name" />
-
-            <TextView
-                android:id="@+id/user_role"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_tiny"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/organization_label"
-                tools:text="USER_ROLE" />
-
-            <TextView
-                android:id="@+id/organization_caution"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/organizations_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:background="@drawable/bg_rounded_rectangle"
-                android:backgroundTint="@color/smart_receipts_colorAccent"
-                android:drawableStart="@drawable/ic_error_outline_24dp"
-                android:drawablePadding="@dimen/padding_normal"
-                android:padding="@dimen/padding_normal"
-                android:text="@string/organization_settings_doesnt_match"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/user_role"
-                tools:visibility="visible" />
-
-            <Button
-                android:id="@+id/organization_update_button"
-                style="@style/Widget.SmartReceipts.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_tiny"
-                android:text="@string/organization_update"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/organization_caution"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toBottomOf="@id/organizations_label"
+                tools:listitem="@layout/item_organization"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

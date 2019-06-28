@@ -521,10 +521,11 @@
 
     <!-- ================== Account Fragment ==================== -->
     <string name="organization_settings_doesnt_match">ההגדרות הנוכחיות שלך אינן מסונכרנות עם הארגון שלך. הקש כאן כדי להחיל הגדרות ארגון.</string>
+    <string name="organization_settings_match">ההגדרות הנוכחיות שלך מסונכרנות עם ארגון זה.</string>
     <string name="organization_apply_error">משהו השתבש במהלך החלת הגדרות הארגון</string>
     <string name="organization_apply_success">ההגדרות הוחלו בהצלחה</string>
     <string name="logged_in_as">מחובר כ:</string>
-    <string name="organization_label">הארגון שלך:</string>
+    <string name="organization_label">הארגונים שלך:</string>
     <string name="organization_update_success">הארגון עודכן בהצלחה</string>
     <string name="organization_update_error">משהו השתבש במהלך עדכון הארגון</string>
     <string name="organization_update">עדכן הגדרות ארגון</string>

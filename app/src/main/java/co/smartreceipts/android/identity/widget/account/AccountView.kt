@@ -1,5 +1,6 @@
 package co.smartreceipts.android.identity.widget.account
 
+import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
@@ -9,14 +10,14 @@ interface AccountView {
 
     val logoutButtonClicks: Observable<Any>
 
-    val applySettingsClicks: Observable<Any>
+    var applySettingsClicks: Observable<OrganizationModel>
 
-    val updateSettingsClicks: Observable<Any>
+    val uploadSettingsClicks: Observable<OrganizationModel>
 
 
     fun presentEmail(emailAddress: EmailAddress)
 
-    fun presentOrganization(uiIndicator: UiIndicator<AccountInteractor.OrganizationModel>)
+    fun presentOrganizations(uiIndicator: UiIndicator<List<OrganizationModel>>)
 
     fun presentApplyingResult(uiIndicator: UiIndicator<Unit>)
 

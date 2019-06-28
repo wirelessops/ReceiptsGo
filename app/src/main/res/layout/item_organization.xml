@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_tiniest"
+    android:layout_marginBottom="@dimen/margin_tiniest"
+    app:cardCornerRadius="@dimen/card_corner_radius">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal">
+
+        <TextView
+            android:id="@+id/organization_name"
+            style="@style/Widget.SmartReceipts.TextView.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/user_role"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Organization Name" />
+
+        <TextView
+            android:id="@+id/user_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="USER_ROLE" />
+
+        <TextView
+            android:id="@+id/organization_text_unsynced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@drawable/bg_rounded_rectangle"
+            android:backgroundTint="@color/smart_receipts_colorAccent"
+            android:drawableStart="@drawable/ic_error_outline_24dp"
+            android:drawablePadding="@dimen/padding_normal"
+            android:padding="@dimen/padding_normal"
+            android:text="@string/organization_settings_doesnt_match"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/user_role"
+            tools:visibility="visible" />
+
+
+        <Button
+            android:id="@+id/organization_update_button"
+            style="@style/Widget.SmartReceipts.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="@string/organization_update"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/organization_text_synced"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/organization_text_synced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@drawable/bg_rounded_rectangle"
+            android:backgroundTint="@color/transparent_overlay"
+            android:drawableStart="@drawable/ic_done_24dp"
+            android:drawablePadding="@dimen/padding_normal"
+            android:padding="@dimen/padding_normal"
+            android:text="@string/organization_settings_match"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/organization_text_unsynced"
+            tools:visibility="visible" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

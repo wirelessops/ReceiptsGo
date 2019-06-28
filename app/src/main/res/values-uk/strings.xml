@@ -502,11 +502,12 @@
     <string name="graphs_label_others">Інші</string>
 
     <!-- ================== Account Fragment ==================== -->
-    <string name="organization_settings_doesnt_match">Ваші поточні налаштування не синхронізовані з вашою організацією. Натисніть тут, щоб застосувати налаштування організації.</string>
+    <string name="organization_settings_doesnt_match">Ваші поточні налаштування не синхронізовані з цiєю організацією. Натисніть тут, щоб застосувати налаштування організації.</string>
+    <string name="organization_settings_match">Ваші поточні налаштування синхронізовані з цiєю організацією.</string>
     <string name="organization_apply_error">Під час застосування налаштувань організації сталася помилка</string>
     <string name="organization_apply_success">Налаштування були успішно застосовані</string>
     <string name="logged_in_as">Ви увійшли як:</string>
-    <string name="organization_label">Ваша організація:</string>
+    <string name="organization_label">Ваші організації:</string>
     <string name="organization_update_success">Організацію успішно оновлено</string>
     <string name="organization_update_error">Щось пішло не так при оновленні організації</string>
     <string name="organization_update">Оновити налаштування організації</string>

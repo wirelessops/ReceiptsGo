@@ -2,6 +2,7 @@ package co.smartreceipts.android.identity.widget.account
 
 import co.smartreceipts.android.identity.IdentityManager
 import co.smartreceipts.android.identity.apis.organizations.Organization
+import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
@@ -9,7 +10,6 @@ import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
-import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
@@ -23,6 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.util.*
+import kotlin.NoSuchElementException
 
 @RunWith(RobolectricTestRunner::class)
 class AccountInteractorTest {
@@ -55,42 +56,41 @@ class AccountInteractorTest {
 
     @Test
     fun getOrganizationSuccessTest() {
-        whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.just(organization))
+        whenever(organizationManager.getOrganizations()).thenReturn(Maybe.just(listOf(organization)))
         whenever(organizationManager.checkOrganizationSettingsMatch(organization)).thenReturn(Single.just(false))
 
-        val expectedOrganizationModel = AccountInteractor.OrganizationModel(organization, OrganizationUser.UserRole.ADMIN, false)
+        val expectedOrganizationModel = OrganizationModel(organization, OrganizationUser.UserRole.ADMIN, false)
 
-        val testObserver = interactor.getOrganization().test()
+        val testObserver = interactor.getOrganizations().test()
         testObserver.awaitTerminalEvent()
-        testObserver.assertValueCount(2)
-            .assertValueAt(0, UiIndicator.loading())
-            .assertValueAt(1, UiIndicator.success(expectedOrganizationModel))
+        testObserver.assertValueCount(1)
+            .assertResult(listOf(expectedOrganizationModel))
             .assertNoErrors()
             .assertComplete()
     }
 
     @Test
     fun getOrganizationEmptyTest() {
-        whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.empty())
+        whenever(organizationManager.getOrganizations()).thenReturn(Maybe.empty())
 
-        val testObserver = interactor.getOrganization().test()
+        val testObserver = interactor.getOrganizations().test()
         testObserver.awaitTerminalEvent()
-        testObserver.assertValueCount(2)
-            .assertValues(UiIndicator.loading(), UiIndicator.idle())
+        testObserver
             .assertNoErrors()
             .assertComplete()
+            .assertResult(Collections.emptyList())
     }
 
     @Test
     fun getOrganizationErrorTest() {
-        whenever(organizationManager.getPrimaryOrganization()).thenReturn(Maybe.error(Exception()))
+        whenever(organizationManager.getOrganizations()).thenReturn(Maybe.error(Exception()))
 
-        val testObserver = interactor.getOrganization().test()
+        val testObserver = interactor.getOrganizations().test()
         testObserver.awaitTerminalEvent()
-        testObserver.assertValueCount(2)
-            .assertValues(UiIndicator.loading(), UiIndicator.error())
-            .assertNoErrors()
-            .assertComplete()
+        testObserver.assertNotComplete()
+            .assertNoValues()
+            .assertError(Exception::class.java)
+
     }
 
     @Test
@@ -101,7 +101,6 @@ class AccountInteractorTest {
         testObserver.awaitTerminalEvent()
         testObserver.assertComplete()
             .assertNoErrors()
-            .assertValues(UiIndicator.success())
     }
 
     @Test
@@ -110,9 +109,8 @@ class AccountInteractorTest {
 
         val testObserver = interactor.applyOrganizationSettings(organization).test()
         testObserver.awaitTerminalEvent()
-        testObserver.assertComplete()
-            .assertNoErrors()
-            .assertValues(UiIndicator.error())
+        testObserver.assertNotComplete()
+            .assertError(Exception::class.java)
     }
 
     @Test
@@ -157,27 +155,22 @@ class AccountInteractorTest {
 
     @Test
     fun updateOrganizationSettingsTest() {
-        whenever(organizationManager.updateOrganizationSettings(organization)).thenReturn(Single.just(true))
+        whenever(organizationManager.updateOrganizationSettings(organization)).thenReturn(Completable.complete())
 
-        val testObserver = interactor.updateOrganizationSettings(organization).test()
+        val testObserver = interactor.uploadOrganizationSettings(organization).test()
         testObserver.awaitTerminalEvent()
 
         testObserver.assertComplete()
-            .assertNoErrors()
-            .assertValueCount(2)
-            .assertValues(UiIndicator.loading(), UiIndicator.success())
     }
 
     @Test
     fun updateOrganizationSettingsErrorTest() {
-        whenever(organizationManager.updateOrganizationSettings(organization)).thenReturn(Single.just(false))
+        whenever(organizationManager.updateOrganizationSettings(organization)).thenReturn(Completable.error(NoSuchElementException()))
 
-        val testObserver = interactor.updateOrganizationSettings(organization).test()
+        val testObserver = interactor.uploadOrganizationSettings(organization).test()
         testObserver.awaitTerminalEvent()
 
-        testObserver.assertComplete()
-            .assertNoErrors()
-            .assertValueCount(2)
-            .assertValues(UiIndicator.loading(), UiIndicator.error())
+        testObserver.assertNotComplete()
+            .assertError(NoSuchElementException::class.java)
     }
 }
