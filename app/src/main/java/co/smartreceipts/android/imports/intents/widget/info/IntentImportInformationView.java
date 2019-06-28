@@ -1,6 +1,6 @@
 package co.smartreceipts.android.imports.intents.widget.info;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.imports.intents.model.FileType;
 

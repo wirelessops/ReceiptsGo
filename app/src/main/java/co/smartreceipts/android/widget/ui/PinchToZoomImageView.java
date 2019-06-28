@@ -10,7 +10,7 @@ import android.view.ScaleGestureDetector;
 import android.widget.ImageView;
 
 //Adapted from: https://github.com/MikeOrtiz/TouchImageView/blob/master/src/com/example/touch/TouchImageView.java
-public class PinchToZoomImageView extends android.support.v7.widget.AppCompatImageView {
+public class PinchToZoomImageView extends androidx.appcompat.widget.AppCompatImageView {
 
 	private static final float DEFAULT_MIN_SCALE = 1f;
 	private static final float DEFAULT_MAX_SCALE = 2.5f;

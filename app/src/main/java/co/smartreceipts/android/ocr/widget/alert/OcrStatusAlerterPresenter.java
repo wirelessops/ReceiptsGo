@@ -1,7 +1,7 @@
 package co.smartreceipts.android.ocr.widget.alert;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

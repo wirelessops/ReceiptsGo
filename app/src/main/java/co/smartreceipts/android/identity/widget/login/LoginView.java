@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.widget.login;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.widget.model.UiIndicator;

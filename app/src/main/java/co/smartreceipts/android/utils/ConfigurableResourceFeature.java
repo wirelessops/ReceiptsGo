@@ -1,8 +1,8 @@
 package co.smartreceipts.android.utils;
 
 import android.content.Context;
-import android.support.annotation.BoolRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.BoolRes;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.R;
 

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.ocr.util;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.sql.Date;

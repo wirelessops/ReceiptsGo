@@ -22,13 +22,13 @@
         android:isScrollContainer="false"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/padding_large">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_name_wrapper"
                 style="@style/Widget.SmartReceipts.TextInputLayout"
                 android:layout_width="0dp"
@@ -49,7 +49,7 @@
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                     android:textStyle="bold" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/trip_input_guide_image_start_date"
@@ -61,7 +61,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/trip_input_start_date_wrapper" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_start_date_wrapper"
                 style="@style/Widget.SmartReceipts.TextInputLayout"
                 android:layout_width="0dp"
@@ -79,7 +79,7 @@
                     android:minHeight="@dimen/default_input_row_size"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/trip_input_guide_image_end_date"
@@ -91,7 +91,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/trip_input_end_date_wrapper" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_end_date_wrapper"
                 style="@style/Widget.SmartReceipts.TextInputLayout"
                 android:layout_width="0dp"
@@ -109,7 +109,7 @@
                     android:minHeight="@dimen/default_input_row_size"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/trip_input_guide_image_currency"
@@ -154,7 +154,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/trip_input_comment_wrapper" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_comment_wrapper"
                 style="@style/Widget.SmartReceipts.TextInputLayout"
                 android:layout_width="0dp"
@@ -175,7 +175,7 @@
                     android:minHeight="@dimen/default_input_row_size"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/dialog_tripmenu_cost_center_layout"
@@ -207,7 +207,7 @@
 
             </LinearLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 </LinearLayout>

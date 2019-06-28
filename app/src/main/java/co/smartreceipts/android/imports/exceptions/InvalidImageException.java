@@ -1,6 +1,6 @@
 package co.smartreceipts.android.imports.exceptions;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class InvalidImageException extends Exception {
 

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.versioning
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 
 interface VersionUpgradedListener {
 

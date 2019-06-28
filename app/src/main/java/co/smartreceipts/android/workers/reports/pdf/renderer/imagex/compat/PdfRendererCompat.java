@@ -7,9 +7,9 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.shockwave.pdfium.PdfDocument;
 import com.shockwave.pdfium.PdfiumCore;

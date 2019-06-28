@@ -1,7 +1,7 @@
 package co.smartreceipts.android.persistence.database.controllers.impl;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;

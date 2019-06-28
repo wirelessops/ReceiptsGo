@@ -1,7 +1,7 @@
 package co.smartreceipts.android.test.espresso
 
-import android.support.test.filters.LargeTest
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import androidx.test.runner.AndroidJUnit4
 import co.smartreceipts.android.test.runner.BeforeApplicationOnCreate
 import co.smartreceipts.android.test.utils.TestResourceReader
 import org.junit.runner.RunWith

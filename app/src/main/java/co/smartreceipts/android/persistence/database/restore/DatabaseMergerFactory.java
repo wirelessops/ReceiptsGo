@@ -1,6 +1,6 @@
 package co.smartreceipts.android.persistence.database.restore;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * A factory, which will return an appropriate version of the {@link DatabaseMerger} based on if we

@@ -2,7 +2,7 @@ package co.smartreceipts.android.sync.drive.rx;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.gms.common.api.GoogleApiClient;

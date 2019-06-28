@@ -1,6 +1,6 @@
 package co.smartreceipts.android.persistence.database.controllers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.hadisatrio.optional.Optional;
 

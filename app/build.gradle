@@ -110,7 +110,7 @@ android {
                 jvmArgs '-noverify'
             }
         }
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
     dependencies {

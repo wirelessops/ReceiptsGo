@@ -1,6 +1,6 @@
 package co.smartreceipts.android.widget.tooltip;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator;
 import io.reactivex.Observable;

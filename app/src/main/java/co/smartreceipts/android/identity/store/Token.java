@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.store;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.sync.model.impl.Identifier;
 

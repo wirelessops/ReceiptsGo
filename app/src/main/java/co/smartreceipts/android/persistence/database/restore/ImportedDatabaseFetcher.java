@@ -1,7 +1,6 @@
 package co.smartreceipts.android.persistence.database.restore;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;

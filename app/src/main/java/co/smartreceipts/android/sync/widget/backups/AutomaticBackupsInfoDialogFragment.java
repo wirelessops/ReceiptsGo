@@ -5,11 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-
-import javax.inject.Inject;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.FragmentProvider;

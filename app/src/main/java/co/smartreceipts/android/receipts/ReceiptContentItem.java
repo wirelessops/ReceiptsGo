@@ -1,6 +1,6 @@
 package co.smartreceipts.android.receipts;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.model.Receipt;
 

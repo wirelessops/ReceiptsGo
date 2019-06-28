@@ -1,7 +1,7 @@
 package co.smartreceipts.android.sync.manual;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

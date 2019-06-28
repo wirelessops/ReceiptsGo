@@ -1,6 +1,6 @@
 package co.smartreceipts.android.settings.widget.editors.categories
 
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import co.smartreceipts.android.model.Category
 import io.reactivex.Observable
 

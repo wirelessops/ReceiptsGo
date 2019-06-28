@@ -1,7 +1,7 @@
 package co.smartreceipts.android.trips.editor.currency;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import co.smartreceipts.android.currency.widget.CurrencyCodeSupplier;
 import co.smartreceipts.android.model.Trip;

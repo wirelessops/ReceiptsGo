@@ -2,7 +2,7 @@ package co.smartreceipts.android.keyboard.decimal
 
 import android.content.Context
 import android.provider.Settings
-import android.support.design.widget.FloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.text.InputType
 import android.view.View
 import android.widget.EditText

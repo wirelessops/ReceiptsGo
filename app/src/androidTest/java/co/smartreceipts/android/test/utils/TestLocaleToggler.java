@@ -1,6 +1,6 @@
 package co.smartreceipts.android.test.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Locale;
 

@@ -1,7 +1,7 @@
 package co.smartreceipts.android.workers.reports.pdf.pdfbox;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 

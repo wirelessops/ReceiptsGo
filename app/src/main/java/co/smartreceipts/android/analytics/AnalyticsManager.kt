@@ -1,6 +1,6 @@
 package co.smartreceipts.android.analytics
 
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 
 import com.google.common.base.Preconditions
 import java.util.concurrent.CopyOnWriteArrayList

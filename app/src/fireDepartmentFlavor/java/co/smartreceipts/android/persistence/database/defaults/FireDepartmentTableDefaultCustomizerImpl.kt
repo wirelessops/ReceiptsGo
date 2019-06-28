@@ -1,7 +1,7 @@
 package co.smartreceipts.android.persistence.database.defaults
 
 import android.content.Context
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import co.smartreceipts.android.R
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory

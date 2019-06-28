@@ -3,7 +3,7 @@ package co.smartreceipts.android.imports.intents.widget.info;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

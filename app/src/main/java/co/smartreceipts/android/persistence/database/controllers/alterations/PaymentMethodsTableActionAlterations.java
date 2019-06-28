@@ -1,11 +1,10 @@
 package co.smartreceipts.android.persistence.database.controllers.alterations;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import io.reactivex.Single;

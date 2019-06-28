@@ -1,7 +1,6 @@
 package co.smartreceipts.android.persistence.database.tables.ordering;
 
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import androidx.annotation.Nullable;
 
 public interface OrderBy {
 

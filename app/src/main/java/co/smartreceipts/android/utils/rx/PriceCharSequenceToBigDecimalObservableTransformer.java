@@ -1,6 +1,6 @@
 package co.smartreceipts.android.utils.rx;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.hadisatrio.optional.Optional;
 
@@ -10,7 +10,6 @@ import co.smartreceipts.android.model.utils.ModelUtils;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
-import io.reactivex.functions.Predicate;
 
 /**
  * An {@link ObservableTransformer}, which is responsible for transforming a {@link CharSequence} that contains a

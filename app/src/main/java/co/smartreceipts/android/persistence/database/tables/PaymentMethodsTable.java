@@ -3,7 +3,7 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;

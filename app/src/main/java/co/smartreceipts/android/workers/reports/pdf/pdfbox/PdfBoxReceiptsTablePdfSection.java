@@ -1,6 +1,6 @@
 package co.smartreceipts.android.workers.reports.pdf.pdfbox;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.filters.LegacyReceiptFilter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.push;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.RemoteMessage;
 

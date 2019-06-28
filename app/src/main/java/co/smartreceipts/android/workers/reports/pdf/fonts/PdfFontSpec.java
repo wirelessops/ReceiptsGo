@@ -1,6 +1,6 @@
 package co.smartreceipts.android.workers.reports.pdf.fonts;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;

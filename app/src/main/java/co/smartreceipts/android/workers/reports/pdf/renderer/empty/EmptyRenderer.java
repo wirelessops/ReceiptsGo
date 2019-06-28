@@ -1,6 +1,6 @@
 package co.smartreceipts.android.workers.reports.pdf.renderer.empty;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 

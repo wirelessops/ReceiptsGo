@@ -1,8 +1,8 @@
 package co.smartreceipts.android.persistence.database.controllers.alterations;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;

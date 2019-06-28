@@ -1,6 +1,6 @@
 package co.smartreceipts.android.sync.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * This interface defines different network provider types (e.g. WiFi-Only vs Mobile) in order to allow us to track the

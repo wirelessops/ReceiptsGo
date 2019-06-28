@@ -1,6 +1,6 @@
 package co.smartreceipts.android.sync.provider;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

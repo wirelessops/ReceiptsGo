@@ -1,8 +1,8 @@
 package co.smartreceipts.android.settings.widget.editors;
 
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.CallSuper;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

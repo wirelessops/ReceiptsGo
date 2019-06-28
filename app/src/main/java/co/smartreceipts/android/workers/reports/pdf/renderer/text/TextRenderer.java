@@ -1,14 +1,13 @@
 package co.smartreceipts.android.workers.reports.pdf.renderer.text;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.util.awt.AWTColor;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import co.smartreceipts.android.utils.log.Logger;

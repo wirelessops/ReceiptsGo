@@ -2,7 +2,7 @@ package co.smartreceipts.android.sync.drive.managers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
@@ -15,7 +15,6 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.sync.drive.device.GoogleDriveSyncMetadata;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
 import co.smartreceipts.android.sync.model.impl.Identifier;
-import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

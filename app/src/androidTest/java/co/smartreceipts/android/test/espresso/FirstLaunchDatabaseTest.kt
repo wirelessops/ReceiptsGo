@@ -1,8 +1,8 @@
 package co.smartreceipts.android.test.espresso
 
-import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.persistence.DatabaseHelper
@@ -42,11 +42,11 @@ class FirstLaunchDatabaseTest {
         assertEquals(DatabaseHelper.DATABASE_VERSION, databaseHelper.readableDatabase.version)
 
         // Verify each data set as empty vs not as appropriate
-        val categories = databaseHelper.categoriesTable.get().blockingGet()
-        val paymentMethods = databaseHelper.paymentMethodsTable.get().blockingGet()
-        val csvColumns = databaseHelper.csvTable.get().blockingGet()
-        val pdfColumns = databaseHelper.pdfTable.get().blockingGet()
-        val trips = databaseHelper.tripsTable.get().blockingGet()
+        val categories = databaseHelper.categoriesTable.blocking
+        val paymentMethods = databaseHelper.paymentMethodsTable.blocking
+        val csvColumns = databaseHelper.csvTable.blocking
+        val pdfColumns = databaseHelper.pdfTable.blocking
+        val trips = databaseHelper.tripsTable.blocking
         assertTrue(categories.isNotEmpty())
         assertTrue(paymentMethods.isNotEmpty())
         assertTrue(csvColumns.isNotEmpty())

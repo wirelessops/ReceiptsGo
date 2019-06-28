@@ -1,7 +1,7 @@
 package com.jakewharton.rxbinding2.widget;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

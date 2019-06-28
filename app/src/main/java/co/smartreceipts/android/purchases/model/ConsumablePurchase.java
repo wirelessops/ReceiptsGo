@@ -1,6 +1,6 @@
 package co.smartreceipts.android.purchases.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class ConsumablePurchase extends AbstractManagedProduct {
 

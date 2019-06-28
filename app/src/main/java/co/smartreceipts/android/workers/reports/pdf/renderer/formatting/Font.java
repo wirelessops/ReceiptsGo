@@ -1,6 +1,6 @@
 package co.smartreceipts.android.workers.reports.pdf.renderer.formatting;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontSpec;
 

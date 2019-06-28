@@ -1,8 +1,8 @@
 package co.smartreceipts.android.settings.widget;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;

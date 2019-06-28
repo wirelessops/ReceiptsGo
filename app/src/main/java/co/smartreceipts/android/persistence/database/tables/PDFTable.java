@@ -1,15 +1,12 @@
 package co.smartreceipts.android.persistence.database.tables;
 
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 
 /**

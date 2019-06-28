@@ -1,6 +1,6 @@
 package co.smartreceipts.android.purchases.consumption;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;

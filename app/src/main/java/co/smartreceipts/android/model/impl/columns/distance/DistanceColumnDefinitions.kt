@@ -1,6 +1,6 @@
 package co.smartreceipts.android.model.impl.columns.distance
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import co.smartreceipts.android.R
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.model.*

@@ -1,7 +1,7 @@
 package co.smartreceipts.android.push.store;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

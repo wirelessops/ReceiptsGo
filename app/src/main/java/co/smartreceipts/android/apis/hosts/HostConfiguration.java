@@ -1,10 +1,6 @@
 package co.smartreceipts.android.apis.hosts;
 
-import android.support.annotation.NonNull;
-
-import com.google.gson.Gson;
-
-import okhttp3.OkHttpClient;
+import androidx.annotation.NonNull;
 
 /**
  * A simple interface that allows us to toggle between the production and beta URLs/configurations

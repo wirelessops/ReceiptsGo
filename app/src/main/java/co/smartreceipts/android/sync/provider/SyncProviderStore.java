@@ -1,7 +1,7 @@
 package co.smartreceipts.android.sync.provider;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

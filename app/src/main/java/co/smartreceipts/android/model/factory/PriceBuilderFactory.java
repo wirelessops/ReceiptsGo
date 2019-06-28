@@ -1,6 +1,6 @@
 package co.smartreceipts.android.model.factory;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

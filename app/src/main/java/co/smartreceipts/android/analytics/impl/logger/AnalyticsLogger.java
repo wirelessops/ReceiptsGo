@@ -1,6 +1,6 @@
 package co.smartreceipts.android.analytics.impl.logger;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.List;
 
