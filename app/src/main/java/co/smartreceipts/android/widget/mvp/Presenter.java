@@ -1,7 +1,7 @@
 package co.smartreceipts.android.widget.mvp;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Used to standardize our core presentation layer to ensure that we're using common patterns for

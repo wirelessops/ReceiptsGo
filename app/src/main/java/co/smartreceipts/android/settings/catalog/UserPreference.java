@@ -1,9 +1,9 @@
 package co.smartreceipts.android.settings.catalog;
 
 import android.content.Context;
-import android.support.annotation.AnyRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.AnyRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.google.common.base.Preconditions;
 

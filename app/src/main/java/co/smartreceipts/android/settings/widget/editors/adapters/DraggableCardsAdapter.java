@@ -1,6 +1,6 @@
 package co.smartreceipts.android.settings.widget.editors.adapters;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Draggable;
-import co.smartreceipts.android.utils.log.Logger;
 
 public abstract class DraggableCardsAdapter<T extends Draggable> extends RecyclerView.Adapter<AbstractDraggableItemViewHolder>
         implements DraggableItemAdapter<AbstractDraggableItemViewHolder> {

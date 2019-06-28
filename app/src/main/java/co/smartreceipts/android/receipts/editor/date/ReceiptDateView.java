@@ -1,7 +1,7 @@
 package co.smartreceipts.android.receipts.editor.date;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 
 import java.sql.Date;
 

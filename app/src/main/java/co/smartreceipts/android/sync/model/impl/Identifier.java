@@ -2,7 +2,7 @@ package co.smartreceipts.android.sync.model.impl;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.annotations.SerializedName;

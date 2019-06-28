@@ -1,6 +1,6 @@
 package co.smartreceipts.android.aws.s3;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.ReplaySubject;

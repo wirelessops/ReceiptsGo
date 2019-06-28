@@ -1,7 +1,7 @@
 package co.smartreceipts.android.persistence.database.tables.adapters;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * A slightly extended version of the {@link DatabaseAdapter} contract that supports a specific selection type

@@ -1,7 +1,7 @@
 package co.smartreceipts.android.persistence.database.controllers.impl;
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

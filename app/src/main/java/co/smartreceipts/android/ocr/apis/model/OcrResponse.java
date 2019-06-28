@@ -1,6 +1,6 @@
 package co.smartreceipts.android.ocr.apis.model;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 

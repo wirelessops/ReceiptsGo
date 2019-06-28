@@ -1,7 +1,7 @@
 package co.smartreceipts.android.workers.reports.pdf.utils;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * If PDFBox does not support a particular character, we straight-up crash. As a short-term fix,

@@ -1,7 +1,7 @@
 package co.smartreceipts.android.persistence.database.tables.ordering;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

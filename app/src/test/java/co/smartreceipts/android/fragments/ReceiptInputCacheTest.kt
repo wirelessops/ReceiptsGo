@@ -1,6 +1,6 @@
 package co.smartreceipts.android.fragments
 
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

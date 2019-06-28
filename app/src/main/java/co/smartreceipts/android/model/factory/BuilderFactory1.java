@@ -1,6 +1,6 @@
 package co.smartreceipts.android.model.factory;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * A simple builder factory interface that allows us {@link #build(From)} new instances of objects of

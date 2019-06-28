@@ -3,7 +3,7 @@ package co.smartreceipts.android.distance.editor
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.view.*
 import android.widget.Toast
 import co.smartreceipts.android.R

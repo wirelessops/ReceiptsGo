@@ -6,22 +6,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.common.base.Preconditions;
-import com.hadisatrio.optional.Optional;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import co.smartreceipts.android.utils.log.Logger;
-import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.functions.Cancellable;
-import io.reactivex.subjects.BehaviorSubject;
 
 
 public class RxInAppBillingServiceConnection {

@@ -1,7 +1,7 @@
 package co.smartreceipts.android.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * This differs from the {@link ConfigurableResourceFeature} in that it is only intended to be

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.persistence.database.restore;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import io.reactivex.Completable;

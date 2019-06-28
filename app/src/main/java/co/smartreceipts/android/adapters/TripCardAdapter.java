@@ -1,7 +1,7 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
@@ -10,7 +10,6 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 
 public class TripCardAdapter extends CardAdapter<Trip> {

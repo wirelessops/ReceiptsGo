@@ -1,7 +1,7 @@
 package co.smartreceipts.android.widget.rxbinding2;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;

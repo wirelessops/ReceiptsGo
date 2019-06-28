@@ -1,8 +1,8 @@
 package co.smartreceipts.android.tooltip.rating
 
 import android.content.Context
-import android.support.annotation.AnyThread
-import android.support.annotation.UiThread
+import androidx.annotation.AnyThread
+import androidx.annotation.UiThread
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events

@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
 import android.content.Context;
-import android.os.Build;
 import android.os.Looper;
-import android.os.StrictMode;
-import android.os.strictmode.Violation;
-import android.support.annotation.VisibleForTesting;
-import android.support.multidex.MultiDex;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.multidex.MultiDex;
+import androidx.fragment.app.Fragment;
 
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
-
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -30,10 +26,8 @@ import co.smartreceipts.android.images.PicassoInitializer;
 import co.smartreceipts.android.launch.OnLaunchDataPreFetcher;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
-import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager;
 import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;

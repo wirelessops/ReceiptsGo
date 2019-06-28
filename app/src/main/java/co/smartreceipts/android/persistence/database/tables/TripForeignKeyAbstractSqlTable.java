@@ -3,7 +3,7 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;

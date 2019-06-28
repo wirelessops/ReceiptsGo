@@ -1,6 +1,6 @@
 package co.smartreceipts.android.aws.cognito;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.amazonaws.auth.AWSAbstractCognitoDeveloperIdentityProvider;
 import com.amazonaws.regions.Regions;

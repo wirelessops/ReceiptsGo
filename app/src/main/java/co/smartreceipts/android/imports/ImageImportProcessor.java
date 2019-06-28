@@ -8,10 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
-import android.support.media.ExifInterface;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.exifinterface.media.ExifInterface;
+import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Preconditions;
 

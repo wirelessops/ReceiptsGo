@@ -1,6 +1,6 @@
 package co.smartreceipts.android.analytics.events;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Extends the {@link Event} contract to allow us to "mark" events with dynamic information (e.g. data points)

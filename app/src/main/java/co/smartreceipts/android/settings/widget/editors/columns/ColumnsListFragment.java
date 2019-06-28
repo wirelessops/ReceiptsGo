@@ -1,7 +1,7 @@
 package co.smartreceipts.android.settings.widget.editors.columns;
 
 import android.app.AlertDialog;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Column;

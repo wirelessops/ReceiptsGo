@@ -1,7 +1,7 @@
 package co.smartreceipts.android.imports.intents.widget;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.reactivex.Maybe;
 

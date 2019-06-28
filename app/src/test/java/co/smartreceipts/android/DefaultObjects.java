@@ -1,6 +1,6 @@
 package co.smartreceipts.android;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -14,7 +14,6 @@ import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;

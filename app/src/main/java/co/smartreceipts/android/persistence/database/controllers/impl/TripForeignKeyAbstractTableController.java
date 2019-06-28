@@ -1,6 +1,6 @@
 package co.smartreceipts.android.persistence.database.controllers.impl;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;

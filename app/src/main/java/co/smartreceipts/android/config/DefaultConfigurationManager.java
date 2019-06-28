@@ -1,14 +1,13 @@
 package co.smartreceipts.android.config;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.Feature;
 
 /**

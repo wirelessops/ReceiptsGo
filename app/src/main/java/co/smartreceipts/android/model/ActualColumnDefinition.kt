@@ -1,6 +1,6 @@
 package co.smartreceipts.android.model
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 
 interface ActualColumnDefinition {
 

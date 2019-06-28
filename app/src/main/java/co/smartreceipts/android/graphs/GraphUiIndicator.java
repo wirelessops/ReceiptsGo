@@ -1,6 +1,6 @@
 package co.smartreceipts.android.graphs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.mikephil.charting.data.BaseEntry;
 import com.github.mikephil.charting.data.Entry;

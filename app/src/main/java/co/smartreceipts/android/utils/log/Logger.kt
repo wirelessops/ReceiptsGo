@@ -1,7 +1,7 @@
 package co.smartreceipts.android.utils.log
 
 
-import android.support.annotation.AnyThread
+import androidx.annotation.AnyThread
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors

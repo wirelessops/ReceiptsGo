@@ -2,8 +2,8 @@ package co.smartreceipts.android.versioning
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.annotation.AnyThread
-import android.support.v4.content.pm.PackageInfoCompat
+import androidx.annotation.AnyThread
+import androidx.core.content.pm.PackageInfoCompat
 import android.util.Pair
 import co.smartreceipts.android.di.scopes.ApplicationScope
 

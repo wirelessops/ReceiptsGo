@@ -1,8 +1,8 @@
 package co.smartreceipts.android.aws.s3;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.aws.cognito.CognitoManager;
 import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 
 

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.apis.signup;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import co.smartreceipts.android.identity.apis.login.LoginResponse;
 import io.reactivex.Observable;

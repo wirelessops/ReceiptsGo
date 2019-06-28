@@ -1,6 +1,6 @@
 package co.smartreceipts.android.receipts.editor.toolbar
 
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 
 
 /**

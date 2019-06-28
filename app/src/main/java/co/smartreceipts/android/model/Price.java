@@ -1,8 +1,8 @@
 package co.smartreceipts.android.model;
 
 import android.os.Parcelable;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
 

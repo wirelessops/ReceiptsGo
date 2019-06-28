@@ -2,7 +2,7 @@ package co.smartreceipts.android.ad
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.persistence.SharedPreferenceDefinitions
 import co.smartreceipts.android.purchases.model.InAppPurchase

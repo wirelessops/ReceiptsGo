@@ -1,7 +1,7 @@
 package co.smartreceipts.android.push.internal;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 

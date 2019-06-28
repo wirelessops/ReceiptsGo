@@ -1,7 +1,7 @@
 package co.smartreceipts.android.workers.reports.pdf.renderer.grid;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.util.awt.AWTColor;

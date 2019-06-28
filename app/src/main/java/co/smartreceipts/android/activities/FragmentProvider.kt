@@ -1,7 +1,7 @@
 package co.smartreceipts.android.activities
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment
 import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment.Companion.ARG_SUGGESTED_DATE
 import co.smartreceipts.android.fragments.ReceiptImageFragment

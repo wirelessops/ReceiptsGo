@@ -1,6 +1,6 @@
 package co.smartreceipts.android;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import org.jetbrains.annotations.NotNull;
 

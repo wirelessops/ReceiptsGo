@@ -1,6 +1,6 @@
 package co.smartreceipts.android.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * A simple interface to define a factory-type pattern in which a certain value can be supplied

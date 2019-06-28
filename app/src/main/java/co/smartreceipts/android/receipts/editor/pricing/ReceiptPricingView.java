@@ -1,7 +1,7 @@
 package co.smartreceipts.android.receipts.editor.pricing;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;

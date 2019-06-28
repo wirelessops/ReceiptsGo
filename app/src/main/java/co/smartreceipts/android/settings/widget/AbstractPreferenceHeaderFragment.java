@@ -4,7 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.annotation.XmlRes;
+import androidx.annotation.XmlRes;
 import android.view.MenuItem;
 
 import co.smartreceipts.android.R;

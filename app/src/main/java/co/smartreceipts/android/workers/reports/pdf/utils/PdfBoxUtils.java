@@ -1,7 +1,7 @@
 package co.smartreceipts.android.workers.reports.pdf.utils;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.StringTokenizer;

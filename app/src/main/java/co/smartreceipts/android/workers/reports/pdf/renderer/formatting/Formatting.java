@@ -1,6 +1,6 @@
 package co.smartreceipts.android.workers.reports.pdf.renderer.formatting;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface Formatting<T> {
 

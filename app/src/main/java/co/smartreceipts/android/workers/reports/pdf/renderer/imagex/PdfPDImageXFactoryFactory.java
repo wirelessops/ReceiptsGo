@@ -2,7 +2,7 @@ package co.smartreceipts.android.workers.reports.pdf.renderer.imagex;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;

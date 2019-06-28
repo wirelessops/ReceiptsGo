@@ -1,6 +1,6 @@
 package co.smartreceipts.android.apis;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.sql.Date;
 

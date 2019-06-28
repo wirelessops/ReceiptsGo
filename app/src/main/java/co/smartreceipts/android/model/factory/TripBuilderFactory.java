@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model.factory;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
@@ -14,7 +14,6 @@ import java.util.UUID;
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.Keyed;
-import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;

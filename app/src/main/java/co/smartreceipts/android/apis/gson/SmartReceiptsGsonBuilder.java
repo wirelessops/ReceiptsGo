@@ -1,6 +1,6 @@
 package co.smartreceipts.android.apis.gson;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.FieldNamingPolicy;
@@ -9,7 +9,6 @@ import com.google.gson.GsonBuilder;
 
 import java.util.Date;
 
-import co.smartreceipts.android.date.Iso8601DateFormat;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;

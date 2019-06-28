@@ -2,8 +2,8 @@ package co.smartreceipts.android.test.runner
 
 import android.app.Application
 import android.os.Bundle
-import android.support.test.internal.runner.RunnerArgs
-import android.support.test.runner.AndroidJUnitRunner
+import androidx.test.internal.runner.RunnerArgs
+import androidx.test.runner.AndroidJUnitRunner
 import android.util.Log
 
 

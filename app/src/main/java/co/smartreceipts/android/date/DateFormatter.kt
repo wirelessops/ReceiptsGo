@@ -2,7 +2,7 @@ package co.smartreceipts.android.date
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import co.smartreceipts.android.R
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager

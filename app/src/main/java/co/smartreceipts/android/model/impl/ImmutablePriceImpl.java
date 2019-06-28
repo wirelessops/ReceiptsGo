@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model.impl;
 
 import android.os.Parcel;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

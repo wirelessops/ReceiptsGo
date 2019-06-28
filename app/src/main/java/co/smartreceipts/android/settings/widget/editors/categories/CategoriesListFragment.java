@@ -2,9 +2,9 @@ package co.smartreceipts.android.settings.widget.editors.categories;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 
 import javax.inject.Inject;
 

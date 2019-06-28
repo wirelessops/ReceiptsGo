@@ -1,10 +1,8 @@
 package co.smartreceipts.android.receipts.editor.paymentmethods;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 
-import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.model.Receipt;
 import io.reactivex.functions.Consumer;
 
 /**

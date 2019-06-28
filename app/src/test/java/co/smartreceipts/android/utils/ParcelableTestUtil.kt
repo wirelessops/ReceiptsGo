@@ -3,7 +3,7 @@ package co.smartreceipts.android.utils
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 
 /**
  * From https://proandroiddev.com/testing-parcelize-114510f44c9a

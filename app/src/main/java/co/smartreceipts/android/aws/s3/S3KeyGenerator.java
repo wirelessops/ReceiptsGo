@@ -1,6 +1,6 @@
 package co.smartreceipts.android.aws.s3;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.apis.gson;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;

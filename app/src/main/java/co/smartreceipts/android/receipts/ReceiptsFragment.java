@@ -1,6 +1,6 @@
 package co.smartreceipts.android.receipts;
 
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Receipt;

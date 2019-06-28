@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.store;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public interface IdentityStore {
 

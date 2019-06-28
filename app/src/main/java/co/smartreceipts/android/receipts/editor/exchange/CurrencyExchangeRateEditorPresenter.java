@@ -1,9 +1,9 @@
 package co.smartreceipts.android.receipts.editor.exchange;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;

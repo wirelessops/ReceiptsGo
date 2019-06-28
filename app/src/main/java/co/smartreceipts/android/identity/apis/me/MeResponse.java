@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.apis.me;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 

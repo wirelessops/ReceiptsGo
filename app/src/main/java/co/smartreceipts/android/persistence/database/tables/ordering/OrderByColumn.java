@@ -1,6 +1,6 @@
 package co.smartreceipts.android.persistence.database.tables.ordering;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 public class OrderByColumn implements OrderBy {

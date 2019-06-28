@@ -1,8 +1,7 @@
 package co.smartreceipts.android.widget.rxbinding2;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-import android.widget.CompoundButton;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.common.base.Preconditions;

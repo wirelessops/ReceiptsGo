@@ -2,7 +2,7 @@ package co.smartreceipts.android.persistence.database.tables.adapters;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

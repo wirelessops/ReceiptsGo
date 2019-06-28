@@ -3,8 +3,8 @@ package co.smartreceipts.android.settings.widget.editors.payment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 
 import javax.inject.Inject;
 

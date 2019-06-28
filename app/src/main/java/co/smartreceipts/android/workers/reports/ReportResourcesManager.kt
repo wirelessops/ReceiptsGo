@@ -2,8 +2,8 @@ package co.smartreceipts.android.workers.reports
 
 import android.content.Context
 import android.content.res.Configuration
-import android.support.annotation.StringRes
-import android.support.v4.os.ConfigurationCompat
+import androidx.annotation.StringRes
+import androidx.core.os.ConfigurationCompat
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference

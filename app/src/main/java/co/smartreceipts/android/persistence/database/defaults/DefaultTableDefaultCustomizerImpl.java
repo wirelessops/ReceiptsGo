@@ -2,13 +2,11 @@ package co.smartreceipts.android.persistence.database.defaults;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Column;
