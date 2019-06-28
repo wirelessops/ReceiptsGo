@@ -2,12 +2,12 @@ package co.smartreceipts.android.identity.widget.account
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.appcompat.widget.Toolbar
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import co.smartreceipts.android.R
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
