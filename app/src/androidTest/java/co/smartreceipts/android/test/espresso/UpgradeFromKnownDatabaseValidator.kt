@@ -160,7 +160,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
 
         // Next - verify each of our categories
         var categoryId = 0
-        val categories = databaseHelper.categoriesTable.get().blockingGet()
+        val categories = databaseHelper.categoriesTable.blocking
         verifyCategory(categories[categoryId++], "<Category>", "NUL", 0)
         verifyCategory(categories[categoryId++], "Airfare", "AIRP", 0)
         verifyCategory(categories[categoryId++], "Books/Periodicals", "ZBKP", 0)
@@ -189,7 +189,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         verifyCategory(categories[categoryId], "Training Fees", "ZTRN", 0)
 
         // Next - verify each of our payment methods
-        val paymentMethods = databaseHelper.paymentMethodsTable.get().blockingGet()
+        val paymentMethods = databaseHelper.paymentMethodsTable.blocking
         verifyPaymentMethod(paymentMethods[0], 1, "Unspecified", 0)
         verifyPaymentMethod(paymentMethods[1], 2, "Corporate Card", 0)
         verifyPaymentMethod(paymentMethods[2], 3, "Personal Card", 0)
@@ -198,7 +198,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         verifyPaymentMethod(paymentMethods[4], 5, "Cash", 0)
 
         // Next - verify each of our CSV columns
-        val csvColumns = databaseHelper.csvTable.get().blockingGet()
+        val csvColumns = databaseHelper.csvTable.blocking
         verifyCsvColumns(csvColumns[0], 1, ReceiptColumnDefinitions.ActualDefinition.CATEGORY_CODE, 0)
         verifyCsvColumns(csvColumns[1], 2, ReceiptColumnDefinitions.ActualDefinition.NAME, 0)
         verifyCsvColumns(csvColumns[2], 3, ReceiptColumnDefinitions.ActualDefinition.PRICE, 0)
@@ -206,7 +206,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         verifyCsvColumns(csvColumns[4], 5, ReceiptColumnDefinitions.ActualDefinition.DATE, 0)
 
         // Next - verify each of our PDF columns
-        val pdfColumns = databaseHelper.pdfTable.get().blockingGet()
+        val pdfColumns = databaseHelper.pdfTable.blocking
         verifyPdfColumns(pdfColumns[0], 1, ReceiptColumnDefinitions.ActualDefinition.NAME, 0)
         verifyPdfColumns(pdfColumns[1], 2, ReceiptColumnDefinitions.ActualDefinition.PRICE, 0)
         verifyPdfColumns(pdfColumns[2], 3, ReceiptColumnDefinitions.ActualDefinition.DATE, 0)
@@ -215,7 +215,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         verifyPdfColumns(pdfColumns[5], 6, ReceiptColumnDefinitions.ActualDefinition.PICTURED, 0)
 
         // Next - confirm each of our trips and the data within
-        val trips = databaseHelper.tripsTable.get().blockingGet()
+        val trips = databaseHelper.tripsTable.blocking
         assertNotNull(trips)
         assertEquals(3, trips.size)
 
@@ -240,7 +240,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("Cost Center", report1.costCenter)
 
         // And the receipts in report 1
-        val report1Receipts = databaseHelper.receiptsTable.get(report1, false).blockingGet()
+        val report1Receipts = databaseHelper.receiptsTable.getBlocking(report1, false)
         allReceipts.addAll(report1Receipts)
         report1Receipts.forEach {
             assertEquals(receiptIndexCounter++, it.index)
@@ -250,7 +250,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         }
 
         // And the distances
-        val report1Distances = databaseHelper.distanceTable.get(report1, false).blockingGet()
+        val report1Distances = databaseHelper.distanceTable.getBlocking(report1, false)
         assertTrue(report1Distances.isEmpty())
         allDistances.addAll(report1Distances)
 
@@ -269,7 +269,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         // And the receipts in report 2
         receiptIndexCounter = 1
         lastReceiptCustomOrderId = 0
-        val report2Receipts = databaseHelper.receiptsTable.get(report2, false).blockingGet()
+        val report2Receipts = databaseHelper.receiptsTable.getBlocking(report2, false)
         allReceipts.addAll(report2Receipts)
         report2Receipts.forEach {
             assertEquals(receiptIndexCounter++, it.index)
@@ -283,7 +283,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         }
 
         // And the distances
-        val report2Distances = databaseHelper.distanceTable.get(report2, false).blockingGet()
+        val report2Distances = databaseHelper.distanceTable.getBlocking(report2, false)
         assertTrue(report2Distances.isEmpty())
         allDistances.addAll(report2Distances)
 
@@ -302,7 +302,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         // And the receipts in report 3
         receiptIndexCounter = 1
         lastReceiptCustomOrderId = 0
-        val report3Receipts = databaseHelper.receiptsTable.get(report3, false).blockingGet()
+        val report3Receipts = databaseHelper.receiptsTable.getBlocking(report3, false)
         allReceipts.addAll(report3Receipts)
         report3Receipts.forEach {
             assertEquals(receiptIndexCounter++, it.index)
@@ -319,7 +319,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         }
 
         // And the distances
-        val report3Distances = databaseHelper.distanceTable.get(report3, false).blockingGet()
+        val report3Distances = databaseHelper.distanceTable.getBlocking(report3, false)
         assertTrue(report3Distances.size == 1)
         val distance = report3Distances[0]
         assertEquals(1, distance.id)
@@ -439,7 +439,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("€0.00", receipt.tax.currencyFormattedPrice)
         assertEquals("EUR", receipt.price.exchangeRate.baseCurrencyCode)
         assertTrue(receipt.price.exchangeRate.supportsExchangeRateFor("USD"))
-        assertEquals("2.0000", receipt.price.exchangeRate.getDecimalFormattedExchangeRate("USD"))
+        assertEquals("2.000000", receipt.price.exchangeRate.getDecimalFormattedExchangeRate("USD"))
         assertEquals("EUR", receipt.tax.currencyCode)
         assertEquals("11/20/16", dateFormatter.getFormattedDate(receipt.displayableDate))
         assertEquals(category, receipt.category)
