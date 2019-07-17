@@ -5,9 +5,7 @@ import co.smartreceipts.android.apis.ApiValidationException
 import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.config.ConfigurationManager
 import co.smartreceipts.android.di.scopes.ApplicationScope
-import co.smartreceipts.android.identity.apis.organizations.Organization
-import co.smartreceipts.android.identity.apis.organizations.OrganizationsResponse
-import co.smartreceipts.android.identity.apis.organizations.OrganizationsService
+import co.smartreceipts.android.identity.apis.organizations.*
 import co.smartreceipts.android.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import co.smartreceipts.android.utils.log.Logger
@@ -27,34 +25,29 @@ class OrganizationManager @Inject constructor(
     private val appSettingsSynchronizer: AppSettingsSynchronizer
 ) {
 
-    fun getPrimaryOrganization(): Maybe<Organization> {
-        return getOrganizations()
-            .filter { !it.organizations.isEmpty() }
-            .map { it.organizations[0] }
-            .flatMap { organization ->
-                if (organization.error.hasError) {
-                    Maybe.error<Organization>(ApiValidationException(TextUtils.join(", ", organization.error.errors)))
-                } else {
-                    Maybe.just(organization)
+    fun getOrganizations(): Maybe<List<Organization>> {
+        return getOrganizationsResponse()
+            .filter { it.organizations.isNotEmpty() }
+            .map { it.organizations }
+            .flatMap {
+                for (organization in it) {
+                    if (organization.error.hasError) {
+                        return@flatMap Maybe.error<List<Organization>>(ApiValidationException(TextUtils.join(", ", organization.error.errors)))
+                    }
                 }
+                return@flatMap Maybe.just(it)
             }
+            .map { it.sortedBy { organization -> organization.name } }
+
     }
 
-    private fun getOrganizations(): Maybe<OrganizationsResponse> {
-        return if (configurationManager.isEnabled(ConfigurableResourceFeature.OrganizationSyncing)) {
-            getOrganizationsApiRequest()
+    private fun getOrganizationsResponse(): Maybe<OrganizationsResponse> {
+        return if (identityStore.isLoggedIn && configurationManager.isEnabled(ConfigurableResourceFeature.OrganizationSyncing)) {
+            webServiceManager.getService(OrganizationsService::class.java).organizations().lastOrError()
                 .toMaybe()
                 .doOnError { throwable -> Logger.error(this, "Failed to complete the organizations request", throwable) }
         } else {
             Maybe.empty()
-        }
-    }
-
-    private fun getOrganizationsApiRequest(): Single<OrganizationsResponse> {
-        return if (identityStore.isLoggedIn) {
-            webServiceManager.getService(OrganizationsService::class.java).organizations().lastOrError()
-        } else {
-            Single.error(IllegalStateException("Cannot fetch the user's organizations until we're logged in"))
         }
     }
 
@@ -94,11 +87,21 @@ class OrganizationManager @Inject constructor(
         )
     }
 
-    fun updateOrganizationSettings(organization: Organization): Single<Boolean> {
-        // TODO: 19.02.2019 mocked. add web service
-        return appSettingsSynchronizer.getCurrentAppSettings()
-            .flatMap { Single.just(false) }
+    fun updateOrganizationSettings(organization: Organization): Completable {
+        return updateOrganizationApiRequest(organization)
+            .ignoreElement()
+    }
 
+    private fun updateOrganizationApiRequest(organization: Organization): Single<OrganizationsResponse> {
+        return if (identityStore.isLoggedIn) {
+            val service = webServiceManager.getService(OrganizationsService::class.java)
+
+            appSettingsSynchronizer.getCurrentAppSettings()
+                .flatMapObservable { settings: AppSettings -> service.updateOrganization(organization.id, AppSettingsPutWrapper(settings)) }
+                .lastOrError()
+        } else {
+            Single.error(IllegalStateException("Cannot update organizations until user is logged in"))
+        }
     }
 
 

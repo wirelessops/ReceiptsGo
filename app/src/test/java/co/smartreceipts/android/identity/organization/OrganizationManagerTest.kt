@@ -7,6 +7,7 @@ import co.smartreceipts.android.identity.apis.organizations.*
 import co.smartreceipts.android.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
@@ -34,6 +35,9 @@ class OrganizationManagerTest {
     private val organization2 = mock<Organization>()
     private val orgError = mock<Error>()
     private val orgSettings = mock<AppSettings>()
+    private val appSettings = mock<AppSettings>()
+    private val org1Name = "A"
+    private val org2Name = "B"
 
     @Before
     fun setUp() {
@@ -54,6 +58,8 @@ class OrganizationManagerTest {
         whenever(organization1.error).thenReturn(orgError)
         whenever(orgError.hasError).thenReturn(false)
         whenever(organization1.appSettings).thenReturn(orgSettings)
+        whenever(organization1.name).thenReturn(org1Name)
+        whenever(organization2.name).thenReturn(org2Name)
 
         whenever(orgSettings.preferences).thenReturn(mock())
         whenever(orgSettings.categories).thenReturn(mock())
@@ -66,46 +72,46 @@ class OrganizationManagerTest {
         whenever(appSettingsSynchronizer.checkCsvColumnsMatch(any())).thenReturn(Single.just(true))
         whenever(appSettingsSynchronizer.checkPdfColumnsMatch(any())).thenReturn(Single.just(true))
         whenever(appSettingsSynchronizer.checkOrganizationPreferencesMatch(any())).thenReturn(Single.just(true))
+        whenever(appSettingsSynchronizer.getCurrentAppSettings()).thenReturn(Single.just(appSettings))
     }
 
     @Test
-    fun getPrimaryOrganizationTestWithoutOrganizationSyncing() {
+    fun getOrganizationsTestWithoutOrganizationSyncing() {
         whenever(configurationManager.isEnabled(ConfigurableResourceFeature.OrganizationSyncing)).thenReturn(false)
 
-        organizationManager.getPrimaryOrganization().test()
+        organizationManager.getOrganizations().test()
             .assertComplete()
             .assertNoErrors()
             .assertNoValues()
-            .assertResult()
     }
 
     @Test
-    fun getPrimaryOrganizationTestWithoutLoggingIn() {
+    fun getOrganizationsTestWithoutLoggingIn() {
         whenever(identityStore.isLoggedIn).thenReturn(false)
 
-        organizationManager.getPrimaryOrganization().test()
-            .assertNotComplete()
-            .assertError(IllegalStateException::class.java)
+        organizationManager.getOrganizations().test()
+            .assertComplete()
+            .assertNoErrors()
             .assertNoValues()
     }
 
     @Test
-    fun getPrimaryOrganizationTestWithServiceError() {
+    fun getOrganizationsTestWithServiceError() {
 
         whenever(service.organizations()).thenReturn(Observable.error(Exception()))
 
-        organizationManager.getPrimaryOrganization().test()
+        organizationManager.getOrganizations().test()
             .assertNotComplete()
             .assertNoValues()
             .assertError(Exception::class.java)
     }
 
     @Test
-    fun getPrimaryOrganizationTestWithNoOrganizations() {
+    fun getOrganizationsTestWithNoOrganizations() {
 
         whenever(organizationsResponse.organizations).thenReturn(emptyList())
 
-        organizationManager.getPrimaryOrganization().test()
+        organizationManager.getOrganizations().test()
             .assertComplete()
             .assertNoErrors()
             .assertNoValues()
@@ -113,34 +119,39 @@ class OrganizationManagerTest {
     }
 
     @Test
-    fun getPrimaryOrganizationTestWithFewOrganizations() {
+    fun getOrganizationsTestWithFewOrganizations() {
 
-        whenever(organizationsResponse.organizations).thenReturn(listOf(organization1, organization2))
+        whenever(organizationsResponse.organizations).thenReturn(listOf(organization2, organization1))
+        whenever(organization1.error).thenReturn(orgError)
+        whenever(organization2.error).thenReturn(orgError)
+        whenever(orgError.hasError).thenReturn(false)
 
-        organizationManager.getPrimaryOrganization().test()
+
+        organizationManager.getOrganizations().test()
             .assertComplete()
             .assertNoErrors()
             .assertValueCount(1)
-            .assertResult(organization1)
+            .assertResult(listOf(organization1, organization2))
     }
 
     @Test
     fun getPrimaryOrganizationTestWithOneOrganization() {
 
-        organizationManager.getPrimaryOrganization().test()
+        organizationManager.getOrganizations().test()
             .assertComplete()
             .assertNoErrors()
             .assertValueCount(1)
-            .assertResult(organization1)
+            .assertResult(listOf(organization1))
     }
 
     @Test
     fun getPrimaryOrganizationTestWithOrganizationError() {
 
         whenever(organizationsResponse.organizations).thenReturn(listOf(organization1))
+        whenever(organization1.error).thenReturn(orgError)
         whenever(orgError.hasError).thenReturn(true)
 
-        organizationManager.getPrimaryOrganization().test()
+        organizationManager.getOrganizations().test()
             .assertNotComplete()
             .assertNoValues()
             .assertError(ApiValidationException::class.java)
@@ -196,6 +207,25 @@ class OrganizationManagerTest {
         whenever(appSettingsSynchronizer.applyPdfColumns(any())).thenReturn(Completable.complete())
 
         organizationManager.applyOrganizationSettings(organization1).test()
+            .assertNotComplete()
+            .assertError(Exception::class.java)
+    }
+
+    @Test
+    fun updateOrganizationSuccess() {
+        whenever(service.updateOrganization(eq(organization1.id), any())).thenReturn(Observable.just(organizationsResponse))
+
+        organizationManager.updateOrganizationSettings(organization1).test()
+            .assertComplete()
+            .assertNoErrors()
+
+    }
+
+    @Test
+    fun updateOrganizationError() {
+        whenever(service.updateOrganization(eq(organization1.id), any())).thenReturn(Observable.error(java.lang.Exception()))
+
+        organizationManager.updateOrganizationSettings(organization1).test()
             .assertNotComplete()
             .assertError(Exception::class.java)
     }

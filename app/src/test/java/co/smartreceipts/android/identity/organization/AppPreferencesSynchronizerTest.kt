@@ -1,13 +1,10 @@
 package co.smartreceipts.android.identity.organization
 
-import co.smartreceipts.android.identity.apis.organizations.AppSettings
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
-import org.intellij.lang.annotations.Language
-import org.json.JSONObject
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -20,9 +17,6 @@ class AppPreferencesSynchronizerTest {
 
     // Class under test
     private lateinit var appPreferencesSynchronizer: AppPreferencesSynchronizer
-
-    private val organizationPreferences1 = AppSettings.OrganizationPreferences(preferencesJsonObject)
-    private val organizationPreferences2 = AppSettings.OrganizationPreferences(simplifiedPreferencesJsonObject)
 
     private val userPreferencesManager = mock<UserPreferenceManager>()
 
@@ -41,7 +35,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(10f)
 
-        Assert.assertEquals(false, appPreferencesSynchronizer.checkPreferenceMatch(organizationPreferences1, preference).get())
+        Assert.assertEquals(false, appPreferencesSynchronizer.checkPreferenceMatch(preferencesMap, preference).get())
 
         verify(userPreferencesManager, never()).set(eq(preference), any())
 
@@ -55,7 +49,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(5.5f)
 
-        Assert.assertEquals(Optional.of(true), appPreferencesSynchronizer.applyPreference(organizationPreferences1, preference))
+        Assert.assertEquals(Optional.of(true), appPreferencesSynchronizer.applyPreference(preferencesMap, preference))
 
         verify(userPreferencesManager, never()).set(eq(preference), any())
 
@@ -69,7 +63,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(10f)
 
-        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(organizationPreferences1, preference))
+        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(preferencesMap, preference))
 
         verify(userPreferencesManager, times(1)).set(eq(preference), any())
         verify(userPreferencesManager, times(1)).set(eq(preference), eq(5.5f))
@@ -84,7 +78,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(8)
 
-        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(organizationPreferences1, preference))
+        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(preferencesMap, preference))
 
         verify(userPreferencesManager, times(1)).set(eq(preference), any())
         verify(userPreferencesManager, times(1)).set(eq(preference), eq(6))
@@ -99,7 +93,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(false)
 
-        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(organizationPreferences1, preference))
+        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(preferencesMap, preference))
 
         verify(userPreferencesManager, times(1)).set(eq(preference), any())
         verify(userPreferencesManager, times(1)).set(eq(preference), eq(true))
@@ -114,7 +108,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn("another str")
 
-        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(organizationPreferences1, preference))
+        Assert.assertEquals(Optional.of(false), appPreferencesSynchronizer.applyPreference(preferencesMap, preference))
 
         verify(userPreferencesManager, times(1)).set(eq(preference), any())
         verify(userPreferencesManager, times(1)).set(eq(preference), eq("str"))
@@ -131,7 +125,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference1))).thenReturn(preference1Name)
         whenever(userPreferencesManager.get(eq(preference1))).thenReturn(15)
 
-        appPreferencesSynchronizer.checkOrganizationPreferencesMatch(organizationPreferences2).test()
+        appPreferencesSynchronizer.checkOrganizationPreferencesMatch(preferencesMap).test()
             .assertComplete()
             .assertNoErrors()
             .assertResult(false)
@@ -142,7 +136,7 @@ class AppPreferencesSynchronizerTest {
 
         prepareForSimplifiedResponse()
 
-        appPreferencesSynchronizer.checkOrganizationPreferencesMatch(organizationPreferences2).test()
+        appPreferencesSynchronizer.checkOrganizationPreferencesMatch(preferencesMap).test()
             .assertComplete()
             .assertNoErrors()
             .assertResult(true)
@@ -158,7 +152,7 @@ class AppPreferencesSynchronizerTest {
         whenever(userPreferencesManager.name(eq(preference1))).thenReturn(preference1Name)
         whenever(userPreferencesManager.get(eq(preference1))).thenReturn(15)
 
-        appPreferencesSynchronizer.applyOrganizationPreferences(organizationPreferences2).test()
+        appPreferencesSynchronizer.applyOrganizationPreferences(preferencesMap).test()
             .assertComplete()
             .assertNoErrors()
 
@@ -186,7 +180,7 @@ class AppPreferencesSynchronizerTest {
         appPreferencesSynchronizer.getAppPreferences().test()
             .assertComplete()
             .assertNoErrors()
-            .assertValue {result: JSONObject -> result.toString() == appPreferencesJsonObject.toString() }
+            .assertValue{result: Map<String, Any> -> result.toString() == preferencesMap.toString() }
     }
 
 
@@ -216,72 +210,12 @@ class AppPreferencesSynchronizerTest {
 
 
     companion object {
-        @Language("JSON")
-        private val preferencesJsonObject = JSONObject(
-            """
-            {
-                    "TripDuration": 6,
-                    "isocurr": "str",
-                    "dateseparator": "-",
-                    "trackcostcenter": true,
-                    "PredictCats": true,
-                    "MatchNameCats": true,
-                    "MatchCommentCats": true,
-                    "OnlyIncludeExpensable": false,
-                    "ExpensableDefault": null,
-                    "IncludeTaxField": false,
-                    "TaxPercentage": null,
-                    "PreTax": false,
-                    "EnableAutoCompleteSuggestions": true,
-                    "MinReceiptPrice": 5.5,
-                    "DefaultToFirstReportDate": null,
-                    "ShowReceiptID": false,
-                    "UseFullPage": false,
-                    "UsePaymentMethods": true,
-                    "IncludeCSVHeaders": true,
-                    "PrintByIDPhotoKey": false,
-                    "PrintCommentByPhoto": false,
-                    "EmailTo": "email@to",
-                    "EmailCC": "email@cc",
-                    "EmailBCC": "email@bcc",
-                    "EmailSubject": "email subject",
-                    "SaveBW": true,
-                    "LayoutIncludeReceiptDate": true,
-                    "LayoutIncludeReceiptCategory": true,
-                    "LayoutIncludeReceiptPicture": true,
-                    "MileageTotalInReport": true,
-                    "MileageRate": 10,
-                    "MileagePrintTable": false,
-                    "MileageAddToPDF": false,
-                    "PdfFooterString": "custom footer string"
-            }
-        """
-        )
 
-        @Language("JSON")
-        private val simplifiedPreferencesJsonObject = JSONObject(
-            """
-            {
-                    "TripDuration": 6,
-                    "isocurr": "str",
-                    "trackcostcenter": true,
-                    "TaxPercentage": null,
-                    "MinReceiptPrice": 5.5
-            }
-        """
-        )
-
-        @Language("JSON")
-        private val appPreferencesJsonObject = JSONObject(
-            """
-            {
-                    "TripDuration": 6,
-                    "isocurr": "str",
-                    "trackcostcenter": true,
-                    "MinReceiptPrice": 5.5
-            }
-        """
-        )
+        private val preferencesMap: Map<String, Any> = mapOf(
+            Pair("TripDuration", 6),
+            Pair("isocurr", "str"),
+            Pair("trackcostcenter", true),
+            Pair("MinReceiptPrice", 5.5))
 
     }
 

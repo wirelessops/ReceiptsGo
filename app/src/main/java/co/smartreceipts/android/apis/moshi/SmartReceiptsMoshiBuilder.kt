@@ -15,7 +15,7 @@ class SmartReceiptsMoshiBuilder @Inject constructor(val receiptColumnDefinitions
             .add(PaymentMethodJsonAdapter())
             .add(Date::class.java, Rfc3339DateJsonAdapter())
             .add(UserRoleJsonAdapter())
-            .add(OrganizationPreferencesJsonAdapter())
+            .add(PreferenceJsonAdapter())
             .add(ColumnJsonAdapter(receiptColumnDefinitions))
             .build()
     }

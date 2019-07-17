@@ -501,10 +501,11 @@
 
     <!-- ================== Account Fragment ==================== -->
     <string name="organization_settings_doesnt_match">Ihre aktuellen Einstellungen werden nicht mit Ihrer Organisation synchronisiert. Tippen Sie hier, um die Organisationseinstellungen anzuwenden.</string>
+    <string name="organization_settings_match">Ihre aktuellen Einstellungen werden mit dieser Organisation synchronisiert.</string>
     <string name="organization_apply_error">Beim Anwenden von Organisationseinstellungen ist ein Fehler aufgetreten</string>
     <string name="organization_apply_success">Einstellungen wurden erfolgreich übernommen</string>
     <string name="logged_in_as">Eingeloggt als:</string>
-    <string name="organization_label">Deine Organisation:</string>
+    <string name="organization_label">Ihre Organisationen:</string>
     <string name="organization_update_success">Organisation erfolgreich aktualisiert</string>
     <string name="organization_update_error">Beim Aktualisieren der Organisation ist ein Fehler aufgetreten</string>
     <string name="organization_update">Aktualisieren Sie die Organisationseinstellungen</string>

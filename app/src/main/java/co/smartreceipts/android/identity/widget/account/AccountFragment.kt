@@ -2,16 +2,17 @@ package co.smartreceipts.android.identity.widget.account
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.appcompat.widget.Toolbar
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import co.smartreceipts.android.R
 import co.smartreceipts.android.date.DateFormatter
-import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
+import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.android.identity.widget.account.organizations.OrganizationsListAdapter
 import co.smartreceipts.android.identity.widget.account.subscriptions.SubscriptionsListAdapter
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
@@ -38,10 +39,13 @@ class AccountFragment : Fragment(), AccountView {
 
     private lateinit var subscriptionsAdapter: SubscriptionsListAdapter
 
+    private lateinit var organizationsAdapter: OrganizationsListAdapter
+
+    override lateinit var applySettingsClicks: Observable<OrganizationModel>
+    override lateinit var uploadSettingsClicks: Observable<OrganizationModel>
+
 
     override val logoutButtonClicks: Observable<Any> get() = RxView.clicks(logout_button)
-    override val applySettingsClicks: Observable<Any> get() = RxView.clicks(organization_caution)
-    override val updateSettingsClicks: Observable<Any> get() = RxView.clicks(organization_update_button)
 
 
     override fun onAttach(context: Context?) {
@@ -62,11 +66,19 @@ class AccountFragment : Fragment(), AccountView {
         val view = inflater.inflate(R.layout.account_info_fragment, container, false)
 
         subscriptionsAdapter = SubscriptionsListAdapter(dateFormatter)
-
         view.subscriptions_list.apply {
-            layoutManager = LinearLayoutManager(getContext());
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = subscriptionsAdapter
         }
+
+        organizationsAdapter = OrganizationsListAdapter()
+        view.organizations_list.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = organizationsAdapter
+        }
+
+        applySettingsClicks = organizationsAdapter.getApplySettingsStream()
+        uploadSettingsClicks = organizationsAdapter.getUploadSettingsStream()
 
         return view
     }
@@ -127,13 +139,16 @@ class AccountFragment : Fragment(), AccountView {
         login_field_email.text = emailAddress
     }
 
-    override fun presentOrganization(uiIndicator: UiIndicator<AccountInteractor.OrganizationModel>) {
+    override fun presentOrganizations(uiIndicator: UiIndicator<List<OrganizationModel>>) {
         when (uiIndicator.state) {
             UiIndicator.State.Success -> {
                 progress_bar.visibility = View.GONE
-                showOrganization(uiIndicator.data.get())
+
+                organization_group.visibility = View.VISIBLE
+                organizationsAdapter.setOrganizations(uiIndicator.data.get())
             }
             UiIndicator.State.Loading -> {
+                organization_group.visibility = View.GONE
                 progress_bar.visibility = View.VISIBLE
             }
             UiIndicator.State.Error -> {
@@ -151,8 +166,6 @@ class AccountFragment : Fragment(), AccountView {
         when (uiIndicator.state) {
             UiIndicator.State.Success -> {
                 Toast.makeText(context, getString(R.string.organization_apply_success), Toast.LENGTH_SHORT).show()
-                organization_caution.visibility = View.GONE
-                organization_update_button.visibility = View.GONE
             }
             UiIndicator.State.Error -> {
                 Toast.makeText(context, getString(R.string.organization_apply_error), Toast.LENGTH_SHORT).show()
@@ -171,8 +184,6 @@ class AccountFragment : Fragment(), AccountView {
             UiIndicator.State.Success -> {
                 Toast.makeText(context, getString(R.string.organization_update_success), Toast.LENGTH_SHORT).show()
                 progress_bar.visibility = View.GONE
-                organization_update_button.visibility = View.GONE
-                organization_caution.visibility = View.GONE
             }
             UiIndicator.State.Error -> {
                 progress_bar.visibility = View.GONE
@@ -198,22 +209,6 @@ class AccountFragment : Fragment(), AccountView {
         subscriptionsAdapter.setSubscriptions(subscriptions)
     }
 
-    private fun showOrganization(organizationModel: AccountInteractor.OrganizationModel) {
-        organization_group.visibility = View.VISIBLE
-
-        organization_name.text = organizationModel.organization.name
-        user_role.text = organizationModel.userRole.name
-
-        when {
-            organizationModel.settingsMatch -> organization_caution.visibility = View.GONE
-            else -> {
-                organization_caution.visibility = View.VISIBLE
-                if (organizationModel.userRole == OrganizationUser.UserRole.ADMIN) {
-                    organization_update_button.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
 
     companion object {
         @JvmStatic fun newInstance() = AccountFragment()

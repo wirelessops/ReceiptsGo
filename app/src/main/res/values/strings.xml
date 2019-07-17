@@ -518,11 +518,12 @@
     <string name="graphs_label_others">Others</string>
 
     <!-- ================== Account Fragment ==================== -->
-    <string name="organization_settings_doesnt_match">Your current settings are not synced with your organization. Tap here to apply organization settings.</string>
+    <string name="organization_settings_doesnt_match">Your current settings are not synced with this organization. Tap here to apply organization settings.</string>
+    <string name="organization_settings_match">Your current settings are synced with this organization.</string>
     <string name="organization_apply_error">Something went wrong while applying organization settings</string>
     <string name="organization_apply_success">Settings were applied successfully</string>
     <string name="logged_in_as">Logged in as:</string>
-    <string name="organization_label">Your organization:</string>
+    <string name="organization_label">Your Organizations:</string>
     <string name="organization_update_success">Organization updated successfully</string>
     <string name="organization_update_error">Something went wrong while updating organization</string>
     <string name="organization_update">Update organization settings</string>

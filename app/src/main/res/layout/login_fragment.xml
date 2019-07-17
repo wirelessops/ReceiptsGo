@@ -39,8 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/login_fields_title"
-                android:ellipsize="end"
-                android:lines="1"
                 android:text="@string/login_fields_hint_email" />
 
             <EditText

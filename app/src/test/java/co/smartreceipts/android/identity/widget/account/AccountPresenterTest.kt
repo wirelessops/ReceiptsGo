@@ -1,12 +1,14 @@
 package co.smartreceipts.android.identity.widget.account
 
 import co.smartreceipts.android.identity.apis.organizations.Organization
+import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,16 +28,21 @@ class AccountPresenterTest {
     private val view = mock<AccountView>()
     private val interactor = mock<AccountInteractor>()
 
+    private val organizationModel = mock<OrganizationModel>()
+    private val organization = mock<Organization>()
+
     @Before
     fun setUp() {
         whenever(view.applySettingsClicks).thenReturn(Observable.never())
         whenever(view.logoutButtonClicks).thenReturn(Observable.never())
-        whenever(view.updateSettingsClicks).thenReturn(Observable.never())
+        whenever(view.uploadSettingsClicks).thenReturn(Observable.never())
 
         whenever(interactor.getEmail()).thenReturn(EmailAddress(EMAIL))
-        whenever(interactor.getOrganization()).thenReturn(Observable.just(UiIndicator.loading(), UiIndicator.idle()))
+        whenever(interactor.getOrganizations()).thenReturn(Single.just(Collections.emptyList()))
         whenever(interactor.getOcrRemainingScansStream()).thenReturn(Observable.just(5))
         whenever(interactor.getSubscriptionsStream()).thenReturn(Observable.empty())
+
+        whenever(organizationModel.organization).thenReturn(organization)
 
 
         presenter = AccountPresenter(view, interactor)
@@ -52,27 +59,26 @@ class AccountPresenterTest {
     fun presentNoOrganization() {
         presenter.subscribe()
 
-        verify(view, times(2)).presentOrganization(any())
-        verify(view).presentOrganization(UiIndicator.loading())
-        verify(view).presentOrganization(UiIndicator.loading())
-        verify(view).presentOrganization(UiIndicator.idle())
+        verify(view, times(2)).presentOrganizations(any())
+        verify(view).presentOrganizations(UiIndicator.loading())
+        verify(view).presentOrganizations(UiIndicator.idle())
 
-        verify(interactor, times(1)).getOrganization()
+        verify(interactor, times(1)).getOrganizations()
     }
 
     @Test
-    fun presentOrganization() {
-        val organizationModel = mock<AccountInteractor.OrganizationModel>()
-        whenever(interactor.getOrganization()).thenReturn(Observable.just(UiIndicator.loading(), UiIndicator.success(organizationModel)))
+    fun presentOrganizations() {
+        val organizationModel = mock<OrganizationModel>()
+        whenever(interactor.getOrganizations()).thenReturn(Single.just(listOf(organizationModel)))
         whenever(organizationModel.organization).thenReturn(mock<Organization>())
 
         presenter.subscribe()
 
-        verify(view, times(2)).presentOrganization(any())
-        verify(view).presentOrganization(UiIndicator.loading())
-        verify(view).presentOrganization(UiIndicator.success(organizationModel))
+        verify(view, times(2)).presentOrganizations(any())
+        verify(view).presentOrganizations(UiIndicator.loading())
+        verify(view).presentOrganizations(UiIndicator.success(listOf(organizationModel)))
 
-        verify(interactor, times(1)).getOrganization()
+        verify(interactor, times(1)).getOrganizations()
     }
 
     @Test
@@ -91,5 +97,23 @@ class AccountPresenterTest {
         presenter.subscribe()
 
         verify(view).presentSubscriptions(subscriptions)
+    }
+
+    @Test
+    fun applySettingsClickTest() {
+        whenever(view.applySettingsClicks).thenReturn(Observable.just(organizationModel))
+
+        presenter.subscribe()
+
+        verify(interactor).applyOrganizationSettings(organizationModel.organization)
+    }
+
+    @Test
+    fun uploadSettingsClickTest() {
+        whenever(view.uploadSettingsClicks).thenReturn(Observable.just(organizationModel))
+
+        presenter.subscribe()
+
+        verify(interactor).uploadOrganizationSettings(organizationModel.organization)
     }
 }

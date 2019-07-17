@@ -34,6 +34,8 @@ class UserPreferenceManager constructor(private val context: Context,
 
     companion object {
         const val PREFERENCES_FILE_NAME = "SmartReceiptsPrefFile"
+
+        const val MIN_RECEIPT_PRICE : Float = -1000f
     }
 
     /**
@@ -81,7 +83,7 @@ class UserPreferenceManager constructor(private val context: Context,
                                 val typedValue = TypedValue()
                                 context.resources.getValue(userPreference.defaultValue, typedValue, true)
                                 if (typedValue.float < 0) {
-                                    val defaultMinimumReceiptPrice = -java.lang.Float.MAX_VALUE
+                                    val defaultMinimumReceiptPrice = MIN_RECEIPT_PRICE
                                     preferences.get().edit().putFloat(preferenceName, defaultMinimumReceiptPrice).apply()
                                     Logger.debug(this@UserPreferenceManager, "Assigned default float value for {} as {}", preferenceName, defaultMinimumReceiptPrice)
                                 }

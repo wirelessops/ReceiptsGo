@@ -2,7 +2,6 @@ package co.smartreceipts.android.identity.apis.organizations
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.io.Serializable
 import java.util.*
 
 @JsonClass(generateAdapter = true)
@@ -13,4 +12,4 @@ data class Organization(
     @Json(name = "app_settings") val appSettings: AppSettings,
     @Json(name = "organization_users") val organizationUsers: List<OrganizationUser> = emptyList(),
     @Json(name = "error") val error: Error
-) : Serializable
+)

@@ -3,13 +3,14 @@ package co.smartreceipts.android.identity.widget.account
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.IdentityManager
 import co.smartreceipts.android.identity.apis.organizations.Organization
+import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
-import co.smartreceipts.android.widget.model.UiIndicator
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -41,27 +42,16 @@ class AccountInteractor constructor(
     fun getEmail(): EmailAddress = identityManager.email ?: EmailAddress("")
 
 
-    fun getOrganization(): Observable<UiIndicator<OrganizationModel>> {
+    fun getOrganizations(): Single<List<OrganizationModel>> {
 
-        return Observable.concat(Observable.just(UiIndicator.loading<OrganizationModel>()),
-            organizationManager.getPrimaryOrganization()
-                .flatMapSingle { organization: Organization ->
-                    organizationManager.checkOrganizationSettingsMatch(organization)
-                        .flatMap { settingsMatch: Boolean ->
-                            Single.just(OrganizationModel(organization, getUserRole(organization), settingsMatch))
-                        }
-                }
-                .map { model: OrganizationModel -> UiIndicator.success(model) }
-                .flatMapObservable { indicator: UiIndicator<OrganizationModel> ->
-                    Observable.just(indicator)
-                }
-        )
-            .onErrorReturn { t: Throwable ->
-                when (t) {
-                    is NoSuchElementException -> UiIndicator.idle()
-                    else -> UiIndicator.error()
-                }
+        return organizationManager.getOrganizations()
+            .flatMapObservable { Observable.fromIterable(it) }
+            .flatMap { organization ->
+                organizationManager.checkOrganizationSettingsMatch(organization)
+                    .map { settingsMatch -> OrganizationModel(organization, getUserRole(organization), settingsMatch) }
+                    .toObservable()
             }
+            .toList()
             .subscribeOn(subscribeOnScheduler)
             .observeOn(observeOnScheduler)
     }
@@ -80,39 +70,25 @@ class AccountInteractor constructor(
 
     }
 
-    fun applyOrganizationSettings(organization: Organization): Observable<UiIndicator<Unit>> {
+    fun applyOrganizationSettings(organization: Organization): Completable {
 
         return Single.just(organization)
-            .flatMap<UiIndicator<Unit>> { org: Organization ->
-                organizationManager.applyOrganizationSettings(org)
-                    .andThen(Single.just(UiIndicator.success()))
-            }
-            .onErrorReturn { UiIndicator.error() }
-            .toObservable()
+            .flatMapCompletable { organizationManager.applyOrganizationSettings(it) }
             .subscribeOn(subscribeOnScheduler)
             .observeOn(observeOnScheduler)
     }
 
-    fun updateOrganizationSettings(organization: Organization): Observable<UiIndicator<Unit>> {
+    fun uploadOrganizationSettings(organization: Organization): Completable {
 
-        return Observable.concat(Observable.just(UiIndicator.loading<Unit>()),
-            organizationManager.updateOrganizationSettings(organization)
-                .flatMapObservable<UiIndicator<Unit>> { Observable.just(if (it) UiIndicator.success() else UiIndicator.error()) }
-                .subscribeOn(subscribeOnScheduler)
-                .observeOn(observeOnScheduler)
-        )
-
+        return Single.just(organization)
+            .flatMapCompletable { organizationManager.updateOrganizationSettings(it) }
+            .subscribeOn(subscribeOnScheduler)
+            .observeOn(observeOnScheduler)
     }
 
     private fun getUserRole(organization: Organization): OrganizationUser.UserRole {
         // TODO: 12.11.2018 implement getting real user role
         return OrganizationUser.UserRole.ADMIN
     }
-
-    data class OrganizationModel(
-        val organization: Organization,
-        val userRole: OrganizationUser.UserRole,
-        val settingsMatch: Boolean
-    )
 
 }

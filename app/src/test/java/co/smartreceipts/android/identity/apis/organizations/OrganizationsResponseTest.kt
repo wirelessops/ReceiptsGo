@@ -4,6 +4,7 @@ import co.smartreceipts.android.apis.moshi.SmartReceiptsMoshiBuilder
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryCodeColumn
+import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryNameColumn
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
 import com.nhaarman.mockito_kotlin.any
@@ -90,7 +91,7 @@ class OrganizationsResponseTest {
                 "CSVColumns": [
                     {
                         "uuid": "fff24e83-fe5a-47b5-86fa-376d449fe348",
-                        "column_type": 5
+                        "column_type": 2
                     }
                 ],
                 "PDFColumns": [
@@ -125,8 +126,8 @@ class OrganizationsResponseTest {
 
     @Before
     fun setUp() {
-        whenever(receiptColumnDefinitions.getColumn(any(), eq(5), any(), any(), eq(UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348"))))
-            .thenReturn(ReceiptCategoryCodeColumn(-1, DefaultSyncState(), 0, UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348")))
+        whenever(receiptColumnDefinitions.getColumn(any(), eq(2), any(), any(), eq(UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348"))))
+            .thenReturn(ReceiptCategoryNameColumn(-1, DefaultSyncState(), 0, UUID.fromString("fff24e83-fe5a-47b5-86fa-376d449fe348")))
 
         whenever(receiptColumnDefinitions.getColumn(any(), eq(1), any(), any(), eq(UUID.fromString("bec00e55-80ad-4147-9c39-9d4a5acb635f"))))
             .thenReturn(ReceiptCategoryCodeColumn(-1, DefaultSyncState(), 0, UUID.fromString("bec00e55-80ad-4147-9c39-9d4a5acb635f")))
@@ -214,42 +215,12 @@ class OrganizationsResponseTest {
         // Testing Settings section
         val settings = appSettings.preferences
         assertNotNull(settings)
-        val jsonObject = settings.preferencesJson
 
-        assertTrue(jsonObject.has("TripDuration") && jsonObject.getInt("TripDuration") == 8)
-        assertTrue(jsonObject.has("isocurr") && !jsonObject.isNull("isocurr") && jsonObject.getString("isocurr") == "AED")
-        assertTrue(jsonObject.has("dateseparator") && !jsonObject.isNull("dateseparator") && jsonObject.getString("dateseparator") == "-")
-        assertTrue(jsonObject.has("trackcostcenter") && jsonObject.getBoolean("trackcostcenter"))
-        assertTrue(jsonObject.has("PredictCats") && !jsonObject.getBoolean("PredictCats"))
-        assertTrue(jsonObject.has("MatchNameCats") && jsonObject.isNull("MatchNameCats"))
-        assertTrue(jsonObject.has("MatchCommentCats") && jsonObject.isNull("MatchCommentCats"))
-        assertTrue(jsonObject.has("OnlyIncludeExpensable") && jsonObject.isNull("OnlyIncludeExpensable"))
-        assertTrue(jsonObject.has("ExpensableDefault") && jsonObject.isNull("ExpensableDefault"))
-        assertTrue(jsonObject.has("IncludeTaxField") && jsonObject.isNull("IncludeTaxField"))
-        assertTrue(jsonObject.has("TaxPercentage") && jsonObject.isNull("TaxPercentage"))
-        assertTrue(jsonObject.has("PreTax") && jsonObject.isNull("PreTax"))
-        assertTrue(jsonObject.has("EnableAutoCompleteSuggestions") && jsonObject.isNull("EnableAutoCompleteSuggestions"))
-        assertTrue(jsonObject.has("MinReceiptPrice") && java.lang.Float.valueOf(jsonObject.getString("MinReceiptPrice")) == 10.5f)
-        assertTrue(jsonObject.has("DefaultToFirstReportDate") && jsonObject.isNull("DefaultToFirstReportDate"))
-        assertTrue(jsonObject.has("ShowReceiptID") && jsonObject.isNull("ShowReceiptID"))
-        assertTrue(jsonObject.has("UseFullPage") && jsonObject.isNull("UseFullPage"))
-        assertTrue(jsonObject.has("UsePaymentMethods") && jsonObject.isNull("UsePaymentMethods"))
-        assertTrue(jsonObject.has("IncludeCSVHeaders") && jsonObject.isNull("IncludeCSVHeaders"))
-        assertTrue(jsonObject.has("PrintByIDPhotoKey") && jsonObject.isNull("PrintByIDPhotoKey"))
-        assertTrue(jsonObject.has("PrintCommentByPhoto") && jsonObject.isNull("PrintCommentByPhoto"))
-        assertTrue(jsonObject.has("EmailTo") && !jsonObject.isNull("EmailTo") && jsonObject.getString("EmailTo").isEmpty())
-        assertTrue(jsonObject.has("EmailCC") && !jsonObject.isNull("EmailCC") && jsonObject.getString("EmailCC").isEmpty())
-        assertTrue(jsonObject.has("EmailBCC") && !jsonObject.isNull("EmailBCC") && jsonObject.getString("EmailBCC").isEmpty())
-        assertTrue(jsonObject.has("EmailSubject") && !jsonObject.isNull("EmailSubject") && jsonObject.getString("EmailSubject").isEmpty())
-        assertTrue(jsonObject.has("SaveBW") && jsonObject.isNull("SaveBW"))
-        assertTrue(jsonObject.has("LayoutIncludeReceiptDate") && jsonObject.isNull("LayoutIncludeReceiptDate"))
-        assertTrue(jsonObject.has("LayoutIncludeReceiptCategory") && jsonObject.isNull("LayoutIncludeReceiptCategory"))
-        assertTrue(jsonObject.has("LayoutIncludeReceiptPicture") && jsonObject.isNull("LayoutIncludeReceiptPicture"))
-        assertTrue(jsonObject.has("MileageTotalInReport") && jsonObject.isNull("MileageTotalInReport"))
-        assertTrue(jsonObject.has("MileageRate") && jsonObject.isNull("MileageRate"))
-        assertTrue(jsonObject.has("MileagePrintTable") && jsonObject.isNull("MileagePrintTable"))
-        assertTrue(jsonObject.has("MileageAddToPDF") && jsonObject.isNull("MileageAddToPDF"))
-        assertTrue(jsonObject.has("PdfFooterString") && jsonObject.isNull("PdfFooterString"))
+        assertTrue(settings.containsKey("TripDuration") && settings["TripDuration"] == 8)
+        assertTrue(settings.containsKey("isocurr") && settings["isocurr"] != null && settings["isocurr"] == "AED")
+        assertTrue(settings.containsKey("trackcostcenter") && settings["trackcostcenter"] == true)
+        assertTrue(settings.containsKey("MinReceiptPrice") && settings["MinReceiptPrice"] == 10.5f)
+        assertTrue(settings.containsKey("TaxPercentage") && settings["TaxPercentage"] == null)
 
 
         // Testing Categories section
@@ -278,7 +249,7 @@ class OrganizationsResponseTest {
         assertEquals(1, csvColumns.size)
         val csvColumn = csvColumns[0]
         assertEquals("fff24e83-fe5a-47b5-86fa-376d449fe348", csvColumn.uuid.toString())
-        assertEquals(1, csvColumn.type)
+        assertEquals(2, csvColumn.type)
 
         // Testing PdfColumns section
         val pdfColumns = appSettings.pdfColumns
@@ -286,6 +257,31 @@ class OrganizationsResponseTest {
         val pdfColumn = pdfColumns[0]
         assertEquals("bec00e55-80ad-4147-9c39-9d4a5acb635f", pdfColumn.uuid.toString())
         assertEquals(1, pdfColumn.type)
+    }
+
+
+    @Test
+    fun serializeTest() {
+        val response = jsonAdapter.fromJson(JSON)
+        val organization = response!!.organizations[0]
+
+        val toJsonResult = jsonAdapter.toJson(response)
+        val serializedOrganization = jsonAdapter.fromJson(toJsonResult)!!.organizations[0]
+
+        assertEquals(organization.id, serializedOrganization.id)
+        assertEquals(organization.name, serializedOrganization.name)
+        assertEquals(organization.createdAt, serializedOrganization.createdAt)
+        assertEquals(organization.error, serializedOrganization.error)
+
+        assertEquals(organization.appSettings.csvColumns, serializedOrganization.appSettings.csvColumns)
+        assertEquals(organization.appSettings.pdfColumns, serializedOrganization.appSettings.pdfColumns)
+        assertEquals(organization.appSettings.categories, serializedOrganization.appSettings.categories)
+        assertEquals(organization.appSettings.paymentMethods, serializedOrganization.appSettings.paymentMethods)
+
+        assertEquals(organization.appSettings.preferences["TripDuration"], serializedOrganization.appSettings.preferences["TripDuration"]) //integer
+        assertEquals(organization.appSettings.preferences["isocurr"], serializedOrganization.appSettings.preferences["isocurr"]) //string
+        assertEquals(organization.appSettings.preferences["trackcostcenter"], serializedOrganization.appSettings.preferences["trackcostcenter"]) //boolean
+        assertEquals(organization.appSettings.preferences["MinReceiptPrice"], serializedOrganization.appSettings.preferences["MinReceiptPrice"]) //float
     }
 
 }
