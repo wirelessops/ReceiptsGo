@@ -45,9 +45,8 @@ public final class Events {
         public static final Event ReceiptImportImage = new DefaultEvent(Category.Receipts, "ReceiptImportImage");
         public static final Event ReceiptImportPdf = new DefaultEvent(Category.Receipts, "ReceiptImportPdf");
 
-        public static final Event ReceiptImageViewRotateCcw = new DefaultEvent(Category.Receipts, "ReceiptImageViewRotateCcw");
-        public static final Event ReceiptImageViewRotateCw = new DefaultEvent(Category.Receipts, "ReceiptImageViewRotateCw");
         public static final Event ReceiptImageViewRetakePhoto = new DefaultEvent(Category.Receipts, "ReceiptImageViewRetakePhoto");
+        public static final Event ReceiptImageViewEditPhoto = new DefaultEvent(Category.Receipts, "ReceiptImageViewEditPhoto");
 
         public static final Event PersistNewReceipt = new DefaultEvent(Category.Receipts, "PersistNewReceipt");
         public static final Event PersistUpdateReceipt = new DefaultEvent(Category.Receipts, "PersistUpdateReceipt");

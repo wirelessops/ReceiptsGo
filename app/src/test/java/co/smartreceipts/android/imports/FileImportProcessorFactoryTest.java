@@ -38,13 +38,13 @@ public class FileImportProcessorFactoryTest {
     @Test
     public void get() {
         // Image Imports
-        assertTrue(this.factory.get(RequestCodes.NATIVE_ADD_PHOTO_CAMERA_REQUEST, trip) instanceof ImageImportProcessor);
-        assertTrue(this.factory.get(RequestCodes.NATIVE_NEW_RECEIPT_CAMERA_REQUEST, trip) instanceof ImageImportProcessor);
-        assertTrue(this.factory.get(RequestCodes.NATIVE_RETAKE_PHOTO_CAMERA_REQUEST, trip) instanceof ImageImportProcessor);
-        assertTrue(this.factory.get(RequestCodes.IMPORT_GALLERY_IMAGE, trip) instanceof ImageImportProcessor);
+        assertTrue(this.factory.get(RequestCodes.ATTACH_CAMERA_IMAGE, trip) instanceof ImageImportProcessor);
+        assertTrue(this.factory.get(RequestCodes.NEW_RECEIPT_CAMERA_IMAGE, trip) instanceof ImageImportProcessor);
+        assertTrue(this.factory.get(RequestCodes.RETAKE_CAMERA_IMAGE, trip) instanceof ImageImportProcessor);
+        assertTrue(this.factory.get(RequestCodes.NEW_RECEIPT_IMPORT_IMAGE, trip) instanceof ImageImportProcessor);
 
         // PDF Imports
-        assertTrue(this.factory.get(RequestCodes.IMPORT_GALLERY_PDF, trip) instanceof GenericFileImportProcessor);
+        assertTrue(this.factory.get(RequestCodes.NEW_RECEIPT_IMPORT_PDF, trip) instanceof GenericFileImportProcessor);
 
         // Rest are auto fail
         assertTrue(this.factory.get(-1, trip) instanceof AutoFailImportProcessor);

@@ -63,6 +63,12 @@
             android:summaryOff="@string/pref_general_track_cost_center_summaryOff"
             android:summaryOn="@string/pref_general_track_cost_center_summaryOn"
             android:title="@string/pref_general_track_cost_center_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_general_enable_crop_defaultValue"
+            android:key="@string/pref_general_enable_crop_key"
+            android:summaryOff="@string/pref_general_enable_crop_summaryOff"
+            android:summaryOn="@string/pref_general_enable_crop_summaryOn"
+            android:title="@string/pref_general_enable_crop_title" />
     </PreferenceCategory>
 
     <PreferenceCategory

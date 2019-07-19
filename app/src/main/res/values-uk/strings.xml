@@ -160,8 +160,7 @@
 
     <!-- ================ Img Menu Options =================== -->
     <string name="menu_receiptimage_retake">Зробити знімок повторно</string>
-    <string name="menu_receiptimage_rotate_ccw">Повернути проти годинникової стрілки</string>
-    <string name="menu_receiptimage_rotate_cw">Поворот за годинниковою стрілкою</string>
+    <string name="menu_receiptimage_edit">Редагувати знімок</string>
 
     <!-- ===================== Email ====================== -->
     <string name="email_body_subject_5mb_warning">Файл має розмір більше 5 МБ і може бути не правильно прикріплений: %s</string>
@@ -199,7 +198,8 @@
     <string name="toast_no_storage_permissions">Неможливо імпортувати файл без дозволу на читання</string>
     <string name="toast_reorder_hint">Утримуйте елемент, щоб почати перетягування</string>
     <string name="toast_csv_report_distances">Щоб створити звіт у форматі CSV, будь ласка, поставте галочку %s</string>
-    <string name="attachment_error">Не вдається прикріпити цей файл.</string>
+    <string name="toast_attachment_error">Не вдається прикріпити цей файл.</string>
+    <string name="toast_disable_crop_option">Ви можете відключити опцію кадрування зображення в налаштуваннях програми</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s до %2$s</string>
@@ -489,7 +489,7 @@
     <string name="tooltip_import_info_message">Будь-ласка, оберіть чек для вашого вкладення</string>
     <string name="tooltip_review_privacy">Торкніться, щоб переглянути налаштування конфіденційності</string>
     <string name="tooltip_automatic_backups_recovery_hint">Ви раніше налаштовували автоматичне резервне копіювання? Натисніть тут, щоб відновити</string>
-    <string name="tooltip_first_report_hint">Ласкаво просимо! Давайте створимо вашу першу папку звітів. Назвіть його після цього місяця, цього року, поточної ділової поїздки або будь-якого іншого. Потім натисніть галочку, щоб зберегти її і почати додавати перші квитанції!</string>
+    <string name="tooltip_first_report_hint">Ласкаво просимо! Давайте створимо вашу першу папку звіту. Назвіть його як цей місяць, цей рік, ваше поточне відрядження або інакше, як ви побажаєте. Потім натисніть на галочку, щоб зберегти його і почати додавати свої перші квитанції!</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Додайте свій перший чек щоб побачити графіки.</string>

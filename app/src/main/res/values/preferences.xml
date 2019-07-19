@@ -49,6 +49,10 @@
     <string name="pref_general_track_cost_center_title">Track Cost Center</string>
     <string name="pref_general_track_cost_center_summaryOn">Include Cost Center For Reports</string>
     <string name="pref_general_track_cost_center_summaryOff">Don\'t Include Cost Center For Reports</string>
+    <string name="pref_general_enable_crop_key" translatable="false">enablecrop</string>
+    <string name="pref_general_enable_crop_title">Enable Crop Image Screen</string>
+    <string name="pref_general_enable_crop_summaryOn">You will see the Crop Screen after taking a photo</string>
+    <string name="pref_general_enable_crop_summaryOff">You won\'t see the Crop Screen after taking a photo</string>
 
     <!-- ============== Preference Receipt ================= -->
     <string name="pref_receipt_customize_categories_key" translatable="false">CustomCategories</string>

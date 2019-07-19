@@ -6,6 +6,7 @@
     <string name="pref_general_default_date_separator_defaultValue" />
     <string name="pref_general_date_format_defaultValue">@string/pref_general_date_format_default_entryValue</string>
     <bool name="pref_general_track_cost_center_defaultValue">false</bool>
+    <bool name="pref_general_enable_crop_defaultValue">true</bool>
 
     <!-- ============== Preference Receipt ================ -->
     <item name="pref_receipt_minimum_receipts_price_defaultValue" format="float" type="dimen">-1000.0</item>

@@ -29,6 +29,10 @@
     <string name="pref_general_track_cost_center_summaryOn">Incluir centro de costos en los informes</string>
     <string name="pref_general_track_cost_center_summaryOff">No incluir centro de costos en los informes</string>
 
+    <string name="pref_general_enable_crop_title">Habilitar pantalla de imagen de recorte</string>
+    <string name="pref_general_enable_crop_summaryOn">Verá la pantalla de recorte después de tomar una foto</string>
+    <string name="pref_general_enable_crop_summaryOff">No verás la pantalla de recorte después de tomar una foto</string>
+
     <!-- ============== Preference Receipt ================= -->
 
     <string name="pref_receipt_customize_categories_title">Personalizar categorías de recibos</string>

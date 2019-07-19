@@ -3,12 +3,13 @@ package co.smartreceipts.android.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.util.Set;
 
@@ -282,7 +283,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
 
     @Override
     public void presentIntentImportFatalError() {
-        Toast.makeText(this, R.string.attachment_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_attachment_error, Toast.LENGTH_SHORT).show();
         finish();
     }
 

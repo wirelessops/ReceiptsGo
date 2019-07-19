@@ -30,6 +30,10 @@
     <string name="pref_general_track_cost_center_summaryOn">Включать Центр расходов в отчеты</string>
     <string name="pref_general_track_cost_center_summaryOff">Не включать Центр расходов в отчеты</string>
 
+    <string name="pref_general_enable_crop_title">Включить экран кадрирования изображения</string>
+    <string name="pref_general_enable_crop_summaryOn">Вы увидите экран кадрирования изображения после съемки фотографии</string>
+    <string name="pref_general_enable_crop_summaryOff">Вы не увидите экран кадрирования изображения после съемки фотографии</string>
+
     <!-- ============== Preference Receipt ================= -->
 
     <string name="pref_receipt_customize_categories_title">Настройка категорий чеков</string>

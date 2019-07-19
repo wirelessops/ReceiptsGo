@@ -161,8 +161,7 @@
 
     <!-- ================ Img Menu Options =================== -->
     <string name="menu_receiptimage_retake">צלם מחדש</string>
-    <string name="menu_receiptimage_rotate_ccw">סובב נגד כיוון השעון</string>
-    <string name="menu_receiptimage_rotate_cw">סובב עם כיוון השעון</string>
+    <string name="menu_receiptimage_edit">ערוך תמונה</string>
 
     <!-- ===================== Email ====================== -->
     <string name="email_body_subject_5mb_warning">%s :הקובץ המצ\״ב גדול מ-5 מגהבייט, ולכן ייתכן שלא יוצמד כראוי</string>
@@ -200,7 +199,8 @@
     <string name="toast_import_complete">.יובאו כל הקבצים בהצלחה. אנא אתחל את האפליקציה.</string>
     <string name="toast_reorder_hint"><![CDATA[לחץ לחיצה ארוכה על הפריט על מנת להתחיל גרירה]]></string>
     <string name="toast_csv_report_distances">%s :על מנת ליצור דוח אקסל אנא לחץ על</string>
-    <string name="attachment_error">Unable to attach this file.</string>
+    <string name="toast_attachment_error">Unable to attach this file.</string>
+    <string name="toast_disable_crop_option">ניתן להשבית אפשרות חיתוך תמונה בהגדרות האפליקציה</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%2$s %1$s אל</string>

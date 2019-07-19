@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:key="@string/pref_general_header_key"
-        android:title="@string/pref_general_header" >
+        android:title="@string/pref_general_header">
         <co.smartreceipts.android.settings.widget.DefaultDurationEditTextPreference
-            android:key="@string/pref_general_trip_duration_key"
-            android:title="@string/pref_general_trip_duration_title"
+            android:defaultValue="@integer/pref_general_trip_duration_defaultValue"
             android:inputType="number"
-            android:defaultValue="@integer/pref_general_trip_duration_defaultValue" />
+            android:key="@string/pref_general_trip_duration_key"
+            android:title="@string/pref_general_trip_duration_title" />
         <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_general_default_currency_defaultValue"
             android:key="@string/pref_general_default_currency_key"
-            android:title="@string/pref_general_default_currency_title"
-            android:defaultValue="@string/pref_general_default_currency_defaultValue"/>
+            android:title="@string/pref_general_default_currency_title" />
         <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_general_default_date_separator_defaultValue"
             android:key="@string/pref_general_default_date_separator_key"
-            android:title="@string/pref_general_default_date_separator_title"
-            android:defaultValue="@string/pref_general_default_date_separator_defaultValue" />
+            android:title="@string/pref_general_default_date_separator_title" />
         <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_general_date_format_defaultValue"
             android:key="@string/pref_general_date_format_key"
-            android:title="@string/pref_general_date_format_title"
-            android:defaultValue="@string/pref_general_date_format_defaultValue" />
+            android:title="@string/pref_general_date_format_title" />
         <CheckBoxPreference
+            android:defaultValue="@bool/pref_general_track_cost_center_defaultValue"
             android:key="@string/pref_general_track_cost_center_key"
-            android:title="@string/pref_general_track_cost_center_title"
-            android:summaryOn="@string/pref_general_track_cost_center_summaryOn"
             android:summaryOff="@string/pref_general_track_cost_center_summaryOff"
-            android:defaultValue="@bool/pref_general_track_cost_center_defaultValue"/>
-	</PreferenceCategory>
+            android:summaryOn="@string/pref_general_track_cost_center_summaryOn"
+            android:title="@string/pref_general_track_cost_center_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_general_enable_crop_defaultValue"
+            android:key="@string/pref_general_enable_crop_key"
+            android:summaryOff="@string/pref_general_enable_crop_summaryOff"
+            android:summaryOn="@string/pref_general_enable_crop_summaryOn"
+            android:title="@string/pref_general_enable_crop_title" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -160,8 +160,7 @@
 
     <!-- ================ Img Menu Options =================== -->
     <string name="menu_receiptimage_retake">Сделать снимок повторно</string>
-    <string name="menu_receiptimage_rotate_ccw">Поворот против часовой стрелки</string>
-    <string name="menu_receiptimage_rotate_cw">Поворот по часовой стрелке</string>
+    <string name="menu_receiptimage_edit">Редактировать снимок</string>
 
     <!-- ===================== Email ====================== -->
     <string name="email_body_subject_5mb_warning">Вложение имеет размер более 5 МБ и может быть не правильно прикреплено: %s</string>
@@ -199,7 +198,8 @@
     <string name="toast_no_storage_permissions">Невозможно импортировать файл без разрешения на чтение</string>
     <string name="toast_reorder_hint">Удерживайте элемент чтобы начать перетаскивание</string>
     <string name="toast_csv_report_distances">Чтобы создать отчет CSV, выберите опцию %s</string>
-    <string name="attachment_error">Не удалось прикрепить этот файл.</string>
+    <string name="toast_attachment_error">Не удалось прикрепить этот файл.</string>
+    <string name="toast_disable_crop_option">Вы можете отключить функцию обрезки изображения в настройках приложения</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s до %2$s</string>
@@ -489,7 +489,7 @@
     <string name="tooltip_import_info_message">Пожалуйста, выберите чек для вашего вложения</string>
     <string name="tooltip_review_privacy">Нажмите, чтобы просмотреть настройки конфиденциальности</string>
     <string name="tooltip_automatic_backups_recovery_hint">Вы ранее настраивали автоматическое резервное копирование? Нажмите здесь, чтобы восстановить</string>
-    <string name="tooltip_first_report_hint">Добро пожаловать! Давайте создадим вашу первую папку отчета. Назовите это после этого месяца, этого года, вашей текущей командировки или чего-либо, что вы пожелаете. Затем нажмите на флажок, чтобы сохранить его и начать добавлять свои первые квитанции!</string>
+    <string name="tooltip_first_report_hint">Добро пожаловать! Давайте создадим вашу первую папку отчета. Назовите его как этот месяц, этот год, ваша текущая командировка или иначе, как вы пожелаете. Затем нажмите на галочку, чтобы сохранить его и начать добавлять свои первые квитанции!</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Добавьте свой первый чек чтобы увидеть графики.</string>

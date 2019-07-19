@@ -40,7 +40,7 @@ public class ActivityFileResultLocatorTest {
     public void onActivityResultCancelled() {
         final TestObserver<ActivityFileResultLocatorResponse> testObserver = locator.getUriStream().test();
 
-        locator.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_CANCELED, null, null);
+        locator.onActivityResult(RequestCodes.NEW_RECEIPT_IMPORT_IMAGE, Activity.RESULT_CANCELED, null, null);
 
         testObserver.assertNoValues()
                 .assertNotComplete()
@@ -52,7 +52,7 @@ public class ActivityFileResultLocatorTest {
     public void onActivityResultWithNullLocation() {
         final TestObserver<ActivityFileResultLocatorResponse> testObserver = locator.getUriStream().test();
 
-        locator.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, null);
+        locator.onActivityResult(RequestCodes.NEW_RECEIPT_IMPORT_IMAGE, Activity.RESULT_OK, intent, null);
 
         testObserver.assertValue(activityFileResultLocatorResponse -> activityFileResultLocatorResponse.getThrowable().isPresent() &&
                 activityFileResultLocatorResponse.getThrowable().get() instanceof FileNotFoundException)
@@ -65,10 +65,10 @@ public class ActivityFileResultLocatorTest {
     public void onActivityResultResponse() {
         final TestObserver<ActivityFileResultLocatorResponse> testObserver = locator.getUriStream().test();
 
-        locator.onActivityResult(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, intent, uri);
+        locator.onActivityResult(RequestCodes.NEW_RECEIPT_IMPORT_IMAGE, Activity.RESULT_OK, intent, uri);
 
         testObserver.assertValue(activityFileResultLocatorResponse -> !activityFileResultLocatorResponse.getThrowable().isPresent() &&
-                activityFileResultLocatorResponse.getRequestCode() == RequestCodes.IMPORT_GALLERY_IMAGE &&
+                activityFileResultLocatorResponse.getRequestCode() == RequestCodes.NEW_RECEIPT_IMPORT_IMAGE &&
                 activityFileResultLocatorResponse.getResultCode() == Activity.RESULT_OK &&
                 activityFileResultLocatorResponse.getUri().equals(uri))
                 .assertNotComplete()

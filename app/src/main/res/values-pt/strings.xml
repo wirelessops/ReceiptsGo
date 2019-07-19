@@ -158,8 +158,7 @@
 
     <!-- ================ Img Menu Options =================== -->
     <string name="menu_receiptimage_retake">Tirar foto novamente</string>
-    <string name="menu_receiptimage_rotate_ccw">Girar no sentido anti-horário</string>
-    <string name="menu_receiptimage_rotate_cw">Girar no sentido horário</string>
+    <string name="menu_receiptimage_edit">Editar foto</string>
 
     <!-- ===================== Email ====================== -->
     <string name="email_body_subject_5mb_warning">O anexo a seguir tem mais de 5 MB de tamanho e não pode ser anexado: %s</string>
@@ -197,7 +196,8 @@
     <string name="toast_no_storage_permissions">Não é possível importar arquivos sem permissões de armazenamento</string>
     <string name="toast_reorder_hint">Pressione prolongadamente o item para iniciar o arrastar</string>
     <string name="toast_csv_report_distances">Para criar um relatório CSV, marque a opção %s</string>
-    <string name="attachment_error">Não é possível anexar este arquivo.</string>
+    <string name="toast_attachment_error">Não é possível anexar este arquivo.</string>
+    <string name="toast_disable_crop_option">Você pode desativar a opção de imagem de recorte nas configurações do aplicativo</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s para %2$s</string>
