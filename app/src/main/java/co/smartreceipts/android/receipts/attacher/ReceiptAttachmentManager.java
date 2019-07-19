@@ -39,7 +39,7 @@ public class ReceiptAttachmentManager {
             final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
-            fragment.startActivityForResult(intent, newReceipt ? RequestCodes.IMPORT_GALLERY_IMAGE : RequestCodes.ATTACH_GALLERY_IMAGE);
+            fragment.startActivityForResult(intent, newReceipt ? RequestCodes.NEW_RECEIPT_IMPORT_IMAGE : RequestCodes.ATTACH_GALLERY_IMAGE);
         } catch (ActivityNotFoundException ex) {
             return false;
         }
@@ -53,7 +53,7 @@ public class ReceiptAttachmentManager {
             final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/pdf");
-            fragment.startActivityForResult(intent, newReceipt ? RequestCodes.IMPORT_GALLERY_PDF : RequestCodes.ATTACH_GALLERY_PDF);
+            fragment.startActivityForResult(intent, newReceipt ? RequestCodes.NEW_RECEIPT_IMPORT_PDF : RequestCodes.ATTACH_GALLERY_PDF);
         } catch (ActivityNotFoundException ex) {
             return false;
         }

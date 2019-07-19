@@ -22,6 +22,7 @@ public final class UserPreference<T> {
         public static final UserPreference<String> DateSeparator = new UserPreference<>(String.class, R.string.pref_general_default_date_separator_key, R.string.pref_general_default_date_separator_defaultValue);
         public static final UserPreference<String> DateFormat = new UserPreference<>(String.class, R.string.pref_general_date_format_key, R.string.pref_general_date_format_defaultValue);
         public static final UserPreference<Boolean> IncludeCostCenter = new UserPreference<>(Boolean.class, R.string.pref_general_track_cost_center_key, R.bool.pref_general_track_cost_center_defaultValue);
+        public static final UserPreference<Boolean> EnableCrop = new UserPreference<>(Boolean.class, R.string.pref_general_enable_crop_key, R.bool.pref_general_enable_crop_defaultValue);
     }
 
     public static final class Receipts {

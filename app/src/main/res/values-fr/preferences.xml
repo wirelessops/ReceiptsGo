@@ -29,6 +29,10 @@
     <string name="pref_general_track_cost_center_summaryOn">Inclure le centre de coûts pour les rapports</string>
     <string name="pref_general_track_cost_center_summaryOff">Ne pas inclure le centre de coûts pour les rapports</string>
 
+    <string name="pref_general_enable_crop_title">Activer l\'écran de recadrage</string>
+    <string name="pref_general_enable_crop_summaryOn">Vous verrez l\'écran de recadrage après avoir pris une photo</string>
+    <string name="pref_general_enable_crop_summaryOff">Vous ne verrez pas l\'écran de recadrage après avoir pris une photo</string>
+
     <!-- ============== Preference Receipt ================= -->
 
     <string name="pref_receipt_customize_categories_title">Personnaliser les catégories de reçus</string>

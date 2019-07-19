@@ -4,6 +4,7 @@ import android.os.Parcelable
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.sync.model.SyncState
 import co.smartreceipts.android.sync.model.Syncable
+import co.smartreceipts.android.utils.StrictModeConfiguration
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 import java.sql.Date
@@ -82,7 +83,7 @@ class Receipt constructor(
     val extraEditText3: String?,
     override val syncState: SyncState,
     override val customOrderId: Long
-    ) : Keyed, Parcelable, Priceable, Draggable<Receipt>, Syncable {
+) : Keyed, Parcelable, Priceable, Draggable<Receipt>, Syncable {
 
     /**
      * The [Date] in which the [displayableDate] was set
@@ -108,7 +109,7 @@ class Receipt constructor(
      * was updated between two "like" receipts
      */
     val fileLastModifiedTime: Long
-        get() = file?.lastModified() ?: -1
+        get() = StrictModeConfiguration.permitDiskReads { file?.lastModified() } ?: -1
 
     /**
      * The absolute path of this Receipt's file from [.getFile].
@@ -225,7 +226,8 @@ class Receipt constructor(
     }
 
     companion object {
-        @JvmField val PARCEL_KEY: String = Receipt::class.java.name
+        @JvmField
+        val PARCEL_KEY: String = Receipt::class.java.name
     }
 
 }

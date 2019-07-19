@@ -1,101 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"
-             android:id="@+id/toolbar"/>
-    
-	<co.smartreceipts.android.widget.ui.PinchToZoomImageView
-		android:id="@+id/receiptimagefragment_imageview"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:scaleType="fitCenter"
-		android:layout_below="@+id/toolbar" />
-	
-	<LinearLayout
-	    android:id="@+id/footer"
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentBottom="true"
-    	android:orientation="horizontal"
-    	android:baselineAligned="false"
-    	android:background="@color/transparent_overlay"
-    	android:visibility="gone"
-		tools:visibility="visible">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
-		<LinearLayout
-		    android:id="@+id/rotate_ccw"
-		    android:layout_height="wrap_content"
-		    android:layout_width="0dp"
-		    android:orientation="vertical"
-		    android:layout_weight="1" 
-		    android:gravity="center"
-		    android:background="@drawable/default_selector" >
-		    <ImageView
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:src="@drawable/ic_rotate_left_24dp"
-			    android:contentDescription="@string/menu_receiptimage_rotate_ccw" />
-		    <TextView
-		        android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-		        android:textColor="@android:color/white"
-				android:textSize="14sp"
-		        android:textStyle="italic"
-		        android:text="@string/menu_receiptimage_rotate_ccw" />
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:id="@+id/retake_photo"
-		    android:layout_height="wrap_content"
-		    android:layout_width="0dp"
-		    android:orientation="vertical"
-		    android:layout_weight="1"
-		    android:gravity="center"
-		    android:background="@drawable/default_selector" >
-		    <ImageView
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:src="@drawable/ic_photo_camera_white_24dp"
-			    android:contentDescription="@string/menu_receiptimage_retake" />
-		    <TextView
-		        android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-		        android:textColor="@android:color/white"
-				android:textSize="14sp"
-		        android:textStyle="italic"
-		        android:text="@string/menu_receiptimage_retake" />
-		</LinearLayout>
-		
-		<LinearLayout
-		    android:id="@+id/rotate_cw"
-		    android:layout_height="wrap_content"
-		    android:layout_width="0dp"
-		    android:orientation="vertical"
-		    android:layout_weight="1"
-		    android:gravity="center"
-		    android:background="@drawable/default_selector" >
-		    <ImageView
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:src="@drawable/ic_rotate_right_24dp"
-			    android:contentDescription="@string/menu_receiptimage_rotate_cw" />
-		    <TextView
-		        android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-		        android:textColor="@android:color/white"
-				android:textSize="14sp"
-		        android:textStyle="italic"
-		        android:text="@string/menu_receiptimage_rotate_cw" />
-		</LinearLayout>
+    <co.smartreceipts.android.widget.ui.PinchToZoomImageView
+        android:id="@+id/receipt_image_imageview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/button_retake_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:layout_editor_absoluteX="0dp" />
 
-	</LinearLayout>
-	<ProgressBar
-        android:id="@+id/progress"
+    <TextView
+        android:id="@+id/button_retake_photo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_selector"
+        android:drawableTop="@drawable/ic_photo_camera_white_24dp"
+        android:gravity="center"
+        android:padding="@dimen/padding_normal"
+        android:text="@string/menu_receiptimage_retake"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_subhead"
+        android:textStyle="italic"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_edit_photo"
+        app:layout_constraintHeight_min="wrap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_footer"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/button_edit_photo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/default_selector"
+        android:drawableTop="@drawable/ic_crop_rotate_white_24dp"
+        android:gravity="center"
+        android:padding="@dimen/padding_normal"
+        android:text="@string/menu_receiptimage_edit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_subhead"
+        android:textStyle="italic"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="wrap"
+        app:layout_constraintStart_toEndOf="@id/button_retake_photo"
+        app:layout_constraintTop_toBottomOf="@id/barrier_footer"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-</RelativeLayout>
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="button_edit_photo, button_retake_photo" />
+
+    <ProgressBar
+        android:id="@+id/receipt_image_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

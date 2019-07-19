@@ -2,6 +2,7 @@ package co.smartreceipts.android.utils
 
 import android.os.Build
 import android.os.StrictMode
+import co.smartreceipts.android.BuildConfig
 import co.smartreceipts.android.utils.log.Logger
 import java.util.concurrent.Executors
 
@@ -81,5 +82,22 @@ object StrictModeConfiguration {
         // vmPolicyBuilder.detectUntaggedSockets() Note: We exclude this one as many of our 3p libraries fail it
         vmPolicyBuilder.penaltyLog()
         StrictMode.setVmPolicy(vmPolicyBuilder.build())
+    }
+
+    @JvmStatic
+    fun <T> permitDiskReads(func: () -> T?): T? {
+        return if (BuildConfig.DEBUG) {
+            val oldThreadPolicy = StrictMode.getThreadPolicy()
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder(oldThreadPolicy)
+                    .permitDiskReads().build()
+            )
+            val anyValue = func()
+            StrictMode.setThreadPolicy(oldThreadPolicy)
+
+            anyValue
+        } else {
+            func()
+        }
     }
 }

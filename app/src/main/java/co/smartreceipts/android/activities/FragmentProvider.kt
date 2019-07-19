@@ -23,8 +23,7 @@ import java.io.File
 import java.util.*
 import javax.inject.Inject
 
-class FragmentProvider @Inject
-constructor() {
+class FragmentProvider @Inject constructor() {
 
     /**
      * Creates a [TripFragment] instance

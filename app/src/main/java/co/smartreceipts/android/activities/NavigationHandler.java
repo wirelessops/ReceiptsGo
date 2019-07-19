@@ -1,20 +1,26 @@
 package co.smartreceipts.android.activities;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
+
 import androidx.annotation.AnimRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -291,6 +297,23 @@ public class NavigationHandler<T extends FragmentActivity> {
 
     public boolean shouldFinishOnBackNavigation() {
         return fragmentManager.getBackStackEntryCount() == 1;
+    }
+
+
+    public void navigateToCropActivity(@NonNull Fragment fragment, @NonNull Uri imageUri, int requestCode) {
+        final Context context = fragment.requireContext();
+        final UCrop.Options options = new UCrop.Options();
+
+        options.setFreeStyleCropEnabled(true);
+        options.setCompressionQuality(100);
+        options.setStatusBarColor(ContextCompat.getColor(context, R.color.smart_receipts_colorPrimaryDark));
+        options.setToolbarColor(ContextCompat.getColor(context, R.color.smart_receipts_colorPrimary));
+        options.setToolbarWidgetColor(Color.WHITE);
+
+        UCrop.of(imageUri, imageUri)
+                .withOptions(options)
+                .start(context, fragment, requestCode);
+
     }
 
     private void replaceFragment(@NonNull Fragment fragment, @IdRes int layoutResId) {

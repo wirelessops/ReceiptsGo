@@ -76,7 +76,7 @@ public class ActivityFileResultImporterTest {
         when(processor.process(uri)).thenReturn(Single.<File>error(exception));
 
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
-        fileResultImporter.importFile(RequestCodes.IMPORT_GALLERY_IMAGE, Activity.RESULT_OK, uri, trip);
+        fileResultImporter.importFile(RequestCodes.NEW_RECEIPT_IMPORT_IMAGE, Activity.RESULT_OK, uri, trip);
 
         testObserver.assertValue(ActivityFileResultImporterResponse.importerError(exception))
                 .assertNotComplete()
@@ -87,7 +87,7 @@ public class ActivityFileResultImporterTest {
     @Test
     public void importFileWithValidUri() {
         final File file = new File("");
-        final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
+        final int requestCode = RequestCodes.NEW_RECEIPT_IMPORT_IMAGE;
         final int responseCode = Activity.RESULT_OK;
         when(processor.process(uri)).thenReturn(Single.just(file));
 
@@ -103,7 +103,7 @@ public class ActivityFileResultImporterTest {
     @Test
     public void importFileWithValidSaveLocation() {
         final File file = new File("");
-        final int requestCode = RequestCodes.IMPORT_GALLERY_IMAGE;
+        final int requestCode = RequestCodes.NEW_RECEIPT_IMPORT_IMAGE;
         final int responseCode = Activity.RESULT_OK;
         when(processor.process(uri)).thenReturn(Single.just(file));
 

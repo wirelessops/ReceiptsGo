@@ -159,8 +159,7 @@
 
     <!-- ================ Img Menu Options =================== -->
     <string name="menu_receiptimage_retake">Retake Photo</string>
-    <string name="menu_receiptimage_rotate_ccw">Rotate CCW</string>
-    <string name="menu_receiptimage_rotate_cw">Rotate CW</string>
+    <string name="menu_receiptimage_edit">Edit Photo</string>
 
     <!-- ===================== Email ====================== -->
     <string name="email_body_subject_5mb_warning">The following attachment is over 5MB in size and may not properly attach: %s</string>
@@ -198,7 +197,8 @@
     <string name="toast_import_complete">Successfully imported all files. Please re-launch the app.</string>
     <string name="toast_reorder_hint"><![CDATA[Long press item to initiate dragging]]></string>
     <string name="toast_csv_report_distances">To create CSV report please check option %s</string>
-    <string name="attachment_error">Unable to attach this file.</string>
+    <string name="toast_attachment_error">Unable to attach this file.</string>
+    <string name="toast_disable_crop_option">You can disable crop image option in the app settings</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s to %2$s</string>

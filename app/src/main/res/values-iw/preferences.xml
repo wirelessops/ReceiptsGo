@@ -22,6 +22,10 @@
     <string name="pref_general_track_cost_center_summaryOn">הכלל מרכז עלויות בדיווחים</string>
     <string name="pref_general_track_cost_center_summaryOff">אל תכליל מרכז עלויות בדיווחים</string>
 
+    <string name="pref_general_enable_crop_title">הפעל מסך חיתוך תמונה</string>
+    <string name="pref_general_enable_crop_summaryOn">תראה את מסך החיתוך לאחר צילום תמונה</string>
+    <string name="pref_general_enable_crop_summaryOff">לא תראה את מסך החיתוך לאחר צילום תמונה</string>
+
     <!-- ============== Preference Receipt ================= -->
     <string name="pref_receipt_customize_categories_title">התאמה אישית לקטגוריות</string>
     <string name="pref_receipt_customize_categories_summary">לחץ כאן לשינוי/הוספת קטגוריה</string>
