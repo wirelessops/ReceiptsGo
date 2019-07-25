@@ -3,6 +3,7 @@ package co.smartreceipts.android.tooltip
 import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationTooltipController
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
+import co.smartreceipts.android.tooltip.image.ImageCroppingTooltipController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
@@ -25,7 +26,8 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
                                                     private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>,
                                                     private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>,
                                                     private val firstReceiptUseTaxesQuestionTooltipProvider: Provider<FirstReceiptUseTaxesQuestionTooltipController>,
-                                                    private val firstReceiptUsePaymentMethodsQuestionTooltipProvider: Provider<FirstReceiptUsePaymentMethodsQuestionTooltipController>) {
+                                                    private val firstReceiptUsePaymentMethodsQuestionTooltipProvider: Provider<FirstReceiptUsePaymentMethodsQuestionTooltipController>,
+                                                    private val croppingTooltipProvider: Provider<ImageCroppingTooltipController>) {
 
     /**
      * Fetches the appropriate [TooltipController] for a given [TooltipType]
@@ -42,6 +44,7 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
             TooltipType.OcrInformation -> ocrInformationTooltipProvider.get()
             TooltipType.FirstReceiptUseTaxesQuestion -> firstReceiptUseTaxesQuestionTooltipProvider.get()
             TooltipType.FirstReceiptUsePaymentMethodsQuestion -> firstReceiptUsePaymentMethodsQuestionTooltipProvider.get()
+            TooltipType.ImageCropping -> croppingTooltipProvider.get()
         }
     }
 }

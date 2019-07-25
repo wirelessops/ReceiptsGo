@@ -21,6 +21,7 @@ enum class TooltipType(val displayStyle: TooltipDisplayStyle,
     FirstReceiptUsePaymentMethodsQuestion(TooltipDisplayStyle.Question, 69, false, false, false, false),
     RateThisApp(TooltipDisplayStyle.Question, 50, false, false, false, false),
     PrivacyPolicy(TooltipDisplayStyle.Informational, 10, false, true, false, false),
-    OcrInformation(TooltipDisplayStyle.Informational, 5, false, true, false, false)
+    OcrInformation(TooltipDisplayStyle.Informational, 5, false, true, false, false),
+    ImageCropping(TooltipDisplayStyle.Question, 101, false, false, false, true)
 
 }

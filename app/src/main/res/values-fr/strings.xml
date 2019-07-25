@@ -197,7 +197,6 @@
     <string name="toast_reorder_hint">Appui long sur l\'élément pour lancer le glisser</string>
     <string name="toast_csv_report_distances">Pour créer un rapport CSV, veuillez cocher l\'option %s</string>
     <string name="toast_attachment_error">Impossible de joindre ce fichier.</string>
-    <string name="toast_disable_crop_option">Vous pouvez désactiver l\'option de rognage d\'image dans les paramètres de l\'application</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s à %2$s</string>

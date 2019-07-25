@@ -26,6 +26,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTab
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
+import co.smartreceipts.android.tooltip.image.data.ImageCroppingPreferenceStorage
 import co.smartreceipts.android.utils.IntentUtils
 import co.smartreceipts.android.utils.log.Logger
 import com.squareup.picasso.Callback
@@ -74,6 +75,9 @@ class ReceiptImageFragment : WBFragment() {
     lateinit var activityFileResultImporter: ActivityFileResultImporter
 
     @Inject
+    lateinit var imageCroppingPreferenceStorage: ImageCroppingPreferenceStorage
+
+    @Inject
     lateinit var picasso: Lazy<Picasso>
 
     private lateinit var receipt: Receipt
@@ -104,6 +108,7 @@ class ReceiptImageFragment : WBFragment() {
 
         rootView.button_edit_photo.setOnClickListener { view ->
             analytics.record(Events.Receipts.ReceiptImageViewEditPhoto)
+            imageCroppingPreferenceStorage.setCroppingScreenWasShown(true)
             navigationHandler.navigateToCropActivity(this, Uri.fromFile(receipt.file), RequestCodes.EDIT_IMAGE_CROP)
         }
 

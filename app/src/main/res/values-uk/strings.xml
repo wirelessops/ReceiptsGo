@@ -199,7 +199,6 @@
     <string name="toast_reorder_hint">Утримуйте елемент, щоб почати перетягування</string>
     <string name="toast_csv_report_distances">Щоб створити звіт у форматі CSV, будь ласка, поставте галочку %s</string>
     <string name="toast_attachment_error">Не вдається прикріпити цей файл.</string>
-    <string name="toast_disable_crop_option">Ви можете відключити опцію кадрування зображення в налаштуваннях програми</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s до %2$s</string>

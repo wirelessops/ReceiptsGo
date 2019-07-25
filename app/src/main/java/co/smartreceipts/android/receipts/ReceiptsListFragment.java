@@ -78,6 +78,7 @@ import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
+import co.smartreceipts.android.tooltip.image.data.ImageCroppingPreferenceStorage;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
@@ -90,7 +91,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import wb.android.flex.Flex;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTableEventsListener, ReceiptCreateActionView,
@@ -159,6 +159,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     @Inject
     Picasso picasso;
+
+    @Inject
+    ImageCroppingPreferenceStorage imageCroppingPreferenceStorage;
 
     @BindView(R.id.progress)
     ProgressBar loadingProgress;
@@ -479,9 +482,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         if (RequestCodes.CROP_REQUESTS.contains(requestCode)) { // result from Crop Activity
             if (resultCode != UCrop.RESULT_ERROR) {
 
-                if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(requireContext(), R.string.toast_disable_crop_option, Toast.LENGTH_LONG).show();
-                }
+                imageCroppingPreferenceStorage.setCroppingScreenWasShown(true);
 
                 switch (requestCode) {
                     case RequestCodes.NEW_RECEIPT_CAMERA_IMAGE_CROP:

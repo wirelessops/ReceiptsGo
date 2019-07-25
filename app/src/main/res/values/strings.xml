@@ -198,7 +198,6 @@
     <string name="toast_reorder_hint"><![CDATA[Long press item to initiate dragging]]></string>
     <string name="toast_csv_report_distances">To create CSV report please check option %s</string>
     <string name="toast_attachment_error">Unable to attach this file.</string>
-    <string name="toast_disable_crop_option">You can disable crop image option in the app settings</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s to %2$s</string>
