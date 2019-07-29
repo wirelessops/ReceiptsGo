@@ -1,6 +1,7 @@
 language: android
 jdk: oraclejdk8
 sudo: required # See https://github.com/travis-ci/travis-ci/issues/5582
+dist: xenial
 
 before_cache:
   # Do not cache a few Gradle files/directories (see https://docs.travis-ci.com/user/languages/java/#Caching)
