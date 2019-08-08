@@ -200,7 +200,6 @@
     <string name="toast_reorder_hint"><![CDATA[לחץ לחיצה ארוכה על הפריט על מנת להתחיל גרירה]]></string>
     <string name="toast_csv_report_distances">%s :על מנת ליצור דוח אקסל אנא לחץ על</string>
     <string name="toast_attachment_error">Unable to attach this file.</string>
-    <string name="toast_disable_crop_option">ניתן להשבית אפשרות חיתוך תמונה בהגדרות האפליקציה</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%2$s %1$s אל</string>

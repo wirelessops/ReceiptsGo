@@ -197,7 +197,6 @@
     <string name="toast_reorder_hint">Lange drücken, um das Ziehen zu starten</string>
     <string name="toast_csv_report_distances">Um einen CSV-Bericht zu erstellen, aktivieren Sie die Option %s</string>
     <string name="toast_attachment_error">Diese Datei kann nicht angehängt werden.</string>
-    <string name="toast_disable_crop_option">Sie können die Option zum Zuschneiden von Bildern in den App-Einstellungen deaktivieren</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s bis %2$s</string>
