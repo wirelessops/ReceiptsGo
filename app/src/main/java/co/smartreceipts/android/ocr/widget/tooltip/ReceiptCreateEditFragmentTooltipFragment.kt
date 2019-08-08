@@ -2,13 +2,10 @@ package co.smartreceipts.android.ocr.widget.tooltip
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import javax.inject.Inject
-
+import androidx.fragment.app.Fragment
 import co.smartreceipts.android.tooltip.TooltipPresenter
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
@@ -16,6 +13,7 @@ import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.widget.tooltip.Tooltip
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
+import javax.inject.Inject
 
 /**
  * Acts as a dedicated fragment for showing a tooltip when editing/creating a receipt.
@@ -48,7 +46,8 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
     }
 
     override fun getSupportedTooltips(): List<TooltipType> {
-        return listOf(TooltipType.FirstReceiptUseTaxesQuestion, TooltipType.FirstReceiptUsePaymentMethodsQuestion, TooltipType.OcrInformation)
+        return listOf(TooltipType.FirstReceiptUseTaxesQuestion, TooltipType.FirstReceiptUsePaymentMethodsQuestion, TooltipType.OcrInformation,
+            TooltipType.ImageCropping)
     }
 
     override fun display(tooltip: TooltipMetadata) {

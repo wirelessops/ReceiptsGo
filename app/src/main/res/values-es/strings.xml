@@ -197,7 +197,6 @@
     <string name="toast_reorder_hint">Mantenga pulsado el elemento para iniciar el arrastre</string>
     <string name="toast_csv_report_distances">Para crear un informe CSV, compruebe la opción %s</string>
     <string name="toast_attachment_error">No se puede adjuntar este archivo.</string>
-    <string name="toast_disable_crop_option">Puede desactivar la opción de imagen de recorte en la configuración de la aplicación</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s hasta %2$s</string>
