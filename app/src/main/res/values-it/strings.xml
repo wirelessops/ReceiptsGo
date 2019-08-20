@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =================== App Details ===================== -->
+    <string name="sr_app_name">Smart Receipts</string>
+    <string name="sr_app_name_plus">Smart Receipts Plus</string>
+
+    <!-- ================ Main Menu Options ================== -->
+    <string name="menu_main_settings">Configurazione</string>
+    <string name="menu_main_categories">Categorie</string>
+    <string name="menu_main_csv">Personalizza Output CSV</string>
+    <string name="menu_main_pdf">Personalizza Output PDF</string>
+    <string name="menu_main_ocr_configuration">Scansione automatica (OCR)</string>
+    <string name="menu_main_export">Backup</string>
+    <string name="menu_main_usage_guide">Aiuto</string>
+    <string name="menu_main_my_account">Il mio acccount</string>
+
+    <!-- ================ General Strings ================== -->
+    <string name="add">Aggiungi</string>
+    <string name="reorder">Riordina</string>
+    <string name="column_item">Colonna %s</string>
+    <string name="copy">Copia</string>
+    <string name="daily_total">Totale giornaliero: %s</string>
+    <string name="day">%s Giorno</string>
+    <string name="days">%s Giorni</string>
+    <string name="delete">Elimina</string>
+    <string name="delete_item">Elimina %s?</string>
+    <string name="delete_sync_information">Anche tutti i dati remoti sincronizzati per questo oggetto saranno cancellati.</string>
+    <string name="distance">Distanza</string>
+    <string name="distance_total_item">Dist. Totale: %s</string>
+    <string name="edit">Modifica</string>
+    <string name="export">Esporta</string>
+    <string name="feedback">%s - Feedback</string>
+    <string name="image">Immagine</string>
+    <string name="import_string">Importa</string>
+    <string name="import_string_item">Importa %s</string>
+    <string name="item_code">Codice</string>
+    <string name="item_name">Nome</string>
+    <string name="move">Sposta</string>
+    <string name="move_copy_item">Sposta/Copia %s?</string>
+    <string name="next_id">Prossimo ID: %d</string>
+    <string name="no">No</string>
+    <string name="pdf">PDF</string>
+    <string name="report">Report</string>
+    <string name="report_attached">1 report allegato</string>
+    <string name="reports_attached">%s reports allegati</string>
+    <string name="save">Salva</string>
+    <string name="send_email">Invia File&#8230;</string>
+    <string name="support">%s - Supporto</string>
+    <string name="total">Totale</string>
+    <string name="undefined">Indefinito</string>
+    <string name="update">Aggiorna</string>
+    <string name="yes">Si</string>
+    <string name="yes_as_pdf">Si - Come PDF</string>
+    <string name="share">Condividi</string>
+
+    <!-- =============== Subscriptions ================ -->
+    <string name="pro_subscription">Smart Receipts Plus</string>
+
+    <!-- ============= Subscription Info ============== -->
+    <string name="subscriptions_label">La tua Subscriptions:</string>
+    <string name="subscription_expiration">Data di termine: %s</string>
+
+    <!-- ================ No More Ads ================= -->
+    <string name="missing_ad_suggest_removal_upsell">Stanco delle pubblicità? Tocca per avviare un periodo di prova privo di annunci</string>
+
+    <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">Grafici</string>
+    <string name="report_info_receipts">Ricevute</string>
+    <string name="report_info_distance">Distanza</string>
+    <string name="report_info_generate">Genera</string>
+
+    <!-- ============= Report Generation ============== -->
+    <string name="report_header_duration">Da: %1$s A: %2$s</string>
+    <string name="report_header_receipts_total">Ricevute totali: %s</string>
+    <string name="report_header_receipts_total_tax">Totale Imposte: %s</string>
+    <string name="report_header_receipts_total_no_tax">Totale ricevute (Senza Imposte): %s</string>
+    <string name="report_header_receipts_total_with_tax">Totale ricevute (Con Imposte): %s</string>
+    <string name="report_header_distance_total">Totale distanza: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Totale generale (Rimborsabile): %s</string>
+    <string name="report_header_grand_total">Totale generale: %s</string>
+    <string name="report_header_cost_center">Centro di costo: %s</string>
+    <string name="report_header_comment">Commenta Report: %s</string>
+    <string name="report_pdf_generation_error">Si è verificato un errore durante la genenrazioen del report</string>
+    <string name="report_pdf_error_too_many_columns_title">Troppe colonne</string>
+    <string name="report_pdf_error_too_many_columns_message">Spazio insufficiente per le colonne nel report. Si prega di limitare il numero di colonne nelle impostazioni.</string>
+    <string name="report_pdf_error_too_many_columns_message_landscape">Spazio insufficiente per le colonne nel report. Si prega di limitare il numero di colonne nelle impostazioni o utilizzare il formato orizzontale.</string>
+    <string name="report_pdf_error_go_to_settings">Vai alle Impostazioni</string>
+
+    <!-- ===================== ocr ======================== -->
+    <string name="ocr_informational_tooltip_configure_text">[Opzionale] Configurare la scansione automatica? Toccare qui.</string>
+    <plurals name="ocr_informational_tooltip_limited_scans_text">
+        <item quantity="one">%d Scansione rimanente. Toccare per altre.</item>
+        <item quantity="other">%d Scansioni rimanenti. Toccare per altre.</item>
+    </plurals>
+    <string name="ocr_status_title">Esegui Scansione (OCR):</string>
+    <string name="ocr_status_message_uploading_image">Invio ricevuta&#8230;</string>
+    <string name="ocr_status_message_performing_scan">Analisi dei metadati della  Ricevuta&#8230;</string>
+    <string name="ocr_status_message_fetching_results">Raccolta risultati&#8230;</string>
+    <string name="ocr_configuration_scans_remaining">Scansioni OCR rimanenti: %d</string>
+    <string name="ocr_configuration_my_account">%s</string>
+    <string name="ocr_configuration_welcome">Scansioni automatiche (OCR):</string>
+    <string name="ocr_configuration_information">Smart Receipts è integrato con Taggun per fornire servizi di scansione automatica (es. OCR), tramite i quali è possibile estrarre i metadati dalle ricevute come prezzi, imposte,date e denominazione del venditore dalle vostre immagini.</string>
+    <string name="ocr_configuration_information_line2">Utiliziamo una combinazione di Google Vision e Machine Learning per fornire velocemente un risultato (spesso in 5 secondi o meno), che diverrà maggiormente accurato con il tempo. A causa del fatto che questi servizi sono a consumo, applicheremo un costo per ciascuna scansione di ricevuta.</string>
+    <string name="ocr_is_enabled">Attiva scansione automatica (OCR)?</string>
+    <string name="ocr_save_scans_to_improve_results">Autorizzi il salvataggio delle immagini per aumentare l\'accuratezza?</string>
+    <string name="ocr_configuration_available_purchases">Acquisti disponibili - Tocca per acquistare:</string>
+    <string name="ocr_configuration_information_line3">Per provare la funzione OCR, tutti i nuovi utenti hanno un bonus di 2 scansioni gratuit! Ti preghiamo di ricordare che la funzione OCR è opzionale e può essere disabilitata in qualsiasi momento.</string>
+
+    <!-- ================ Categories ================== -->
+    <string name="category_null">&lt;Categoria&gt;</string>
+    <string name="category_null_code">NUL</string>
+    <string name="category_airfare">Biglietto aereo</string>
+    <string name="category_airfare_code">AIRP</string>
+    <string name="category_breakfast">Colazione</string>
+    <string name="category_breakfast_code">BRFT</string>
+    <string name="category_dinner">Cena</string>
+    <string name="category_dinner_code">DINN</string>
+    <string name="category_entertainment">Intrattenimento</string>
+    <string name="category_entertainment_code">ENT</string>
+    <string name="category_gasoline">Carburante</string>
+    <string name="category_gasoline_code">GAS</string>
+    <string name="category_gift">Omaggio</string>
+    <string name="category_gift_code">GIFT</string>
+    <string name="category_hotel">Hotel</string>
+    <string name="category_hotel_code">HTL</string>
+    <string name="category_laundry">Lavanderia</string>
+    <string name="category_laundry_code">LAUN</string>
+    <string name="category_lunch">Pranzo</string>
+    <string name="category_lunch_code">LNCH</string>
+    <string name="category_other">Altro</string>
+    <string name="category_other_code">MISC</string>
+    <string name="category_parking_tolls">Parcheggio</string>
+    <string name="category_parking_tolls_code">PARK</string>
+    <string name="category_postage_shipping">Spedizione postale</string>
+    <string name="category_postage_shipping_code">POST</string>
+    <string name="category_car_rental">Autonoleggio</string>
+    <string name="category_car_rental_code">RCAR</string>
+    <string name="category_taxi_bus">Taxi/Bus</string>
+    <string name="category_taxi_bus_code">TAXI</string>
+    <string name="category_telephone_fax">Telefono/Fax</string>
+    <string name="category_telephone_fax_code">TELE</string>
+    <string name="category_tip">Mancia</string>
+    <string name="category_tip_code">TIP</string>
+    <string name="category_train">Treno</string>
+    <string name="category_train_code">TRN</string>
+    <string name="category_books_periodicals">Libri/Periodici</string>
+    <string name="category_books_periodicals_code">ZBKP</string>
+    <string name="category_cell_phone">Cellulare</string>
+    <string name="category_cell_phone_code">ZCEL</string>
+    <string name="category_dues_subscriptions">Quota/Abbonamenti</string>
+    <string name="category_dues_subscriptions_code">ZDUE</string>
+    <string name="category_meals_justified">Pasti (Giustificati)</string>
+    <string name="category_meals_justified_code">ZMEO</string>
+    <string name="category_stationery_stations">Stazioni</string>
+    <string name="category_stationery_stations_code">ZSTS</string>
+    <string name="category_training_fees">Formazione</string>
+    <string name="category_training_fees_code">ZTRN</string>
+
+    <!-- ================ Img Menu Options =================== -->
+    <string name="menu_receiptimage_retake">Ripeti foto</string>
+    <string name="menu_receiptimage_edit">Modifica foto</string>
+
+    <!-- ===================== Email ====================== -->
+    <string name="email_body_subject_5mb_warning">L\'allegato è superiore ai 5MB e potrebbe non essere trasmesso correttamente: %s</string>
+
+    <!-- ============== Progress Messages ================= -->
+    <string name="progress_import">Importazione dei files&#8230;</string>
+    <string name="progress_building_reports">Elaborazione dei Report…</string>
+
+    <!-- ============== Start Error Messages ================= -->
+    <string name="SD_WARNING">Attenzione: La SD card non è disponibile o è in uso nel tuo computer.Alcune immagini potrebbero essere inacessibili. Viene selezionato lo storage interno&#8230;</string>
+    <string name="database_error">Errore: Il salvataggio della ricevuta è fallito</string>
+    <string name="database_get_error">Errore: Il recupero dei dati è fallito.Provare a rilanciare la app.</string>
+    <string name="IMG_OPEN_ERROR">Errore: L\'immagine non è al momento disponibile o è corrotta. La SD card non è accessibile o è in uso da parte del computer. Se non è così, cliccare il pulsante per eseguire nuovamente la foto.</string>
+    <string name="IMG_SAVE_ERROR">Errore: Il salvataggio della foto non è andato a buon fine corrrettamente</string>
+    <string name="FILE_SAVE_ERROR">errore: Il file non è stato salvato correttamente</string>
+    <string name="ILLEGAL_CHAR_ERROR">Errore: Il Nome contiene caratteri non permessi</string>
+    <string name="SPACE_ERROR">Errore: Il nome non può iniziare con uno spazio</string>
+    <string name="CALENDAR_TAB_ERROR">Errore: Prego utilizzare il box data per inserire la data</string>
+    <string name="DURATION_ERROR">Errore: La data iniziale deve essere precedente alla data finale</string>
+    <string name="EXPORT_ERROR">Errore: L\'esportazione dei dati è fallita.</string>
+    <string name="IMPORT_ERROR">Errore: Il file non è stato riconosciuto come importabile</string>
+    <string name="MOVE_ERROR">Errore: Lo spostamento della ricevuta è fallito</string>
+    <string name="COPY_ERROR">Errore: La copia della ricevuta è fallita</string>
+    <string name="toast_warning_reset_exchange_rate">Attenzione: Cambiando la valuta si reinizializzeranno tutti i valori di cambio</string>
+    <string name="toast_error_trip_exists">Errore: Un Reposrt di spese con questo nome esiste già</string>
+
+    <!-- ============== Toast Messages ================= -->
+    <string name="toast_receipt_copy">La ricevuta è stata copiata con successo</string>
+    <string name="toast_receipt_move">La ricevuta è stata spostata con successo</string>
+    <string name="toast_receipt_image_added">Una nuova immagine è stata aggiunta a  %s con successo</string>
+    <string name="toast_receipt_image_replaced">L\'immagine  %s è stata sostituita con successo</string>
+    <string name="toast_receipt_pdf_added">Un nuovo pdf è stato aggiunto con successo a %s</string>
+    <string name="toast_receipt_pdf_replaced">Un nuovo PDF è stato sostituito con sucesso a %s</string>
+    <string name="toast_no_storage_permissions">Non è possibile importare file senza i permessi di uso dello storage</string>
+    <string name="toast_import_complete">Tutti i files sono stati importati con successo. Prego riavviare la app.</string>
+    <string name="toast_reorder_hint"><![CDATA[Mantenere premuto a lungo l\'oggetto per iniziarne il trascinamento]]></string>
+    <string name="toast_csv_report_distances">Prego selezionare l\'opzione  %s per creare il reoprt CSV</string>
+    <string name="toast_attachment_error">Impossibile allegare questo file.</string>
+    <string name="toast_disable_crop_option">Potete disabilitare il crop dell\'immagine nelle preferenze della app</string>
+
+    <!-- ================== Trip Adapter ===================== -->
+    <string name="trip_adapter_list_item_to">%1$s a %2$s</string>
+    <string name="trip_no_data">Non appare alcun report definito al momento. Cliccare il "+" (più) per iniziare.</string>
+
+    <!-- ================= Receipt Adapter =================== -->
+    <string name="receipt_no_data">Non c\'è alcuna ricevuta definita al momento. Toccare il pulsante "+" per iniziare&#8230;</string>
+
+    <!-- ================= Distance Adapter ================== -->
+    <string name="distance_no_data">Non c\'è ancora alcuna distanza definita. Toccare il pulsante "+" per iniziare.</string>
+    <string name="distance_insert_failed">Errore: Non è stato possibile creare la distanza.Prego accertarsi che il vostro telefono non sia connesso al PC.</string>
+    <string name="distance_update_failed">Errore Non è stato possibile modificare la distanza.Prego accertarsi che il vostro telefono non sia connesso al PC.</string>
+    <string name="distance_delete_failed">Errore Non è stato possibile eliminare la distanza.Prego accertarsi che il vostro telefono non sia connesso al PC.</string>
+
+    <!-- ================= Trip Actions =================== -->
+
+    <!-- ================= Receipt Actions =================== -->
+    <string name="receipt_action_camera">Immagine</string>
+    <string name="receipt_action_text">Solo testo</string>
+    <string name="receipt_action_import">Importazione</string>
+
+    <!-- ==================== Cards ========================= -->
+
+    <!-- ================ DIALOG (GENERAL) =================== -->
+    <string name="DIALOG_CANCEL">Annulla</string>
+
+    <!-- ================= DIALOG_WELCOME ==================== -->
+
+    <!-- ================== DIALOG_EMAIL ===================== -->
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Report completo PDF</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">Report PDF - senza tabella</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_CSV">File CSV</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - Files delle Ricevute con metadati</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Files delle Ricevute</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Prego selezionare almeno un Report</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">NOn ci sono Ricevute in questo Report</string>
+    <string name="generate_report_tooltip">Toccare per configurare i layout dei Report</string>
+
+
+    <!-- ================= DIALOG_SETTINGS =================== -->
+
+
+    <!-- ================= DIALOG_TRIPMENU =================== -->
+    <string name="DIALOG_TRIPMENU_HINT_NAME">Nome</string>
+    <string name="DIALOG_TRIPMENU_HINT_START">Data di Inizio</string>
+    <string name="DIALOG_TRIPMENU_HINT_END">Data di termine</string>
+    <string name="DIALOG_TRIPMENU_TITLE_NEW">Nuovo Report spese</string>
+    <string name="DIALOG_TRIPMENU_TITLE_EDIT">Modifica report</string>
+    <string name="DIALOG_TRIPMENU_TOAST_MISSING_FIELD">Prego riempire tutti i campi</string>
+
+    <!-- =============== DIALOG_TRIP_DELETE ================== -->
+    <string name="DIALOG_TRIP_DELETE_POSITIVE_BUTTON">Elimina</string>
+
+    <!-- ================= DIALOG_RECEIPTMENU =================== -->
+    <string name="DIALOG_RECEIPTMENU_HINT_NAME">Nome</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Prezzo</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_TAX">Imposta</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Valuta</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Tasso di cambio</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Tasso di cambio fallito. Riprovare?</string>
+    <string name="receipt_input_exchanged_result_hint">Prezzo nella valuta base</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_DATE">Data</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Categoria</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Commento</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">Centro di costo</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Rimborsabile?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE"> Immagine a piena pagina?</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Nuova Ricevuta</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Nuova Ricevuta - %d</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Modifica Ricevuta</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Modifica Ricevuta - %d</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Attenzione: La data di questa ricevuta cade fuori dall\'intervallo specificato</string>
+    <string name="manage_categories">Gestisci Categorie</string>
+    <string name="manage_payment_methods">Gestisci metodi di pagamento</string>
+
+    <!-- ================= DIALOG_RECEIPT_ATTACHMENT =================== -->
+    <string name="receipt_attach_photo">Esegui una foto</string>
+    <string name="receipt_attach_image">Seleziona una foto</string>
+    <string name="receipt_attach_file">Allega file</string>
+
+
+    <!-- ==================== dialog export / import ====================== -->
+    <string name="dialog_export_title">Esportare le ricevute?</string>
+    <string name="dialog_export_text">Potete reimportare le ricevute cliccando sul file SmartReceipts.SMR, che viene generato cliccando sotto.</string>
+    <string name="dialog_export_positive">Esporta</string>
+    <string name="dialog_import_positive">Importa</string>
+    <string name="dialog_import_text">Sovrascrivere tutti i dati esistenti</string>
+    <string name="dialog_export_working">Ricevute in esportaziones&#8230;</string>
+
+    <!-- ===================== backup menu ======================== -->
+    <string name="backups">Backups</string>
+    <string name="manual_backup_title">Backups manuale:</string>
+    <string name="manual_backup_description">Eseguire il backup dei dati per tenere al sicuro le ricevute! Potete ripristinare i dati importando il file SmartReceipts.SMR, che viene generato dal pulsante "Backup" sottostante.</string>
+    <string name="manual_backup_export">Backup</string>
+    <string name="manual_backup_import">Importa</string>
+    <string name="auto_backup_title">Backups automatico [BETA]:</string>
+    <string name="auto_backup_wifi_only">Usare solo Wi-Fi</string>
+    <string name="auto_backup_warning_none">Attenzione: I backup automatici non sono configurati!\nI dati sono a rischio.</string>
+    <string name="auto_backup_warning_drive">Attenzione: Possono essere previsti costi per i backup automatici su rete mobile.</string>
+    <string name="auto_backup_configure">Toccare per configurare</string>
+    <string name="auto_backup_source_none">Nessuno</string>
+    <string name="auto_backup_source_google_drive">Google Drive</string>
+    <string name="existing_backups_title">Backups presenti:</string>
+    <string name="existing_remote_backup_current_device">%s (Backup attuale)</string>
+    <string name="remote_backups_list_item_menu_restore">Ripristina</string>
+    <string name="remote_backups_list_item_menu_download_images">Scarica ZIP</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Scarica</string>
+
+    <string name="dialog_remote_backup_delete_message">Siete sicuri di voler cancellare il backup dal dispositivo %s ? Questa operazione non può essere annullata.</string>
+    <string name="dialog_remote_backup_delete_message_this_device">Siete sicuri di voler cancellare il backup dal dispositivo? Questa operazione non può essere annullata. Prego notaer che potete disabilitare il backup automatico dopo che questa operazione è completa o tutti i dati locali possono essere risincronizzati.</string>
+    <string name="dialog_remote_backup_delete_progress">Il vostro backup dal dispositivo %s in cancellazione&#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">Questo backup è stato cancellato con successo</string>
+    <string name="dialog_remote_backup_delete_toast_failure">Cancellazione del backup fallita</string>
+    <string name="dialog_remote_backup_download_progress">Immagini scaricate nel file ZIP&#8230;</string>
+
+    <string name="dialog_remote_backup_drive_restore_title">Ripristino del Drive</string>
+    <string name="dialog_remote_backup_drive_restore_message">Problema nella sincronizzazione dei dati. Per recuperare è necessario eliminare il Drive d backup e re-sincronizzare. Se vedete questo messaggi spesso, prego contattarci per ulteriore supporto.</string>
+    <string name="dialog_remote_backup_restore_progress">Pulizia del backup in corso per predisporre la re-sincronizzazione&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Backup pulito con successo. Re-sincronizzazione&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_failure">Re-sincronizzazione di questo backup fallita</string>
+
+    <string name="automatic_backups_info_dialog_message">I Backup automatici non sono abilitati al momento.</string>
+    <string name="automatic_backups_info_dialog_positive">Toccare per configurare</string>
+
+    <string name="drive_sync_error_no_space">Spazio insufficiente sul Drive</string>
+    <string name="drive_sync_error_no_permissions">Toccare per ripristinare i permessi sul Drive</string>
+    <string name="drive_sync_error_lost_data">Errore nella configurazione del Drive - Toccare per correggere</string>
+
+    <!-- ==============-========== Login ========================== -->
+    <string name="login_toolbar_title">Log In / Iscrizione</string>
+    <string name="login_title">Log In con l\'account Smart Receipts per iniziare ad utilizzare le scansioni automatiche (OCR)</string>
+    <string name="login_field_email_hint">Indirizzo Email</string>
+    <string name="login_field_password_hint">Password</string>
+    <string name="sign_up_button_text">Iscrizione</string>
+    <string name="login_button_text">Log In</string>
+    <string name="login_fields_hint_email">Prego inserire un indirizzo email valido:</string>
+    <string name="login_fields_hint_password">La Password deve contenere almeno 8 caratteri:</string>
+    <string name="login_fields_hint_valid">Toccare sotto per accedere o iscriversi:</string>
+    <string name="login_success_toast">Login eseguito con successo</string>
+    <string name="sign_up_success_toast">Iscrizione eseguita con successo</string>
+    <string name="login_failure_toast">Login fallito</string>
+    <string name="sign_up_failure_toast">Iscrizione fallita</string>
+    <string name="login_failure_credentials_toast">Errore: Username o Password errati</string>
+    <string name="sign_up_failure_account_exists_toast">Errore: Questo indirizzo email esiste già - Eseguire il Try Log In</string>
+    <string name="logout_button_text">Log Out</string>
+
+    <!-- ==================== dialog filter ======================= -->
+    <string name="dialog_filter_positive_button">Aggiungi filtro</string>
+    <string name="dialog_filter_negative_button">Rimuovi filtro</string>
+
+    <!-- ==================== dialog miles ======================== -->
+    <string name="dialog_mileage_title_create">Aggiungi distanza</string>
+    <string name="dialog_mileage_title_update">Aggiorna distanza</string>
+    <string name="dialog_mileage_positive_create">Aggiungi</string>
+    <string name="dialog_mileage_positive_update">Aggiorna</string>
+    <string name="dialog_mileage_neutral_delete">Elimina</string>
+
+    <!-- ================= RECEIPTMENU_FIELDS =================== -->
+    <string name="RECEIPTMENU_FIELD_NAME">Nome</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">Prezzo</string>
+    <string name="RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY">Prezzo con simbolo valuta</string>
+    <string name="RECEIPTMENU_FIELD_TAX">Imposta</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">Valuta</string>
+    <string name="RECEIPTMENU_FIELD_DATE">Data</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">Categoria</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">Commento</string>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
+
+    <!-- ================== RECEIPTMENU_TAGS ==================== -->
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
+
+    <!-- ============== Start String Arrays ================== -->
+    <string-array name="EDIT_TRIP_ITEMS">
+        <item>Modifica Report</item>
+        <item>Elimina Report</item>
+    </string-array>
+
+    <!-- ============== CSV/PDF Columns ================== -->
+    <string name="column_item_blank">Colonna vuota</string>
+    <string name="column_item_category_code">Codice Categoria</string>
+    <string name="column_item_category_name">Nome Categoria</string>
+    <string name="column_item_user_id">ID utente</string>
+    <string name="column_item_report_name">Nome Report</string>
+    <string name="column_item_report_start_date">Data inizio Report</string>
+    <string name="column_item_report_end_date">Data termine Report</string>
+    <string name="column_item_report_comment">Commento del Report</string>
+    <string name="column_item_report_cost_center">Centro di Costo Report</string>
+    <string name="column_item_image_file_name">Nome immagine</string>
+    <string name="column_item_image_path">Percorso Immagine</string>
+    <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">Prezzo imponibile</string>
+    <string name="column_item_converted_price_exchange_rate">Prezzo (Al tasso di cambio)</string>
+    <string name="column_item_converted_tax_exchange_rate">Imposta (Al tasso di cambio)</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">Prezzo con imposta (Al tasso di cambio)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Prezzo imponibile (Al tasso di cambio)</string>
+    <string name="column_item_exchange_rate">Tasso di cambio</string>
+    <string name="column_item_pictured">Nella foto</string>
+    <string name="column_item_reimbursable">Rimborsabile</string>
+    <string name="column_item_deprecated_expensable" translatable="false">Expensable</string>
+    <string name="column_item_index">Indice Ricevute</string>
+    <string name="column_item_id">Receipt ID</string>
+    <string name="column_item_payment_method">Metodo di Pagamento</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Luogo</string>
+    <string name="distance_price_field">Prezzo</string>
+    <string name="distance_distance_field">Distanza</string>
+    <string name="distance_rate_field">Costo chilometrico</string>
+    <string name="dialog_currency_field">Valuta</string>
+    <string name="distance_date_field">Data</string>
+    <string name="distance_comment_field">Commento</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Categoria</string>
+    <string name="category_code_field">Codice categoria</string>
+    <string name="category_price_field">Prezzo</string>
+    <string name="category_tax_field">Imposta</string>
+    <string name="category_price_exchanged_field">Prezzo (Al tasso di cambio)</string>
+
+
+    <string name="receipt_dialog_action_delete">Elimina Ricevuta</string>
+    <string name="receipt_dialog_action_move_copy">Sposta/Copia</string>
+    <string name="receipt_dialog_action_remove_attachment">Elimina allegato</string>
+
+    <string name="dialog_attachment_text">Toccare su una ricevuta per aggiungere questo %s ad essa</string>
+    <string name="receipt_dialog_remove_attachment">Rimuovere l\'allegato?</string>
+
+    <!-- ================== Preference Dialog ==================== -->
+    <string name="dialog_custom_csv_spinner">Tipo Colonna</string>
+    <string name="dialog_category_add">Aggiungere Categoria</string>
+    <string name="dialog_category_edit">Modificare Categoria</string>
+
+    <!-- ================ Error Feedback ==================== -->
+    <string name="error_no_pdf_activity_viewer">Visualizzatore di PDF non trovato</string>
+    <string name="error_no_send_intent_dialog_title">Applicazione di invio non trovata</string>
+    <string name="error_no_send_intent_dialog_message">Non trovata alcuna applicazione di email (o equivalente) nel vostro telefono. I files sono stati salvati nella seguente directory: %s</string>
+    <string name="error_no_file_intent_dialog_title">Errore: non è presente alcuna applicazione per l\'import nel vosrto dispositivo</string>
+    <string name="error_no_wifi">Errore: Non connessi a WiFi</string>
+
+    <!-- ================== ActionBar ===================== -->
+
+    <!-- ================== CSV Table ===================== -->
+
+    <!-- ================== Legacy Camera ==================== -->
+
+    <!-- ================== SQL Corrpution ==================== -->
+    <string name="dialog_sql_corrupt_title">Oh No!</string>
+    <string name="dialog_sql_corrupt_message">Il database si è corrotto. Questo può accadere a causa di una task killerr app, ma può dipendere da molte cose differenti. Non temete, dovremmo poter ripristinare la maggior parte dei dati.</string>
+    <string name="dialog_sql_corrupt_positive">Inviare una mail allo sviluppatore per Aiuto</string>
+    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Database Corrupted</string>
+    <string name="dialog_sql_corrupt_intent_text">Help - my database was corrupted. How can you help me restore things?</string>
+    <string name="dialog_sql_corrupt_chooser">Invia Email&#8230;</string>
+
+    <!-- ======================= Filters ====================== -->
+    <string name="filter_name_and">E</string>
+    <string name="filter_name_not">Non</string>
+    <string name="filter_name_or">O</string>
+    <string name="filter_name_receipt_category">Categoria</string>
+    <string name="filter_name_receipt_reimbursable">È rimborsabile</string>
+    <string name="filter_name_receipt_max_price">Prezzo massimo</string>
+    <string name="filter_name_receipt_min_price">Prezzo minimo</string>
+    <string name="filter_name_receipt_on_or_after">A o Dopo</string>
+    <string name="filter_name_receipt_on_or_before">A o Prima</string>
+    <string name="filter_name_receipt_selected">Selezionato</string>
+    <string name="filter_name_trip_ends_on_or_after">Ternina A o Dopo</string>
+    <string name="filter_name_trip_ends_on_or_before">Ternina A o Prima</string>
+    <string name="filter_name_trip_max_price">Prezzo Massimo</string>
+    <string name="filter_name_trip_min_price">Prezzo Minimo</string>
+    <string name="filter_name_trip_starts_on_or_after">Inizio A o Dopo</string>
+    <string name="filter_name_trip_starts_on_or_before">Inizio A o Prima</string>
+
+    <!-- =================== Payment Methods =====+============= -->
+    <string name="payment_method">Metodo di pagamento</string>
+    <string name="payment_methods">Metodi di pagamento</string>
+    <string name="payment_method_add">Aggiungi Metodo di pagamento</string>
+    <string name="payment_method_edit">Modifica Metodo di pagamento</string>
+    <string name="payment_method_default_cash">Contanti</string>
+    <string name="payment_method_default_check">Assegno</string>
+    <string name="payment_method_default_personal_card">Carta di credito personale</string>
+    <string name="payment_method_default_corporate_card">Carta di credito aziendale</string>
+
+    <!-- =================== Payment Methods =================== -->
+    <string name="purchase_succeeded">Acquisto eseguito con successo</string>
+    <string name="purchase_unavailable">Impossibile recuperare le informazioni di acquisto</string>
+    <string name="purchase_failed">Acquisto fallito</string>
+
+    <!-- ================== App Rating ==================== -->
+    <string name="rating_tooltip_text">Vi piace Smart Receipts?</string>
+    <string name="leave_feedback_text">Volete lasciarci un feedback?</string>
+    <string name="apprating_dialog_title">Like %s?</string>
+    <string name="apprating_dialog_message">Cortesemente lascia una recensione. Come sviluppatore indipedente le recensioni sono le principali fonti di notorietà ed aiutano concretamente lo sviluppo di nuove funzionalità. Grazie!</string>
+    <string name="apprating_dialog_negative">No grazie</string>
+    <string name="apprating_dialog_neutral">Forse più tardi</string>
+    <string name="apprating_dialog_positive">Esprimi il gradimento adesso!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">Usare la tab \'Genera\' per creare i Report</string>
+    <string name="tooltip_backup_info_message">%d giorni dall\'ultimo backup</string>
+    <string name="tooltip_no_backups_info_message">Reminder: Periodicamente eseguite il backup dei vostri dati</string>
+    <string name="tooltip_import_info_message">Prego selezionare la ricevuta da allegare</string>
+    <string name="tooltip_review_privacy">Toccare per visualizzare le impostazioni della privacy</string>
+    <string name="tooltip_automatic_backups_recovery_hint">Avete configurato i backup automatici? Toccare per ripristinare</string>
+    <string name="tooltip_first_report_hint">Benvenuto! Creiamo il tuo primo folder per Report. Denominalo come preferito. Clicca il segno di spunta per salvarlo ed inizire ad inserire le prima ricevute!</string>
+
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">Aggiungere le prime ricevute per visualizzare i grafici.</string>
+    <string name="graphs_expenditure_by_dates_title">Spese giornaliere</string>
+    <string name="graphs_expenditure_by_categories_title">Spese per categoria</string>
+    <string name="graphs_expenditure_by_reimbursable_title">Rimborsabili versus Non rimborsabili</string>
+    <string name="graphs_expenditure_by_payment_methods_title">Spese per metodo di pagamento</string>
+    <string name="graphs_label_reimbursable">Rimborsabili</string>
+    <string name="graphs_label_non_reimbursable">Non rimborsabili</string>
+    <string name="graphs_label_others">Altro</string>
+
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Le impostazioni attuali non sono sincronizzate con questa organizzazione. Toccare per applicare le impostazioni della organizzazione.</string>
+    <string name="organization_settings_match">Le impostazioni sono sincronizzate con questa organizzazione.</string>
+    <string name="organization_apply_error">Qualcosa non ha funzionato applicando le impostazioni della organizzazione</string>
+    <string name="organization_apply_success">Impostazioni applicate con successo</string>
+    <string name="logged_in_as">Logged in come:</string>
+    <string name="organization_label">Organizzazione:</string>
+    <string name="organization_update_success">Organizzazione aggiornata con successo</string>
+    <string name="organization_update_error">Qualcosa non ha funzionato nell\'aggiornamento della organizzazione</string>
+    <string name="organization_update">Aggiorna impostazioni dell\'organizzazione</string>
+
+</resources>
