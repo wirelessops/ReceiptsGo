@@ -6,9 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -596,20 +597,6 @@ public class StorageManager {
 			}
 		};
 		return list(root, ff);
-	}
-
-	public Bitmap getBitmap(final File root, final String filename) {
-		return getBitmapHelper(root, filename);
-	}
-
-	private final Bitmap getBitmapHelper(final File root, final String filename) {
-		try {
-			File path = new File(root, filename);
-			return BitmapFactory.decodeFile(path.getCanonicalPath());
-		}
-		catch (IOException e) {
-			return null;
-		}
 	}
 
 	public Bitmap getMutableMemoryEfficientBitmap(File file) {
