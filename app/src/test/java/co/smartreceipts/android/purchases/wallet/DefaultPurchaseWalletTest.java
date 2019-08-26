@@ -3,6 +3,8 @@ package co.smartreceipts.android.purchases.wallet;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.Collections;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class DefaultPurchaseWalletTest {
 
         managedProduct = new Subscription(InAppPurchase.SmartReceiptsPlus, this.purchaseData, PURCHASE_TOKEN, IN_APP_DATA_SIGNATURE);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
+        preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
         preferences.edit().putString(TEST, TEST).apply();
 
         when(sharedPreferencesLazy.get()).thenReturn(preferences);

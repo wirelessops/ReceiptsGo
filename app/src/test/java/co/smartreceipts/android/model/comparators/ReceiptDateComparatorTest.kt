@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model.comparators
 
 import co.smartreceipts.android.model.Receipt
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test

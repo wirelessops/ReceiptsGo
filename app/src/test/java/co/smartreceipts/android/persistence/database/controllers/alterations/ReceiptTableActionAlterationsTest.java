@@ -1,5 +1,7 @@
 package co.smartreceipts.android.persistence.database.controllers.alterations;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.squareup.picasso.Picasso;
 
 import org.junit.After;
@@ -9,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 import java.sql.Date;
@@ -111,7 +112,7 @@ public class ReceiptTableActionAlterationsTest {
             return receiptBuilderFactory;
         }).when(receiptBuilderFactory).setCustomOrderId(anyLong());
 
-        receiptTableActionAlterations = new ReceiptTableActionAlterations(RuntimeEnvironment.application, receiptsTable, storageManager, receiptBuilderFactoryFactory, picassoLazy);
+        receiptTableActionAlterations = new ReceiptTableActionAlterations(ApplicationProvider.getApplicationContext(), receiptsTable, storageManager, receiptBuilderFactoryFactory, picassoLazy);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

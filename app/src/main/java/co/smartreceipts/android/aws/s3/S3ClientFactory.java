@@ -3,6 +3,8 @@ package co.smartreceipts.android.aws.s3;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.common.base.Preconditions;
@@ -39,7 +41,8 @@ class S3ClientFactory {
             amazonS3Disposable = cognitoManager.getCognitoCachingCredentialsProvider()
                     .<Optional<AmazonS3Client>>map(cognitoCachingCredentialsProvider -> {
                             if (cognitoCachingCredentialsProvider.isPresent()) {
-                                return Optional.of(new AmazonS3Client(cognitoCachingCredentialsProvider.get()));
+                                return Optional.of(new AmazonS3Client(
+                                        cognitoCachingCredentialsProvider.get(), Region.getRegion(Regions.US_EAST_1)));
                             } else {
                                 return Optional.absent();
                             }

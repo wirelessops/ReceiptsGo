@@ -2,6 +2,7 @@ package co.smartreceipts.android.identity.store
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.test.core.app.ApplicationProvider
 import dagger.Lazy
 import org.junit.After
 import org.junit.Assert.*
@@ -12,7 +13,6 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class MutableIdentityStoreTest {
@@ -29,7 +29,7 @@ class MutableIdentityStoreTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+                PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
         `when`(lazySharedPreferences!!.get()).thenReturn(sharedPreferences)
         mutableIdentityStore = MutableIdentityStore(lazySharedPreferences!!)
     }

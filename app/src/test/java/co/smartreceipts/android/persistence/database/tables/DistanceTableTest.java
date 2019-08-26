@@ -3,6 +3,8 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -14,7 +16,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -111,7 +112,7 @@ public class DistanceTableTest {
         when(mTripsTable.findByPrimaryKey(TRIP_ID_3)).thenReturn(Single.just(mTrip3));
         when(userPreferenceManager.get(UserPreference.General.DefaultCurrency)).thenReturn(CURRENCY_CODE);
 
-        mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
+        mSQLiteOpenHelper = new TestSQLiteOpenHelper(ApplicationProvider.getApplicationContext());
         mDistanceTable = new DistanceTable(mSQLiteOpenHelper, mTripsTable, userPreferenceManager);
 
         // Now create the table and insert some defaults

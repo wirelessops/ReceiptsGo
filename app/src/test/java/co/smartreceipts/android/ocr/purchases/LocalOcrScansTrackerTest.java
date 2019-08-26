@@ -3,6 +3,8 @@ package co.smartreceipts.android.ocr.purchases;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import dagger.Lazy;
 import io.reactivex.observers.TestObserver;
@@ -33,7 +34,7 @@ public class LocalOcrScansTrackerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
+        preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
         when(lazy.get()).thenReturn(preferences);
         localOcrScansTracker = new LocalOcrScansTracker(lazy, Schedulers.trampoline());

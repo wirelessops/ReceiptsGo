@@ -95,7 +95,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @SuppressLint("InflateParams")
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.simple_recycler_view, container, false);
         final RecyclerView recyclerView = rootView.findViewById(android.R.id.list);
         final View headerView = inflater.inflate(R.layout.ocr_configuration_fragment, null);
@@ -183,7 +183,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     }
 
     @Override
-    public void delayPurchaseAndPresentNeedToLogin(String delayedPurchaseId) {
+    public void delayPurchaseAndPresentNeedToLogin(@NonNull String delayedPurchaseId) {
         this.delayedPurchaseId = delayedPurchaseId;
         router.navigateToLoginScreen();
     }

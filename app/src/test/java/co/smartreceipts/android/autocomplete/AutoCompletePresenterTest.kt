@@ -1,7 +1,7 @@
 package co.smartreceipts.android.autocomplete
 
 import co.smartreceipts.android.editor.Editor
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject

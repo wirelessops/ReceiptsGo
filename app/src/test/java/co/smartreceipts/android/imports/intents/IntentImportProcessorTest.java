@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.hadisatrio.optional.Optional;
 
 import org.junit.Before;
@@ -13,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 
@@ -47,7 +48,7 @@ public class IntentImportProcessorTest {
         when(context.getApplicationContext()).thenReturn(context);
         when(context.getContentResolver()).thenReturn(contentResolver);
 
-        intentImportProcessor = new IntentImportProcessor(RuntimeEnvironment.application, analytics);
+        intentImportProcessor = new IntentImportProcessor(ApplicationProvider.getApplicationContext(), analytics);
         mockContentIntentImportProcessor = new IntentImportProcessor(context, analytics);
     }
 

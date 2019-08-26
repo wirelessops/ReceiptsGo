@@ -2,7 +2,8 @@ package co.smartreceipts.android.receipts.ordering
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.nhaarman.mockito_kotlin.whenever
+import androidx.test.core.app.ApplicationProvider
+import com.nhaarman.mockitokotlin2.whenever
 import dagger.Lazy
 import org.junit.After
 import org.junit.Before
@@ -12,7 +13,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ReceiptsOrderingMigrationStoreTest {
@@ -27,7 +27,7 @@ class ReceiptsOrderingMigrationStoreTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+        preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
 
         whenever(lazy.get()).thenReturn(preferences)
         migrationStore = ReceiptsOrderingMigrationStore(lazy)

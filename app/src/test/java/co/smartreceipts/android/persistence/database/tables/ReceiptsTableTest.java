@@ -3,6 +3,8 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
+import androidx.test.core.app.ApplicationProvider;
+
 import android.text.TextUtils;
 
 import org.junit.After;
@@ -15,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.verification.VerificationMode;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -164,7 +165,7 @@ public class ReceiptsTableTest {
         when(mPersistenceManager.getStorageManager()).thenReturn(mStorageManager);
         when(mPreferences.get(UserPreference.General.DefaultCurrency)).thenReturn(CURRENCY_CODE);
 
-        mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
+        mSQLiteOpenHelper = new TestSQLiteOpenHelper(ApplicationProvider.getApplicationContext());
         mReceiptsTable = new ReceiptsTable(mSQLiteOpenHelper, mTripsTable, mPaymentMethodTable, mCategoryTable,
                 mPersistenceManager.getStorageManager(), mPersistenceManager.getPreferenceManager(), orderingPreferencesManager);
 

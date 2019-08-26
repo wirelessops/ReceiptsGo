@@ -133,7 +133,7 @@ android {
 
         implementation "com.google.android.gms:play-services-drive:$DRIVE_API_VERSION"
         implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
-        implementation "com.google.firebase:firebase-crash:$FIREBASE_CORE_VERSION"
+        implementation "com.google.firebase:firebase-crash:$FIREBASE_CRASH_VERSION"
         implementation "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"
 
         implementation "com.squareup.picasso:picasso:$PICASSO_VERSION"
@@ -193,13 +193,14 @@ android {
         testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
         testImplementation "junit:junit:$JUNIT_VERSION"
         testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
-        testImplementation "com.nhaarman:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
+        testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
+        testImplementation "androidx.test:core:$ANDROID_TEST_RUNNER_VERSION"
 
         // Espresso Tests
-        androidTestImplementation "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
-        androidTestImplementation "com.android.support.test:runner:$ANDROID_TEST_RUNNER_VERSION"
-        androidTestImplementation "com.android.support.test:rules:$ANDROID_TEST_RUNNER_VERSION"
-        androidTestUtil "com.android.support.test:orchestrator:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
+        androidTestImplementation "androidx.test:runner:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestImplementation "androidx.test:rules:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestUtil "androidx.test:orchestrator:$ANDROID_TEST_RUNNER_VERSION"
 
         // Leak Canary
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
@@ -207,7 +208,7 @@ android {
         releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
 
         // Special dependencies for free flavor
-        freeImplementation "com.google.android.gms:play-services-analytics:$FIREBASE_CORE_VERSION"
+        freeImplementation "com.google.android.gms:play-services-analytics:$GOOGLE_ANALYTICS_VERSION"
 
         // Free ads
         freeImplementation "com.google.android.gms:play-services-ads:$ADMOB_VERSION"

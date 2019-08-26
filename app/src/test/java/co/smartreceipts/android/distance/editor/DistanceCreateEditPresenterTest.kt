@@ -5,10 +5,10 @@ import co.smartreceipts.android.autocomplete.AutoCompletePresenter
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.doNothing
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.doNothing
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test

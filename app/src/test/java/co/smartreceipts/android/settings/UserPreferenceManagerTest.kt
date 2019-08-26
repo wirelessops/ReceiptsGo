@@ -1,11 +1,13 @@
 package co.smartreceipts.android.settings
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.TypedValue
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.utils.TestUtils
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import dagger.Lazy
 import io.reactivex.schedulers.Schedulers
 import org.junit.After
@@ -16,7 +18,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
@@ -36,9 +37,9 @@ class UserPreferenceManagerTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         defaultLocale = Locale.getDefault()
-        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+        preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
         whenever(sharedPreferencesLazy.get()).thenReturn(preferences)
-        userPreferenceManager = UserPreferenceManager(RuntimeEnvironment.application, sharedPreferencesLazy, Schedulers.trampoline())
+        userPreferenceManager = UserPreferenceManager(ApplicationProvider.getApplicationContext(), sharedPreferencesLazy, Schedulers.trampoline())
     }
 
     @After
@@ -52,12 +53,12 @@ class UserPreferenceManagerTest {
         userPreferenceManager.initialize()
 
         // Just confirm that we properly apply the default values for these special cases
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.General.DateSeparator.name)))
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name)))
-        assertEquals("USD", preferences.getString(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name), null))
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name)))
-        assertEquals(UserPreferenceManager.MIN_RECEIPT_PRICE.toDouble(), preferences.getFloat(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.ReportOutput.PreferredReportLanguage.name)))
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.General.DateSeparator.name)))
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.General.DefaultCurrency.name)))
+        assertEquals("USD", preferences.getString(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.General.DefaultCurrency.name), null))
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.Receipts.MinimumReceiptPrice.name)))
+        assertEquals(UserPreferenceManager.MIN_RECEIPT_PRICE.toDouble(), preferences.getFloat(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.ReportOutput.PreferredReportLanguage.name)))
     }
 
     @Test
@@ -66,20 +67,20 @@ class UserPreferenceManagerTest {
         userPreferenceManager.initialize()
 
         // Just confirm that we properly apply the default values for these special cases
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.General.DateSeparator.name)))
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name)))
-        assertEquals("USD", preferences.getString(RuntimeEnvironment.application.getString(UserPreference.General.DefaultCurrency.name), null))
-        assertTrue(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name)))
-        assertEquals(UserPreferenceManager.MIN_RECEIPT_PRICE.toDouble(), preferences.getFloat(RuntimeEnvironment.application.getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.General.DateSeparator.name)))
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.General.DefaultCurrency.name)))
+        assertEquals("USD", preferences.getString(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.General.DefaultCurrency.name), null))
+        assertTrue(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.Receipts.MinimumReceiptPrice.name)))
+        assertEquals(UserPreferenceManager.MIN_RECEIPT_PRICE.toDouble(), preferences.getFloat(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.Receipts.MinimumReceiptPrice.name), 0f).toDouble(), TestUtils.EPSILON.toDouble())
 
         // Assert that we haven't set the locale (we'll use the default instead)
-        assertFalse(preferences.contains(RuntimeEnvironment.application.getString(UserPreference.ReportOutput.PreferredReportLanguage.name)))
+        assertFalse(preferences.contains(ApplicationProvider.getApplicationContext<Context>().getString(UserPreference.ReportOutput.PreferredReportLanguage.name)))
     }
 
     @Test
     fun getInteger() {
         val intPreference = UserPreference.General.DefaultReportDuration
-        val intVal = RuntimeEnvironment.application.resources.getInteger(intPreference.defaultValue)
+        val intVal = ApplicationProvider.getApplicationContext<Context>().resources.getInteger(intPreference.defaultValue)
         assertEquals(intVal.toLong(), userPreferenceManager[intPreference].toLong())
 
         userPreferenceManager.getObservable(intPreference)
@@ -92,7 +93,7 @@ class UserPreferenceManagerTest {
     @Test
     fun getBoolean() {
         val booleanPreference = UserPreference.Receipts.UsePaymentMethods
-        val boolVal = RuntimeEnvironment.application.resources.getBoolean(booleanPreference.defaultValue)
+        val boolVal = ApplicationProvider.getApplicationContext<Context>().resources.getBoolean(booleanPreference.defaultValue)
         assertEquals(boolVal, userPreferenceManager[booleanPreference])
 
         userPreferenceManager.getObservable(booleanPreference)
@@ -105,7 +106,7 @@ class UserPreferenceManagerTest {
     @Test
     fun getString() {
         val stringPreference = UserPreference.PlusSubscription.PdfFooterString
-        val stringVal = RuntimeEnvironment.application.getString(stringPreference.defaultValue)
+        val stringVal = ApplicationProvider.getApplicationContext<Context>().getString(stringPreference.defaultValue)
         assertEquals(stringVal, userPreferenceManager[stringPreference])
 
         userPreferenceManager.getObservable(stringPreference)
@@ -119,7 +120,7 @@ class UserPreferenceManagerTest {
     fun getFloat() {
         val floatPreference = UserPreference.Receipts.DefaultTaxPercentage
         val typedValue = TypedValue()
-        RuntimeEnvironment.application.resources.getValue(floatPreference.defaultValue, typedValue, true)
+        ApplicationProvider.getApplicationContext<Context>().resources.getValue(floatPreference.defaultValue, typedValue, true)
         val floatVal = typedValue.float
 
         assertEquals(floatVal.toDouble(), userPreferenceManager[floatPreference].toDouble(), TestUtils.EPSILON.toDouble())

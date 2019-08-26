@@ -1,5 +1,7 @@
 package co.smartreceipts.android.tooltip.rating
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
@@ -16,16 +18,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class RateThisAppTooltipControllerTest {
 
     companion object {
-        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, RuntimeEnvironment.application.getString(R.string.rating_tooltip_text))
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, ApplicationProvider.getApplicationContext<Context>().getString(R.string.rating_tooltip_text))
     }
     
     lateinit var controller: RateThisAppTooltipController
@@ -45,7 +46,7 @@ class RateThisAppTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        controller = RateThisAppTooltipController(RuntimeEnvironment.application, tooltipView, router, appRatingManager, analytics)
+        controller = RateThisAppTooltipController(ApplicationProvider.getApplicationContext(), tooltipView, router, appRatingManager, analytics)
     }
 
     @Test

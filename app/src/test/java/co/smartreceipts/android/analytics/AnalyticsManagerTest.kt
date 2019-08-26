@@ -4,7 +4,7 @@ import co.smartreceipts.android.SameThreadExecutorService
 import co.smartreceipts.android.analytics.events.Event
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

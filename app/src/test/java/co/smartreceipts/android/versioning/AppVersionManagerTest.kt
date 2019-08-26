@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -18,7 +19,6 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import java.util.*
 
@@ -56,7 +56,7 @@ class AppVersionManagerTest {
         MockitoAnnotations.initMocks(this)
         whenever(userPreferenceManager.getObservable(UserPreference.Internal.ApplicationVersionCode)).thenReturn(Observable.just(OLD_VERSION))
         whenever(context.packageManager).thenReturn(packageManager)
-        whenever(context.packageName).thenReturn(RuntimeEnvironment.application.packageName)
+        whenever(context.packageName).thenReturn(ApplicationProvider.getApplicationContext<Context>().packageName)
         whenever(packageManager.getPackageInfo(anyString(), any())).thenReturn(packageInfo)
         whenever(appVersionUpgradesList.getUpgradeListeners()).thenReturn(Arrays.asList(versionUpgradedListener1, versionUpgradedListener2))
         appVersionManager = AppVersionManager(context, userPreferenceManager, appVersionUpgradesList, Schedulers.trampoline())

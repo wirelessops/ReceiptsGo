@@ -7,10 +7,10 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryCodeC
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryNameColumn
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.intellij.lang.annotations.Language
 import org.junit.Assert.*
 import org.junit.Before

@@ -2,6 +2,8 @@ package co.smartreceipts.android.report;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.test.core.app.ApplicationProvider;
+
 import android.view.View;
 
 import com.tom_roush.pdfbox.cos.COSName;
@@ -20,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.File;
@@ -116,7 +117,7 @@ public class InteractivePdfBoxTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        context = RuntimeEnvironment.application;
+        context = ApplicationProvider.getApplicationContext();
         testResourceReader = new TestResourceReader();
         dateFormatter = new DateFormatter(context, userPreferenceManager, Schedulers.trampoline());
 
