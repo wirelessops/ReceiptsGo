@@ -285,7 +285,5 @@
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
 
-### Ucrop
--dontwarn com.yalantis.ucrop**
--keep class com.yalantis.ucrop** { *; }
--keep interface com.yalantis.ucrop** { *; }
+### SmartCropper
+-keep class me.pqpo.smartcropperlib.**{*;}

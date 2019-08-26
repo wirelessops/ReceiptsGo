@@ -10,7 +10,7 @@ interface AccountView {
 
     val logoutButtonClicks: Observable<Any>
 
-    var applySettingsClicks: Observable<OrganizationModel>
+    val applySettingsClicks: Observable<OrganizationModel>
 
     val uploadSettingsClicks: Observable<OrganizationModel>
 

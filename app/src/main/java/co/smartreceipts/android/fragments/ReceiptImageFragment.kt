@@ -1,7 +1,5 @@
 package co.smartreceipts.android.fragments
 
-import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,6 +13,7 @@ import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
+import co.smartreceipts.android.images.CropImageActivity
 import co.smartreceipts.android.imports.CameraInteractionController
 import co.smartreceipts.android.imports.RequestCodes
 import co.smartreceipts.android.imports.importer.ActivityFileResultImporter
@@ -32,7 +31,6 @@ import co.smartreceipts.android.utils.log.Logger
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import com.yalantis.ucrop.UCrop
 import dagger.Lazy
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
@@ -109,7 +107,7 @@ class ReceiptImageFragment : WBFragment() {
         rootView.button_edit_photo.setOnClickListener { view ->
             analytics.record(Events.Receipts.ReceiptImageViewEditPhoto)
             imageCroppingPreferenceStorage.setCroppingScreenWasShown(true)
-            navigationHandler.navigateToCropActivity(this, Uri.fromFile(receipt.file), RequestCodes.EDIT_IMAGE_CROP)
+            navigationHandler.navigateToCropActivity(this, receipt.file!!, RequestCodes.EDIT_IMAGE_CROP)
         }
 
         rootView.button_retake_photo.setOnClickListener { view ->
@@ -136,28 +134,18 @@ class ReceiptImageFragment : WBFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Logger.debug(this, "Result Code: $resultCode")
 
-        // Show the progress bar
-        if (resultCode != RESULT_CANCELED) {
-            receipt_image_progress.visibility = View.VISIBLE
-        }
-
         // Null out the last request
         val cachedImageSaveLocation = imageUri
         imageUri = null
 
         if (requestCode == RequestCodes.EDIT_IMAGE_CROP) {
             when (resultCode) {
-                RESULT_OK -> {
-                    data?.let {
-                        picasso.get().invalidate(UCrop.getOutput(it))
-                        loadImage()
-                    }
-
+                CropImageActivity.RESULT_CROP_ERROR -> {
+                    Logger.error(this, "An error occurred while cropping the image")
                 }
-                UCrop.RESULT_ERROR -> {
-                    data?.let {
-                        Logger.error(this, "An error occurred while cropping the image: {}", UCrop.getError(it))
-                    }
+                else -> {
+                    picasso.get().invalidate(receipt.file!!)
+                    loadImage()
                 }
             }
         } else {
@@ -259,6 +247,8 @@ class ReceiptImageFragment : WBFragment() {
 
         if (receipt.hasImage()) {
             receipt.file?.let {
+                receipt_image_progress.visibility = View.VISIBLE
+
                 picasso.get().load(it).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside()
                     .into(receipt_image_imageview, object : Callback {
 

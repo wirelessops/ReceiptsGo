@@ -9,11 +9,14 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
-import androidx.annotation.NonNull;
-
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -245,4 +248,26 @@ public class ImageUtils {
         return bitmap;
     }
 
+    public static boolean writeImageToFile(@NonNull Bitmap bitmap, @NonNull File file) {
+        try {
+
+            FileOutputStream fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Nullable
+    public static Bitmap getImageFromFile(@NonNull File file) {
+        try {
+            return BitmapFactory.decodeFile(file.getCanonicalPath());
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }

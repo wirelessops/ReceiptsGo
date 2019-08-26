@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/crop_toolbar"
+        layout="@layout/toolbar" />
+
+    <me.pqpo.smartcropperlib.view.CropImageView
+        android:id="@+id/image_crop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="@dimen/padding_large"
+        app:layout_constraintBottom_toTopOf="@id/button_rotate_left"
+        app:layout_constraintTop_toBottomOf="@id/crop_toolbar" />
+
+    <ProgressBar
+        android:id="@+id/progress_crop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/button_rotate_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crop_toolbar" />
+
+    <ImageView
+        android:id="@+id/button_rotate_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_selector"
+        android:padding="@dimen/padding_large"
+        android:src="@drawable/ic_rotate_left_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_crop"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/button_rotate_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_selector"
+        android:padding="@dimen/padding_large"
+        android:src="@drawable/ic_rotate_right_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_crop"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/button_crop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_selector"
+        android:padding="@dimen/padding_large"
+        android:src="@drawable/ic_crop_free_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/button_rotate_right"
+        app:layout_constraintStart_toEndOf="@id/button_rotate_left"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
