@@ -20,8 +20,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 900
-        versionName "4.21.0.900"
+        versionCode 1000
+        versionName "4.21.0.1000"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -175,7 +175,7 @@ android {
             transitive = true
         }
 
-        implementation "com.github.yalantis:ucrop:$UCROP_VERSION"
+        implementation "com.github.pqpo:SmartCropper:$SMART_CROPPER_VERSION"
 
         implementation "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
         implementation "com.amazonaws:aws-android-sdk-s3:$AWS_SDK_VERSION"

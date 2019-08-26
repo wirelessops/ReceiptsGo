@@ -7,6 +7,8 @@ import co.smartreceipts.android.di.scopes.ServiceScope;
 import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
+import co.smartreceipts.android.images.CropImageActivity;
+import co.smartreceipts.android.images.di.CropModule;
 import co.smartreceipts.android.imports.intents.di.IntentImportInformationModule;
 import co.smartreceipts.android.permissions.PermissionRequesterHeadlessFragment;
 import co.smartreceipts.android.rating.FeedbackDialogFragment;
@@ -43,6 +45,10 @@ public abstract class GlobalBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     public abstract SettingsActivity settingsActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = CropModule.class)
+    public abstract CropImageActivity cropImageActivity();
 
     @ServiceScope
     @ContributesAndroidInjector

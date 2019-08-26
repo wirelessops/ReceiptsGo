@@ -25,7 +25,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.squareup.picasso.Picasso;
 import com.tapadoo.alerter.Alert;
 import com.tapadoo.alerter.Alerter;
-import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.util.List;
@@ -44,6 +43,7 @@ import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
+import co.smartreceipts.android.images.CropImageActivity;
 import co.smartreceipts.android.imports.AttachmentSendFileImporter;
 import co.smartreceipts.android.imports.CameraInteractionController;
 import co.smartreceipts.android.imports.RequestCodes;
@@ -342,7 +342,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                                     lastImporterResponse = response;
                                     int requestCode = response.getRequestCode() == RequestCodes.NEW_RECEIPT_IMPORT_IMAGE ?
                                             RequestCodes.NEW_RECEIPT_IMPORT_IMAGE_CROP : RequestCodes.NEW_RECEIPT_CAMERA_IMAGE_CROP;
-                                    navigationHandler.navigateToCropActivity(this, Uri.fromFile(file), requestCode);
+                                    navigationHandler.navigateToCropActivity(this, file, requestCode);
                                 } else {
                                     navigationHandler.navigateToCreateNewReceiptFragment(trip, file, response.getOcrResponse());
                                 }
@@ -358,7 +358,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                                     lastImporterResponse = response;
                                     int requestCode = response.getRequestCode() == RequestCodes.ATTACH_GALLERY_IMAGE ?
                                             RequestCodes.ATTACH_GALLERY_IMAGE_CROP : RequestCodes.ATTACH_CAMERA_IMAGE_CROP;
-                                    navigationHandler.navigateToCropActivity(this, Uri.fromFile(file), requestCode);
+                                    navigationHandler.navigateToCropActivity(this, file, requestCode);
                                 } else {
                                     attachImageToHighlightedReceipt(file);
                                 }
@@ -480,7 +480,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         loadingProgress.setVisibility(View.VISIBLE);
 
         if (RequestCodes.CROP_REQUESTS.contains(requestCode)) { // result from Crop Activity
-            if (resultCode != UCrop.RESULT_ERROR) {
+            if (resultCode != CropImageActivity.RESULT_CROP_ERROR) {
 
                 imageCroppingPreferenceStorage.setCroppingScreenWasShown(true);
 
@@ -503,10 +503,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 lastImporterResponse = null;
 
             } else {
-                final Throwable cropError = UCrop.getError(data);
-                if (cropError != null) {
-                    Logger.error(this, "An error occurred while cropping the image: {}", cropError);
-                }
+                Logger.error(this, "An error occurred while cropping the image");
             }
         } else { // result from Camera
             activityFileResultLocator.onActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
