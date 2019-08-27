@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +15,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,7 +76,7 @@ public class PaymentMethodsTableTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
+        mSQLiteOpenHelper = new TestSQLiteOpenHelper(ApplicationProvider.getApplicationContext());
         mPaymentMethodsTable = new PaymentMethodsTable(mSQLiteOpenHelper, orderingPreferencesManager);
 
         // Now create the table and insert some defaults

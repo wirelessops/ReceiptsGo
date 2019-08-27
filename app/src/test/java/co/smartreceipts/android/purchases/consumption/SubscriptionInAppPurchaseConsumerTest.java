@@ -3,6 +3,8 @@ package co.smartreceipts.android.purchases.consumption;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
@@ -38,7 +39,7 @@ public class SubscriptionInAppPurchaseConsumerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
+        preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
         when(subscription.getInAppPurchase()).thenReturn(InAppPurchase.SmartReceiptsPlus);
         when(lazy.get()).thenReturn(preferences);

@@ -1,5 +1,7 @@
 package co.smartreceipts.android.aws.s3;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.hadisatrio.optional.Optional;
@@ -10,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.aws.cognito.CognitoManager;
 import io.reactivex.Observable;
@@ -37,7 +38,7 @@ public class S3ClientFactoryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(cognitoManager.getCognitoCachingCredentialsProvider()).thenReturn(Observable.just(Optional.of(cognitoCachingCredentialsProvider)));
-        s3ClientFactory = new S3ClientFactory(RuntimeEnvironment.application, cognitoManager);
+        s3ClientFactory = new S3ClientFactory(ApplicationProvider.getApplicationContext(), cognitoManager);
     }
 
     @Test

@@ -2,6 +2,8 @@ package co.smartreceipts.android.identity.widget.login;
 
 import android.content.Context;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +12,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserLogin;
@@ -36,7 +37,7 @@ public class LoginPresenterTest {
     // Class under test
     LoginPresenter presenter;
 
-    Context context = RuntimeEnvironment.application;
+    Context context = ApplicationProvider.getApplicationContext();
 
     @Mock
     LoginView view;

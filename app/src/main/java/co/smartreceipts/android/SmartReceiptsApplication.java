@@ -1,14 +1,11 @@
 package co.smartreceipts.android;
 
-import android.app.Activity;
 import android.app.Application;
-import android.app.Service;
 import android.content.Context;
 import android.os.Looper;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.multidex.MultiDex;
-import androidx.fragment.app.Fragment;
 
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
@@ -42,9 +39,7 @@ import co.smartreceipts.android.utils.rx.DefaultRxErrorHandler;
 import co.smartreceipts.android.versioning.AppVersionManager;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
-import dagger.android.HasServiceInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.HasAndroidInjector;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -53,16 +48,10 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import wb.android.flex.Flex;
 
-public class SmartReceiptsApplication extends Application implements HasActivityInjector, HasSupportFragmentInjector, HasServiceInjector {
+public class SmartReceiptsApplication extends Application implements HasAndroidInjector {
 
     @Inject
-    DispatchingAndroidInjector<Activity> activityInjector;
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> supportFragmentInjector;
-
-    @Inject
-    DispatchingAndroidInjector<Service> serviceInjector;
+    DispatchingAndroidInjector<Object> androidInjector;
 
     @Inject
     DatabaseHelper databaseHelper;
@@ -158,18 +147,8 @@ public class SmartReceiptsApplication extends Application implements HasActivity
     }
 
     @Override
-    public DispatchingAndroidInjector<Activity> activityInjector() {
-        return activityInjector;
-    }
-
-    @Override
-    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
-        return supportFragmentInjector;
-    }
-
-    @Override
-    public AndroidInjector<Service> serviceInjector() {
-        return serviceInjector;
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 
     /**
@@ -225,9 +204,7 @@ public class SmartReceiptsApplication extends Application implements HasActivity
         PDFBoxResourceLoader.init(getApplicationContext());
 
         // Clear our cache
-        Completable.fromAction(() -> {
-                    new SmartReceiptsTemporaryFileCache(this).resetCache();
-                })
+        Completable.fromAction(() -> new SmartReceiptsTemporaryFileCache(this).resetCache())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 

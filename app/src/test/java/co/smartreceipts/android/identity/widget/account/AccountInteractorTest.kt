@@ -10,8 +10,8 @@ import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable

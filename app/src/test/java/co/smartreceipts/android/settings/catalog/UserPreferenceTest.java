@@ -1,13 +1,13 @@
 package co.smartreceipts.android.settings.catalog;
 
 import androidx.annotation.NonNull;
+import androidx.test.core.app.ApplicationProvider;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.List;
 
@@ -284,7 +284,7 @@ public class UserPreferenceTest {
 
     @NonNull
     private String name(@NonNull UserPreference<?> userPreference) {
-        return RuntimeEnvironment.application.getString(userPreference.getName());
+        return ApplicationProvider.getApplicationContext().getString(userPreference.getName());
     }
 
 }

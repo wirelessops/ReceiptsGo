@@ -1,11 +1,12 @@
 package co.smartreceipts.android.sync.drive.device;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.sync.model.impl.Identifier;
 
@@ -22,7 +23,7 @@ public class GoogleDriveSyncMetadataTest {
 
     @Before
     public void setUp() throws Exception {
-        mGoogleDriveSyncMetadata = new GoogleDriveSyncMetadata(RuntimeEnvironment.application);
+        mGoogleDriveSyncMetadata = new GoogleDriveSyncMetadata(ApplicationProvider.getApplicationContext());
     }
 
     @After

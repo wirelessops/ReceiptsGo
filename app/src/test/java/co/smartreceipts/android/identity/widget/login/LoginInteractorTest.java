@@ -2,13 +2,14 @@ package co.smartreceipts.android.identity.widget.login;
 
 import android.content.Context;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.identity.IdentityManager;
@@ -33,7 +34,7 @@ public class LoginInteractorTest {
     // Class under test
     LoginInteractor interactor;
 
-    Context context = RuntimeEnvironment.application;
+    Context context = ApplicationProvider.getApplicationContext();
 
     @Mock
     IdentityManager identityManager;
@@ -100,7 +101,8 @@ public class LoginInteractorTest {
 
     @Test
     public void loginErrorBadCredentials() {
-        when(identityManager.logInOrSignUp(loginPayload)).thenReturn(Observable.error(new HttpException(Response.error(401, responseBody))));
+        Response response = Response.error(401, responseBody);
+        when(identityManager.logInOrSignUp(loginPayload)).thenReturn(Observable.error(new HttpException(response)));
         final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(loginPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.error(context.getString(R.string.login_failure_credentials_toast)));
         testObserver.assertComplete();
@@ -109,7 +111,8 @@ public class LoginInteractorTest {
 
     @Test
     public void signUpErrorExistingAccount() {
-        when(identityManager.logInOrSignUp(signUpPayload)).thenReturn(Observable.error(new HttpException(Response.error(420, responseBody))));
+        Response response = Response.error(420, responseBody);
+        when(identityManager.logInOrSignUp(signUpPayload)).thenReturn(Observable.error(new HttpException(response)));
         final TestObserver<UiIndicator<String>> testObserver = interactor.loginOrSignUp(signUpPayload).test();
         testObserver.assertValues(UiIndicator.loading(), UiIndicator.error(context.getString(R.string.sign_up_failure_account_exists_toast)));
         testObserver.assertComplete();

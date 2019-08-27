@@ -2,7 +2,7 @@ package co.smartreceipts.android.workers.reports.pdf.misc;
 
 import androidx.annotation.NonNull;
 
-import com.tom_roush.pdfbox.util.awt.AWTColor;
+import com.tom_roush.harmony.awt.AWTColor;
 
 import java.io.IOException;
 import java.util.ArrayList;

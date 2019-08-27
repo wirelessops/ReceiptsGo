@@ -1,5 +1,7 @@
 package co.smartreceipts.android.tooltip.image
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.R
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
@@ -9,9 +11,9 @@ import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipType
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +21,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ImageCroppingTooltipControllerTest {
@@ -39,7 +40,7 @@ class ImageCroppingTooltipControllerTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        controller = ImageCroppingTooltipController(RuntimeEnvironment.application, tooltipView, prefStorage, prefManager)
+        controller = ImageCroppingTooltipController(ApplicationProvider.getApplicationContext(), tooltipView, prefStorage, prefManager)
     }
 
     @Test
@@ -72,7 +73,7 @@ class ImageCroppingTooltipControllerTest {
         controller.shouldDisplayTooltip().test()
             .assertComplete()
             .assertNoErrors()
-            .assertResult(Optional.of(TooltipMetadata(TooltipType.ImageCropping,  RuntimeEnvironment.application.getString(R.string.pref_general_enable_crop_title))))
+            .assertResult(Optional.of(TooltipMetadata(TooltipType.ImageCropping, ApplicationProvider.getApplicationContext<Context>().getString(R.string.pref_general_enable_crop_title))))
     }
 
     @Test

@@ -138,11 +138,11 @@
 
         <activity
             android:name="co.smartreceipts.android.settings.widget.SettingsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
             android:name="co.smartreceipts.android.settings.widget.SettingsViewerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
             android:name=".images.CropImageActivity"
@@ -166,14 +166,6 @@
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".push.services.FirebaseTokenRefreshService"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

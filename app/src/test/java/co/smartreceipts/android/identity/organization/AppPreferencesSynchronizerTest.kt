@@ -1,16 +1,17 @@
 package co.smartreceipts.android.identity.organization
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class AppPreferencesSynchronizerTest {
@@ -31,7 +32,7 @@ class AppPreferencesSynchronizerTest {
     fun checkFloatPreferenceTest() {
 
         val preference = UserPreference.Receipts.MinimumReceiptPrice
-        val preferenceName = RuntimeEnvironment.application.getString(preference.name)
+        val preferenceName = ApplicationProvider.getApplicationContext<Context>().getString(preference.name)
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(10f)
 
@@ -45,7 +46,7 @@ class AppPreferencesSynchronizerTest {
     fun applyFloatPreferenceWhenEqualsTest() {
 
         val preference = UserPreference.Receipts.MinimumReceiptPrice
-        val preferenceName = RuntimeEnvironment.application.getString(preference.name)
+        val preferenceName = ApplicationProvider.getApplicationContext<Context>().getString(preference.name)
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(5.5f)
 
@@ -59,7 +60,7 @@ class AppPreferencesSynchronizerTest {
     fun applyFloatPreferenceWhenNotEqualsTest() {
 
         val preference = UserPreference.Receipts.MinimumReceiptPrice
-        val preferenceName = RuntimeEnvironment.application.getString(preference.name)
+        val preferenceName = ApplicationProvider.getApplicationContext<Context>().getString(preference.name)
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(10f)
 
@@ -74,7 +75,7 @@ class AppPreferencesSynchronizerTest {
     fun applyIntPreferenceTest() {
 
         val preference = UserPreference.General.DefaultReportDuration
-        val preferenceName = RuntimeEnvironment.application.getString(preference.name)
+        val preferenceName = ApplicationProvider.getApplicationContext<Context>().getString(preference.name)
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(8)
 
@@ -89,7 +90,7 @@ class AppPreferencesSynchronizerTest {
     fun applyBooleanPreferenceTest() {
 
         val preference = UserPreference.General.IncludeCostCenter
-        val preferenceName = RuntimeEnvironment.application.getString(preference.name)
+        val preferenceName = ApplicationProvider.getApplicationContext<Context>().getString(preference.name)
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn(false)
 
@@ -104,7 +105,7 @@ class AppPreferencesSynchronizerTest {
     fun applyStringPreferenceTest() {
 
         val preference = UserPreference.General.DefaultCurrency
-        val preferenceName = RuntimeEnvironment.application.getString(preference.name)
+        val preferenceName = ApplicationProvider.getApplicationContext<Context>().getString(preference.name)
         whenever(userPreferencesManager.name(eq(preference))).thenReturn(preferenceName)
         whenever(userPreferencesManager.get(eq(preference))).thenReturn("another str")
 
@@ -121,7 +122,7 @@ class AppPreferencesSynchronizerTest {
         prepareForSimplifiedResponse()
 
         val preference1 = UserPreference.General.DefaultReportDuration
-        val preference1Name = RuntimeEnvironment.application.getString(preference1.name)
+        val preference1Name = ApplicationProvider.getApplicationContext<Context>().getString(preference1.name)
         whenever(userPreferencesManager.name(eq(preference1))).thenReturn(preference1Name)
         whenever(userPreferencesManager.get(eq(preference1))).thenReturn(15)
 
@@ -148,7 +149,7 @@ class AppPreferencesSynchronizerTest {
         prepareForSimplifiedResponse()
 
         val preference1 = UserPreference.General.DefaultReportDuration
-        val preference1Name = RuntimeEnvironment.application.getString(preference1.name)
+        val preference1Name = ApplicationProvider.getApplicationContext<Context>().getString(preference1.name)
         whenever(userPreferencesManager.name(eq(preference1))).thenReturn(preference1Name)
         whenever(userPreferencesManager.get(eq(preference1))).thenReturn(15)
 
@@ -185,7 +186,7 @@ class AppPreferencesSynchronizerTest {
 
 
     private fun prepareForSimplifiedResponse() {
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
 
         val preference1 = UserPreference.General.DefaultReportDuration
         val preference1Name = context.getString(preference1.name)

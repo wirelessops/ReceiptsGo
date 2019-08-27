@@ -2,8 +2,8 @@ package co.smartreceipts.android.tooltip.receipt
 
 import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsVersionUpgradedListener
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -1,5 +1,7 @@
 package co.smartreceipts.android.push.services;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -19,13 +21,21 @@ import co.smartreceipts.android.utils.log.Logger;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         Logger.info(this, "onMessageReceived");
         final SmartReceiptsApplication application = (SmartReceiptsApplication) getApplication();
 
-        if (remoteMessage != null) {
-            PushManager pushManager = application.getAppComponent().providePushManager();
-            pushManager.onMessageReceived(remoteMessage);
-        }
+        PushManager pushManager = application.getAppComponent().providePushManager();
+        pushManager.onMessageReceived(remoteMessage);
+    }
+
+    @Override
+    public void onNewToken(@NonNull String token) {
+        super.onNewToken(token);
+        Logger.info(this, "onTokenRefresh");
+        final SmartReceiptsApplication application = (SmartReceiptsApplication) getApplication();
+
+        PushManager pushManager = application.getAppComponent().providePushManager();
+        pushManager.onTokenRefresh();
     }
 }

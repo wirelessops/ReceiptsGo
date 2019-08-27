@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
-import com.tom_roush.pdfbox.util.awt.AWTColor;
+import com.tom_roush.harmony.awt.AWTColor;
 
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Receipt;

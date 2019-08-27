@@ -3,6 +3,8 @@ package co.smartreceipts.android.aws.cognito;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class LocalCognitoTokenStoreTest {
     // Class under test
     LocalCognitoTokenStore localCognitoTokenStore;
 
-    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application);
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
     @Mock
     Lazy<SharedPreferences> lazy;

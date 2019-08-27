@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import java.util.Set;
 
@@ -36,14 +35,15 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.HasAndroidInjector;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
 
-public class SmartReceiptsActivity extends AppCompatActivity implements HasSupportFragmentInjector,
+public class SmartReceiptsActivity extends AppCompatActivity implements HasAndroidInjector,
         PurchaseEventsListener, IntentImportInformationView, IntentImportProvider {
 
     @Inject
@@ -71,7 +71,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
     BackupProvidersManager backupProvidersManager;
 
     @Inject
-    DispatchingAndroidInjector<Fragment> fragmentInjector;
+    DispatchingAndroidInjector<Object> fragmentInjector;
 
     @Inject
     NavigationHandler<SmartReceiptsActivity> navigationHandler;
@@ -265,7 +265,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
     }
 
     @Override
-    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+    public AndroidInjector<Object> androidInjector() {
         return fragmentInjector;
     }
 
@@ -286,5 +286,4 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasSuppo
         Toast.makeText(this, R.string.toast_attachment_error, Toast.LENGTH_SHORT).show();
         finish();
     }
-
 }

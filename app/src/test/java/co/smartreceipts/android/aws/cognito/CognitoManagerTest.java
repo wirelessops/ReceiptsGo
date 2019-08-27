@@ -2,6 +2,8 @@ package co.smartreceipts.android.aws.cognito;
 
 import android.content.Context;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.hadisatrio.optional.Optional;
 
@@ -11,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.apis.me.Cognito;
@@ -31,7 +32,7 @@ public class CognitoManagerTest {
     // Class under test
     CognitoManager cognitoManager;
 
-    Context context = RuntimeEnvironment.application;
+    Context context = ApplicationProvider.getApplicationContext();
 
     @Mock
     IdentityManager identityManager;

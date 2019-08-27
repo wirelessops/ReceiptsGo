@@ -7,10 +7,10 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable
 import co.smartreceipts.android.sync.provider.SyncProvider
 import co.smartreceipts.android.sync.provider.SyncProviderStore
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 

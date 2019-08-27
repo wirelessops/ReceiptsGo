@@ -1,10 +1,12 @@
 package co.smartreceipts.android.date
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.TestTimezoneToggler
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -17,7 +19,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import java.sql.Date
 import java.util.*
 
@@ -35,13 +36,13 @@ class DateFormatterTest {
         private const val TIMESTAMP = 1548955843313
 
         private const val DEFAULT_DATE_SEPARATOR = "/"
-        private val DEFAULT_DATE_FORMAT_STRING = RuntimeEnvironment.application.getString(DateFormatter.DateFormatOption.yyyy_MM_dd.stringResId)
+        private val DEFAULT_DATE_FORMAT_STRING = ApplicationProvider.getApplicationContext<Context>().getString(DateFormatter.DateFormatOption.yyyy_MM_dd.stringResId)
         private val TIMEZONE = TimeZone.getTimeZone("America/New_York")
     }
 
     private lateinit var dateFormatter: DateFormatter
 
-    private val context = RuntimeEnvironment.application
+    private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Mock
     private lateinit var userPreferenceManager: UserPreferenceManager
@@ -102,7 +103,7 @@ class DateFormatterTest {
         assertEquals("2019/01/31", dateFormatter.getFormattedDate(java.util.Date(TIMESTAMP), TIMEZONE))
 
         // Now change the format
-        whenever(userPreferenceManager[UserPreference.General.DateFormat]).thenReturn(RuntimeEnvironment.application.getString(DateFormatter.DateFormatOption.M_d_yyyy.stringResId))
+        whenever(userPreferenceManager[UserPreference.General.DateFormat]).thenReturn(ApplicationProvider.getApplicationContext<Context>().getString(DateFormatter.DateFormatOption.M_d_yyyy.stringResId))
         userPreferenceChangeStream.onNext(UserPreference.General.DateFormat)
         assertEquals("1/31/2019", dateFormatter.getFormattedDate(displayableDate))
     }
@@ -126,7 +127,7 @@ class DateFormatterTest {
         assertEquals("2019/01/31", dateFormatter.getFormattedDate(java.util.Date(TIMESTAMP), TIMEZONE))
 
         // Now change the format
-        whenever(userPreferenceManager[UserPreference.General.DateFormat]).thenReturn(RuntimeEnvironment.application.getString(DateFormatter.DateFormatOption.M_d_yyyy.stringResId))
+        whenever(userPreferenceManager[UserPreference.General.DateFormat]).thenReturn(ApplicationProvider.getApplicationContext<Context>().getString(DateFormatter.DateFormatOption.M_d_yyyy.stringResId))
         userPreferenceChangeStream.onNext(UserPreference.General.DateFormat)
         whenever(userPreferenceManager[UserPreference.General.DateSeparator]).thenReturn("--")
         userPreferenceChangeStream.onNext(UserPreference.General.DateSeparator)

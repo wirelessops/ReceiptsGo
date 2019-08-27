@@ -1,5 +1,7 @@
 package co.smartreceipts.android.ocr.widget.tooltip
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
@@ -9,9 +11,9 @@ import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipType
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -20,20 +22,19 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class OcrInformationTooltipControllerTest {
 
     companion object {
-        private val NOT_CONFIGURED_TOOLTIP_METADATA = TooltipMetadata(TooltipType.OcrInformation, RuntimeEnvironment.application.getString(R.string.ocr_informational_tooltip_configure_text))
-        private val NO_SCANS_TOOLTIP_METADATA = TooltipMetadata(TooltipType.OcrInformation, RuntimeEnvironment.application.resources.getQuantityString(R.plurals.ocr_informational_tooltip_limited_scans_text, 0, 0))
-        private val THREE_SCANS_TOOLTIP_METADATA = TooltipMetadata(TooltipType.OcrInformation, RuntimeEnvironment.application.resources.getQuantityString(R.plurals.ocr_informational_tooltip_limited_scans_text, 3, 3))
+        private val NOT_CONFIGURED_TOOLTIP_METADATA = TooltipMetadata(TooltipType.OcrInformation, ApplicationProvider.getApplicationContext<Context>().getString(R.string.ocr_informational_tooltip_configure_text))
+        private val NO_SCANS_TOOLTIP_METADATA = TooltipMetadata(TooltipType.OcrInformation, ApplicationProvider.getApplicationContext<Context>().resources.getQuantityString(R.plurals.ocr_informational_tooltip_limited_scans_text, 0, 0))
+        private val THREE_SCANS_TOOLTIP_METADATA = TooltipMetadata(TooltipType.OcrInformation, ApplicationProvider.getApplicationContext<Context>().resources.getQuantityString(R.plurals.ocr_informational_tooltip_limited_scans_text, 3, 3))
     }
 
     private lateinit var ocrInformationTooltipController: OcrInformationTooltipController
 
-    private val context = RuntimeEnvironment.application
+    private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Mock
     private lateinit var tooltipView: TooltipView

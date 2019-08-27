@@ -6,10 +6,10 @@ import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTa
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.settings.UserPreferenceManager
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.doNothing
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.doNothing
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before

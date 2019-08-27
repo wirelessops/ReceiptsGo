@@ -229,7 +229,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
         // Create our OCR drop-down alerter
         this.alerter = Alerter.create(getActivity())
                 .setTitle(R.string.ocr_status_title)
-                .setBackgroundColor(R.color.smart_receipts_colorAccent)
+                .setBackgroundColorRes(R.color.smart_receipts_colorAccent)
                 .setIcon(R.drawable.ic_receipt_white_24dp);
 
         // And inflate the root view
@@ -781,7 +781,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                 alert.setText(ocrStatusIndicator.getData().get());
             }
         } else if (alert != null) {
-            alert.hide();
+            Alerter.hide();
             alert = null;
         }
     }

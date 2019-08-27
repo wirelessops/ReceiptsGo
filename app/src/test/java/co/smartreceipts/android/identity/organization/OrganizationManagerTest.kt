@@ -6,10 +6,10 @@ import co.smartreceipts.android.config.ConfigurationManager
 import co.smartreceipts.android.identity.apis.organizations.*
 import co.smartreceipts.android.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

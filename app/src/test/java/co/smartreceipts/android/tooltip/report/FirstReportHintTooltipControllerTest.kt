@@ -1,5 +1,7 @@
 package co.smartreceipts.android.tooltip.report
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
@@ -10,9 +12,9 @@ import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.utils.TripUtils
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -22,13 +24,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class FirstReportHintTooltipControllerTest  {
 
     companion object {
-        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.FirstReportHint, RuntimeEnvironment.application.getString(R.string.tooltip_first_report_hint))
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.FirstReportHint, ApplicationProvider.getApplicationContext<Context>().getString(R.string.tooltip_first_report_hint))
     }
 
     private lateinit var firstReportHintTooltipController: FirstReportHintTooltipController
@@ -50,7 +51,7 @@ class FirstReportHintTooltipControllerTest  {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        firstReportHintTooltipController = FirstReportHintTooltipController(RuntimeEnvironment.application, tooltipView, store, tripTableController, analytics, scheduler)
+        firstReportHintTooltipController = FirstReportHintTooltipController(ApplicationProvider.getApplicationContext(), tooltipView, store, tripTableController, analytics, scheduler)
     }
 
     @Test

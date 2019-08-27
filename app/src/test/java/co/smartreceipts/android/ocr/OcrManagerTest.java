@@ -2,13 +2,14 @@ package co.smartreceipts.android.ocr;
 
 import android.content.Context;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 
@@ -48,7 +49,7 @@ public class OcrManagerTest {
     // Class under test
     OcrManager ocrManager;
 
-    Context context = RuntimeEnvironment.application;
+    Context context = ApplicationProvider.getApplicationContext();
 
     @Mock
     S3Manager s3Manager;

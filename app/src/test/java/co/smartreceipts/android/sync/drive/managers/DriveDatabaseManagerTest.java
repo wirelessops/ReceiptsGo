@@ -1,5 +1,7 @@
 package co.smartreceipts.android.sync.drive.managers;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 
@@ -47,12 +48,12 @@ public class DriveDatabaseManagerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mDatabaseFile = new File(RuntimeEnvironment.application.getExternalFilesDir(null), DatabaseHelper.DATABASE_NAME);
+        mDatabaseFile = new File(ApplicationProvider.getApplicationContext().getExternalFilesDir(null), DatabaseHelper.DATABASE_NAME);
         if (!mDatabaseFile.createNewFile()) {
             throw new RuntimeException("Failed to create database file... Failing this test");
         }
 
-        mDriveDatabaseManager = new DriveDatabaseManager(RuntimeEnvironment.application, mDriveStreamsManager, mGoogleDriveSyncMetadata, mAnalytics, Schedulers.trampoline(), Schedulers.trampoline());
+        mDriveDatabaseManager = new DriveDatabaseManager(ApplicationProvider.getApplicationContext(), mDriveStreamsManager, mGoogleDriveSyncMetadata, mAnalytics, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @After
