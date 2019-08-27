@@ -11,7 +11,7 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

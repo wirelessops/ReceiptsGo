@@ -5,7 +5,7 @@ import co.smartreceipts.android.model.Category
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.subjects.PublishSubject
 import org.junit.Assert.*
 import org.junit.Before

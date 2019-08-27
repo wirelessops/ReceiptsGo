@@ -1,28 +1,28 @@
 package co.smartreceipts.android.push.internal;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import io.reactivex.Observable;
 
 
 public class FcmTokenRetriever {
 
-    @Nullable
-    public String getToken() {
-        return FirebaseInstanceId.getInstance().getToken();
+    @NonNull
+    public Task<InstanceIdResult> getToken() {
+        return FirebaseInstanceId.getInstance().getInstanceId();
     }
 
     @NonNull
     public Observable<String> getFcmTokenObservable() {
         return Observable.create(emitter -> {
-            final String token = getToken();
-            if (token != null) {
-                emitter.onNext(token);
-            }
-            emitter.onComplete();
+            getToken().addOnSuccessListener(instanceIdResult -> {
+                emitter.onNext(instanceIdResult.getToken());
+                emitter.onComplete();
+            });
         });
     }
 }

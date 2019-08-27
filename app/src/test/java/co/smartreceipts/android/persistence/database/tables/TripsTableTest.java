@@ -3,6 +3,7 @@ package co.smartreceipts.android.persistence.database.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.verification.VerificationMode;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 import java.util.Arrays;
@@ -115,7 +115,7 @@ public class TripsTableTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        mSQLiteOpenHelper = new TestSQLiteOpenHelper(RuntimeEnvironment.application);
+        mSQLiteOpenHelper = new TestSQLiteOpenHelper(ApplicationProvider.getApplicationContext());
 
         when(mPersistenceManager.getStorageManager()).thenReturn(mStorageManager);
         when(mPersistenceManager.getPreferenceManager()).thenReturn(mPreferences);

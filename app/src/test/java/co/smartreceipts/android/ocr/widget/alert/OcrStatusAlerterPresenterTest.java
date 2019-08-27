@@ -1,12 +1,13 @@
 package co.smartreceipts.android.ocr.widget.alert;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.ocr.OcrManager;
@@ -38,7 +39,7 @@ public class OcrStatusAlerterPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(ocrManager.getOcrProcessingStatus()).thenReturn(ocrProcessingStatusEvents);
-        presenter = new OcrStatusAlerterPresenter(view, RuntimeEnvironment.application, ocrManager);
+        presenter = new OcrStatusAlerterPresenter(view, ApplicationProvider.getApplicationContext(), ocrManager);
         presenter.subscribe();
         verify(view).displayOcrStatus(UiIndicator.idle()); // We always start with idle
     }
@@ -46,19 +47,19 @@ public class OcrStatusAlerterPresenterTest {
     @Test
     public void uploadingImageEventsAreHandled() {
         ocrProcessingStatusEvents.onNext(OcrProcessingStatus.UploadingImage);
-        verify(view).displayOcrStatus(UiIndicator.loading(RuntimeEnvironment.application.getString(R.string.ocr_status_message_uploading_image)));
+        verify(view).displayOcrStatus(UiIndicator.loading(ApplicationProvider.getApplicationContext().getString(R.string.ocr_status_message_uploading_image)));
     }
 
     @Test
     public void performingScanEventsAreHandled() {
         ocrProcessingStatusEvents.onNext(OcrProcessingStatus.PerformingScan);
-        verify(view).displayOcrStatus(UiIndicator.loading(RuntimeEnvironment.application.getString(R.string.ocr_status_message_performing_scan)));
+        verify(view).displayOcrStatus(UiIndicator.loading(ApplicationProvider.getApplicationContext().getString(R.string.ocr_status_message_performing_scan)));
     }
 
     @Test
     public void retrievingResultsEventsAreHandled() {
         ocrProcessingStatusEvents.onNext(OcrProcessingStatus.RetrievingResults);
-        verify(view).displayOcrStatus(UiIndicator.loading(RuntimeEnvironment.application.getString(R.string.ocr_status_message_fetching_results)));
+        verify(view).displayOcrStatus(UiIndicator.loading(ApplicationProvider.getApplicationContext().getString(R.string.ocr_status_message_fetching_results)));
     }
 
     @Test

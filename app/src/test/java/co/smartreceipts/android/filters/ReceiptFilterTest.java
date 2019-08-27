@@ -2,12 +2,13 @@ package co.smartreceipts.android.filters;
 
 import android.content.Context;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class ReceiptFilterTest {
 
     @Before
     public void setUp() {
-        context = RuntimeEnvironment.application;
+        context = ApplicationProvider.getApplicationContext();
     }
 
 

@@ -3,7 +3,7 @@ package co.smartreceipts.android.workers.reports.pdf.colors;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
-import com.tom_roush.pdfbox.util.awt.AWTColor;
+import com.tom_roush.harmony.awt.AWTColor;
 
 import java.util.HashMap;
 import java.util.Map;

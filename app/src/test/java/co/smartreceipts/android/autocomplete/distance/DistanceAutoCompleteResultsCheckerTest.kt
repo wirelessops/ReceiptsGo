@@ -2,7 +2,7 @@ package co.smartreceipts.android.autocomplete.distance
 
 import co.smartreceipts.android.autocomplete.AutoCompleteField
 import co.smartreceipts.android.model.Distance
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.*
 import org.junit.Before
 

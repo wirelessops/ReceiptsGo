@@ -1,12 +1,14 @@
 package co.smartreceipts.android.tooltip
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import com.hadisatrio.optional.Optional
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
@@ -18,14 +20,13 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class TooltipPresenterTest {
 
     companion object {
-        private val RATE_THIS_APP_TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, RuntimeEnvironment.application.getString(R.string.rating_tooltip_text))
-        private val PRIVACY_POLICY_TOOLTIP_METADATA = TooltipMetadata(TooltipType.PrivacyPolicy, RuntimeEnvironment.application.getString(R.string.tooltip_review_privacy))
+        private val RATE_THIS_APP_TOOLTIP_METADATA = TooltipMetadata(TooltipType.RateThisApp, ApplicationProvider.getApplicationContext<Context>().getString(R.string.rating_tooltip_text))
+        private val PRIVACY_POLICY_TOOLTIP_METADATA = TooltipMetadata(TooltipType.PrivacyPolicy, ApplicationProvider.getApplicationContext<Context>().getString(R.string.tooltip_review_privacy))
     }
 
     lateinit var tooltipPresenter: TooltipPresenter

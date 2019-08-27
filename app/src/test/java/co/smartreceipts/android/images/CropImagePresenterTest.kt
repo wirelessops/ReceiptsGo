@@ -2,7 +2,7 @@ package co.smartreceipts.android.images
 
 import android.graphics.Bitmap
 import co.smartreceipts.android.widget.model.UiIndicator
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

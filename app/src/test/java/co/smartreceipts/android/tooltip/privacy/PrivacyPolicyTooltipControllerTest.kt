@@ -1,5 +1,7 @@
 package co.smartreceipts.android.tooltip.privacy
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
@@ -16,17 +18,16 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.schedulers.Schedulers
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class PrivacyPolicyTooltipControllerTest {
 
     companion object {
-        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.PrivacyPolicy, RuntimeEnvironment.application.getString(R.string.tooltip_review_privacy))
+        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.PrivacyPolicy, ApplicationProvider.getApplicationContext<Context>().getString(R.string.tooltip_review_privacy))
     }
 
     private lateinit var privacyPolicyTooltipController: PrivacyPolicyTooltipController
@@ -54,7 +55,7 @@ class PrivacyPolicyTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        privacyPolicyTooltipController = PrivacyPolicyTooltipController(RuntimeEnvironment.application, tooltipView, router, store, regionChecker, tripTableController, analytics, scheduler)
+        privacyPolicyTooltipController = PrivacyPolicyTooltipController(ApplicationProvider.getApplicationContext(), tooltipView, router, store, regionChecker, tripTableController, analytics, scheduler)
     }
 
     @Test

@@ -1,6 +1,7 @@
 package co.smartreceipts.android.tooltip.receipt
 
 import android.preference.PreferenceManager
+import androidx.test.core.app.ApplicationProvider
 import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import co.smartreceipts.android.utils.TestLazy
 import io.reactivex.schedulers.Schedulers
@@ -10,14 +11,13 @@ import org.junit.Test
 
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class FirstReceiptQuestionsUserInteractionStoreTest {
 
     private lateinit var firstReceiptQuestionsUserInteractionStore: FirstReceiptQuestionsUserInteractionStore
 
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
 
     private val scheduler = Schedulers.trampoline()
 

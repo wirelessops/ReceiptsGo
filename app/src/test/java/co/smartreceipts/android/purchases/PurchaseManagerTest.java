@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import androidx.annotation.NonNull;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.gson.Gson;
@@ -20,7 +21,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowApplication;
 
@@ -82,11 +82,11 @@ public class PurchaseManagerTest {
     // Class under test
     PurchaseManager purchaseManager;
 
-    Application application = RuntimeEnvironment.application;
+    Application application = ApplicationProvider.getApplicationContext();
 
     ShadowApplication shadowApplication = Shadows.shadowOf(application);
 
-    String packageName = RuntimeEnvironment.application.getPackageName();
+    String packageName = ApplicationProvider.getApplicationContext().getPackageName();
 
     @Mock
     PurchaseWallet purchaseWallet;

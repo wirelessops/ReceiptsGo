@@ -3,7 +3,7 @@ package co.smartreceipts.android.tooltip.privacy
 import android.telephony.TelephonyManager
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.TestTimezoneToggler
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

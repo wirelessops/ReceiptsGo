@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
@@ -58,7 +59,7 @@ public class IntentImportInformationPresenterTest {
 
     @After
     public void tearDown() throws Exception {
-        PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application).edit().clear().apply();
+        PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()).edit().clear().apply();
     }
 
     @Test

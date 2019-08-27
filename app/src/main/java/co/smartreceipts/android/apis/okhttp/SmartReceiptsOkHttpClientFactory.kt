@@ -24,7 +24,11 @@ class SmartReceiptsOkHttpClientFactory(private val context: Context,
         okHttpClientBuilder.addInterceptor(TrafficStatsRequestInterceptor())
         if (BuildConfig.DEBUG) {
             // If we're using a debug build, add logging
-            val loggingInterceptor = HttpLoggingInterceptor { message -> Logger.debug(HttpLoggingInterceptor::class.java, message) }
+            val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Logger.debug(HttpLoggingInterceptor::class.java, message)
+                }
+            })
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             okHttpClientBuilder.addInterceptor(loggingInterceptor)
         }

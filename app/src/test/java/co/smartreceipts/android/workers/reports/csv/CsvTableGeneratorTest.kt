@@ -2,7 +2,7 @@ package co.smartreceipts.android.workers.reports.csv
 
 import co.smartreceipts.android.model.Column
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

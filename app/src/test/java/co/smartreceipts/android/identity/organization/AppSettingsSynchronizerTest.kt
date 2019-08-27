@@ -13,7 +13,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PDFTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
