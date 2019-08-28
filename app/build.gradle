@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'io.fabric'
@@ -188,6 +189,8 @@ android {
 
         // Crashalytics
         implementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS_VERSION"
+
+        implementation "com.google.android.gms:play-services-oss-licenses:$GOOGLE_OSS_VERSION"
 
         // Unit Tests
         testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"

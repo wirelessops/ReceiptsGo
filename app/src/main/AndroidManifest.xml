@@ -148,6 +148,11 @@
             android:name=".images.CropImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
+        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/Theme.SmartReceipts.OSS"/>
+        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/Theme.SmartReceipts.OSS"/>
+
 
         <!-- DriveEventService (and subclasses) must be exported -->
         <service

@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -143,6 +145,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             configurePreferencesHelp(this);
             configurePreferencesAbout(this);
             configurePreferencesPrivacy(this);
+            configurePreferencesOSS(this);
         }
 
         purchaseManager.addEventListener(this);
@@ -424,6 +427,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         }
     }
 
+    public void configurePreferencesOSS(UniversalPreferences universal) {
+        // Set up OSS
+        universal.findPreference(R.string.pref_about_oss_key).setOnPreferenceClickListener(this);
+    }
+
     @Override
     public boolean onPreferenceClick(Preference preference) {
         final String key = preference.getKey();
@@ -464,6 +472,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/privacy")));
+            return true;
+        } else if (key.equals(getString(R.string.pref_about_oss_key))) {
+            OssLicensesMenuActivity.setActivityTitle(getString(R.string.pref_about_oss_title));
+            startActivity(new Intent(this, OssLicensesMenuActivity.class));
             return true;
         } else {
             return false;
