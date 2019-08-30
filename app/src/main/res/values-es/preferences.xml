@@ -179,6 +179,7 @@
 
     <string name="pref_about_about_title">Acerca de</string>
     <string name="pref_about_terms_title">Términos de uso</string>
+    <string name="pref_about_oss_title">Software de código abierto</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Política de Privacidad</string>

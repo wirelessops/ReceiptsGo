@@ -178,6 +178,7 @@
     <string name="pref_about_version_title">Version</string>
     <string name="pref_about_about_title">Über</string>
     <string name="pref_about_terms_title">Nutzungsbedingungen</string>
+    <string name="pref_about_oss_title">Quelloffene Software</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Datenschutz-Bestimmungen</string>
