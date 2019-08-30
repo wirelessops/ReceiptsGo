@@ -179,6 +179,7 @@
     <string name="pref_about_version_title">Версія</string>
     <string name="pref_about_about_title">Про програму</string>
     <string name="pref_about_terms_title">Умови використання</string>
+    <string name="pref_about_oss_title">Програмне забезпечення з відкритим кодом</string>
 
     <!-- ============== Preference Privacy ================= -->
     <string name="pref_about_privacy_policy_title">Політика конфіденційності</string>
