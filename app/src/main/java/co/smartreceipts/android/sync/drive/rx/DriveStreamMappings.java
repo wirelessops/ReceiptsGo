@@ -3,7 +3,7 @@ package co.smartreceipts.android.sync.drive.rx;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.drive.DriveFile;
+import com.google.api.services.drive.model.File;
 import com.google.common.base.Preconditions;
 
 import java.sql.Date;
@@ -20,7 +20,7 @@ import co.smartreceipts.android.sync.provider.SyncProvider;
 public class DriveStreamMappings {
 
     @NonNull
-    public SyncState postInsertSyncState(@NonNull SyncState oldSyncState, @Nullable DriveFile driveFile) {
+    public SyncState postInsertSyncState(@NonNull SyncState oldSyncState, @Nullable File driveFile) {
         Preconditions.checkNotNull(oldSyncState);
 
         if (driveFile != null) {
@@ -33,7 +33,7 @@ public class DriveStreamMappings {
     }
 
     @NonNull
-    public SyncState postUpdateSyncState(@NonNull SyncState oldSyncState, @NonNull DriveFile driveFile) {
+    public SyncState postUpdateSyncState(@NonNull SyncState oldSyncState, @NonNull File driveFile) {
         return new DefaultSyncState(getSyncIdentifierMap(driveFile), newDriveSyncedStatusMap(),
                 new MarkedForDeletionMap(Collections.singletonMap(SyncProvider.GoogleDrive, false)), new Date(System.currentTimeMillis()));
     }
@@ -51,13 +51,13 @@ public class DriveStreamMappings {
     }
 
     @NonNull
-    private IdentifierMap getSyncIdentifierMap(@NonNull DriveFile driveFile) {
+    private IdentifierMap getSyncIdentifierMap(@NonNull File driveFile) {
         return new IdentifierMap(Collections.singletonMap(SyncProvider.GoogleDrive, newSyncIdentifier(driveFile)));
     }
 
     @NonNull
-    private Identifier newSyncIdentifier(@NonNull DriveFile driveFile) {
-        return new Identifier(driveFile.getDriveId().getResourceId());
+    private Identifier newSyncIdentifier(@NonNull File driveFile) {
+        return new Identifier(driveFile.getId());
     }
 
     @NonNull

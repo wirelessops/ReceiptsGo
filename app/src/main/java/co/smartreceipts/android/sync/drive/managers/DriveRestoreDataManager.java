@@ -7,13 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
-import com.google.android.gms.drive.DriveId;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
 import org.apache.commons.io.IOUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,34 +35,29 @@ import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-
 public class DriveRestoreDataManager {
 
     private final Context mContext;
     private final DriveStreamsManager mDriveStreamsManager;
     private final DriveDatabaseManager mDriveDatabaseManager;
-    private final DatabaseHelper mDatabaseHelper;
     private final DatabaseRestorer databaseRestorer;
-    private final File mStorageDirectory;
+    private final java.io.File mStorageDirectory;
 
     @SuppressWarnings("ConstantConditions")
     public DriveRestoreDataManager(@NonNull Context context,
                                    @NonNull DriveStreamsManager driveStreamsManager,
-                                   @NonNull DatabaseHelper databaseHelper,
                                    @NonNull DriveDatabaseManager driveDatabaseManager,
                                    @NonNull DatabaseRestorer databaseRestorer) {
-        this(context, driveStreamsManager, databaseHelper, driveDatabaseManager, databaseRestorer, context.getExternalFilesDir(null));
+        this(context, driveStreamsManager, driveDatabaseManager, databaseRestorer, context.getExternalFilesDir(null));
     }
 
     public DriveRestoreDataManager(@NonNull Context context,
                                    @NonNull DriveStreamsManager driveStreamsManager,
-                                   @NonNull DatabaseHelper databaseHelper,
                                    @NonNull DriveDatabaseManager driveDatabaseManager,
                                    @NonNull DatabaseRestorer databaseRestorer,
-                                   @NonNull File storageDirectory) {
+                                   @NonNull java.io.File storageDirectory) {
         mContext = Preconditions.checkNotNull(context.getApplicationContext());
         mDriveStreamsManager = Preconditions.checkNotNull(driveStreamsManager);
-        mDatabaseHelper = Preconditions.checkNotNull(databaseHelper);
         mDriveDatabaseManager = Preconditions.checkNotNull(driveDatabaseManager);
         this.databaseRestorer = Preconditions.checkNotNull(databaseRestorer);
         mStorageDirectory = Preconditions.checkNotNull(storageDirectory);
@@ -75,7 +70,7 @@ public class DriveRestoreDataManager {
         return downloadBackupMetadataImages(remoteBackupMetadata, overwriteExistingData, mStorageDirectory)
                 .flatMap(files -> {
                     Logger.debug(this, "Performing database merge");
-                    final File tempDbFile = new File(mStorageDirectory, ManualBackupTask.DATABASE_EXPORT_NAME);
+                    final java.io.File tempDbFile = new java.io.File(mStorageDirectory, ManualBackupTask.DATABASE_EXPORT_NAME);
                     return databaseRestorer.restoreDatabase(tempDbFile, overwriteExistingData)
                             .toSingleDefault(true);
                 })
@@ -86,31 +81,29 @@ public class DriveRestoreDataManager {
     }
 
     @NonNull
-    public Single<List<File>> downloadAllBackupMetadataImages(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final File downloadLocation) {
+    public Single<List<java.io.File>> downloadAllBackupMetadataImages(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final java.io.File downloadLocation) {
         return downloadBackupMetadataImages(remoteBackupMetadata, true, downloadLocation);
     }
 
     @NonNull
-    public Single<List<File>> downloadAllFilesInDriveFolder(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final File downloadLocation) {
+    public Single<List<java.io.File>> downloadAllFilesInDriveFolder(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final java.io.File downloadLocation) {
         Preconditions.checkNotNull(remoteBackupMetadata);
         Preconditions.checkNotNull(downloadLocation);
 
-        return mDriveStreamsManager.getDriveId(remoteBackupMetadata.getId())
-                .map(driveId -> {
-                    Logger.debug(DriveRestoreDataManager.this, "Converting drive id to smart receipts drive folder");
-                    return driveId.asDriveFolder();
-                })
-                .flatMapObservable(mDriveStreamsManager::getFilesInFolder)
-                .map(DriveId::asDriveFile)
-                .flatMapSingle(driveFile -> mDriveStreamsManager.getMetadata(driveFile)
-                        .map(metadata -> driveFile.getDriveId().getResourceId() + "__" + metadata.getOriginalFilename())
-                        .flatMap(filename -> mDriveStreamsManager.download(driveFile, new File(downloadLocation, filename))))
-                .toList();
+        return mDriveStreamsManager.getFilesInFolder(remoteBackupMetadata.getId().getId())
+                .flatMap(fileList -> {
+                    List<java.io.File> javaFileList = new ArrayList<>();
+                    for (File file : fileList.getFiles()) {
+                        String filename = file.getId() + "__" + file.getOriginalFilename();
+                        javaFileList.add(mDriveStreamsManager.download(file.getId(), new java.io.File(downloadLocation, filename)).blockingGet());
+                    }
+                    return Single.just(javaFileList);
+                });
     }
 
     @VisibleForTesting
     @NonNull
-    public Single<List<File>> downloadFilesAfterDate(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final File downloadLocation) {
+    public Single<List<java.io.File>> downloadFilesAfterDate(@NonNull final RemoteBackupMetadata remoteBackupMetadata, @NonNull final java.io.File downloadLocation) {
         Preconditions.checkNotNull(remoteBackupMetadata);
         Preconditions.checkNotNull(downloadLocation);
 
@@ -118,72 +111,42 @@ public class DriveRestoreDataManager {
         calendar.set(2018, 03, 01);
         final Date date = calendar.getTime();
         return mDriveStreamsManager.getAllFiles()
-                .map(DriveId::asDriveFile)
-                .flatMapMaybe(driveFile -> {
-                    return mDriveStreamsManager.getMetadata(driveFile)
-                            .map(Optional::of)
-                            .onErrorReturnItem(Optional.absent())
-                            .flatMapObservable(metadata -> {
-                                if (metadata.isPresent()) {
-                                    return Observable.just(metadata.get());
-                                } else {
-                                    return Observable.empty();
-                                }
-                            })
-                            .flatMap(metadata -> {
-                                if (metadata.getModifiedDate().after(date)) {
-                                    return Observable.just(metadata);
-                                } else {
-                                    return Observable.empty();
-                                }
-                            })
-                            .map(metadata -> {
-                                return ModelUtils.getFormattedDate(metadata.getModifiedDate(), TimeZone.getDefault(), mContext, "-") + "_" + metadata.getOriginalFilename();
-                            })
-                            .flatMapSingle(filename -> mDriveStreamsManager.download(driveFile, new File(downloadLocation, filename)))
-                            .firstElement();
-                })
-                .toList();
-
+                .flatMap(fileList -> {
+                    List<java.io.File> javaFileList = new ArrayList<>();
+                    for (File f : fileList.getFiles()) {
+                        if (f.getModifiedTime().getValue() > date.getTime()) {
+                            String filename = ModelUtils.getFormattedDate(
+                                    new Date(f.getModifiedTime().getValue()), TimeZone.getDefault(), mContext, "-") + "_" + f.getOriginalFilename();
+                            javaFileList.add(mDriveStreamsManager.download(f.getId(), new java.io.File(downloadLocation, filename)).blockingGet());
+                        }
+                    }
+                    return Single.just(javaFileList);
+                });
     }
 
-
     @NonNull
-    private Single<List<File>> downloadBackupMetadataImages(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean overwriteExistingData,
-                                                            @NonNull final File downloadLocation) {
+    private Single<List<java.io.File>> downloadBackupMetadataImages(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean overwriteExistingData,
+                                                                    @NonNull final java.io.File downloadLocation) {
         Preconditions.checkNotNull(remoteBackupMetadata);
         Preconditions.checkNotNull(downloadLocation);
 
         return deletePreviousTemporaryDatabase(downloadLocation)
-                .<Optional<DriveId>>flatMap(success -> {
+                .<Optional<FileList>>flatMap(success -> {
                     if (success) {
-                        Logger.debug(DriveRestoreDataManager.this, "Fetching drive id");
-                        return mDriveStreamsManager.getDriveId(remoteBackupMetadata.getId()).map(Optional::of);
+                        Logger.debug(DriveRestoreDataManager.this, "Fetching receipts database in drive for this folder");
+                        return mDriveStreamsManager.getFilesInFolder(remoteBackupMetadata.getId().getId(), DatabaseHelper.DATABASE_NAME).map(Optional::of);
                     } else {
                         return Single.just(Optional.absent());
                     }
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .flatMapSingle(driveId -> {
-                    Logger.debug(DriveRestoreDataManager.this, "Converting drive id to smart receipts drive folder");
-                    return Single.just(driveId.asDriveFolder());
-                })
-                .flatMapObservable(driveFolder -> {
-                    Logger.debug(DriveRestoreDataManager.this, "Fetching receipts database in drive for this folder");
-                    return mDriveStreamsManager.getFilesInFolder(driveFolder, DatabaseHelper.DATABASE_NAME);
-                })
-                .take(1)
-                .flatMap(driveId -> {
-                    Logger.debug(DriveRestoreDataManager.this, "Converting database drive id to drive file");
-                    return Observable.just(driveId.asDriveFile());
-                })
-                .flatMapSingle(driveFile -> {
+                .flatMapSingle(fileList -> {
                     Logger.debug(DriveRestoreDataManager.this, "Downloading database file");
-                    final File tempDbFile = new File(downloadLocation, ManualBackupTask.DATABASE_EXPORT_NAME);
-                    return mDriveStreamsManager.download(driveFile, tempDbFile);
+                    final java.io.File tempDbFile = new java.io.File(downloadLocation, ManualBackupTask.DATABASE_EXPORT_NAME);
+                    return mDriveStreamsManager.download(fileList.getFiles().get(0).getId(), tempDbFile);
                 })
-                .flatMap(file -> {
+                .flatMapObservable(file -> {
                     Logger.debug(DriveRestoreDataManager.this, "Retrieving partial receipts from our temporary drive database");
                     return getPartialReceipts(file);
                 })
@@ -195,7 +158,7 @@ public class DriveRestoreDataManager {
                     if (overwriteExistingData) {
                         return true;
                     } else {
-                        final File receiptFile = new File(new File(downloadLocation, partialReceipt.parentTripName), partialReceipt.fileName);
+                        final java.io.File receiptFile = new java.io.File(new java.io.File(downloadLocation, partialReceipt.parentTripName), partialReceipt.fileName);
                         Logger.debug(DriveRestoreDataManager.this, "Filtering out receipt? " + !receiptFile.exists());
                         return !receiptFile.exists();
                     }
@@ -209,9 +172,9 @@ public class DriveRestoreDataManager {
                 .toList();
     }
 
-    private Single<Boolean> deletePreviousTemporaryDatabase(@NonNull final File inDirectory) {
+    private Single<Boolean> deletePreviousTemporaryDatabase(@NonNull final java.io.File inDirectory) {
         return Single.create(emitter -> {
-            final File tempDbFile = new File(inDirectory, ManualBackupTask.DATABASE_EXPORT_NAME);
+            final java.io.File tempDbFile = new java.io.File(inDirectory, ManualBackupTask.DATABASE_EXPORT_NAME);
             if (tempDbFile.exists()) {
                 if (tempDbFile.delete()) {
                     emitter.onSuccess(true);
@@ -224,7 +187,7 @@ public class DriveRestoreDataManager {
         });
     }
 
-    private Observable<PartialReceipt> getPartialReceipts(@NonNull final File temporaryDatabaseFile) {
+    private Observable<PartialReceipt> getPartialReceipts(@NonNull final java.io.File temporaryDatabaseFile) {
         Preconditions.checkNotNull(temporaryDatabaseFile);
 
         return Observable.fromCallable(() -> {
@@ -292,9 +255,9 @@ public class DriveRestoreDataManager {
         }).flatMapIterable(items -> items);
     }
 
-    private Single<PartialReceipt> createParentFolderIfNeeded(@NonNull final PartialReceipt partialReceipt, @NonNull final File inDirectory) {
+    private Single<PartialReceipt> createParentFolderIfNeeded(@NonNull final PartialReceipt partialReceipt, @NonNull final java.io.File inDirectory) {
         return Single.create(emitter -> {
-            final File parentTripFolder = new File(inDirectory, partialReceipt.parentTripName);
+            final java.io.File parentTripFolder = new java.io.File(inDirectory, partialReceipt.parentTripName);
             if (!parentTripFolder.exists()) {
                 if (parentTripFolder.mkdir()) {
                     emitter.onSuccess(partialReceipt);
@@ -307,13 +270,9 @@ public class DriveRestoreDataManager {
         });
     }
 
-    private Single<Optional<File>> downloadFileForReceipt(@NonNull final PartialReceipt partialReceipt, @NonNull final File inDirectory) {
-        return mDriveStreamsManager.getDriveId(partialReceipt.driveId)
-                .flatMap(driveId -> Single.just(driveId.asDriveFile()))
-                .flatMap(driveFile -> {
-                    final File receiptFile = new File(new File(inDirectory, partialReceipt.parentTripName), partialReceipt.fileName);
-                    return mDriveStreamsManager.download(driveFile, receiptFile);
-                })
+    private Single<Optional<java.io.File>> downloadFileForReceipt(@NonNull final PartialReceipt partialReceipt, @NonNull final java.io.File inDirectory) {
+        final java.io.File receiptFile = new java.io.File(new java.io.File(inDirectory, partialReceipt.parentTripName), partialReceipt.fileName);
+        return mDriveStreamsManager.download(partialReceipt.driveId.getId(), receiptFile)
                 .map(Optional::of)
                 .doOnError(throwable -> Logger.error(DriveRestoreDataManager.this, "Failed to download {} in {} with id {}.", partialReceipt.fileName, partialReceipt.parentTripName, partialReceipt.driveId));
     }

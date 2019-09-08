@@ -81,6 +81,10 @@ android {
 
     flavorDimensions "versionType"
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     productFlavors {
         free {
             applicationId "wb.receipts"
@@ -132,7 +136,14 @@ android {
 
         implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
-        implementation "com.google.android.gms:play-services-drive:$DRIVE_API_VERSION"
+        implementation "com.google.http-client:google-http-client-gson:$GOOGLE_HTTP_CLIENT_VERSION"
+        implementation("com.google.api-client:google-api-client-android:$GOOGLE_API_CLIENT_VERSION") {
+            exclude group: 'org.apache.httpcomponents'
+        }
+        implementation("com.google.apis:google-api-services-drive:$GOOGLE_API_SERVICES_VERSION") {
+            exclude group: 'org.apache.httpcomponents'
+        }
+        implementation "com.google.android.gms:play-services-auth:$DRIVE_API_VERSION"
         implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
         implementation "com.google.firebase:firebase-crash:$FIREBASE_CRASH_VERSION"
         implementation "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"

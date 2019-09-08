@@ -151,7 +151,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
         outState.putParcelable(KEY_OUT_TRIP, trip);
