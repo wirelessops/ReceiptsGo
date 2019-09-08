@@ -3,6 +3,7 @@ package co.smartreceipts.android.sync.model.impl;
 import android.os.Parcel;
 import androidx.annotation.NonNull;
 
+import com.google.api.client.util.DateTime;
 import com.google.common.base.Preconditions;
 
 import java.util.Date;
@@ -14,10 +15,10 @@ public class DefaultRemoteBackupMetadata implements RemoteBackupMetadata {
     private final Identifier mIdentifier;
     private final Identifier mSyncDeviceIdentifier;
     private final String mSyncDeviceName;
-    private final Date mLastModifiedDate;
+    private final DateTime mLastModifiedDate;
 
     public DefaultRemoteBackupMetadata(@NonNull Identifier identifier, @NonNull Identifier syncDeviceIdentifier, @NonNull String syncDeviceName,
-                                       @NonNull Date lastModifiedDate) {
+                                       @NonNull DateTime lastModifiedDate) {
         mIdentifier = Preconditions.checkNotNull(identifier);
         mSyncDeviceIdentifier = Preconditions.checkNotNull(syncDeviceIdentifier);
         mSyncDeviceName = Preconditions.checkNotNull(syncDeviceName);
@@ -45,7 +46,7 @@ public class DefaultRemoteBackupMetadata implements RemoteBackupMetadata {
     @NonNull
     @Override
     public Date getLastModifiedDate() {
-        return mLastModifiedDate;
+        return new Date(mLastModifiedDate.getValue());
     }
 
     @Override
@@ -91,14 +92,14 @@ public class DefaultRemoteBackupMetadata implements RemoteBackupMetadata {
         dest.writeParcelable(this.mIdentifier, flags);
         dest.writeParcelable(this.mSyncDeviceIdentifier, flags);
         dest.writeString(this.mSyncDeviceName);
-        dest.writeLong(this.mLastModifiedDate.getTime());
+        dest.writeLong(this.mLastModifiedDate.getValue());
     }
 
     public static final Creator<DefaultRemoteBackupMetadata> CREATOR = new Creator<DefaultRemoteBackupMetadata>() {
         @Override
         public DefaultRemoteBackupMetadata createFromParcel(@NonNull Parcel in) {
             return new DefaultRemoteBackupMetadata((Identifier) in.readParcelable(Identifier.class.getClassLoader()),
-                    (Identifier) in.readParcelable(Identifier.class.getClassLoader()), in.readString(), new Date(in.readLong()));
+                    (Identifier) in.readParcelable(Identifier.class.getClassLoader()), in.readString(), new DateTime(in.readLong()));
         }
 
         @Override

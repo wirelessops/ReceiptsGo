@@ -1,5 +1,6 @@
 package co.smartreceipts.android.sync.drive.managers;
 
+import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
@@ -76,7 +77,8 @@ public class DriveReceiptsManager {
         mSubscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
     }
 
-    public synchronized void initialize() {
+    @SuppressLint("CheckResult")
+    public synchronized void syncReceipts() {
         if (mIsEnabled.get()) {
             if (mNetworkManager.isNetworkAvailable()) {
                 if (!mIsIntializing.getAndSet(true)) {

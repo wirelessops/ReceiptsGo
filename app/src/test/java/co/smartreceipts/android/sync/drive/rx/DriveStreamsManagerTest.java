@@ -2,10 +2,8 @@ package co.smartreceipts.android.sync.drive.rx;
 
 import android.os.Bundle;
 
-import com.google.android.gms.drive.DriveFile;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.Metadata;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.hadisatrio.optional.Optional;
 
 import org.junit.Before;
@@ -15,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +27,7 @@ import io.reactivex.observers.TestObserver;
 import io.reactivex.subjects.Subject;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,21 +51,15 @@ public class DriveStreamsManagerTest {
 
     @Mock
     RemoteBackupMetadata remoteBackupMetadata;
-    
-    @Mock
-    DriveId driveId;
-    
-    @Mock
-    DriveFolder driveFolder;
 
     @Mock
-    DriveFile driveFile;
+    File driveFile;
+
+    @Mock
+    FileList fileList;
     
     @Mock
     Identifier identifier;
-
-    @Mock
-    Metadata metadata;
 
     @Mock
     Throwable criticalSyncError;
@@ -107,33 +99,11 @@ public class DriveStreamsManagerTest {
     }
 
     @Test
-    public void getDriveId() throws Exception {
-        when(driveDataStreams.getDriveId(identifier)).thenReturn(Single.just(driveId));
-
-        final TestObserver<DriveId> testObserver = driveStreamsManager.getDriveId(identifier).test();
-        testObserver.assertValue(driveId);
-        testObserver.assertComplete();
-        testObserver.assertNoErrors();
-    }
-
-    @Test
-    public void getDriveIdErrorIsForwarded() throws Exception {
-        final Exception exception = new Exception("test");
-        when(driveDataStreams.getDriveId(identifier)).thenReturn(Single.error(exception));
-
-        final TestObserver<DriveId> testObserver = driveStreamsManager.getDriveId(identifier).test();
-        testObserver.assertNoValues();
-        testObserver.assertNotComplete();
-        testObserver.assertError(Exception.class);
-        verify(driveErrorStream).onNext(Optional.of(criticalSyncError));
-    }
-
-    @Test
     public void getFilesInFolder() throws Exception {
-        when(driveDataStreams.getFilesInFolder(driveFolder)).thenReturn(Observable.just(driveId));
+        when(driveDataStreams.getFilesInFolder(anyString())).thenReturn(Single.just(fileList));
 
-        final TestObserver<DriveId> testObserver = driveStreamsManager.getFilesInFolder(driveFolder).test();
-        testObserver.assertValue(driveId);
+        final TestObserver<FileList> testObserver = driveStreamsManager.getFilesInFolder(anyString()).test();
+        testObserver.assertValue(fileList);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
@@ -141,9 +111,9 @@ public class DriveStreamsManagerTest {
     @Test
     public void getFilesInFolderErrorIsForwarded() throws Exception {
         final Exception exception = new Exception("test");
-        when(driveDataStreams.getFilesInFolder(driveFolder)).thenReturn(Observable.error(exception));
+        when(driveDataStreams.getFilesInFolder(anyString())).thenReturn(Single.error(exception));
 
-        final TestObserver<DriveId> testObserver = driveStreamsManager.getFilesInFolder(driveFolder).test();
+        final TestObserver<FileList> testObserver = driveStreamsManager.getFilesInFolder(anyString()).test();
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
         testObserver.assertError(Exception.class);
@@ -153,10 +123,12 @@ public class DriveStreamsManagerTest {
     @Test
     public void getFilesInFolderForName() throws Exception {
         final String filename = "filename";
-        when(driveDataStreams.getFilesInFolder(driveFolder, filename)).thenReturn(Observable.just(driveId));
+        final String folderId = "folderId";
 
-        final TestObserver<DriveId> testObserver = driveStreamsManager.getFilesInFolder(driveFolder, filename).test();
-        testObserver.assertValue(driveId);
+        when(driveDataStreams.getFilesInFolder(folderId, filename)).thenReturn(Single.just(fileList));
+
+        final TestObserver<FileList> testObserver = driveStreamsManager.getFilesInFolder(folderId, filename).test();
+        testObserver.assertValue(fileList);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
@@ -164,10 +136,11 @@ public class DriveStreamsManagerTest {
     @Test
     public void getFilesInFolderErrorIsForwardedForName() throws Exception {
         final String filename = "filename";
+        final String folderId = "folderId";
         final Exception exception = new Exception("test");
-        when(driveDataStreams.getFilesInFolder(driveFolder, filename)).thenReturn(Observable.error(exception));
+        when(driveDataStreams.getFilesInFolder(folderId, filename)).thenReturn(Single.error(exception));
 
-        final TestObserver<DriveId> testObserver = driveStreamsManager.getFilesInFolder(driveFolder, filename).test();
+        final TestObserver<FileList> testObserver = driveStreamsManager.getFilesInFolder(folderId, filename).test();
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
         testObserver.assertError(Exception.class);
@@ -176,10 +149,10 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void getMetadata() throws Exception {
-        when(driveDataStreams.getMetadata(driveFile)).thenReturn(Single.just(metadata));
+        when(driveDataStreams.getMetadata(anyString())).thenReturn(Single.just(driveFile));
 
-        final TestObserver<Metadata> testObserver = driveStreamsManager.getMetadata(driveFile).test();
-        testObserver.assertValue(metadata);
+        final TestObserver<File> testObserver = driveStreamsManager.getMetadata(anyString()).test();
+        testObserver.assertValue(driveFile);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
@@ -187,9 +160,9 @@ public class DriveStreamsManagerTest {
     @Test
     public void getMetadataErrorIsForwarded() throws Exception {
         final Exception exception = new Exception("test");
-        when(driveDataStreams.getMetadata(driveFile)).thenReturn(Single.error(exception));
+        when(driveDataStreams.getMetadata(anyString())).thenReturn(Single.error(exception));
 
-        final TestObserver<Metadata> testObserver = driveStreamsManager.getMetadata(driveFile).test();
+        final TestObserver<File> testObserver = driveStreamsManager.getMetadata(anyString()).test();
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
         testObserver.assertError(Exception.class);
@@ -198,9 +171,9 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void uploadFileToDriveWithSyncState() throws Exception {
-        final File file = new File("/");
-        when(driveDataStreams.getSmartReceiptsFolder()).thenReturn(Observable.just(driveFolder));
-        when(driveDataStreams.createFileInFolder(driveFolder, file)).thenReturn(Single.just(driveFile));
+        final java.io.File file = new java.io.File("/");
+        when(driveDataStreams.getSmartReceiptsFolder()).thenReturn(Observable.just(driveFile));
+        when(driveDataStreams.createFileInFolder(driveFile, file)).thenReturn(Single.just(driveFile));
         when(driveStreamMappings.postInsertSyncState(currentSyncState, driveFile)).thenReturn(newSyncState);
 
         final TestObserver<SyncState> testObserver = driveStreamsManager.uploadFileToDrive(currentSyncState, file).test();
@@ -211,7 +184,7 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void uploadFileToDriveWithSyncStateErrorIsForwarded() throws Exception {
-        final File file = new File("/");
+        final java.io.File file = new java.io.File("/");
         final Exception exception = new Exception("test");
         when(driveDataStreams.getSmartReceiptsFolder()).thenReturn(Observable.error(exception));
 
@@ -225,11 +198,10 @@ public class DriveStreamsManagerTest {
     @Test
     public void uploadFileToDrive() throws Exception {
         final String id = "id";
-        final File file = new File("/");
-        when(driveDataStreams.getSmartReceiptsFolder()).thenReturn(Observable.just(driveFolder));
-        when(driveDataStreams.createFileInFolder(driveFolder, file)).thenReturn(Single.just(driveFile));
-        when(driveFile.getDriveId()).thenReturn(driveId);
-        when(driveId.getResourceId()).thenReturn(id);
+        final java.io.File file = new java.io.File("/");
+        when(driveDataStreams.getSmartReceiptsFolder()).thenReturn(Observable.just(driveFile));
+        when(driveDataStreams.createFileInFolder(driveFile, file)).thenReturn(Single.just(driveFile));
+        when(driveFile.getId()).thenReturn(id);
 
         final TestObserver<Identifier> testObserver = driveStreamsManager.uploadFileToDrive(file).test();
         testObserver.assertValue(new Identifier(id));
@@ -239,7 +211,7 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void uploadFileToDriveErrorIsForwarded() throws Exception {
-        final File file = new File("/");
+        final java.io.File file = new java.io.File("/");
         final Exception exception = new Exception("test");
         when(driveDataStreams.getSmartReceiptsFolder()).thenReturn(Observable.error(exception));
 
@@ -252,7 +224,7 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void updateDriveFileWithSyncState() throws Exception {
-        final File file = new File("/");
+        final java.io.File file = new java.io.File("/");
         when(currentSyncState.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
         when(driveDataStreams.updateFile(identifier, file)).thenReturn(Single.just(driveFile));
         when(driveStreamMappings.postUpdateSyncState(currentSyncState, driveFile)).thenReturn(newSyncState);
@@ -265,7 +237,7 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void updateDriveFileWithSyncStateWithoutIdentifier() throws Exception {
-        final File file = new File("/");
+        final java.io.File file = new java.io.File("/");
         when(currentSyncState.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
 
         final TestObserver<SyncState> testObserver = driveStreamsManager.updateDriveFile(currentSyncState, file).test();
@@ -277,11 +249,10 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void updateDriveFileWithIdentifier() throws Exception {
-        final File file = new File("/");
+        final java.io.File file = new java.io.File("/");
         final String id = "id";
         when(driveDataStreams.updateFile(identifier, file)).thenReturn(Single.just(driveFile));
-        when(driveFile.getDriveId()).thenReturn(driveId);
-        when(driveId.getResourceId()).thenReturn(id);
+        when(driveFile.getId()).thenReturn(id);
 
         final TestObserver<Identifier> testObserver = driveStreamsManager.updateDriveFile(identifier, file).test();
         testObserver.assertValue(new Identifier(id));
@@ -291,7 +262,7 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void updateDriveFileWithIdentifierErrorIsForwarded() throws Exception {
-        final File file = new File("/");
+        final java.io.File file = new java.io.File("/");
         final Exception exception = new Exception("test");
         when(driveDataStreams.updateFile(identifier, file)).thenReturn(Single.error(exception));
 
@@ -381,10 +352,11 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void download() throws Exception {
-        final File file = new File("/");
-        when(driveDataStreams.download(driveFile, file)).thenReturn(Single.just(file));
+        final String fileId = "fileId";
+        final java.io.File file = new java.io.File("/");
+        when(driveDataStreams.download(fileId, file)).thenReturn(Single.just(file));
 
-        final TestObserver<File> testObserver = driveStreamsManager.download(driveFile, file).test();
+        final TestObserver<java.io.File> testObserver = driveStreamsManager.download(fileId, file).test();
         testObserver.assertValue(file);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
@@ -392,11 +364,12 @@ public class DriveStreamsManagerTest {
 
     @Test
     public void downloadErrorIsForwarded() throws Exception {
+        final String fileId = "fileId";
         final Exception exception = new Exception("test");
-        final File file = new File("/");
-        when(driveDataStreams.download(driveFile, file)).thenReturn(Single.error(exception));
+        final java.io.File file = new java.io.File("/");
+        when(driveDataStreams.download(fileId, file)).thenReturn(Single.error(exception));
 
-        final TestObserver<File> testObserver = driveStreamsManager.download(driveFile, file).test();
+        final TestObserver<java.io.File> testObserver = driveStreamsManager.download(fileId, file).test();
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
         testObserver.assertError(Exception.class);

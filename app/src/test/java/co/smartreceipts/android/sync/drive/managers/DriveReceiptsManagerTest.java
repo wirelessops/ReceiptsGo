@@ -408,7 +408,7 @@ public class DriveReceiptsManagerTest {
         when(syncState2.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(true);
         when(receiptsTable.getUnsynced(trip, SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
 
-        spiedManager.initialize();
+        spiedManager.syncReceipts();
 
         verify(spiedManager).handleInsertOrUpdateInternal(receipt1);
         verify(spiedManager).handleDeleteInternal(receipt2);
@@ -428,7 +428,7 @@ public class DriveReceiptsManagerTest {
         when(receiptsTable.getUnsynced(trip, SyncProvider.GoogleDrive)).thenReturn(Single.just(Arrays.asList(receipt1, receipt2)));
         when(networkManager.isNetworkAvailable()).thenReturn(false);
 
-        spiedManager.initialize();
+        spiedManager.syncReceipts();
 
         verify(spiedManager, never()).handleInsertOrUpdateInternal(receipt1);
         verify(spiedManager, never()).handleDeleteInternal(receipt2);

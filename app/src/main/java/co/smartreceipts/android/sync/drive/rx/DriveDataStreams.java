@@ -1,63 +1,30 @@
 package co.smartreceipts.android.sync.drive.rx;
 
 import android.content.Context;
-import android.net.Uri;
 import androidx.annotation.NonNull;
-import android.text.TextUtils;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallbacks;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveContents;
-import com.google.android.gms.drive.DriveFile;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.DriveResource;
-import com.google.android.gms.drive.ExecutionOptions;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataBuffer;
-import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.metadata.CustomPropertyKey;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.Query;
-import com.google.android.gms.drive.query.SearchableField;
-import com.google.android.gms.drive.query.SortOrder;
-import com.google.android.gms.drive.query.SortableField;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import co.smartreceipts.android.persistence.DatabaseHelper;
+import co.smartreceipts.android.sync.drive.DriveServiceHelper;
 import co.smartreceipts.android.sync.drive.device.DeviceMetadata;
 import co.smartreceipts.android.sync.drive.device.GoogleDriveSyncMetadata;
 import co.smartreceipts.android.sync.drive.rx.debug.DriveFilesAndFoldersPrinter;
-import co.smartreceipts.android.sync.drive.services.DriveIdUploadCompleteCallback;
-import co.smartreceipts.android.sync.drive.services.DriveIdUploadMetadata;
-import co.smartreceipts.android.sync.drive.services.DriveUploadCompleteManager;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.android.sync.model.impl.DefaultRemoteBackupMetadata;
 import co.smartreceipts.android.sync.model.impl.Identifier;
-import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.ReplaySubject;
-import wb.android.storage.StorageManager;
 
 class DriveDataStreams {
 
@@ -67,575 +34,226 @@ class DriveDataStreams {
      * Saves the randomly generated UDID that is associated with this device. We leverage this in order to determine
      * if this is a "new" install (even on the same device) or is an existing sync for this device.
      */
-    private static final CustomPropertyKey SMART_RECEIPTS_FOLDER_KEY = new CustomPropertyKey("smart_receipts_id", CustomPropertyKey.PUBLIC);
+    private static final String SMART_RECEIPTS_FOLDER_KEY = "smart_receipts_id";
+    private static final String FOLDER_NAME_QUERY = "name = 'Smart Receipts'";
+    private static final String FOLDER_PARENTS_QUERY = "' in parents and name = 'receipts.db'";
+    private static final String APP_DATA_FOLDER_NAME = "appDataFolder";
+    private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
+    private static final String PROPERTIES_QUERY = "properties has { key='smart_receipts_id' and value='";
 
-    private final GoogleApiClient mGoogleApiClient;
-    private final GoogleDriveSyncMetadata mGoogleDriveSyncMetadata;
-    private final Context mContext;
-    private final DeviceMetadata mDeviceMetadata;
-    private final DriveUploadCompleteManager mDriveUploadCompleteManager;
-    private final Executor mExecutor;
-    private ReplaySubject<DriveFolder> mSmartReceiptsFolderSubject;
+    private final DriveServiceHelper driveServiceHelper;
+    private final GoogleDriveSyncMetadata googleDriveSyncMetadata;
+    private final DeviceMetadata deviceMetadata;
 
-    public DriveDataStreams(@NonNull Context context, @NonNull GoogleApiClient googleApiClient,
+    private ReplaySubject<File> smartReceiptsFolderSubject;
+
+    public DriveDataStreams(@NonNull Context context,
+                            @NonNull DriveServiceHelper driveServiceHelper,
+                            @NonNull GoogleDriveSyncMetadata googleDriveSyncMetadata) {
+        this(driveServiceHelper, googleDriveSyncMetadata, new DeviceMetadata(context));
+    }
+
+    public DriveDataStreams(@NonNull DriveServiceHelper driveServiceHelper,
                             @NonNull GoogleDriveSyncMetadata googleDriveSyncMetadata,
-                            @NonNull DriveUploadCompleteManager driveUploadCompleteManager) {
-        this(googleApiClient, context, googleDriveSyncMetadata, new DeviceMetadata(context), driveUploadCompleteManager, Executors.newCachedThreadPool());
+                            @NonNull DeviceMetadata deviceMetadata) {
+        this.driveServiceHelper = Preconditions.checkNotNull(driveServiceHelper);
+        this.googleDriveSyncMetadata = Preconditions.checkNotNull(googleDriveSyncMetadata);
+        this.deviceMetadata = Preconditions.checkNotNull(deviceMetadata);
     }
 
-    public DriveDataStreams(@NonNull GoogleApiClient googleApiClient, @NonNull Context context, @NonNull GoogleDriveSyncMetadata googleDriveSyncMetadata,
-                            @NonNull DeviceMetadata deviceMetadata, @NonNull DriveUploadCompleteManager driveUploadCompleteManager, @NonNull Executor executor) {
-        mGoogleApiClient = Preconditions.checkNotNull(googleApiClient);
-        mContext = Preconditions.checkNotNull(context.getApplicationContext());
-        mGoogleDriveSyncMetadata = Preconditions.checkNotNull(googleDriveSyncMetadata);
-        mDeviceMetadata = Preconditions.checkNotNull(deviceMetadata);
-        mDriveUploadCompleteManager = Preconditions.checkNotNull(driveUploadCompleteManager);
-        mExecutor = Preconditions.checkNotNull(executor);
-    }
-
+    @NonNull
     public synchronized Single<List<RemoteBackupMetadata>> getSmartReceiptsFolders() {
-        return Single.create(emitter -> {
-            final Query folderQuery = new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, SMART_RECEIPTS_FOLDER)).build();
-            Drive.DriveApi.query(mGoogleApiClient, folderQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                @Override
-                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                    try {
-                        final List<Metadata> folderMetadataList = new ArrayList<>();
-                        for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
-                            if (isValidSmartReceiptsFolder(metadata)) {
-                                Logger.info(DriveDataStreams.this, "Tentatively found a Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
-                                folderMetadataList.add(metadata);
-                            } else {
-                                Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
-                            }
-                        }
-
-                        final AtomicInteger resultsCount = new AtomicInteger(folderMetadataList.size());
-                        final List<RemoteBackupMetadata> resultsList = new ArrayList<>();
-                        if (resultsCount.get() == 0) {
-                            emitter.onSuccess(resultsList);
+        return driveServiceHelper.querySingle(FOLDER_NAME_QUERY)
+                .flatMap(fileList -> {
+                    final List<File> folderFileList = new ArrayList<>();
+                    for (final File file : fileList.getFiles()) {
+                        if (isValidSmartReceiptsFolder(file)) {
+                            Logger.info(DriveDataStreams.this, "Tentatively found a Smart Receipts folder during metadata pre-check: {}", file.getId());
+                            folderFileList.add(file);
                         } else {
-                            final Query databaseQuery = new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, DatabaseHelper.DATABASE_NAME)).build();
-                            for (final Metadata metadata : folderMetadataList) {
-                                final String validResourceId = metadata.getDriveId().getResourceId();
-                                if (validResourceId != null) {
-                                    final Identifier driveFolderId = new Identifier(validResourceId);
-                                    final Map<CustomPropertyKey, String> customPropertyMap = metadata.getCustomProperties();
-                                    final Identifier syncDeviceIdentifier;
-                                    if (customPropertyMap != null && customPropertyMap.containsKey(SMART_RECEIPTS_FOLDER_KEY)) {
-                                        syncDeviceIdentifier = new Identifier(customPropertyMap.get(SMART_RECEIPTS_FOLDER_KEY));
-                                        Logger.info(DriveDataStreams.this, "Found valid Smart Receipts folder a known device id");
-                                    } else {
-                                        syncDeviceIdentifier = new Identifier("UnknownDevice");
-                                        Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder without a tagged device key");
-                                    }
+                            Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", file.getId());
+                        }
+                    }
+                    return Single.just(folderFileList);
+                })
+                .flatMap(files -> Observable.fromIterable(files)
+                        .flatMap(file -> {
+                            String fileId = file.getId();
+                            String queryStr = "'".concat(fileId).concat(FOLDER_PARENTS_QUERY);
+                            return driveServiceHelper.queryObservable(queryStr)
+                                    .map(databaseFileList -> {
+                                        // Get the folder resource id
+                                        final String validResourceId = file.getId();
+                                        final Identifier driveFolderId = new Identifier(validResourceId);
+                                        final Map<String, String> customPropertyMap = file.getProperties();
+                                        Logger.debug(DriveDataStreams.this, "Found existing Smart Receipts folder with id: {}", driveFolderId);
 
-                                    Logger.debug(DriveDataStreams.this, "Found existing Smart Receipts folder with id: {}", driveFolderId);
-                                    final String deviceName = metadata.getDescription() != null ? metadata.getDescription() : "";
-                                    final Date parentFolderLastModifiedDate = metadata.getModifiedDate();
-                                    metadata.getDriveId().asDriveFolder().queryChildren(mGoogleApiClient, databaseQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                                        @Override
-                                        public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                                            try {
-                                                Date lastModifiedDate = parentFolderLastModifiedDate;
-                                                for (final Metadata databaseMetadata : metadataBufferResult.getMetadataBuffer()) {
-                                                    if (databaseMetadata.getModifiedDate().getTime() > lastModifiedDate.getTime()) {
-                                                        lastModifiedDate = databaseMetadata.getModifiedDate();
-                                                    }
-                                                }
-                                                resultsList.add(new DefaultRemoteBackupMetadata(driveFolderId, syncDeviceIdentifier, deviceName, lastModifiedDate));
-                                                Logger.debug(DriveDataStreams.this, "Successfully queried the backup metadata for the Smart Receipts folder with id: {}", driveFolderId);
-                                            } finally {
-                                                metadataBufferResult.getMetadataBuffer().release();
-                                                if (resultsCount.decrementAndGet() == 0) {
-                                                    emitter.onSuccess(resultsList);
-                                                }
+                                        // Get the device id for the device that created this backup
+                                        final Identifier syncDeviceIdentifier;
+                                        if (customPropertyMap != null && customPropertyMap.containsKey(SMART_RECEIPTS_FOLDER_KEY)) {
+                                            syncDeviceIdentifier = new Identifier(customPropertyMap.get(SMART_RECEIPTS_FOLDER_KEY));
+                                            Logger.info(DriveDataStreams.this, "Found valid Smart Receipts folder a known device id");
+                                        } else {
+                                            syncDeviceIdentifier = new Identifier("UnknownDevice");
+                                            Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder without a tagged device key");
+                                        }
+
+                                        // Get the metadata (i.e. device name like Pixel)
+                                        final String deviceName = file.getDescription() != null ? file.getDescription() : "";
+
+                                        // Set the last modified date, using the last database update
+                                        DateTime lastModifiedDate = file.getModifiedTime();
+                                        for (final File f : databaseFileList.getFiles()) {
+                                            if (f.getModifiedTime().getValue() > lastModifiedDate.getValue()) {
+                                                lastModifiedDate = f.getModifiedTime();
                                             }
                                         }
 
-                                        @Override
-                                        public void onFailure(@NonNull Status status) {
-                                            Logger.error(DriveDataStreams.this, "Failed to query a database within the parent folder: {}", status);
-                                            emitter.onError(new IOException(status.getStatusMessage()));
-                                        }
-                                    });
-                                } else {
-                                    Logger.warn(DriveDataStreams.this, "Found resource without a valid drive id. Decrementing the remaining total");
-                                    if (resultsCount.decrementAndGet() == 0) {
-                                        emitter.onSuccess(resultsList);
-                                    }
-                                }
-                            }
-                        }
-                    } finally {
-                        metadataBufferResult.getMetadataBuffer().release();
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to query a Smart Receipts folder with status: " + status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-        });
+                                        // Return all of this via our internal database wrapper
+                                        return new DefaultRemoteBackupMetadata(driveFolderId, syncDeviceIdentifier, deviceName, lastModifiedDate);
+                                    })
+                                    .doOnNext(backupMetadata -> Logger.debug(DriveDataStreams.this, "Successfully queried the backup metadata for the Smart Receipts folder with id: {}", backupMetadata.getId()))
+                                    .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to query a database within the parent folder: {}", fileId));
+                        })
+                        .toList()
+                        .flatMap(defaultRemoteBackupMetadataList -> {
+                            // Note: We create this new list to cast to the interface variant of the list
+                            return Single.just(new ArrayList<>(defaultRemoteBackupMetadataList));
+                        }));
     }
 
-    public synchronized Observable<DriveFolder> getSmartReceiptsFolder() {
-        if (mSmartReceiptsFolderSubject == null) {
+    @NonNull
+    public synchronized Observable<File> getSmartReceiptsFolder() {
+        if (smartReceiptsFolderSubject == null) {
             Logger.info(this, "Creating new replay subject for the Smart Receipts folder");
-            mSmartReceiptsFolderSubject = ReplaySubject.create();
-
-            Single.<DriveFolder>create(emitter -> {
-                final Query folderQuery = new Query.Builder().addFilter(Filters.eq(SMART_RECEIPTS_FOLDER_KEY, mGoogleDriveSyncMetadata.getDeviceIdentifier().getId())).build();
-                Drive.DriveApi.query(mGoogleApiClient, folderQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                    @Override
-                    public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                        try {
-                            DriveId folderId = null;
-                            for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
-                                if (isValidSmartReceiptsFolder(metadata)) {
-                                    folderId = metadata.getDriveId();
-                                    break;
-                                } else {
-                                    Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", metadata.getDriveId().getResourceId());
-                                }
-                            }
-
-                            if (folderId != null) {
-                                Logger.info(DriveDataStreams.this, "Found an existing Google Drive folder for Smart Receipts");
-                                emitter.onSuccess(folderId.asDriveFolder());
+            smartReceiptsFolderSubject = ReplaySubject.create();
+            driveServiceHelper.querySingle(PROPERTIES_QUERY
+                    .concat(googleDriveSyncMetadata.getDeviceIdentifier().getId()).concat("' }"))
+                    .map(fileList -> {
+                        File fileId = null;
+                        for (final File file : fileList.getFiles()) {
+                            if (isValidSmartReceiptsFolder(file)) {
+                                fileId = file;
+                                break;
                             } else {
-                                Logger.info(DriveDataStreams.this, "Failed to find an existing Smart Receipts folder for this device. Creating a new one...");
-                                final MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(SMART_RECEIPTS_FOLDER).setDescription(mDeviceMetadata.getDeviceName()).setCustomProperty(SMART_RECEIPTS_FOLDER_KEY, mGoogleDriveSyncMetadata.getDeviceIdentifier().getId()).build();
-                                Drive.DriveApi.getAppFolder(mGoogleApiClient).createFolder(mGoogleApiClient, changeSet).setResultCallback(new ResultCallbacks<DriveFolder.DriveFolderResult>() {
-                                    @Override
-                                    public void onSuccess(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
-                                        emitter.onSuccess(driveFolderResult.getDriveFolder());
-                                    }
-
-                                    @Override
-                                    public void onFailure(@NonNull Status status) {
-                                        Logger.error(DriveDataStreams.this, "Failed to create a home folder with status: {}", status);
-                                        emitter.onError(new IOException(status.getStatusMessage()));
-                                    }
-                                });
+                                Logger.warn(DriveDataStreams.this, "Found an invalid Smart Receipts folder during metadata pre-check: {}", file.getId());
                             }
-                        } finally {
-                            metadataBufferResult.getMetadataBuffer().release();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Status status) {
-                        Logger.error(DriveDataStreams.this, "Failed to query a Smart Receipts folder with status: {}", status);
-                        emitter.onError(new IOException(status.getStatusMessage()));
-                    }
-                });
-            })
+                        return Optional.ofNullable(fileId);
+                    })
+                    .flatMap(driveIdOptional -> {
+                        if (driveIdOptional.isPresent()) {
+                            Logger.info(DriveDataStreams.this, "Found an existing Google Drive folder for Smart Receipts");
+                            return Single.just(driveIdOptional.get());
+                        } else {
+                            Logger.info(DriveDataStreams.this, "Failed to find an existing Smart Receipts folder for this device. Creating a new one...");
+                            Map<String, String> properties = new HashMap<>();
+                            properties.put(SMART_RECEIPTS_FOLDER_KEY, googleDriveSyncMetadata.getDeviceIdentifier().getId());
+                            return driveServiceHelper.createFile(SMART_RECEIPTS_FOLDER, FOLDER_MIME_TYPE, deviceMetadata.getDeviceName(), properties, APP_DATA_FOLDER_NAME, null)
+                                    .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to create a home folder with error: {}", throwable.getMessage()));
+                        }
+                    })
                     .toObservable()
-                    .subscribe(mSmartReceiptsFolderSubject);
+                    .subscribe(smartReceiptsFolderSubject);
         }
-        return mSmartReceiptsFolderSubject;
+        return smartReceiptsFolderSubject;
     }
 
     @NonNull
-    public synchronized Single<DriveId> getDriveId(@NonNull final Identifier identifier) {
-        Preconditions.checkNotNull(identifier);
-
-        return Single.create(emitter -> Drive.DriveApi.fetchDriveId(mGoogleApiClient, identifier.getId()).setResultCallback(new ResultCallbacks<DriveApi.DriveIdResult>() {
-            @Override
-            public void onSuccess(@NonNull DriveApi.DriveIdResult driveIdResult) {
-                final DriveId driveId = driveIdResult.getDriveId();
-                Logger.debug(DriveDataStreams.this, "Successfully fetch file with id: {}", driveId);
-                emitter.onSuccess(driveId);
-            }
-
-            @Override
-            public void onFailure(@NonNull Status status) {
-                Logger.error(DriveDataStreams.this, "Failed to fetch {} with status: {}", identifier, status);
-                emitter.onError(new IOException(status.getStatusMessage()));
-            }
-        }));
-    }
-
-    public synchronized Observable<DriveId> getAllFiles() {
-        return Observable.create(emitter -> {
-            final SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.MODIFIED_DATE).build();
-            final Query query = new Query.Builder().setSortOrder(sortOrder).build();
-            Drive.DriveApi.query(mGoogleApiClient, query).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-
-                @Override
-                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                    try {
-                        for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
-                            final boolean isFolder = metadata.isFolder();
-                            if (!isFolder) {
-                                emitter.onNext(metadata.getDriveId());
-                            }
-                        }
-                    } finally {
-                        metadataBufferResult.getMetadataBuffer().release();
-                        emitter.onComplete();
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveFilesAndFoldersPrinter.class, "Failed to query with status: " + status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-        });
+    public synchronized Single<FileList> getAllFiles() {
+        return driveServiceHelper.getAllFilesSortedByTime()
+                .doOnError(throwable -> Logger.error(DriveFilesAndFoldersPrinter.class, "Failed to query with status: {}" , throwable.getMessage()));
     }
 
     @NonNull
-    public synchronized Observable<DriveId> getFilesInFolder(@NonNull final DriveFolder driveFolder) {
-        Preconditions.checkNotNull(driveFolder);
+    public synchronized Single<FileList> getFilesInFolder(@NonNull final String folderId) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(folderId);
 
-        return Observable.create(emitter -> {
-            final Query folderQuery = new Query.Builder().build();
-            driveFolder.queryChildren(mGoogleApiClient, folderQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                @Override
-                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                    try {
-                        for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
-                            if (!metadata.isTrashed()) {
-                                emitter.onNext(metadata.getDriveId());
-                            }
-                        }
-                        emitter.onComplete();
-                    } finally {
-                        metadataBufferResult.getMetadataBuffer().release();
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to query files in folder with status: {}", status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-
-        });
+        return driveServiceHelper.getFilesInFolder(folderId)
+                .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to query files in folder with status: {}", throwable.getMessage()));
     }
 
     @NonNull
-    public synchronized Observable<DriveId> getFilesInFolder(@NonNull final DriveFolder driveFolder, @NonNull final String fileName) {
-        Preconditions.checkNotNull(driveFolder);
+    public synchronized Single<FileList> getFilesInFolder(@NonNull final String folderId, @NonNull final String fileName) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(folderId);
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(fileName);
 
-        return Observable.create(emitter -> {
-            final Query folderQuery = new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, fileName)).build();
-            driveFolder.queryChildren(mGoogleApiClient, folderQuery).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                @Override
-                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                    try {
-                        for (final Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
-                            if (!metadata.isTrashed()) {
-                                emitter.onNext(metadata.getDriveId());
-                            }
-                        }
-                        emitter.onComplete();
-                    } finally {
-                        metadataBufferResult.getMetadataBuffer().release();
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to query files in folder with status: {}", status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-
-        });
+        return driveServiceHelper.getFilesByNameInFolder(folderId, fileName)
+                .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to query files in folder by name with status: {}", throwable.getMessage()));
     }
 
     @NonNull
-    public synchronized Single<Metadata> getMetadata(@NonNull final DriveFile driveFile) {
-        Preconditions.checkNotNull(driveFile);
+    public synchronized Single<File> getMetadata(@NonNull final String fileId) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(fileId);
 
-        return Single.create(emitter -> {
-            driveFile.getMetadata(mGoogleApiClient).setResultCallback(new ResultCallbacks<DriveResource.MetadataResult>() {
-                @Override
-                public void onSuccess(@NonNull DriveResource.MetadataResult metadataResult) {
-                    emitter.onSuccess(metadataResult.getMetadata());
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to get metadata for file with status: {}", status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-        });
+        return driveServiceHelper.getFile(fileId)
+                .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to get metadata for file with status: {}", throwable.getMessage()));
     }
 
     @NonNull
-    public synchronized Single<List<Metadata>> getParents(@NonNull final DriveFile driveFile) {
-        Preconditions.checkNotNull(driveFile);
-
-        return Single.create(emitter -> {
-            driveFile.listParents(mGoogleApiClient).setResultCallback(new ResultCallbacks<DriveApi.MetadataBufferResult>() {
-                @Override
-                public void onSuccess(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                    final MetadataBuffer buffer = metadataBufferResult.getMetadataBuffer();
-                    try {
-                        final List<Metadata> results = new ArrayList<>();
-                        for (Metadata metadata : buffer) {
-                            results.add(metadata);
-                        }
-                        emitter.onSuccess(results);
-                    } finally {
-                        buffer.release();
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to get parents for file with status: {}", status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-        });
-    }
-
-    public synchronized Single<DriveFile> createFileInFolder(@NonNull final DriveFolder folder, @NonNull final File file) {
+    public synchronized Single<File> createFileInFolder(@NonNull final File folder, @NonNull final java.io.File file) {
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(folder);
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(file);
 
-        return Single.create(emitter -> {
-            Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(new ResultCallbacks<DriveApi.DriveContentsResult>() {
-                @Override
-                public void onSuccess(@NonNull final DriveApi.DriveContentsResult driveContentsResult) {
-                    mExecutor.execute(() -> {
-                        final DriveContents driveContents = driveContentsResult.getDriveContents();
-                        OutputStream outputStream = null;
-                        FileInputStream fileInputStream = null;
-                        try {
-                            outputStream = driveContents.getOutputStream();
-                            fileInputStream = new FileInputStream(file);
-                            byte[] buffer = new byte[8192];
-                            int read;
-                            while ((read = fileInputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, read);
-                            }
-
-                            final Uri uri = Uri.fromFile(file);
-                            final String mimeType = UriUtils.getMimeType(uri, mContext.getContentResolver());
-                            final MetadataChangeSet.Builder builder = new MetadataChangeSet.Builder();
-                            builder.setTitle(file.getName());
-                            if (!TextUtils.isEmpty(mimeType)) {
-                                builder.setMimeType(mimeType);
-                            }
-                            final MetadataChangeSet changeSet = builder.build();
-                            final String trackingTag = UUID.randomUUID().toString();
-                            folder.createFile(mGoogleApiClient, changeSet, driveContents, new ExecutionOptions.Builder().setNotifyOnCompletion(true).setTrackingTag(trackingTag).build()).setResultCallback(new ResultCallbacks<DriveFolder.DriveFileResult>() {
-                                @Override
-                                public void onSuccess(@NonNull DriveFolder.DriveFileResult driveFileResult) {
-                                    final DriveFile driveFile = driveFileResult.getDriveFile();
-                                    final DriveId driveFileId = driveFile.getDriveId();
-                                    if (driveFileId.getResourceId() == null) {
-                                        final DriveIdUploadMetadata uploadMetadata = new DriveIdUploadMetadata(driveFileId, trackingTag);
-                                        mDriveUploadCompleteManager.registerCallback(uploadMetadata, new DriveIdUploadCompleteCallback() {
-                                            @Override
-                                            public void onSuccess(@NonNull DriveId fetchedDriveId) {
-                                                emitter.onSuccess(fetchedDriveId.asDriveFile());
-                                            }
-
-                                            @Override
-                                            public void onFailure(@NonNull DriveId driveId) {
-                                                emitter.onError(new IOException("Failed to receive a Drive Id"));
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(@NonNull Status status) {
-                                    Logger.error(DriveDataStreams.this, "Failed to create file with status: {}", status);
-                                    emitter.onError(new IOException(status.getStatusMessage()));
-                                }
-                            });
-                        } catch (IOException e) {
-                            Logger.error(DriveDataStreams.this, "Failed write file with exception: ", e);
-                            driveContents.discard(mGoogleApiClient);
-                            emitter.onError(e);
-                        } finally {
-                            StorageManager.closeQuietly(fileInputStream);
-                            StorageManager.closeQuietly(outputStream);
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to create file with status: " + status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-        });
+        return driveServiceHelper.createFile(file.getName(), null, null, null, folder.getId(), file);
     }
 
-    public synchronized Single<DriveFile> updateFile(@NonNull final Identifier driveIdentifier, @NonNull final File file) {
+    @NonNull
+    public synchronized Single<File> updateFile(@NonNull final Identifier driveIdentifier, @NonNull final java.io.File file) {
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(driveIdentifier);
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(file);
 
-        return Single.create(emitter -> {
-            Drive.DriveApi.fetchDriveId(mGoogleApiClient, driveIdentifier.getId()).setResultCallback(new ResultCallbacks<DriveApi.DriveIdResult>() {
-                @Override
-                public void onSuccess(@NonNull DriveApi.DriveIdResult driveIdResult) {
-                    final DriveId driveId = driveIdResult.getDriveId();
-                    final DriveFile driveFile = driveId.asDriveFile();
-                    driveFile.open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(new ResultCallbacks<DriveApi.DriveContentsResult>() {
-                        @Override
-                        public void onSuccess(@NonNull final DriveApi.DriveContentsResult driveContentsResult) {
-                            mExecutor.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    final DriveContents driveContents = driveContentsResult.getDriveContents();
-                                    OutputStream outputStream = null;
-                                    FileInputStream fileInputStream = null;
-                                    try {
-                                        outputStream = driveContents.getOutputStream();
-                                        fileInputStream = new FileInputStream(file);
-                                        byte[] buffer = new byte[8192];
-                                        int read;
-                                        while ((read = fileInputStream.read(buffer)) != -1) {
-                                            outputStream.write(buffer, 0, read);
-                                        }
-
-                                        driveContents.commit(mGoogleApiClient, null).setResultCallback(new ResultCallbacks<Status>() {
-                                            @Override
-                                            public void onSuccess(@NonNull Status status) {
-                                                emitter.onSuccess(driveFile);
-                                            }
-
-                                            @Override
-                                            public void onFailure(@NonNull Status status) {
-                                                Logger.error(DriveDataStreams.this, "Failed to updateDriveFile file with status: {}", status);
-                                                emitter.onError(new IOException(status.getStatusMessage()));
-                                            }
-                                        });
-                                    } catch (IOException e) {
-                                        Logger.error(DriveDataStreams.this, "Failed write file with exception: ", e);
-                                        driveContents.discard(mGoogleApiClient);
-                                        emitter.onError(e);
-                                    } finally {
-                                        StorageManager.closeQuietly(fileInputStream);
-                                        StorageManager.closeQuietly(outputStream);
-                                    }
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Status status) {
-                            Logger.error(DriveDataStreams.this, "Failed to updateDriveFile file with status: {}", status);
-                            emitter.onError(new IOException(status.getStatusMessage()));
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(@NonNull Status status) {
-                    Logger.error(DriveDataStreams.this, "Failed to fetch drive id {} to updateDriveFile with status: {}", driveIdentifier, status);
-                    emitter.onError(new IOException(status.getStatusMessage()));
-                }
-            });
-        });
+        String fileId = driveIdentifier.getId();
+        return driveServiceHelper.updateFile(fileId, file);
     }
 
+    @NonNull
     public synchronized Single<Boolean> delete(@NonNull final Identifier driveIdentifier) {
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(driveIdentifier);
 
         final Identifier smartReceiptsFolderId;
-        if (mSmartReceiptsFolderSubject != null && mSmartReceiptsFolderSubject.getValue() != null && mSmartReceiptsFolderSubject.getValue().getDriveId().getResourceId() != null) {
-            smartReceiptsFolderId = new Identifier(mSmartReceiptsFolderSubject.getValue().getDriveId().getResourceId());
+        if (smartReceiptsFolderSubject != null && smartReceiptsFolderSubject.getValue() != null && smartReceiptsFolderSubject.getValue().getId() != null) {
+            smartReceiptsFolderId = new Identifier(smartReceiptsFolderSubject.getValue().getId());
         } else {
             smartReceiptsFolderId = null;
         }
         if (driveIdentifier.equals(smartReceiptsFolderId)) {
-            Logger.info(DriveDataStreams.this, "Attemping to delete our Smart Receipts folder. Clearing our cached replay result...");
-            mSmartReceiptsFolderSubject = null;
+            Logger.info(DriveDataStreams.this, "Attempting to delete our Smart Receipts folder. Clearing our cached replay result...");
+            smartReceiptsFolderSubject = null;
         }
 
         // Note: (https://developers.google.com/drive/android/trash) If the target of the trash/untrash operation is a folder, all descendants of that folder are similarly trashed or untrashed
-        return Single.create(emitter -> Drive.DriveApi.fetchDriveId(mGoogleApiClient, driveIdentifier.getId()).setResultCallback(new ResultCallbacks<DriveApi.DriveIdResult>() {
-            @Override
-            public void onSuccess(@NonNull DriveApi.DriveIdResult driveIdResult) {
-                final DriveId driveId = driveIdResult.getDriveId();
-                final DriveResource driveResource = driveId.asDriveResource();
-                driveResource.delete(mGoogleApiClient).setResultCallback(new ResultCallbacks<Status>() {
-                    @Override
-                    public void onSuccess(@NonNull Status status) {
-                        Logger.info(DriveDataStreams.this, "Successfully deleted resource with status: {}", status);
-                        emitter.onSuccess(true);
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Status status) {
-                        Logger.error(DriveDataStreams.this, "Failed to delete resource with status: {}", status);
-                        emitter.onSuccess(false);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(@NonNull Status status) {
-                Logger.error(DriveDataStreams.this, "Failed to fetch drive id " + driveIdentifier + " to deleteFolder with status: {}", status);
-                emitter.onError(new IOException(status.getStatusMessage()));
-            }
-        }));
+        return driveServiceHelper.deleteFile(driveIdentifier.getId())
+                .andThen(Single.just(true))
+                .doOnSuccess(ignore -> Logger.info(DriveDataStreams.this, "Successfully deleted resource with status"))
+                .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to delete file with id: {}", driveIdentifier));
     }
 
     public synchronized void clear() {
         Logger.info(DriveDataStreams.this, "Clearing our cached replay result...");
-        mSmartReceiptsFolderSubject = null;
+        smartReceiptsFolderSubject = null;
     }
 
-    public synchronized Single<File> download(@NonNull final DriveFile driveFile, @NonNull final File downloadLocationFile) {
-        Preconditions.checkNotNull(driveFile);
+    @NonNull
+    public synchronized Single<java.io.File> download(@NonNull final String fileId, @NonNull final java.io.File downloadLocationFile) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(fileId);
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(downloadLocationFile);
 
-        return Single.create(emitter -> driveFile.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(new ResultCallbacks<DriveApi.DriveContentsResult>() {
-            @Override
-            public void onSuccess(@NonNull final DriveApi.DriveContentsResult driveContentsResult) {
-                mExecutor.execute(() -> {
-                    Logger.info(DriveDataStreams.this, "Successfully connected to the drive download stream");
-                    final DriveContents driveContents = driveContentsResult.getDriveContents();
-                    InputStream inputStream = null;
-                    FileOutputStream fileOutputStream = null;
-                    try {
-                        inputStream = driveContents.getInputStream();
-                        fileOutputStream = new FileOutputStream(downloadLocationFile);
-                        byte[] buffer = new byte[8192];
-                        int read;
-                        while ((read = inputStream.read(buffer)) != -1) {
-                            fileOutputStream.write(buffer, 0, read);
-                        }
-                        driveContents.discard(mGoogleApiClient);
-                        emitter.onSuccess(downloadLocationFile);
-                    } catch (IOException e) {
-                        Logger.error(DriveDataStreams.this, "Failed write file with exception: ", e);
-                        driveContents.discard(mGoogleApiClient);
-                        emitter.onError(e);
-                    } finally {
-                        StorageManager.closeQuietly(inputStream);
-                        StorageManager.closeQuietly(fileOutputStream);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(@NonNull Status status) {
-                Logger.error(DriveDataStreams.this, "Failed to downloaded the drive resource with status: {}", status);
-            }
-        }));
+        return driveServiceHelper.getDriveFileAsJavaFile(fileId, downloadLocationFile);
     }
 
-    private boolean isValidSmartReceiptsFolder(@NonNull Metadata metadata) {
-        return metadata.isInAppFolder() && metadata.isFolder() && !metadata.isTrashed();
+    private boolean isValidSmartReceiptsFolder(@NonNull File file) {
+        return file.getMimeType().equals(FOLDER_MIME_TYPE) && !file.getTrashed() && file.getId() != null;
     }
 }

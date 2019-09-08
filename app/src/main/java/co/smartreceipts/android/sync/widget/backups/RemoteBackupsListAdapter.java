@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -60,7 +59,8 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
             return new HeaderViewHolder(headerView);
         } else {
@@ -82,38 +82,32 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             itemHolder.backupProviderTextView.setText(R.string.auto_backup_source_google_drive);
             itemHolder.backupDateTextView.setText(ModelUtils.getFormattedDate(metadata.getLastModifiedDate(), TimeZone.getDefault(), context, preferences.get(UserPreference.General.DateSeparator)));
-            final View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final PopupMenu popupMenu = new PopupMenu(context, itemHolder.backupOverflowView);
-                    popupMenu.getMenuInflater().inflate(R.menu.remote_backups_list_item_menu, popupMenu.getMenu());
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (!networkManager.isNetworkAvailable() && networkManager.getSupportedNetworkType() == SupportedNetworkType.WifiOnly) {
-                                Toast.makeText(headerView.getContext(), headerView.getContext().getString(R.string.error_no_wifi), Toast.LENGTH_SHORT).show();
-                                return true;
-                            } else {
-                                if (item.getItemId() == R.id.remote_backups_list_item_menu_restore) {
-                                    navigationHandler.showDialog(ImportRemoteBackupDialogFragment.newInstance(metadata));
-                                    return true;
-                                } else if (item.getItemId() == R.id.remote_backups_list_item_menu_delete) {
-                                    navigationHandler.showDialog(DeleteRemoteBackupDialogFragment.newInstance(metadata));
-                                    return true;
-                                } else if (item.getItemId() == R.id.remote_backups_list_item_menu_download_images) {
-                                    navigationHandler.showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata));
-                                    return true;
-                                } else if (item.getItemId() == R.id.remote_backups_list_item_menu_download_images_debug) {
-                                    navigationHandler.showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata, true));
-                                    return true;
-                                } else {
-                                    throw new IllegalArgumentException("Unsupported menu type was selected");
-                                }
-                            }
+            final View.OnClickListener onClickListener = view -> {
+                final PopupMenu popupMenu = new PopupMenu(context, itemHolder.backupOverflowView);
+                popupMenu.getMenuInflater().inflate(R.menu.remote_backups_list_item_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    if (!networkManager.isNetworkAvailable() && networkManager.getSupportedNetworkType() == SupportedNetworkType.WifiOnly) {
+                        Toast.makeText(headerView.getContext(), headerView.getContext().getString(R.string.error_no_wifi), Toast.LENGTH_SHORT).show();
+                        return true;
+                    } else {
+                        if (item.getItemId() == R.id.remote_backups_list_item_menu_restore) {
+                            navigationHandler.showDialog(ImportRemoteBackupDialogFragment.newInstance(metadata));
+                            return true;
+                        } else if (item.getItemId() == R.id.remote_backups_list_item_menu_delete) {
+                            navigationHandler.showDialog(DeleteRemoteBackupDialogFragment.newInstance(metadata));
+                            return true;
+                        } else if (item.getItemId() == R.id.remote_backups_list_item_menu_download_images) {
+                            navigationHandler.showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata));
+                            return true;
+                        } else if (item.getItemId() == R.id.remote_backups_list_item_menu_download_images_debug) {
+                            navigationHandler.showDialog(DownloadRemoteBackupImagesProgressDialogFragment.newInstance(metadata, true));
+                            return true;
+                        } else {
+                            throw new IllegalArgumentException("Unsupported menu type was selected");
                         }
-                    });
-                    popupMenu.show();
-                }
+                    }
+                });
+                popupMenu.show();
             };
             itemHolder.parentView.setOnClickListener(onClickListener);
             itemHolder.backupOverflowView.setOnClickListener(onClickListener);
@@ -155,10 +149,10 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
         ItemViewHolder(@NonNull View view) {
             super(view);
             parentView = view;
-            backupDeviceNameTextView = (TextView) view.findViewById(R.id.remote_backup_device_name);
-            backupProviderTextView = (TextView) view.findViewById(R.id.remote_backup_provider);
-            backupDateTextView = (TextView) view.findViewById(R.id.remote_backup_date);
-            backupOverflowView = (ImageView) view.findViewById(R.id.remote_backup_metadata_overflow);
+            backupDeviceNameTextView = view.findViewById(R.id.remote_backup_device_name);
+            backupProviderTextView = view.findViewById(R.id.remote_backup_provider);
+            backupDateTextView = view.findViewById(R.id.remote_backup_date);
+            backupOverflowView = view.findViewById(R.id.remote_backup_metadata_overflow);
         }
     }
 }
