@@ -103,5 +103,6 @@ public class CompatPdfPDImageXFactory implements PdfPDImageXFactory {
             pdfRenderer.close();
         }
         IOUtils.closeQuietly(parcelFileDescriptor);
+        pdDocument.close();
     }
 }

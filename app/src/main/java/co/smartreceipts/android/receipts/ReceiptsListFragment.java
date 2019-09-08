@@ -647,14 +647,14 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
                     }
                     Toast.makeText(getActivity(), getString(stringId, newReceipt.getName()), Toast.LENGTH_SHORT).show();
 
-                    intentImportProcessor.getLastResult()
+                    compositeDisposable.add(intentImportProcessor.getLastResult()
                             .filter(intentImportResultOptional -> intentImportResultOptional.isPresent() &&
                                     (intentImportResultOptional.get().getFileType() == FileType.Image || intentImportResultOptional.get().getFileType() == FileType.Pdf))
                             .subscribe(ignored -> {
                                 if (getActivity() != null) {
                                     intentImportProcessor.markIntentAsSuccessfullyProcessed(getActivity().getIntent());
                                 }
-                            });
+                            }));
                 }
             }
             // But still refresh for sync operations

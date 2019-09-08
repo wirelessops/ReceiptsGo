@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * After having seen a few instances in which CSV files were failing for foreign languages when attemping
+ * After having seen a few instances in which CSV files were failing for foreign languages when attempting
  * to open the file in MS Excel, I found this article that addresses some challenges and how we can
  * resolve them:
  * http://stackoverflow.com/questions/4192186/setting-a-utf-8-in-java-and-csv-file
