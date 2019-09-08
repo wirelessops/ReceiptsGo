@@ -35,30 +35,27 @@ public class SelectAutomaticBackupProviderDialogFragment extends DialogFragment 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_select_automatic_backup_provider, null);
-        final RadioGroup providerGroup = (RadioGroup) dialogView.findViewById(R.id.automatic_backup_provider_radiogroup);
-        final RadioButton noneProviderButton = (RadioButton) providerGroup.findViewById(R.id.automatic_backup_provider_none);
-        final RadioButton googleDriveProviderButton = (RadioButton) providerGroup.findViewById(R.id.automatic_backup_provider_google_drive);
+        final RadioGroup providerGroup = dialogView.findViewById(R.id.automatic_backup_provider_radiogroup);
+        final RadioButton noneProviderButton = providerGroup.findViewById(R.id.automatic_backup_provider_none);
+        final RadioButton googleDriveProviderButton = providerGroup.findViewById(R.id.automatic_backup_provider_google_drive);
 
         if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
             googleDriveProviderButton.setChecked(true);
         } else {
             noneProviderButton.setChecked(true);
         }
-        providerGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int id) {
-                final SyncProvider currentProvider = backupProvidersManager.getSyncProvider();
-                final SyncProvider newProvider;
-                if (id == R.id.automatic_backup_provider_google_drive) {
-                    newProvider = SyncProvider.GoogleDrive;
-                } else {
-                    newProvider = SyncProvider.None;
-                }
-                if (currentProvider != newProvider) {
-                    backupProvidersManager.setAndInitializeSyncProvider(newProvider, getActivity());
-                }
-                dismiss();
+        providerGroup.setOnCheckedChangeListener((radioGroup, id) -> {
+            final SyncProvider currentProvider = backupProvidersManager.getSyncProvider();
+            final SyncProvider newProvider;
+            if (id == R.id.automatic_backup_provider_google_drive) {
+                newProvider = SyncProvider.GoogleDrive;
+            } else {
+                newProvider = SyncProvider.None;
             }
+            if (currentProvider != newProvider) {
+                backupProvidersManager.setAndInitializeSyncProvider(newProvider, getActivity());
+            }
+            dismiss();
         });
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

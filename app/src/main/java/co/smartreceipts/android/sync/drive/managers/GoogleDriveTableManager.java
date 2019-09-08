@@ -1,5 +1,9 @@
 package co.smartreceipts.android.sync.drive.managers;
 
+import androidx.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
 import javax.inject.Inject;
 
 import co.smartreceipts.android.di.scopes.ApplicationScope;
@@ -18,26 +22,17 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTab
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.sync.drive.listeners.DatabaseBackupListener;
 import co.smartreceipts.android.sync.drive.listeners.ReceiptBackupListener;
-import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager;
-import co.smartreceipts.android.sync.drive.managers.DriveReceiptsManager;
 
 @ApplicationScope
 public class GoogleDriveTableManager {
 
-    @Inject
-    TripTableController tripTableController;
-    @Inject
-    ReceiptTableController receiptTableController;
-    @Inject
-    CategoriesTableController categoriesTableController;
-    @Inject
-    CSVTableController csvTableController;
-    @Inject
-    PDFTableController pdfTableController;
-    @Inject
-    PaymentMethodsTableController paymentMethodsTableController;
-    @Inject
-    DistanceTableController distanceTableController;
+    private final TripTableController tripTableController;
+    private final ReceiptTableController receiptTableController;
+    private final CategoriesTableController categoriesTableController;
+    private final CSVTableController csvTableController;
+    private final PDFTableController pdfTableController;
+    private final PaymentMethodsTableController paymentMethodsTableController;
+    private final DistanceTableController distanceTableController;
 
     private DatabaseBackupListener<Trip> tripDatabaseBackupListener;
     private ReceiptBackupListener receiptDatabaseBackupListener;
@@ -48,20 +43,33 @@ public class GoogleDriveTableManager {
     private DatabaseBackupListener<Column<Receipt>> pdfColumnDatabaseBackupListener;
 
     @Inject
-    public GoogleDriveTableManager() {
+    public GoogleDriveTableManager(@NonNull TripTableController tripTableController,
+                                   @NonNull ReceiptTableController receiptTableController,
+                                   @NonNull CategoriesTableController categoriesTableController,
+                                   @NonNull CSVTableController csvTableController,
+                                   @NonNull PDFTableController pdfTableController,
+                                   @NonNull PaymentMethodsTableController paymentMethodsTableController,
+                                   @NonNull DistanceTableController distanceTableController) {
+        this.tripTableController = Preconditions.checkNotNull(tripTableController);
+        this.receiptTableController = Preconditions.checkNotNull(receiptTableController);
+        this.categoriesTableController = Preconditions.checkNotNull(categoriesTableController);
+        this.csvTableController = Preconditions.checkNotNull(csvTableController);
+        this.pdfTableController = Preconditions.checkNotNull(pdfTableController);
+        this.paymentMethodsTableController = Preconditions.checkNotNull(paymentMethodsTableController);
+        this.distanceTableController = Preconditions.checkNotNull(distanceTableController);
     }
 
-    public void initBackupListeners(DriveDatabaseManager driveDatabaseManager, DriveReceiptsManager driveReceiptsManager) {
-        tripDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
-        receiptDatabaseBackupListener = new ReceiptBackupListener(driveDatabaseManager, driveReceiptsManager);
-        distanceDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
-        paymentMethodDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
-        categoryDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
-        csvColumnDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
-        pdfColumnDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
-    }
+    public void initializeListeners(@NonNull DriveDatabaseManager driveDatabaseManager,
+                                    @NonNull DriveReceiptsManager driveReceiptsManager) {
 
-    public void onConnected() {
+        this.tripDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
+        this.receiptDatabaseBackupListener = new ReceiptBackupListener(driveDatabaseManager, driveReceiptsManager);
+        this.distanceDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
+        this.paymentMethodDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
+        this.categoryDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
+        this.csvColumnDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
+        this.pdfColumnDatabaseBackupListener = new DatabaseBackupListener<>(driveDatabaseManager);
+
         tripTableController.subscribe(tripDatabaseBackupListener);
         receiptTableController.subscribe(receiptDatabaseBackupListener);
         distanceTableController.subscribe(distanceDatabaseBackupListener);
@@ -71,7 +79,7 @@ public class GoogleDriveTableManager {
         pdfTableController.subscribe(pdfColumnDatabaseBackupListener);
     }
 
-    public void onConnectionSuspended() {
+    public void deinitializeListeners() {
         tripTableController.unsubscribe(tripDatabaseBackupListener);
         receiptTableController.unsubscribe(receiptDatabaseBackupListener);
         distanceTableController.unsubscribe(distanceDatabaseBackupListener);

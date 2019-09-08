@@ -3,7 +3,6 @@ package co.smartreceipts.android.di;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.di.scopes.FragmentScope;
-import co.smartreceipts.android.di.scopes.ServiceScope;
 import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
@@ -21,7 +20,6 @@ import co.smartreceipts.android.settings.widget.editors.categories.CategoryEdito
 import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.columns.PDFColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
-import co.smartreceipts.android.sync.drive.services.DriveCompletionEventService;
 import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.DownloadRemoteBackupImagesProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ExportBackupWorkerProgressDialogFragment;
@@ -49,10 +47,6 @@ public abstract class GlobalBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = CropModule.class)
     public abstract CropImageActivity cropImageActivity();
-
-    @ServiceScope
-    @ContributesAndroidInjector
-    public abstract DriveCompletionEventService driveCompletionEventService();
 
     @FragmentScope
     @ContributesAndroidInjector

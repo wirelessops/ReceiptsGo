@@ -10,6 +10,9 @@ import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.sync.BackupProvider;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.errors.CriticalSyncError;
@@ -23,10 +26,16 @@ import io.reactivex.Single;
  * A no-op implementation of the {@link BackupProvider} contract to help us to avoid dealing with nulls
  * in our {@link BackupProvidersManager} class
  */
+@ApplicationScope
 public class NoOpBackupProvider implements BackupProvider {
 
+    @Inject
+    public NoOpBackupProvider() {
+
+    }
+
     @Override
-    public void initialize(@Nullable FragmentActivity activity) {
+    public void initialize(@NonNull FragmentActivity activity) {
 
     }
 
