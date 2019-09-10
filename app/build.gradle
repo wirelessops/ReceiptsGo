@@ -122,6 +122,8 @@ android {
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+        implementation 'com.google.guava:guava:27.0.1-jre'
+
         implementation "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
         implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
         implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
@@ -136,9 +138,12 @@ android {
 
         implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
-        implementation "com.google.http-client:google-http-client-gson:$GOOGLE_HTTP_CLIENT_VERSION"
+        implementation ("com.google.http-client:google-http-client-gson:$GOOGLE_HTTP_CLIENT_VERSION") {
+            exclude group: 'com.google.guava', module: 'guava'
+        }
         implementation("com.google.api-client:google-api-client-android:$GOOGLE_API_CLIENT_VERSION") {
             exclude group: 'org.apache.httpcomponents'
+            exclude group: 'com.google.guava', module: 'guava'
         }
         implementation("com.google.apis:google-api-services-drive:$GOOGLE_API_SERVICES_VERSION") {
             exclude group: 'org.apache.httpcomponents'
@@ -204,9 +209,7 @@ android {
         implementation "com.google.android.gms:play-services-oss-licenses:$GOOGLE_OSS_VERSION"
 
         // Unit Tests
-        testImplementation ("org.robolectric:robolectric:$ROBOLECTRIC_VERSION") {
-            exclude group: 'com.google.guava', module: 'guava'
-        }
+        testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
         testImplementation "junit:junit:$JUNIT_VERSION"
         testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
         testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
