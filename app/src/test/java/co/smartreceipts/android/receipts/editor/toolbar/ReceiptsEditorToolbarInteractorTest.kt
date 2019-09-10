@@ -42,7 +42,7 @@ class ReceiptsEditorToolbarInteractorTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(databaseHelper.nextReceiptAutoIncremenetIdHelper).thenReturn(Single.just(DATABASE_ID))
+        whenever(databaseHelper.nextReceiptAutoIncrementIdHelper).thenReturn(Single.just(DATABASE_ID))
         whenever(receipt.id).thenReturn(RECEIPT_ID)
         interactor = ReceiptsEditorToolbarInteractor(ApplicationProvider.getApplicationContext(), databaseHelper, preferenceManager, Schedulers.trampoline())
     }

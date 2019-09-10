@@ -28,7 +28,7 @@ public class SmartReceiptsGsonBuilder {
         final GsonBuilder builder = new GsonBuilder();
         builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         builder.registerTypeAdapter(Date.class, new GsonUtcDateAdapter());
-        builder.registerTypeAdapter(Column.class, new ColumnGsonAdpater(mReceiptColumnDefinitions));
+        builder.registerTypeAdapter(Column.class, new ColumnGsonAdapter(mReceiptColumnDefinitions));
         builder.registerTypeAdapter(PaymentMethod.class, new PaymentMethodGsonAdapter());
         builder.registerTypeAdapter(Category.class, new CategoryGsonAdapter());
         return builder.create();

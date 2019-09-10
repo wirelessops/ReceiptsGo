@@ -272,7 +272,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         trip.setDailySubTotal(new PriceBuilderFactory().setPriceables(prices, trip.getTripCurrency()).build());
     }
 
-    public Single<Integer> getNextReceiptAutoIncremenetIdHelper() {
+    public Single<Integer> getNextReceiptAutoIncrementIdHelper() {
         return Single.fromCallable(() -> {
             SQLiteDatabase db = getReadableDatabase();
             Cursor cursor = null;

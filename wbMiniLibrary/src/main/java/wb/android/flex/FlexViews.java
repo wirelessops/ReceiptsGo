@@ -27,7 +27,7 @@ class FlexViews {
 	private final Stack<FlexViews.Element> elements;
 	private final Stack<List<FlexView>> views;
 	private final HashMap<String, FlexView> viewMap;
-	private final HashMap<String, List<FlexView>> viewGroupChildern;
+	private final HashMap<String, List<FlexView>> viewGroupChildren;
 	private final FlexViews.Element[] elementCache;
 	
 	enum Element {
@@ -69,7 +69,7 @@ class FlexViews {
 		this.elements = new Stack<FlexViews.Element>();
 		this.views = new Stack<List<FlexView>>();
 		this.viewMap = new HashMap<String, FlexView>();
-		this.viewGroupChildern = new HashMap<String, List<FlexView>>();
+		this.viewGroupChildren = new HashMap<String, List<FlexView>>();
 		this.elementCache = FlexViews.Element.values();
 	} 
 	
@@ -116,7 +116,7 @@ class FlexViews {
 		if (elements.pop() != element)
 			throw new SAXException("The end XML tag for " + localName + " did not match the expected tag: " + element.elementName());
 		if (element.isViewGroup()) 
-			viewGroupChildern.put(ids.pop(), views.pop());
+			viewGroupChildren.put(ids.pop(), views.pop());
 	}
 	
 	boolean updateView(View view, String id) throws FlexFailedException {
@@ -151,8 +151,8 @@ class FlexViews {
 	
 	boolean addFlexViewsToParent(Context context, ViewGroup parent, String parentID) throws FlexFailedException {
 		if (parentID == null) return false;
-		if (viewGroupChildern.containsKey(parentID)) {
-			List<FlexView> views = viewGroupChildern.get(parentID);
+		if (viewGroupChildren.containsKey(parentID)) {
+			List<FlexView> views = viewGroupChildren.get(parentID);
 			final int size = views.size();
 			for(int i=0; i<size; i++) { views.get(i).buildAndAddToParent(context, parent); }
 			return true;

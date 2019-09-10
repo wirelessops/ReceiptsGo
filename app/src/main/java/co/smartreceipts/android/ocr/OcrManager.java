@@ -21,7 +21,7 @@ import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.apis.OcrService;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
-import co.smartreceipts.android.ocr.apis.model.RecongitionRequest;
+import co.smartreceipts.android.ocr.apis.model.RecognitionRequest;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.ocr.push.OcrPushMessageReceiver;
 import co.smartreceipts.android.ocr.push.OcrPushMessageReceiverFactory;
@@ -126,7 +126,7 @@ public class OcrManager {
                         Logger.debug(OcrManager.this, "Uploading OCR request for processing");
                         ocrProcessingStatusSubject.onNext(OcrProcessingStatus.PerformingScan);
                         final boolean incognito = userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode);
-                        return ocrWebServiceManager.getService(OcrService.class).scanReceipt(new RecongitionRequest(s3Url, incognito));
+                        return ocrWebServiceManager.getService(OcrService.class).scanReceipt(new RecognitionRequest(s3Url, incognito));
                     })
                     .flatMap(recognitionResponse -> {
                         if (recognitionResponse != null && recognitionResponse.getRecognition() != null && recognitionResponse.getRecognition().getId() != null) {

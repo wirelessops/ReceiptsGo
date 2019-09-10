@@ -289,7 +289,7 @@ class TripTest {
             )
         )
 
-        // Special equals cases (source, price, and daily subtotal don't cound):
+        // Special equals cases (source, price, and daily subtotal don't count):
         val tripWithPrice = Trip(
             ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT,
             COST_CENTER, syncState

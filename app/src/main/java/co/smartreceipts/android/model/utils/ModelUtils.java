@@ -194,7 +194,7 @@ public class ModelUtils {
      * Tries to parse a string to find the underlying numerical value
      *
      * @param number the string containing a number (hopefully)
-     * @param defaultValue the default value to use if this string is not parseable
+     * @param defaultValue the default value to use if this string is not parsable
      * @return the {@link BigDecimal} value or "0" if it cannot be found
      */
     @NonNull

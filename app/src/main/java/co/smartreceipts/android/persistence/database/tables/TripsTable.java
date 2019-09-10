@@ -90,7 +90,7 @@ public class TripsTable extends AbstractSqlTable<Trip> {
                         final ContentValues tripValues = new ContentValues(1);
                         tripValues.put(TripsTable.COLUMN_NAME, relPath);
                         if (db.update(TripsTable.TABLE_NAME, tripValues, TripsTable.COLUMN_NAME + " = ?", new String[]{absPath}) == 0) {
-                            Logger.error(this, "Trip Update Error Occured");
+                            Logger.error(this, "Trip Update Error Occurred");
                         }
                     }
                     while (tripsCursor.moveToNext());

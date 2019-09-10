@@ -31,7 +31,7 @@ class DateFormatterTest {
 
     companion object {
         /**
-         * A timestamp for a date that occurs on January 31, 2019 in the America/New_York time ozne
+         * A timestamp for a date that occurs on January 31, 2019 in the America/New_York time zone
          */
         private const val TIMESTAMP = 1548955843313
 

@@ -2,11 +2,11 @@ package co.smartreceipts.android.ocr.apis.model;
 
 import androidx.annotation.NonNull;
 
-public class RecongitionRequest {
+public class RecognitionRequest {
 
     private Recognition recognition;
 
-    public RecongitionRequest(@NonNull String s3Path, boolean incognito) {
+    public RecognitionRequest(@NonNull String s3Path, boolean incognito) {
         this.recognition = new Recognition();
         this.recognition.s3_path = s3Path;
         this.recognition.incognito = incognito;
@@ -39,9 +39,9 @@ public class RecongitionRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RecongitionRequest)) return false;
+        if (!(o instanceof RecognitionRequest)) return false;
 
-        RecongitionRequest that = (RecongitionRequest) o;
+        RecognitionRequest that = (RecognitionRequest) o;
 
         return recognition != null ? recognition.equals(that.recognition) : that.recognition == null;
 

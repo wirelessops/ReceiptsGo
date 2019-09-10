@@ -51,7 +51,7 @@ public class ShadowFontFileFinder {
     }
 
     /**
-     * walk down the driectory tree and search for font files.
+     * walk down the directory tree and search for font files.
      *
      * @param directory the directory to start at
      * @param results names of all found font files
@@ -59,11 +59,11 @@ public class ShadowFontFileFinder {
     private void walk(File directory, List<URI> results) {
         // search for font files recursively in the given directory
         if (directory.isDirectory()) {
-            File[] filelist = directory.listFiles();
-            if (filelist != null) {
-                int numOfFiles = filelist.length;
+            File[] fileList = directory.listFiles();
+            if (fileList != null) {
+                int numOfFiles = fileList.length;
                 for (int i=0;i<numOfFiles;i++) {
-                    File file = filelist[i];
+                    File file = fileList[i];
                     if (file.isDirectory()) {
                         // skip hidden directories
                         if (file.getName().startsWith(".")) {
@@ -72,7 +72,7 @@ public class ShadowFontFileFinder {
                         walk(file, results);
                     }
                     else {
-                        if (checkFontfile(file)) {
+                        if (checkFontFile(file)) {
                             results.add(file.toURI());
                         }
                     }
@@ -87,7 +87,7 @@ public class ShadowFontFileFinder {
      * @param file the given file
      * @return true if the given filename has a typical font file ending
      */
-    private boolean checkFontfile(File file) {
+    private boolean checkFontFile(File file) {
         String name = file.getName().toLowerCase();
         return name.endsWith(".ttf") || name.endsWith(".otf") || name.endsWith(".pfb") || name.endsWith(".ttc");
     }

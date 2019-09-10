@@ -96,7 +96,7 @@ class OcrInformationTooltipControllerTest {
     }
 
     @Test
-    fun doNotdisplayTooltipForEmptyOcrTooltip() {
+    fun doNotDisplayTooltipForEmptyOcrTooltip() {
         whenever(interactor.showOcrTooltip).thenReturn(Observable.empty())
         ocrInformationTooltipController.shouldDisplayTooltip()
                 .test()

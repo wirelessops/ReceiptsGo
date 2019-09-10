@@ -13,7 +13,7 @@ public class AnalyticsLogger implements Analytics {
 
     @Override
     public void record(@NonNull Event event) {
-        Logger.info(this, "Logging Event: {} with datapoints: {}", event, getDataPointsString(event.getDataPoints()));
+        Logger.info(this, "Logging Event: {} with dataPoints: {}", event, getDataPointsString(event.getDataPoints()));
     }
 
     @NonNull

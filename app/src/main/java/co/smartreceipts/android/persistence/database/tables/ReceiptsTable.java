@@ -180,7 +180,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
                             Logger.debug(this, "Updating Abs. Img Path for Receipt{}: {} => {}", id, absImgPath, relImgPath);
                         }
                         if (db.update(ReceiptsTable.TABLE_NAME, receiptValues, ReceiptsTable.COLUMN_ID + " = ?", new String[]{Integer.toString(id)}) == 0) {
-                            Logger.error(this, "Receipt Update Error Occured");
+                            Logger.error(this, "Receipt Update Error Occurred");
                         }
                     }
                     while (receiptsCursor.moveToNext());

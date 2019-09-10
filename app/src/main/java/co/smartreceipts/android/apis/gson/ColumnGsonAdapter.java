@@ -14,11 +14,11 @@ import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.ColumnBuilderFactory;
 
-public class ColumnGsonAdpater implements GsonAdapter<Column<Receipt>> {
+public class ColumnGsonAdapter implements GsonAdapter<Column<Receipt>> {
 
     private final ColumnDefinitions<Receipt> mReceiptColumnDefinitions;
 
-    public ColumnGsonAdpater(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions) {
+    public ColumnGsonAdapter(@NonNull ColumnDefinitions<Receipt> receiptColumnDefinitions) {
         mReceiptColumnDefinitions = Preconditions.checkNotNull(receiptColumnDefinitions);
     }
 
