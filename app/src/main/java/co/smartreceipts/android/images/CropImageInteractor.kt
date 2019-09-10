@@ -17,7 +17,7 @@ import java.io.File
 import javax.inject.Inject
 
 @ApplicationScope
-class CropImageInteracror(
+class CropImageInteractor(
     private val subscribeOnScheduler: Scheduler = Schedulers.io(),
     private val observeOnScheduler: Scheduler = AndroidSchedulers.mainThread()
 ) {

@@ -661,7 +661,7 @@ public class StorageManager {
 		return zipBufferedHelper(inputDir, buffer, null);
 	}
 
-	// Uses a buffer to conserver memory
+	// Uses a buffer to conserve memory
 	private File zipBufferedHelper(File inputDir, int buffer, FileFilter filter) {
 		// What if file exists
 		if (!inputDir.isDirectory()) {

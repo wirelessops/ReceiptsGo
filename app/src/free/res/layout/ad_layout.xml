@@ -6,7 +6,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center">
 
-    <!-- Ads areadded programmatically here -->
+    <!-- Ads are added programmatically here -->
     <Button style="@style/Widget.SmartReceipts.Button"
         android:id="@+id/adView_upsell"
         android:layout_width="match_parent"

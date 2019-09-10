@@ -42,7 +42,7 @@ public abstract class ReceiptsFragment extends DraggableListFragment<Receipt, Re
             if (updateSubtitle) {
                 PersistenceManager persistenceManager = getPersistenceManager();
                 if (persistenceManager.getPreferenceManager().get(UserPreference.Receipts.ShowReceiptID)) {
-                    disposable = persistenceManager.getDatabase().getNextReceiptAutoIncremenetIdHelper()
+                    disposable = persistenceManager.getDatabase().getNextReceiptAutoIncrementIdHelper()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(receiptId ->  {

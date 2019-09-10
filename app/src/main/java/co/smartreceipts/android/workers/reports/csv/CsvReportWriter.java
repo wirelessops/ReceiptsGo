@@ -26,13 +26,9 @@ public class CsvReportWriter {
     }
 
     public void write(@NonNull String csv) throws IOException {
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(this.outputFile);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(this.outputFile)) {
             IOUtils.write(ByteOrderMark.UTF_8.getBytes(), fileOutputStream);
             IOUtils.write(csv, fileOutputStream, "UTF-8");
-        } finally {
-            IOUtils.closeQuietly(fileOutputStream);
         }
     }
 }

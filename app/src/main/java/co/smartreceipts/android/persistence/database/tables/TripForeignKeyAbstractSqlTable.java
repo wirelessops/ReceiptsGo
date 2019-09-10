@@ -75,12 +75,12 @@ public abstract class TripForeignKeyAbstractSqlTable<ModelType extends Keyed & S
 
     /**
      * We fetch the un-synced receipts for a given parent {@link Trip}, since our receipt "index" is
-     * rather hacky (ie programtic) instead of database driven via a sorting order. As this is dependent
+     * rather hacky (ie programmatic) instead of database driven via a sorting order. As this is dependent
      * on the specific order of the receipt in the trip itself, we must fetch this for a parent trip
      *
      * @param trip the {@link Trip} parameter that should be treated as a foreign key
      * @param syncProvider the provided {@link SyncProvider}
-     * @return a {@link Single} with: all unsycned objects assigned to this foreign key in the desired order
+     * @return a {@link Single} with: all unsynced objects assigned to this foreign key in the desired order
      */
     @NonNull
     public synchronized Single<List<ModelType>> getUnsynced(@NonNull final Trip trip, @NonNull final SyncProvider syncProvider) {

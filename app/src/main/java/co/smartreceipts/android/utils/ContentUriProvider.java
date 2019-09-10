@@ -41,20 +41,15 @@ public class ContentUriProvider {
                     Logger.warn(ContentUriProvider.class, "ANR Risk -- Copying the file the location cache to avoid Huawei 'external-files-path' bug for N+ devices", e);
                     final SmartReceiptsTemporaryFileCache temporaryFileCache = new SmartReceiptsTemporaryFileCache(context);
                     final File cacheLocation = temporaryFileCache.getInternalCacheFile(file.getName());
-                    InputStream in = null;
-                    OutputStream out = null;
-                    try {
-                        in = new FileInputStream(file);
-                        out = new FileOutputStream(cacheLocation); // appending output stream
+                    try (InputStream in = new FileInputStream(file);
+                         // appending output stream
+                         OutputStream out = new FileOutputStream(cacheLocation)) {
                         IOUtils.copy(in, out);
                         Logger.info(ContentUriProvider.class, "Completed Android N+ Huawei file copy. Attempting to return the cached file");
                         return FileProvider.getUriForFile(context, authority, cacheLocation);
                     } catch (IOException e1) {
                         Logger.error(ContentUriProvider.class, "Failed to copy the Huawei file. Re-throwing exception", e1);
                         throw new IllegalArgumentException("Huawei devices are unsupported for Android N", e1);
-                    } finally {
-                        IOUtils.closeQuietly(in);
-                        IOUtils.closeQuietly(out);
                     }
                 }
             }

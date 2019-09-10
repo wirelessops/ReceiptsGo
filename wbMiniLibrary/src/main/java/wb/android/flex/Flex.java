@@ -56,7 +56,7 @@ public class Flex {
 				//Try to find an old flex file
 				SharedPreferences prefs = context.getSharedPreferences(FLEX_PREFERENCES, 0);
 				if (prefs != null) {
-					// This check is really just to avoid RoboElectric failures
+					// This check is really just to avoid Robolectric failures
 					String flexFilePath = prefs.getString(STRING_FLEX_FILE, "");
 					if (D) Log.d(TAG, flexFilePath);
 
@@ -263,7 +263,7 @@ public class Flex {
 		String tagName() { return this.name; }
 	}
 	
-	/*Attribs
+	/*Attributes
 	 * xmlns:android="http://schemas.android.com/apk/res/android" 
 	  version="1" 
 	  apkDistURL="www.test.com/app.apk" 

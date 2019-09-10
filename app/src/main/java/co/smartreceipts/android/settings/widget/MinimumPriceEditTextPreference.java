@@ -12,7 +12,7 @@ import wb.android.preferences.FloatSummaryEditTextPreference;
 public class MinimumPriceEditTextPreference extends FloatSummaryEditTextPreference {
 
 	private static final float INCLUDE_ALL = -Float.MAX_VALUE;
-	private static final float EPISILON = 0.1f;
+	private static final float EPSILON = 0.1f;
 
 	public MinimumPriceEditTextPreference(Context context) {
 		super(context);
@@ -31,7 +31,7 @@ public class MinimumPriceEditTextPreference extends FloatSummaryEditTextPreferen
 		String text = super.getText();
 		try {
     		float value = Float.parseFloat(text);
-    		if (Math.abs(value - INCLUDE_ALL) < EPISILON) { // We're including all
+    		if (Math.abs(value - INCLUDE_ALL) < EPSILON) { // We're including all
     			return "";
     		}
     		else {

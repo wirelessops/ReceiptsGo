@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 public interface DataPointEvent extends Event {
 
     /**
-     * Adds a datapoint to this event
+     * Adds a dataPoint to this event
      *
      * @param dataPoint the {@link DataPoint} to add
      * @return this {@link DataPointEvent} for method chaining

@@ -129,13 +129,13 @@ public class ReceiptDatabaseAdapterTest {
         final int dateIndex = 9;
         final int timezoneIndex = 10;
         final int commentIndex = 11;
-        final int expenseableIndex = 12;
+        final int expensableIndex = 12;
         final int currencyCodeIndex = 13;
         final int paymentMethodKeyIndex = 14;
         final int fullPageImageIndex = 15;
-        final int extraEdittext1Index = 17;
-        final int extraEdittext2Index = 18;
-        final int extraEdittext3Index = 19;
+        final int extraEditText1Index = 17;
+        final int extraEditText2Index = 18;
+        final int extraEditText3Index = 19;
         final int customOrderIdIndex = 20;
         final int uuidIndex = 21;
 
@@ -150,13 +150,13 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_DATE)).thenReturn(dateIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_TIMEZONE)).thenReturn(timezoneIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_COMMENT)).thenReturn(commentIndex);
-        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_REIMBURSABLE)).thenReturn(expenseableIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_REIMBURSABLE)).thenReturn(expensableIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_ISO4217)).thenReturn(currencyCodeIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID)).thenReturn(paymentMethodKeyIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE)).thenReturn(fullPageImageIndex);
-        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1)).thenReturn(extraEdittext1Index);
-        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2)).thenReturn(extraEdittext2Index);
-        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3)).thenReturn(extraEdittext3Index);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1)).thenReturn(extraEditText1Index);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2)).thenReturn(extraEditText2Index);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3)).thenReturn(extraEditText3Index);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID)).thenReturn(customOrderIdIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_UUID)).thenReturn(uuidIndex);
 
@@ -171,13 +171,13 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getLong(dateIndex)).thenReturn(DATE);
         when(mCursor.getString(timezoneIndex)).thenReturn(TIMEZONE);
         when(mCursor.getString(commentIndex)).thenReturn(COMMENT);
-        when(mCursor.getInt(expenseableIndex)).thenReturn(REIMBURSABLE ? 1 : 0);
+        when(mCursor.getInt(expensableIndex)).thenReturn(REIMBURSABLE ? 1 : 0);
         when(mCursor.getString(currencyCodeIndex)).thenReturn(CURRENCY_CODE);
         when(mCursor.getInt(paymentMethodKeyIndex)).thenReturn(PAYMENT_METHOD_ID);
         when(mCursor.getInt(fullPageImageIndex)).thenReturn(FULL_PAGE ? 1 : 0);
-        when(mCursor.getString(extraEdittext1Index)).thenReturn(EXTRA1);
-        when(mCursor.getString(extraEdittext2Index)).thenReturn(EXTRA2);
-        when(mCursor.getString(extraEdittext3Index)).thenReturn(EXTRA3);
+        when(mCursor.getString(extraEditText1Index)).thenReturn(EXTRA1);
+        when(mCursor.getString(extraEditText2Index)).thenReturn(EXTRA2);
+        when(mCursor.getString(extraEditText3Index)).thenReturn(EXTRA3);
         when(mCursor.getLong(customOrderIdIndex)).thenReturn(CUSTOM_ORDER_ID);
         when(mCursor.getCount()).thenReturn(CURSOR_COUNT);
         when(mCursor.getPosition()).thenReturn(ASCENDING_INDEX - 1);
@@ -451,7 +451,7 @@ public class ReceiptDatabaseAdapterTest {
     }
 
     @Test
-    public void writeUnsycned() throws Exception {
+    public void writeUnsynced() throws Exception {
         final String sync = "sync";
         final ContentValues syncValues = new ContentValues();
         syncValues.put(sync, sync);

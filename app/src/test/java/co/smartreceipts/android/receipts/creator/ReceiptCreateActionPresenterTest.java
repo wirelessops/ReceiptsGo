@@ -54,7 +54,7 @@ public class ReceiptCreateActionPresenterTest {
     }
 
     @Test
-    public void dismissCreateNewReceiptMenuButtonClicksHideseceiptCreationMenuOptions() {
+    public void dismissCreateNewReceiptMenuButtonClicksHidesReceiptCreationMenuOptions() {
         createNewReceiptMenuButtonToggles.onNext(false);
         verify(view).hideReceiptCreationMenuOptions();
     }

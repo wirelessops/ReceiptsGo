@@ -230,7 +230,7 @@ public class EmailAssistant {
         private final WeakReference<ProgressDialog> mProgressDialog;
         private final File[] mFiles;
         private final EnumSet<EmailOptions> mOptions;
-        private boolean memoryErrorOccured = false;
+        private boolean memoryErrorOccurred = false;
 
         public EmailAttachmentWriter(PersistenceManager persistenceManager,
                                      ProgressDialog dialog,
@@ -241,7 +241,7 @@ public class EmailAssistant {
             mProgressDialog = new WeakReference<>(dialog);
             mOptions = options;
             mFiles = new File[]{null, null, null, null, null};
-            memoryErrorOccured = false;
+            memoryErrorOccurred = false;
         }
 
         @Override
@@ -423,7 +423,7 @@ public class EmailAssistant {
                                 } catch (OutOfMemoryError e2) {
                                     Logger.error(this, "Failed to recover from OOM", e2);
                                     results.didZIPFailCompletely = true;
-                                    memoryErrorOccured = true;
+                                    memoryErrorOccurred = true;
                                     break;
                                 }
                             }
@@ -614,8 +614,8 @@ public class EmailAssistant {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            if (memoryErrorOccured) {
-                memoryErrorOccured = false;
+            if (memoryErrorOccurred) {
+                memoryErrorOccurred = false;
                 Toast.makeText(context, "Error: Not enough memory to stamp the images. Try stopping some other apps and try again.", Toast.LENGTH_LONG).show();
             }
         }

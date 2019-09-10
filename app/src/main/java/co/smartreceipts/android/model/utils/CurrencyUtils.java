@@ -238,7 +238,7 @@ public class CurrencyUtils {
         // https://coinmarketcap.com/
         nonIso4217Currencies.add("BTC");  // Bitcoin (Old Code)
         nonIso4217Currencies.add("DOGE"); // Dogecoin
-        nonIso4217Currencies.add("ETH");  // Etherium
+        nonIso4217Currencies.add("ETH");  // Ethereum
         nonIso4217Currencies.add("GNT");  // Golem Project
         nonIso4217Currencies.add("LTC");  // Litecoin
         nonIso4217Currencies.add("PPC");  // Peercoin

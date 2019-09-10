@@ -46,7 +46,7 @@ public interface Event {
     Name name();
 
     /**
-     * @return a {@link List} of {@link DataPoint} objeccts associated with this event
+     * @return a {@link List} of {@link DataPoint} objects associated with this event
      */
     @NonNull
     List<DataPoint> getDataPoints();

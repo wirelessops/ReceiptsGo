@@ -21,7 +21,7 @@ public class DateUtils {
     private static String separator;
 
     private DateUtils() {
-        throw new RuntimeException("This class uses static calls only. It cannot be instantianted");
+        throw new RuntimeException("This class uses static calls only. It cannot be instantiated");
     }
 
     public static String getDateSeparator(Context context) {

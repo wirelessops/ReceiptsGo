@@ -183,7 +183,7 @@ public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receip
     }
 
     /**
-     * Passes alongs a call to insert our "table" defaults to the appropriate sub implementation
+     * Passes along a call to insert our "table" defaults to the appropriate sub implementation
      *
      * @param customizer the {@link TableDefaultsCustomizer} implementation
      */

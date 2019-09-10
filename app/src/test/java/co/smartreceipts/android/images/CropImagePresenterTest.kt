@@ -19,7 +19,7 @@ class CropImagePresenterTest {
     private lateinit var presenter: CropImagePresenter
 
     private val view = mock<CropView>()
-    private val interactor = mock<CropImageInteracror>()
+    private val interactor = mock<CropImageInteractor>()
 
     private val imageFile = mock<File>()
     private val bitmap = mock<Bitmap>()

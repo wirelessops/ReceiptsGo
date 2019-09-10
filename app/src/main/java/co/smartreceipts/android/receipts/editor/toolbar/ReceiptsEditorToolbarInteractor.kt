@@ -45,7 +45,7 @@ class ReceiptsEditorToolbarInteractor(private val context: Context,
                         if (receiptToEdit != null) {
                             Single.just(context.getString(R.string.DIALOG_RECEIPTMENU_TITLE_EDIT_ID, receiptToEdit.id))
                         } else {
-                            databaseHelper.nextReceiptAutoIncremenetIdHelper
+                            databaseHelper.nextReceiptAutoIncrementIdHelper
                                     .doOnSuccess {
                                         Logger.debug(this, "Determined next receipt id as {}")
                                     }

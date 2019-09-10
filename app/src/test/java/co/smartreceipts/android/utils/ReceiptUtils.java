@@ -50,7 +50,7 @@ public class ReceiptUtils {
     }
 
     public static ReceiptBuilderFactory newDefaultReceiptBuilderFactory(Context context) {
-        final File img = createRoboElectricStubFile(context, Constants.IMAGE_FILE_NAME);
+        final File img = createRobolectricStubFile(context, Constants.IMAGE_FILE_NAME);
         final ReceiptBuilderFactory factory = new ReceiptBuilderFactory(Constants.ID);
         factory.setTrip(TripUtils.newDefaultTrip());
         factory.setName(Constants.NAME);
@@ -78,7 +78,7 @@ public class ReceiptUtils {
         return newDefaultReceiptBuilderFactory(context).build();
     }
 
-    public static File createRoboElectricStubFile(Context context, String filename) {
+    public static File createRobolectricStubFile(Context context, String filename) {
         final File root = context.getExternalFilesDir(null);
         final File newFile = new File(root, filename);
         try {

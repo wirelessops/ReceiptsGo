@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -24,16 +22,13 @@ public class PdfValidator {
     }
 
     public boolean isPdfValid(@NonNull File file) {
-        PdfPDImageXFactory factory = new PdfPDImageXFactoryFactory(context, new PDDocument(), file).get();
-        try {
+        try (PdfPDImageXFactory factory = new PdfPDImageXFactoryFactory(context, new PDDocument(), file).get()) {
             factory.open();
             // document has at least one page == it's valid
             return factory.nextPage();
         } catch (IOException e) {
             Logger.error(this, "Invalid PDF File", e);
             return false;
-        }  finally {
-            IOUtils.closeQuietly(factory);
         }
     }
 }
