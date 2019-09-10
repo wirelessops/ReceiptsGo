@@ -78,11 +78,11 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final int commentIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_COMMENT);
         final int reimbursableIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_REIMBURSABLE);
         final int currencyIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_ISO4217);
-        final int fullpageIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE);
+        final int fullPageIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE);
         final int paymentMethodIdIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID);
-        final int extra_edittext_1_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1);
-        final int extra_edittext_2_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2);
-        final int extra_edittext_3_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3);
+        final int extra_editText_1_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1);
+        final int extra_editText_2_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2);
+        final int extra_editText_3_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3);
         final int orderIdIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_CUSTOM_ORDER_ID);
 
         final int id = cursor.getInt(idIndex);
@@ -103,11 +103,11 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final String comment = possiblyNullComment != null ? possiblyNullComment : "";
         final boolean reimbursable = cursor.getInt(reimbursableIndex) > 0;
         final String currency = cursor.getString(currencyIndex);
-        final boolean fullpage = !(cursor.getInt(fullpageIndex) > 0);
+        final boolean fullPage = !(cursor.getInt(fullPageIndex) > 0);
         final int paymentMethodId = cursor.getInt(paymentMethodIdIndex);
-        final String extra_edittext_1 = cursor.getString(extra_edittext_1_Index);
-        final String extra_edittext_2 = cursor.getString(extra_edittext_2_Index);
-        final String extra_edittext_3 = cursor.getString(extra_edittext_3_Index);
+        final String extra_editText_1 = cursor.getString(extra_editText_1_Index);
+        final String extra_editText_2 = cursor.getString(extra_editText_2_Index);
+        final String extra_editText_3 = cursor.getString(extra_editText_3_Index);
         final long orderId = cursor.getLong(orderIdIndex);
         File file = null;
         if (!TextUtils.isEmpty(path) && !DatabaseHelper.NO_DATA.equals(path)) {
@@ -143,11 +143,11 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
                 .setComment(comment)
                 .setIsReimbursable(reimbursable)
                 .setCurrency(currency)
-                .setIsFullPage(fullpage)
+                .setIsFullPage(fullPage)
                 .setIndex(index)
-                .setExtraEditText1(extra_edittext_1)
-                .setExtraEditText2(extra_edittext_2)
-                .setExtraEditText3(extra_edittext_3)
+                .setExtraEditText1(extra_editText_1)
+                .setExtraEditText2(extra_editText_2)
+                .setExtraEditText3(extra_editText_3)
                 .setSyncState(syncState)
                 .setCustomOrderId(orderId);
 

@@ -42,7 +42,7 @@ public class GraphsPresenter extends BaseViperPresenter<GraphsView, GraphsIntera
         compositeDisposable.add(interactor.getSummationByCategories(trip)
                 .subscribe(view::present));
 
-        compositeDisposable.add(interactor.getSummationByReimbursment(trip)
+        compositeDisposable.add(interactor.getSummationByReimbursement(trip)
                 .subscribe(view::present));
 
         if (preferenceManager.get(UserPreference.Receipts.UsePaymentMethods)) {

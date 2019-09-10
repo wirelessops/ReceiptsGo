@@ -164,7 +164,7 @@ public class ImageImportProcessor implements FileImportProcessor {
     private int getOrientationFromMediaStore(@NonNull Uri externalUri) {
         final boolean hasStoragePermission = ContextCompat.checkSelfPermission(mContext, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         if (!hasStoragePermission) {
-            Logger.warn(ImageImportProcessor.this, "The user has not provided storage permissions. Unabled to determine the rotation from the content provider.");
+            Logger.warn(ImageImportProcessor.this, "The user has not provided storage permissions. Unable to determine the rotation from the content provider.");
             return ExifInterface.ORIENTATION_UNDEFINED;
         }
 

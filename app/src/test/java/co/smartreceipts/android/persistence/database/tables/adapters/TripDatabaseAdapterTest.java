@@ -146,7 +146,7 @@ public class TripDatabaseAdapterTest {
     }
 
     @Test
-    public void writeUnsycned() throws Exception {
+    public void writeUnsynced() throws Exception {
         final String sync = "sync";
         final ContentValues syncValues = new ContentValues();
         syncValues.put(sync, sync);

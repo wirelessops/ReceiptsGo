@@ -44,7 +44,7 @@ public class DriveReceiptsManager {
     private final Scheduler mObserveOnScheduler;
     private final Scheduler mSubscribeOnScheduler;
     private final AtomicBoolean mIsEnabled = new AtomicBoolean(true);
-    private final AtomicBoolean mIsIntializing = new AtomicBoolean(false);
+    private final AtomicBoolean mIsInitializing = new AtomicBoolean(false);
 
     public DriveReceiptsManager(@NonNull TableController<Receipt> receiptsTableController, @NonNull TripsTable tripsTable,
                                 @NonNull ReceiptsTable receiptsTable, @NonNull DriveStreamsManager driveTaskManager,
@@ -81,7 +81,7 @@ public class DriveReceiptsManager {
     public synchronized void syncReceipts() {
         if (mIsEnabled.get()) {
             if (mNetworkManager.isNetworkAvailable()) {
-                if (!mIsIntializing.getAndSet(true)) {
+                if (!mIsInitializing.getAndSet(true)) {
                     Logger.info(this, "Performing initialization of drive receipts");
                     mTripsTable.get()
                             .flatMapObservable(Observable::fromIterable)
@@ -101,10 +101,10 @@ public class DriveReceiptsManager {
                             }, throwable -> {
                                 mAnalytics.record(new ErrorEvent(DriveReceiptsManager.this, throwable));
                                 Logger.error(DriveReceiptsManager.this, "Failed to fetch our unsynced receipt data", throwable);
-                                mIsIntializing.set(false);
+                                mIsInitializing.set(false);
                             }, () -> {
                                 mDriveDatabaseManager.syncDatabase();
-                                mIsIntializing.set(false);
+                                mIsInitializing.set(false);
                             });
                 }
             }
@@ -122,7 +122,7 @@ public class DriveReceiptsManager {
     }
 
     public synchronized void handleInsertOrUpdate(@NonNull final Receipt receipt) {
-        if (!mIsIntializing.get()) {
+        if (!mIsInitializing.get()) {
             handleInsertOrUpdateInternal(receipt);
         }
     }
@@ -159,7 +159,7 @@ public class DriveReceiptsManager {
     }
 
     public synchronized void handleDelete(@NonNull final Receipt receipt) {
-        if (!mIsIntializing.get()) {
+        if (!mIsInitializing.get()) {
             handleDeleteInternal(receipt);
         }
     }

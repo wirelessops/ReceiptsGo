@@ -97,7 +97,7 @@ public class GroupingController {
                         .toObservable());
     }
 
-    private Observable<SumReimbursementGroupingResult> getSummationByReimbursment(Trip trip) {
+    private Observable<SumReimbursementGroupingResult> getSummationByReimbursement(Trip trip) {
         return getReceiptsStream(trip)
                 .groupBy(Receipt::isReimbursable)
                 .flatMap(booleanReceiptGroupedObservable -> booleanReceiptGroupedObservable
@@ -138,8 +138,8 @@ public class GroupingController {
                 .toList();
     }
 
-    public Single<List<LabeledGraphEntry>> getSummationByReimbursmentAsGraphEntries(Trip trip) {
-        return getSummationByReimbursment(trip)
+    public Single<List<LabeledGraphEntry>> getSummationByReimbursementAsGraphEntries(Trip trip) {
+        return getSummationByReimbursement(trip)
                 .map(reimbursementGroupingResult -> {
                     if (reimbursementGroupingResult.isReimbursable()) {
                         return new LabeledGraphEntry(reimbursementGroupingResult.getPrice().getPriceAsFloat(),

@@ -37,14 +37,10 @@ public class CsvReportWriterTest {
         final String csv = "column1, column2, column3, column4,\nhello, שלום, привет, hello,";
         writer.write(csv);
 
-        BOMInputStream bomInputStream = null;
-        try {
-            bomInputStream = new BOMInputStream(new FileInputStream(outputFile));
+        try (BOMInputStream bomInputStream = new BOMInputStream(new FileInputStream(outputFile))) {
             final String fileString = IOUtils.toString(bomInputStream, "UTF-8");
             assertEquals(fileString, csv);
             assertTrue(bomInputStream.hasBOM());
-        } finally {
-            IOUtils.closeQuietly(bomInputStream);
         }
     }
 

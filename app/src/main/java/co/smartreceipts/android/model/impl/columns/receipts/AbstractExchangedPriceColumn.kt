@@ -41,7 +41,7 @@ abstract class AbstractExchangedPriceColumn(
     }
 
     override fun getFooter(rows: List<Receipt>): String {
-        return if (!rows.isEmpty()) {
+        return if (rows.isNotEmpty()) {
             val factory = PriceBuilderFactory()
             val prices = ArrayList<Price>(rows.size)
             for (receipt in rows) {

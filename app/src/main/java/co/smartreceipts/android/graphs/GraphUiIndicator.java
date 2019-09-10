@@ -13,7 +13,7 @@ import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
 public class GraphUiIndicator {
 
     public enum GraphType {
-        SummationByCategory, SummationByPaymentMethod, SummationByReimbursment, SummationByDate
+        SummationByCategory, SummationByPaymentMethod, SummationByReimbursement, SummationByDate
     }
 
     private final GraphType graphType;
@@ -30,8 +30,8 @@ public class GraphUiIndicator {
     }
 
     @NonNull
-    public static GraphUiIndicator summationByReimbursment(@NonNull List<LabeledGraphEntry> entries ) {
-        return new GraphUiIndicator(GraphType.SummationByReimbursment, entries);
+    public static GraphUiIndicator summationByReimbursement(@NonNull List<LabeledGraphEntry> entries ) {
+        return new GraphUiIndicator(GraphType.SummationByReimbursement, entries);
     }
 
     @NonNull

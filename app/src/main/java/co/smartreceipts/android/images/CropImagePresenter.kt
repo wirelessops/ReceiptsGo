@@ -7,8 +7,8 @@ import io.reactivex.ObservableTransformer
 import io.reactivex.Single
 import javax.inject.Inject
 
-class CropImagePresenter @Inject constructor(view: CropView, interactor: CropImageInteracror) :
-    BaseViperPresenter<CropView, CropImageInteracror>(view, interactor) {
+class CropImagePresenter @Inject constructor(view: CropView, interactor: CropImageInteractor) :
+    BaseViperPresenter<CropView, CropImageInteractor>(view, interactor) {
 
     override fun subscribe() {
 

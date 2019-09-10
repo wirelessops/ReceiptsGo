@@ -452,7 +452,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
 
         /**
          * This is effectively the same as the [Ordered] case, but it may contain a scenario in which many receipts all share the same
-         * position as 999 within that day (i.e. the number of days since the Unix epoch multipled by 1000 + 999) instead of using the
+         * position as 999 within that day (i.e. the number of days since the Unix epoch multiplied by 1000 + 999) instead of using the
          * current day as the offset
          */
         PartiallyOrdered,
@@ -460,7 +460,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         /**
          * The current approach uses a mix of the receipt date and count of receipts within that day (https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
          *
-         * Practically speaking, we multiple the number of days since the Unix epoch multipled by 1000 and add the current position within that day
+         * Practically speaking, we multiple the number of days since the Unix epoch multiplied by 1000 and add the current position within that day
          */
         Ordered
     }

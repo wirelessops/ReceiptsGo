@@ -25,7 +25,6 @@ import co.smartreceipts.android.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;
 

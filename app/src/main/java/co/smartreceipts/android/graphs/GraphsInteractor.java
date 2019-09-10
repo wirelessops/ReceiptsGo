@@ -64,10 +64,10 @@ public class GraphsInteractor {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Maybe<GraphUiIndicator> getSummationByReimbursment(Trip trip) {
-        return groupingController.getSummationByReimbursmentAsGraphEntries(trip)
+    public Maybe<GraphUiIndicator> getSummationByReimbursement(Trip trip) {
+        return groupingController.getSummationByReimbursementAsGraphEntries(trip)
                 .filter(graphEntries -> graphEntries.size() == 2) // no need to show this chart if user have all receipts (non)reimbursable
-                .map(GraphUiIndicator::summationByReimbursment)
+                .map(GraphUiIndicator::summationByReimbursement)
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

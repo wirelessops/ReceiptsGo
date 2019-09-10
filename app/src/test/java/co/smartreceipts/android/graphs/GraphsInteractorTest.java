@@ -125,32 +125,32 @@ public class GraphsInteractorTest {
     }
 
     @Test
-    public void getSumByReimbursmentNormal() {
+    public void getSumByReimbursementNormal() {
         entries = new ArrayList<>();
         entries.add(new LabeledGraphEntry(15, context.getString(R.string.graphs_label_non_reimbursable)));
         entries.add(new LabeledGraphEntry(5, context.getString(R.string.graphs_label_reimbursable)));
 
-        when(groupingController.getSummationByReimbursmentAsGraphEntries(trip)).thenReturn(Single.just(entries));
+        when(groupingController.getSummationByReimbursementAsGraphEntries(trip)).thenReturn(Single.just(entries));
 
         List<LabeledGraphEntry> sortedEntries = new ArrayList<>(entries);
         Collections.sort(sortedEntries);
 
-        interactor.getSummationByReimbursment(trip)
+        interactor.getSummationByReimbursement(trip)
                 .test()
                 .assertNoErrors()
                 .assertComplete()
-                .assertResult(GraphUiIndicator.summationByReimbursment(sortedEntries));
+                .assertResult(GraphUiIndicator.summationByReimbursement(sortedEntries));
 
     }
 
     @Test
-    public void getNothingSumByReimbursmentIfOneType() {
+    public void getNothingSumByReimbursementIfOneType() {
         entries = new ArrayList<>();
         entries.add(new LabeledGraphEntry(10, context.getString(R.string.graphs_label_reimbursable)));
 
-        when(groupingController.getSummationByReimbursmentAsGraphEntries(trip)).thenReturn(Single.just(entries));
+        when(groupingController.getSummationByReimbursementAsGraphEntries(trip)).thenReturn(Single.just(entries));
 
-        interactor.getSummationByReimbursment(trip)
+        interactor.getSummationByReimbursement(trip)
                 .test()
                 .assertNoErrors()
                 .assertComplete()

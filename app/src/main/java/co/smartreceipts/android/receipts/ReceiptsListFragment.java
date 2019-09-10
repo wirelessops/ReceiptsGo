@@ -98,7 +98,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptTab
 
     public static final String READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
 
-    // Outstate
+    // Out state
     private static final String OUT_HIGHLIGHTED_RECEIPT = "out_highlighted_receipt";
     private static final String OUT_IMAGE_URI = "out_image_uri";
     private static final String OUT_IMPORTER_RESPONSE = "out_importer_response";

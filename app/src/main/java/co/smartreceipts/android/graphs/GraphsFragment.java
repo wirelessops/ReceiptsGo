@@ -173,8 +173,8 @@ public class GraphsFragment extends WBFragment implements GraphsView {
                 showSummationByCategory(uiIndicator.getEntries());
                 categoriesPieChart.setVisibility(View.VISIBLE);
                 break;
-            case SummationByReimbursment:
-                showSummationByReimbursment(uiIndicator.getEntries());
+            case SummationByReimbursement:
+                showSummationByReimbursement(uiIndicator.getEntries());
                 reimbursableBarChart.setVisibility(View.VISIBLE);
                 break;
             case SummationByPaymentMethod:
@@ -242,7 +242,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         categoriesPieChart.animateY(ANIMATION_DURATION, Easing.EaseOutBack);
     }
 
-    private void showSummationByReimbursment(List<? extends BaseEntry> entries) {
+    private void showSummationByReimbursement(List<? extends BaseEntry> entries) {
         reimbursableBarChart.post(() -> setDescription(reimbursableBarChart, R.string.graphs_expenditure_by_reimbursable_title));
 
         String[] labels = new String[2];

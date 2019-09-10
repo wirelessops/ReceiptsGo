@@ -51,7 +51,7 @@ public class GraphsPresenterTest {
 
     private GraphUiIndicator sumByCategoryIndicator = GraphUiIndicator.summationByCategory(labeledEntries);
     private GraphUiIndicator sumByPaymentMethodIndicator = GraphUiIndicator.summationByPaymentMethod(labeledEntries);
-    private GraphUiIndicator sumByReimbursmentIndicator = GraphUiIndicator.summationByReimbursment(labeledEntries);
+    private GraphUiIndicator sumByReimbursementIndicator = GraphUiIndicator.summationByReimbursement(labeledEntries);
     private GraphUiIndicator sumByDateIndicator = GraphUiIndicator.summationByDate(entries);
 
     @Before
@@ -63,7 +63,7 @@ public class GraphsPresenterTest {
         when(interactor.getSummationByCategories(trip)).thenReturn(Maybe.just(sumByCategoryIndicator));
         when(interactor.getSummationByPaymentMethod(trip)).thenReturn(Maybe.just(sumByPaymentMethodIndicator));
         when(interactor.getSummationByDate(trip)).thenReturn(Maybe.just(sumByDateIndicator));
-        when(interactor.getSummationByReimbursment(trip)).thenReturn(Maybe.just(sumByReimbursmentIndicator));
+        when(interactor.getSummationByReimbursement(trip)).thenReturn(Maybe.just(sumByReimbursementIndicator));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class GraphsPresenterTest {
         when(interactor.getSummationByCategories(trip)).thenReturn(Maybe.empty());
         when(interactor.getSummationByPaymentMethod(trip)).thenReturn(Maybe.empty());
         when(interactor.getSummationByDate(trip)).thenReturn(Maybe.empty());
-        when(interactor.getSummationByReimbursment(trip)).thenReturn(Maybe.empty());
+        when(interactor.getSummationByReimbursement(trip)).thenReturn(Maybe.empty());
 
         presenter.subscribe(trip);
 
@@ -96,7 +96,7 @@ public class GraphsPresenterTest {
         verify(graphsView).present(sumByCategoryIndicator);
         verify(graphsView).present(sumByPaymentMethodIndicator);
         verify(graphsView).present(sumByDateIndicator);
-        verify(graphsView).present(sumByReimbursmentIndicator);
+        verify(graphsView).present(sumByReimbursementIndicator);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class GraphsPresenterTest {
         verify(graphsView).present(sumByCategoryIndicator);
         verify(graphsView, never()).present(sumByPaymentMethodIndicator);
         verify(graphsView).present(sumByDateIndicator);
-        verify(graphsView).present(sumByReimbursmentIndicator);
+        verify(graphsView).present(sumByReimbursementIndicator);
     }
 
 }

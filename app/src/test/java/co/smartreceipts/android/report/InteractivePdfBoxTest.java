@@ -14,7 +14,6 @@ import com.tom_roush.pdfbox.pdmodel.graphics.PDXObject;
 import com.tom_roush.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -515,12 +514,8 @@ public class InteractivePdfBoxTest {
                 Collections.<CategoryGroupingResult>emptyList(), purchaseWallet));
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(outputFile);
+        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
             pdfBoxReportFile.writeFile(outputStream, trip);
-        } finally {
-            IOUtils.closeQuietly(outputStream);
         }
     }
 
@@ -528,12 +523,8 @@ public class InteractivePdfBoxTest {
         final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager, dateFormatter);
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
 
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(outputFile);
+        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
             pdfBoxReportFile.writeFile(outputStream, trip);
-        } finally {
-            IOUtils.closeQuietly(outputStream);
         }
     }
 

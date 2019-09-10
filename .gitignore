@@ -10,7 +10,8 @@ upload_key.jks
 ## Android Studio
 #################
 *.iml
-.idea/
+.idea/*
+!.idea/dictionaries/
 .gradle/
 build/
 
