@@ -95,11 +95,11 @@ abstract class UpgradeFromKnownDatabaseValidator {
         @JvmStatic
         private fun copyFile(resourceName: String, destination: File) {
             try {
-                val inputStream = TestResourceReader().openStream(resourceName)
-                val outputStream = FileOutputStream(destination)
-                IOUtils.copy(inputStream, outputStream)
-                IOUtils.closeQuietly(inputStream)
-                IOUtils.closeQuietly(outputStream)
+                TestResourceReader().openStream(resourceName).use { inputStream ->
+                    FileOutputStream(destination).use { outputStream ->
+                        IOUtils.copy(inputStream, outputStream)
+                    }
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Copy failed: $resourceName -> ${destination.absolutePath}", e)
                 throw e
