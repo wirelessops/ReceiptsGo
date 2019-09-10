@@ -204,7 +204,9 @@ android {
         implementation "com.google.android.gms:play-services-oss-licenses:$GOOGLE_OSS_VERSION"
 
         // Unit Tests
-        testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
+        testImplementation ("org.robolectric:robolectric:$ROBOLECTRIC_VERSION") {
+            exclude group: 'com.google.guava', module: 'guava'
+        }
         testImplementation "junit:junit:$JUNIT_VERSION"
         testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
         testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
