@@ -66,7 +66,6 @@ public class CognitoManagerTest {
     }
 
     @Test
-    @Ignore("Ignoring to test CircleCI")
     public void initializeAndGetCognitoCachingCredentialsProviderWhenLoggedIn() {
         final BehaviorSubject<Boolean> isLoggedInStream = BehaviorSubject.createDefault(true);
         when(identityManager.isLoggedInStream()).thenReturn(isLoggedInStream);
@@ -80,7 +79,6 @@ public class CognitoManagerTest {
     }
 
     @Test
-    @Ignore("Ignoring to test CircleCI")
     public void initializeAndGetCognitoCachingCredentialsProviderWhenLoggedInAfter() {
         final BehaviorSubject<Boolean> isLoggedInStream = BehaviorSubject.createDefault(false);
         when(identityManager.isLoggedInStream()).thenReturn(isLoggedInStream);
@@ -100,14 +98,12 @@ public class CognitoManagerTest {
     }
 
     @Test
-    @Ignore("Ignoring to test CircleCI")
     public void initializeCallsPrefetchCognitoTokenIfNeeded() {
         cognitoManager.initialize();
         verify(cognitoIdentityProvider).prefetchCognitoTokenIfNeeded();
     }
 
     @Test
-    @Ignore("Ignoring to test CircleCI")
     public void getCognitoCachingCredentialsProviderReDrivesCallsPrefetchCognitoTokenOnFailure() {
         cognitoManager.initialize();
         when(cognitoIdentityProvider.prefetchCognitoTokenIfNeeded()).thenReturn(Single.error(new Exception("Test")));
