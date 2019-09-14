@@ -11,7 +11,7 @@ jobs:
       JVM_OPTS: -Xmx3200m
 #      GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
     steps:
-      - run:
+#      - run:
 #          name: Wait 300 Seconds (5 Minutes - To Wait For Additional Commits)
 #          command: sleep 300
       - checkout
