@@ -86,16 +86,29 @@ object StrictModeConfiguration {
 
     @JvmStatic
     fun <T> permitDiskReads(func: () -> T?): T? {
+        val newPolicy = StrictMode.ThreadPolicy.Builder(StrictMode.getThreadPolicy()).permitDiskReads().build()
+
+        return temporaryPolicyChange(func, newPolicy)
+    }
+
+    @JvmStatic
+    fun <T> permitDiskWrites(func: () -> T?): T? {
+        val newPolicy = StrictMode.ThreadPolicy.Builder(StrictMode.getThreadPolicy()).permitDiskWrites().build()
+
+        return temporaryPolicyChange(func, newPolicy)
+    }
+
+
+    private fun <T> temporaryPolicyChange(func: () -> T?, newThreadPolicy: StrictMode.ThreadPolicy): T? {
         return if (BuildConfig.DEBUG) {
             val oldThreadPolicy = StrictMode.getThreadPolicy()
-            StrictMode.setThreadPolicy(
-                StrictMode.ThreadPolicy.Builder(oldThreadPolicy)
-                    .permitDiskReads().build()
-            )
-            val anyValue = func()
+
+            StrictMode.setThreadPolicy(newThreadPolicy)
+            val resultValue = func()
+
             StrictMode.setThreadPolicy(oldThreadPolicy)
 
-            anyValue
+            resultValue
         } else {
             func()
         }

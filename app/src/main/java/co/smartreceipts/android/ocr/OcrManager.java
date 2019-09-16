@@ -1,6 +1,5 @@
 package co.smartreceipts.android.ocr;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
@@ -41,7 +40,6 @@ public class OcrManager {
 
     private static final String OCR_FOLDER = "ocr/";
 
-    private final Context context;
     private final S3Manager s3Manager;
     private final IdentityManager identityManager;
     private final WebServiceManager ocrWebServiceManager;
@@ -55,8 +53,7 @@ public class OcrManager {
     private final BehaviorSubject<OcrProcessingStatus> ocrProcessingStatusSubject = BehaviorSubject.createDefault(OcrProcessingStatus.Idle);
 
     @Inject
-    public OcrManager(@NonNull Context context,
-                      @NonNull S3Manager s3Manager,
+    public OcrManager(@NonNull S3Manager s3Manager,
                       @NonNull IdentityManager identityManager,
                       @NonNull WebServiceManager webServiceManager,
                       @NonNull PushManager pushManager,
@@ -65,12 +62,12 @@ public class OcrManager {
                       @NonNull UserPreferenceManager userPreferenceManager,
                       @NonNull Analytics analytics,
                       @NonNull ConfigurationManager configurationManager) {
-        this(context, s3Manager, identityManager, webServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
+        this(s3Manager, identityManager, webServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor,
+                userPreferenceManager, analytics, new OcrPushMessageReceiverFactory(), configurationManager);
     }
 
     @VisibleForTesting
-    OcrManager(@NonNull Context context,
-               @NonNull S3Manager s3Manager,
+    OcrManager(@NonNull S3Manager s3Manager,
                @NonNull IdentityManager identityManager,
                @NonNull WebServiceManager webServiceManager,
                @NonNull PushManager pushManager,
@@ -80,7 +77,6 @@ public class OcrManager {
                @NonNull Analytics analytics,
                @NonNull OcrPushMessageReceiverFactory pushMessageReceiverFactory,
                @NonNull ConfigurationManager configurationManager) {
-        this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.s3Manager = Preconditions.checkNotNull(s3Manager);
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.ocrWebServiceManager = Preconditions.checkNotNull(webServiceManager);

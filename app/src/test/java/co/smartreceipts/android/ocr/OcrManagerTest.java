@@ -126,7 +126,8 @@ public class OcrManagerTest {
         when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode)).thenReturn(false);
 
-        ocrManager = new OcrManager(context, s3Manager, identityManager, ocrWebServiceManager, pushManager, ocrPurchaseTracker, ocrInformationalTooltipInteractor, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
+        ocrManager = new OcrManager(s3Manager, identityManager, ocrWebServiceManager, pushManager, ocrPurchaseTracker,
+                ocrInformationalTooltipInteractor, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
     }
 
     @Test

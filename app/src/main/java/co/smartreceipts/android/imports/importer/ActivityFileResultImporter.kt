@@ -7,7 +7,6 @@ import co.smartreceipts.android.analytics.events.ErrorEvent
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.imports.FileImportProcessorFactory
 import co.smartreceipts.android.model.Trip
-import co.smartreceipts.android.ocr.OcrManager
 import co.smartreceipts.android.utils.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
@@ -21,17 +20,14 @@ import javax.inject.Inject
 @ApplicationScope
 class ActivityFileResultImporter @VisibleForTesting constructor(
     private val analytics: Analytics,
-    private val ocrManager: OcrManager,
     private val factory: FileImportProcessorFactory,
     private val subscribeOnScheduler: Scheduler,
     private val observeOnScheduler: Scheduler
 ) {
 
-    @Inject constructor(
-        analytics: Analytics,
-        ocrManager: OcrManager,
-        factory: FileImportProcessorFactory
-    ) : this(analytics, ocrManager, factory, Schedulers.io(), AndroidSchedulers.mainThread())
+    @Inject
+    constructor(analytics: Analytics, factory: FileImportProcessorFactory)
+            : this(analytics, factory, Schedulers.io(), AndroidSchedulers.mainThread())
 
     private val importSubject = BehaviorSubject.create<Optional<ActivityFileResultImporterResponse>>()
     private var localDisposable: Disposable? = null
@@ -51,12 +47,7 @@ class ActivityFileResultImporter @VisibleForTesting constructor(
         localDisposable =
             factory.get(requestCode, trip).process(uri)
                 .subscribeOn(subscribeOnScheduler)
-                .flatMapObservable { file ->
-                    ocrManager.scan(file)
-                        .map { response ->
-                            ActivityFileResultImporterResponse.importerResponse(file, response, requestCode, resultCode)
-                        }
-                }
+                .map { file -> ActivityFileResultImporterResponse.importerResponse(file, requestCode, resultCode)}
                 .observeOn(observeOnScheduler)
                 .doOnError { throwable ->
                     Logger.error(this, "Failed to save import result", throwable)
