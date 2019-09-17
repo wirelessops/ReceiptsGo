@@ -18,7 +18,7 @@ interface CropView {
 
     fun present(indicator: UiIndicator<Bitmap>)
 
-    fun finishCropView()
+    fun finishCropView(success: Boolean)
 
     fun getApplyCropClicks(): Observable<Bitmap>
 

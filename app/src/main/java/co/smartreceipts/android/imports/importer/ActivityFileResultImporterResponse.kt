@@ -1,7 +1,6 @@
 package co.smartreceipts.android.imports.importer
 
 import android.os.Parcelable
-import co.smartreceipts.android.ocr.apis.model.OcrResponse
 import com.hadisatrio.optional.Optional
 import kotlinx.android.parcel.Parcelize
 import java.io.File
@@ -17,11 +16,6 @@ data class ActivityFileResultImporterResponse(
      * The resultant file that was imported
      */
     val file: File? = null,
-
-    /**
-     * The OCR scan response
-     */
-    val ocrResponse: OcrResponse? = null,
 
     /**
      * The request code that triggered the import
@@ -41,8 +35,8 @@ data class ActivityFileResultImporterResponse(
             ActivityFileResultImporterResponse(Optional.of(throwable))
 
         @JvmStatic
-        fun importerResponse(file: File, ocrResponse: OcrResponse, requestCode: Int, resultCode: Int): ActivityFileResultImporterResponse =
-            ActivityFileResultImporterResponse(Optional.absent(), file, ocrResponse, requestCode, resultCode)
+        fun importerResponse(file: File, requestCode: Int, resultCode: Int): ActivityFileResultImporterResponse =
+            ActivityFileResultImporterResponse(Optional.absent(), file, requestCode, resultCode)
 
     }
 }

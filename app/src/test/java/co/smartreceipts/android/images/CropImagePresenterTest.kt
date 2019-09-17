@@ -120,7 +120,7 @@ class CropImagePresenterTest {
         verify(interactor).updateImage(imageFile, bitmapUpdated)
         verify(view, times(2)).present(UiIndicator.loading())
         verify(view).present(UiIndicator.success(bitmap))
-        verify(view).finishCropView()
+        verify(view).finishCropView(true)
     }
 
     @Test
@@ -134,6 +134,6 @@ class CropImagePresenterTest {
         verify(view, times(2)).present(UiIndicator.loading())
         verify(view).present(UiIndicator.success(bitmap))
         verify(view).present(UiIndicator.error())
-        verify(view).finishCropView()
+        verify(view).finishCropView(false)
     }
 }

@@ -157,11 +157,13 @@ public class ReceiptCreateEditFragmentPresenter {
         }
     }
 
-    void deleteReceiptFileIfUnused() {
+    boolean deleteReceiptFileIfUnused() {
         if (fragment.getEditableItem() == null && fragment.getFile() != null) {
             if (fragment.getFile().delete()) {
                 Logger.info(this, "Deleting receipt file as we're not saving it");
+                return true;
             }
         }
+        return false;
     }
 }

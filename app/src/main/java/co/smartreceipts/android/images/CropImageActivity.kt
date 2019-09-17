@@ -1,5 +1,7 @@
 package co.smartreceipts.android.images
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
@@ -51,6 +53,11 @@ class CropImageActivity : AppCompatActivity(), CropView {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_crop_image)
+
+        // setting default result
+        val intent = Intent()
+        intent.putExtra(EXTRA_IMAGE_PATH, imageFile.absolutePath)
+        setResult(Activity.RESULT_CANCELED, intent)
 
     }
 
@@ -126,7 +133,12 @@ class CropImageActivity : AppCompatActivity(), CropView {
         }
     }
 
-    override fun finishCropView() {
+    override fun finishCropView(success: Boolean) {
+        val intent = Intent()
+        intent.putExtra(EXTRA_IMAGE_PATH, imageFile.absolutePath)
+
+        setResult(if (success) Activity.RESULT_OK else RESULT_CROP_ERROR, intent)
+
         this.finish()
     }
 
