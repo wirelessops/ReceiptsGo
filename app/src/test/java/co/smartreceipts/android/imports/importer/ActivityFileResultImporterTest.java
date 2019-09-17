@@ -19,9 +19,6 @@ import co.smartreceipts.android.imports.FileImportProcessor;
 import co.smartreceipts.android.imports.FileImportProcessorFactory;
 import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.ocr.OcrManager;
-import co.smartreceipts.android.ocr.apis.model.OcrResponse;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -47,12 +44,6 @@ public class ActivityFileResultImporterTest {
     Analytics analytics;
 
     @Mock
-    OcrManager ocrManager;
-
-    @Mock
-    OcrResponse ocrResponse;
-
-    @Mock
     Trip trip;
 
     @Mock
@@ -65,15 +56,14 @@ public class ActivityFileResultImporterTest {
         MockitoAnnotations.initMocks(this);
 
         when(factory.get(anyInt(), any(Trip.class))).thenReturn(processor);
-        when(ocrManager.scan(any(File.class))).thenReturn(Observable.just(ocrResponse));
         when(uri.getScheme()).thenReturn(ContentResolver.SCHEME_CONTENT);
 
-        fileResultImporter = new ActivityFileResultImporter(analytics, ocrManager, factory, Schedulers.trampoline(), Schedulers.trampoline());
+        fileResultImporter = new ActivityFileResultImporter(analytics, factory, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test
     public void importFileWithProcessingFailure() {
-        when(processor.process(uri)).thenReturn(Single.<File>error(exception));
+        when(processor.process(uri)).thenReturn(Single.error(exception));
 
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
         fileResultImporter.importFile(RequestCodes.NEW_RECEIPT_IMPORT_IMAGE, Activity.RESULT_OK, uri, trip);
@@ -94,7 +84,7 @@ public class ActivityFileResultImporterTest {
         TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
         fileResultImporter.importFile(requestCode, responseCode, uri, trip);
 
-        testObserver.assertValue(ActivityFileResultImporterResponse.importerResponse(file, ocrResponse, requestCode, responseCode))
+        testObserver.assertValue(ActivityFileResultImporterResponse.importerResponse(file, requestCode, responseCode))
                 .assertNotComplete()
                 .assertNoErrors()
                 .assertSubscribed();
@@ -110,7 +100,7 @@ public class ActivityFileResultImporterTest {
         final TestObserver<ActivityFileResultImporterResponse> testObserver = fileResultImporter.getResultStream().test();
         fileResultImporter.importFile(requestCode, responseCode, uri, trip);
 
-        testObserver.assertValue(ActivityFileResultImporterResponse.importerResponse(file, ocrResponse, requestCode, responseCode))
+        testObserver.assertValue(ActivityFileResultImporterResponse.importerResponse(file, requestCode, responseCode))
                 .assertNotComplete()
                 .assertNoErrors()
                 .assertSubscribed();

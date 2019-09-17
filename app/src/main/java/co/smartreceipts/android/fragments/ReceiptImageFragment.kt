@@ -20,7 +20,6 @@ import co.smartreceipts.android.imports.importer.ActivityFileResultImporter
 import co.smartreceipts.android.imports.locator.ActivityFileResultLocator
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
-import co.smartreceipts.android.ocr.OcrManager
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
@@ -59,9 +58,6 @@ class ReceiptImageFragment : WBFragment() {
 
     @Inject
     lateinit var receiptTableController: ReceiptTableController
-
-    @Inject
-    lateinit var ocrManager: OcrManager
 
     @Inject
     lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
