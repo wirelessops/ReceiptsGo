@@ -6,7 +6,7 @@ jobs:
         - /release_.*/
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-25
+      - image: circleci/android:api-28
     environment:
 #      JVM_OPTS: -Xmx3200m #-XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
       JAVA_OPTS: -Xmx3200m
