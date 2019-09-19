@@ -81,9 +81,9 @@ android {
 
     flavorDimensions "versionType"
 
-    kapt {
-        useBuildCache true
-    }
+//    kapt {
+//        useBuildCache true
+//    }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
