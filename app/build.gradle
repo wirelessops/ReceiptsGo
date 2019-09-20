@@ -198,7 +198,7 @@ android {
         kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
         kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
-        // Crashalytics
+        // Crashlytics
         implementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS_VERSION"
 
         implementation "com.google.android.gms:play-services-oss-licenses:$GOOGLE_OSS_VERSION"

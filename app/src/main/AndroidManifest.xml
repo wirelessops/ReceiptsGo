@@ -153,17 +153,6 @@
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/Theme.SmartReceipts.OSS"/>
 
-
-        <!-- DriveEventService (and subclasses) must be exported -->
-        <service
-            android:name=".sync.drive.services.DriveCompletionEventService"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.drive.events.HANDLE_EVENT" />
-            </intent-filter>
-        </service>
-
         <!-- FirebaseMessagingService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
         <service
             android:name=".push.services.MyFirebaseMessagingService"
