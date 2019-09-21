@@ -77,14 +77,9 @@ android {
 
     dexOptions {
         javaMaxHeapSize "2048M"
-//        preDexLibraries true
     }
 
     flavorDimensions "versionType"
-
-//    kapt {
-//        useBuildCache true
-//    }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
