@@ -3,7 +3,6 @@ package co.smartreceipts.android.widget.ui;
 import android.content.Context;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
-import androidx.appcompat.widget.WithHint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
