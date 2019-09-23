@@ -25,28 +25,11 @@ mv ../app/build.gradle.temp ../app/build.gradle
 echo "Done!"
 printf "\n"
 
-# Bumping version minor (not editing ../app/build.gradle yet, though)
-echo "---- Bumping Version Minor, NOT Editing ../app/build.gradle ----"
+echo "---- Editing versionName in ../app/build.gradle with new versionCode ----"
 printf "\n"
-
-# Get minor from full version
-minor=`echo $fullVersion | cut -f 2 -d"."`
-echo "Old minor: $minor"
-
-# Bump minor by one
-bumpedMinor=$((minor + 1))
-echo "New minor: $bumpedMinor"
-
-printf "\n"
-echo "---- Editing versionName in ../app/build.gradle with new minor and new versionCode ----"
-printf "\n"
-
-# Edit the bumped minor into the version name
-bumpedVersionNameTemp=`echo $fullVersion | sed -E "s/([0-9]+\.)$minor(\.[0-9]+\.[0-9]+)/\1$bumpedMinor\2/"`
-echo "Editing minor in versionName in ../app/build.gradle, versionName is now: $bumpedVersionNameTemp"
 
 # Edit the bumped versionCode into the versionName
-bumpedVersionName=`echo $bumpedVersionNameTemp | sed "s/\.$versionCode/\.$bumpedVersionCode"/`
+bumpedVersionName=`echo $fullVersion | sed "s/\.$versionCode/\.$bumpedVersionCode"/`
 echo "Editing versionCode in versionName in ../app/build.gradle, versionName is now: $bumpedVersionName"
 printf "\n"
 
