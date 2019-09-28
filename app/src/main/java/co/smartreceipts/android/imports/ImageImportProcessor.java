@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.exifinterface.media.ExifInterface;
@@ -112,8 +113,11 @@ public class ImageImportProcessor implements FileImportProcessor {
                         Logger.info(ImageImportProcessor.this, "Image import rotation is disabled. Ignoring...");
                     }
 
-                    final File destination = mStorageManner.getFile(mTrip.getDirectory(), System.currentTimeMillis() + ".jpg");
-                    if (!mStorageManner.writeBitmap(Uri.fromFile(destination), bitmap, Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY)) {
+                    final File destination = mStorageManner.getFile(mTrip.getDirectory(), System.currentTimeMillis() +
+                            (bitmap!= null && bitmap.hasAlpha() ? ".png" : ".jpg"));
+                    final Bitmap.CompressFormat compressFormat = bitmap != null && bitmap.hasAlpha() ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG;
+
+                    if (!mStorageManner.writeBitmap(Uri.fromFile(destination), bitmap, compressFormat, COMPRESSION_QUALITY)) {
                         Logger.error(ImageImportProcessor.this, "Failed to write the image data. Aborting");
                         emitter.onError(new IOException("Failed to write the image data. Aborting"));
                     } else {
@@ -170,27 +174,21 @@ public class ImageImportProcessor implements FileImportProcessor {
 
         Cursor cursor = null;
         try {
-            final String[] imageColumns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION };
+            final String[] imageColumns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
             cursor = mContentResolver.query(externalUri, imageColumns, null, null, null);
-            if(cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
+            if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
                 return cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
-            }
-            else {
+            } else {
                 Logger.warn(this, "Failed to find the URI to determine the orientation");
                 return ExifInterface.ORIENTATION_UNDEFINED;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.error(this, "An exception occurred when fetching the content orientation", e);
             return ExifInterface.ORIENTATION_UNDEFINED;
-        }
-        finally {
+        } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
     }
-
-
-
 }
