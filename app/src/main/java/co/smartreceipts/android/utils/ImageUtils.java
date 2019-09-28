@@ -252,7 +252,7 @@ public class ImageUtils {
         try {
 
             FileOutputStream fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            bitmap.compress(bitmap.hasAlpha() ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
             fOut.close();
             return true;
