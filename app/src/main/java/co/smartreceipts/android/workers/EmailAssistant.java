@@ -15,10 +15,12 @@ import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -47,7 +49,9 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.utils.ImageUtils;
 import co.smartreceipts.android.utils.IntentUtils;
+import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.Report;
 import co.smartreceipts.android.workers.reports.ReportGenerationException;
@@ -263,6 +267,32 @@ public class EmailAssistant {
                 dir = mStorageManager.getFile(trip.getName());
                 if (!dir.exists()) {
                     dir = mStorageManager.mkdir(trip.getName());
+                }
+            }
+
+            // TODO: 29.09.2019 we need to remove this part of code after some time
+            // due to the bug user may have some cropped images that have .jpg  extension and alpha channel
+            // such images will fail the PDF rendering process
+            // so we need to re-compress these images with JPEG format
+            for (Receipt receipt : receipts) {
+                if (receipt.hasImage()) {
+                    final File file = receipt.getFile();
+                    final Bitmap bitmap = ImageUtils.getImageFromFile(file);
+
+                    final String extension = UriUtils.getExtension(file, context).toLowerCase();
+
+                    if ((extension.equals("jpg") || extension.equals("jpeg")) && bitmap.hasAlpha()) {
+                        try {
+                            FileOutputStream fOut = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                            fOut.flush();
+                            fOut.close();
+                            Logger.info(this, "Successfully re-compressed cropped image");
+                        }
+                        catch (Exception e) {
+                            Logger.error(this, "Something went wrong while re-compressing cropped image");
+                        }
+                    }
                 }
             }
 
