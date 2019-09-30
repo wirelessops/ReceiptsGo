@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Completable;
@@ -97,19 +96,16 @@ public class DriveServiceHelper {
       if (javaFile != null) {
         if (!TextUtils.isEmpty(mimeType)) {
           FileContent mediaContent = new FileContent(mimeType, javaFile);
-          googleFile = mDriveService.files().create(metadata, mediaContent)
-                  .setKey(context.getString(R.string.android_api_key)).execute();
+          googleFile = mDriveService.files().create(metadata, mediaContent).execute();
         } else {
           final Uri uri = Uri.fromFile(javaFile);
           final String mime = UriUtils.getMimeType(uri, context.getContentResolver());
           metadata.setMimeType(mime);
           FileContent mediaContent = new FileContent(mime, javaFile);
-          googleFile = mDriveService.files().create(metadata, mediaContent)
-                  .setKey(context.getString(R.string.android_api_key)).execute();
+          googleFile = mDriveService.files().create(metadata, mediaContent).execute();
         }
       } else {
-        googleFile = mDriveService.files().create(metadata)
-                .setKey(context.getString(R.string.android_api_key)).execute();
+        googleFile = mDriveService.files().create(metadata).execute();
       }
 
       if (googleFile == null) {
@@ -131,30 +127,25 @@ public class DriveServiceHelper {
    */
   public Single<FileList> querySingle(String query) {
     return Single.fromCallable(() ->
-            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*")
-                    .setKey(context.getString(R.string.android_api_key)).execute());
+            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*").execute());
   }
 
   public Observable<FileList> queryObservable(String query) {
     return Observable.fromCallable(() ->
-            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*")
-                    .setKey(context.getString(R.string.android_api_key)).execute());
+            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*").execute());
   }
 
   public Completable deleteFile(String fileId) {
-    return Completable.fromCallable(() -> mDriveService.files().delete(fileId)
-            .setKey(context.getString(R.string.android_api_key)).execute());
+    return Completable.fromCallable(() -> mDriveService.files().delete(fileId).execute());
   }
 
   public Single<FileList> getAllFilesSortedByTime() {
     return Single.fromCallable(() ->
-            mDriveService.files().list().setSpaces(DRIVE_SEARCH_AREA).setOrderBy("modifiedTime").setFields("*")
-                    .setKey(context.getString(R.string.android_api_key)).execute());
+            mDriveService.files().list().setSpaces(DRIVE_SEARCH_AREA).setOrderBy("modifiedTime").setFields("*").execute());
   }
 
   public Single<java.io.File> getDriveFileAsJavaFile(String fileId, java.io.File downloadLocationFile) {
-    return Single.fromCallable(() -> mDriveService.files().get(fileId).setFields("*")
-            .setKey(context.getString(R.string.android_api_key)).executeMediaAsInputStream())
+    return Single.fromCallable(() -> mDriveService.files().get(fileId).setFields("*").executeMediaAsInputStream())
             .flatMap(inputStream -> {
               FileOutputStream fileOutputStream = null;
               try {
@@ -177,22 +168,19 @@ public class DriveServiceHelper {
   }
 
   public Single<File> getFile(String fileId) {
-    return Single.fromCallable(() -> mDriveService.files().get(fileId).setFields("*")
-            .setKey(context.getString(R.string.android_api_key)).execute());
+    return Single.fromCallable(() -> mDriveService.files().get(fileId).setFields("*").execute());
   }
 
   public Single<FileList> getFilesInFolder(String folderId) {
     String query = "'".concat(folderId).concat("' in parents");
     return Single.fromCallable(() ->
-            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*")
-                    .setKey(context.getString(R.string.android_api_key)).execute());
+            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*").execute());
   }
 
   public Single<FileList> getFilesByNameInFolder(String folderId, String fileName) {
     String query = "'".concat(folderId).concat("' in parents and name = '".concat(fileName).concat("'"));
     return Single.fromCallable(() ->
-            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*")
-                    .setKey(context.getString(R.string.android_api_key)).execute());
+            mDriveService.files().list().setQ(query).setSpaces(DRIVE_SEARCH_AREA).setFields("*").execute());
   }
 
   public Single<File> updateFile(String fileId, java.io.File file) {
@@ -212,8 +200,7 @@ public class DriveServiceHelper {
                   driveFile.setMimeType(mimeType);
                   driveFile.setName(file.getName());
                   return Single.fromCallable(() ->
-                          mDriveService.files().update(fileId, driveFile, mediaContent)
-                                  .setKey(context.getString(R.string.android_api_key)).execute());
+                          mDriveService.files().update(fileId, driveFile, mediaContent).execute());
               }
             });
   }
