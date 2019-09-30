@@ -37,6 +37,7 @@ import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryCodeColumn;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryExchangedPriceColumn;
@@ -106,6 +107,9 @@ public class InteractivePdfBoxTest {
     @Mock
     ReportResourcesManager reportResourcesManager;
 
+    @Mock
+    Trip mTrip;
+
     DateFormatter dateFormatter;
 
     /**
@@ -162,6 +166,8 @@ public class InteractivePdfBoxTest {
 
         // Configure test data
         final int count = 1;
+        final DistanceBuilderFactory distanceFactory = new DistanceBuilderFactory(count);
+        distanceFactory.setTrip(mTrip);
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final ReceiptBuilderFactory factory = ReceiptUtils.newDefaultReceiptBuilderFactory(context);
         factory.setFile(imgFile);
@@ -170,7 +176,7 @@ public class InteractivePdfBoxTest {
         when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString)).thenReturn("footer\n\twith\r\nnon-printable\tchars");
 
         // Write the file
-        writeFullReport(TripUtils.newDefaultTrip(), Collections.singletonList(factory.build()));
+        writeFullReport(TripUtils.newDefaultTrip(), Collections.singletonList(factory.build()), Collections.singletonList(distanceFactory.build()));
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -183,6 +189,8 @@ public class InteractivePdfBoxTest {
 
         // Configure test data
         final int count = 1;
+        final DistanceBuilderFactory distanceFactory = new DistanceBuilderFactory(count);
+        distanceFactory.setTrip(mTrip);
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final ReceiptBuilderFactory factory = ReceiptUtils.newDefaultReceiptBuilderFactory(context);
         factory.setFile(imgFile);
@@ -191,7 +199,7 @@ public class InteractivePdfBoxTest {
         when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString)).thenReturn("Footer with Various Currencies: $£€ \u20A3\u20A4\u20A6\u20A7\u20A8\u20A9\u20AA\u20AB\u20AC\u20B1\u20B9\u20BA\u20BC\u20BD)");
 
         // Write the file
-        writeFullReport(TripUtils.newDefaultTrip(), Collections.singletonList(factory.build()));
+        writeFullReport(TripUtils.newDefaultTrip(), Collections.singletonList(factory.build()), Collections.singletonList(distanceFactory.build()));
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -204,6 +212,8 @@ public class InteractivePdfBoxTest {
 
         // Configure test data
         final int count = 1;
+        final DistanceBuilderFactory distanceFactory = new DistanceBuilderFactory(count);
+        distanceFactory.setTrip(mTrip);
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final ReceiptBuilderFactory factory = ReceiptUtils.newDefaultReceiptBuilderFactory(context);
         factory.setFile(imgFile);
@@ -212,7 +222,7 @@ public class InteractivePdfBoxTest {
         when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString)).thenReturn("Footer with Various Currencies: $£€ \u20A3\u20A4\u20A6\u20A7\u20A8\u20A9\u20AA\u20AB\u20AC\u20B1\u20B9\u20BA\u20BC\u20BD)");
 
         // Write the file
-        writeFullReport(TripUtils.newDefaultTripBuilderFactory().setDirectory(new File("Name with Non-Western Characters: \uCD9C \uFFE5 \u7172")).build(), Collections.singletonList(factory.build()));
+        writeFullReport(TripUtils.newDefaultTripBuilderFactory().setDirectory(new File("Name with Non-Western Characters: \uCD9C \uFFE5 \u7172")).build(), Collections.singletonList(factory.build()), Collections.singletonList(distanceFactory.build()));
 
         // Verify the results
         final int expectedNonWesternCharactersConvertedToImageCount = 3;
@@ -241,8 +251,10 @@ public class InteractivePdfBoxTest {
         receipts.addAll(createReceiptsWithFile(wideReceiptImg, 2, true));
         receipts.addAll(createReceiptsWithFile(wideReceiptImg, 15));
 
+        final List<Distance> distances = createDistances(37);
+
         // Write the file
-        writeFullReport(TripUtils.newDefaultTrip(), receipts);
+        writeFullReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -270,8 +282,10 @@ public class InteractivePdfBoxTest {
         receipts.addAll(createReceiptsWithFile(wideReceiptImg, 2, true));
         receipts.addAll(createReceiptsWithFile(wideReceiptImg, 3));
 
+        final List<Distance> distances = createDistances(25);
+
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -286,9 +300,10 @@ public class InteractivePdfBoxTest {
         final int count = 1;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -303,9 +318,10 @@ public class InteractivePdfBoxTest {
         final int count = 2;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -320,9 +336,10 @@ public class InteractivePdfBoxTest {
         final int count = 3;
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -337,9 +354,10 @@ public class InteractivePdfBoxTest {
         final int count = 6;
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -354,9 +372,10 @@ public class InteractivePdfBoxTest {
         final int count = 12;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -371,9 +390,10 @@ public class InteractivePdfBoxTest {
         final int count = 2;
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count, true);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -388,9 +408,10 @@ public class InteractivePdfBoxTest {
         final int count = 7;
         final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count, true);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -405,9 +426,10 @@ public class InteractivePdfBoxTest {
         final int count = 1;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_PNG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -422,9 +444,10 @@ public class InteractivePdfBoxTest {
         final int count = 3;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_PNG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -439,9 +462,10 @@ public class InteractivePdfBoxTest {
         final int count = 6;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_PNG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -456,9 +480,10 @@ public class InteractivePdfBoxTest {
         final int count = 12;
         final File imgFile = testResourceReader.openFile(TestResourceReader.RECEIPT_PNG);
         final List<Receipt> receipts = createReceiptsWithFile(imgFile, count);
+        final List<Distance> distances = createDistances(count);
 
         // Write the file
-        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts);
+        writeImagesOnlyReport(TripUtils.newDefaultTrip(), receipts, distances);
 
         // Verify the results
         final PDDocument pdDocument = PDDocument.load(outputFile);
@@ -483,7 +508,18 @@ public class InteractivePdfBoxTest {
         return receipts;
     }
 
-    private void writeFullReport(@NonNull Trip trip, @NonNull List<Receipt> receipts) throws Exception {
+    @NonNull
+    private List<Distance> createDistances(int count) {
+        final List<Distance> distances = new ArrayList<>();
+        final DistanceBuilderFactory factory = new DistanceBuilderFactory(count);
+        factory.setTrip(mTrip);
+        for (int i = 0; i < count; i++) {
+            distances.add(factory.build());
+        }
+        return distances;
+    }
+
+    private void writeFullReport(@NonNull Trip trip, @NonNull List<Receipt> receipts, @NonNull List<Distance> distances) throws Exception {
         final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager, dateFormatter);
 
         final ArrayList<Column<Receipt>> receiptColumns = new ArrayList<>();
@@ -512,19 +548,19 @@ public class InteractivePdfBoxTest {
                 receiptColumns, Collections.<Distance>emptyList(), distanceColumns,
                 Collections.<SumCategoryGroupingResult>emptyList(), summationColumns,
                 Collections.<CategoryGroupingResult>emptyList(), purchaseWallet));
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
+        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts, distances));
 
         try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-            pdfBoxReportFile.writeFile(outputStream, trip);
+            pdfBoxReportFile.writeFile(outputStream, trip, receipts, distances);
         }
     }
 
-    private void writeImagesOnlyReport(@NonNull Trip trip, @NonNull List<Receipt> receipts) throws Exception {
+    private void writeImagesOnlyReport(@NonNull Trip trip, @NonNull List<Receipt> receipts, @NonNull List<Distance> distances) throws Exception {
         final PdfBoxReportFile pdfBoxReportFile = new PdfBoxReportFile(reportResourcesManager, userPreferenceManager, dateFormatter);
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
+        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts, distances));
 
         try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-            pdfBoxReportFile.writeFile(outputStream, trip);
+            pdfBoxReportFile.writeFile(outputStream, trip, receipts, distances);
         }
     }
 
