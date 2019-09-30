@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import co.smartreceipts.android.filters.LegacyReceiptFilter;
+import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -22,20 +23,23 @@ public class PdfBoxReceiptsImagesPdfSection extends PdfBoxSection {
     private final PDDocument pdDocument;
     private final UserPreferenceManager userPreferenceManager;
     private final List<Receipt> receipts;
+    private final List<Distance> distances;
 
 
     public PdfBoxReceiptsImagesPdfSection(@NonNull PdfBoxContext context, @NonNull PDDocument pdDocument,
-                                          @NonNull Trip trip, @NonNull List<Receipt> receipts) {
+                                          @NonNull Trip trip, @NonNull List<Receipt> receipts,
+                                          @NonNull List<Distance> distances) {
         super(context, trip);
         this.pdDocument = Preconditions.checkNotNull(pdDocument);
         this.userPreferenceManager = Preconditions.checkNotNull(context.getPreferences());
         this.receipts = Preconditions.checkNotNull(receipts);
+        this.distances = Preconditions.checkNotNull(distances);
     }
 
     @Override
     public void writeSection(@NonNull PDDocument doc, @NonNull PdfBoxWriter writer) throws IOException {
 
-        DefaultPdfBoxPageDecorations pageDecorations = new DefaultPdfBoxPageDecorations(pdfBoxContext, trip);
+        DefaultPdfBoxPageDecorations pageDecorations = new DefaultPdfBoxPageDecorations(pdfBoxContext, trip, receipts, distances);
 
         float availableWidth = pdfBoxContext.getPageSize().getWidth() - 2 * pdfBoxContext.getPageMarginHorizontal();
         float availableHeight = pdfBoxContext.getPageSize().getHeight() - 2 * pdfBoxContext.getPageMarginVertical()

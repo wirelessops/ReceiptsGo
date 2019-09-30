@@ -62,7 +62,9 @@ jobs:
           command: ./gradlew clean test bundleFreeRelease bundlePlusFlavorRelease
       - run:
           name: Publish Free Beta Version To Play Store
-          command: ./gradlew publishFreeReleaseBundle
+          command: |
+            rm -fr ~/.gradle/daemon/
+            ./gradlew publishFreeReleaseBundle
       - run:
           name: Publish Plus Beta Version To Play Store
           command: ./gradlew publishPlusFlavorReleaseBundle

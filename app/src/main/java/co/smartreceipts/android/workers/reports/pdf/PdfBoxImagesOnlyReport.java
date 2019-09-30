@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.date.DateFormatter;
+import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -34,7 +35,8 @@ public class PdfBoxImagesOnlyReport extends PdfBoxAbstractReport {
     @Override
     public void createSections(@NonNull Trip trip, @NonNull PdfBoxReportFile pdfBoxReportFile) {
         final List<Receipt> receipts = new ArrayList<>(getDatabase().getReceiptsTable().getBlocking(trip, false));
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
+        final List<Distance> distances = new ArrayList<>(getDatabase().getDistanceTable().getBlocking(trip, false));
+        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts, distances));
     }
 
     @Override
