@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.utils.UriUtils;
 import co.smartreceipts.android.utils.log.Logger;
 import io.reactivex.Completable;
