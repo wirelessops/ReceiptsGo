@@ -332,7 +332,7 @@ public class GoogleDriveBackupManager implements BackupProvider {
                 }).doOnError(throwable ->  {
                     Logger.error(GoogleDriveBackupManager.this, "Failed to authenticate user with status: {}", throwable.getMessage());
                 }).subscribeOn(Schedulers.io())
-                        .subscribe(onSuccess -> GoogleSignInAccountFinalization(signInAccount, onSuccess),
+                        .subscribe(token -> GoogleSignInAccountFinalization(signInAccount, token),
                                 onError -> {
                             if (onError instanceof UserRecoverableAuthException) {
                                 activity.startActivityForResult(((UserRecoverableAuthException) onError).getIntent(), REQUEST_CODE_GOOGLE_SERVICE_REAUTH);
