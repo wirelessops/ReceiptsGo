@@ -332,7 +332,7 @@ public class GoogleDriveBackupManager implements BackupProvider {
                 }).doOnError(throwable ->  {
                     Logger.error(GoogleDriveBackupManager.this, "Failed to authenticate user with status: {}", throwable.getMessage());
                 }).subscribeOn(Schedulers.io())
-                        .subscribe(onSuccess -> GoogleSignInAccountFinalization(signInAccount),
+                        .subscribe(onSuccess -> GoogleSignInAccountFinalization(signInAccount, onSuccess),
                                 onError -> {
                             if (onError instanceof UserRecoverableAuthException) {
                                 activity.startActivityForResult(((UserRecoverableAuthException) onError).getIntent(), REQUEST_CODE_GOOGLE_SERVICE_REAUTH);
@@ -344,7 +344,7 @@ public class GoogleDriveBackupManager implements BackupProvider {
         }
     }
 
-    private void GoogleSignInAccountFinalization(@NonNull GoogleSignInAccount signInAccount) {
+    private void GoogleSignInAccountFinalization(@NonNull GoogleSignInAccount signInAccount, String token) {
         Collection<String> scopes = new ArrayList<>();
         scopes.add(DriveScopes.DRIVE_FILE);
         scopes.add(DriveScopes.DRIVE_APPDATA);
@@ -362,7 +362,7 @@ public class GoogleDriveBackupManager implements BackupProvider {
 
         // The DriveServiceHelper encapsulates all REST API and SAF functionality.
         // Its instantiation is required before handling any onClick actions.
-        DriveServiceHelper driveServiceHelper = new DriveServiceHelper(context, googleDriveService);
+        DriveServiceHelper driveServiceHelper = new DriveServiceHelper(context, token, googleDriveService);
 
         // Next, build each of the appropriate member objects
         final DriveStreamsManager driveStreamsManager = new DriveStreamsManager(context, driveServiceHelper, googleDriveSyncMetadata, syncErrorStream);
