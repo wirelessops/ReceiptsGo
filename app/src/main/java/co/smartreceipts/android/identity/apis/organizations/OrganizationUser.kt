@@ -11,8 +11,8 @@ data class OrganizationUser(
     @Json(name = "user_id") val userId: String,
     @Json(name = "organization_id") val organizationId: String,
     @Json(name = "role") val role: UserRole,
-    @Json(name = "created_at") val createdAt: Date,
-    @Json(name = "updated_at") val updatedAt: Date
+    @Json(name = "created_at_iso8601") val createdAt: Date,
+    @Json(name = "updated_at_iso8601") val updatedAt: Date
 ) {
     enum class UserRole(val intValue: Int) {
         ADMIN(1), SUPPORT_ADMIN(5), USER(10);
