@@ -6,6 +6,7 @@ import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
 import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.android.identity.store.UserId
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
@@ -28,6 +29,11 @@ import kotlin.NoSuchElementException
 @RunWith(RobolectricTestRunner::class)
 class AccountInteractorTest {
 
+    companion object {
+        const val adminId = "565656"
+        const val userId = "88888"
+    }
+
     // Class under test
     private lateinit var interactor: AccountInteractor
 
@@ -40,6 +46,14 @@ class AccountInteractorTest {
 
     @Before
     fun setUp() {
+        whenever(identityManager.userId).thenReturn(UserId(adminId))
+        whenever(organization.organizationUsers).thenReturn(
+            listOf(
+                OrganizationUser("id1", adminId, "org_id", OrganizationUser.UserRole.ADMIN, Date(), Date()),
+                OrganizationUser("id2", userId, "org_id", OrganizationUser.UserRole.USER, Date(), Date())
+            )
+        )
+
         interactor = AccountInteractor(
             identityManager, organizationManager, ocrPurchaseTracker, remoteSubscriptionManager,
             Schedulers.trampoline(), Schedulers.trampoline()
@@ -55,11 +69,27 @@ class AccountInteractorTest {
     }
 
     @Test
-    fun getOrganizationSuccessTest() {
+    fun getOrganizationSuccessAdminTest() {
         whenever(organizationManager.getOrganizations()).thenReturn(Maybe.just(listOf(organization)))
         whenever(organizationManager.checkOrganizationSettingsMatch(organization)).thenReturn(Single.just(false))
 
         val expectedOrganizationModel = OrganizationModel(organization, OrganizationUser.UserRole.ADMIN, false)
+
+        val testObserver = interactor.getOrganizations().test()
+        testObserver.awaitTerminalEvent()
+        testObserver.assertValueCount(1)
+            .assertResult(listOf(expectedOrganizationModel))
+            .assertNoErrors()
+            .assertComplete()
+    }
+
+    @Test
+    fun getOrganizationSuccessNullUserIdTest() {
+        whenever(identityManager.userId).thenReturn(null)
+        whenever(organizationManager.getOrganizations()).thenReturn(Maybe.just(listOf(organization)))
+        whenever(organizationManager.checkOrganizationSettingsMatch(organization)).thenReturn(Single.just(false))
+
+        val expectedOrganizationModel = OrganizationModel(organization, OrganizationUser.UserRole.USER, false)
 
         val testObserver = interactor.getOrganizations().test()
         testObserver.awaitTerminalEvent()
@@ -173,4 +203,5 @@ class AccountInteractorTest {
         testObserver.assertNotComplete()
             .assertError(NoSuchElementException::class.java)
     }
+
 }
