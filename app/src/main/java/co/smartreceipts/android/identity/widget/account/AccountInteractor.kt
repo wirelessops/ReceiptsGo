@@ -1,5 +1,6 @@
 package co.smartreceipts.android.identity.widget.account
 
+import androidx.annotation.VisibleForTesting
 import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.IdentityManager
 import co.smartreceipts.android.identity.apis.organizations.Organization
@@ -86,9 +87,17 @@ class AccountInteractor constructor(
             .observeOn(observeOnScheduler)
     }
 
+    @VisibleForTesting
     private fun getUserRole(organization: Organization): OrganizationUser.UserRole {
-        // TODO: 12.11.2018 implement getting real user role
-        return OrganizationUser.UserRole.ADMIN
+        val defaultRole = OrganizationUser.UserRole.USER
+
+        for (user in organization.organizationUsers) {
+            if (identityManager.userId?.id.equals(user.userId)) {
+                 return user.role
+            }
+        }
+
+        return defaultRole
     }
 
 }
