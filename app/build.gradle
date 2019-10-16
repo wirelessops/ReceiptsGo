@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.github.triplet.play") version "2.4.1"
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 apply plugin: 'com.android.application'
@@ -234,6 +235,10 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+}
+
+ktlint {
+    android.set(true)
 }
 
 task secretsExtraction(description: "Allows us to extract our secrets if we have a local decrpytion key") {
