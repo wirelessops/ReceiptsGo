@@ -206,9 +206,9 @@ public class CardAdapter<T> extends BaseAdapter {
 
     protected void setSyncStateImage(ImageView image, T data) {
         image.setClickable(false);
-        if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
-            if (data instanceof Syncable) {
-                final Syncable syncableData = (Syncable) data;
+        if (data instanceof Syncable) {
+            final Syncable syncableData = (Syncable) data;
+            if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
                 if (backupProvidersManager.getLastDatabaseSyncTime().getTime() >= syncableData.getSyncState().getLastLocalModificationTime().getTime()
                         && syncableData.getSyncState().getLastLocalModificationTime().getTime() >= 0) {
                     Picasso.get().load(Uri.EMPTY).placeholder(syncedDrawable).into(image);
@@ -216,10 +216,14 @@ public class CardAdapter<T> extends BaseAdapter {
                     Picasso.get().load(Uri.EMPTY).placeholder(notSyncedDrawable).into(image);
                 }
             } else {
-                image.setVisibility(View.GONE);
+                if (backupProvidersManager.getLastDatabaseSyncTime().getTime() < syncableData.getSyncState().getLastLocalModificationTime().getTime()) {
+                    Picasso.get().load(Uri.EMPTY).placeholder(cloudDisabledDrawable).into(image);
+                } else if (backupProvidersManager.getLastDatabaseSyncTime().getTime() >= syncableData.getSyncState().getLastLocalModificationTime().getTime()) {
+                    Picasso.get().load(Uri.EMPTY).placeholder(syncedDrawable).into(image);
+                }
             }
         } else {
-            Picasso.get().load(Uri.EMPTY).placeholder(cloudDisabledDrawable).into(image);
+            image.setVisibility(View.GONE);
         }
     }
 
