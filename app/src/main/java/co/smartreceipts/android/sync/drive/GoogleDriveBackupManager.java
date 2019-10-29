@@ -362,7 +362,7 @@ public class GoogleDriveBackupManager implements BackupProvider {
 
         // The DriveServiceHelper encapsulates all REST API and SAF functionality.
         // Its instantiation is required before handling any onClick actions.
-        DriveServiceHelper driveServiceHelper = new DriveServiceHelper(context, token, googleDriveService);
+        DriveServiceHelper driveServiceHelper = new DriveServiceHelper(context, googleDriveService);
 
         // Next, build each of the appropriate member objects
         final DriveStreamsManager driveStreamsManager = new DriveStreamsManager(context, driveServiceHelper, googleDriveSyncMetadata, syncErrorStream);
