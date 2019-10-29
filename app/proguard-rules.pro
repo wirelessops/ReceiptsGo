@@ -287,3 +287,8 @@
 
 ### SmartCropper
 -keep class me.pqpo.smartcropperlib.**{*;}
+
+### Google Drive API
+-keepclassmembers class * {
+  @com.google.api.client.util.Key <fields>;
+}
