@@ -274,6 +274,10 @@
     <string name="dialog_import_positive">Importar</string>
     <string name="dialog_import_text">Sobrescribir todos los datos existentes</string>
     <string name="dialog_export_working">Exportando tus recibos…</string>
+    <string name="storage_permission_required">Permiso de almacenamiento requerido</string>
+    <string name="permission_must_be_granted">Se debe otorgar permiso de almacenamiento para importar este archivo de copia de seguridad.</string>
+    <string name="approve_permission">No se puede importar este archivo de copia de seguridad porque se ha denegado el permiso de almacenamiento. ¿Desea aprobarlo en la configuración de la aplicación?</string>
+    <string name="ok">OKAY</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Copias de seguridad</string>

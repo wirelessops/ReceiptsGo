@@ -274,6 +274,10 @@
     <string name="dialog_import_positive">Importieren</string>
     <string name="dialog_import_text">Überschreiben Sie alle vorhandenen Daten</string>
     <string name="dialog_export_working">Export Ihrer Belege …</string>
+    <string name="storage_permission_required">Opslagrechten vereist</string>
+    <string name="permission_must_be_granted">Er moet opslagmachtiging worden verleend om dit back-upbestand te importeren.</string>
+    <string name="approve_permission">Het importeren van dit back-upbestand kan niet worden gedaan omdat de opslagmachtiging is geweigerd. Wilt u het goedkeuren in de app-instellingen?</string>
+    <string name="ok">OK</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>

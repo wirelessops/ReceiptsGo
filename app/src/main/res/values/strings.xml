@@ -286,6 +286,10 @@
     <string name="dialog_import_positive">Import</string>
     <string name="dialog_import_text">Overwrite All Existing Data</string>
     <string name="dialog_export_working">Exporting your receipts&#8230;</string>
+    <string name="storage_permission_required">Storage Permission Required</string>
+    <string name="permission_must_be_granted">Storage permission must be granted to import this backup file.</string>
+    <string name="approve_permission">Importing this backup file cannot be done because the storage permission has been denied. Would you like to approve it in the app settings?</string>
+    <string name="ok">OK</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>

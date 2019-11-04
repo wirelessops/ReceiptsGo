@@ -276,6 +276,10 @@
     <string name="dialog_import_positive">Импорт</string>
     <string name="dialog_import_text">Перезаписать все существующие данные</string>
     <string name="dialog_export_working">Экспорт ваших чеков…</string>
+    <string name="storage_permission_required">Требуется разрешение на хранение</string>
+    <string name="permission_must_be_granted">Для импорта этого файла резервной копии необходимо предоставить разрешение на хранение.</string>
+    <string name="approve_permission">Невозможно импортировать этот файл резервной копии, поскольку в разрешении на хранение было отказано. Хотите утвердить его в настройках приложения?</string>
+    <string name="ok">Хорошо</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Резервные копии</string>

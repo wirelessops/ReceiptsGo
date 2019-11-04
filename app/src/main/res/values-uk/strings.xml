@@ -276,6 +276,10 @@
     <string name="dialog_import_positive">Імпорт</string>
     <string name="dialog_import_text">Перезаписати всі існуючі дані</string>
     <string name="dialog_export_working">Експорт ваших чеків…</string>
+    <string name="storage_permission_required">Необхідний дозвіл на зберігання</string>
+    <string name="permission_must_be_granted">Для імпорту цього резервного файлу повинен бути наданий дозвіл на зберігання.</string>
+    <string name="approve_permission">Імпортувати цей файл резервного копіювання неможливо, оскільки в дозволі на зберігання відмовлено. Хочете затвердити це в налаштуваннях додатка?</string>
+    <string name="ok">гаразд</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Резервні копії</string>

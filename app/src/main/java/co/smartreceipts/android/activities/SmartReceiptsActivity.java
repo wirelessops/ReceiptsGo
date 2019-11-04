@@ -2,6 +2,7 @@ package co.smartreceipts.android.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -283,7 +285,12 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     @Override
     public void presentIntentImportFatalError() {
-        Toast.makeText(this, R.string.toast_attachment_error, Toast.LENGTH_SHORT).show();
-        finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            navigationHandler.showDialog(PermissionAlertDialogFragment.newInstance(this));
+        } else {
+            Toast.makeText(this, R.string.toast_attachment_error, Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
+
 }

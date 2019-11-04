@@ -274,6 +274,10 @@
     <string name="dialog_import_positive">Importer</string>
     <string name="dialog_import_text">Remplacer toutes les données existantes</string>
     <string name="dialog_export_working">Exportation de vos reçus…</string>
+    <string name="storage_permission_required">Permis de stockage requis</string>
+    <string name="permission_must_be_granted">Une autorisation de stockage doit être accordée pour importer ce fichier de sauvegarde.</string>
+    <string name="approve_permission">L\'importation de ce fichier de sauvegarde est impossible car l\'autorisation de stockage a été refusée. Voulez-vous l\'approuver dans les paramètres de l\'application?</string>
+    <string name="ok">D\'accord</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Sauvegardes</string>

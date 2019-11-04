@@ -290,6 +290,10 @@
     <string name="dialog_import_positive">ייבוא</string>
     <string name="dialog_import_text">דריסת כל המידע הקיים</string>
     <string name="dialog_export_working">ייצוא הקבלות שלך&#8230;</string>
+    <string name="storage_permission_required">נדרשת הרשאת אחסון</string>
+    <string name="permission_must_be_granted">יש להעניק הרשאת אחסון לייבוא ​​קובץ גיבוי זה.</string>
+    <string name="approve_permission">ייבוא ​​קובץ גיבוי זה לא יכול להיעשות מכיוון שהרשאת האחסון נדחתה. האם תרצה לאשר זאת בהגדרות האפליקציה?</string>
+    <string name="ok">בסדר</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
