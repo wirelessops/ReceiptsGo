@@ -71,9 +71,7 @@ public class IntentImportInformationInteractor {
                                     });
                         }
                     })
-                    .doOnSuccess(ignored -> {
-                        intent.putExtra(INTENT_INFORMATION_SHOW, true);
-                    })
+                    .doOnSuccess(ignored -> intent.putExtra(INTENT_INFORMATION_SHOW, true))
                     .toObservable()
                     .map(UiIndicator::success)
                     .startWith(UiIndicator.idle());

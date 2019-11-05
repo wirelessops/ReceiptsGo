@@ -57,7 +57,7 @@ public class ImportLocalBackupDialogFragment extends DialogFragment implements D
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_import_backup, null);
-        mOverwriteCheckBox = (CheckBox) dialogView.findViewById(R.id.dialog_import_overwrite);
+        mOverwriteCheckBox = dialogView.findViewById(R.id.dialog_import_overwrite);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(dialogView);
