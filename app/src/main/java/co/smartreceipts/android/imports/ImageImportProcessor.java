@@ -113,16 +113,17 @@ public class ImageImportProcessor implements FileImportProcessor {
                         Logger.info(ImageImportProcessor.this, "Image import rotation is disabled. Ignoring...");
                     }
 
-                    final File destination = mStorageManner.getFile(mTrip.getDirectory(), System.currentTimeMillis() +
-                            (bitmap!= null && bitmap.hasAlpha() ? ".png" : ".jpg"));
-                    final Bitmap.CompressFormat compressFormat = bitmap != null && bitmap.hasAlpha() ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG;
+                    if (bitmap != null) {
+                        final File destination = mStorageManner.getFile(mTrip.getDirectory(), System.currentTimeMillis() + ".jpg");
+                        final Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
 
-                    if (!mStorageManner.writeBitmap(Uri.fromFile(destination), bitmap, compressFormat, COMPRESSION_QUALITY)) {
-                        Logger.error(ImageImportProcessor.this, "Failed to write the image data. Aborting");
-                        emitter.onError(new IOException("Failed to write the image data. Aborting"));
-                    } else {
-                        Logger.info(ImageImportProcessor.this, "Successfully saved the image to {}.", destination);
-                        emitter.onSuccess(destination);
+                        if (!mStorageManner.writeBitmap(Uri.fromFile(destination), bitmap, compressFormat, COMPRESSION_QUALITY)) {
+                            Logger.error(ImageImportProcessor.this, "Failed to write the image data. Aborting");
+                            emitter.onError(new IOException("Failed to write the image data. Aborting"));
+                        } else {
+                            Logger.info(ImageImportProcessor.this, "Successfully saved the image to {}.", destination);
+                            emitter.onSuccess(destination);
+                        }
                     }
                 } else {
                     emitter.onError(new FileNotFoundException());

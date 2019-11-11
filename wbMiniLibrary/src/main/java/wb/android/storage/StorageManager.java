@@ -219,22 +219,10 @@ public class StorageManager {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(path + filename);
+		try (FileOutputStream fos = new FileOutputStream(path + filename)) {
 			fos.write(data);
-			fos.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			return false;
-		}
-		finally {
-			try {
-				if (fos != null)
-					fos.close();
-			}
-			catch (IOException e) {
-			}
 		}
 		return true;
 	}
@@ -251,22 +239,10 @@ public class StorageManager {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(path + filename);
+		try (FileOutputStream fos = new FileOutputStream(path + filename)) {
 			fos.write(data.getBytes());
-			fos.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			return false;
-		}
-		finally {
-			try {
-				if (fos != null)
-					fos.close();
-			}
-			catch (IOException e) {
-			}
 		}
 		return true;
 	}
@@ -279,23 +255,11 @@ public class StorageManager {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(path + filename);
+		try (FileOutputStream fos = new FileOutputStream(path + filename)) {
 			bitmap.compress(format, quality, fos);
-			fos.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			Log.e(TAG, e.toString());
 			return false;
-		}
-		finally {
-			try {
-				if (fos != null)
-					fos.close();
-			}
-			catch (IOException e) {
-			}
 		}
 		return true;
 	}
@@ -305,23 +269,11 @@ public class StorageManager {
 			Log.e(TAG, "Invalid parameters - cannot supply null values to writeBitmap method");
 			return false;
 		}
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(imageUri.getPath());
+		try (FileOutputStream fos = new FileOutputStream(imageUri.getPath())) {
 			bitmap.compress(format, quality, fos);
-			fos.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			Log.e(TAG, e.toString());
 			return false;
-		}
-		finally {
-			try {
-				if (fos != null)
-					fos.close();
-			}
-			catch (IOException e) {
-			}
 		}
 		return true;
 	}
@@ -358,7 +310,7 @@ public class StorageManager {
 		if (is == null)
 			Log.d(TAG, "null");
 		ByteArrayOutputStream os = null;
-		byte[] bytes = null;
+		byte[] bytes;
 		try {
 			os = new ByteArrayOutputStream();
 			byte[] buffer = new byte[2048];
