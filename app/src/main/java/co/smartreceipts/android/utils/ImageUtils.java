@@ -86,8 +86,6 @@ public class ImageUtils {
     public static Bitmap rotateBitmap(Bitmap bitmap, int exifOrientation) {
         Matrix matrix = new Matrix();
         switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_NORMAL:
-                return bitmap;
             case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
                 matrix.setScale(-1, 1);
                 break;
@@ -112,6 +110,7 @@ public class ImageUtils {
             case ExifInterface.ORIENTATION_ROTATE_270:
                 matrix.setRotate(-90);
                 break;
+            case ExifInterface.ORIENTATION_NORMAL:
             default:
                 return bitmap;
         }
@@ -250,9 +249,8 @@ public class ImageUtils {
 
     public static boolean writeImageToFile(@NonNull Bitmap bitmap, @NonNull File file) {
         try {
-
             FileOutputStream fOut = new FileOutputStream(file);
-            bitmap.compress(bitmap.hasAlpha() ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, fOut);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
             fOut.close();
             return true;
