@@ -383,6 +383,7 @@
     <string name="column_item_report_cost_center">Kostenstellenbericht</string>
     <string name="column_item_image_file_name">Bildname</string>
     <string name="column_item_image_path">Bildpfad</string>
+    <string name="column_item_image_hash">Bild-Hash - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Price ohne Steuer</string>
     <string name="column_item_converted_price_exchange_rate">Preis (getauscht)</string>

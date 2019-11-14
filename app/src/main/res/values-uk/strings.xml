@@ -385,6 +385,7 @@
     <string name="column_item_report_cost_center">Центр витрат у звіті</string>
     <string name="column_item_image_file_name">Ім\'я зображення</string>
     <string name="column_item_image_path">Шлях до зображення</string>
+    <string name="column_item_image_hash">Зображення Хеш - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Вартість без податок</string>
     <string name="column_item_converted_price_exchange_rate">Вартість (після обміну)</string>

@@ -415,6 +415,7 @@
     <string name="column_item_report_cost_center">מרכז עלות דוח</string>
     <string name="column_item_image_file_name">שם תמונה</string>
     <string name="column_item_image_path">נתיב לתמונה</string>
+    <string name="column_item_image_hash">האש של תמונה SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">מחיר פחות מס</string>
     <string name="column_item_converted_price_exchange_rate">מחיר לאחר המרה</string>

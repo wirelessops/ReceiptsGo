@@ -26,7 +26,7 @@ import java.io.File
 import javax.inject.Inject
 
 @ApplicationScope
-class ReceiptsListInteracror constructor(
+class ReceiptsListInteractor constructor(
     private val intentImportProcessor: IntentImportProcessor,
     private val attachmentSendFileImporter: AttachmentSendFileImporter,
     private val receiptTableController: ReceiptTableController,

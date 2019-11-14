@@ -396,6 +396,7 @@
     <string name="column_item_report_cost_center">Centro di Costo Report</string>
     <string name="column_item_image_file_name">Nome immagine</string>
     <string name="column_item_image_path">Percorso Immagine</string>
+    <string name="column_item_image_hash">Hash immagine - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Prezzo imponibile</string>
     <string name="column_item_converted_price_exchange_rate">Prezzo (Al tasso di cambio)</string>

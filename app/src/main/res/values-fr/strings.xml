@@ -383,6 +383,7 @@
     <string name="column_item_report_cost_center">Centre de coûts du rapport</string>
     <string name="column_item_image_file_name">Nom de l\'image</string>
     <string name="column_item_image_path">Chemin de l\'image</string>
+    <string name="column_item_image_hash">Image de hachage - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Prix sans taxes comprises</string>
     <string name="column_item_converted_price_exchange_rate">Prix ​​(Échangé)</string>
