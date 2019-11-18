@@ -52,6 +52,9 @@
     <string name="yes_as_pdf">Sí: como PDF</string>
     <string name="reorder">Reordenar</string>
     <string name="share">Enviar</string>
+    <string name="reports_title">Informes</string>
+    <string name="search_empty">No se han encontrado resultados</string>
+    <string name="search_hint">Puede buscar informes o recibos por nombre, comentario, precio o categoría</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>

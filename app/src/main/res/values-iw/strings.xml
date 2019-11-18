@@ -51,6 +51,9 @@
     <string name="yes">כן</string>
     <string name="yes_as_pdf">PDF כן - בתור</string>
     <string name="share">שתף</string>
+    <string name="reports_title">דיווחים</string>
+    <string name="search_empty">לא נמצאו תוצאות</string>
+    <string name="search_hint">אתה יכול לחפש דוחות או קבלות לפי שם, תגובה, מחיר או קטגוריה</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>

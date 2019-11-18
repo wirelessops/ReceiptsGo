@@ -21,6 +21,7 @@ import co.smartreceipts.android.identity.widget.login.model.UiInputValidationInd
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import kotlin.Unit;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -100,7 +101,7 @@ public class LoginPresenterTest {
 
     @Test
     public void loginClickStartsLogin() {
-        when(view.getLoginButtonClicks()).thenReturn(Observable.just(new Object()));
+        when(view.getLoginButtonClicks()).thenReturn(Observable.just(Unit.INSTANCE));
         presenter.subscribe();
 
         verify(interactor).loginOrSignUp(userCredentialsPayloadCaptor.capture());
@@ -112,7 +113,7 @@ public class LoginPresenterTest {
 
     @Test
     public void signUpClickStartsSignUp() {
-        when(view.getSignUpButtonClicks()).thenReturn(Observable.just(new Object()));
+        when(view.getSignUpButtonClicks()).thenReturn(Observable.just(Unit.INSTANCE));
         presenter.subscribe();
 
         verify(interactor).loginOrSignUp(userCredentialsPayloadCaptor.capture());

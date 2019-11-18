@@ -30,7 +30,7 @@ interface SamsungDecimalInputView {
     fun appendDecimalSeparatorToFocusedVied(separator: String)
 
     /**
-     * @return an [Observable] that will emit an [Any] whenever this view is clicked
+     * @return an [Observable] that will emit an [Unit] whenever this view is clicked
      */
-    fun getClickStream() : Observable<Any>
+    fun getClickStream() : Observable<Unit>
 }

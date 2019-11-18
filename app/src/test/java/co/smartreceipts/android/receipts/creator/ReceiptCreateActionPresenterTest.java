@@ -11,6 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
 import io.reactivex.subjects.PublishSubject;
+import kotlin.Unit;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -31,11 +32,11 @@ public class ReceiptCreateActionPresenterTest {
     
     PublishSubject<Boolean> createNewReceiptMenuButtonToggles = PublishSubject.create();
 
-    PublishSubject<Object> createNewReceiptFromCameraButtonClicks = PublishSubject.create();
+    PublishSubject<Unit> createNewReceiptFromCameraButtonClicks = PublishSubject.create();
     
-    PublishSubject<Object> createNewReceiptFromImportedFileButtonClicks = PublishSubject.create();
+    PublishSubject<Unit> createNewReceiptFromImportedFileButtonClicks = PublishSubject.create();
     
-    PublishSubject<Object> createNewReceiptFromPlainTextButtonClicks = PublishSubject.create();
+    PublishSubject<Unit> createNewReceiptFromPlainTextButtonClicks = PublishSubject.create();
 
     @Before
     public void setUp() throws Exception {
@@ -61,21 +62,21 @@ public class ReceiptCreateActionPresenterTest {
 
     @Test
     public void createNewReceiptFromCameraButtonClicksCreatesNewReceiptViaCamera() {
-        createNewReceiptFromCameraButtonClicks.onNext(new Object());
+        createNewReceiptFromCameraButtonClicks.onNext(Unit.INSTANCE);
         verify(view).createNewReceiptViaCamera();
         verify(analytics).record(Events.Receipts.AddPictureReceipt);
     }
 
     @Test
     public void createNewReceiptFromImportedFileButtonClicksCreatesNewReceiptViaFileImport() {
-        createNewReceiptFromImportedFileButtonClicks.onNext(new Object());
+        createNewReceiptFromImportedFileButtonClicks.onNext(Unit.INSTANCE);
         verify(view).createNewReceiptViaFileImport();
         verify(analytics).record(Events.Receipts.ImportPictureReceipt);
     }
 
     @Test
     public void createNewReceiptFromPlainTextButtonClicksCreatesNewReceiptViaPlainText() {
-        createNewReceiptFromPlainTextButtonClicks.onNext(new Object());
+        createNewReceiptFromPlainTextButtonClicks.onNext(Unit.INSTANCE);
         verify(view).createNewReceiptViaPlainText();
         verify(analytics).record(Events.Receipts.AddTextReceipt);
     }
@@ -90,13 +91,13 @@ public class ReceiptCreateActionPresenterTest {
         createNewReceiptMenuButtonToggles.onNext(false);
         verify(view, never()).hideReceiptCreationMenuOptions();
 
-        createNewReceiptFromCameraButtonClicks.onNext(new Object());
+        createNewReceiptFromCameraButtonClicks.onNext(Unit.INSTANCE);
         verify(view, never()).createNewReceiptViaCamera();
 
-        createNewReceiptFromImportedFileButtonClicks.onNext(new Object());
+        createNewReceiptFromImportedFileButtonClicks.onNext(Unit.INSTANCE);
         verify(view, never()).createNewReceiptViaFileImport();
 
-        createNewReceiptFromPlainTextButtonClicks.onNext(new Object());
+        createNewReceiptFromPlainTextButtonClicks.onNext(Unit.INSTANCE);
         verify(view, never()).createNewReceiptViaPlainText();
 
         verifyZeroInteractions(analytics);

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.common.base.Preconditions;
-import com.jakewharton.rxbinding2.InitialValueObservable;
+import com.jakewharton.rxbinding3.InitialValueObservable;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;

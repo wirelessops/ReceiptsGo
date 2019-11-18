@@ -8,7 +8,7 @@ import io.reactivex.Observable
 
 interface AccountView {
 
-    val logoutButtonClicks: Observable<Any>
+    val logoutButtonClicks: Observable<Unit>
 
     val applySettingsClicks: Observable<OrganizationModel>
 

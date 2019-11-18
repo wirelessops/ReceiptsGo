@@ -52,6 +52,9 @@
     <string name="yes_as_pdf">Да - в виде PDF</string>
     <string name="reorder">Изменить порядок</string>
     <string name="share">Поделиться</string>
+    <string name="reports_title">Отчёты</string>
+    <string name="search_empty">Результаты не найдены</string>
+    <string name="search_hint">Вы можете искать отчеты или чеки по имени, комментарию, цене или категории</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Смарт Чеки Плюс</string>
