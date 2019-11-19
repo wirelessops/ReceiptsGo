@@ -16,6 +16,8 @@ object RequestCodes {
     const val ATTACH_GALLERY_IMAGE_CROP = 14
     const val ATTACH_CAMERA_IMAGE_CROP = 15
 
+    const val SEARCH_REQUEST = 16
+
 
     @JvmField
     val PHOTO_REQUESTS = listOf(

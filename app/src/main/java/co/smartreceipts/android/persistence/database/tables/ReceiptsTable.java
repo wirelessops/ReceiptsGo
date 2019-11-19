@@ -198,7 +198,6 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
 
             db.execSQL(alterReceipts);
         }
-
         if (oldVersion <= 11) { // Added trips filters, payment methods, and mileage table
             final String alterReceipts = "ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_PAYMENT_METHOD_ID + " INTEGER REFERENCES " + PaymentMethodsTable.TABLE_NAME + " ON DELETE NO ACTION";
 
@@ -283,7 +282,6 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
             moveDataToCopyTableAndRename(db, finalColumns);
 
         }
-
         if (oldVersion <= 18) { // v18 => 19 Changed Trip foreign key from Name to Id, added UUID column
 
             // adding parent trip id as a foreign key
@@ -343,6 +341,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
             // adding new UUID column
             onUpgradeToAddUUID(db, oldVersion);
         }
+
     }
 
     private void moveDataToCopyTableAndRename(@NonNull SQLiteDatabase db, String dataColumns) {

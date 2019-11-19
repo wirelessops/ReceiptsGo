@@ -27,9 +27,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.hadisatrio.optional.Optional;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
-import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.jakewharton.rxbinding3.view.RxView;
+import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -111,6 +111,7 @@ import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Consumer;
+import kotlin.Unit;
 import wb.android.flex.Flex;
 
 import static java.util.Collections.emptyList;
@@ -758,7 +759,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Observable<Date> getReceiptDateChanges() {
-        return RxDateEditText.dateChanges(dateBox)
+        return RxDateEditText.INSTANCE.dateChanges(dateBox)
                 .doOnNext(ignored -> {
                     if (exchangedPriceInBaseCurrencyBox.isFocused()) {
                         exchangedPriceInBaseCurrencyBox.clearFocus();
@@ -876,7 +877,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @NotNull
     @Override
-    public Observable<Object> getClickStream() {
+    public Observable<Unit> getClickStream() {
         return RxView.clicks(decimalSeparatorButton);
     }
 

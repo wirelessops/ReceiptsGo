@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -22,17 +25,23 @@ import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationView;
+import co.smartreceipts.android.model.Receipt;
+import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import co.smartreceipts.android.search.SearchActivity;
+import co.smartreceipts.android.search.SearchResultKeeper;
+import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.log.Logger;
@@ -46,7 +55,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import wb.android.flex.Flex;
 
 public class SmartReceiptsActivity extends AppCompatActivity implements HasAndroidInjector,
-        PurchaseEventsListener, IntentImportInformationView, IntentImportProvider {
+        PurchaseEventsListener, IntentImportInformationView, IntentImportProvider, SearchResultKeeper {
 
     @Inject
     AdPresenter adPresenter;
@@ -83,6 +92,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
+
+    @Nullable
+    private Searchable searchResult = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,17 +146,48 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(inAppPurchases -> {
-                    Logger.info(this, "The following purchases are available: {}", availablePurchases);
                     availablePurchases = inAppPurchases;
+                    Logger.info(this, "The following purchases are available: {}", availablePurchases);
                     invalidateOptionsMenu(); // To show the subscription option
                 }, throwable -> Logger.warn(SmartReceiptsActivity.this, "Failed to retrieve purchases for this session.")));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!purchaseManager.onActivityResult(requestCode, resultCode, data)) {
+
+        if (requestCode == RequestCodes.SEARCH_REQUEST) { // result from Search Activity
+            if (data != null) {
+                final Parcelable extra = data.getParcelableExtra(SearchActivity.EXTRA_RESULT);
+                switch (resultCode) {
+                    case SearchActivity.RESULT_RECEIPT:
+                        searchResult = (Receipt) extra;
+                        break;
+                    case SearchActivity.RESULT_TRIP:
+                        searchResult = (Trip) extra;
+                        break;
+                }
+            }
+        } else if (!purchaseManager.onActivityResult(requestCode, resultCode, data)) {
             if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
                 super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        //we need to handle search results here
+        // according to https://stackoverflow.com/questions/16265733/failure-delivering-result-onactivityforresult/18345899#18345899
+        if (searchResult != null) {
+            if (searchResult instanceof Receipt) {
+                final Receipt receipt = (Receipt) this.searchResult;
+                navigationHandler.navigateToReportInfoFragment(receipt.getTrip());
+            } else if (searchResult instanceof Trip) {
+                navigationHandler.navigateToHomeTripsFragment();
+            } else {
+                throw new IllegalStateException("Unexpected search result type: " + searchResult.getClass());
             }
         }
     }
@@ -181,32 +224,37 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_main_settings) {
-            navigationHandler.navigateToSettings();
-            analytics.record(Events.Navigation.SettingsOverflow);
-            return true;
-        } else if (item.getItemId() == R.id.menu_main_export) {
-            navigationHandler.navigateToBackupMenu();
-            analytics.record(Events.Navigation.BackupOverflow);
-            return true;
-        } else if (item.getItemId() == R.id.menu_main_pro_subscription) {
-            purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.OverflowMenu);
-            analytics.record(Events.Navigation.SmartReceiptsPlusOverflow);
-            return true;
-        } else if (item.getItemId() == R.id.menu_main_ocr_configuration) {
-            navigationHandler.navigateToOcrConfigurationFragment();
-            analytics.record(Events.Navigation.OcrConfiguration);
-            return true;
-        } else if (item.getItemId() == R.id.menu_main_usage_guide) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
-            analytics.record(Events.Navigation.UsageGuideOverflow);
-            return true;
-        } else if (item.getItemId() == R.id.menu_main_my_account) {
-            navigationHandler.navigateToAccountScreen();
-            analytics.record(Events.Navigation.MyAccountOverflow);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.menu_main_settings:
+                navigationHandler.navigateToSettings();
+                analytics.record(Events.Navigation.SettingsOverflow);
+                return true;
+            case R.id.menu_main_export:
+                navigationHandler.navigateToBackupMenu();
+                analytics.record(Events.Navigation.BackupOverflow);
+                return true;
+            case R.id.menu_main_pro_subscription:
+                purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.OverflowMenu);
+                analytics.record(Events.Navigation.SmartReceiptsPlusOverflow);
+                return true;
+            case R.id.menu_main_ocr_configuration:
+                navigationHandler.navigateToOcrConfigurationFragment();
+                analytics.record(Events.Navigation.OcrConfiguration);
+                return true;
+            case R.id.menu_main_usage_guide:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
+                analytics.record(Events.Navigation.UsageGuideOverflow);
+                return true;
+            case R.id.menu_main_my_account:
+                navigationHandler.navigateToAccountScreen();
+                analytics.record(Events.Navigation.MyAccountOverflow);
+                return true;
+            case R.id.menu_main_search:
+                navigationHandler.navigateToSearchActivity();
+                analytics.record(Events.Navigation.Search);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -293,4 +341,15 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         }
     }
 
+
+    @Nullable
+    @Override
+    public Searchable getSearchResult() {
+        return searchResult;
+    }
+
+    @Override
+    public void markSearchResultAsProcessed() {
+        searchResult = null;
+    }
 }

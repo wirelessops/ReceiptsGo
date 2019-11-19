@@ -28,10 +28,12 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.images.CropImageActivity;
+import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
+import co.smartreceipts.android.search.SearchActivity;
 import co.smartreceipts.android.settings.widget.PreferenceHeaderDistanceFragment;
 import co.smartreceipts.android.settings.widget.PreferenceHeaderPrivacyFragment;
 import co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFragment;
@@ -62,10 +64,6 @@ public class NavigationHandler<T extends FragmentActivity> {
     }
 
     public void navigateToHomeTripsFragment() {
-        replaceFragment(fragmentProvider.newTripFragmentInstance(), R.id.content_list);
-    }
-
-    public void navigateUpToTripsFragment() {
         replaceFragment(fragmentProvider.newTripFragmentInstance(), R.id.content_list);
     }
 
@@ -301,6 +299,14 @@ public class NavigationHandler<T extends FragmentActivity> {
         intent.putExtra(CropImageActivity.EXTRA_IMAGE_PATH, imageFile.getAbsolutePath());
 
         fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public void navigateToSearchActivity() {
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, SearchActivity.class);
+            activity.startActivityForResult(intent, RequestCodes.SEARCH_REQUEST);
+        }
     }
 
     private void replaceFragment(@NonNull Fragment fragment, @IdRes int layoutResId) {

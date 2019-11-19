@@ -2,10 +2,6 @@ package co.smartreceipts.android.trips.editor;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.text.method.TextKeyListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,8 +14,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
-import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -54,10 +55,10 @@ import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
-import co.smartreceipts.android.tooltip.model.TooltipType;
+import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.model.TooltipMetadata;
+import co.smartreceipts.android.tooltip.model.TooltipType;
 import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.trips.editor.date.TripDateView;
 import co.smartreceipts.android.trips.editor.date.TripDatesPresenter;
@@ -438,7 +439,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @NonNull
     @Override
     public Observable<Date> getStartDateChanges() {
-        return RxDateEditText.dateChanges(startDateBox);
+        return RxDateEditText.INSTANCE.dateChanges(startDateBox);
     }
 
     private String getFlexString(int id) {

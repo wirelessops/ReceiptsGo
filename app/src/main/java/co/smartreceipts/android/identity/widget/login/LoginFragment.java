@@ -3,13 +3,6 @@ package co.smartreceipts.android.identity.widget.login;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +15,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding2.view.RxView;
-import com.jakewharton.rxbinding2.widget.RxTextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+
+import com.jakewharton.rxbinding3.view.RxView;
+import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import javax.inject.Inject;
 
@@ -37,6 +38,7 @@ import co.smartreceipts.android.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
+import kotlin.Unit;
 
 
 public class LoginFragment extends Fragment implements LoginView {
@@ -190,13 +192,13 @@ public class LoginFragment extends Fragment implements LoginView {
 
     @NonNull
     @Override
-    public Observable<Object> getLoginButtonClicks() {
+    public Observable<Unit> getLoginButtonClicks() {
         return RxView.clicks(loginButton);
     }
 
     @NonNull
     @Override
-    public Observable<Object> getSignUpButtonClicks() {
+    public Observable<Unit> getSignUpButtonClicks() {
         return RxView.clicks(signUpButton);
     }
 

@@ -52,6 +52,9 @@
     <string name="yes_as_pdf">Sim - Como PDF</string>
     <string name="reorder">Reordenar</string>
     <string name="share">Enviar</string>
+    <string name="reports_title">Relatórios</string>
+    <string name="search_empty">Nenhum resultado encontrado</string>
+    <string name="search_hint">Você pode procurar relatórios ou recibos por nome, comentário, preço ou categoria</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>
@@ -383,6 +386,7 @@
     <string name="column_item_report_cost_center">Centro de custos do relatório</string>
     <string name="column_item_image_file_name">Nome da imagem</string>
     <string name="column_item_image_path">Diretório da imagem</string>
+    <string name="column_item_image_hash">Hash de imagem - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Preço sem impostos</string>
     <string name="column_item_converted_price_exchange_rate">Preço (com câmbio)</string>

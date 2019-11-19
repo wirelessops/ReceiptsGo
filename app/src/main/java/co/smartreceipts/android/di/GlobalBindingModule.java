@@ -14,6 +14,8 @@ import co.smartreceipts.android.rating.FeedbackDialogFragment;
 import co.smartreceipts.android.rating.RatingDialogFragment;
 import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentDialogFragment;
 import co.smartreceipts.android.receipts.attacher.ReceiptRemoveAttachmentDialogFragment;
+import co.smartreceipts.android.search.SearchActivity;
+import co.smartreceipts.android.search.SearchModule;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoriesListFragment;
 import co.smartreceipts.android.settings.widget.editors.categories.CategoryEditorDialogFragment;
@@ -47,6 +49,10 @@ public abstract class GlobalBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = CropModule.class)
     public abstract CropImageActivity cropImageActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = SearchModule.class)
+    public abstract SearchActivity searchActivity();
 
     @FragmentScope
     @ContributesAndroidInjector

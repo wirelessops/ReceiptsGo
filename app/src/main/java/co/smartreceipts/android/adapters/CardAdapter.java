@@ -5,16 +5,16 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
@@ -143,8 +143,8 @@ public class CardAdapter<T> extends BaseAdapter {
             convertView = inflater.inflate(R.layout.simple_card, parent, false);
             holder = new MyViewHolder();
             holder.price = convertView.findViewById(R.id.price);
-            holder.name = convertView.findViewById(android.R.id.title);
-            holder.date = convertView.findViewById(android.R.id.summary);
+            holder.name = convertView.findViewById(R.id.title);
+            holder.date = convertView.findViewById(R.id.date);
             holder.category = convertView.findViewById(android.R.id.text1);
             holder.marker = convertView.findViewById(android.R.id.text2);
             holder.syncState = convertView.findViewById(R.id.card_sync_state);

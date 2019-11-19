@@ -3,15 +3,16 @@ package co.smartreceipts.android.receipts;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.common.base.Preconditions;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
@@ -162,6 +163,8 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     }
 
     private void setIcon(ImageView view, @DrawableRes int drawableRes) {
+        picasso.cancelRequest(view);
+
         final Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), drawableRes, context.getTheme());
         if (drawable != null) {
             drawable.mutate(); // hack to prevent fab icon tinting (fab has drawable with the same src)
@@ -236,6 +239,20 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         return getItemViewType(itemPosition) == ReceiptsListItem.TYPE_HEADER;
     }
 
+    public int getIndexOfReceipt(Receipt receipt) {
+        for (int i = 0; i < listItems.size(); i++) {
+            final ReceiptsListItem listItem = listItems.get(i);
+
+            // Note: we can't use just equals for receipts because of index field.
+            // The index value depends on the request (if it was made for a trip or for all receipts), so index from search may be different than index here
+            if (listItem instanceof ReceiptContentItem && ((ReceiptContentItem) listItem).getReceipt().getId() == receipt.getId()) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     private abstract class ReceiptsListViewHolder extends AbstractDraggableItemViewHolder {
 
         ReceiptsListViewHolder(View itemView) {
@@ -259,7 +276,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
             super(itemView);
 
             price = itemView.findViewById(R.id.price);
-            name = itemView.findViewById(android.R.id.title);
+            name = itemView.findViewById(R.id.title);
             category = itemView.findViewById(R.id.card_category);
             syncState = itemView.findViewById(R.id.card_sync_state);
             menuButton = itemView.findViewById(R.id.card_menu);
@@ -324,7 +341,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
         ReceiptHeaderReceiptsListViewHolder(View itemView) {
             super(itemView);
 
-            date = itemView.findViewById(R.id.card_date);
+            date = itemView.findViewById(R.id.card_header);
         }
 
         @Override

@@ -3,9 +3,9 @@ package co.smartreceipts.android.distance.editor
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
@@ -25,7 +25,7 @@ import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.persistence.DatabaseHelper
 import co.smartreceipts.android.utils.SoftKeyboardManager
 import co.smartreceipts.android.widget.model.UiIndicator
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.widget.textChanges
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -267,8 +267,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     override fun getTextChangeStream(field: AutoCompleteField): Observable<CharSequence> {
         return when (field) {
-            DistanceAutoCompleteField.Location -> RxTextView.textChanges(text_distance_location)
-            DistanceAutoCompleteField.Comment -> RxTextView.textChanges(text_distance_comment)
+            DistanceAutoCompleteField.Location -> text_distance_location.textChanges()
+            DistanceAutoCompleteField.Comment -> text_distance_comment.textChanges()
             else -> throw IllegalArgumentException("Unsupported field type: $field")
         }
     }
