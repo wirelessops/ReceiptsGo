@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Observable;
+import kotlin.Unit;
 
 public interface LoginView {
 
@@ -19,8 +20,8 @@ public interface LoginView {
     Observable<CharSequence> getPasswordTextChanges();
 
     @NonNull
-    Observable<Object> getLoginButtonClicks();
+    Observable<Unit> getLoginButtonClicks();
 
     @NonNull
-    Observable<Object> getSignUpButtonClicks();
+    Observable<Unit> getSignUpButtonClicks();
 }

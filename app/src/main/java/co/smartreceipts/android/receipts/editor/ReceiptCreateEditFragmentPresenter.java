@@ -166,4 +166,5 @@ public class ReceiptCreateEditFragmentPresenter {
         }
         return false;
     }
+
 }

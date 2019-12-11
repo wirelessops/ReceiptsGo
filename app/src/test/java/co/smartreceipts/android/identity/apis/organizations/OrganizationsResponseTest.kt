@@ -111,8 +111,8 @@ class OrganizationsResponseTest {
                     "user_id": 50,
                     "organization_id": 11,
                     "role": 1,
-                    "created_at": "2018-08-25T12:48:49.757Z",
-                    "updated_at": "2018-08-25T12:48:49.757Z"
+                    "created_at_iso8601": "2018-08-25T12:48:49.757Z",
+                    "updated_at_iso8601": "2018-08-25T12:48:49.757Z"
                 }
             ]
         }

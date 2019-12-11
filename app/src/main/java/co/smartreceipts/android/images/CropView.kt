@@ -9,11 +9,11 @@ interface CropView {
 
     val imageFile: File
 
-    val rotateRightClicks: Observable<Any>
+    val rotateRightClicks: Observable<Unit>
 
-    val rotateLeftClicks: Observable<Any>
+    val rotateLeftClicks: Observable<Unit>
 
-    val cropToggleClicks: Observable<Any>
+    val cropToggleClicks: Observable<Unit>
 
 
     fun present(indicator: UiIndicator<Bitmap>)

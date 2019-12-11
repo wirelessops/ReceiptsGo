@@ -183,8 +183,12 @@ public class EmailAssistant {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
         emailIntent.putExtra(Intent.EXTRA_CC, cc);
         emailIntent.putExtra(Intent.EXTRA_BCC, bcc);
+
+        final List<Receipt> receipts = new ArrayList<>(persistenceManager.getDatabase().getReceiptsTable().getBlocking(trip, false));
+        final List<Distance> distances = new ArrayList<>(persistenceManager.getDatabase().getDistanceTable().getBlocking(trip, false));
+
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, new SmartReceiptsFormattableString(persistenceManager.getPreferenceManager().get(UserPreference.Email.Subject),
-                trip, persistenceManager.getPreferenceManager(), dateFormatter).toString());
+                trip, persistenceManager.getPreferenceManager(), dateFormatter, receipts, distances).toString());
         emailIntent.putExtra(Intent.EXTRA_TEXT, body);
 
         Logger.debug(this, "Built the send intent {} with extras {}.", emailIntent, emailIntent.getExtras());

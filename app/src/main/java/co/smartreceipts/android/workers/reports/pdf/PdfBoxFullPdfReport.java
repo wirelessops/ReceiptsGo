@@ -70,7 +70,7 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip,
                 receipts, columns, distances, distanceColumns, categories, categoryColumns,
                 groupingResults, purchaseWallet));
-        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts));
+        pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsImagesSection(trip, receipts, distances));
     }
 
 }

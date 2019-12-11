@@ -24,15 +24,7 @@ class AppPreferencesSynchronizer @Inject constructor(private val userPreferenceM
         return userPreferenceManager.userPreferencesSingle
             .flatMap { userPreferences ->
                 for (userPreference in userPreferences) {
-                    val prefName = userPreferenceManager.name(userPreference)
-
-                    // TODO: 24.06.2019 temporary hack (need server fix)
-                    if (prefName == "EmailSubject") {
-                        appPreferencesMap[prefName] = ""
-                    } else {
-                        appPreferencesMap[prefName] = userPreferenceManager.get(userPreference)
-                    }
-
+                    appPreferencesMap[userPreferenceManager.name(userPreference)] = userPreferenceManager.get(userPreference)
                 }
                 Single.just(appPreferencesMap)
             }
@@ -120,15 +112,7 @@ class AppPreferencesSynchronizer @Inject constructor(private val userPreferenceM
                 appPreferenceValue, preferenceValue
             )
 
-
-            val equals : Boolean;
-            // TODO: 24.06.2019 temporary hack
-            if (preferenceName == "EmailSubject") {
-                equals = true
-            } else {
-                equals = appPreferenceValue == preferenceValue
-            }
-
+            val equals: Boolean = appPreferenceValue == preferenceValue
 
             if (!equals && apply) {
                 Logger.debug(this, "Applying organization preferences: set \'{}\' to \'{}\'", preferenceName, preferenceValue)

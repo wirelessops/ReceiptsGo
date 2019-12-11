@@ -65,6 +65,7 @@ class ReceiptColumnDefinitions @Inject constructor(
         ID(26, R.string.column_item_id, R.string.original_column_item_id_en_us_name),
         PAYMENT_METHOD(27, R.string.column_item_payment_method, R.string.original_column_item_payment_method_en_us_name),
         PRICE_WITH_CURRENCY(28, R.string.RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY),
+        IMAGE_HASH(29, R.string.column_item_image_hash, R.string.original_column_item_image_hash_en_us_name),
 
         EXTRA_EDITTEXT_1(100, R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1),
         EXTRA_EDITTEXT_2(101, R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2),
@@ -128,7 +129,7 @@ class ReceiptColumnDefinitions @Inject constructor(
         for (definition in actualDefinitions) {
 
             // don't add column if column name is empty (useful for flex cases)
-            if (!reportResourcesManager.getFlexString(definition.columnHeaderId).isEmpty()) {
+            if (reportResourcesManager.getFlexString(definition.columnHeaderId).isNotEmpty()) {
 
                 val column = getColumnFromDefinition(definition)
                 columns.add(column)
@@ -197,6 +198,7 @@ class ReceiptColumnDefinitions @Inject constructor(
             INDEX -> ReceiptIndexColumn(id, syncState, customOrderId, uuid)
             ID -> ReceiptIdColumn(id, syncState, customOrderId, uuid)
             PAYMENT_METHOD -> ReceiptPaymentMethodColumn(id, syncState, customOrderId, uuid)
+            IMAGE_HASH -> ReceiptFileHashColumn(id, syncState, customOrderId, uuid)
             EXTRA_EDITTEXT_1 -> ReceiptExtra1Column(id, syncState, customOrderId, uuid)
             EXTRA_EDITTEXT_2 -> ReceiptExtra2Column(id, syncState, customOrderId, uuid)
             EXTRA_EDITTEXT_3 -> ReceiptExtra3Column(id, syncState, customOrderId, uuid)

@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
+import co.smartreceipts.android.model.Distance;
+import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 
 public interface PdfReportFile {
@@ -15,10 +18,12 @@ public interface PdfReportFile {
      * should close it).
      * @param outStream
      * @param trip
+     * @param receipts
+     * @param distances
      * @return
      * @throws IOException
      */
-    void writeFile(@NonNull OutputStream outStream, @NonNull Trip trip)
+    void writeFile(@NonNull OutputStream outStream, @NonNull Trip trip, @NonNull List<Receipt> receipts, @NonNull List<Distance> distances)
             throws IOException;
 
 

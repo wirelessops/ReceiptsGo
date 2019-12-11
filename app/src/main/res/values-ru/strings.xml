@@ -52,6 +52,9 @@
     <string name="yes_as_pdf">Да - в виде PDF</string>
     <string name="reorder">Изменить порядок</string>
     <string name="share">Поделиться</string>
+    <string name="reports_title">Отчёты</string>
+    <string name="search_empty">Результаты не найдены</string>
+    <string name="search_hint">Вы можете искать отчеты или чеки по имени, комментарию, цене или категории</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Смарт Чеки Плюс</string>
@@ -276,6 +279,10 @@
     <string name="dialog_import_positive">Импорт</string>
     <string name="dialog_import_text">Перезаписать все существующие данные</string>
     <string name="dialog_export_working">Экспорт ваших чеков…</string>
+    <string name="storage_permission_required">Требуется разрешение на хранение</string>
+    <string name="permission_must_be_granted">Для импорта этого файла резервной копии необходимо предоставить разрешение на хранение.</string>
+    <string name="approve_permission">Невозможно импортировать этот файл резервной копии, поскольку в разрешении на хранение было отказано. Хотите утвердить его в настройках приложения?</string>
+    <string name="ok">Хорошо</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Резервные копии</string>
@@ -381,6 +388,7 @@
     <string name="column_item_report_cost_center">Центр расходов в отчете</string>
     <string name="column_item_image_file_name">Имя изображения</string>
     <string name="column_item_image_path">Путь к изображению</string>
+    <string name="column_item_image_hash">Хэш изображения - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Цена без налог</string>
     <string name="column_item_converted_price_exchange_rate">Цена (после обмена)</string>

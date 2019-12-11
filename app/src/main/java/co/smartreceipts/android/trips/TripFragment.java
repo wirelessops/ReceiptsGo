@@ -6,12 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +14,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,12 +41,14 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.purchases.plus.SmartReceiptsTitle;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
+import co.smartreceipts.android.search.SearchResultKeeper;
+import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
-import co.smartreceipts.android.tooltip.model.TooltipType;
+import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.model.TooltipMetadata;
+import co.smartreceipts.android.tooltip.model.TooltipType;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
@@ -252,6 +255,20 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
             updateViewVisibilities(trips);
             hasResults = true;
             tripCardAdapter.notifyDataSetChanged(trips);
+
+            if (getActivity() instanceof SearchResultKeeper) {
+                final SearchResultKeeper searchResultKeeper = (SearchResultKeeper) getActivity();
+
+                final Searchable searchResult = searchResultKeeper.getSearchResult();
+                if (searchResult instanceof Trip) {
+                    final int index = trips.indexOf(searchResult);
+                    if (index >= 0) {
+                        getListView().smoothScrollToPosition(index);
+                    }
+
+                    searchResultKeeper.markSearchResultAsProcessed();
+                }
+            }
         }
     }
 

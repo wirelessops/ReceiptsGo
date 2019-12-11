@@ -89,7 +89,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     @Override
     public void writeSection(@NonNull PDDocument doc, @NonNull PdfBoxWriter writer) throws IOException {
 
-        final DefaultPdfBoxPageDecorations pageDecorations = new DefaultPdfBoxPageDecorations(pdfBoxContext, trip);
+        final DefaultPdfBoxPageDecorations pageDecorations = new DefaultPdfBoxPageDecorations(pdfBoxContext, trip, receipts, distances);
         final ReceiptsTotals totals = new ReceiptsTotals(trip, receipts, distances, preferenceManager);
 
         // switch to landscape mode

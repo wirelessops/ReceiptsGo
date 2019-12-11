@@ -31,7 +31,7 @@ import java.io.File
 class ReceiptsListInteractorTest {
 
     // Class under test
-    private lateinit var interactor: ReceiptsListInteracror
+    private lateinit var interactor: ReceiptsListInteractor
 
     private val intentImportProcessor = mock<IntentImportProcessor>()
     private val attachmentSendFileImporter = mock<AttachmentSendFileImporter>()
@@ -55,7 +55,7 @@ class ReceiptsListInteractorTest {
 
         whenever(attachmentSendFileImporter.importAttachment(trip, receipt, intentImportResult)).thenReturn(Single.just(file))
 
-        interactor = ReceiptsListInteracror(intentImportProcessor, attachmentSendFileImporter, receiptTableController, preferenceManager,
+        interactor = ReceiptsListInteractor(intentImportProcessor, attachmentSendFileImporter, receiptTableController, preferenceManager,
             ocrManager, imageCroppingPreferenceStorage, Schedulers.trampoline(), Schedulers.trampoline())
     }
 
