@@ -3,6 +3,7 @@ package co.smartreceipts.android.receipts.creator;
 import androidx.annotation.NonNull;
 
 import io.reactivex.Observable;
+import kotlin.Unit;
 
 /**
  * Provides a View contract from which a user can attempt to add a new receipt via the camera,
@@ -54,7 +55,7 @@ public interface ReceiptCreateActionView {
      * button, indicating the he/she would like to photograph a receipt
      */
     @NonNull
-    Observable<Object> getCreateNewReceiptFromCameraButtonClicks();
+    Observable<Unit> getCreateNewReceiptFromCameraButtonClicks();
 
     /**
      * @return an {@link Observable} that will emit an {@link Object} whenever a user clicks a
@@ -62,7 +63,7 @@ public interface ReceiptCreateActionView {
      * device
      */
     @NonNull
-    Observable<Object> getCreateNewReceiptFromImportedFileButtonClicks();
+    Observable<Unit> getCreateNewReceiptFromImportedFileButtonClicks();
 
     /**
      * @return an {@link Observable} that will emit an {@link Object} whenever a user clicks a
@@ -70,5 +71,5 @@ public interface ReceiptCreateActionView {
      * corresponding image/pdf file).
      */
     @NonNull
-    Observable<Object> getCreateNewReceiptFromPlainTextButtonClicks();
+    Observable<Unit> getCreateNewReceiptFromPlainTextButtonClicks();
 }

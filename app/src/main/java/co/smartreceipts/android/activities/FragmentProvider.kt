@@ -14,8 +14,7 @@ import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.ocr.apis.model.OcrResponse
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment
-import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_FILE
-import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_OCR
+import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.*
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment
 import co.smartreceipts.android.trips.TripFragment
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment

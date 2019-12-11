@@ -53,6 +53,9 @@
     <string name="yes">Si</string>
     <string name="yes_as_pdf">Si - Come PDF</string>
     <string name="share">Condividi</string>
+    <string name="reports_title">Rapporti</string>
+    <string name="search_empty">Nessun risultato trovato</string>
+    <string name="search_hint">Puoi cercare Rapporti o Ricevute per nome, commento, prezzo o categoria</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>
@@ -287,6 +290,10 @@
     <string name="dialog_import_positive">Importa</string>
     <string name="dialog_import_text">Sovrascrivere tutti i dati esistenti</string>
     <string name="dialog_export_working">Ricevute in esportaziones&#8230;</string>
+    <string name="storage_permission_required">È richiesta l\'autorizzazione allo stoccaggio</string>
+    <string name="permission_must_be_granted">L\'autorizzazione di archiviazione deve essere concessa per importare questo file di backup.</string>
+    <string name="approve_permission">L\'importazione di questo file di backup non può essere eseguita perché l\'autorizzazione di archiviazione è stata negata. Desideri approvarlo nelle impostazioni dell\'app?</string>
+    <string name="ok">OK</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
@@ -392,6 +399,7 @@
     <string name="column_item_report_cost_center">Centro di Costo Report</string>
     <string name="column_item_image_file_name">Nome immagine</string>
     <string name="column_item_image_path">Percorso Immagine</string>
+    <string name="column_item_image_hash">Hash immagine - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Prezzo imponibile</string>
     <string name="column_item_converted_price_exchange_rate">Prezzo (Al tasso di cambio)</string>

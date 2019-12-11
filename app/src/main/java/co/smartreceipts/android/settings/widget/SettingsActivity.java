@@ -10,15 +10,16 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
-import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
-import androidx.core.app.TaskStackBuilder;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+import androidx.core.app.TaskStackBuilder;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
@@ -188,8 +189,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(inAppPurchases -> {
-                    Logger.info(SettingsActivity.this, "The following purchases are available: {}", availablePurchases);
                     availablePurchases = inAppPurchases;
+                    Logger.info(SettingsActivity.this, "The following purchases are available: {}", availablePurchases);
                 }, throwable -> Logger.warn(SettingsActivity.this, "Failed to retrieve purchases for this session.", throwable)));
     }
 

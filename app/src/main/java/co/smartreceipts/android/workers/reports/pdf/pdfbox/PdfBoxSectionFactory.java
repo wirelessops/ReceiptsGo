@@ -28,6 +28,7 @@ public interface PdfBoxSectionFactory {
 
     @NonNull
     PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip,
-                                                               @NonNull List<Receipt> receipts);
+                                                               @NonNull List<Receipt> receipts,
+                                                               @NonNull List<Distance> distances);
 
 }

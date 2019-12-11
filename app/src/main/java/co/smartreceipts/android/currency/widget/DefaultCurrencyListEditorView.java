@@ -1,14 +1,14 @@
 package co.smartreceipts.android.currency.widget;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
+
 import com.google.common.base.Preconditions;
-import com.jakewharton.rxbinding2.widget.RxAdapterView;
+import com.jakewharton.rxbinding3.widget.RxAdapterView;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class DefaultCurrencyListEditorView implements CurrencyListEditorView {
     @NonNull
     @UiThread
     public Consumer<? super Integer> displayCurrencySelection() {
-        return RxAdapterView.selection(currencySpinnerSupplier.get());
+        return integer -> currencySpinnerSupplier.get().setSelection(integer);
     }
 
     @Override

@@ -75,12 +75,12 @@ class CropImagePresenterTest {
 
     @Test
     fun rotateRightClickTest() {
-        val subject = PublishSubject.create<Any>()
+        val subject = PublishSubject.create<Unit>()
         whenever(view.rotateRightClicks).thenReturn(subject)
 
         presenter.subscribe()
 
-        subject.onNext(Any())
+        subject.onNext(Unit)
 
         val orderVerifier = Mockito.inOrder(view, interactor)
         orderVerifier.verify(interactor).getImage(imageFile)
@@ -94,12 +94,12 @@ class CropImagePresenterTest {
 
     @Test
     fun rotateLeftClickTest() {
-        val subject = PublishSubject.create<Any>()
+        val subject = PublishSubject.create<Unit>()
         whenever(view.rotateLeftClicks).thenReturn(subject)
 
         presenter.subscribe()
 
-        subject.onNext(Any())
+        subject.onNext(Unit)
 
         val orderVerifier = Mockito.inOrder(view, interactor)
         orderVerifier.verify(interactor).getImage(imageFile)

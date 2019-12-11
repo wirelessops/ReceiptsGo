@@ -53,6 +53,9 @@
     <string name="yes">Yes</string>
     <string name="yes_as_pdf">Yes - As PDF</string>
     <string name="share">Share</string>
+    <string name="reports_title">Reports</string>
+    <string name="search_empty">No Results Found</string>
+    <string name="search_hint">You can search for Reports or Receipts by name, comment, price or category</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>
@@ -286,6 +289,10 @@
     <string name="dialog_import_positive">Import</string>
     <string name="dialog_import_text">Overwrite All Existing Data</string>
     <string name="dialog_export_working">Exporting your receipts&#8230;</string>
+    <string name="storage_permission_required">Storage Permission Required</string>
+    <string name="permission_must_be_granted">Storage permission must be granted to import this backup file.</string>
+    <string name="approve_permission">Importing this backup file cannot be done because the storage permission has been denied. Would you like to approve it in the app settings?</string>
+    <string name="ok">OK</string>
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
@@ -391,6 +398,7 @@
     <string name="column_item_report_cost_center">Report Cost Center</string>
     <string name="column_item_image_file_name">Image Name</string>
     <string name="column_item_image_path">Image Path</string>
+    <string name="column_item_image_hash">Image Hash - SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">Price Minus Tax</string>
     <string name="column_item_converted_price_exchange_rate">Price (Exchanged)</string>

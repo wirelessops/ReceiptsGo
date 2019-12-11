@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.github.triplet.play") version "2.4.1"
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 apply plugin: 'com.android.application'
@@ -21,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2181
-        versionName "4.20.2.2181"
+        versionCode 1100
+        versionName "4.22.0.1100"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -161,7 +162,8 @@ android {
         //Rx2
         implementation "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
         implementation "io.reactivex.rxjava2:rxandroid:$RX2_ANDROID_VERSION"
-        implementation "com.jakewharton.rxbinding2:rxbinding:$RX2_BINDING_VERSION"
+        implementation "com.jakewharton.rxbinding3:rxbinding:$RX2_BINDING_VERSION"
+        implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$RX2_BINDING_VERSION"
         implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
 
         implementation "commons-io:commons-io:$IO_UTILS_VERSION"
@@ -186,6 +188,8 @@ android {
         implementation("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:$ADV_RECYCLER_VIEW_VERSION@aar") {
             transitive = true
         }
+
+        implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:$ADAPTER_DELEGATES_VERSION"
 
         implementation "com.github.pqpo:SmartCropper:$SMART_CROPPER_VERSION"
 
@@ -234,6 +238,10 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+}
+
+ktlint {
+    android.set(true)
 }
 
 task secretsExtraction(description: "Allows us to extract our secrets if we have a local decrpytion key") {

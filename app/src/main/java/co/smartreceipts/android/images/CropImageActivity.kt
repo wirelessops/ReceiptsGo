@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import co.smartreceipts.android.R
 import co.smartreceipts.android.utils.StrictModeConfiguration
 import co.smartreceipts.android.widget.model.UiIndicator
-import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -30,14 +30,14 @@ class CropImageActivity : AppCompatActivity(), CropView {
     override val imageFile: File
         get() = File(intent.getStringExtra(EXTRA_IMAGE_PATH))
 
-    override val rotateRightClicks: Observable<Any>
-        get() = RxView.clicks(button_rotate_right)
+    override val rotateRightClicks: Observable<Unit>
+        get() = button_rotate_right.clicks()
 
-    override val rotateLeftClicks: Observable<Any>
-        get() = RxView.clicks(button_rotate_left)
+    override val rotateLeftClicks: Observable<Unit>
+        get() = button_rotate_left.clicks()
 
-    override val cropToggleClicks: Observable<Any>
-        get() = RxView.clicks(button_crop)
+    override val cropToggleClicks: Observable<Unit>
+        get() = button_crop.clicks()
 
     private val applyCropClicksSubject = PublishSubject.create<Bitmap>()
 

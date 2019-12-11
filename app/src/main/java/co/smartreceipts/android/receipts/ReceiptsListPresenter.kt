@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @FragmentScope
 class ReceiptsListPresenter @Inject constructor(
-    view: ReceiptsListView, interactor: ReceiptsListInteracror,
+    view: ReceiptsListView, interactor: ReceiptsListInteractor,
     private val ocrStatusAlerterPresenter: OcrStatusAlerterPresenter,
     private val receiptCreateActionPresenter: ReceiptCreateActionPresenter,
     private val activityFileResultLocator: ActivityFileResultLocator,
@@ -40,14 +40,13 @@ class ReceiptsListPresenter @Inject constructor(
     private val tripTableController: TripTableController,
     private val analytics: Analytics
 ) :
-    BaseViperPresenter<ReceiptsListView, ReceiptsListInteracror>(view, interactor) {
+    BaseViperPresenter<ReceiptsListView, ReceiptsListInteractor>(view, interactor) {
 
     companion object {
         const val READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
     }
 
     private var importIntentMode: Boolean = false
-
 
     override fun subscribe() {
 

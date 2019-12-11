@@ -38,7 +38,7 @@ class ReceiptsListPresenterTest {
     lateinit var presenter: ReceiptsListPresenter
 
     private val view = mock<ReceiptsListView>()
-    private val interactor = mock<ReceiptsListInteracror>()
+    private val interactor = mock<ReceiptsListInteractor>()
 
     private val ocrStatusAlerterPresenter = mock<OcrStatusAlerterPresenter>()
     private val receiptCreateActionPresenter = mock<ReceiptCreateActionPresenter>()

@@ -35,7 +35,7 @@ import io.reactivex.subjects.Subject;
 public class IntentImportProcessor {
 
     private static final String INTENT_CONSUMED = "co.smartreceipts.android.INTENT_CONSUMED";
-    private static final Set<String> SUPPORTED_SMR_MIME_TYPES = new HashSet<>(Arrays.asList("application/octet-stream", "application/zip"));
+    private static final Set<String> SUPPORTED_SMR_MIME_TYPES = new HashSet<>(Arrays.asList("application/octet-stream", "application/zip", "application/x-zip"));
 
     private final Context context;
     private final Analytics analytics;

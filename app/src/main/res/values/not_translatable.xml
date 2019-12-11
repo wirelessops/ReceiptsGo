@@ -19,7 +19,8 @@
     <string name="original_column_item_report_cost_center_en_us_name" translatable="false">Report Cost Center</string>
     <string name="original_column_item_image_file_name_en_us_name" translatable="false">Image Name</string>
     <string name="original_column_item_image_path_en_us_name" translatable="false">Image Path</string>
-    <!-- **Please note that for _en_us_namef translatable="false" lex purposes, some of these use the legacy names above** -->
+    <string name="original_column_item_image_hash_en_us_name" translatable="false">Image Hash</string>
+    <!-- **Please note that for _en_us_name translatable="false" lex purposes, some of these use the legacy names above** -->
     <string name="original_column_item_receipt_price_minus_tax_en_us_name" translatable="false">Price Minus Tax"</string>
     <string name="original_column_item_converted_price_exchange_rate_en_us_name" translatable="false">Price (Exchanged)</string>
     <string name="original_column_item_converted_tax_exchange_rate_en_us_name" translatable="false">Tax (Exchanged)</string>

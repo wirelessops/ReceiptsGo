@@ -1,11 +1,10 @@
 package co.smartreceipts.android.model
 
-import android.content.Context
 import android.os.Parcelable
 import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
-import co.smartreceipts.android.model.utils.ModelUtils
+import co.smartreceipts.android.search.Searchable
 import co.smartreceipts.android.sync.model.SyncState
 import co.smartreceipts.android.sync.model.Syncable
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState
@@ -56,7 +55,7 @@ class Trip @JvmOverloads constructor(
      */
     var dailySubTotal: Price = PriceBuilderFactory().setPrice(0.0).setCurrency(tripCurrency).build()
 
-) : Keyed, Parcelable, Priceable, Comparable<Trip>, Syncable {
+) : Keyed, Parcelable, Priceable, Comparable<Trip>, Syncable, Searchable {
 
     /**
      * The [Date] upon which this trip began

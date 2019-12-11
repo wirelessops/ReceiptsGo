@@ -52,9 +52,10 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
 
 
     @Override
-    public void writeFile(@NonNull OutputStream outStream, @NonNull Trip trip) throws IOException {
+    public void writeFile(@NonNull OutputStream outStream, @NonNull Trip trip, @NonNull List<Receipt> receipts,
+                          @NonNull List<Distance> distances) throws IOException {
         try {
-            final PdfBoxWriter writer = new PdfBoxWriter(pdDocument, pdfBoxContext, new DefaultPdfBoxPageDecorations(pdfBoxContext, trip));
+            final PdfBoxWriter writer = new PdfBoxWriter(pdDocument, pdfBoxContext, new DefaultPdfBoxPageDecorations(pdfBoxContext, trip, receipts, distances));
             for (PdfBoxSection section : sections) {
                 section.writeSection(pdDocument, writer);
             }
@@ -94,7 +95,9 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
 
     @NonNull
     @Override
-    public PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip, @NonNull List<Receipt> receipts) {
-        return new PdfBoxReceiptsImagesPdfSection(pdfBoxContext, pdDocument, trip, receipts);
+    public PdfBoxReceiptsImagesPdfSection createReceiptsImagesSection(@NonNull Trip trip,
+                                                                      @NonNull List<Receipt> receipts,
+                                                                      @NonNull List<Distance> distances) {
+        return new PdfBoxReceiptsImagesPdfSection(pdfBoxContext, pdDocument, trip, receipts, distances);
     }
 }

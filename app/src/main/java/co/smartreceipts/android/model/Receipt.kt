@@ -2,6 +2,7 @@ package co.smartreceipts.android.model
 
 import android.os.Parcelable
 import co.smartreceipts.android.date.DisplayableDate
+import co.smartreceipts.android.search.Searchable
 import co.smartreceipts.android.sync.model.SyncState
 import co.smartreceipts.android.sync.model.Syncable
 import co.smartreceipts.android.utils.StrictModeConfiguration
@@ -83,7 +84,7 @@ class Receipt constructor(
     val extraEditText3: String?,
     override val syncState: SyncState,
     override val customOrderId: Long
-) : Keyed, Parcelable, Priceable, Draggable<Receipt>, Syncable {
+) : Keyed, Parcelable, Priceable, Draggable<Receipt>, Syncable, Searchable {
 
     /**
      * The [Date] in which the [displayableDate] was set

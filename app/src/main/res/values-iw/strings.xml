@@ -51,6 +51,9 @@
     <string name="yes">כן</string>
     <string name="yes_as_pdf">PDF כן - בתור</string>
     <string name="share">שתף</string>
+    <string name="reports_title">דיווחים</string>
+    <string name="search_empty">לא נמצאו תוצאות</string>
+    <string name="search_hint">אתה יכול לחפש דוחות או קבלות לפי שם, תגובה, מחיר או קטגוריה</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>
@@ -290,6 +293,10 @@
     <string name="dialog_import_positive">ייבוא</string>
     <string name="dialog_import_text">דריסת כל המידע הקיים</string>
     <string name="dialog_export_working">ייצוא הקבלות שלך&#8230;</string>
+    <string name="storage_permission_required">נדרשת הרשאת אחסון</string>
+    <string name="permission_must_be_granted">יש להעניק הרשאת אחסון לייבוא ​​קובץ גיבוי זה.</string>
+    <string name="approve_permission">ייבוא ​​קובץ גיבוי זה לא יכול להיעשות מכיוון שהרשאת האחסון נדחתה. האם תרצה לאשר זאת בהגדרות האפליקציה?</string>
+    <string name="ok">בסדר</string>
 
     <!-- ==================== DIALOG_ABOUT ====================== -->
 
@@ -411,6 +418,7 @@
     <string name="column_item_report_cost_center">מרכז עלות דוח</string>
     <string name="column_item_image_file_name">שם תמונה</string>
     <string name="column_item_image_path">נתיב לתמונה</string>
+    <string name="column_item_image_hash">האש של תמונה SHA256</string>
     <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
     <string name="column_item_receipt_price_minus_tax">מחיר פחות מס</string>
     <string name="column_item_converted_price_exchange_rate">מחיר לאחר המרה</string>
