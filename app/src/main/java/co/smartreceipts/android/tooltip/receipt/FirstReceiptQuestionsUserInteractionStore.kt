@@ -1,7 +1,7 @@
 package co.smartreceipts.android.tooltip.receipt
 
 import android.content.SharedPreferences
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import dagger.Lazy
 import io.reactivex.Scheduler

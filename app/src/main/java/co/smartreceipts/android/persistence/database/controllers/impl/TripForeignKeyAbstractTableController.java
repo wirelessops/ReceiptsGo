@@ -17,7 +17,7 @@ import co.smartreceipts.android.persistence.database.controllers.alterations.Tab
 import co.smartreceipts.android.persistence.database.controllers.results.ForeignKeyGetResult;
 import co.smartreceipts.android.persistence.database.tables.TripForeignKeyAbstractSqlTable;
 import co.smartreceipts.android.sync.model.Syncable;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

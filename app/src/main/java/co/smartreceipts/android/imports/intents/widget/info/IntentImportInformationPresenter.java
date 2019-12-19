@@ -2,6 +2,7 @@ package co.smartreceipts.android.imports.intents.widget.info;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -10,14 +11,14 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
-import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**

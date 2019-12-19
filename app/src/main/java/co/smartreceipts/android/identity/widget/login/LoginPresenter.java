@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserLogin;
 import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserSignUp;
 import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;

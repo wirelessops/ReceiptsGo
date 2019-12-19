@@ -8,14 +8,14 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import com.hadisatrio.optional.Optional
 
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Completable
 import io.reactivex.Scheduler

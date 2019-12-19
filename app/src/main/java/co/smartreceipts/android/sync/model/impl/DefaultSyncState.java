@@ -9,6 +9,7 @@ import java.sql.Date;
 
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 public class DefaultSyncState implements SyncState {
 

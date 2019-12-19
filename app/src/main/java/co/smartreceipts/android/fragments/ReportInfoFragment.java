@@ -30,7 +30,7 @@ import co.smartreceipts.android.persistence.LastTripMonitor;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;

@@ -2,7 +2,7 @@ package co.smartreceipts.android.distance.editor
 
 import co.smartreceipts.android.R
 import co.smartreceipts.android.autocomplete.AutoCompletePresenter
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.widget.model.UiIndicator

@@ -1,10 +1,9 @@
 package co.smartreceipts.android.receipts.ordering
 
 import android.content.SharedPreferences
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import dagger.Lazy
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**

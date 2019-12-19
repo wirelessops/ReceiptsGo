@@ -28,7 +28,7 @@ import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamMappings;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
 import co.smartreceipts.android.sync.model.SyncState;
-import co.smartreceipts.android.sync.model.impl.Identifier;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import io.reactivex.Single;

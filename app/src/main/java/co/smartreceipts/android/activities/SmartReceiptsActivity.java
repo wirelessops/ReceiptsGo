@@ -44,7 +44,7 @@ import co.smartreceipts.android.search.SearchResultKeeper;
 import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;

@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Distance;

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 
 @ApplicationScope
 public class GenerateInfoTooltipPreferencesStorage implements GenerateInfoTooltipStorage {

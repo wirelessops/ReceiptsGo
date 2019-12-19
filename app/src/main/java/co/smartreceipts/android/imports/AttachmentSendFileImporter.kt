@@ -3,7 +3,7 @@ package co.smartreceipts.android.imports
 import android.content.Context
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.ErrorEvent
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.imports.intents.model.FileType
 import co.smartreceipts.android.imports.intents.model.IntentImportResult
 import co.smartreceipts.android.model.Receipt

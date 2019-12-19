@@ -6,7 +6,7 @@ import co.smartreceipts.android.sync.drive.managers.DriveRestoreDataManager
 import co.smartreceipts.android.sync.drive.managers.GoogleDriveTableManager
 import co.smartreceipts.android.sync.network.NetworkManager
 import co.smartreceipts.android.sync.network.NetworkStateChangeListener
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.disposables.CompositeDisposable
 
 /**

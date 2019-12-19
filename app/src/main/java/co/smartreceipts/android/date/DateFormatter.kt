@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.StringRes
 import co.smartreceipts.android.R
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Scheduler
 import java.sql.Date

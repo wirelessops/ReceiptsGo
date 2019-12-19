@@ -9,11 +9,11 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.sync.BackupProviderChangeListener;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.LegacyTooltipView;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 import io.reactivex.Scheduler;

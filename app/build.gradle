@@ -90,14 +90,21 @@ android {
         free {
             applicationId "wb.receipts"
             dimension "versionType"
+            proguardFile 'flavor-not-floss-rules.pro'
         }
         plusFlavor {
             applicationId "wb.receiptspro"
             dimension "versionType"
+            proguardFile 'flavor-not-floss-rules.pro'
         }
         fireDepartmentFlavor {
             applicationId "co.smartreceipts.fire.department.tracker.android"
             dimension "versionType"
+            proguardFile 'flavor-not-floss-rules.pro'
+        }
+        flossFlavor {
+            applicationId "wb.receipts.floss"
+            dimension"versionType"
         }
     }
 
@@ -119,7 +126,9 @@ android {
 
     dependencies {
         implementation fileTree(dir: 'libs', include: '*.jar')
+        implementation project(':core')
         implementation project(':wbMiniLibrary')
+        implementation project(':aws')
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -160,8 +169,6 @@ android {
         implementation "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
 
         //Rx2
-        implementation "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
-        implementation "io.reactivex.rxjava2:rxandroid:$RX2_ANDROID_VERSION"
         implementation "com.jakewharton.rxbinding3:rxbinding:$RX2_BINDING_VERSION"
         implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$RX2_BINDING_VERSION"
         implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
@@ -178,7 +185,6 @@ android {
         implementation "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
         implementation "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"
 
-        implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
         implementation "com.github.tony19:logback-android:$LOGBACK_VERSION"
 
         // Note: Periodically check for updates here so we can revert to the official version
@@ -193,12 +199,7 @@ android {
 
         implementation "com.github.pqpo:SmartCropper:$SMART_CROPPER_VERSION"
 
-        implementation "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
-        implementation "com.amazonaws:aws-android-sdk-s3:$AWS_SDK_VERSION"
-
         // Dagger
-        implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
-        implementation "com.google.dagger:dagger:$DAGGER_VERSION"
         kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
         kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 

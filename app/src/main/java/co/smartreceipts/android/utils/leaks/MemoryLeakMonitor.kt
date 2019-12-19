@@ -2,9 +2,9 @@ package co.smartreceipts.android.utils.leaks
 
 import android.app.Application
 import android.os.Build
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.utils.RobolectricMonitor
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import com.squareup.leakcanary.LeakCanary
 import javax.inject.Inject
 

@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import co.smartreceipts.android.utils.UriUtils;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;

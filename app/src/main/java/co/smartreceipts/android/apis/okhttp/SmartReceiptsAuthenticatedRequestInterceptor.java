@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 
 import java.io.IOException;
 
-import co.smartreceipts.android.identity.store.IdentityStore;
+import co.smartreceipts.core.identity.store.IdentityStore;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;

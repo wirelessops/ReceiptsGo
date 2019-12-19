@@ -52,7 +52,7 @@ import co.smartreceipts.android.tooltip.model.TooltipType;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;

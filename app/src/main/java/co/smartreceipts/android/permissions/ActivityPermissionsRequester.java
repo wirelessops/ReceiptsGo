@@ -8,8 +8,8 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ActivityScope;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Single;
 
 @ActivityScope

@@ -15,7 +15,7 @@ import java.lang.reflect.Constructor;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.identity.IdentityManager;
-import co.smartreceipts.android.identity.apis.me.MeResponse;
+import co.smartreceipts.core.identity.apis.me.MeResponse;
 import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
 import co.smartreceipts.android.push.internal.FcmTokenRetriever;
 import co.smartreceipts.android.push.store.PushDataStore;

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.receipts.editor.toolbar
 
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.editor.Editor
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.widget.mvp.BasePresenter

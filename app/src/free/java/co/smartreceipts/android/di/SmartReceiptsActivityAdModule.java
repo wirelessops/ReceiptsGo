@@ -2,7 +2,7 @@ package co.smartreceipts.android.di;
 
 import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.android.ad.BannerAdPresenter;
-import co.smartreceipts.android.di.scopes.ActivityScope;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 import dagger.Module;
 import dagger.Provides;
 

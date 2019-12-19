@@ -11,7 +11,7 @@ import java.util.Collections;
 
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
-import co.smartreceipts.android.sync.model.impl.Identifier;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.model.impl.IdentifierMap;
 import co.smartreceipts.android.sync.model.impl.MarkedForDeletionMap;
 import co.smartreceipts.android.sync.model.impl.SyncStatusMap;

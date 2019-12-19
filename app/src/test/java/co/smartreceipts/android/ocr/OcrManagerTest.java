@@ -15,7 +15,7 @@ import java.io.File;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.apis.WebServiceManager;
-import co.smartreceipts.android.aws.s3.S3Manager;
+import co.smartreceipts.aws.s3.S3Manager;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.apis.OcrService;
@@ -47,7 +47,7 @@ public class OcrManagerTest {
     private static final String ID = "id";
 
     // Class under test
-    OcrManager ocrManager;
+    OcrManagerImpl ocrManager;
 
     Context context = ApplicationProvider.getApplicationContext();
 
@@ -126,7 +126,7 @@ public class OcrManagerTest {
         when(userPreferenceManager.get(UserPreference.Misc.OcrIsEnabled)).thenReturn(true);
         when(userPreferenceManager.get(UserPreference.Misc.OcrIncognitoMode)).thenReturn(false);
 
-        ocrManager = new OcrManager(s3Manager, identityManager, ocrWebServiceManager, pushManager, ocrPurchaseTracker,
+        ocrManager = new OcrManagerImpl(s3Manager, identityManager, ocrWebServiceManager, pushManager, ocrPurchaseTracker,
                 ocrInformationalTooltipInteractor, userPreferenceManager, analytics, ocrPushMessageReceiverFactory, configurationManager);
     }
 

@@ -1,6 +1,6 @@
 package co.smartreceipts.android.di;
 
-import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment;
 import co.smartreceipts.android.distance.editor.di.DistanceCreateEditFragmentModule;
 import co.smartreceipts.android.fragments.DistanceFragment;

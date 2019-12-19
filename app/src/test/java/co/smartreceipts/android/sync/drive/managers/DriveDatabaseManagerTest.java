@@ -17,8 +17,7 @@ import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.sync.drive.device.GoogleDriveSyncMetadata;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
-import co.smartreceipts.android.sync.model.impl.Identifier;
-import co.smartreceipts.android.sync.network.NetworkManager;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 

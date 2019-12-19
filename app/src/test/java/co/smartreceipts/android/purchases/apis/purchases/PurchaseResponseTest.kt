@@ -1,8 +1,6 @@
 package co.smartreceipts.android.purchases.apis.purchases
 
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder
-import co.smartreceipts.android.identity.apis.me.MeResponse
-import co.smartreceipts.android.identity.apis.me.MeResponseTest
 import co.smartreceipts.android.model.ColumnDefinitions
 import co.smartreceipts.android.model.Receipt
 import com.google.gson.Gson

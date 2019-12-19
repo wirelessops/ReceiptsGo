@@ -3,6 +3,7 @@ package co.smartreceipts.android.imports.intents.widget.info;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -10,7 +11,6 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
-import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.imports.intents.IntentImportProcessor;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.permissions.ActivityPermissionsRequester;
@@ -18,6 +18,7 @@ import co.smartreceipts.android.permissions.PermissionRequester;
 import co.smartreceipts.android.permissions.PermissionStatusChecker;
 import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
 import co.smartreceipts.android.widget.model.UiIndicator;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

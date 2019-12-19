@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 public class IdentifierMap implements Serializable {
 

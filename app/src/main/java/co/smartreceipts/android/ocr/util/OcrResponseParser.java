@@ -12,7 +12,7 @@ import java.util.Locale;
 
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * A simple utility class, which will allow us to handle all the {@code null} risks that we need to deal

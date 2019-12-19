@@ -1,7 +1,7 @@
 package co.smartreceipts.android.di
 
-import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.utils.rx.RxSchedulers
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler

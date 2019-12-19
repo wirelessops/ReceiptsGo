@@ -2,7 +2,7 @@ package co.smartreceipts.android.receipts.ordering
 
 import android.annotation.SuppressLint
 import co.smartreceipts.android.date.DateUtils
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
@@ -12,7 +12,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer.OrderingType.*
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

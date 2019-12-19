@@ -2,7 +2,7 @@ package co.smartreceipts.android.ocr.widget.configuration
 
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import javax.inject.Inject
 
 @FragmentScope

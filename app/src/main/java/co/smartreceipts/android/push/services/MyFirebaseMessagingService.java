@@ -7,7 +7,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import co.smartreceipts.android.SmartReceiptsApplication;
 import co.smartreceipts.android.push.PushManager;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * There are two types of messages data messages and notification messages. Data messages are handled

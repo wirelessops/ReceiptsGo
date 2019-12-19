@@ -1,11 +1,13 @@
 package co.smartreceipts.android.ad;
 
 import android.app.Activity;
+
 import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ActivityScope;
+import co.smartreceipts.core.di.scopes.ActivityScope;
+
 
 @ActivityScope
 public class EmptyBannerAdPresenter implements AdPresenter {

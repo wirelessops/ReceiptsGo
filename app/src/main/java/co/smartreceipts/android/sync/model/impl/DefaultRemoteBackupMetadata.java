@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import java.util.Date;
 
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 public class DefaultRemoteBackupMetadata implements RemoteBackupMetadata {
 

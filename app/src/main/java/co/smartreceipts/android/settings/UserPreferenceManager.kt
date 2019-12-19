@@ -7,9 +7,9 @@ import android.text.TextUtils
 import android.util.TypedValue
 import co.smartreceipts.android.R
 import co.smartreceipts.android.date.DateUtils
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import dagger.Lazy
 import io.reactivex.Completable
 import io.reactivex.Observable

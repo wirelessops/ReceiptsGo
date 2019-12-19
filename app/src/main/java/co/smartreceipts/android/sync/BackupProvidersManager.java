@@ -15,17 +15,17 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.sync.errors.CriticalSyncError;
 import co.smartreceipts.android.sync.errors.SyncErrorType;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
-import co.smartreceipts.android.sync.model.impl.Identifier;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.provider.SyncProviderFactory;
 import co.smartreceipts.android.sync.provider.SyncProviderStore;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

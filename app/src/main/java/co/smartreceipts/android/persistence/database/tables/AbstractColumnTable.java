@@ -18,7 +18,7 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColu
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * Since our CSV and PDF tables share almost all of the same logic, this class purely acts as a wrapper around

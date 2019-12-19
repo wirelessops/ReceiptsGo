@@ -14,9 +14,6 @@ import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.subjects.PublishSubject;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

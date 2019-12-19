@@ -1,7 +1,7 @@
 package co.smartreceipts.android.di;
 
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.rating.data.AppRatingStorage;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderPreferencesStorage;

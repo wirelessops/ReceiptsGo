@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.util.Collections;
 
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;

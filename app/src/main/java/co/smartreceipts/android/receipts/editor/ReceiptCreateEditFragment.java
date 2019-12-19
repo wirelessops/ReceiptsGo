@@ -101,7 +101,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.utils.rx.RxSchedulers;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.model.UiIndicator;
