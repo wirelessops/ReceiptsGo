@@ -1,8 +1,6 @@
 package co.smartreceipts.android.settings.widget.editors;
 
 import android.os.Bundle;
-import androidx.annotation.CallSuper;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.CallSuper;
+import androidx.appcompat.widget.Toolbar;
+
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options

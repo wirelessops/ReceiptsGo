@@ -4,13 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +14,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
 
@@ -40,7 +40,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 

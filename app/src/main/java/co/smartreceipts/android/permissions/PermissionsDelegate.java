@@ -5,8 +5,8 @@ import androidx.annotation.NonNull;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
-import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Completable;
 
 @ActivityScope

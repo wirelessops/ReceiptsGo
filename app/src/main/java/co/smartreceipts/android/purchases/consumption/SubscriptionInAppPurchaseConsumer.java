@@ -12,7 +12,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.model.Subscription;

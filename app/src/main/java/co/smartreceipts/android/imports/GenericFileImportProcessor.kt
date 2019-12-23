@@ -8,7 +8,7 @@ import co.smartreceipts.android.imports.exceptions.InvalidPdfException
 import co.smartreceipts.android.imports.utils.PdfValidator
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.utils.UriUtils
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Single
 import wb.android.storage.StorageManager
 import java.io.File

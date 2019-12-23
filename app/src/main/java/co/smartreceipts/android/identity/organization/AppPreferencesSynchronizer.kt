@@ -1,9 +1,9 @@
 package co.smartreceipts.android.identity.organization
 
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable

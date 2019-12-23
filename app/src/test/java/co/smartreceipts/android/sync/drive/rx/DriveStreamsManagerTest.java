@@ -19,7 +19,7 @@ import java.util.List;
 import co.smartreceipts.android.sync.drive.error.DriveThrowableToSyncErrorTranslator;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.android.sync.model.SyncState;
-import co.smartreceipts.android.sync.model.impl.Identifier;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import io.reactivex.Observable;
 import io.reactivex.Single;

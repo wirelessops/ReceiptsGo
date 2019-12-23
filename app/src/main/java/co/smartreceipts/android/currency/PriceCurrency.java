@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import co.smartreceipts.android.model.utils.ModelUtils;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 public final class PriceCurrency implements Parcelable {
 

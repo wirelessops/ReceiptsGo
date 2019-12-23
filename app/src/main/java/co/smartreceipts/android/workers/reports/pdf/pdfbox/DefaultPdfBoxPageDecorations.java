@@ -30,7 +30,7 @@ public class DefaultPdfBoxPageDecorations implements PdfBoxPageDecorations {
     private static final float FOOTER_HEIGHT = 15.0f;
 
     private final PdfBoxContext pdfBoxContext;
-    private final String footerText;
+    private String footerText;
 
     DefaultPdfBoxPageDecorations(@NonNull PdfBoxContext pdfBoxContext, @NonNull Trip trip,
                                  @NonNull List<Receipt> receipts, @NonNull List<Distance> distances) {
@@ -40,6 +40,9 @@ public class DefaultPdfBoxPageDecorations implements PdfBoxPageDecorations {
         final SmartReceiptsFormattableString formattableString = new SmartReceiptsFormattableString(pdfBoxContext.getPreferences().get(UserPreference.PlusSubscription.PdfFooterString),
                 trip, pdfBoxContext.getPreferences(), pdfBoxContext.getDateFormatter(), Preconditions.checkNotNull(receipts), Preconditions.checkNotNull(distances));
         footerText = HeavyHandedReplaceIllegalCharacters.getSafeString(formattableString.toString());
+        if (footerText.isEmpty()) {
+            footerText = " ";
+        }
     }
 
     /**

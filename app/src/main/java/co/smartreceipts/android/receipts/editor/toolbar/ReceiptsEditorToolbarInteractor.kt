@@ -2,12 +2,12 @@ package co.smartreceipts.android.receipts.editor.toolbar
 
 import android.content.Context
 import co.smartreceipts.android.R
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.persistence.DatabaseHelper
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

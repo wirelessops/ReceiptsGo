@@ -1,6 +1,7 @@
 package co.smartreceipts.android.identity.apis.me;
 
 import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
+import co.smartreceipts.core.identity.apis.me.MeResponse;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

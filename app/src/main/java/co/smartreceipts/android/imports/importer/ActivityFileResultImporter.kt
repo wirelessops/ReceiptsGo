@@ -4,10 +4,10 @@ import android.net.Uri
 import androidx.annotation.VisibleForTesting
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.ErrorEvent
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.imports.FileImportProcessorFactory
 import co.smartreceipts.android.model.Trip
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
 import io.reactivex.Scheduler

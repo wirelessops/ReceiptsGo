@@ -3,9 +3,10 @@ package co.smartreceipts.android.imports.intents;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
@@ -20,11 +21,11 @@ import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.DataPoint;
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.utils.UriUtils;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 public class TaxItem {
 

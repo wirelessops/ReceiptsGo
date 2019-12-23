@@ -108,9 +108,6 @@ public class GraphsInteractorTest {
         List<LabeledGraphEntry> sortedEntries = new ArrayList<>(entries);
         Collections.sort(sortedEntries);
 
-        List<LabeledGraphEntry> expectedEntries = sortedEntries.subList(0, GraphsInteractor.CATEGORIES_MAX_COUNT);
-        expectedEntries.add(new LabeledGraphEntry(2 + 1, context.getString(R.string.graphs_label_others)));
-
         interactor.getSummationByCategories(trip)
                 .test()
                 .assertNoErrors()
@@ -118,7 +115,7 @@ public class GraphsInteractorTest {
                 .assertValue(graphUiIndicator -> {
                     if (graphUiIndicator.getGraphType() == GraphUiIndicator.GraphType.SummationByCategory) {
                         List<? extends BaseEntry> graphUiIndicatorEntries = graphUiIndicator.getEntries();
-                        return graphUiIndicatorEntries.containsAll(expectedEntries) && graphUiIndicatorEntries.size() == expectedEntries.size();
+                        return graphUiIndicatorEntries.containsAll(sortedEntries) && graphUiIndicatorEntries.size() == sortedEntries.size();
                     }
                     return false;
                 });

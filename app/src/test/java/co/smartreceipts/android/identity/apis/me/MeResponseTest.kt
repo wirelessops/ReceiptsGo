@@ -4,6 +4,7 @@ import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder
 import co.smartreceipts.android.date.Iso8601DateFormat
 import co.smartreceipts.android.model.ColumnDefinitions
 import co.smartreceipts.android.model.Receipt
+import co.smartreceipts.core.identity.apis.me.MeResponse
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before

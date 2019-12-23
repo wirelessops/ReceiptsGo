@@ -1,6 +1,6 @@
 package co.smartreceipts.android.purchases.subscriptions
 
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import javax.inject.Inject

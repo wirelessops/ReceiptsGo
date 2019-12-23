@@ -4,10 +4,11 @@ import android.content.Context;
 
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.config.DefaultConfigurationManager;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.persistence.database.defaults.FireDepartmentTableDefaultCustomizerImpl;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import wb.android.flex.Flex;
@@ -19,7 +20,7 @@ import wb.android.flex.Flexable;
  * other configurations be required, it is critical that we copy them to both components.
  */
 @Module
-public class ConfigurationModule {
+public abstract class ConfigurationModule {
 
     @Provides
     @ApplicationScope
@@ -27,11 +28,9 @@ public class ConfigurationModule {
         return new Flex(context, () -> Flexable.UNDEFINED);
     }
 
-    @Provides
+    @Binds
     @ApplicationScope
-    public static ConfigurationManager provideConfigurationManager(DefaultConfigurationManager manager) {
-        return manager;
-    }
+    public abstract ConfigurationManager provideConfigurationManager(DefaultConfigurationManager manager);
 
     @Provides
     @ApplicationScope

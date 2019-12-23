@@ -3,7 +3,7 @@ package co.smartreceipts.android.di;
 import android.content.Context;
 
 import co.smartreceipts.android.database.DatabaseContext;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;

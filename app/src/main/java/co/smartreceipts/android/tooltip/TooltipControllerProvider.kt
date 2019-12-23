@@ -1,6 +1,6 @@
 package co.smartreceipts.android.tooltip
 
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationTooltipController
 import co.smartreceipts.android.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import co.smartreceipts.android.tooltip.image.ImageCroppingTooltipController

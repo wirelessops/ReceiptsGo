@@ -3,10 +3,10 @@ package co.smartreceipts.android.ad
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
-import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.persistence.SharedPreferenceDefinitions
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import javax.inject.Inject
 
 

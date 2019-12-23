@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -22,7 +22,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableEventsList
 import co.smartreceipts.android.persistence.database.controllers.alterations.ReceiptTableActionAlterations;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;

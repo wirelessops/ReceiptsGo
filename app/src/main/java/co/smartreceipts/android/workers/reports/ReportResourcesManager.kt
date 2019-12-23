@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.core.os.ConfigurationCompat
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject

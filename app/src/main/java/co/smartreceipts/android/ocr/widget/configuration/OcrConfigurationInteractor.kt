@@ -4,9 +4,9 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.DataPoint
 import co.smartreceipts.android.analytics.events.DefaultDataPointEvent
 import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.identity.IdentityManager
-import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.AvailablePurchase
@@ -16,7 +16,7 @@ import co.smartreceipts.android.purchases.model.PurchaseFamily
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

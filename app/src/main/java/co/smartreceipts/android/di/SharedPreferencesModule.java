@@ -6,18 +6,12 @@ import android.preference.PreferenceManager;
 
 import javax.inject.Named;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.model.ColumnDefinitions;
-import co.smartreceipts.android.model.Receipt;
-import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
-import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import dagger.Module;
 import dagger.Provides;
-import wb.android.storage.StorageManager;
 
 @Module
 public class SharedPreferencesModule {

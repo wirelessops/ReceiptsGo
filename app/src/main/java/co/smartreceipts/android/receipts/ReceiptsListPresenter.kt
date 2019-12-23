@@ -8,7 +8,6 @@ import android.net.Uri
 import co.smartreceipts.android.R
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.android.di.scopes.FragmentScope
 import co.smartreceipts.android.images.CropImageActivity
 import co.smartreceipts.android.imports.RequestCodes
 import co.smartreceipts.android.imports.importer.ActivityFileResultImporter
@@ -21,9 +20,10 @@ import co.smartreceipts.android.permissions.PermissionsDelegate
 import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter
-import co.smartreceipts.android.utils.log.Logger
 import co.smartreceipts.android.widget.model.UiIndicator
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
+import co.smartreceipts.core.di.scopes.FragmentScope
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File

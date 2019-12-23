@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 
 import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.date.DateUtils;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Priceable;
 import co.smartreceipts.android.model.Receipt;
@@ -39,7 +39,7 @@ import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.utils.sorting.AlphabeticalCaseInsensitiveCharSequenceComparator;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;

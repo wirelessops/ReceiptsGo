@@ -2,7 +2,7 @@ package co.smartreceipts.android.autocomplete.trip
 
 import co.smartreceipts.android.autocomplete.AutoCompleteField
 import co.smartreceipts.android.autocomplete.AutoCompletionProvider
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController

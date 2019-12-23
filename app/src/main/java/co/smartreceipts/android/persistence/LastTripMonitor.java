@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Trip;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;

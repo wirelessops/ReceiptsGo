@@ -15,13 +15,13 @@ import javax.inject.Inject;
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
 import co.smartreceipts.android.push.apis.me.UpdateUserPushTokens;
 import co.smartreceipts.android.push.internal.FcmTokenRetriever;
 import co.smartreceipts.android.push.store.PushDataStore;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 

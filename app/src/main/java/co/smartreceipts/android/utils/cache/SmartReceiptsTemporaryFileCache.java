@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.core.utils.log.Logger;
 import wb.android.storage.StorageManager;
 
 /**

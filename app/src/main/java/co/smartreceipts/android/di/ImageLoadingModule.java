@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import dagger.Module;
 import dagger.Provides;
 

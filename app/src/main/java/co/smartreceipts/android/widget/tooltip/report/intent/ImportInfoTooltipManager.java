@@ -6,11 +6,11 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.imports.intents.IntentImportProcessor;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.widget.tooltip.TooltipManager;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Observable;
 
 @ActivityScope

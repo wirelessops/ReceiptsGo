@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.ErrorEvent;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.functions.Consumer;

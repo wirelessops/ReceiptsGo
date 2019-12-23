@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.apis.hosts.HostConfiguration;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import dagger.Lazy;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;

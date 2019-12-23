@@ -28,8 +28,8 @@ import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
 import co.smartreceipts.android.sync.manual.ManualBackupTask;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
-import co.smartreceipts.android.sync.model.impl.Identifier;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.sync.model.impl.Identifier;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

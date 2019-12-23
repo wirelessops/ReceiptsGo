@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 
 import java.sql.Date;
 
-import co.smartreceipts.android.sync.model.impl.Identifier;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 public class GoogleDriveSyncMetadata {
 

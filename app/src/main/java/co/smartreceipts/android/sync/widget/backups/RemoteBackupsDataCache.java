@@ -23,7 +23,7 @@ import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.utils.FileUtils;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;

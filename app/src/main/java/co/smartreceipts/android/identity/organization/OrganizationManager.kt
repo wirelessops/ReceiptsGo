@@ -4,11 +4,11 @@ import android.text.TextUtils
 import co.smartreceipts.android.apis.ApiValidationException
 import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.config.ConfigurationManager
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.apis.organizations.*
-import co.smartreceipts.android.identity.store.MutableIdentityStore
+import co.smartreceipts.core.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single

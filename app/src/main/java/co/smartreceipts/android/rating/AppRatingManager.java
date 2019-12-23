@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.rating.data.AppRatingStorage;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;

@@ -1,8 +1,8 @@
 package co.smartreceipts.android.identity.widget.account
 
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import co.smartreceipts.android.widget.model.UiIndicator
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import io.reactivex.Observable

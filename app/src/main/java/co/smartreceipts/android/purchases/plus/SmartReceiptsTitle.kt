@@ -2,7 +2,7 @@ package co.smartreceipts.android.purchases.plus
 
 import android.content.Context
 import co.smartreceipts.android.R
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import wb.android.flex.Flex

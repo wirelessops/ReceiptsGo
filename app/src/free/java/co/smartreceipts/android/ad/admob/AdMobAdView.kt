@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-
 import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.AdLoadListener
 import co.smartreceipts.android.ad.BannerAdView
-import co.smartreceipts.android.utils.log.Logger
-
+import co.smartreceipts.core.utils.log.Logger
 import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import javax.inject.Inject
 
 class AdMobAdView @Inject constructor() : BannerAdView {
