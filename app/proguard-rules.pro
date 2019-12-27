@@ -18,7 +18,15 @@
 -keepattributes *Annotation*
 
 
--dontobfuscate
+# Keep all of our classes as they are
+-keep class co.smartreceipts.** { *; }
+-dontwarn co.smartreceipts.**
+-keep class wb.android.** { *; }
+-dontwarn wb.android.**
+-keep class wb.receipts.** { *; }
+-dontwarn wb.receipts.**
+-keep class wb.receiptspro.** { *; }
+-dontwarn wb.receiptspro.**
 
 # Keep native classes
 -keepclasseswithmembernames class * {
