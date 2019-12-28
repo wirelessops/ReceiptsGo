@@ -1,7 +1,7 @@
 package co.smartreceipts.android.ad
 
 /**
- * Abstracts the various advertisment loading strategies into a share protocol, ensuring that we can
+ * Abstracts the various advertisement loading strategies into a share protocol, ensuring that we can
  * properly trace each
  */
 interface AdLoadListener {
