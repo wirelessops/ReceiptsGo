@@ -7,7 +7,7 @@ import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompleteResultsC
 import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompletionProvider;
 import co.smartreceipts.android.autocomplete.trip.TripAutoCompleteResultsChecker;
 import co.smartreceipts.android.autocomplete.trip.TripAutoCompletionProvider;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;

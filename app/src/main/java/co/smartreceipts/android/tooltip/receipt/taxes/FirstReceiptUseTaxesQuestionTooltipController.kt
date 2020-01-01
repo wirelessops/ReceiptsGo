@@ -10,7 +10,7 @@ import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.columns.ordering.CsvColumnsOrderer
 import co.smartreceipts.android.columns.ordering.PdfColumnsOrderer
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
@@ -20,7 +20,7 @@ import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Completable
 import io.reactivex.Scheduler

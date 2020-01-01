@@ -2,8 +2,8 @@ package co.smartreceipts.android.apis.okhttp
 
 import android.content.Context
 import co.smartreceipts.android.BuildConfig
-import co.smartreceipts.android.identity.store.IdentityStore
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.identity.store.IdentityStore
+import co.smartreceipts.core.utils.log.Logger
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +15,8 @@ import okhttp3.logging.HttpLoggingInterceptor
  * be performed in the background
  */
 class SmartReceiptsOkHttpClientFactory(private val context: Context,
-                                       private val identityStore: IdentityStore) {
+                                       private val identityStore: IdentityStore
+) {
 
 
     fun newInstance() : OkHttpClient {

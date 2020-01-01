@@ -17,7 +17,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 public class CameraInteractionController {
 

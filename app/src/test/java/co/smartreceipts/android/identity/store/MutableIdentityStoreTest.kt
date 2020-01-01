@@ -3,6 +3,7 @@ package co.smartreceipts.android.identity.store
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
+import co.smartreceipts.core.identity.store.MutableIdentityStore
 import dagger.Lazy
 import org.junit.After
 import org.junit.Assert.*

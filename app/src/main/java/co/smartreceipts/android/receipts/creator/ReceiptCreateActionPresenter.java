@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.android.di.scopes.FragmentScope;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.FragmentScope;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import co.smartreceipts.android.widget.mvp.Presenter;
 

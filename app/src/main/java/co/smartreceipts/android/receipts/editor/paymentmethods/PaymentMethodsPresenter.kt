@@ -1,6 +1,6 @@
 package co.smartreceipts.android.receipts.editor.paymentmethods
 
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.utils.rx.RxSchedulers

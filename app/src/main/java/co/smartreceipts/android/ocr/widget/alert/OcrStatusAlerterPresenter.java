@@ -1,6 +1,7 @@
 package co.smartreceipts.android.ocr.widget.alert;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -8,9 +9,9 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.di.scopes.FragmentScope;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.ocr.OcrManager;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;

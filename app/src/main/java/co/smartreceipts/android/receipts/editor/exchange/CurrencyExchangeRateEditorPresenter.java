@@ -22,7 +22,7 @@ import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.utils.rx.PriceCharSequenceToBigDecimalObservableTransformer;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.mvp.BasePresenter;

@@ -9,14 +9,14 @@
 
 ##### Our ProGuard configurations #####
 
+#-whyareyoukeeping class com.amazonaws.*
+
 # Preserve the line number information for debugging stack traces.
 -keepattributes SourceFile,LineNumberTable
 
 # Keep annotations
 -keepattributes *Annotation*
 
-# Keep all exceptions for tracking purposes
--keep public class * extends java.lang.Exception
 
 # Keep all of our classes as they are
 -keep class co.smartreceipts.** { *; }
@@ -157,24 +157,6 @@
 
 
 
-##### AWS ProGuard configurations #####
-
-# Class names are needed in reflection
--keepnames class com.amazonaws.**
--keepnames class com.amazon.**
-# Request handlers defined in request.handlers
--keep class com.amazonaws.services.**.*Handler
-# The following are referenced but aren't required to run
--dontwarn com.fasterxml.jackson.**
--dontwarn org.apache.commons.logging.**
-# Android 6.0 release removes support for the Apache HTTP client
--dontwarn org.apache.http.**
-# The SDK has several references of Apache HTTP client
--dontwarn com.amazonaws.http.**
--dontwarn com.amazonaws.metrics.**
-
-
-
 ##### FireBase ProGuard configurations #####
 
 -keep class com.google.firebase.provider.FirebaseInitProvider
@@ -289,6 +271,41 @@
 -keep class me.pqpo.smartcropperlib.**{*;}
 
 ### Google Drive API
+# Needed to keep generic types and @Key annotations accessed via reflection
+-keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault,*Annotation*
 -keepclassmembers class * {
   @com.google.api.client.util.Key <fields>;
 }
+
+# Needed by google-http-client-android when linking against an older platform version
+-dontwarn com.google.api.client.extensions.android.**
+
+# Needed by google-api-client-android when linking against an older platform version
+-dontwarn com.google.api.client.googleapis.extensions.android.**
+
+# Needed by google-play-services when linking against an older platform version
+-dontwarn com.google.android.gms.**
+
+# com.google.client.util.IOUtils references java.nio.file.Files when on Java 7+
+-dontnote java.nio.file.Files, java.nio.file.Path
+
+# Suppress notes on LicensingServices
+-dontnote **.ILicensingService
+
+# Suppress warnings on sun.misc.Unsafe
+-dontnote sun.misc.Unsafe
+
+# Needed by Guava
+# See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
+-dontwarn com.google.common.collect.MinMaxPriorityQueue
+
+-keep class * extends com.google.api.client.json.GenericJson {
+*;
+}
+-keep class com.google.api.services.drive.** {
+*;
+}
+
+-keep class com.google.** { *;}
+-keep interface com.google.** { *;}
+-dontwarn com.google.**

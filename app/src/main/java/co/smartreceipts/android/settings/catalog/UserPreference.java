@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 public final class UserPreference<T> {
 

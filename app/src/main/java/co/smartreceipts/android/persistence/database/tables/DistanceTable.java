@@ -14,7 +14,7 @@ import co.smartreceipts.android.persistence.database.tables.adapters.DistanceDat
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * Stores all database operations related to the {@link Distance} model objects

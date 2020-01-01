@@ -2,7 +2,7 @@ package co.smartreceipts.android.autocomplete.receipt
 
 import co.smartreceipts.android.autocomplete.AutoCompleteField
 import co.smartreceipts.android.autocomplete.AutoCompleteResultsChecker
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
 import javax.inject.Inject
 

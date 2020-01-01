@@ -1,6 +1,6 @@
 package co.smartreceipts.android.search
 
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.persistence.DatabaseHelper

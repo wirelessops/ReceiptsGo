@@ -1,13 +1,14 @@
 package co.smartreceipts.android.sync.model;
 
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.sql.Date;
 
-import co.smartreceipts.android.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 public interface SyncState extends Parcelable {
 

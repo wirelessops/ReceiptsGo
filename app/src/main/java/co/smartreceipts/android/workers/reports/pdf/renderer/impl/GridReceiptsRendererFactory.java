@@ -13,7 +13,7 @@ import java.util.List;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontSpec;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxPageDecorations;
 import co.smartreceipts.android.workers.reports.pdf.renderer.Renderer;

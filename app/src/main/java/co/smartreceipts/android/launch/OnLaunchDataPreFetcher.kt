@@ -1,12 +1,12 @@
 package co.smartreceipts.android.launch
 
 import android.annotation.SuppressLint
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.persistence.LastTripMonitor
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

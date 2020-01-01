@@ -1,7 +1,6 @@
 package co.smartreceipts.android.receipts
 
 import android.content.Intent
-import co.smartreceipts.android.di.scopes.ApplicationScope
 import co.smartreceipts.android.imports.AttachmentSendFileImporter
 import co.smartreceipts.android.imports.intents.IntentImportProcessor
 import co.smartreceipts.android.imports.intents.model.IntentImportResult
@@ -15,6 +14,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.tooltip.image.data.ImageCroppingPreferenceStorage
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable

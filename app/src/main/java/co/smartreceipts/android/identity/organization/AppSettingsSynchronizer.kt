@@ -1,6 +1,6 @@
 package co.smartreceipts.android.identity.organization
 
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.apis.organizations.AppSettings
 import co.smartreceipts.android.identity.apis.organizations.Configurations
 import co.smartreceipts.android.model.*
@@ -10,7 +10,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PDFTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function5

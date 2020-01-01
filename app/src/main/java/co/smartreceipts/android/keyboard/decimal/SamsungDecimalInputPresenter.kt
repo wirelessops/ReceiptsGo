@@ -2,14 +2,8 @@ package co.smartreceipts.android.keyboard.decimal
 
 import android.content.Context
 import android.provider.Settings
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import android.text.InputType
-import android.view.View
-import android.widget.EditText
-import android.widget.TextView
-import co.smartreceipts.android.R
-import co.smartreceipts.android.di.scopes.FragmentScope
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.di.scopes.FragmentScope
+import co.smartreceipts.core.utils.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import io.reactivex.Scheduler
 import io.reactivex.Single

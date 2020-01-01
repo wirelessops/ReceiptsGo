@@ -4,7 +4,7 @@ import co.smartreceipts.android.apis.ApiValidationException
 import co.smartreceipts.android.apis.WebServiceManager
 import co.smartreceipts.android.config.ConfigurationManager
 import co.smartreceipts.android.identity.apis.organizations.*
-import co.smartreceipts.android.identity.store.MutableIdentityStore
+import co.smartreceipts.core.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq

@@ -1,8 +1,6 @@
 package co.smartreceipts.android.di;
 
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
-import co.smartreceipts.android.di.scopes.ActivityScope;
-import co.smartreceipts.android.di.scopes.FragmentScope;
 import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
@@ -27,6 +25,8 @@ import co.smartreceipts.android.sync.widget.backups.DownloadRemoteBackupImagesPr
 import co.smartreceipts.android.sync.widget.backups.ExportBackupWorkerProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupWorkerProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupWorkerProgressDialogFragment;
+import co.smartreceipts.core.di.scopes.ActivityScope;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

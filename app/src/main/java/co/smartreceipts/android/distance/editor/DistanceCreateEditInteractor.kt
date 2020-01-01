@@ -2,7 +2,7 @@ package co.smartreceipts.android.distance.editor
 
 import co.smartreceipts.android.analytics.Analytics
 import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata

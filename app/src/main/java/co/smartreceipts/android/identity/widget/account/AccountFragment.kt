@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.smartreceipts.android.R
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
-import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.identity.widget.account.organizations.OrganizationsListAdapter
 import co.smartreceipts.android.identity.widget.account.subscriptions.SubscriptionsListAdapter
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription

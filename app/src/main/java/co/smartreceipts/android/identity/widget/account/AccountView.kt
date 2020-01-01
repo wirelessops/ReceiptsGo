@@ -1,7 +1,7 @@
 package co.smartreceipts.android.identity.widget.account
 
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
-import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
 import io.reactivex.Observable

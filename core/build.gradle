@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Dagger
+    api "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
+    api "com.google.dagger:dagger:$DAGGER_VERSION"
+    kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+
+    api("com.google.guava:guava:28.1-android")
+
+    api "org.slf4j:slf4j-api:$SLF4J_VERSION"
+
+    //Rx2
+    api "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
+    api "io.reactivex.rxjava2:rxandroid:$RX2_ANDROID_VERSION"
+
+    // Unit Tests
+    testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
+    testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
+    testImplementation "androidx.test:core:$ANDROID_TEST_RUNNER_VERSION"
+
+    implementation "com.google.http-client:google-http-client-gson:$GOOGLE_HTTP_CLIENT_VERSION"
+
+
+}

@@ -12,11 +12,11 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.date.DateUtils;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

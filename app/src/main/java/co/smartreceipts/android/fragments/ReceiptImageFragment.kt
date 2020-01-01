@@ -26,7 +26,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.tooltip.image.data.ImageCroppingPreferenceStorage
 import co.smartreceipts.android.utils.IntentUtils
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso

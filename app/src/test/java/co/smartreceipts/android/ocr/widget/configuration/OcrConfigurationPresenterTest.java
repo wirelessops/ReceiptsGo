@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collections;
 
-import co.smartreceipts.android.identity.store.EmailAddress;
+import co.smartreceipts.core.identity.store.EmailAddress;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import io.reactivex.Observable;

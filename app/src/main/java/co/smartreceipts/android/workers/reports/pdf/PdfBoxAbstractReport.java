@@ -15,7 +15,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import co.smartreceipts.android.workers.reports.AbstractReport;
 import co.smartreceipts.android.workers.reports.ReportGenerationException;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;

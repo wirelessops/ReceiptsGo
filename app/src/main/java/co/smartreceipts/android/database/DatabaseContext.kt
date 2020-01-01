@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.database.DatabaseErrorHandler
 import android.database.sqlite.SQLiteDatabase
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.persistence.DatabaseHelper
 import wb.android.storage.StorageManager
 import java.io.File

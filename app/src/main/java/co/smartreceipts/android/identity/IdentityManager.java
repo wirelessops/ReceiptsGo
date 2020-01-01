@@ -1,6 +1,7 @@
 package co.smartreceipts.android.identity;
 
 import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
@@ -16,23 +17,23 @@ import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.WebServiceManager;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
 import co.smartreceipts.android.identity.apis.login.LoginPayload;
 import co.smartreceipts.android.identity.apis.login.LoginResponse;
 import co.smartreceipts.android.identity.apis.login.LoginService;
 import co.smartreceipts.android.identity.apis.login.LoginType;
 import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
-import co.smartreceipts.android.identity.apis.me.MeResponse;
 import co.smartreceipts.android.identity.apis.me.MeService;
 import co.smartreceipts.android.identity.apis.signup.SignUpPayload;
 import co.smartreceipts.android.identity.apis.signup.SignUpService;
-import co.smartreceipts.android.identity.store.EmailAddress;
-import co.smartreceipts.android.identity.store.IdentityStore;
-import co.smartreceipts.android.identity.store.MutableIdentityStore;
-import co.smartreceipts.android.identity.store.Token;
-import co.smartreceipts.android.identity.store.UserId;
+import co.smartreceipts.core.identity.store.MutableIdentityStore;
 import co.smartreceipts.android.push.apis.me.UpdatePushTokensRequest;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.core.identity.IdentityManagerInterface;
+import co.smartreceipts.core.identity.apis.me.MeResponse;
+import co.smartreceipts.core.identity.store.EmailAddress;
+import co.smartreceipts.core.identity.store.Token;
+import co.smartreceipts.core.identity.store.UserId;
+import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
@@ -40,7 +41,7 @@ import io.reactivex.subjects.BehaviorSubject;
 
 
 @ApplicationScope
-public class IdentityManager implements IdentityStore {
+public class IdentityManager implements IdentityManagerInterface {
 
     private final WebServiceManager webServiceManager;
     private final Analytics analytics;
@@ -112,6 +113,7 @@ public class IdentityManager implements IdentityStore {
      * state will always be emitted as soon as we subscribe
      * </p>
      */
+    @Override
     @NonNull
     public Observable<Boolean> isLoggedInStream() {
         return isLoggedInBehaviorSubject;
@@ -173,6 +175,7 @@ public class IdentityManager implements IdentityStore {
         Logger.info(this, "User logged out");
     }
 
+    @Override
     @NonNull
     public Observable<MeResponse> getMe() {
         if (isLoggedIn()) {

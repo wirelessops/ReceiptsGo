@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.di.scopes.ActivityScope;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.images.CropImageActivity;
 import co.smartreceipts.android.imports.RequestCodes;
@@ -40,7 +39,8 @@ import co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFrag
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.SettingsViewerActivity;
 import co.smartreceipts.android.utils.IntentUtils;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.ActivityScope;
 
 import static android.preference.PreferenceActivity.EXTRA_SHOW_FRAGMENT;
 

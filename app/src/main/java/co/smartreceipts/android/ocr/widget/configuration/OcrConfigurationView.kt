@@ -1,6 +1,6 @@
 package co.smartreceipts.android.ocr.widget.configuration
 
-import co.smartreceipts.android.identity.store.EmailAddress
+import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.purchases.model.AvailablePurchase
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer

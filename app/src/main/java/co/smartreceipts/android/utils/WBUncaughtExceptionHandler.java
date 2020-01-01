@@ -2,7 +2,7 @@ package co.smartreceipts.android.utils;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * This enables us to handle uncaught exceptions in a customizable manner. This is needed to fix a bug with Google Play

@@ -2,8 +2,6 @@ package co.smartreceipts.android.ocr.apis.model
 
 import co.smartreceipts.android.apis.gson.SmartReceiptsGsonBuilder
 import co.smartreceipts.android.date.Iso8601DateFormat
-import co.smartreceipts.android.identity.apis.me.MeResponse
-import co.smartreceipts.android.identity.apis.me.MeResponseTest
 import co.smartreceipts.android.model.ColumnDefinitions
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.utils.TestUtils

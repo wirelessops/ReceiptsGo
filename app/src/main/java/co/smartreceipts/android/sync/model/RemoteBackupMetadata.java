@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 
-import co.smartreceipts.android.sync.model.impl.Identifier;
+import co.smartreceipts.core.sync.model.impl.Identifier;
 
 public interface RemoteBackupMetadata extends Parcelable {
 

@@ -11,7 +11,7 @@ import co.smartreceipts.android.persistence.database.tables.adapters.CategoryDat
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * Stores all database operations related to the {@link Category} model object

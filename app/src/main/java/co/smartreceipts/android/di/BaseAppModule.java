@@ -5,19 +5,20 @@ import android.content.Context;
 
 import co.smartreceipts.android.SmartReceiptsApplication;
 import co.smartreceipts.android.autocomplete.di.AutoCompleteModule;
-import co.smartreceipts.android.di.scopes.ApplicationScope;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import dagger.Module;
 import dagger.Provides;
 
 @Module(includes = {TooltipStorageModule.class,
-                    NetworkingModule.class,
-                    LocalRepositoryModule.class,
-                    SharedPreferencesModule.class,
-                    ImageLoadingModule.class,
-                    ConfigurationModule.class,
-                    AutoCompleteModule.class,
-                    ExecutorsModule.class,
-                    RxModule.class })
+        NetworkingModule.class,
+        LocalRepositoryModule.class,
+        SharedPreferencesModule.class,
+        ImageLoadingModule.class,
+        ConfigurationModule.class,
+        AutoCompleteModule.class,
+        ExecutorsModule.class,
+        RxModule.class,
+        IdentityModule.class})
 public class BaseAppModule {
 
     private final SmartReceiptsApplication application;

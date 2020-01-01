@@ -34,7 +34,7 @@ import co.smartreceipts.android.sync.model.impl.IdentifierMap;
 import co.smartreceipts.android.sync.model.impl.MarkedForDeletionMap;
 import co.smartreceipts.android.sync.model.impl.SyncStatusMap;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.android.utils.log.Logger;
+import co.smartreceipts.core.utils.log.Logger;
 import wb.android.storage.StorageManager;
 
 /**

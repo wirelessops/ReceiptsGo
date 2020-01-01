@@ -1,8 +1,8 @@
 package co.smartreceipts.android.ocr.widget.configuration
 
-import co.smartreceipts.android.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.purchases.model.InAppPurchase
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import javax.inject.Inject
 

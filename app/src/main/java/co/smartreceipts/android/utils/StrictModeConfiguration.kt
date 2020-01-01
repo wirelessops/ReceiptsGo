@@ -3,7 +3,7 @@ package co.smartreceipts.android.utils
 import android.os.Build
 import android.os.StrictMode
 import co.smartreceipts.android.BuildConfig
-import co.smartreceipts.android.utils.log.Logger
+import co.smartreceipts.core.utils.log.Logger
 import java.util.concurrent.Executors
 
 /**

@@ -2,7 +2,7 @@ package co.smartreceipts.android.tooltip.privacy
 
 import android.content.Context
 import android.telephony.TelephonyManager
-import co.smartreceipts.android.di.scopes.ApplicationScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import java.util.*
 import javax.inject.Inject
 
