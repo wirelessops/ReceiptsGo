@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("com.github.triplet.play") version "2.4.1"
+    id("com.github.triplet.play") version "2.6.2"
     id("org.jlleitschuh.gradle.ktlint")
 }
 
@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1100
-        versionName "4.22.0.1100"
+        versionCode 2201
+        versionName "4.20.2.2201"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
