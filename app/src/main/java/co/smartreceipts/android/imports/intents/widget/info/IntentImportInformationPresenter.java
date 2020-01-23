@@ -15,7 +15,7 @@ import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 import co.smartreceipts.core.di.scopes.ActivityScope;

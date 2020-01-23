@@ -12,7 +12,7 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColu
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 
 /**
  * Stores all database operations related to the {@link PaymentMethod} model object

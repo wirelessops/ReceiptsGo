@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 
-import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;

@@ -12,7 +12,7 @@ import com.hadisatrio.optional.Optional;
 import javax.inject.Inject;
 
 import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.identity.IdentityManagerInterface;
+import co.smartreceipts.core.identity.IdentityManager;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -26,7 +26,7 @@ import io.reactivex.subjects.ReplaySubject;
 public class CognitoManagerImpl implements CognitoManager {
 
     private final Context context;
-    private final IdentityManagerInterface identityManager;
+    private final IdentityManager identityManager;
     private final CognitoIdentityProvider cognitoIdentityProvider;
     private final Scheduler subscribeOnScheduler;
     private final PublishSubject<Object> retryErrorsOnSubscribePredicate = PublishSubject.create();
@@ -35,14 +35,14 @@ public class CognitoManagerImpl implements CognitoManager {
 
     @Inject
     public CognitoManagerImpl(@NonNull Context context,
-                              @NonNull IdentityManagerInterface identityManager,
+                              @NonNull IdentityManager identityManager,
                               @NonNull CognitoIdentityProvider cognitoIdentityProvider) {
         this(context, identityManager, cognitoIdentityProvider, Schedulers.io());
     }
 
     @VisibleForTesting
     CognitoManagerImpl(@NonNull Context context,
-                       @NonNull IdentityManagerInterface identityManager,
+                       @NonNull IdentityManager identityManager,
                        @NonNull CognitoIdentityProvider cognitoIdentityProvider,
                        @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context);

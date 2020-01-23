@@ -9,7 +9,7 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import java.io.File;
 import java.io.IOException;
 
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PdfPDImageXFactory;
 import co.smartreceipts.android.workers.reports.pdf.renderer.imagex.PdfPDImageXFactoryFactory;
 

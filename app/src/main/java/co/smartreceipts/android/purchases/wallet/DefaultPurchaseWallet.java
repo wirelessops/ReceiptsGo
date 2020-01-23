@@ -21,7 +21,7 @@ import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.ManagedProductFactory;
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import dagger.Lazy;
 
 public class DefaultPurchaseWallet implements PurchaseWallet {

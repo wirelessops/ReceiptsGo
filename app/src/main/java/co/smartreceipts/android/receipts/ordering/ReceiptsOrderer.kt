@@ -12,7 +12,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer.OrderingType.*
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

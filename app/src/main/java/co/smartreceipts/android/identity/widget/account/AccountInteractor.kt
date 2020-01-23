@@ -1,16 +1,16 @@
 package co.smartreceipts.android.identity.widget.account
 
 import androidx.annotation.VisibleForTesting
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.android.identity.IdentityManager
 import co.smartreceipts.android.identity.apis.organizations.Organization
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.identity.apis.organizations.OrganizationUser
 import co.smartreceipts.android.identity.organization.OrganizationManager
-import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
+import co.smartreceipts.core.di.scopes.ApplicationScope
+import co.smartreceipts.core.identity.IdentityManager
+import co.smartreceipts.core.identity.store.EmailAddress
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

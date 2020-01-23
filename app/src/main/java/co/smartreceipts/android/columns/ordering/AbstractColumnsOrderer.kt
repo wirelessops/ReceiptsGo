@@ -7,7 +7,7 @@ import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinit
 import co.smartreceipts.android.persistence.database.controllers.impl.ColumnTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

@@ -1,13 +1,13 @@
 package co.smartreceipts.android.distance.editor
 
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
 import io.reactivex.Scheduler

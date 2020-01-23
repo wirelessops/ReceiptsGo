@@ -34,7 +34,7 @@ import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;

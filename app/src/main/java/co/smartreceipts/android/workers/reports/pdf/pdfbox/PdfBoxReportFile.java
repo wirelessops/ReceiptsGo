@@ -19,7 +19,7 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.PdfReportFile;
 import co.smartreceipts.android.workers.reports.pdf.colors.PdfColorManager;

@@ -14,11 +14,11 @@ import dagger.Provides;
         LocalRepositoryModule.class,
         SharedPreferencesModule.class,
         ImageLoadingModule.class,
-        ConfigurationModule.class,
         AutoCompleteModule.class,
         ExecutorsModule.class,
         RxModule.class,
-        IdentityModule.class})
+        IdentityModule.class,
+        ConfigurationModule.class})
 public class BaseAppModule {
 
     private final SmartReceiptsApplication application;

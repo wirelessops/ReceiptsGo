@@ -3,17 +3,17 @@ package co.smartreceipts.android.tooltip.rating
 import android.content.Context
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.rating.AppRatingManager
-import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.TooltipController
+import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipType
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.core.di.scopes.FragmentScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -29,7 +29,8 @@ class RateThisAppTooltipController @Inject constructor(private val context: Cont
                                                        private val tooltipView: TooltipView,
                                                        private var router: RateThisAppTooltipRouter,
                                                        private val appRatingManager: AppRatingManager,
-                                                       private val analytics: Analytics) : TooltipController {
+                                                       private val analytics: Analytics
+) : TooltipController {
 
     @UiThread
     override fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>> {

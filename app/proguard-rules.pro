@@ -9,7 +9,10 @@
 
 ##### Our ProGuard configurations #####
 
+# Checkers for floss flavor
 #-whyareyoukeeping class com.amazonaws.*
+#-whyareyoukeeping class com.google.firebase.*
+
 
 # Preserve the line number information for debugging stack traces.
 -keepattributes SourceFile,LineNumberTable
@@ -19,14 +22,7 @@
 
 
 # Keep all of our classes as they are
--keep class co.smartreceipts.** { *; }
--dontwarn co.smartreceipts.**
--keep class wb.android.** { *; }
--dontwarn wb.android.**
--keep class wb.receipts.** { *; }
--dontwarn wb.receipts.**
--keep class wb.receiptspro.** { *; }
--dontwarn wb.receiptspro.**
+-dontobfuscate
 
 # Keep native classes
 -keepclasseswithmembernames class * {
@@ -157,13 +153,6 @@
 
 
 
-##### FireBase ProGuard configurations #####
-
--keep class com.google.firebase.provider.FirebaseInitProvider
-
-
-
-
 # All below here are from: https://gist.github.com/jemshit/767ab25a9670eb0083bafa65f8d786bb
 
 ### RxJava, RxAndroid (https://gist.github.com/kosiara/487868792fbd3214f9c9)
@@ -270,12 +259,6 @@
 ### SmartCropper
 -keep class me.pqpo.smartcropperlib.**{*;}
 
-### Google Drive API
-# Needed to keep generic types and @Key annotations accessed via reflection
--keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault,*Annotation*
--keepclassmembers class * {
-  @com.google.api.client.util.Key <fields>;
-}
 
 # Needed by google-http-client-android when linking against an older platform version
 -dontwarn com.google.api.client.extensions.android.**
@@ -298,14 +281,3 @@
 # Needed by Guava
 # See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
 -dontwarn com.google.common.collect.MinMaxPriorityQueue
-
--keep class * extends com.google.api.client.json.GenericJson {
-*;
-}
--keep class com.google.api.services.drive.** {
-*;
-}
-
--keep class com.google.** { *;}
--keep interface com.google.** { *;}
--dontwarn com.google.**

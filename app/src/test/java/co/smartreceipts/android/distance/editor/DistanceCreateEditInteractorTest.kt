@@ -1,6 +1,6 @@
 package co.smartreceipts.android.distance.editor
 
-import co.smartreceipts.android.analytics.Analytics
+import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata

@@ -14,8 +14,8 @@ import java.sql.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.apis.ExchangeRateService;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;

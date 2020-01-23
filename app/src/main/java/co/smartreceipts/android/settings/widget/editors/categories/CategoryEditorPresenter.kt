@@ -5,7 +5,7 @@ import co.smartreceipts.android.model.Category
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import io.reactivex.Observable
 

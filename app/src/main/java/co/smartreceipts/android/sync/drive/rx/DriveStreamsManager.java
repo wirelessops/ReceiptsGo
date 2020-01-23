@@ -23,7 +23,7 @@ import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.android.sync.model.SyncState;
 import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.subjects.Subject;

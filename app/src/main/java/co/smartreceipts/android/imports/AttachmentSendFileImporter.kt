@@ -1,9 +1,8 @@
 package co.smartreceipts.android.imports
 
 import android.content.Context
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.ErrorEvent
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.ErrorEvent
 import co.smartreceipts.android.imports.intents.model.FileType
 import co.smartreceipts.android.imports.intents.model.IntentImportResult
 import co.smartreceipts.android.model.Receipt
@@ -12,6 +11,7 @@ import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.settings.UserPreferenceManager
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import io.reactivex.Single
 import wb.android.storage.StorageManager
 import java.io.File
@@ -42,7 +42,12 @@ class AttachmentSendFileImporter @Inject constructor(
                     ReceiptBuilderFactory(receipt).setFile(file).build(), DatabaseOperationMetadata()
                 )
             }
-            .doOnError { throwable -> analytics.record(ErrorEvent(this@AttachmentSendFileImporter, throwable)) }
+            .doOnError { throwable -> analytics.record(
+                ErrorEvent(
+                    this@AttachmentSendFileImporter,
+                    throwable
+                )
+            ) }
     }
 
 }

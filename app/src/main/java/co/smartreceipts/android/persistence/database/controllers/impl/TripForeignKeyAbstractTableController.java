@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.ErrorEvent;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
@@ -17,7 +17,7 @@ import co.smartreceipts.android.persistence.database.controllers.alterations.Tab
 import co.smartreceipts.android.persistence.database.controllers.results.ForeignKeyGetResult;
 import co.smartreceipts.android.persistence.database.tables.TripForeignKeyAbstractSqlTable;
 import co.smartreceipts.android.sync.model.Syncable;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

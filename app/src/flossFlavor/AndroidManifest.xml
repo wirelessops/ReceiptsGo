@@ -1,0 +1,19 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application tools:node="merge">
+
+        <!-- FirebaseMessagingService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
+        <service
+            android:name="co.smartreceipts.push.services.MyFirebaseMessagingService"
+            android:exported="true"
+            tools:node="remove"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

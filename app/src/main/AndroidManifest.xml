@@ -159,7 +159,7 @@
 
         <!-- FirebaseMessagingService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
         <service
-            android:name=".push.services.MyFirebaseMessagingService"
+            android:name="co.smartreceipts.push.services.MyFirebaseMessagingService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>

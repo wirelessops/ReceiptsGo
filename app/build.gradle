@@ -91,20 +91,24 @@ android {
             applicationId "wb.receipts"
             dimension "versionType"
             proguardFile 'flavor-not-floss-rules.pro'
+            missingDimensionStrategy 'isFloss', 'notFloss'
         }
         plusFlavor {
             applicationId "wb.receiptspro"
             dimension "versionType"
             proguardFile 'flavor-not-floss-rules.pro'
+            missingDimensionStrategy 'isFloss', 'notFloss'
         }
         fireDepartmentFlavor {
             applicationId "co.smartreceipts.fire.department.tracker.android"
             dimension "versionType"
             proguardFile 'flavor-not-floss-rules.pro'
+            missingDimensionStrategy 'isFloss', 'notFloss'
         }
         flossFlavor {
             applicationId "wb.receipts.floss"
             dimension"versionType"
+            missingDimensionStrategy 'isFloss', 'floss'
         }
     }
 
@@ -129,6 +133,7 @@ android {
         implementation project(':core')
         implementation project(':wbMiniLibrary')
         implementation project(':aws')
+        implementation project(':push')
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -154,9 +159,6 @@ android {
             exclude group: 'org.apache.httpcomponents'
         }
         implementation "com.google.android.gms:play-services-auth:$DRIVE_API_VERSION"
-        implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
-        implementation "com.google.firebase:firebase-crash:$FIREBASE_CRASH_VERSION"
-        implementation "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"
 
         implementation "com.squareup.picasso:picasso:$PICASSO_VERSION"
         implementation "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"

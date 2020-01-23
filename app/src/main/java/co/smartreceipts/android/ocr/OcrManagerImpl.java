@@ -9,28 +9,28 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.ErrorEvent;
-import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.ErrorEvent;
+import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.WebServiceManager;
 import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.ocr.apis.OcrService;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.apis.model.RecognitionRequest;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
-import co.smartreceipts.android.ocr.push.OcrPushMessageReceiver;
-import co.smartreceipts.android.ocr.push.OcrPushMessageReceiverFactory;
 import co.smartreceipts.android.ocr.widget.alert.OcrProcessingStatus;
 import co.smartreceipts.android.ocr.widget.tooltip.OcrInformationalTooltipInteractor;
-import co.smartreceipts.android.push.PushManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.aws.s3.S3Manager;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.core.identity.IdentityManager;
+import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.push.PushManagerImpl;
+import co.smartreceipts.push.ocr.OcrPushMessageReceiver;
+import co.smartreceipts.push.ocr.OcrPushMessageReceiverFactory;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
@@ -43,7 +43,7 @@ public class OcrManagerImpl implements OcrManager {
     private final S3Manager s3Manager;
     private final IdentityManager identityManager;
     private final WebServiceManager ocrWebServiceManager;
-    private final PushManager pushManager;
+    private final PushManagerImpl pushManager;
     private final UserPreferenceManager userPreferenceManager;
     private final Analytics analytics;
     private final OcrPurchaseTracker ocrPurchaseTracker;
@@ -56,7 +56,7 @@ public class OcrManagerImpl implements OcrManager {
     public OcrManagerImpl(@NonNull S3Manager s3Manager,
                           @NonNull IdentityManager identityManager,
                           @NonNull WebServiceManager webServiceManager,
-                          @NonNull PushManager pushManager,
+                          @NonNull PushManagerImpl pushManager,
                           @NonNull OcrPurchaseTracker ocrPurchaseTracker,
                           @NonNull OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor,
                           @NonNull UserPreferenceManager userPreferenceManager,
@@ -70,7 +70,7 @@ public class OcrManagerImpl implements OcrManager {
     OcrManagerImpl(@NonNull S3Manager s3Manager,
                    @NonNull IdentityManager identityManager,
                    @NonNull WebServiceManager webServiceManager,
-                   @NonNull PushManager pushManager,
+                   @NonNull PushManagerImpl pushManager,
                    @NonNull OcrPurchaseTracker ocrPurchaseTracker,
                    @NonNull OcrInformationalTooltipInteractor ocrInformationalTooltipInteractor,
                    @NonNull UserPreferenceManager userPreferenceManager,
@@ -135,7 +135,7 @@ public class OcrManagerImpl implements OcrManager {
                     })
                     .flatMap(recognitionId -> {
                         Logger.debug(OcrManagerImpl.this, "Awaiting completion of recognition request {}.", recognitionId);
-                        return ocrPushMessageReceiver.getOcrPushResponse()
+                        return ocrPushMessageReceiver.getPushResponse()
                                 .doOnNext(ignore -> analytics.record(Events.Ocr.OcrPushMessageReceived))
                                 .doOnError(ignore -> analytics.record(Events.Ocr.OcrPushMessageTimeOut))
                                 .onErrorReturn(throwable -> {

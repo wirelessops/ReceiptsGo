@@ -9,7 +9,7 @@ import com.hadisatrio.optional.Optional;
 
 import java.util.Collections;
 
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 
 public class SmartReceiptsAuthenticationProvider extends AWSAbstractCognitoDeveloperIdentityProvider {
 

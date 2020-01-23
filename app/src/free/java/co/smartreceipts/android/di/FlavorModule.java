@@ -4,16 +4,16 @@ import android.content.Context;
 
 import com.google.android.gms.analytics.Tracker;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.AnalyticsProvider;
 import co.smartreceipts.android.ExtraInitializer;
 import co.smartreceipts.android.ExtraInitializerFreeImpl;
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.AnalyticsManager;
 import co.smartreceipts.android.analytics.GoogleAnalytics;
-import co.smartreceipts.android.analytics.impl.firebase.FirebaseAnalytics;
-import co.smartreceipts.android.analytics.impl.logger.AnalyticsLogger;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.OcrManagerImpl;
 import co.smartreceipts.android.purchases.wallet.DefaultPurchaseWallet;
@@ -22,11 +22,14 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.aws.cognito.CognitoManager;
 import co.smartreceipts.aws.cognito.CognitoManagerImpl;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.push.PushManager;
+import co.smartreceipts.push.PushManagerImpl;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class FlavorModule {
+public abstract class FlavorModule {
 
     @Provides
     @ApplicationScope
@@ -42,8 +45,10 @@ public class FlavorModule {
 
     @Provides
     @ApplicationScope
-    public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, FirebaseAnalytics firebaseAnalytics, GoogleAnalytics googleAnalytics) {
-        return new AnalyticsManager(Arrays.asList(new AnalyticsLogger(), firebaseAnalytics, googleAnalytics), userPreferenceManager);
+    public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, Context context, GoogleAnalytics googleAnalytics) {
+        final List<Analytics> defaultAnalytics = new ArrayList<>(new AnalyticsProvider(context).getAnalytics());
+        defaultAnalytics.add(googleAnalytics);
+        return new AnalyticsManager(defaultAnalytics, userPreferenceManager);
     }
 
     @Provides
@@ -63,4 +68,8 @@ public class FlavorModule {
     public static CognitoManager provideCognitoManager(CognitoManagerImpl cognitoManager) {
         return cognitoManager;
     }
+
+    @Binds
+    @ApplicationScope
+    public abstract PushManager providePushManager(PushManagerImpl pushManager);
 }

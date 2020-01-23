@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 
 @ApplicationScope
 public class NetworkManager extends CompositeNetworkProviderImpl {

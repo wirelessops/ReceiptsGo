@@ -11,10 +11,10 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.apis.SmartReceiptsApiErrorResponse;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.android.identity.IdentityManager;
-import co.smartreceipts.android.identity.apis.login.LoginType;
-import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.android.identity.IdentityManagerImpl;
+import co.smartreceipts.core.identity.apis.login.LoginType;
+import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -29,12 +29,12 @@ public class LoginInteractor {
     private static final int ACCOUNT_ALREADY_EXISTS_CODE = 420;
 
     private final Context context;
-    private final IdentityManager identityManager;
+    private final IdentityManagerImpl identityManager;
     private UserCredentialsPayload userCredentialsPayload;
     private ReplaySubject<UiIndicator<String>> uiIndicatorReplaySubject;
 
     @Inject
-    public LoginInteractor(@NonNull Context context, @NonNull IdentityManager identityManager) {
+    public LoginInteractor(@NonNull Context context, @NonNull IdentityManagerImpl identityManager) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.identityManager = Preconditions.checkNotNull(identityManager);
     }

@@ -2,7 +2,7 @@ package co.smartreceipts.android.utils.timer
 
 import android.os.SystemClock
 import co.smartreceipts.android.BuildConfig
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 
 
 /**

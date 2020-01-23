@@ -1,7 +1,7 @@
 package co.smartreceipts.android.tooltip.backup
 
 import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.versioning.VersionUpgradedListener
 import javax.inject.Inject
 

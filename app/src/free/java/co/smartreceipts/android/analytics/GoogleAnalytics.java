@@ -10,10 +10,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.analytics.events.DataPoint;
-import co.smartreceipts.android.analytics.events.Event;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.DataPoint;
+import co.smartreceipts.analytics.events.Event;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.utils.log.Logger;
 import dagger.Lazy;
 
 @ApplicationScope

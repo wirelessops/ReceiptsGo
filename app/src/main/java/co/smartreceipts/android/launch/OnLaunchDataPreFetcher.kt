@@ -6,7 +6,7 @@ import co.smartreceipts.android.persistence.LastTripMonitor
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

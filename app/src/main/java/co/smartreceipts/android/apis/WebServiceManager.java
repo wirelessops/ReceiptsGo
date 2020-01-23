@@ -1,6 +1,5 @@
 package co.smartreceipts.android.apis;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 
 import java.util.HashMap;
@@ -26,8 +25,7 @@ public class WebServiceManager {
     private final Map<Class<?>, Object> cachedServiceMap = new HashMap<>();
 
     @Inject
-    public WebServiceManager(@NonNull Context context,
-                             @NonNull HostConfiguration defaultHostConfiguration,
+    public WebServiceManager(@NonNull HostConfiguration defaultHostConfiguration,
                              @NonNull SmartReceiptsRetrofitConverterFactory smartReceiptsRetrofitConverterFactory,
                              @NonNull Lazy<OkHttpClient> okHttpClientLazy) {
 

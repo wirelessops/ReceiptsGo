@@ -18,10 +18,10 @@ import java.util.EnumSet;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -31,7 +31,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import co.smartreceipts.android.workers.EmailAssistant;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import wb.android.flex.Flex;
 

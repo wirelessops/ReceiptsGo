@@ -9,8 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.identity.widget.account.AccountRouter;
+import co.smartreceipts.core.identity.IdentityManager;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.ocr.OcrManager;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;

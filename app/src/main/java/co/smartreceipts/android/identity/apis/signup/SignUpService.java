@@ -2,7 +2,7 @@ package co.smartreceipts.android.identity.apis.signup;
 
 import androidx.annotation.NonNull;
 
-import co.smartreceipts.android.identity.apis.login.LoginResponse;
+import co.smartreceipts.core.identity.apis.login.LoginResponse;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;

@@ -52,7 +52,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.ImageUtils;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.utils.UriUtils;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.workers.reports.Report;
 import co.smartreceipts.android.workers.reports.ReportGenerationException;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;

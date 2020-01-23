@@ -10,7 +10,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.Categories
 import co.smartreceipts.android.persistence.database.controllers.impl.PDFTableController
 import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMethodsTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function5

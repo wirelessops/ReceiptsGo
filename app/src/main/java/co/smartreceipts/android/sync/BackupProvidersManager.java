@@ -25,7 +25,7 @@ import co.smartreceipts.android.sync.network.SupportedNetworkType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.provider.SyncProviderFactory;
 import co.smartreceipts.android.sync.provider.SyncProviderStore;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
