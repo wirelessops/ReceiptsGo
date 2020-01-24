@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 
 /**
  * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options

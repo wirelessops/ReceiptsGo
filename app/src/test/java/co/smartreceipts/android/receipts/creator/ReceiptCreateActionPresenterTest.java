@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.Events;
 import io.reactivex.subjects.PublishSubject;
 import kotlin.Unit;
 

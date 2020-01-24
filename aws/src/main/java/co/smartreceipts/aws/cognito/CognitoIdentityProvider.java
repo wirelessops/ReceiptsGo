@@ -9,19 +9,19 @@ import com.hadisatrio.optional.Optional;
 import javax.inject.Inject;
 
 import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.identity.IdentityManagerInterface;
+import co.smartreceipts.core.identity.IdentityManager;
 import co.smartreceipts.core.identity.apis.me.User;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Single;
 
 @ApplicationScope
 class CognitoIdentityProvider {
 
-    private final IdentityManagerInterface identityManager;
+    private final IdentityManager identityManager;
     private final LocalCognitoTokenStore localCognitoTokenStore;
 
     @Inject
-    public CognitoIdentityProvider(@NonNull IdentityManagerInterface identityManager,
+    public CognitoIdentityProvider(@NonNull IdentityManager identityManager,
                                    @NonNull LocalCognitoTokenStore localCognitoTokenStore) {
         this.identityManager = Preconditions.checkNotNull(identityManager);
         this.localCognitoTokenStore = Preconditions.checkNotNull(localCognitoTokenStore);

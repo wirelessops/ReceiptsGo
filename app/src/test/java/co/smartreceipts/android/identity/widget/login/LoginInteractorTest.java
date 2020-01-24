@@ -12,11 +12,11 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.identity.IdentityManager;
-import co.smartreceipts.android.identity.apis.login.LoginResponse;
-import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserLogin;
-import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserSignUp;
-import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
+import co.smartreceipts.android.identity.IdentityManagerImpl;
+import co.smartreceipts.core.identity.apis.login.LoginResponse;
+import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserLogin;
+import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserSignUp;
+import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
@@ -37,7 +37,7 @@ public class LoginInteractorTest {
     Context context = ApplicationProvider.getApplicationContext();
 
     @Mock
-    IdentityManager identityManager;
+    IdentityManagerImpl identityManager;
 
     SmartReceiptsUserLogin loginPayload = new SmartReceiptsUserLogin("email", "password");
 

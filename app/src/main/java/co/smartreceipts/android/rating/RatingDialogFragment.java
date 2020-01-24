@@ -7,14 +7,15 @@ import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.utils.IntentUtils;
 import dagger.android.support.AndroidSupportInjection;
 
@@ -74,7 +75,7 @@ public class RatingDialogFragment extends DialogFragment {
     }
 
     private void prorogueRatingPrompt() {
-            appRatingManager.prorogueRatingPrompt();
+        appRatingManager.prorogueRatingPrompt();
     }
 
     private String getApplicationName() {

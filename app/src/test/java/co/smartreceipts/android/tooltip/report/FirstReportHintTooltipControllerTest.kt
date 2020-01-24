@@ -2,14 +2,14 @@ package co.smartreceipts.android.tooltip.report
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.tooltip.TooltipView
-import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
+import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.utils.TripUtils
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.verify
@@ -19,7 +19,6 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
-
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations

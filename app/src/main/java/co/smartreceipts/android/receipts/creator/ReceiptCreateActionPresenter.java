@@ -6,10 +6,10 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.Events;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.core.di.scopes.FragmentScope;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
 import co.smartreceipts.android.widget.mvp.Presenter;
 

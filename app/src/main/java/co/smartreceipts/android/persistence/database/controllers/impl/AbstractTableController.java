@@ -12,8 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.ErrorEvent;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
@@ -27,7 +27,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.utils.PreFixedThreadFactory;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

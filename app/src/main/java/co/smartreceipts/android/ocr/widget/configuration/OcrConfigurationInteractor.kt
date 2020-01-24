@@ -1,12 +1,10 @@
 package co.smartreceipts.android.ocr.widget.configuration
 
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.DataPoint
-import co.smartreceipts.android.analytics.events.DefaultDataPointEvent
-import co.smartreceipts.android.analytics.events.Events
-import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.android.identity.IdentityManager
-import co.smartreceipts.core.identity.store.EmailAddress
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.DataPoint
+import co.smartreceipts.analytics.events.DefaultDataPointEvent
+import co.smartreceipts.analytics.events.Events
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.AvailablePurchase
@@ -16,7 +14,9 @@ import co.smartreceipts.android.purchases.model.PurchaseFamily
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.core.di.scopes.FragmentScope
+import co.smartreceipts.core.identity.IdentityManager
+import co.smartreceipts.core.identity.store.EmailAddress
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -68,7 +68,11 @@ constructor(
 
     fun startOcrPurchase(inAppPurchase: InAppPurchase?) {
         if (inAppPurchase != null) {
-            analytics.record(DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(DataPoint("sku", inAppPurchase)))
+            analytics.record(
+                DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(
+                    DataPoint("sku", inAppPurchase)
+                )
+            )
             purchaseManager.initiatePurchase(inAppPurchase, PurchaseSource.Ocr)
         } else {
             Logger.error(this, "Unexpected state in which the in app purchase is null")
@@ -76,12 +80,20 @@ constructor(
     }
 
     fun setOcrIsEnabled(ocrIsEnabled: Boolean) {
-        analytics.record(DefaultDataPointEvent(Events.Ocr.OcrIsEnabledToggled).addDataPoint(DataPoint("value", ocrIsEnabled)))
+        analytics.record(
+            DefaultDataPointEvent(Events.Ocr.OcrIsEnabledToggled).addDataPoint(
+                DataPoint("value", ocrIsEnabled)
+            )
+        )
         userPreferenceManager[UserPreference.Misc.OcrIsEnabled] = ocrIsEnabled
     }
 
     fun setAllowUsToSaveImagesRemotely(saveImagesRemotely: Boolean) {
-        analytics.record(DefaultDataPointEvent(Events.Ocr.OcrIncognitoModeToggled).addDataPoint(DataPoint("value", !saveImagesRemotely)))
+        analytics.record(
+            DefaultDataPointEvent(Events.Ocr.OcrIncognitoModeToggled).addDataPoint(
+                DataPoint("value", !saveImagesRemotely)
+            )
+        )
         userPreferenceManager[UserPreference.Misc.OcrIncognitoMode] = !saveImagesRemotely
     }
 

@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.smartreceipts.android.KeyedObject;
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.ErrorEvent;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.ErrorEvent;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.alterations.TableActionAlterations;

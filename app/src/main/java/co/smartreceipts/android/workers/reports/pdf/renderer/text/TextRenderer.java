@@ -10,7 +10,7 @@ import com.tom_roush.harmony.awt.AWTColor;
 import java.io.IOException;
 import java.util.List;
 
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.workers.reports.pdf.utils.HeavyHandedReplaceIllegalCharacters;
 import co.smartreceipts.android.workers.reports.pdf.utils.PdfBoxUtils;
 import co.smartreceipts.android.workers.reports.pdf.fonts.PdfFontSpec;

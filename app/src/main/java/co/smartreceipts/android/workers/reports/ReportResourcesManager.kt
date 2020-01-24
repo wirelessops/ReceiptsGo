@@ -7,7 +7,7 @@ import androidx.core.os.ConfigurationCompat
 import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject

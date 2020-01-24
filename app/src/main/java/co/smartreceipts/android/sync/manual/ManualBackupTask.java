@@ -16,7 +16,7 @@ import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

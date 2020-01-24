@@ -8,7 +8,7 @@ import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.identity.apis.organizations.*
 import co.smartreceipts.core.identity.store.MutableIdentityStore
 import co.smartreceipts.android.utils.ConfigurableResourceFeature
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single

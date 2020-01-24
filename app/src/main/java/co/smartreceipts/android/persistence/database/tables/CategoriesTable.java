@@ -2,16 +2,17 @@ package co.smartreceipts.android.persistence.database.tables;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.CategoryDatabaseAdapter;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByColumn;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrderingPreference;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.core.utils.log.Logger;
 
 /**
  * Stores all database operations related to the {@link Category} model object

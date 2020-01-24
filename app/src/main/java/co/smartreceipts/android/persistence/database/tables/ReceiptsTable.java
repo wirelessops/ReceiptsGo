@@ -4,8 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.sql.Date;
 import java.util.Collections;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Receipt;
@@ -34,7 +36,6 @@ import co.smartreceipts.android.sync.model.impl.IdentifierMap;
 import co.smartreceipts.android.sync.model.impl.MarkedForDeletionMap;
 import co.smartreceipts.android.sync.model.impl.SyncStatusMap;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.core.utils.log.Logger;
 import wb.android.storage.StorageManager;
 
 /**

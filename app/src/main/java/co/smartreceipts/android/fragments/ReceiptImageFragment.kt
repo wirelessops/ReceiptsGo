@@ -8,11 +8,12 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.images.CropImageActivity
 import co.smartreceipts.android.imports.CameraInteractionController
 import co.smartreceipts.android.imports.RequestCodes
@@ -26,7 +27,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.tooltip.image.data.ImageCroppingPreferenceStorage
 import co.smartreceipts.android.utils.IntentUtils
-import co.smartreceipts.core.utils.log.Logger
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso

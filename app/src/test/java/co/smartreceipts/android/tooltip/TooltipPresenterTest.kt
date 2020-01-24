@@ -2,11 +2,11 @@ package co.smartreceipts.android.tooltip
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.android.R
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
+import co.smartreceipts.android.tooltip.model.TooltipType
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
@@ -16,7 +16,6 @@ import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner

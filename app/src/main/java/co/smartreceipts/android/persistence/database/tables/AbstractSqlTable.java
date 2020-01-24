@@ -24,7 +24,7 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderBy;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import co.smartreceipts.android.sync.model.Syncable;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Single;
 
 /**

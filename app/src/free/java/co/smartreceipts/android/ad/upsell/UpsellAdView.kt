@@ -2,11 +2,11 @@ package co.smartreceipts.android.ad.upsell
 
 import android.app.Activity
 import android.view.View
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.AdLoadListener
 import co.smartreceipts.android.ad.BannerAdView
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
 import javax.inject.Inject
 
 class UpsellAdView @Inject constructor(private val analytics: Analytics) : BannerAdView {

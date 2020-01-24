@@ -1,14 +1,14 @@
 package co.smartreceipts.android.ad
 
 import android.app.Activity
-import android.content.Context
 import android.view.View
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.DataPoint
+import co.smartreceipts.analytics.events.DefaultDataPointEvent
+import co.smartreceipts.analytics.events.Events
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.upsell.UpsellAdView
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.DataPoint
-import co.smartreceipts.android.analytics.events.DefaultDataPointEvent
-import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.source.PurchaseSource
@@ -16,16 +16,16 @@ import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.android.utils.UiThread
 import co.smartreceipts.core.di.scopes.ActivityScope
-import co.smartreceipts.core.utils.log.Logger
 import javax.inject.Inject
 
 @ActivityScope
-class BannerAdPresenter @Inject constructor(private val context: Context,
-                                            private val adStatusTracker: AdStatusTracker,
-                                            private val purchaseManager: PurchaseManager,
-                                            private val userPreferenceManager: UserPreferenceManager,
-                                            private val bannerAdViewFactory: BannerAdViewFactory,
-                                            private val analytics: Analytics) : AdPresenter {
+class BannerAdPresenter @Inject constructor(
+    private val adStatusTracker: AdStatusTracker,
+    private val purchaseManager: PurchaseManager,
+    private val userPreferenceManager: UserPreferenceManager,
+    private val bannerAdViewFactory: BannerAdViewFactory,
+    private val analytics: Analytics
+) : AdPresenter {
 
     private var adView: BannerAdView? = null
     private var upsellAdView: UpsellAdView? = null

@@ -1,13 +1,12 @@
 package co.smartreceipts.android.di;
 
-import java.util.Arrays;
+import android.content.Context;
 
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.AnalyticsProvider;
 import co.smartreceipts.android.ExtraInitializer;
 import co.smartreceipts.android.ExtraInitializerFireDepartmentImpl;
-import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.analytics.AnalyticsManager;
-import co.smartreceipts.android.analytics.impl.firebase.FirebaseAnalytics;
-import co.smartreceipts.android.analytics.impl.logger.AnalyticsLogger;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.ocr.OcrManagerImpl;
 import co.smartreceipts.android.purchases.wallet.PlusPurchaseWallet;
@@ -16,6 +15,8 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.aws.cognito.CognitoManager;
 import co.smartreceipts.aws.cognito.CognitoManagerImpl;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.push.PushManager;
+import co.smartreceipts.push.PushManagerImpl;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -33,8 +34,8 @@ public abstract class FlavorModule {
 
     @Provides
     @ApplicationScope
-    public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, FirebaseAnalytics firebaseAnalytics) {
-        return new AnalyticsManager(Arrays.asList(new AnalyticsLogger(), firebaseAnalytics), userPreferenceManager);
+    public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, Context context) {
+        return new AnalyticsManager(new AnalyticsProvider(context).getAnalytics(), userPreferenceManager);
     }
 
     @Binds
@@ -44,4 +45,8 @@ public abstract class FlavorModule {
     @Binds
     @ApplicationScope
     public abstract CognitoManager provideCognitoManager(CognitoManagerImpl cognitoManager);
+
+    @Binds
+    @ApplicationScope
+    public abstract PushManager providePushManager(PushManagerImpl pushManager);
 }

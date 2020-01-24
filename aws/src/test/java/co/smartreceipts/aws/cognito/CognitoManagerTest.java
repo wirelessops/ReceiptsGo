@@ -15,7 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.core.identity.IdentityManagerInterface;
+import co.smartreceipts.core.identity.IdentityManager;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
@@ -33,7 +33,7 @@ public class CognitoManagerTest {
     Context context = ApplicationProvider.getApplicationContext();
 
     @Mock
-    IdentityManagerInterface identityManager;
+    IdentityManager identityManager;
 
     @Mock
     CognitoIdentityProvider cognitoIdentityProvider;

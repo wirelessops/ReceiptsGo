@@ -12,7 +12,7 @@ import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.core.identity.store.MutableIdentityStore;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.utils.ConfigurableStaticFeature;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;

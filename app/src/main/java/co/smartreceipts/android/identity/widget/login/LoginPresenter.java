@@ -9,9 +9,9 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.core.di.scopes.FragmentScope;
-import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserLogin;
-import co.smartreceipts.android.identity.apis.login.SmartReceiptsUserSignUp;
-import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
+import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserLogin;
+import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserSignUp;
+import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;

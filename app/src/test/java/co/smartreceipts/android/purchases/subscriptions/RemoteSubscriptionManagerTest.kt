@@ -1,11 +1,11 @@
 package co.smartreceipts.android.purchases.subscriptions
 
 import co.smartreceipts.android.apis.WebServiceManager
-import co.smartreceipts.android.identity.IdentityManager
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiService
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
+import co.smartreceipts.core.identity.IdentityManager
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever

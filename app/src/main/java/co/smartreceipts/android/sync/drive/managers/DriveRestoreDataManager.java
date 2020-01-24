@@ -3,9 +3,10 @@ package co.smartreceipts.android.sync.drive.managers;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import android.text.TextUtils;
 
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.restore.DatabaseRestorer;
@@ -29,7 +31,6 @@ import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
 import co.smartreceipts.android.sync.manual.ManualBackupTask;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
-import co.smartreceipts.core.utils.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

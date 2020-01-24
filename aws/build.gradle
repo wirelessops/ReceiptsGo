@@ -11,6 +11,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        missingDimensionStrategy 'isFloss', 'notFloss'
     }
 
     buildTypes {
@@ -24,7 +26,6 @@ android {
         targetCompatibility = 1.8
     }
     buildToolsVersion = rootProject.ext.buildToolsVersion
-
 }
 
 dependencies {
@@ -35,9 +36,6 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
 
     implementation project(':core')
-    //Rx2
-    implementation "io.reactivex.rxjava2:rxjava:$RX2_JAVA_VERSION"
-    implementation "io.reactivex.rxjava2:rxandroid:$RX2_ANDROID_VERSION"
 
     implementation "com.amazonaws:aws-android-sdk-core:$AWS_SDK_VERSION"
     implementation "com.amazonaws:aws-android-sdk-s3:$AWS_SDK_VERSION"
@@ -51,6 +49,7 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
     testImplementation "androidx.test:core:$ANDROID_TEST_RUNNER_VERSION"
 
+    // Dagger
     kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 

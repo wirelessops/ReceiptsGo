@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import androidx.exifinterface.media.ExifInterface
 import co.smartreceipts.android.utils.ImageUtils
 import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import io.reactivex.Observable

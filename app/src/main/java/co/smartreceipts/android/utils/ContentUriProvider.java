@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 
 /** 
  * Some (ie just one) phone manufacturers (ie Huawei) break the Android contract for calls to {@link Context#getExternalFilesDirs(String)}. 

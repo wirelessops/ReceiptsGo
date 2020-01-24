@@ -39,7 +39,7 @@ import co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFrag
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.SettingsViewerActivity;
 import co.smartreceipts.android.utils.IntentUtils;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.core.di.scopes.ActivityScope;
 
 import static android.preference.PreferenceActivity.EXTRA_SHOW_FRAGMENT;

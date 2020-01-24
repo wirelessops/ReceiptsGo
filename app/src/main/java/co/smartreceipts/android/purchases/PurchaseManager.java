@@ -9,10 +9,11 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.common.base.Preconditions;
@@ -31,11 +32,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.DataPoint;
-import co.smartreceipts.android.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.android.analytics.events.Events;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.purchases.lifecycle.PurchaseManagerActivityLifecycleCallbacks;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.purchases.model.ConsumablePurchase;
@@ -48,7 +44,12 @@ import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.DataPoint;
+import co.smartreceipts.analytics.events.DefaultDataPointEvent;
+import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;

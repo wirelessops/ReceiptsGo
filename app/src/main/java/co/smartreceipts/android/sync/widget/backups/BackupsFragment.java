@@ -40,7 +40,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
 import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 

@@ -9,7 +9,7 @@ import co.smartreceipts.core.di.scopes.ApplicationScope
 
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.utils.rx.RxSchedulers
 import io.reactivex.Observable
 import io.reactivex.Scheduler

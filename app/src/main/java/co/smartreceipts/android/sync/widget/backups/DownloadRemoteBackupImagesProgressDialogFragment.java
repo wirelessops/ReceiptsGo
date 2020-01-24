@@ -5,25 +5,26 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.ErrorEvent;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.SmartReceiptsApplication;
-import co.smartreceipts.android.analytics.Analytics;
-import co.smartreceipts.android.analytics.events.ErrorEvent;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.utils.IntentUtils;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,10 +39,13 @@ public class DownloadRemoteBackupImagesProgressDialogFragment extends DialogFrag
 
     @Inject
     DatabaseHelper database;
+
     @Inject
     NetworkManager networkManager;
+
     @Inject
     Analytics analytics;
+
     @Inject
     BackupProvidersManager backupProvidersManager;
 

@@ -1,17 +1,15 @@
 package co.smartreceipts.android.di
 
-import co.smartreceipts.android.identity.IdentityManager
+import co.smartreceipts.android.identity.IdentityManagerImpl
 import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.identity.IdentityManagerInterface
+import co.smartreceipts.core.identity.IdentityManager
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 @Module
-class IdentityModule {
+abstract class IdentityModule {
 
-    @Provides
+    @Binds
     @ApplicationScope
-    fun provideIdentityManager(identityManager: IdentityManager) : IdentityManagerInterface {
-        return identityManager
-    }
+    abstract fun provideIdentityManager(identityManager: IdentityManagerImpl) : IdentityManager
 }

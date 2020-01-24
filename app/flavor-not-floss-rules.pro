@@ -1,3 +1,5 @@
+
+
 ##### AWS ProGuard configurations #####
 
 # Class names are needed in reflection
@@ -17,9 +19,12 @@
 -dontwarn com.amazonaws.http.**
 -dontwarn com.amazonaws.metrics.**
 
+
+##### FireBase ProGuard configurations #####
+-keep class com.google.firebase.provider.FirebaseInitProvider
+
 # Keep all exceptions for tracking purposes
 -keep public class * extends java.lang.Exception
-
 -keep class org.apache.commons.logging.**               { *; }
 -keep class com.amazonaws.services.sqs.QueueUrlHandler  { *; }
 -keep class com.amazonaws.javax.xml.transform.sax.*     { public *; }
@@ -40,3 +45,23 @@
 -dontwarn com.amazonaws.services.sqs.**
 
 -dontnote com.amazonaws.services.sqs.QueueUrlHandler
+
+
+
+### Google Drive API
+# Needed to keep generic types and @Key annotations accessed via reflection
+-keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault,*Annotation*
+-keepclassmembers class * {
+  @com.google.api.client.util.Key <fields>;
+}
+
+-keep class * extends com.google.api.client.json.GenericJson {
+*;
+}
+-keep class com.google.api.services.drive.** {
+*;
+}
+
+-keep class com.google.** { *;}
+-keep interface com.google.** { *;}
+-dontwarn com.google.**

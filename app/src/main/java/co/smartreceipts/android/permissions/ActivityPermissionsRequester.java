@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Single;
 

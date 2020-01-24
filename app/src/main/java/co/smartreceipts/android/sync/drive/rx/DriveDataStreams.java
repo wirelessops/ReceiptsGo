@@ -21,7 +21,7 @@ import co.smartreceipts.android.sync.drive.rx.debug.DriveFilesAndFoldersPrinter;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.android.sync.model.impl.DefaultRemoteBackupMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.ReplaySubject;

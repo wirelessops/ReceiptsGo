@@ -1,9 +1,9 @@
 package co.smartreceipts.android.di;
 
+import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.android.activities.FragmentProvider;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
-import co.smartreceipts.android.analytics.Analytics;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipInteractor;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupReminderTooltipManager;

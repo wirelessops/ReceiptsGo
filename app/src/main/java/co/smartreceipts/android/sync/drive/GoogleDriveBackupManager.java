@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.restore.DatabaseRestorer;
@@ -56,7 +56,7 @@ import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.noop.NoOpBackupProvider;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;

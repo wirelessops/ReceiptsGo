@@ -14,7 +14,7 @@ import co.smartreceipts.android.persistence.database.controllers.TableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.analytics.log.Logger;
 
 public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<PaymentMethod> {
 

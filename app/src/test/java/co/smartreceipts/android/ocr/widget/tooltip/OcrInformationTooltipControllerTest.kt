@@ -2,9 +2,9 @@ package co.smartreceipts.android.ocr.widget.tooltip
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipInteraction

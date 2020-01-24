@@ -201,7 +201,6 @@
     <string name="toast_reorder_hint"><![CDATA[Mantenere premuto a lungo l\'oggetto per iniziarne il trascinamento]]></string>
     <string name="toast_csv_report_distances">Prego selezionare l\'opzione  %s per creare il reoprt CSV</string>
     <string name="toast_attachment_error">Impossibile allegare questo file.</string>
-    <string name="toast_disable_crop_option">Potete disabilitare il crop dell\'immagine nelle preferenze della app</string>
 
     <!-- ================== Trip Adapter ===================== -->
     <string name="trip_adapter_list_item_to">%1$s a %2$s</string>

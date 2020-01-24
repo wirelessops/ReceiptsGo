@@ -3,7 +3,7 @@ package co.smartreceipts.android.apis.okhttp
 import android.content.Context
 import co.smartreceipts.android.BuildConfig
 import co.smartreceipts.core.identity.store.IdentityStore
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

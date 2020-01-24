@@ -5,7 +5,7 @@ import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.persistence.LastTripMonitor
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
 import co.smartreceipts.android.utils.ConfigurableStaticFeature
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

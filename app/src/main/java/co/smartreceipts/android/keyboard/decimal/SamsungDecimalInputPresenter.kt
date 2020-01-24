@@ -3,7 +3,7 @@ package co.smartreceipts.android.keyboard.decimal
 import android.content.Context
 import android.provider.Settings
 import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import io.reactivex.Scheduler
 import io.reactivex.Single

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import co.smartreceipts.android.identity.apis.login.UserCredentialsPayload;
+import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
 
 public class SignUpPayload implements Serializable {
 

@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import co.smartreceipts.push.store.PushDataStore;
 import dagger.Lazy;
 import io.reactivex.observers.TestObserver;
 

@@ -2,23 +2,24 @@ package co.smartreceipts.android.tooltip.rating
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.rating.AppRatingManager
 import co.smartreceipts.android.tooltip.TooltipView
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipType
 import com.hadisatrio.optional.Optional
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Before
-
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import com.nhaarman.mockitokotlin2.*
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 

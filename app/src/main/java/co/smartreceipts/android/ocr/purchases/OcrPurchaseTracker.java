@@ -1,7 +1,7 @@
 package co.smartreceipts.android.ocr.purchases;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
@@ -17,8 +17,6 @@ import javax.inject.Inject;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
 import co.smartreceipts.android.apis.WebServiceManager;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.android.identity.IdentityManager;
 import co.smartreceipts.android.purchases.PurchaseEventsListener;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.apis.purchases.MobileAppPurchasesService;
@@ -29,7 +27,9 @@ import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.PurchaseFamily;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
-import co.smartreceipts.core.utils.log.Logger;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.core.identity.IdentityManager;
+import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
@@ -49,8 +49,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     private final Scheduler subscribeOnScheduler;
 
     @Inject
-    public OcrPurchaseTracker(@NonNull Context context,
-                              @NonNull IdentityManager identityManager,
+    public OcrPurchaseTracker(@NonNull IdentityManager identityManager,
                               @NonNull WebServiceManager webServiceManager,
                               @NonNull PurchaseManager purchaseManager,
                               @NonNull PurchaseWallet purchaseWallet,

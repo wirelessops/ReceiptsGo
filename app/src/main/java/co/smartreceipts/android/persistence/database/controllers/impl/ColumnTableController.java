@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.android.analytics.Analytics;
+import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Receipt;

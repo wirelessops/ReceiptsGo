@@ -14,7 +14,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.IOException;
 import java.util.Date;
 
-import co.smartreceipts.core.identity.IdentityManagerInterface;
+import co.smartreceipts.core.identity.IdentityManager;
 import co.smartreceipts.core.identity.apis.me.MeResponse;
 import co.smartreceipts.core.identity.apis.me.User;
 import io.reactivex.Observable;
@@ -33,7 +33,7 @@ public class CognitoIdentityProviderTest {
     CognitoIdentityProvider cognitoIdentityProvider;
 
     @Mock
-    IdentityManagerInterface identityManager;
+    IdentityManager identityManager;
 
     @Mock
     LocalCognitoTokenStore localCognitoTokenStore;

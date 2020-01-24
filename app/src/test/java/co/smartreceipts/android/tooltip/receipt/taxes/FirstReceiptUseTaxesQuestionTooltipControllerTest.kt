@@ -2,9 +2,9 @@ package co.smartreceipts.android.tooltip.receipt.taxes
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
-import co.smartreceipts.android.analytics.Analytics
-import co.smartreceipts.android.analytics.events.Events
 import co.smartreceipts.android.columns.ordering.CsvColumnsOrderer
 import co.smartreceipts.android.columns.ordering.PdfColumnsOrderer
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions

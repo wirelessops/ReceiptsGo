@@ -13,7 +13,7 @@ import co.smartreceipts.android.tooltip.image.data.ImageCroppingPreferenceStorag
 import co.smartreceipts.android.tooltip.model.TooltipInteraction
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
 import co.smartreceipts.android.tooltip.model.TooltipType
-import co.smartreceipts.core.utils.log.Logger
+import co.smartreceipts.analytics.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable
