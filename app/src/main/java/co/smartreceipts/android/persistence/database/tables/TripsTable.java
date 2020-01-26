@@ -33,6 +33,9 @@ public class TripsTable extends AbstractSqlTable<Trip> {
     public static final String COLUMN_DEFAULT_CURRENCY = "trips_default_currency";
     public static final String COLUMN_FILTERS = "trips_filters";
     public static final String COLUMN_PROCESSING_STATUS = "trip_processing_status";
+    public static final String COLUMN_NAME_HIDDEN_AUTO_COMPLETE = "name_hidden_auto_complete";
+    public static final String COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE = "comment_hidden_auto_complete";
+    public static final String COLUMN_COSTCENTER_HIDDEN_AUTO_COMPLETE = "costcenter_hidden_auto_complete";
 
     @SuppressWarnings("unused")
     @Deprecated
@@ -58,6 +61,9 @@ public class TripsTable extends AbstractSqlTable<Trip> {
                 + COLUMN_DEFAULT_CURRENCY + " TEXT, "
                 + COLUMN_PROCESSING_STATUS + " TEXT, "
                 + COLUMN_FILTERS + " TEXT, "
+                + COLUMN_NAME_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
+                + COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
+                + COLUMN_COSTCENTER_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
@@ -193,6 +199,20 @@ public class TripsTable extends AbstractSqlTable<Trip> {
 
             // adding new UUID column
             onUpgradeToAddUUID(db, oldVersion);
+        }
+
+        if (oldVersion <= 19) { // Added a timezone column to the receipts table
+            final String alterReceipts = "ALTER TABLE " + TripsTable.TABLE_NAME + " ADD " + COLUMN_NAME_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+            final String alterReceipts2 = "ALTER TABLE " + TripsTable.TABLE_NAME + " ADD " + COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+            final String alterReceipts3 = "ALTER TABLE " + TripsTable.TABLE_NAME + " ADD " + COLUMN_COSTCENTER_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+
+            Logger.debug(this, alterReceipts);
+            Logger.debug(this, alterReceipts2);
+            Logger.debug(this, alterReceipts3);
+
+            db.execSQL(alterReceipts);
+            db.execSQL(alterReceipts2);
+            db.execSQL(alterReceipts3);
         }
 
     }

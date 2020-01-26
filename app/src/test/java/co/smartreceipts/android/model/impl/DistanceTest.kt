@@ -40,6 +40,8 @@ class DistanceTest {
         private val CURRENCY = PriceCurrency.getInstance("USD")
         private val TIMEZONE = TimeZone.getDefault()
         private const val COMMENT = "Comment"
+        private const val LOCATION_HIDDEN_AUTO_COMPLETE = false
+        private const val COMMENT_HIDDEN_AUTO_COMPLETE = false
     }
 
     // Class under test

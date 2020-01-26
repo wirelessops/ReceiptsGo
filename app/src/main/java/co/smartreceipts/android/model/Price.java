@@ -99,4 +99,5 @@ public interface Price extends Parcelable {
      */
     @NonNull
     ExchangeRate getExchangeRate();
+
 }

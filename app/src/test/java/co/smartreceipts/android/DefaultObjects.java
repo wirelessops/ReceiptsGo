@@ -38,7 +38,7 @@ public class DefaultObjects {
                 new File(new File("").getAbsolutePath()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
-                PriceCurrency.getDefaultCurrency(),"comment","costCenter", newDefaultSyncState());
+                PriceCurrency.getDefaultCurrency(), "comment", "costCenter");
     }
 
     @NonNull
@@ -68,4 +68,5 @@ public class DefaultObjects {
     public static Price newDefaultTax() {
         return new ImmutablePriceImpl(new BigDecimal(2), PriceCurrency.getInstance("USD"), new ExchangeRate("USD", Collections.singletonMap("USD", 1.00d)));
     }
+
 }

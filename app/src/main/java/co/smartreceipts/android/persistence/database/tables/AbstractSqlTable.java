@@ -119,9 +119,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable> imple
             db.execSQL(addNewColumn);
 
             // assign random values
-            Cursor cursor = null;
-            try {
-                cursor = db.query(getTableName(), new String[]{COLUMN_ID}, null, null, null, null, null);
+            try (Cursor cursor = db.query(getTableName(), new String[]{COLUMN_ID}, null, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
 
                     final int idIdx = cursor.getColumnIndex(COLUMN_ID);
@@ -138,10 +136,6 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable> imple
                             throw new IllegalStateException("Column update error happened");
                         }
                     } while (cursor.moveToNext());
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
                 }
             }
         }
@@ -283,9 +277,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable> imple
         UUID uuid = UUID.fromString(values.getAsString(COLUMN_UUID));
 
         if (getWritableDatabase().insertOrThrow(getTableName(), null, values) != -1) {
-            Cursor cursor = null;
-            try {
-                cursor = getReadableDatabase().rawQuery("SELECT last_insert_rowid()", null);
+            try (Cursor cursor = getReadableDatabase().rawQuery("SELECT last_insert_rowid()", null)) {
 
                 final int id;
                 if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
@@ -302,11 +294,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable> imple
                     }
                 }
                 return Optional.of(insertedItem);
-            } finally { // Close the cursor and db to avoid memory leaks
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
+            } // Close the cursor and db to avoid memory leaks
         } else {
             return Optional.absent();
         }
@@ -328,7 +316,7 @@ public abstract class AbstractSqlTable<ModelType extends Keyed & Syncable> imple
 
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             // For sync operations, ensure that this only succeeds if we haven't already updated this item more recently
-            final Syncable syncableOldModel = (Syncable) oldModelType;
+            final Syncable syncableOldModel = oldModelType;
             updateSuccess = getWritableDatabase().update(getTableName(), values, COLUMN_ID +
                             " = ? AND " + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " >= ?",
                     new String[]{oldPrimaryKeyValue, Long.toString(syncableOldModel.getSyncState().getLastLocalModificationTime().getTime())}) > 0;

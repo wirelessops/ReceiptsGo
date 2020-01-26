@@ -50,12 +50,11 @@ import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -231,6 +230,8 @@ public class ReceiptsTableTest {
         assertTrue(creatingTable.contains("last_local_modification_time DATE"));
         assertTrue(creatingTable.contains("custom_order_id INTEGER DEFAULT 0"));
         assertTrue(creatingTable.contains("uuid TEXT"));
+        assertTrue(creatingTable.contains("name_hidden_auto_complete BOOLEAN DEFAULT 0"));
+        assertTrue(creatingTable.contains("comment_hidden_auto_complete BOOLEAN DEFAULT 0"));
     }
 
     @Test
@@ -251,6 +252,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -271,6 +273,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -291,6 +294,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -311,6 +315,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -331,6 +336,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -351,6 +357,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -371,6 +378,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -391,6 +399,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(times(1));
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -411,6 +420,7 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(never());
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -431,6 +441,28 @@ public class ReceiptsTableTest {
         verifyV14Upgrade(never());
         verifyV15Upgrade(never());
         verifyV18Upgrade(times(1));
+        verifyV19Upgrade(times(1));
+    }
+
+    @Test
+    public void onUpgradeFromV19() {
+        final int oldVersion = 19;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mReceiptsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verifyZeroInteractions(customizer);
+        verifyV1Upgrade(never());
+        verifyV3Upgrade(never());
+        verifyV4Upgrade(never());
+        verifyV7Upgrade(never());
+        verifyV11Upgrade(never());
+        verifyV12Upgrade(never());
+        verifyV13Upgrade(never());
+        verifyV14Upgrade(never());
+        verifyV15Upgrade(never());
+        verifyV18Upgrade(never());
+        verifyV19Upgrade(times(1));
     }
 
     @Test
@@ -449,6 +481,9 @@ public class ReceiptsTableTest {
         verifyV12Upgrade(never());
         verifyV13Upgrade(never());
         verifyV14Upgrade(never());
+        verifyV15Upgrade(never());
+        verifyV18Upgrade(never());
+        verifyV19Upgrade(never());
     }
 
     private void verifyV1Upgrade(@NonNull VerificationMode verificationMode) {
@@ -589,13 +624,18 @@ public class ReceiptsTableTest {
                 AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION, AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME});
 
 
-        verify(mSQLiteDatabase, atLeastOnce()).execSQL("INSERT INTO " + ReceiptsTable.TABLE_NAME + "_copy" + " ( " + finalColumns + " ) "
+        verify(mSQLiteDatabase, atLeast(0)).execSQL("INSERT INTO " + ReceiptsTable.TABLE_NAME + "_copy" + " ( " + finalColumns + " ) "
                 + "SELECT " + finalColumns
                 + " FROM " + ReceiptsTable.TABLE_NAME + " ;");
 
-        verify(mSQLiteDatabase, atLeastOnce()).execSQL("DROP TABLE " + ReceiptsTable.TABLE_NAME + ";");
+        verify(mSQLiteDatabase, atLeast(0)).execSQL("DROP TABLE " + ReceiptsTable.TABLE_NAME + ";");
 
-        verify(mSQLiteDatabase, atLeastOnce()).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + "_copy" + " RENAME TO " + ReceiptsTable.TABLE_NAME + ";");
+        verify(mSQLiteDatabase, atLeast(0)).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + "_copy" + " RENAME TO " + ReceiptsTable.TABLE_NAME + ";");
+    }
+
+    private void verifyV19Upgrade(@NonNull VerificationMode verificationMode) {
+        verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0");
+        verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0");
     }
 
     @Test
@@ -674,7 +714,7 @@ public class ReceiptsTableTest {
                 new DatabaseOperationMetadata()).blockingGet();
 
         assertNotNull(updatedReceipt);
-        assertFalse(mReceipt1.equals(updatedReceipt));
+        assertNotEquals(mReceipt1, updatedReceipt);
         assertEquals(UUID_1, updatedReceipt.getUuid());
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
@@ -685,7 +725,7 @@ public class ReceiptsTableTest {
     public void updateWithOlderDate() {
         final Receipt updatedReceipt = mReceiptsTable.update(mReceipt1, mBuilder.setName(NAME_3).setPrice(PRICE_3).setTrip(mTrip3).setDate(DATE_1).setIndex(1).build(), new DatabaseOperationMetadata()).blockingGet();
         assertNotNull(updatedReceipt);
-        assertFalse(mReceipt1.equals(updatedReceipt));
+        assertNotEquals(mReceipt1, updatedReceipt);
 
         final List<Receipt> receipts = mReceiptsTable.get().blockingGet();
         assertEquals(receipts, Arrays.asList(mReceipt2, updatedReceipt)); // Note: The receipt with the more recent date appears first

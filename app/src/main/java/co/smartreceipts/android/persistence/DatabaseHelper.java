@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
     public static final String DATABASE_NAME = "receipts.db";
-    public static final int DATABASE_VERSION = 19;
+    public static final int DATABASE_VERSION = 20;
 
     @Deprecated
     public static final String NO_DATA = "null"; // TODO: Just set to null
@@ -111,11 +111,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Tables:
         mTables = new ArrayList<>();
         mTripsTable = new TripsTable(this, storageManager, preferences);
-        mDistanceTable = new DistanceTable(this, mTripsTable, preferences);
         mCategoriesTable = new CategoriesTable(this, orderingPreferencesManager);
         mCSVTable = new CSVTable(this, mReceiptColumnDefinitions, orderingPreferencesManager);
         mPDFTable = new PDFTable(this, mReceiptColumnDefinitions, orderingPreferencesManager);
         mPaymentMethodsTable = new PaymentMethodsTable(this, orderingPreferencesManager);
+        mDistanceTable = new DistanceTable(this, mTripsTable, mPaymentMethodsTable, preferences);
         mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable, storageManager, preferences, orderingPreferencesManager);
         mTables.add(mTripsTable);
         mTables.add(mDistanceTable);

@@ -5,11 +5,13 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import co.smartreceipts.android.model.Distance;
+import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -25,14 +27,17 @@ import co.smartreceipts.android.sync.model.SyncState;
 public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAdapter<Distance, Trip> {
 
     private final Table<Trip> mTripsTable;
+    private final Table<PaymentMethod> mPaymentMethodTable;
     private final SyncStateAdapter mSyncStateAdapter;
 
-    public DistanceDatabaseAdapter(@NonNull Table<Trip> tripsTable) {
-        this(tripsTable, new SyncStateAdapter());
+    public DistanceDatabaseAdapter(@NonNull Table<Trip> tripsTable, @NonNull Table<PaymentMethod> paymentMethodTable) {
+        this(tripsTable, paymentMethodTable, new SyncStateAdapter());
     }
 
-    public DistanceDatabaseAdapter(@NonNull Table<Trip> tripsTable, @NonNull SyncStateAdapter syncStateAdapter) {
+    public DistanceDatabaseAdapter(@NonNull Table<Trip> tripsTable, @NonNull Table<PaymentMethod> paymentMethodTable,
+                                   @NonNull SyncStateAdapter syncStateAdapter) {
         mTripsTable = Preconditions.checkNotNull(tripsTable);
+        mPaymentMethodTable = Preconditions.checkNotNull(paymentMethodTable);
         mSyncStateAdapter = Preconditions.checkNotNull(syncStateAdapter);
     }
 
@@ -57,6 +62,9 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
         final int rateIndex = cursor.getColumnIndex(DistanceTable.COLUMN_RATE);
         final int rateCurrencyIndex = cursor.getColumnIndex(DistanceTable.COLUMN_RATE_CURRENCY);
         final int commentIndex = cursor.getColumnIndex(DistanceTable.COLUMN_COMMENT);
+        final int paymentMethodIdIndex = cursor.getColumnIndex(DistanceTable.COLUMN_PAYMENT_METHOD_ID);
+        final int locationHiddenFromAutoCompleteIndex = cursor.getColumnIndex(DistanceTable.COLUMN_LOCATION_HIDDEN_AUTO_COMPLETE);
+        final int commentHiddenFromAutoCompleteIndex = cursor.getColumnIndex(DistanceTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE);
 
         final int id = cursor.getInt(idIndex);
         final UUID uuid = UUID.fromString(cursor.getString(uuidIndex));
@@ -68,8 +76,17 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
         final String rateCurrency = cursor.getString(rateCurrencyIndex);
         final String comment = cursor.getString(commentIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
+        final int paymentMethodId = cursor.getInt(paymentMethodIdIndex);
+        final boolean isLocationHiddenFromAutoComplete = cursor.getInt(locationHiddenFromAutoCompleteIndex) > 0;
+        final boolean isCommentHiddenFromAutoComplete = cursor.getInt(commentHiddenFromAutoCompleteIndex) > 0;
 
-        return new DistanceBuilderFactory(id)
+        final PaymentMethod paymentMethod = mPaymentMethodTable.findByPrimaryKey(paymentMethodId)
+                .map(Optional::of)
+                .onErrorReturn(ignored -> Optional.absent())
+                .blockingGet()
+                .orNull();
+
+        DistanceBuilderFactory builder = new DistanceBuilderFactory(id)
                 .setUuid(uuid)
                 .setTrip(trip)
                 .setLocation(location)
@@ -80,7 +97,9 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
                 .setCurrency(rateCurrency)
                 .setComment(comment)
                 .setSyncState(syncState)
-                .build();
+                .setPaymentMethod(paymentMethod);
+
+        return builder.build();
     }
 
     @NonNull
@@ -97,6 +116,7 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
         values.put(DistanceTable.COLUMN_RATE_CURRENCY, distance.getPrice().getCurrencyCode());
         values.put(DistanceTable.COLUMN_COMMENT, distance.getComment().trim());
         values.put(DistanceTable.COLUMN_UUID, distance.getUuid().toString());
+        values.put(DistanceTable.COLUMN_PAYMENT_METHOD_ID, distance.getPaymentMethod().getId());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(distance.getSyncState()));
         } else {

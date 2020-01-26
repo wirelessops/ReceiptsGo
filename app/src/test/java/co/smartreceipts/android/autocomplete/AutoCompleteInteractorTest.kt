@@ -8,7 +8,6 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.Test
@@ -52,7 +51,7 @@ class AutoCompleteInteractorTest {
         MockitoAnnotations.initMocks(this)
         whenever(provider.tableController).thenReturn(tableController)
         whenever(tableController.get()).thenReturn(Single.just(listOf(matchingResult1, matchingResult2, nonMatchingResult)))
-        whenever(userPreferenceManager.get(UserPreference.Receipts.EnableAutoCompleteSuggestions)).thenReturn(true)
+        whenever(userPreferenceManager[UserPreference.Receipts.EnableAutoCompleteSuggestions]).thenReturn(true)
         whenever(resultsChecker.matchesInput(any(), eq(autoCompleteField), eq(matchingResult1))).thenReturn(true)
         whenever(resultsChecker.matchesInput(any(), eq(autoCompleteField), eq(matchingResult2))).thenReturn(true)
         whenever(resultsChecker.matchesInput(any(), eq(autoCompleteField), eq(nonMatchingResult))).thenReturn(false)
@@ -61,7 +60,7 @@ class AutoCompleteInteractorTest {
 
     @Test
     fun getAutoCompleteResultsWhenPreferenceIsDisabled() {
-        whenever(userPreferenceManager.get(UserPreference.Receipts.EnableAutoCompleteSuggestions)).thenReturn(false)
+        whenever(userPreferenceManager[UserPreference.Receipts.EnableAutoCompleteSuggestions]).thenReturn(false)
         interactor.getAutoCompleteResults(autoCompleteField, "T")
                 .test()
                 .assertNoValues()
