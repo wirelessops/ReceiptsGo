@@ -47,6 +47,9 @@ public final class TripDatabaseAdapter implements DatabaseAdapter<Trip> {
         final int commentIndex = cursor.getColumnIndex(TripsTable.COLUMN_COMMENT);
         final int costCenterIndex = cursor.getColumnIndex(TripsTable.COLUMN_COST_CENTER);
         final int defaultCurrencyIndex = cursor.getColumnIndex(TripsTable.COLUMN_DEFAULT_CURRENCY);
+        final int nameHiddenFromAutoCompleteIndex = cursor.getColumnIndex(TripsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE);
+        final int commentHiddenFromAutoCompleteIndex = cursor.getColumnIndex(TripsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE);
+        final int costCenterHiddenFromAutoCompleteIndex = cursor.getColumnIndex(TripsTable.COLUMN_COSTCENTER_HIDDEN_AUTO_COMPLETE);
 
         final int id = cursor.getInt(idIndex);
         final UUID uuid = UUID.fromString(cursor.getString(uuidIndex));
@@ -58,6 +61,9 @@ public final class TripDatabaseAdapter implements DatabaseAdapter<Trip> {
         final String comment = cursor.getString(commentIndex);
         final String costCenter = cursor.getString(costCenterIndex);
         final String defaultCurrency = cursor.getString(defaultCurrencyIndex);
+        final boolean isNameHiddenFromAutoComplete = cursor.getInt(nameHiddenFromAutoCompleteIndex) > 0;
+        final boolean isCommentHiddenFromAutoComplete = cursor.getInt(commentHiddenFromAutoCompleteIndex) > 0;
+        final boolean isCostCenterHiddenFromAutoComplete = cursor.getInt(costCenterHiddenFromAutoCompleteIndex) > 0;
         final SyncState syncState = syncStateAdapter.read(cursor);
 
         return new TripBuilderFactory()

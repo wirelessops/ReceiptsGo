@@ -15,7 +15,6 @@ import java.sql.Date;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import co.smartreceipts.android.model.Source;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.TripBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
@@ -81,6 +80,9 @@ public class TripDatabaseAdapterTest {
         final int defaultCurrencyIndex = 8;
         final int idIndex = 9;
         final int uuidIndex = 10;
+        final int nameHiddenFromAutoCompleteIndex = 11;
+        final int commentHiddenFromAutoCompleteIndex = 12;
+        final int costCenterHiddenFromAutoCompleteIndex = 13;
 
         when(mCursor.getColumnIndex("id")).thenReturn(idIndex);
         when(mCursor.getColumnIndex("name")).thenReturn(nameIndex);
@@ -92,6 +94,9 @@ public class TripDatabaseAdapterTest {
         when(mCursor.getColumnIndex("trips_cost_center")).thenReturn(costCenterIndex);
         when(mCursor.getColumnIndex("trips_default_currency")).thenReturn(defaultCurrencyIndex);
         when(mCursor.getColumnIndex("entity_uuid")).thenReturn(uuidIndex);
+        when(mCursor.getColumnIndex("name_hidden_auto_complete")).thenReturn(nameHiddenFromAutoCompleteIndex);
+        when(mCursor.getColumnIndex("comment_hidden_auto_complete")).thenReturn(commentHiddenFromAutoCompleteIndex);
+        when(mCursor.getColumnIndex("costcenter_hidden_auto_complete")).thenReturn(costCenterHiddenFromAutoCompleteIndex);
 
         when(mCursor.getInt(idIndex)).thenReturn(ID);
         when(mCursor.getString(nameIndex)).thenReturn(NAME);
@@ -116,6 +121,7 @@ public class TripDatabaseAdapterTest {
         when(mTrip.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
         when(mTrip.getSyncState()).thenReturn(mSyncState);
         when(mTrip.getUuid()).thenReturn(TRIP_UUID);
+
 
         when(mPreferences.get(UserPreference.General.DefaultCurrency)).thenReturn(USER_PREFERENCES_CURRENCY_CODE);
         when(mStorageManager.getFile(NAME)).thenReturn(new File(NAME));
@@ -163,6 +169,7 @@ public class TripDatabaseAdapterTest {
         assertEquals(COST_CENTER, contentValues.getAsString("trips_cost_center"));
         assertEquals(CURRENCY_CODE, contentValues.getAsString("trips_default_currency"));
         assertEquals(TRIP_UUID.toString(), contentValues.getAsString("entity_uuid"));
+
         assertEquals(sync, contentValues.getAsString(sync));
         assertFalse(contentValues.containsKey("miles_new"));
         assertFalse(contentValues.containsKey("trips_filters"));

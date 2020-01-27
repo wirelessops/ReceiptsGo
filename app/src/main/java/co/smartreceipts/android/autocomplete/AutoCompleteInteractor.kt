@@ -21,9 +21,9 @@ class AutoCompleteInteractor<Type> constructor(private val provider: AutoComplet
 
     /**
      * Fetches a list of auto-completion results for a specific [field], given the user's current
-     * [input] for that field. We return a [List] to maintain a consistent ordering, but it is
-     * expected that all [AutoCompleteResult] instances will have a unique
-     * [AutoCompleteResult.displayName].
+     * [input] for that field. We return a [List] to maintain a consistent ordering and allow
+     * removal and additions to the adapter, but it's expected that all [AutoCompleteResult] instances
+     * will have a unique [AutoCompleteResult.displayName].
      *
      * We return a [Maybe] from this, since we except to either have a valid list of nothing,
      * depending on if the user has enabled the [UserPreference.Receipts.EnableAutoCompleteSuggestions]
@@ -38,7 +38,7 @@ class AutoCompleteInteractor<Type> constructor(private val provider: AutoComplet
      */
     fun getAutoCompleteResults(field: AutoCompleteField, input: CharSequence) : Maybe<List<AutoCompleteResult<Type>>> {
         // Confirm that the user has this setting enable
-        if (userPreferenceManager.get(UserPreference.Receipts.EnableAutoCompleteSuggestions)) {
+        if (userPreferenceManager[UserPreference.Receipts.EnableAutoCompleteSuggestions]) {
             // And that we've typed this exact amount of characters (as the adapters manage filtering afterwards)
             if (input.length == TEXT_LENGTH_TO_FETCH_RESULTS) {
                 return provider.tableController.get()
@@ -67,7 +67,6 @@ class AutoCompleteInteractor<Type> constructor(private val provider: AutoComplet
                         .doOnSuccess {
                             Logger.info(this, "Adding {} auto-completion results to {}.", it.size, field)
                         }
-
             }
         }
         return Maybe.empty<List<AutoCompleteResult<Type>>>()

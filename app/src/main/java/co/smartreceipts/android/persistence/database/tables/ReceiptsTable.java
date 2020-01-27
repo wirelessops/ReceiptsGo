@@ -61,6 +61,8 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
     public static final String COLUMN_PAYMENT_METHOD_ID = "paymentMethodKey";
     public static final String COLUMN_NOTFULLPAGEIMAGE = "fullpageimage";
     public static final String COLUMN_PROCESSING_STATUS = "receipt_processing_status";
+    public static final String COLUMN_NAME_HIDDEN_AUTO_COMPLETE = "name_hidden_auto_complete";
+    public static final String COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE = "comment_hidden_auto_complete";
     public static final String COLUMN_EXTRA_EDITTEXT_1 = "extra_edittext_1";
     public static final String COLUMN_EXTRA_EDITTEXT_2 = "extra_edittext_2";
     public static final String COLUMN_EXTRA_EDITTEXT_3 = "extra_edittext_3";
@@ -104,6 +106,8 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
                 + ReceiptsTable.COLUMN_REIMBURSABLE + " BOOLEAN DEFAULT 1, "
                 + ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE + " BOOLEAN DEFAULT 1, "
                 + ReceiptsTable.COLUMN_PROCESSING_STATUS + " TEXT, "
+                + ReceiptsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
+                + ReceiptsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
                 + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1 + " TEXT, "
                 + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2 + " TEXT, "
                 + ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3 + " TEXT, "
@@ -341,6 +345,17 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
 
             // adding new UUID column
             onUpgradeToAddUUID(db, oldVersion);
+        }
+
+        if (oldVersion <= 19) { // Added a timezone column to the receipts table
+            final String alterReceipts = "ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+            final String alterReceipts2 = "ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+
+            Logger.debug(this, alterReceipts);
+            Logger.debug(this, alterReceipts2);
+
+            db.execSQL(alterReceipts);
+            db.execSQL(alterReceipts2);
         }
 
     }

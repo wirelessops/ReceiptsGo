@@ -283,9 +283,8 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return new Receipt(id, uuid, index, trip, file,
                 paymentMethod == null ? PaymentMethod.Companion.getNONE() : paymentMethod, name,
                 category == null ? new CategoryBuilderFactory().build() : category, comment,
-                priceBuilderFactory.build(), taxBuilderFactory.build(), displayableDate,
-                isReimbursable, isFullPage, isSelected, extraEditText1,
-                extraEditText2, extraEditText3, syncState, orderId);
+                priceBuilderFactory.build(), taxBuilderFactory.build(), displayableDate, isReimbursable,
+                isFullPage, isSelected, extraEditText1, extraEditText2, extraEditText3, syncState, orderId);
     }
 
 }

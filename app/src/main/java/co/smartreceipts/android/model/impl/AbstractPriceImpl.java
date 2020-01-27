@@ -12,7 +12,7 @@ abstract class AbstractPriceImpl implements Price {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof AbstractPriceImpl)) return false;
+        if (!(o instanceof AbstractPriceImpl)) return false;
 
         Price that = (Price) o;
 
@@ -22,11 +22,7 @@ abstract class AbstractPriceImpl implements Price {
         if (Math.abs(getPrice().floatValue() - that.getPrice().floatValue()) > EPSILON) {
             return false;
         }
-        if (!getCurrencyFormattedPrice().equals(that.getCurrencyFormattedPrice())) {
-            return false;
-        }
-
-        return true;
+        return getCurrencyFormattedPrice().equals(that.getCurrencyFormattedPrice());
     }
 
     @Override

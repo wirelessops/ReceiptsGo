@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.model.Distance;
+import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.adapters.DistanceDatabaseAdapter;
@@ -33,14 +34,18 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance> {
     public static final String COLUMN_COMMENT = "comment";
     public static final String COLUMN_RATE = "rate";
     public static final String COLUMN_RATE_CURRENCY = "rate_currency";
+    public static final String COLUMN_PAYMENT_METHOD_ID = "paymentMethodKey";
+    public static final String COLUMN_LOCATION_HIDDEN_AUTO_COMPLETE = "location_hidden_auto_complete";
+    public static final String COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE = "comment_hidden_auto_complete";
 
     @Deprecated
     public static final String COLUMN_PARENT = "parent";
 
     private final UserPreferenceManager userPreferenceManager;
 
-    public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip> tripsTable, @NonNull UserPreferenceManager userPreferenceManager) {
-        super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable), COLUMN_PARENT_TRIP_ID,
+    public DistanceTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper, @NonNull Table<Trip> tripsTable,
+                         @NonNull Table<PaymentMethod> paymentMethodTable, @NonNull UserPreferenceManager userPreferenceManager) {
+        super(sqLiteOpenHelper, TABLE_NAME, new DistanceDatabaseAdapter(tripsTable, paymentMethodTable), COLUMN_PARENT_TRIP_ID,
                 new OrderByColumn(COLUMN_DATE, true));
         this.userPreferenceManager = Preconditions.checkNotNull(userPreferenceManager);
     }
@@ -58,6 +63,9 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance> {
                 + COLUMN_COMMENT + " TEXT,"
                 + COLUMN_RATE_CURRENCY + " TEXT NOT NULL, "
                 + COLUMN_RATE + " DECIMAL(10, 2) DEFAULT 0.00, "
+                + COLUMN_PAYMENT_METHOD_ID + " INTEGER REFERENCES " + PaymentMethodsTable.TABLE_NAME + " ON DELETE NO ACTION, "
+                + COLUMN_LOCATION_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
+                + COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
@@ -155,6 +163,20 @@ public class DistanceTable extends TripForeignKeyAbstractSqlTable<Distance> {
             db.execSQL(renameTable);
 
             onUpgradeToAddUUID(db, oldVersion);
+        }
+
+        if (oldVersion <= 19) {
+            final String alterDistance = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_PAYMENT_METHOD_ID + " INTEGER REFERENCES " + PaymentMethodsTable.TABLE_NAME + " ON DELETE NO ACTION";
+            final String alterDistance2 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_LOCATION_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+            final String alterDistance3 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0";
+
+            Logger.debug(this, alterDistance);
+            Logger.debug(this, alterDistance2);
+            Logger.debug(this, alterDistance3);
+
+            db.execSQL(alterDistance);
+            db.execSQL(alterDistance2);
+            db.execSQL(alterDistance3);
         }
     }
 

@@ -8,12 +8,10 @@ import co.smartreceipts.android.persistence.DatabaseHelper
 import co.smartreceipts.android.sync.model.SyncState
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.testParcel
-import junit.framework.Assert.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.IsNot.not
 import org.junit.After
-import org.junit.Assert
-import org.junit.Assert.assertThat
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,6 +41,8 @@ class ReceiptTest {
         private const val EXTRA2 = "extra2"
         private const val EXTRA3 = "extra3"
         private const val CUSTOM_ORDER: Long = 2
+        private const val NAME_HIDDEN_AUTO_COMPLETE = false
+        private const val COMMENT_HIDDEN_AUTO_COMPLETE = false
     }
 
     // Class under test
@@ -282,27 +282,23 @@ class ReceiptTest {
             ) == 0
         )
         assertTrue(
-            receipt.compareTo(
-                Receipt(
-                    ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DisplayableDate(Date(DATE.time * 2), TIMEZONE),
-                    REIMBURSABLE, FULL_PAGE, IS_SELECTED, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+                receipt > Receipt(
+                        ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DisplayableDate(Date(DATE.time * 2), TIMEZONE),
+                        REIMBURSABLE, FULL_PAGE, IS_SELECTED, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
                 )
-            ) > 0
         )
         assertTrue(
-            receipt.compareTo(
-                Receipt(
-                    ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DisplayableDate(Date(0), TIMEZONE),
-                    REIMBURSABLE, FULL_PAGE, IS_SELECTED, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
+                receipt < Receipt(
+                        ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DisplayableDate(Date(0), TIMEZONE),
+                        REIMBURSABLE, FULL_PAGE, IS_SELECTED, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
                 )
-            ) < 0
         )
     }
 
     @Test
     fun testHashCode() {
-        Assert.assertEquals(receipt.hashCode().toLong(), receipt.hashCode().toLong())
-        Assert.assertEquals(
+        assertEquals(receipt.hashCode().toLong(), receipt.hashCode().toLong())
+        assertEquals(
             receipt.hashCode().toLong(),
             Receipt(
                 ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DISPLAYABLE_DATE, REIMBURSABLE,
@@ -488,14 +484,14 @@ class ReceiptTest {
         )
 
         // Special equals cases (we don't check on the sources don't count, and selected doesn't count):
-        Assert.assertEquals(
+        assertEquals(
             receipt.hashCode().toLong(),
             Receipt(
                 ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DISPLAYABLE_DATE, REIMBURSABLE,
                 FULL_PAGE, IS_SELECTED, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
             ).hashCode().toLong()
         )
-        Assert.assertEquals(
+        assertEquals(
             receipt.hashCode().toLong(),
             Receipt(
                 ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DISPLAYABLE_DATE, REIMBURSABLE,
@@ -506,8 +502,8 @@ class ReceiptTest {
 
     @Test
     fun testEquals() {
-        Assert.assertEquals(receipt, receipt)
-        Assert.assertEquals(
+        assertEquals(receipt, receipt)
+        assertEquals(
             receipt,
             Receipt(
                 ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DISPLAYABLE_DATE, REIMBURSABLE,
@@ -695,14 +691,14 @@ class ReceiptTest {
         )
 
         // Special equals cases (we don't check on the sources don't count, and selected doesn't count):
-        Assert.assertEquals(
+        assertEquals(
             receipt,
             Receipt(
                 ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DISPLAYABLE_DATE, REIMBURSABLE,
                 FULL_PAGE, IS_SELECTED, EXTRA1, EXTRA2, EXTRA3, syncState, CUSTOM_ORDER
             )
         )
-        Assert.assertEquals(
+        assertEquals(
             receipt,
             Receipt(
                 ID, REC_UUID, INDEX, trip, file, paymentMethod, NAME, category, COMMENT, price, tax, DISPLAYABLE_DATE, REIMBURSABLE,

@@ -80,6 +80,8 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final int currencyIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_ISO4217);
         final int fullPageIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_NOTFULLPAGEIMAGE);
         final int paymentMethodIdIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_PAYMENT_METHOD_ID);
+        final int nameHiddenFromAutoCompleteIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE);
+        final int commentHiddenFromAutoCompleteIndex = cursor.getColumnIndex(ReceiptsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE);
         final int extra_editText_1_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_1);
         final int extra_editText_2_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_2);
         final int extra_editText_3_Index = cursor.getColumnIndex(ReceiptsTable.COLUMN_EXTRA_EDITTEXT_3);
@@ -105,6 +107,8 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
         final String currency = cursor.getString(currencyIndex);
         final boolean fullPage = !(cursor.getInt(fullPageIndex) > 0);
         final int paymentMethodId = cursor.getInt(paymentMethodIdIndex);
+        final boolean isNameHiddenFromAutoComplete = cursor.getInt(nameHiddenFromAutoCompleteIndex) > 0;
+        final boolean isCommentHiddenFromAutoComplete = cursor.getInt(commentHiddenFromAutoCompleteIndex) > 0;
         final String extra_editText_1 = cursor.getString(extra_editText_1_Index);
         final String extra_editText_2 = cursor.getString(extra_editText_2_Index);
         final String extra_editText_3 = cursor.getString(extra_editText_3_Index);

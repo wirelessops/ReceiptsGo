@@ -42,7 +42,11 @@ class Distance(
     /**
      * The user defined comment [String] for this receipt
      */
-    val comment: String
+    val comment: String,
+    /**
+     * The payment method associated with this receipt item.
+     */
+    val paymentMethod: PaymentMethod
 ) : Keyed, Parcelable, Priceable, Comparable<Distance>, Syncable {
 
     /**
@@ -78,7 +82,8 @@ class Distance(
 
 
     override fun toString(): String {
-        return "Distance [uuid=$uuid, location=$location, distance=$distance, displayableDate=$displayableDate, rate=$rate, price= $price, comment=$comment]"
+        return "Distance [uuid=$uuid, location=$location, distance=$distance, displayableDate=$displayableDate, rate=$rate, price= $price, " +
+                "comment=$comment, paymentMethod=$paymentMethod]"
     }
 
     override fun compareTo(other: Distance): Int {
@@ -100,6 +105,7 @@ class Distance(
         if (price != other.price) return false
         if (displayableDate != other.displayableDate) return false
         if (comment != other.comment) return false
+        if (paymentMethod != other.paymentMethod) return false
 
         return true
     }
@@ -114,6 +120,7 @@ class Distance(
         result = 31 * result + price.hashCode()
         result = 31 * result + displayableDate.hashCode()
         result = 31 * result + comment.hashCode()
+        result = 31 * result + paymentMethod.hashCode()
         return result
     }
 
