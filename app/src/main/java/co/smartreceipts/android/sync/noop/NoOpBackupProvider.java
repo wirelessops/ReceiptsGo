@@ -52,7 +52,7 @@ public class NoOpBackupProvider implements BackupProvider {
     @NonNull
     @Override
     public Single<List<RemoteBackupMetadata>> getRemoteBackups() {
-        return Single.just(Collections.<RemoteBackupMetadata>emptyList());
+        return Single.just(Collections.emptyList());
     }
 
     @Nullable
@@ -87,13 +87,13 @@ public class NoOpBackupProvider implements BackupProvider {
     @NonNull
     @Override
     public Single<List<File>> downloadAllData(@NonNull RemoteBackupMetadata remoteBackupMetadata, @NonNull File downloadLocation) {
-        return Single.just(Collections.<File>emptyList());
+        return Single.just(Collections.emptyList());
     }
 
     @NonNull
     @Override
     public Single<List<File>> debugDownloadAllData(@NonNull RemoteBackupMetadata remoteBackupMetadata, @NonNull File downloadLocation) {
-        return Single.just(Collections.<File>emptyList());
+        return Single.just(Collections.emptyList());
     }
 
     @NonNull

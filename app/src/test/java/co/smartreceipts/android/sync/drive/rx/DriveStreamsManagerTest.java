@@ -354,10 +354,10 @@ public class DriveStreamsManagerTest {
     public void download() throws Exception {
         final String fileId = "fileId";
         final java.io.File file = new java.io.File("/");
-        when(driveDataStreams.download(fileId, file)).thenReturn(Single.just(file));
+        when(driveDataStreams.download(fileId, file)).thenReturn(Single.just(Optional.of(file)));
 
-        final TestObserver<java.io.File> testObserver = driveStreamsManager.download(fileId, file).test();
-        testObserver.assertValue(file);
+        final TestObserver<Optional<java.io.File>> testObserver = driveStreamsManager.download(fileId, file).test();
+        testObserver.assertValue(Optional.of(file));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
@@ -369,7 +369,7 @@ public class DriveStreamsManagerTest {
         final java.io.File file = new java.io.File("/");
         when(driveDataStreams.download(fileId, file)).thenReturn(Single.error(exception));
 
-        final TestObserver<java.io.File> testObserver = driveStreamsManager.download(fileId, file).test();
+        final TestObserver<Optional<java.io.File>> testObserver = driveStreamsManager.download(fileId, file).test();
         testObserver.assertNoValues();
         testObserver.assertNotComplete();
         testObserver.assertError(Exception.class);

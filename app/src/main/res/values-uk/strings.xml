@@ -185,6 +185,7 @@
     <string name="DURATION_ERROR">Помилка: Дата початку має передувати даті закінчення</string>
     <string name="EXPORT_ERROR">Помилка: Не вдалося правильно експортувати ваші дані.</string>
     <string name="IMPORT_ERROR">Помилка: Не вдалося розпізнати файл як імпортуємий</string>
+    <string name="IMPORT_MISSING_ERROR">Помилка: для імпортування забагато файлів відсутнє</string>
     <string name="MOVE_ERROR">Помилка: Не вдається перемістити чек</string>
     <string name="COPY_ERROR">Помилка: Не вдається скопіювати чек</string>
     <string name="toast_warning_reset_exchange_rate">Увага: зміна валюти скине ВСЕ курси валют</string>

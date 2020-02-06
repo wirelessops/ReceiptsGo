@@ -24,14 +24,18 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.common.base.Preconditions;
+import com.hadisatrio.optional.Optional;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
@@ -40,7 +44,6 @@ import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import wb.android.storage.StorageManager;
 
 /**
  * A utility for performing read/write operations on Drive files via the REST API and opening a
@@ -144,27 +147,26 @@ public class DriveServiceHelper {
             driveService.files().list().setSpaces(DRIVE_SEARCH_AREA).setOrderBy("modifiedTime").setFields("*").execute());
   }
 
-  public Single<java.io.File> getDriveFileAsJavaFile(String fileId, java.io.File downloadLocationFile) {
-    return Single.fromCallable(() -> driveService.files().get(fileId).setFields("*").executeMediaAsInputStream())
-            .flatMap(inputStream -> {
-              FileOutputStream fileOutputStream = null;
-              try {
-                fileOutputStream = new FileOutputStream(downloadLocationFile);
-                byte[] buffer = new byte[BYTE_BUFFER_SIZE];
-                int read;
-                while ((read = inputStream.read(buffer)) != -1) {
-                  fileOutputStream.write(buffer, 0, read);
-                }
-                return Single.just(downloadLocationFile);
-
-              } catch (IOException e) {
-                Logger.error(DriveServiceHelper.this, "Failed write file with exception: ", e);
-                return Single.error(e);
-              } finally {
-                StorageManager.closeQuietly(inputStream);
-                StorageManager.closeQuietly(fileOutputStream);
-              }
-            });
+  public Single<Optional<java.io.File>> getDriveFileAsJavaFile(String fileId, java.io.File downloadLocationFile) {
+    try (InputStream is = driveService.files().get(fileId).setFields("*").executeMediaAsInputStream()) {
+      try (FileOutputStream fileOutputStream = new FileOutputStream(downloadLocationFile)) {
+        byte[] buffer = new byte[BYTE_BUFFER_SIZE];
+        int read;
+        while ((read = is.read(buffer)) != -1) {
+          fileOutputStream.write(buffer, 0, read);
+        }
+        return Single.just(Optional.of(downloadLocationFile));
+      } catch (FileNotFoundException e) {
+        Logger.error(DriveServiceHelper.this, "Failed write file with FileNotFoundException: ", e);
+        return Single.error(e);
+      }
+    } catch (GoogleJsonResponseException e) {
+      Logger.warn(DriveServiceHelper.this, "Failed write file with GoogleJsonResponseException: ", e);
+      return Single.just(Optional.absent());
+    } catch (IOException e) {
+      Logger.error(DriveServiceHelper.this, "Failed write file with IOException: ", e);
+      return Single.error(e);
+    }
   }
 
   public Single<File> getFile(String fileId) {

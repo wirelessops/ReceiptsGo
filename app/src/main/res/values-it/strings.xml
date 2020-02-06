@@ -184,6 +184,7 @@
     <string name="DURATION_ERROR">Errore: La data iniziale deve essere precedente alla data finale</string>
     <string name="EXPORT_ERROR">Errore: L\'esportazione dei dati è fallita.</string>
     <string name="IMPORT_ERROR">Errore: Il file non è stato riconosciuto come importabile</string>
+    <string name="IMPORT_MISSING_ERROR">Errore: troppi file mancanti per essere importati</string>
     <string name="MOVE_ERROR">Errore: Lo spostamento della ricevuta è fallito</string>
     <string name="COPY_ERROR">Errore: La copia della ricevuta è fallita</string>
     <string name="toast_warning_reset_exchange_rate">Attenzione: Cambiando la valuta si reinizializzeranno tutti i valori di cambio</string>

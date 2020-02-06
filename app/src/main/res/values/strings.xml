@@ -184,6 +184,7 @@
     <string name="DURATION_ERROR">Error: The Start Date Must Occur Prior To The End Date</string>
     <string name="EXPORT_ERROR">Error: Failed to properly export your data.</string>
     <string name="IMPORT_ERROR">Error: Failed to recognize the file as importable</string>
+    <string name="IMPORT_MISSING_ERROR">Error: Too many files missing to be imported</string>
     <string name="MOVE_ERROR">Error: Failed to move the receipt</string>
     <string name="COPY_ERROR">Error: Failed to copy the receipt</string>
     <string name="toast_warning_reset_exchange_rate">Warning: Changing the currency will reset ALL exchange rates</string>

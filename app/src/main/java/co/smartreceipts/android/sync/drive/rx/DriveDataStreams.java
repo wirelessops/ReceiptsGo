@@ -244,7 +244,7 @@ class DriveDataStreams {
     }
 
     @NonNull
-    public synchronized Single<java.io.File> download(@NonNull final String fileId, @NonNull final java.io.File downloadLocationFile) {
+    public synchronized Single<Optional<java.io.File>> download(@NonNull final String fileId, @NonNull final java.io.File downloadLocationFile) {
         //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(fileId);
         //noinspection ResultOfMethodCallIgnored

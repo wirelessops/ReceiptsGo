@@ -185,6 +185,7 @@
     <string name="DURATION_ERROR">Ошибка: Дата начала должна предшествовать дате окончания</string>
     <string name="EXPORT_ERROR">Ошибка: Не удалось правильно экспортировать ваши данные.</string>
     <string name="IMPORT_ERROR">Ошибка: Не удалось распознать файл как импортируемый</string>
+    <string name="IMPORT_MISSING_ERROR">Ошибка: слишком много файлов отсутствует для импорта</string>
     <string name="MOVE_ERROR">Ошибка: Не удалось переместить чек</string>
     <string name="COPY_ERROR">Ошибка: Не удалось копировать чек</string>
     <string name="toast_warning_reset_exchange_rate">Внимание: изменение валюты сбросит ВСЕ курсы валют</string>

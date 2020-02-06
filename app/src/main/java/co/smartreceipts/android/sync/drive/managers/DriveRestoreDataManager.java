@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.model.utils.ModelUtils;
@@ -28,6 +29,7 @@ import co.smartreceipts.android.persistence.database.tables.AbstractSqlTable;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
+import co.smartreceipts.android.sync.errors.MissingFilesException;
 import co.smartreceipts.android.sync.manual.ManualBackupTask;
 import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
@@ -35,6 +37,8 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class DriveRestoreDataManager {
+
+    private static final Integer ALLOWED_DOWNLOAD_FAILURES = 5;
 
     private final Context mContext;
     private final DriveStreamsManager mDriveStreamsManager;
@@ -94,7 +98,10 @@ public class DriveRestoreDataManager {
                     List<java.io.File> javaFileList = new ArrayList<>();
                     for (File file : fileList.getFiles()) {
                         String filename = file.getId() + "__" + file.getOriginalFilename();
-                        javaFileList.add(mDriveStreamsManager.download(file.getId(), new java.io.File(downloadLocation, filename)).blockingGet());
+                        Optional<java.io.File> optional = mDriveStreamsManager.download(file.getId(), new java.io.File(downloadLocation, filename)).blockingGet();
+                        if (optional.isPresent()) {
+                            javaFileList.add(optional.get());
+                        }
                     }
                     return Single.just(javaFileList);
                 });
@@ -116,7 +123,10 @@ public class DriveRestoreDataManager {
                         if (f.getModifiedTime().getValue() > date.getTime()) {
                             String filename = ModelUtils.getFormattedDate(
                                     new Date(f.getModifiedTime().getValue()), TimeZone.getDefault(), mContext, "-") + "_" + f.getOriginalFilename();
-                            javaFileList.add(mDriveStreamsManager.download(f.getId(), new java.io.File(downloadLocation, filename)).blockingGet());
+                            Optional<java.io.File> optional = mDriveStreamsManager.download(f.getId(), new java.io.File(downloadLocation, filename)).blockingGet();
+                            if (optional.isPresent()) {
+                                javaFileList.add(optional.get());
+                            }
                         }
                     }
                     return Single.just(javaFileList);
@@ -128,6 +138,8 @@ public class DriveRestoreDataManager {
                                                                     @NonNull final java.io.File downloadLocation) {
         Preconditions.checkNotNull(remoteBackupMetadata);
         Preconditions.checkNotNull(downloadLocation);
+
+        AtomicInteger missingFileCount = new AtomicInteger();
 
         return deletePreviousTemporaryDatabase(downloadLocation)
                 .<Optional<FileList>>flatMap(success -> {
@@ -147,7 +159,7 @@ public class DriveRestoreDataManager {
                 })
                 .flatMapObservable(file -> {
                     Logger.debug(DriveRestoreDataManager.this, "Retrieving partial receipts from our temporary drive database");
-                    return getPartialReceipts(file);
+                    return getPartialReceipts(file.get());
                 })
                 .flatMapSingle(partialReceipt -> {
                     Logger.debug(DriveRestoreDataManager.this, "Creating trip folder for partial receipt: {}", partialReceipt.parentTripName);
@@ -164,7 +176,15 @@ public class DriveRestoreDataManager {
                 })
                 .flatMapSingle(partialReceipt -> {
                     Logger.debug(DriveRestoreDataManager.this, "Downloading file for partial receipt: {}", partialReceipt.driveId);
-                    return downloadFileForReceipt(partialReceipt, downloadLocation);
+                    Single<Optional<java.io.File>> singleOptional = downloadFileForReceipt(partialReceipt, downloadLocation);
+                    Optional<java.io.File> optionalFile = singleOptional.blockingGet();
+                    if (!optionalFile.isPresent()) {
+                        missingFileCount.getAndIncrement();
+                        if (missingFileCount.get() > ALLOWED_DOWNLOAD_FAILURES) {
+                            return Single.error(new MissingFilesException("Aborting import: More than five missing files"));
+                        }
+                    }
+                    return singleOptional;
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -264,7 +284,6 @@ public class DriveRestoreDataManager {
     private Single<Optional<java.io.File>> downloadFileForReceipt(@NonNull final PartialReceipt partialReceipt, @NonNull final java.io.File inDirectory) {
         final java.io.File receiptFile = new java.io.File(new java.io.File(inDirectory, partialReceipt.parentTripName), partialReceipt.fileName);
         return mDriveStreamsManager.download(partialReceipt.driveId.getId(), receiptFile)
-                .map(Optional::of)
                 .doOnError(throwable -> Logger.error(DriveRestoreDataManager.this, "Failed to download {} in {} with id {}.", partialReceipt.fileName, partialReceipt.parentTripName, partialReceipt.driveId));
     }
 

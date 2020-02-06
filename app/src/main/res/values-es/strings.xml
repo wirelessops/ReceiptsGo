@@ -183,6 +183,7 @@
     <string name="DURATION_ERROR">Error: La fecha inicial debe ser antes de la fecha final</string>
     <string name="EXPORT_ERROR">Error: No se pudo exportar correctamente tu información.</string>
     <string name="IMPORT_ERROR">Error: No se pudo reconocer el archivo como importable</string>
+    <string name="IMPORT_MISSING_ERROR">Error: faltan demasiados archivos para importar</string>
     <string name="MOVE_ERROR">Error: No se pudo mover el recibo</string>
     <string name="COPY_ERROR">Error: No se pudo copiar el recibo</string>
     <string name="toast_warning_reset_exchange_rate">Advertencia: Cambiar la moneda restablecerá TODAS las tasas de cambio</string>
