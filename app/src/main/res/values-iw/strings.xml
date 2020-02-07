@@ -186,6 +186,7 @@
     <string name="DURATION_ERROR">תקלה: תאריך ההתחלה חייב להיות לפני תאריך הסיום</string>
     <string name="EXPORT_ERROR">.תקלה: לא ניתן לייצא את המידע שלך כראוי</string>
     <string name="IMPORT_ERROR">.תקלה: לא ניתן לזהות את הקובץ כבר-ייבוא</string>
+    <string name="IMPORT_MISSING_ERROR">שגיאה: חסרים לייבוא ​​של יותר מדי קבצים</string>
     <string name="MOVE_ERROR">תקלה: לא ניתן להזיז את הקבלה</string>
     <string name="COPY_ERROR">תקלה: לא ניתן להעתיק את הקבלה</string>
     <string name="toast_warning_reset_exchange_rate">אזהרה: שינוי המטבע יאתחל את כל המטבעות ושערי החליפין</string>

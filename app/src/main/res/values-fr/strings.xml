@@ -183,6 +183,7 @@
     <string name="DURATION_ERROR">Erreur : La date de début doit être avant la date de fin</string>
     <string name="EXPORT_ERROR">Erreur : Impossible d\'exporter correctement vos données.</string>
     <string name="IMPORT_ERROR">Erreur : Impossible de reconnaître le fichier comme importable</string>
+    <string name="IMPORT_MISSING_ERROR">Erreur: trop de fichiers manquants pour être importés</string>
     <string name="MOVE_ERROR">Erreur : Impossible de déplacer le reçu</string>
     <string name="COPY_ERROR">Erreur : Impossible de copier le reçu</string>
     <string name="toast_warning_reset_exchange_rate">Attention : Changer la devise réinitialisera TOUS les taux de change</string>

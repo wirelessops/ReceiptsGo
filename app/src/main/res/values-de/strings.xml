@@ -183,6 +183,7 @@
     <string name="DURATION_ERROR">Fehler: Das Startdatum muss vor dem Enddatum liegen</string>
     <string name="EXPORT_ERROR">Fehler: Ihre Daten wurden nicht ordnungsgemäß exportiert.</string>
     <string name="IMPORT_ERROR">Fehler: Die Datei wurde nicht als importierbar erkannt</string>
+    <string name="IMPORT_MISSING_ERROR">Fehler: Es fehlen zu viele Dateien, um importiert zu werden</string>
     <string name="MOVE_ERROR">Fehler: Fehler beim Verschieben des Belegs</string>
     <string name="COPY_ERROR">Fehler: Fehler beim Kopieren des Belegs</string>
     <string name="toast_warning_reset_exchange_rate">Achtung: Beim Ändern der Währung werden alle Wechselkurse zurückgesetzt</string>

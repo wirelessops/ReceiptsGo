@@ -183,6 +183,7 @@
     <string name="DURATION_ERROR">Erro: A data inicial deve anteceder a data final</string>
     <string name="EXPORT_ERROR">Erro: Falha ao exportar dados</string>
     <string name="IMPORT_ERROR">Erro: Falha ao reconhecer o arquivo como importável</string>
+    <string name="IMPORT_MISSING_ERROR">Erro: Muitos arquivos faltando para serem importados</string>
     <string name="MOVE_ERROR">Erro: Falha ao mover o recibo</string>
     <string name="COPY_ERROR">Erro: Falha ao copiar o recibo</string>
     <string name="toast_warning_reset_exchange_rate">Aviso: Alterar a moeda redefine TODAS as taxas de câmbio</string>

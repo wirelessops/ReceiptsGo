@@ -204,7 +204,7 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
     }
 
     @NonNull
-    public Single<java.io.File> download(@NonNull final String fileId, @NonNull final java.io.File downloadLocationFile) {
+    public Single<Optional<java.io.File>> download(@NonNull final String fileId, @NonNull final java.io.File downloadLocationFile) {
         Preconditions.checkNotNull(fileId);
         Preconditions.checkNotNull(downloadLocationFile);
 
