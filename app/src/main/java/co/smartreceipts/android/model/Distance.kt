@@ -76,7 +76,7 @@ class Distance(
      */
     val currencyFormattedRate: String
         get() {
-            val precision = if (decimalFormattedRate.endsWith("0")) Price.DEFAULT_DECIMAL_PRECISION else RATE_PRECISION
+            val precision = if (decimalFormattedRate.endsWith("0")) Price.TOTAL_DECIMAL_PRECISION else RATE_PRECISION
             return ModelUtils.getCurrencyFormattedValue(rate, price.currency, precision)
         }
 

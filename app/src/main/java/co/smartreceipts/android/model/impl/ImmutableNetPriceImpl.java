@@ -48,8 +48,7 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
 
             notExchangedPriceMap.put(price.getCurrency(), notExchangedPriceMap.containsKey(price.getCurrency()) ?
                     notExchangedPriceMap.get(price.getCurrency()).add(price.getPrice()) : price.getPrice());
-
-
+            
             final BigDecimal priceToAdd;
             final PriceCurrency currencyForPriceToAdd;
             if (price.getExchangeRate().supportsExchangeRateFor(baseCurrency)) {
@@ -68,8 +67,8 @@ public final class ImmutableNetPriceImpl extends AbstractPriceImpl {
             final BigDecimal priceForCurrency = currencyToPriceMap.containsKey(currencyForPriceToAdd) ? currencyToPriceMap.get(currencyForPriceToAdd).add(priceToAdd) : priceToAdd;
             currencyToPriceMap.put(currencyForPriceToAdd, priceForCurrency);
         }
-        this.totalPrice = totalPrice;
-        this.possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice;
+        this.totalPrice = totalPrice.setScale(TOTAL_DECIMAL_PRECISION, RoundingMode.HALF_DOWN);
+        this.possiblyIncorrectTotalPrice = possiblyIncorrectTotalPrice.setScale(TOTAL_DECIMAL_PRECISION, RoundingMode.HALF_DOWN);
         this.areAllExchangeRatesValid = areAllExchangeRatesValid;
         this.exchangeRate = new ExchangeRateBuilderFactory().setBaseCurrency(baseCurrency).build();
 
