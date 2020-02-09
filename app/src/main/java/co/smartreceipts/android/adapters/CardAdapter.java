@@ -53,7 +53,7 @@ public class CardAdapter<T> extends BaseAdapter {
     private T selectedItem;
 
     public CardAdapter(@NonNull Context context, @NonNull UserPreferenceManager preferences, @NonNull BackupProvidersManager backupProvidersManager) {
-        this(context, preferences, backupProvidersManager, Collections.<T>emptyList());
+        this(context, preferences, backupProvidersManager, Collections.emptyList());
     }
 
     public CardAdapter(@NonNull Context context, @NonNull UserPreferenceManager preferences, @NonNull BackupProvidersManager backupProvidersManager, @NonNull List<T> data) {

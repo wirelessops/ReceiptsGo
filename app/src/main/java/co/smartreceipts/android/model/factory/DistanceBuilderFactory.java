@@ -179,7 +179,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         final BigDecimal scaledDistance = distance.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
         final BigDecimal scaledRate = rate.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
 
-        final int precision = ModelUtils.getDecimalFormattedValue(distance.multiply(rate), Distance.RATE_PRECISION).endsWith("0") ? Price.DEFAULT_DECIMAL_PRECISION : Distance.RATE_PRECISION;
+        final int precision = ModelUtils.getDecimalFormattedValue(distance.multiply(rate), Distance.RATE_PRECISION).endsWith("0") ? Price.TOTAL_DECIMAL_PRECISION : Distance.RATE_PRECISION;
         Price price = new PriceBuilderFactory().setCurrency(currency).setPrice(distance.multiply(rate)).setDecimalPrecision(precision).build();
 
         final DisplayableDate displayableDate = new DisplayableDate(date, timeZone);

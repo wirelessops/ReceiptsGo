@@ -74,7 +74,7 @@ public class ModelUtils {
      */
     @NonNull
     public static String getDecimalFormattedValue(@NonNull BigDecimal decimal) {
-        return getDecimalFormattedValue(decimal, Price.DEFAULT_DECIMAL_PRECISION);
+        return getDecimalFormattedValue(decimal, Price.TOTAL_DECIMAL_PRECISION);
     }
 
     /**
@@ -101,7 +101,7 @@ public class ModelUtils {
 
     /**
      * The "currency-formatted" value, which would appear as "$25.20" or "$25,20" as determined by the user's locale.
-     * By default, this assumes a decimal precision of {@link Price#DEFAULT_DECIMAL_PRECISION}
+     * By default, this assumes a decimal precision of {@link Price#TOTAL_DECIMAL_PRECISION}
      *
      * @param decimal  - the {@link BigDecimal} to format
      * @param currency - the {@link PriceCurrency} to use. If this is {@code null}, return {@link #getDecimalFormattedValue(BigDecimal)}
@@ -109,7 +109,7 @@ public class ModelUtils {
      */
     @NonNull
     public static String getCurrencyFormattedValue(@NonNull BigDecimal decimal, @Nullable PriceCurrency currency) {
-        return getCurrencyFormattedValue(decimal, currency, Price.DEFAULT_DECIMAL_PRECISION);
+        return getCurrencyFormattedValue(decimal, currency, Price.TOTAL_DECIMAL_PRECISION);
     }
 
     /**
@@ -133,7 +133,7 @@ public class ModelUtils {
 
     /**
      * The "currency-code-formatted" value, which would appear as "USD25.20" or "USD25,20" as determined by the user's locale.
-     * By default, this assumes a decimal precision of {@link Price#DEFAULT_DECIMAL_PRECISION}
+     * By default, this assumes a decimal precision of {@link Price#TOTAL_DECIMAL_PRECISION}
      *
      * @param decimal  - the {@link BigDecimal} to format
      * @param currency - the {@link PriceCurrency} to use. If this is {@code null}, return {@link #getDecimalFormattedValue(BigDecimal)}
@@ -141,7 +141,7 @@ public class ModelUtils {
      */
     @NonNull
     public static String getCurrencyCodeFormattedValue(@NonNull BigDecimal decimal, @Nullable PriceCurrency currency) {
-        return getCurrencyCodeFormattedValue(decimal, currency, Price.DEFAULT_DECIMAL_PRECISION);
+        return getCurrencyCodeFormattedValue(decimal, currency, Price.TOTAL_DECIMAL_PRECISION);
     }
 
     /**

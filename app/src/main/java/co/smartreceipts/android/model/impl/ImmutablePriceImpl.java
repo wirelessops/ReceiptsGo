@@ -27,7 +27,7 @@ public final class ImmutablePriceImpl extends AbstractPriceImpl {
     private final String currencyCodeFormattedPrice; // Note: We create/cache this as it's common, slower operation
 
     public ImmutablePriceImpl(@NonNull BigDecimal price, @NonNull PriceCurrency currency, @NonNull ExchangeRate exchangeRate) {
-        this(price, currency, exchangeRate, Price.DEFAULT_DECIMAL_PRECISION);
+        this(price, currency, exchangeRate, Price.TOTAL_DECIMAL_PRECISION);
     }
 
     public ImmutablePriceImpl(@NonNull BigDecimal price, @NonNull PriceCurrency currency, @NonNull ExchangeRate exchangeRate,

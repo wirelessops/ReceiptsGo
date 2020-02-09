@@ -27,7 +27,7 @@ public final class PriceBuilderFactory implements BuilderFactory<Price> {
     private PriceCurrency currency;
     private List<Priceable> priceables;
     private List<Price> prices;
-    private int decimalPrecision = Price.DEFAULT_DECIMAL_PRECISION;
+    private int decimalPrecision = Price.TOTAL_DECIMAL_PRECISION;
 
     public PriceBuilderFactory() {
         currency = PriceCurrency.getDefaultCurrency();
