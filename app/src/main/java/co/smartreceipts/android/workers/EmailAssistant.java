@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -238,7 +237,7 @@ public class EmailAssistant {
         private final WeakReference<ProgressDialog> mProgressDialog;
         private final File[] mFiles;
         private final EnumSet<EmailOptions> mOptions;
-        private boolean memoryErrorOccurred = false;
+        private boolean memoryErrorOccurred;
 
         public EmailAttachmentWriter(PersistenceManager persistenceManager,
                                      ProgressDialog dialog,
@@ -330,7 +329,7 @@ public class EmailAssistant {
                     mStorageManager.delete(dir, dir.getName() + ".csv");
 
                     final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
-                    final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<Receipt>(reportResourcesManager,
+                    final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<>(reportResourcesManager,
                             csvColumns, true, true, new LegacyReceiptFilter(mPreferenceManager));
 
                     String data;
@@ -488,11 +487,7 @@ public class EmailAssistant {
         private boolean filterOutReceipt(UserPreferenceManager preferences, Receipt receipt) {
             if (preferences.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !receipt.isReimbursable()) {
                 return true;
-            } else if (receipt.getPrice().getPriceAsFloat() < preferences.get(UserPreference.Receipts.MinimumReceiptPrice)) {
-                return true;
-            } else {
-                return false;
-            }
+            } else return receipt.getPrice().getPriceAsFloat() < preferences.get(UserPreference.Receipts.MinimumReceiptPrice);
         }
 
         private static final float IMG_SCALE_FACTOR = 2.1f;
@@ -620,12 +615,9 @@ public class EmailAssistant {
                                     mPreferenceManager.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)
                                             ? context.getString(R.string.report_pdf_error_too_many_columns_message)
                                             : context.getString(R.string.report_pdf_error_too_many_columns_message_landscape))
-                            .setPositiveButton(R.string.report_pdf_error_go_to_settings, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    navigationHandler.navigateToSettingsScrollToReportSection();
-                                }
+                            .setPositiveButton(R.string.report_pdf_error_go_to_settings, (dialog1, id) -> {
+                                dialog1.cancel();
+                                navigationHandler.navigateToSettingsScrollToReportSection();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
                             .show();
