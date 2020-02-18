@@ -313,7 +313,7 @@ public class PurchaseManager {
                 .map(inAppPurchases -> {
                         final Set<AvailablePurchase> trimmedInAppPurchases = new HashSet<>();
                         for (final AvailablePurchase availablePurchase : inAppPurchases) {
-                            if (availablePurchase.getInAppPurchase() != null && !purchaseWallet.hasActivePurchase(availablePurchase.getInAppPurchase())) {
+                            if (availablePurchase.getInAppPurchase() != null) {
                                 trimmedInAppPurchases.add(availablePurchase);
                             } else {
                                 Logger.debug(PurchaseManager.this, "Omitting {} from available purchases as we're tracking it as owned.", availablePurchase.getInAppPurchase());
@@ -470,7 +470,7 @@ public class PurchaseManager {
                                 for (final String response : responseList) {
                                     final AvailablePurchase availablePurchase = gson.fromJson(response, AvailablePurchase.class);
                                     final InAppPurchase inAppPurchase = availablePurchase.getInAppPurchase();
-                                    if (inAppPurchase != null && !PurchaseManager.this.purchaseWallet.hasActivePurchase(inAppPurchase)) {
+                                    if (inAppPurchase != null) {
                                         availablePurchases.add(availablePurchase);
                                     } else {
                                         Logger.warn(PurchaseManager.this, "Unknown or already owned sku returned from the available purchases query: {}.", availablePurchase.getInAppPurchase());
