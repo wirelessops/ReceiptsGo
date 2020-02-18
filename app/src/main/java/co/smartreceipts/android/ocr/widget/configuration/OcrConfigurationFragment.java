@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jakewharton.rxbinding3.widget.RxCompoundButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -220,6 +222,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         return isChecked -> allowUsToSaveImagesRemotelyCheckbox.setChecked(isChecked);
     }
 
+    @NotNull
     @Override
     public Observable<String> getDelayedPurchaseIdStream() {
         return delayedPurchaseIdSubject;
