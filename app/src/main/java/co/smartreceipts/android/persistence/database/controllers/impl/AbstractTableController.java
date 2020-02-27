@@ -87,7 +87,7 @@ abstract class AbstractTableController<ModelType extends Keyed & Syncable> imple
 
     @Override
     public synchronized void subscribe(@NonNull TableEventsListener<ModelType> tableEventsListener) {
-        final BridgingTableEventsListener<ModelType> bridge = new BridgingTableEventsListener<ModelType>(this, tableEventsListener, mObserveOnScheduler);
+        final BridgingTableEventsListener<ModelType> bridge = new BridgingTableEventsListener<>(this, tableEventsListener, mObserveOnScheduler);
         mBridgingTableEventsListeners.put(tableEventsListener, bridge);
         mTableEventsListeners.add(tableEventsListener);
         bridge.subscribe();

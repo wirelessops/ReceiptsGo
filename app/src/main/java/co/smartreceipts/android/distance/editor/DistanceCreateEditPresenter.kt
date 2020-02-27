@@ -56,6 +56,10 @@ class DistanceCreateEditPresenter @Inject constructor(
         distanceAutoCompletePresenter.unsubscribe()
     }
 
+    fun isUsePaymentMethods(): Boolean {
+        return interactor.isUsePaymentMethods()
+    }
+
     fun getDefaultDistanceRate(): String {
         val defaultDistanceRate = interactor.getDefaultDistanceRate()
         return if (defaultDistanceRate > 0) {

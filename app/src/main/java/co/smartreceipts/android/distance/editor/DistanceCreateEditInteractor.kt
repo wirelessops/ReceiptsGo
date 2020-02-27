@@ -52,4 +52,8 @@ class DistanceCreateEditInteractor constructor(
         return userPreferenceManager[UserPreference.Distance.DefaultDistanceRate]
     }
 
+    fun isUsePaymentMethods(): Boolean {
+        return userPreferenceManager[UserPreference.Receipts.UsePaymentMethods]
+    }
+
 }

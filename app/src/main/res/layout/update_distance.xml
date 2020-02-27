@@ -169,6 +169,28 @@
                 app:layout_constraintStart_toEndOf="@id/image_guide_comment"
                 app:layout_constraintTop_toBottomOf="@id/text_distance_date" />
 
+            <ImageView
+                android:id="@+id/distance_input_guide_image_payment_method"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:contentDescription="@string/payment_method"
+                app:layout_constraintBottom_toBottomOf="@+id/distance_input_payment_method"
+                app:layout_constraintEnd_toStartOf="@+id/distance_input_payment_method"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/distance_input_payment_method"
+                app:srcCompat="@drawable/ic_credit_card_24dp" />
+
+            <Spinner
+                android:id="@+id/distance_input_payment_method"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/default_input_row_size"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:drawSelectorOnTop="true"
+                android:prompt="@string/payment_method"
+                android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/distance_input_guide_image_payment_method"
+                app:layout_constraintTop_toBottomOf="@+id/text_distance_comment" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
