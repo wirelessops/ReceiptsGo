@@ -6,9 +6,15 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import butterknife.BindViews
+import butterknife.ButterKnife
+import butterknife.ViewCollections
+import co.smartreceipts.analytics.Analytics
+import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.adapters.FooterButtonArrayAdapter
 import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter
 import co.smartreceipts.android.autocomplete.AutoCompleteField
 import co.smartreceipts.android.autocomplete.AutoCompleteResult
@@ -19,15 +25,20 @@ import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier
 import co.smartreceipts.android.fragments.WBFragment
 import co.smartreceipts.android.model.Distance
+import co.smartreceipts.android.model.PaymentMethod
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsPresenter
+import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsView
 import co.smartreceipts.android.utils.SoftKeyboardManager
+import co.smartreceipts.android.utils.butterknife.ButterKnifeActions
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding3.widget.textChanges
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
+import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.update_distance.*
@@ -36,10 +47,12 @@ import java.sql.Date
 import java.util.*
 import javax.inject.Inject
 
-class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.OnFocusChangeListener {
-
+class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.OnFocusChangeListener, PaymentMethodsView {
     @Inject
     lateinit var presenter: DistanceCreateEditPresenter
+
+    @Inject
+    lateinit var analytics: Analytics
 
     @Inject
     lateinit var database: DatabaseHelper
@@ -49,6 +62,12 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     @Inject
     lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+
+    @Inject
+    lateinit var paymentMethodsPresenter: PaymentMethodsPresenter
+
+    @BindViews(R.id.distance_input_guide_image_payment_method, R.id.distance_input_payment_method)
+    lateinit var paymentMethodsViewsList: List<@JvmSuppressWildcards View>
 
     override val editableItem: Distance?
         get() = arguments?.getParcelable(Distance.PARCEL_KEY)
@@ -61,6 +80,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     private lateinit var currencyListEditorPresenter: CurrencyListEditorPresenter
 
     private var focusedView: View? = null
+
+    private lateinit var paymentMethodsAdapter: FooterButtonArrayAdapter<PaymentMethod>
 
     override val createDistanceClicks: Observable<Distance>
         get() = _createDistanceClicks
@@ -108,6 +129,12 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             suggestedDate = Date(arguments?.getLong(ARG_SUGGESTED_DATE, suggestedDate.time) ?: suggestedDate.time)
         }
 
+        paymentMethodsAdapter = FooterButtonArrayAdapter(requireActivity(), ArrayList(),
+                R.string.manage_payment_methods) {
+            analytics.record(Events.Informational.ClickedManagePaymentMethods)
+            navigationHandler.navigateToPaymentMethodsEditor()
+        }
+
         currencyListEditorPresenter =
             CurrencyListEditorPresenter(
                 DefaultCurrencyListEditorView(requireContext()) { spinner_currency },
@@ -118,12 +145,14 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.update_distance, container, false)
+        val ourView: View = inflater.inflate(R.layout.update_distance, container, false)
+        ButterKnife.bind(this, ourView)
+        return ourView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         setUpFocusBehavior()
 
         // Toolbar stuff
@@ -160,11 +189,13 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
         super.onStart()
         presenter.subscribe()
         currencyListEditorPresenter.subscribe()
+        paymentMethodsPresenter.subscribe()
     }
 
     override fun onStop() {
         presenter.unsubscribe()
         currencyListEditorPresenter.unsubscribe()
+        paymentMethodsPresenter.unsubscribe()
         super.onStop()
     }
 
@@ -199,8 +230,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     }
 
     override fun present(uiIndicator: UiIndicator<Int>) {
-        when {
-            uiIndicator.state == UiIndicator.State.Success -> navigationHandler.navigateBack()
+        when (uiIndicator.state) {
+            UiIndicator.State.Success -> navigationHandler.navigateBack()
             else -> if (uiIndicator.state == UiIndicator.State.Error && uiIndicator.data.isPresent) {
                 Toast.makeText(requireContext(), uiIndicator.data.get(), Toast.LENGTH_LONG).show()
             }
@@ -214,10 +245,12 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
         text_distance_date.onFocusChangeListener = this
         spinner_currency.onFocusChangeListener = this
         text_distance_comment.onFocusChangeListener = this
+        distance_input_payment_method.onFocusChangeListener = this
 
         // And ensure that we do not show the keyboard when clicking these views
         val hideSoftKeyboardOnTouchListener = SoftKeyboardManager.HideSoftKeyboardOnTouchListener()
         spinner_currency.setOnTouchListener(hideSoftKeyboardOnTouchListener)
+        distance_input_payment_method.setOnTouchListener(hideSoftKeyboardOnTouchListener)
 
         text_distance_date.apply {
             isFocusable = false
@@ -244,6 +277,13 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
                 .setRate(ModelUtils.tryParse(text_distance_rate.text.toString(), editableItem!!.rate))
         }
 
+        val paymentMethod: PaymentMethod? =
+            if (presenter.isUsePaymentMethods()) {
+                distance_input_payment_method.selectedItem as PaymentMethod
+            } else {
+                null
+            }
+
         return distanceBuilder
             .setTrip(parentTrip)
             .setLocation(text_distance_location.text.toString())
@@ -251,6 +291,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             .setTimezone(text_distance_date.timeZone)
             .setCurrency(spinner_currency.selectedItem.toString())
             .setComment(text_distance_comment.text.toString())
+            .setPaymentMethod(paymentMethod)
             .build()
     }
 
@@ -264,6 +305,33 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             .show()
     }
 
+    override fun togglePaymentMethodFieldVisibility(): Consumer<in Boolean> {
+        return Consumer { isVisible ->
+            if (isVisible) {
+                ViewCollections.run(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE))
+            } else {
+                ViewCollections.run(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.GONE))
+            }
+        }
+    }
+
+    override fun displayPaymentMethods(list: List<PaymentMethod>) {
+        if (isAdded) {
+            paymentMethodsAdapter.update(list)
+            distance_input_payment_method.adapter = paymentMethodsAdapter
+            if (editableItem != null) {
+                // Here we manually loop through all payment methods and check for id == id in case the user changed this via "Manage"
+                val distancePaymentMethod = editableItem!!.paymentMethod
+                for (i in 0 until paymentMethodsAdapter.count) {
+                    val paymentMethod = paymentMethodsAdapter.getItem(i)
+                    if (paymentMethod != null && paymentMethod.id == distancePaymentMethod.id) {
+                        distance_input_payment_method.setSelection(i)
+                        break
+                    }
+                }
+            }
+        }
+    }
 
     override fun getTextChangeStream(field: AutoCompleteField): Observable<CharSequence> {
         return when (field) {
@@ -273,9 +341,9 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
         }
     }
 
-    override fun displayAutoCompleteResults(field: AutoCompleteField, autoCompleteResults: List<AutoCompleteResult<Distance>>) {
+    override fun displayAutoCompleteResults(field: AutoCompleteField, results: List<AutoCompleteResult<Distance>>) {
         if (isAdded) {
-            val resultsAdapter = AutoCompleteArrayAdapter(requireContext(), autoCompleteResults)
+            val resultsAdapter = AutoCompleteArrayAdapter(requireContext(), results)
             when (field) {
                 DistanceAutoCompleteField.Location -> {
                     text_distance_location.setAdapter(resultsAdapter)

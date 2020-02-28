@@ -3,6 +3,9 @@ package co.smartreceipts.android.receipts.editor.paymentmethods;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
+import java.util.List;
+
+import co.smartreceipts.android.model.PaymentMethod;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -18,5 +21,7 @@ public interface PaymentMethodsView {
     @NonNull
     @UiThread
     Consumer<? super Boolean> togglePaymentMethodFieldVisibility();
+
+    void displayPaymentMethods(List<PaymentMethod> list);
 
 }

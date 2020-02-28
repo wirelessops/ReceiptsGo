@@ -5,6 +5,7 @@ import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment
 import co.smartreceipts.android.distance.editor.DistanceCreateEditView
 import co.smartreceipts.android.editor.Editor
 import co.smartreceipts.android.model.Distance
+import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsView
 import dagger.Binds
 import dagger.Module
 
@@ -19,5 +20,8 @@ abstract class DistanceCreateEditFragmentModule {
 
     @Binds
     internal abstract fun provideDistanceCreateEditView(fragment: DistanceCreateEditFragment): DistanceCreateEditView
+
+    @Binds
+    internal abstract fun providesPaymentMethodsView(fragment: DistanceCreateEditFragment): PaymentMethodsView
 
 }
