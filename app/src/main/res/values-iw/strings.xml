@@ -77,7 +77,7 @@
     <string name="report_header_receipts_total_tax">%s :סה״כ מס</string>
     <string name="report_header_receipts_total_no_tax">%s :סה״כ קבלות (ללא מס)</string>
     <string name="report_header_receipts_total_with_tax">%s :סה״כ קבלות (עם מס)</string>
-    <string name="report_header_distance_total">%s :סה״כ מרחק</string>
+    <string name="report_header_distance_total">%s :מחיר מרחק כולל</string>
     <string name="report_header_receipts_total_reimbursable">%s :סה״כ (זכאי להחזרים)</string>
     <string name="report_header_grand_total">%s :סה״כ</string>
     <string name="report_header_cost_center">%s :מרכז מחיר</string>

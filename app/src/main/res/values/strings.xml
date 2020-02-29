@@ -79,7 +79,7 @@
     <string name="report_header_receipts_total_tax">Tax Total: %s</string>
     <string name="report_header_receipts_total_no_tax">Receipts Total (Without Tax): %s</string>
     <string name="report_header_receipts_total_with_tax">Receipts Total (With Tax): %s</string>
-    <string name="report_header_distance_total">Distance Total: %s</string>
+    <string name="report_header_distance_total">Distance Price Total: %s</string>
     <string name="report_header_receipts_total_reimbursable">Grand Total (Reimbursable): %s</string>
     <string name="report_header_grand_total">Grand Total: %s</string>
     <string name="report_header_cost_center">Cost Center: %s</string>

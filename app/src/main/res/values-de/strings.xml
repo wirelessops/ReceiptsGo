@@ -78,7 +78,7 @@
     <string name="report_header_receipts_total_tax">MwSt: %s</string>
     <string name="report_header_receipts_total_no_tax">Einnahmen Gesamt (ohne Steuer): %s</string>
     <string name="report_header_receipts_total_with_tax">Einnahmen Gesamt (mit Steuer): %s</string>
-    <string name="report_header_distance_total">Strecke Gesamt: %s</string>
+    <string name="report_header_distance_total">Entfernung Preis Gesamt: %s</string>
     <string name="report_header_receipts_total_reimbursable">Gesamtsumme (Erstattungsfähig): %s</string>
     <string name="report_header_grand_total">Gesamtsumme: %s</string>
     <string name="report_header_cost_center">Kostenstelle: %s</string>

@@ -78,7 +78,7 @@
     <string name="report_header_receipts_total_tax">Податок, загалом: %s</string>
     <string name="report_header_receipts_total_no_tax">Загалом за чеками (без податку): %s</string>
     <string name="report_header_receipts_total_with_tax">Загалом за чеками  (з податком): %s</string>
-    <string name="report_header_distance_total">Відстань, загалом: %s</string>
+    <string name="report_header_distance_total">Відстань Ціна загальна: %s</string>
     <string name="report_header_receipts_total_reimbursable">Загалом (що відшкодовуються): %s</string>
     <string name="report_header_grand_total">Загалом: %s</string>
     <string name="report_header_cost_center">Центр витрат: %s</string>
