@@ -79,7 +79,7 @@
     <string name="report_header_receipts_total_tax">Totale Imposte: %s</string>
     <string name="report_header_receipts_total_no_tax">Totale ricevute (Senza Imposte): %s</string>
     <string name="report_header_receipts_total_with_tax">Totale ricevute (Con Imposte): %s</string>
-    <string name="report_header_distance_total">Totale distanza: %s</string>
+    <string name="report_header_distance_total">Totale distanza prezzo: %s</string>
     <string name="report_header_receipts_total_reimbursable">Totale generale (Rimborsabile): %s</string>
     <string name="report_header_grand_total">Totale generale: %s</string>
     <string name="report_header_cost_center">Centro di costo: %s</string>
