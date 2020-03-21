@@ -38,6 +38,12 @@
             android:summaryOff="@string/pref_output_print_receipt_comment_by_photo_summaryOff"
             android:summaryOn="@string/pref_output_print_receipt_comment_by_photo_summaryOn"
             android:title="@string/pref_output_print_receipt_comment_by_photo_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_output_show_total_on_csv_defaultValue"
+            android:key="@string/pref_output_show_total_on_csv_key"
+            android:summaryOff="@string/pref_output_show_total_on_csv_summaryOff"
+            android:summaryOn="@string/pref_output_show_total_on_csv_summaryOn"
+            android:title="@string/pref_output_show_total_on_csv_title" />
         <wb.android.preferences.SummaryListPreference
             android:defaultValue="@string/pref_output_preferred_language_defaultValue"
             android:entryValues="@array/pref_output_preferred_language_entryValues"

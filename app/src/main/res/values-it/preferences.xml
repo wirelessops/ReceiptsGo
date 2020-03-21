@@ -120,6 +120,10 @@
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Mostra il commento sulla ricevuta sopra le foto nel PDF</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Nascondi il commento sulla ricevuta sopra le foto nel PDF</string>
 
+    <string name="pref_output_show_total_on_csv_title">Mostra totale sul rapporto CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Mostra il totale in una riga separata nel rapporto CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Nascondi la riga totale sul rapporto CSV</string>
+
     <string name="pref_output_receipts_landscape_key" translatable="false">ReceiptsTableLandscape</string>
     <string name="pref_output_receipts_landscape_title">Stampa Tabella Ricevute in orizzontale</string>
     <string name="pref_output_receipts_landscape_on">Stampa la tabella delle ricevute in modalità orizzontale</string>

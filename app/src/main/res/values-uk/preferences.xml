@@ -99,6 +99,10 @@
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Показувати коментар над фотографіями в PDF</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Приховати коментар над фотографіями в PDF</string>
 
+    <string name="pref_output_show_total_on_csv_title">Показати загальний звіт про CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Показує загальну суму в окремому рядку у звіті CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Сховати загальний рядок у звіті CSV</string>
+
     <string name="pref_output_receipts_landscape_title">Друк таблиці чеків в ландшафтному режимі</string>
     <string name="pref_output_receipts_landscape_on">Таблиця чеків друкується в ландшафтному режимі</string>
     <string name="pref_output_receipts_landscape_off">Таблиця чеків друкується в портретному режимі</string>

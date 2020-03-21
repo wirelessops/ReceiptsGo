@@ -325,12 +325,13 @@ public class EmailAssistant {
             }
 
             if (mOptions.contains(EmailOptions.CSV)) {
+                boolean printFooters = mPreferenceManager.get(UserPreference.ReportOutput.ShowTotalOnCSV);
                 try {
                     mStorageManager.delete(dir, dir.getName() + ".csv");
 
                     final List<Column<Receipt>> csvColumns = mDB.getCSVTable().get().blockingGet();
                     final CsvTableGenerator<Receipt> csvTableGenerator = new CsvTableGenerator<>(reportResourcesManager,
-                            csvColumns, true, true, new LegacyReceiptFilter(mPreferenceManager));
+                            csvColumns, true, printFooters, new LegacyReceiptFilter(mPreferenceManager));
 
                     String data;
 
@@ -355,7 +356,7 @@ public class EmailAssistant {
                             final List<Column<Distance>> distanceColumns = distanceColumnDefinitions.getAllColumns();
                             data += "\n\n";
                             data += new CsvTableGenerator<>(reportResourcesManager, distanceColumns,
-                                    true, true).generate(distances);
+                                    true, printFooters).generate(distances);
                         }
                     }
 
@@ -378,7 +379,7 @@ public class EmailAssistant {
 
                         data += "\n\n";
                         data += new CsvTableGenerator<>(reportResourcesManager, categoryColumns,
-                                true, true).generate(sumCategoryGroupingResults);
+                                true, printFooters).generate(sumCategoryGroupingResults);
                     }
 
                     // Separated tables for each category
@@ -392,7 +393,7 @@ public class EmailAssistant {
                             data += "\n\n";
                             data += groupingResult.getCategory().getName() + "\n";
                             data += new CsvTableGenerator<>(reportResourcesManager, csvColumns,
-                                    true, true)
+                                    true, printFooters)
                                     .generate(groupingResult.getReceipts());
                         }
                     }

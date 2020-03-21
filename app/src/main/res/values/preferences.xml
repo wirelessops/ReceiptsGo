@@ -124,6 +124,11 @@
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Shows the Receipt comment above PDF photos</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Hide the Receipt comment above PDF photos</string>
 
+    <string name="pref_output_show_total_on_csv_key" translatable="false">ShowTotalOnCSV</string>
+    <string name="pref_output_show_total_on_csv_title">Show Total on CSV Report</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Shows the total in a separate line on CSV report</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Hide the total line on CSV report</string>
+
     <string name="pref_output_receipts_landscape_key" translatable="false">ReceiptsTableLandscape</string>
     <string name="pref_output_receipts_landscape_title">Print receipts table in landscape mode</string>
     <string name="pref_output_receipts_landscape_on">Receipts table is printed in landscape mode</string>

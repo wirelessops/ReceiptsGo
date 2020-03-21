@@ -70,6 +70,9 @@
     <string name="pref_output_print_receipt_comment_by_photo_title">הראה הערה לקבלה לפי תמונה</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">מראה הערה לקבלה מעל תמונות פידיאף</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">מחביא הערה לקבלה מתחת לתמונות פידיאף</string>
+    <string name="pref_output_show_total_on_csv_title">הצג סה"כ בדוח CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">מציג את הסכום בשורה נפרדת על דוח CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">הסתר את השורה הכוללת בדוח CSV</string>
     <string name="pref_output_receipts_landscape_title">מדפיס טבלת קבלות בדף מאוזן</string>
     <string name="pref_output_receipts_landscape_on">טבלת קבלות מודפסת בדף מאוזן</string>
     <string name="pref_output_receipts_landscape_off">טבלת קבלות מודפסת בדף מאונך</string>

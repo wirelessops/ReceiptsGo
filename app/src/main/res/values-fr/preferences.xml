@@ -98,6 +98,10 @@
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Affiche le commentaire du reçu au-dessus des photos PDF</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Masquer le commentaire du reçu au-dessus des photos PDF</string>
 
+    <string name="pref_output_show_total_on_csv_title">Afficher le total sur le rapport CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Affiche le total sur une ligne distincte dans le rapport CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Masquer la ligne totale dans le rapport CSV</string>
+
     <string name="pref_output_receipts_landscape_title">Imprimer le tableau des reçus en mode paysage</string>
     <string name="pref_output_receipts_landscape_on">Le tableau des reçus est imprimé en mode paysage</string>
     <string name="pref_output_receipts_landscape_off">Le tableau des reçus est imprimé en mode portrait</string>
