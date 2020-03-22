@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
-import co.smartreceipts.android.sync.model.Syncable;
+import co.smartreceipts.core.sync.model.Syncable;
 import io.reactivex.Scheduler;
 
 /**

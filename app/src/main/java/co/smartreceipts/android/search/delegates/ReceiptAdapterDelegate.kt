@@ -7,7 +7,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import co.smartreceipts.android.R
 import co.smartreceipts.android.model.Receipt
-import co.smartreceipts.android.sync.provider.SyncProvider
+import co.smartreceipts.core.sync.provider.SyncProvider
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_receipt_card.*

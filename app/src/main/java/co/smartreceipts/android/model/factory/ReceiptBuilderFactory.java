@@ -22,8 +22,8 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
-import co.smartreceipts.android.sync.model.SyncState;
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
+import co.smartreceipts.core.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link co.smartreceipts.android.model.Receipt} {@link BuilderFactory}

@@ -26,8 +26,8 @@ import java.util.List;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.model.Syncable;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.model.Syncable;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 
 public class CardAdapter<T> extends BaseAdapter {
 

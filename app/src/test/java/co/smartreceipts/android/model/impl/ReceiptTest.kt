@@ -5,7 +5,7 @@ import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory
 import co.smartreceipts.android.persistence.DatabaseHelper
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.testParcel
 import org.hamcrest.CoreMatchers.equalTo

@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 import co.smartreceipts.android.model.Keyed;
-import co.smartreceipts.android.sync.model.SyncState;
-import co.smartreceipts.android.sync.model.Syncable;
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
+import co.smartreceipts.core.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.Syncable;
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 
 @VisibleForTesting
 public class KeyedObject implements Keyed, Syncable {

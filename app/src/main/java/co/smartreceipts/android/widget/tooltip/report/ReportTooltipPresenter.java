@@ -12,7 +12,7 @@ import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.sync.BackupProviderChangeListener;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.tooltip.LegacyTooltipView;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;

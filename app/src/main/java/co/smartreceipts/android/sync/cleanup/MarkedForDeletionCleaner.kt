@@ -1,15 +1,15 @@
 package co.smartreceipts.android.sync.cleanup
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.persistence.PersistenceManager
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable
-import co.smartreceipts.android.sync.provider.SyncProvider
 import co.smartreceipts.android.sync.provider.SyncProviderStore
-import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.core.di.scopes.ApplicationScope
+import co.smartreceipts.core.sync.provider.SyncProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers

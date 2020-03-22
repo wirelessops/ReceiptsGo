@@ -25,12 +25,13 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.TripsTable;
-import co.smartreceipts.android.sync.drive.rx.DriveStreamMappings;
-import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
+import co.smartreceipts.automatic_backups.drive.rx.DriveStreamMappings;
+import co.smartreceipts.automatic_backups.drive.rx.DriveStreamsManager;
+import co.smartreceipts.core.sync.model.SyncState;
 import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.network.NetworkManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -254,7 +255,7 @@ public class DriveReceiptsManagerTest {
 
     @Test
     public void handleInsertOrUpdateForNonExistingNewFile() {
-        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(driveStreamMappings.postInsertSyncState()).thenReturn(newSyncState1);
         when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
         when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
@@ -272,7 +273,7 @@ public class DriveReceiptsManagerTest {
 
     @Test
     public void handleInsertOrUpdateForNonExistingNewFileButStaleReceipt() {
-        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(driveStreamMappings.postInsertSyncState()).thenReturn(newSyncState1);
         when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
         when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
@@ -287,7 +288,7 @@ public class DriveReceiptsManagerTest {
 
     @Test
     public void handleInsertWithoutFile() {
-        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(driveStreamMappings.postInsertSyncState()).thenReturn(newSyncState1);
         when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
         when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);
@@ -304,7 +305,7 @@ public class DriveReceiptsManagerTest {
 
     @Test
     public void handleInsertWithoutFileButStaleReceipt() {
-        when(driveStreamMappings.postInsertSyncState(syncState1, null)).thenReturn(newSyncState1);
+        when(driveStreamMappings.postInsertSyncState()).thenReturn(newSyncState1);
         when(syncState1.getSyncId(SyncProvider.GoogleDrive)).thenReturn(null);
         when(syncState1.isSynced(SyncProvider.GoogleDrive)).thenReturn(false);
         when(syncState1.isMarkedForDeletion(SyncProvider.GoogleDrive)).thenReturn(false);

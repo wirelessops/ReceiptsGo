@@ -30,12 +30,12 @@ import co.smartreceipts.android.persistence.database.tables.ordering.OrderByOrde
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.sync.model.SyncState;
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
-import co.smartreceipts.android.sync.model.impl.IdentifierMap;
-import co.smartreceipts.android.sync.model.impl.MarkedForDeletionMap;
-import co.smartreceipts.android.sync.model.impl.SyncStatusMap;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import co.smartreceipts.core.sync.model.impl.IdentifierMap;
+import co.smartreceipts.core.sync.model.impl.MarkedForDeletionMap;
+import co.smartreceipts.core.sync.model.impl.SyncStatusMap;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import wb.android.storage.StorageManager;
 
 /**

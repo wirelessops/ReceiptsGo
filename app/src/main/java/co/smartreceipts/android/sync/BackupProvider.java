@@ -9,9 +9,9 @@ import java.io.File;
 import java.sql.Date;
 import java.util.List;
 
-import co.smartreceipts.android.sync.errors.CriticalSyncError;
-import co.smartreceipts.android.sync.errors.SyncErrorType;
-import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
+import co.smartreceipts.core.sync.errors.CriticalSyncError;
+import co.smartreceipts.core.sync.errors.SyncErrorType;
+import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
 import io.reactivex.Observable;
 import io.reactivex.Single;

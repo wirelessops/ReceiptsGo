@@ -25,7 +25,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.DistanceTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.SyncState;
 import io.reactivex.Single;
 
 import static org.junit.Assert.assertEquals;

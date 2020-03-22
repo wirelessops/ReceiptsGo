@@ -3,7 +3,7 @@ package co.smartreceipts.android.model.impl.columns
 import co.smartreceipts.android.model.ActualColumnDefinition
 import co.smartreceipts.android.model.Column
 import co.smartreceipts.android.model.Keyed
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import java.util.*
 
 /**

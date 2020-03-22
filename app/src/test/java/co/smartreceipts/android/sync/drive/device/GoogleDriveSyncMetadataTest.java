@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import co.smartreceipts.automatic_backups.drive.device.GoogleDriveSyncMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
 
 import static junit.framework.Assert.assertEquals;

@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model
 
 import androidx.annotation.StringRes
-import co.smartreceipts.android.sync.model.Syncable
+import co.smartreceipts.core.sync.model.Syncable
 
 /**
  * Provides a contract for how each individual column in a report should operate

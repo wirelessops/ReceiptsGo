@@ -1,8 +1,9 @@
 package co.smartreceipts.android.model.factory;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 
@@ -20,8 +21,8 @@ import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.utils.ModelUtils;
-import co.smartreceipts.android.sync.model.SyncState;
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
+import co.smartreceipts.core.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link co.smartreceipts.android.model.Distance} {@link BuilderFactory}

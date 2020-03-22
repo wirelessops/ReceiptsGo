@@ -25,7 +25,7 @@ import co.smartreceipts.android.persistence.database.controllers.results.InsertR
 import co.smartreceipts.android.persistence.database.controllers.results.UpdateResult;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.sync.model.Syncable;
+import co.smartreceipts.core.sync.model.Syncable;
 import co.smartreceipts.android.utils.PreFixedThreadFactory;
 import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;

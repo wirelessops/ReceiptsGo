@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
@@ -39,8 +41,7 @@ import co.smartreceipts.android.sync.BackupProviderChangeListener;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
-import co.smartreceipts.android.sync.provider.SyncProvider;
-import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -110,6 +111,13 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
         wifiOnlyCheckbox = headerView.findViewById(R.id.auto_backup_wifi_only);
         existingBackupsSection = headerView.findViewById(R.id.existing_backups_section);
 
+        // hide google drive backups section for FLOSS flavor
+        if (BuildConfig.FLAVOR.equals("flossFlavor")) {
+            headerView.findViewById(R.id.auto_backup_title).setVisibility(View.GONE);
+            warningTextView.setVisibility(View.GONE);
+            backupConfigButton.setVisibility(View.GONE);
+            wifiOnlyCheckbox.setVisibility(View.GONE);
+        }
         exportButton.setOnClickListener(view -> navigationHandler.showDialog(new ExportBackupDialogFragment()));
         importButton.setOnClickListener(view -> {
             final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

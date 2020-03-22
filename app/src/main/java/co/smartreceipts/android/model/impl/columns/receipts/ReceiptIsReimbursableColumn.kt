@@ -5,7 +5,7 @@ import android.content.Context
 import co.smartreceipts.android.R
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import java.util.*
 
 /**

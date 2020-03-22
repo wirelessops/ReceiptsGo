@@ -6,7 +6,7 @@ import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.search.delegates.headerAdapterDelegate
 import co.smartreceipts.android.search.delegates.receiptAdapterDelegate
 import co.smartreceipts.android.search.delegates.tripAdapterDelegate
-import co.smartreceipts.android.sync.provider.SyncProvider
+import co.smartreceipts.core.sync.provider.SyncProvider
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
 class SearchResultsDelegationAdapter(

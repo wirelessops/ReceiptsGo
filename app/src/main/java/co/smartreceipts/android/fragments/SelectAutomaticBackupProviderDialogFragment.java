@@ -6,17 +6,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
 
 public class SelectAutomaticBackupProviderDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {

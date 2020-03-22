@@ -7,6 +7,8 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Named;
+
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.AnalyticsProvider;
 import co.smartreceipts.android.ExtraInitializer;
@@ -19,6 +21,11 @@ import co.smartreceipts.android.ocr.OcrManagerImpl;
 import co.smartreceipts.android.purchases.wallet.DefaultPurchaseWallet;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.sync.BackupProvider;
+import co.smartreceipts.android.sync.drive.GoogleDriveBackupManager;
+import co.smartreceipts.android.sync.drive.managers.GoogleDriveTableManager;
+import co.smartreceipts.android.sync.drive.managers.GoogleDriveTableManagerImpl;
+import co.smartreceipts.android.sync.provider.SyncProviderFactory;
 import co.smartreceipts.aws.cognito.CognitoManager;
 import co.smartreceipts.aws.cognito.CognitoManagerImpl;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
@@ -31,17 +38,13 @@ import dagger.Provides;
 @Module
 public abstract class FlavorModule {
 
-    @Provides
+    @Binds
     @ApplicationScope
-    public static PurchaseWallet providePurchaseWallet(DefaultPurchaseWallet defaultPurchaseWallet) {
-        return defaultPurchaseWallet;
-    }
+    public abstract PurchaseWallet providePurchaseWallet(DefaultPurchaseWallet defaultPurchaseWallet);
 
-    @Provides
+    @Binds
     @ApplicationScope
-    public static ExtraInitializer provideExtraInitializer(ExtraInitializerFreeImpl freeInitializer) {
-        return freeInitializer;
-    }
+    public abstract ExtraInitializer provideExtraInitializer(ExtraInitializerFreeImpl freeInitializer);
 
     @Provides
     @ApplicationScope
@@ -57,19 +60,25 @@ public abstract class FlavorModule {
         return com.google.android.gms.analytics.GoogleAnalytics.getInstance(context).newTracker(R.xml.analytics);
     }
 
-    @Provides
+    @Binds
     @ApplicationScope
-    public static OcrManager provideOcrManager(OcrManagerImpl ocrManager) {
-        return ocrManager;
-    }
+    public abstract OcrManager provideOcrManager(OcrManagerImpl ocrManager);
 
-    @Provides
+    @Binds
     @ApplicationScope
-    public static CognitoManager provideCognitoManager(CognitoManagerImpl cognitoManager) {
-        return cognitoManager;
-    }
+    public abstract CognitoManager provideCognitoManager(CognitoManagerImpl cognitoManager);
 
     @Binds
     @ApplicationScope
     public abstract PushManager providePushManager(PushManagerImpl pushManager);
+
+    @Binds
+    @ApplicationScope
+    @Named(SyncProviderFactory.DRIVE_BACKUP_MANAGER)
+    public abstract BackupProvider provideDriveBackupManager(GoogleDriveBackupManager googleDriveBackupManager);
+
+    @Binds
+    @ApplicationScope
+    public abstract GoogleDriveTableManager provideGoogleDriveTableManager(GoogleDriveTableManagerImpl driveTableManager);
+
 }

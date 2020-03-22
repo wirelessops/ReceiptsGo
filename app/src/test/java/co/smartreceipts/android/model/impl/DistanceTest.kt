@@ -5,7 +5,7 @@ import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.testParcel
 import junit.framework.Assert.assertEquals

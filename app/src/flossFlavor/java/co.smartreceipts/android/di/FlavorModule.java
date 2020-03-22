@@ -1,5 +1,7 @@
 package co.smartreceipts.android.di;
 
+import javax.inject.Named;
+
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.AnalyticsProvider;
 import co.smartreceipts.android.ExtraInitializer;
@@ -10,6 +12,11 @@ import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.purchases.wallet.DefaultPurchaseWallet;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.sync.BackupProvider;
+import co.smartreceipts.android.sync.drive.managers.GoogleDriveTableManager;
+import co.smartreceipts.android.sync.drive.managers.NoOpGoogleDriveTableManager;
+import co.smartreceipts.android.sync.noop.NoOpBackupProvider;
+import co.smartreceipts.android.sync.provider.SyncProviderFactory;
 import co.smartreceipts.aws.cognito.CognitoManager;
 import co.smartreceipts.aws.cognito.NoOpCognitoManager;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
@@ -47,4 +54,14 @@ public abstract class FlavorModule {
     @Binds
     @ApplicationScope
     public abstract PushManager providePushManager(NoOpPushManager pushManager);
+
+    @Binds
+    @ApplicationScope
+    @Named(SyncProviderFactory.DRIVE_BACKUP_MANAGER)
+    public abstract BackupProvider provideDriveBackupManager(NoOpBackupProvider noOpBackupManager);
+
+    @Binds
+    @ApplicationScope
+    public abstract GoogleDriveTableManager provideGoogleDriveTableManager(NoOpGoogleDriveTableManager driveTableManager);
+
 }

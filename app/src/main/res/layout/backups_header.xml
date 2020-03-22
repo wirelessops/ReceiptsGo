@@ -81,6 +81,7 @@
         android:layout_marginTop="@dimen/margin_normal" />
 
     <TextView
+        android:id="@+id/auto_backup_title"
         style="@style/Widget.SmartReceipts.TextView.Body2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

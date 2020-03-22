@@ -5,7 +5,7 @@ import android.content.ContextWrapper
 import android.database.DatabaseErrorHandler
 import android.database.sqlite.SQLiteDatabase
 import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.core.persistence.DatabaseConstants
 import wb.android.storage.StorageManager
 import java.io.File
 import javax.inject.Inject
@@ -25,10 +25,10 @@ import javax.inject.Inject
 class DatabaseContext @Inject constructor(context: Context) : ContextWrapper(context) {
 
     override fun getDatabasePath(name: String?): File {
-        return if (DatabaseHelper.DATABASE_NAME == name) {
+        return if (DatabaseConstants.DATABASE_NAME == name) {
             // Only return the internal path to this file if it's our receipts database
             val externalDatabaseDirectory = File(StorageManager.GetRootPath())
-            File(externalDatabaseDirectory, DatabaseHelper.DATABASE_NAME)
+            File(externalDatabaseDirectory, DatabaseConstants.DATABASE_NAME)
         } else {
             super.getDatabasePath(name)
         }

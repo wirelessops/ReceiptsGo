@@ -23,7 +23,7 @@ import co.smartreceipts.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.model.IntentImportResult;
-import co.smartreceipts.android.utils.UriUtils;
+import co.smartreceipts.core.utils.UriUtils;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Maybe;

@@ -2,7 +2,7 @@ package co.smartreceipts.android.widget.tooltip.report;
 
 import org.junit.Test;
 
-import co.smartreceipts.android.sync.errors.SyncErrorType;
+import co.smartreceipts.core.sync.errors.SyncErrorType;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipUiIndicator.State;
 
 import static junit.framework.Assert.assertEquals;

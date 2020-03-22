@@ -30,7 +30,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableCardsAdapter;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.widget.backups.AutomaticBackupsInfoDialogFragment;
 import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;

@@ -9,8 +9,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.errors.SyncErrorType;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.errors.SyncErrorType;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.android.widget.tooltip.LegacyTooltipView;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

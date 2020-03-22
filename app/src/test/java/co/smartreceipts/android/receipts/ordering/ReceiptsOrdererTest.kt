@@ -9,7 +9,7 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
@@ -23,6 +23,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import java.sql.Date
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
@@ -60,10 +61,10 @@ class ReceiptsOrdererTest {
         // For items that have the partial ordering (i.e. customOrderId endWith 999)
         // Note: We set the names for `PARTIALLY_ORDERED_RECEIPT_1` and `PARTIALLY_ORDERED_RECEIPT_4`, since they are never updated
         // Without this hack, `PARTIALLY_ORDERED_RECEIPT_1` == `ORDERED_RECEIPT_1`, which causes the tests to fail
-        private val PARTIALLY_ORDERED_RECEIPT_1 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1512778546145L).setCustomOrderId(17509000L).setSyncState(DefaultSyncState(java.sql.Date(1540327972705L))).build()
-        private val PARTIALLY_ORDERED_RECEIPT_2 = ReceiptBuilderFactory().setTrip(TRIP).setDate(1512778546147L).setCustomOrderId(17509999L).setSyncState(DefaultSyncState(java.sql.Date(1540327944477L))).build()
-        private val PARTIALLY_ORDERED_RECEIPT_3 = ReceiptBuilderFactory().setTrip(TRIP).setDate(1512778546146L).setCustomOrderId(17509999L).setSyncState(DefaultSyncState(java.sql.Date(1540327944476L))).build()
-        private val PARTIALLY_ORDERED_RECEIPT_4 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1513580400148L).setCustomOrderId(17518000L).setSyncState(DefaultSyncState(java.sql.Date(1540327972705L))).build()
+        private val PARTIALLY_ORDERED_RECEIPT_1 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1512778546145L).setCustomOrderId(17509000L).setSyncState(DefaultSyncState(Date(1540327972705L))).build()
+        private val PARTIALLY_ORDERED_RECEIPT_2 = ReceiptBuilderFactory().setTrip(TRIP).setDate(1512778546147L).setCustomOrderId(17509999L).setSyncState(DefaultSyncState(Date(1540327944477L))).build()
+        private val PARTIALLY_ORDERED_RECEIPT_3 = ReceiptBuilderFactory().setTrip(TRIP).setDate(1512778546146L).setCustomOrderId(17509999L).setSyncState(DefaultSyncState(Date(1540327944476L))).build()
+        private val PARTIALLY_ORDERED_RECEIPT_4 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1513580400148L).setCustomOrderId(17518000L).setSyncState(DefaultSyncState(Date(1540327972705L))).build()
 
         // The properly ordered representations of each of the items above
         private val ORDERED_RECEIPT_1 = ReceiptBuilderFactory().setTrip(TRIP).setDate(1513580400148L).setCustomOrderId(17518000L).build()
@@ -76,10 +77,10 @@ class ReceiptsOrdererTest {
         // For items that have a different type of partial ordering (i.e. custom order id are equal)
         // Note: We set the names for `OTHER_PARTIALLY_ORDERED_RECEIPT_1` and `OTHER_PARTIALLY_ORDERED_RECEIPT_4`, since they are never updated
         // Without this hack, `OTHER_PARTIALLY_ORDERED_RECEIPT_1` == `OTHER_ORDERED_RECEIPT_1`, which causes the tests to fail
-        private val OTHER_PARTIALLY_ORDERED_RECEIPT_1 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1512778546125L).setCustomOrderId(17509000L).setSyncState(DefaultSyncState(java.sql.Date(1540327972705L))).build()
-        private val OTHER_PARTIALLY_ORDERED_RECEIPT_2 = ReceiptBuilderFactory().setName("2").setTrip(TRIP).setDate(1512778546125L).setCustomOrderId(17509004L).setSyncState(DefaultSyncState(java.sql.Date(1540327944427L))).build()
-        private val OTHER_PARTIALLY_ORDERED_RECEIPT_3 = ReceiptBuilderFactory().setName("3").setTrip(TRIP).setDate(1512778546125L).setCustomOrderId(17509004L).setSyncState(DefaultSyncState(java.sql.Date(1540327944426L))).build()
-        private val OTHER_PARTIALLY_ORDERED_RECEIPT_4 = ReceiptBuilderFactory().setName("4").setTrip(TRIP).setDate(1513580400128L).setCustomOrderId(17518000L).setSyncState(DefaultSyncState(java.sql.Date(1540327972705L))).build()
+        private val OTHER_PARTIALLY_ORDERED_RECEIPT_1 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1512778546125L).setCustomOrderId(17509000L).setSyncState(DefaultSyncState(Date(1540327972705L))).build()
+        private val OTHER_PARTIALLY_ORDERED_RECEIPT_2 = ReceiptBuilderFactory().setName("2").setTrip(TRIP).setDate(1512778546125L).setCustomOrderId(17509004L).setSyncState(DefaultSyncState(Date(1540327944427L))).build()
+        private val OTHER_PARTIALLY_ORDERED_RECEIPT_3 = ReceiptBuilderFactory().setName("3").setTrip(TRIP).setDate(1512778546125L).setCustomOrderId(17509004L).setSyncState(DefaultSyncState(Date(1540327944426L))).build()
+        private val OTHER_PARTIALLY_ORDERED_RECEIPT_4 = ReceiptBuilderFactory().setName("4").setTrip(TRIP).setDate(1513580400128L).setCustomOrderId(17518000L).setSyncState(DefaultSyncState(Date(1540327972705L))).build()
 
         // The properly ordered representations of each of the items above
         private val OTHER_ORDERED_RECEIPT_1 = ReceiptBuilderFactory().setName("1").setTrip(TRIP).setDate(1513580400128L).setCustomOrderId(17518000L).build()

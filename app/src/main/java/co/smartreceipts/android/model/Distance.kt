@@ -3,8 +3,8 @@ package co.smartreceipts.android.model
 import android.os.Parcelable
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.utils.ModelUtils
-import co.smartreceipts.android.sync.model.SyncState
-import co.smartreceipts.android.sync.model.Syncable
+import co.smartreceipts.core.sync.model.SyncState
+import co.smartreceipts.core.sync.model.Syncable
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.sql.Date

@@ -8,7 +8,7 @@ import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.model.utils.ModelUtils
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import java.util.*
 
 /**

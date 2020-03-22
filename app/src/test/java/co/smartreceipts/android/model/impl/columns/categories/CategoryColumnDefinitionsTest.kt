@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model.impl.columns.categories
 
 import co.smartreceipts.android.model.Keyed
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever

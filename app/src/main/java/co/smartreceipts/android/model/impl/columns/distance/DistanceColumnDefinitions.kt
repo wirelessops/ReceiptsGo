@@ -7,8 +7,8 @@ import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions.ActualDefinition.*
 import co.smartreceipts.android.settings.UserPreferenceManager
-import co.smartreceipts.android.sync.model.SyncState
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.SyncState
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import java.util.*
 

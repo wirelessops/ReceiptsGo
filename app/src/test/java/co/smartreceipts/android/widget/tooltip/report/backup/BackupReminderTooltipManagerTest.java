@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import io.reactivex.observers.TestObserver;
 
