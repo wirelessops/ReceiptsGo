@@ -10,8 +10,8 @@ import co.smartreceipts.android.model.impl.columns.BlankColumn
 import co.smartreceipts.android.model.impl.columns.SettingUserIdColumn
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions.ActualDefinition.*
 import co.smartreceipts.android.settings.UserPreferenceManager
-import co.smartreceipts.android.sync.model.SyncState
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.SyncState
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import java.util.*
 import javax.inject.Inject

@@ -98,6 +98,10 @@
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Exibir o comentário do recibo acima das fotos em PDF</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Ocultar o comentário do recibo acima das fotos em PDF</string>
 
+    <string name="pref_output_show_total_on_csv_title">Mostrar total no relatório CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Mostra o total em uma linha separada no relatório CSV</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Ocultar a linha total no relatório CSV</string>
+
     <string name="pref_output_receipts_landscape_title">Imprimir tabela de recibos em modo paisagem</string>
     <string name="pref_output_receipts_landscape_on">A tabela de recibos é impressa em modo paisagem</string>
     <string name="pref_output_receipts_landscape_off">A tabela de recibos é impressa em modo retrato</string>

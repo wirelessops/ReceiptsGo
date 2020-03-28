@@ -32,7 +32,7 @@ import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCusto
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
 import static co.smartreceipts.android.persistence.database.tables.AbstractColumnTable.COLUMN_ID;

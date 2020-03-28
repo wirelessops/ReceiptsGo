@@ -17,9 +17,9 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.Nonnull;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.database.DatabaseContext;
 import co.smartreceipts.android.date.DateUtils;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Priceable;
 import co.smartreceipts.android.model.Receipt;
@@ -39,8 +39,9 @@ import co.smartreceipts.android.persistence.database.tables.TripsTable;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.utils.sorting.AlphabeticalCaseInsensitiveCharSequenceComparator;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.core.persistence.DatabaseConstants;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import wb.android.storage.StorageManager;
@@ -49,7 +50,6 @@ import wb.android.storage.StorageManager;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
-    public static final String DATABASE_NAME = "receipts.db";
     public static final int DATABASE_VERSION = 20;
 
     @Deprecated
@@ -101,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                           @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
                           @NonNull OrderingPreferencesManager orderingPreferencesManager,
                           @NonNull Optional<String> databasePathOptional) {
-        super(context, databasePathOptional.or(DATABASE_NAME), null, DATABASE_VERSION); // Requests the default cursor
+        super(context, databasePathOptional.or(DatabaseConstants.DATABASE_NAME), null, DATABASE_VERSION); // Requests the default cursor
 
         mContext = context;
         mPreferences = preferences;

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.exifinterface.media.ExifInterface;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -247,16 +248,19 @@ public class StorageManager {
 		return true;
 	}
 
-	public boolean writeBitmap(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality) {
-		return writeBitmapHelper(dir, bitmap, filename, format, quality);
+	public boolean writeBitmap(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality, final String userComment) {
+		return writeBitmapHelper(dir, bitmap, filename, format, quality, userComment);
 	}
 
-	private final boolean writeBitmapHelper(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality) {
+	private final boolean writeBitmapHelper(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality, final String userComment) {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
 		try (FileOutputStream fos = new FileOutputStream(path + filename)) {
 			bitmap.compress(format, quality, fos);
+			ExifInterface exif = new ExifInterface(path + filename);
+			exif.setAttribute(ExifInterface.TAG_USER_COMMENT, userComment);
+			exif.saveAttributes();
 		} catch (IOException e) {
 			Log.e(TAG, e.toString());
 			return false;

@@ -1,9 +1,9 @@
 package co.smartreceipts.android.model
 
 import android.os.Parcelable
-import co.smartreceipts.android.sync.model.SyncState
-import co.smartreceipts.android.sync.model.Syncable
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.SyncState
+import co.smartreceipts.core.sync.model.Syncable
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 

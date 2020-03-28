@@ -16,7 +16,7 @@ import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.SyncState;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

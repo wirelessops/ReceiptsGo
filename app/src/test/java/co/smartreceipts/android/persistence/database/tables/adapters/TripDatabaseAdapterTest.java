@@ -21,7 +21,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.SyncState;
 import wb.android.storage.StorageManager;
 
 import static org.junit.Assert.assertEquals;

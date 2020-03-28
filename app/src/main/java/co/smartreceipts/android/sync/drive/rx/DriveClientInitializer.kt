@@ -1,12 +1,13 @@
 package co.smartreceipts.android.sync.drive.rx
 
-import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.sync.drive.managers.DriveReceiptsManager
 import co.smartreceipts.android.sync.drive.managers.DriveRestoreDataManager
 import co.smartreceipts.android.sync.drive.managers.GoogleDriveTableManager
 import co.smartreceipts.android.sync.network.NetworkManager
 import co.smartreceipts.android.sync.network.NetworkStateChangeListener
-import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager
+import co.smartreceipts.automatic_backups.drive.rx.DriveStreamsManager
 import io.reactivex.disposables.CompositeDisposable
 
 /**

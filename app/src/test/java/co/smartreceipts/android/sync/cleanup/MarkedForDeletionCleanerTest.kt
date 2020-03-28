@@ -5,9 +5,8 @@ import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTab
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable
-import co.smartreceipts.android.sync.provider.SyncProvider
+import co.smartreceipts.core.sync.provider.SyncProvider
 import co.smartreceipts.android.sync.provider.SyncProviderStore
-import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever

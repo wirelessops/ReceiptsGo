@@ -19,7 +19,7 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.persistence.database.tables.DistanceTable;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.SyncState;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link DistanceTable}

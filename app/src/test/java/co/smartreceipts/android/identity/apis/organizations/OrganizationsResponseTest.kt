@@ -6,7 +6,7 @@ import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryCodeColumn
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptCategoryNameColumn
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock

@@ -19,6 +19,10 @@
 -dontwarn com.amazonaws.http.**
 -dontwarn com.amazonaws.metrics.**
 
+### Fabric
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
 
 ##### FireBase ProGuard configurations #####
 -keep class com.google.firebase.provider.FirebaseInitProvider

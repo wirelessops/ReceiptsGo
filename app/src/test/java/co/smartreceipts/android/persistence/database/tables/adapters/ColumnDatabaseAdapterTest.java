@@ -23,7 +23,7 @@ import co.smartreceipts.android.persistence.database.operations.OperationFamilyT
 import co.smartreceipts.android.persistence.database.tables.AbstractColumnTable;
 import co.smartreceipts.android.persistence.database.tables.AbstractSqlTable;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.core.sync.model.SyncState;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
 import static org.junit.Assert.assertEquals;

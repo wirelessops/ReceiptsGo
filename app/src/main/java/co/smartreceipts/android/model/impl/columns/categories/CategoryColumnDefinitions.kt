@@ -10,8 +10,8 @@ import co.smartreceipts.android.model.comparators.ColumnNameComparator
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions.ActualDefinition.*
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
-import co.smartreceipts.android.sync.model.SyncState
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.SyncState
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import co.smartreceipts.android.workers.reports.ReportResourcesManager
 import java.util.*
 

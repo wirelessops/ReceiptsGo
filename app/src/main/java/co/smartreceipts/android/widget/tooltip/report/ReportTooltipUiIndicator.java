@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
-import co.smartreceipts.android.sync.errors.SyncErrorType;
+import co.smartreceipts.core.sync.errors.SyncErrorType;
 
 public class ReportTooltipUiIndicator {
 

@@ -4,7 +4,7 @@ import co.smartreceipts.android.model.Price
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import java.util.*
 
 

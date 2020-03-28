@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import co.smartreceipts.android.utils.UriUtils;
+import co.smartreceipts.core.utils.UriUtils;
 
 public class ImagePDImageXFactory implements PDImageXFactory {
 

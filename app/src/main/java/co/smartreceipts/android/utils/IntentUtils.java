@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.core.utils.UriUtils;
 
 public class IntentUtils {
 

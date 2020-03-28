@@ -6,7 +6,7 @@ import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.Price
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.testParcel
 import org.hamcrest.CoreMatchers.equalTo

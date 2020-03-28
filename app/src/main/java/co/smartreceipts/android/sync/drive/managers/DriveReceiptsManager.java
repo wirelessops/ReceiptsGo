@@ -18,11 +18,12 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.TripsTable;
-import co.smartreceipts.android.sync.drive.rx.DriveStreamMappings;
-import co.smartreceipts.android.sync.drive.rx.DriveStreamsManager;
-import co.smartreceipts.android.sync.model.SyncState;
+import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
+import co.smartreceipts.automatic_backups.drive.rx.DriveStreamMappings;
+import co.smartreceipts.automatic_backups.drive.rx.DriveStreamsManager;
+import co.smartreceipts.core.sync.model.SyncState;
 import co.smartreceipts.android.sync.network.NetworkManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -214,7 +215,7 @@ public class DriveReceiptsManager {
                                 return mDriveTaskManager.uploadFileToDrive(oldSyncState, receiptFile);
                             } else {
                                 Logger.info(this, "Found receipt {} without a file. Marking as synced for Drive", receipt.getId());
-                                return Single.just(mDriveStreamMappings.postInsertSyncState(oldSyncState, null));
+                                return Single.just(mDriveStreamMappings.postInsertSyncState());
                             }
                         } else {
                             if (receiptFile != null) {

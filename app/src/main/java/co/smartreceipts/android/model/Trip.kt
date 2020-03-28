@@ -5,9 +5,9 @@ import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.search.Searchable
-import co.smartreceipts.android.sync.model.SyncState
-import co.smartreceipts.android.sync.model.Syncable
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState
+import co.smartreceipts.core.sync.model.SyncState
+import co.smartreceipts.core.sync.model.Syncable
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 import java.sql.Date

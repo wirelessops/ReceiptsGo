@@ -1,21 +1,19 @@
 package co.smartreceipts.android.test.espresso
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.test.InstrumentationRegistry
-import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
-import android.util.Log
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.date.DateFormatter
-import co.smartreceipts.android.test.runner.BeforeApplicationOnCreate
-import co.smartreceipts.android.test.utils.TestLocaleToggler
-import co.smartreceipts.android.test.utils.TestResourceReader
 import co.smartreceipts.android.model.*
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
 import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.android.test.utils.TestLocaleToggler
+import co.smartreceipts.android.test.utils.TestResourceReader
+import co.smartreceipts.core.persistence.DatabaseConstants
 import com.google.common.base.Preconditions
 import org.apache.commons.io.IOUtils
 import org.hamcrest.Matchers.equalTo
@@ -25,7 +23,6 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -47,7 +44,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         fun setUpBeforeApplicationOnCreate(databaseName: String) {
             Log.i(TAG, "Copying our test v15 database onto the local device...")
             val externalFilesDir = InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null)
-            val databaseLocation = File(externalFilesDir, DatabaseHelper.DATABASE_NAME)
+            val databaseLocation = File(externalFilesDir, DatabaseConstants.DATABASE_NAME)
             copyFile(databaseName, databaseLocation)
 
             Log.i(TAG, "Creating report folders...")

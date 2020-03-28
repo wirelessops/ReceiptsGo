@@ -1,6 +1,5 @@
 package co.smartreceipts.android.sync.manual;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -11,12 +10,12 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.date.DateUtils;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
+import co.smartreceipts.core.persistence.DatabaseConstants;
 import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
@@ -27,12 +26,9 @@ import wb.android.storage.StorageManager;
 @ApplicationScope
 public class ManualBackupTask {
 
-    public static final String DATABASE_EXPORT_NAME = "receipts_backup.db";
-
     private static final String EXPORT_FILENAME = DateUtils.getCurrentDateAsYYYY_MM_DDString() + "_SmartReceipts.smr";
     private static final String DATABASE_JOURNAL = "receipts.db-journal";
 
-    private final Context context;
     private final Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy;
     private final PersistenceManager persistenceManager;
     private final Scheduler observeonscheduler;
@@ -40,18 +36,15 @@ public class ManualBackupTask {
     private ReplaySubject<File> backupBehaviorSubject;
 
     @Inject
-    ManualBackupTask(@NonNull Context context,
-                     @NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
+    ManualBackupTask(@NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
                      @NonNull PersistenceManager persistenceManager) {
-        this(context, smartReceiptsTemporaryFileCacheLazy, persistenceManager, Schedulers.io(), Schedulers.io());
+        this(smartReceiptsTemporaryFileCacheLazy, persistenceManager, Schedulers.io(), Schedulers.io());
     }
 
-    ManualBackupTask(@NonNull Context context,
-                     @NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
+    ManualBackupTask(@NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
                      @NonNull PersistenceManager persistenceManager,
                      @NonNull Scheduler observeOnScheduler,
                      @NonNull Scheduler subscribeOnScheduler) {
-        this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.smartReceiptsTemporaryFileCacheLazy = Preconditions.checkNotNull(smartReceiptsTemporaryFileCacheLazy);
         this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
         this.observeonscheduler = Preconditions.checkNotNull(observeOnScheduler);
@@ -83,7 +76,7 @@ public class ManualBackupTask {
             final StorageManager internal = persistenceManager.getInternalStorageManager();
             external.delete(external.getFile(EXPORT_FILENAME)); // Remove old export
 
-            external.copy(external.getFile(DatabaseHelper.DATABASE_NAME), external.getFile(DATABASE_EXPORT_NAME), true);
+            external.copy(external.getFile(DatabaseConstants.DATABASE_NAME), external.getFile(DatabaseConstants.DATABASE_EXPORT_NAME), true);
             final File internalSharedPreferencesFolder = internal.getFile(internal.getRoot().getParentFile(), "shared_prefs");
 
             // Preferences File
@@ -123,7 +116,7 @@ public class ManualBackupTask {
 
         @Override
         public boolean accept(File file) {
-            return !file.getName().equalsIgnoreCase(DatabaseHelper.DATABASE_NAME) &&
+            return !file.getName().equalsIgnoreCase(DatabaseConstants.DATABASE_NAME) &&
                     !file.getName().equalsIgnoreCase(DATABASE_JOURNAL) &&
                     !file.getName().endsWith(".smr"); //Ignore previous backups
         }

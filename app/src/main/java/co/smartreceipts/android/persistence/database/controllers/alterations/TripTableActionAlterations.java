@@ -19,6 +19,7 @@ import co.smartreceipts.android.persistence.database.tables.DistanceTable;
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.persistence.database.tables.Table;
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.core.persistence.DatabaseConstants;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -138,9 +139,9 @@ public class TripTableActionAlterations extends StubTableActionAlterations<Trip>
      * Simple utility method that takes a snapshot backup of our database after all trip "insert'
      */
     private void backUpDatabase() {
-        File sdDB = mStorageManager.getFile(DateUtils.getCurrentDateAsYYYY_MM_DDString() + "_" + DatabaseHelper.DATABASE_NAME + ".bak");
+        File sdDB = mStorageManager.getFile(DateUtils.getCurrentDateAsYYYY_MM_DDString() + "_" + DatabaseConstants.DATABASE_NAME + ".bak");
         try {
-            if (mStorageManager.copy(mStorageManager.getFile(DatabaseHelper.DATABASE_NAME), sdDB, true)) {
+            if (mStorageManager.copy(mStorageManager.getFile(DatabaseConstants.DATABASE_NAME), sdDB, true)) {
                 Logger.info(this, "Backed up database file to: {}", sdDB.getName());
             } else {
                 Logger.error(this, "Failed to backup database: {}", sdDB.getName());

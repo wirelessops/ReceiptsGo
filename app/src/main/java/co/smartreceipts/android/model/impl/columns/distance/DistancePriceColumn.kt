@@ -3,7 +3,7 @@ package co.smartreceipts.android.model.impl.columns.distance
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 
 class DistancePriceColumn(
     id: Int,

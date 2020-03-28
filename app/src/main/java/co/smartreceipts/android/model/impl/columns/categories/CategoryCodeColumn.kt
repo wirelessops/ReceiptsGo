@@ -2,7 +2,7 @@ package co.smartreceipts.android.model.impl.columns.categories
 
 import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 
 
 class CategoryCodeColumn(id: Int, syncState: SyncState) :

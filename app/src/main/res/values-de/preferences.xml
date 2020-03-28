@@ -98,6 +98,10 @@
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Im PDF den Belegkommentar über den Fotos anzeigen</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Im PDF den Belegkommentar über den Fotos ausblenden</string>
 
+    <string name="pref_output_show_total_on_csv_title">Gesamtsumme im CSV-Bericht anzeigen</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Zeigt die Summe in einer separaten Zeile im CSV-Bericht an</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Blenden Sie die gesamte Zeile im CSV-Bericht aus</string>
+
     <string name="pref_output_receipts_landscape_title">Belegtabelle im Querformat drucken</string>
     <string name="pref_output_receipts_landscape_on">Belegtabelle ist im Querformat gedruckt</string>
     <string name="pref_output_receipts_landscape_off">Belegtabelle wird im Hochformat gedruckt</string>

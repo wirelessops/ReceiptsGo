@@ -6,11 +6,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import android.view.View;
-import android.widget.CheckBox;
 
 import com.google.common.base.Preconditions;
 
@@ -18,7 +19,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
+import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ImportRemoteBackupDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {

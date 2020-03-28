@@ -1,7 +1,7 @@
 package co.smartreceipts.android.model.impl.columns
 
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import java.util.*
 
 /**

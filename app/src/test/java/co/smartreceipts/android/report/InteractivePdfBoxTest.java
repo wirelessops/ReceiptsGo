@@ -1,10 +1,10 @@
 package co.smartreceipts.android.report;
 
 import android.content.Context;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
-
-import android.view.View;
 
 import com.tom_roush.pdfbox.cos.COSName;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -62,13 +62,13 @@ import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.sync.model.impl.DefaultSyncState;
 import co.smartreceipts.android.utils.ReceiptUtils;
 import co.smartreceipts.android.utils.TripUtils;
 import co.smartreceipts.android.utils.shadows.ShadowFontFileFinder;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import co.smartreceipts.android.workers.reports.pdf.renderer.text.FallbackTextRenderer;
+import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 import io.reactivex.schedulers.Schedulers;
 
 import static junit.framework.Assert.assertEquals;

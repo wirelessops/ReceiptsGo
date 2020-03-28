@@ -41,13 +41,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    implementation "com.google.guava:guava:$GUAVA_VERSION"
-
-    implementation "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-
-    notFlossImplementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
 
     // Dagger
     api "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
@@ -55,7 +48,14 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
+    api "com.google.guava:guava:$GUAVA_VERSION"
+
     // Logger
-    implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
+    api "org.slf4j:slf4j-api:$SLF4J_VERSION"
+
+    notFlossImplementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
+
+    // Crashlytics
+    notFlossImplementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS_VERSION"
 
 }

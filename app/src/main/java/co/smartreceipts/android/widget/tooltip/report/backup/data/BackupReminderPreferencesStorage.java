@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.analytics.log.Logger;
 
 @ApplicationScope

@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager;
+import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
 import co.smartreceipts.android.sync.drive.managers.DriveReceiptsManager;
 
 public class ReceiptBackupListener extends DatabaseBackupListener<Receipt> {

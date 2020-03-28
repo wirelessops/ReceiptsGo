@@ -2,7 +2,7 @@ package co.smartreceipts.android.model.impl
 
 import co.smartreceipts.android.DefaultObjects
 import co.smartreceipts.android.model.PaymentMethod
-import co.smartreceipts.android.sync.model.SyncState
+import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.android.utils.testParcel
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotSame

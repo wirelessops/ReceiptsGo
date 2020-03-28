@@ -24,7 +24,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.persistence.database.tables.ReceiptsTable;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.utils.FileUtils;
-import co.smartreceipts.android.utils.UriUtils;
+import co.smartreceipts.core.utils.UriUtils;
 import co.smartreceipts.analytics.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Single;

@@ -19,6 +19,7 @@ import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.persistence.database.restore.DatabaseRestorer;
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.core.persistence.DatabaseConstants;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
@@ -100,7 +101,7 @@ public class ManualRestoreTask {
             Logger.debug(this, "Deleting existing backup database...");
             final SDCardFileManager external = persistenceManager.getExternalStorageManager();
             //noinspection ResultOfMethodCallIgnored
-            external.getFile(ManualBackupTask.DATABASE_EXPORT_NAME).delete();
+            external.getFile(DatabaseConstants.DATABASE_EXPORT_NAME).delete();
 
             Logger.debug(this, "Deleting existing import zip...");
             final File localZipFile = external.getFile("smart.zip");
@@ -175,7 +176,7 @@ public class ManualRestoreTask {
                 Logger.error(ManualRestoreTask.this, "Failed to import local files");
             }
 
-            final File importDatabaseFile = external.getFile(ManualBackupTask.DATABASE_EXPORT_NAME);
+            final File importDatabaseFile = external.getFile(DatabaseConstants.DATABASE_EXPORT_NAME);
             if (!importDatabaseFile.exists()) {
                 throw new IOException("Failed to find our import database file");
             }

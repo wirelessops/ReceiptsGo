@@ -16,13 +16,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import javax.inject.Inject;
 
 import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.android.sync.errors.CriticalSyncError;
-import co.smartreceipts.android.sync.errors.SyncErrorType;
-import co.smartreceipts.android.sync.model.RemoteBackupMetadata;
+import co.smartreceipts.core.sync.errors.CriticalSyncError;
+import co.smartreceipts.core.sync.errors.SyncErrorType;
+import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
 import co.smartreceipts.core.sync.model.impl.Identifier;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 import co.smartreceipts.android.sync.provider.SyncProviderFactory;
 import co.smartreceipts.android.sync.provider.SyncProviderStore;
 import co.smartreceipts.analytics.log.Logger;

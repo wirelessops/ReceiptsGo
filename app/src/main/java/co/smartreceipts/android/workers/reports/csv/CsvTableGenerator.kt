@@ -18,7 +18,7 @@ class CsvTableGenerator<DataType> @JvmOverloads constructor(
 ) : TableGenerator<String, DataType> {
 
     override fun generate(list: List<DataType>): String {
-        if (!list.isEmpty()) {
+        if (list.isNotEmpty()) {
             val columnCount = columns.size
             val csvBuilder = StringBuilder("")
 

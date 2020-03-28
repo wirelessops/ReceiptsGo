@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.android.sync.drive.managers.DriveDatabaseManager;
+import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;

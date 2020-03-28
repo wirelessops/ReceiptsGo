@@ -3,16 +3,20 @@ package co.smartreceipts.android.sync.provider;
 import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 
 import co.smartreceipts.android.sync.BackupProvider;
-import co.smartreceipts.android.sync.drive.GoogleDriveBackupManager;
 import co.smartreceipts.android.sync.noop.NoOpBackupProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 
 public class SyncProviderFactory {
 
+    public final static String DRIVE_BACKUP_MANAGER = "google_backup_provider";
+
     @Inject
-    Provider<GoogleDriveBackupManager> googleDriveBackupManagerProvider;
+    @Named(DRIVE_BACKUP_MANAGER)
+    Provider<BackupProvider> googleDriveBackupManagerProvider;
 
     @Inject
     public SyncProviderFactory() {

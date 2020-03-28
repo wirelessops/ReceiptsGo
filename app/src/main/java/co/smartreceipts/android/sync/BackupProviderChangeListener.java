@@ -2,7 +2,7 @@ package co.smartreceipts.android.sync;
 
 import androidx.annotation.NonNull;
 
-import co.smartreceipts.android.sync.provider.SyncProvider;
+import co.smartreceipts.core.sync.provider.SyncProvider;
 
 public interface BackupProviderChangeListener {
 
