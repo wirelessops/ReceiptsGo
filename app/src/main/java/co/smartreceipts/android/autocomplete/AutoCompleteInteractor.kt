@@ -40,7 +40,7 @@ class AutoCompleteInteractor<Type> constructor(private val provider: AutoComplet
         // Confirm that the user has this setting enable
         if (userPreferenceManager[UserPreference.Receipts.EnableAutoCompleteSuggestions]) {
             // And that we've typed this exact amount of characters (as the adapters manage filtering afterwards)
-            if (input.length == TEXT_LENGTH_TO_FETCH_RESULTS) {
+            if (input.length >= TEXT_LENGTH_TO_FETCH_RESULTS) {
                 return provider.tableController.get()
                         .subscribeOn(backgroundScheduler)
                         .flatMapMaybe { getResults ->
