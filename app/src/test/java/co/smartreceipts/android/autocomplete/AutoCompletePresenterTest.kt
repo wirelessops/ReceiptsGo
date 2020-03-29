@@ -51,15 +51,17 @@ class AutoCompletePresenterTest {
         whenever(view.getTextChangeStream(field2)).thenReturn(field2TextChanges)
         whenever(interactor.getAutoCompleteResults(eq(field1), any())).thenReturn(Maybe.just(FIELD_1_RESULTS))
         whenever(interactor.getAutoCompleteResults(eq(field2), any())).thenReturn(Maybe.just(FIELD_2_RESULTS))
-        presenter = AutoCompletePresenter(view, editor, interactor, Schedulers.trampoline())
+        presenter = AutoCompletePresenter(view, interactor, Schedulers.trampoline())
     }
 
     @Test
     fun subscribeWhenEditing() {
         whenever(editor.editableItem).thenReturn(Any())
         presenter.subscribe()
-        verify(view, never()).displayAutoCompleteResults(any(), any())
-        verifyZeroInteractions(interactor)
+        field1TextChanges.onNext("1")
+        verify(view).displayAutoCompleteResults(field1, FIELD_1_RESULTS)
+        field2TextChanges.onNext("2")
+        verify(view).displayAutoCompleteResults(field2, FIELD_2_RESULTS)
     }
 
     @Test

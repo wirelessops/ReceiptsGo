@@ -79,9 +79,12 @@ class AutoCompleteInteractorTest {
 
     @Test
     fun getAutoCompleteResultsWhenMultipleCharactersAreTyped() {
-        interactor.getAutoCompleteResults(autoCompleteField, "Test")
+        whenever(resultsChecker.getValue(autoCompleteField, matchingResult1)).thenReturn("Test")
+        whenever(resultsChecker.getValue(autoCompleteField, matchingResult2)).thenReturn("Test2")
+        whenever(resultsChecker.getValue(autoCompleteField, nonMatchingResult)).thenReturn("Non-Test")
+        interactor.getAutoCompleteResults(autoCompleteField, "Te")
                 .test()
-                .assertNoValues()
+                .assertValues(listOf(AutoCompleteResult("Test", matchingResult1), AutoCompleteResult("Test2", matchingResult2)))
                 .assertNoErrors()
                 .assertComplete()
     }
