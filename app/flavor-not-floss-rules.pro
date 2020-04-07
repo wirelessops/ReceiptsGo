@@ -1,5 +1,15 @@
 
 
+##### Our Personal Classes #####
+-keep class co.smartreceipts.** { *; }
+-dontwarn co.smartreceipts.**
+-keep class wb.android.** { *; }
+-dontwarn wb.android.**
+-keep class wb.receipts.** { *; }
+-dontwarn wb.receipts.**
+-keep class wb.receiptspro.** { *; }
+-dontwarn wb.receiptspro.**
+
 ##### AWS ProGuard configurations #####
 
 # Class names are needed in reflection
