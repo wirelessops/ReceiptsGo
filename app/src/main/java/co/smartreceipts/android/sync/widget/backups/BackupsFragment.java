@@ -28,6 +28,8 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.databinding.BackupsHeaderBinding;
+import co.smartreceipts.android.databinding.SimpleRecyclerViewBinding;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -68,16 +70,15 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     private CompositeDisposable compositeDisposable;
 
     private Toolbar toolbar;
-    private View headerView;
-    private View exportButton;
-    private View importButton;
-    private View backupConfigButton;
     private ImageView backupConfigButtonImage;
     private TextView backupConfigButtonText;
     private TextView warningTextView;
     private CheckBox wifiOnlyCheckbox;
     private View existingBackupsSection;
     private RecyclerView recyclerView;
+
+    private SimpleRecyclerViewBinding rootBinding;
+    private BackupsHeaderBinding headerBinding;
 
     @Override
     public void onAttach(Context context) {
@@ -98,22 +99,23 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     @Override
     @SuppressLint("InflateParams")
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.simple_recycler_view, container, false);
-        recyclerView = rootView.findViewById(android.R.id.list);
+        rootBinding = SimpleRecyclerViewBinding.inflate(inflater, container, false);
+        recyclerView = rootBinding.list;
 
-        headerView = inflater.inflate(R.layout.backups_header, null);
-        exportButton = headerView.findViewById(R.id.manual_backup_export);
-        importButton = headerView.findViewById(R.id.manual_backup_import);
-        warningTextView = headerView.findViewById(R.id.auto_backup_warning);
-        backupConfigButton = headerView.findViewById(R.id.automatic_backup_config_button);
-        backupConfigButtonImage = headerView.findViewById(R.id.automatic_backup_config_button_image);
-        backupConfigButtonText = headerView.findViewById(R.id.automatic_backup_config_button_text);
-        wifiOnlyCheckbox = headerView.findViewById(R.id.auto_backup_wifi_only);
-        existingBackupsSection = headerView.findViewById(R.id.existing_backups_section);
+        headerBinding = BackupsHeaderBinding.inflate(inflater, container, false);
+        warningTextView = headerBinding.autoBackupWarning;
+        backupConfigButtonImage = headerBinding.automaticBackupConfigButtonImage;
+        backupConfigButtonText = headerBinding.automaticBackupConfigButtonText;
+        wifiOnlyCheckbox = headerBinding.autoBackupWifiOnly;
+        existingBackupsSection = headerBinding.existingBackupsSection;
+
+        View exportButton = headerBinding.manualBackupExport;
+        View importButton = headerBinding.manualBackupImport;
+        View backupConfigButton = headerBinding.automaticBackupConfigButton;
 
         // hide google drive backups section for FLOSS flavor
         if (BuildConfig.FLAVOR.equals("flossFlavor")) {
-            headerView.findViewById(R.id.auto_backup_title).setVisibility(View.GONE);
+            headerBinding.autoBackupTitle.setVisibility(View.GONE);
             warningTextView.setVisibility(View.GONE);
             backupConfigButton.setVisibility(View.GONE);
             wifiOnlyCheckbox.setVisibility(View.GONE);
@@ -142,13 +144,13 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
             persistenceManager.getPreferenceManager().set(UserPreference.Misc.AutoBackupOnWifiOnly, checked);
             backupProvidersManager.setAndInitializeNetworkProviderType(checked ? SupportedNetworkType.WifiOnly : SupportedNetworkType.AllNetworks);
         });
-        return rootView;
+        return rootBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setAdapter(new RemoteBackupsListAdapter(headerView, navigationHandler,
+        recyclerView.setAdapter(new RemoteBackupsListAdapter(headerBinding.getRoot(), navigationHandler,
                 backupProvidersManager, persistenceManager.getPreferenceManager(), networkManager));
     }
 
@@ -224,7 +226,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
         updateViewsForProvider(newProvider);
     }
 
-    public void updateViewsForProvider(@NonNull SyncProvider syncProvider) {
+    void updateViewsForProvider(@NonNull SyncProvider syncProvider) {
         if (isResumed()) {
             if (syncProvider == SyncProvider.None) {
                 warningTextView.setText(R.string.auto_backup_warning_none);
@@ -248,7 +250,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
                             existingBackupsSection.setVisibility(View.VISIBLE);
                         }
                         final RemoteBackupsListAdapter remoteBackupsListAdapter =
-                                new RemoteBackupsListAdapter(headerView, navigationHandler,
+                                new RemoteBackupsListAdapter(headerBinding.getRoot(), navigationHandler,
                                         backupProvidersManager, persistenceManager.getPreferenceManager(), networkManager, remoteBackupMetadatas);
                         recyclerView.setAdapter(remoteBackupsListAdapter);
                     })

@@ -22,6 +22,7 @@ import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.databinding.GenerateReportLayoutBinding;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -69,6 +70,7 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     private CheckBox csvCheckbox;
     private CheckBox zipCheckbox;
     private CheckBox zipWithMetadataCheckbox;
+    private GenerateReportLayoutBinding binding;
 
     private Trip trip;
 
@@ -86,14 +88,15 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.generate_report_layout, container, false);
+        binding = GenerateReportLayoutBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
         pdfFullCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_pdf_full);
         pdfImagesCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_pdf_images);
         csvCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_csv);
         zipWithMetadataCheckbox = (CheckBox) flex.getSubView(getActivity(), root, R.id.dialog_email_checkbox_zip_with_metadata);
-        zipCheckbox = root.findViewById(R.id.dialog_email_checkbox_zip);
-        root.findViewById(R.id.receipt_action_send).setOnClickListener(this);
-        root.findViewById(R.id.generate_report_tooltip).setOnClickListener(v -> {
+        zipCheckbox = binding.dialogEmailCheckboxZip;
+        binding.receiptActionSend.setOnClickListener(this);
+        binding.generateReportTooltip.setOnClickListener(v -> {
             analytics.record(Events.Informational.ConfigureReport);
             navigationHandler.navigateToSettingsScrollToReportSection();
         });
@@ -121,7 +124,7 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         Logger.debug(this, "pre-onSaveInstanceState");
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
@@ -196,5 +199,11 @@ public class GenerateReportFragment extends WBFragment implements View.OnClickLi
         final EmailAssistant emailAssistant = new EmailAssistant(getActivity(), navigationHandler,
                 reportResourcesManager, persistenceManager, trip, purchaseWallet, dateFormatter);
         emailAssistant.emailTrip(options);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

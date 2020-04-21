@@ -6,7 +6,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -16,6 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.DialogSelectAutomaticBackupProviderBinding;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
@@ -25,20 +28,30 @@ public class SelectAutomaticBackupProviderDialogFragment extends DialogFragment 
     @Inject
     BackupProvidersManager backupProvidersManager;
 
+    private ViewGroup container;
+    private DialogSelectAutomaticBackupProviderBinding binding;
+
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.container = container;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_select_automatic_backup_provider, null);
-        final RadioGroup providerGroup = dialogView.findViewById(R.id.automatic_backup_provider_radiogroup);
-        final RadioButton noneProviderButton = providerGroup.findViewById(R.id.automatic_backup_provider_none);
-        final RadioButton googleDriveProviderButton = providerGroup.findViewById(R.id.automatic_backup_provider_google_drive);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        binding = DialogSelectAutomaticBackupProviderBinding.inflate(inflater, container, false);
+        final RadioGroup providerGroup = binding.automaticBackupProviderRadiogroup;
+        final RadioButton noneProviderButton = binding.automaticBackupProviderNone;
+        final RadioButton googleDriveProviderButton = binding.automaticBackupProviderGoogleDrive;
 
         if (backupProvidersManager.getSyncProvider() == SyncProvider.GoogleDrive) {
             googleDriveProviderButton.setChecked(true);
@@ -60,7 +73,7 @@ public class SelectAutomaticBackupProviderDialogFragment extends DialogFragment 
         });
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(dialogView);
+        builder.setView(binding.getRoot());
         builder.setCancelable(true);
         builder.setNegativeButton(android.R.string.cancel, this);
         return builder.create();
@@ -69,5 +82,11 @@ public class SelectAutomaticBackupProviderDialogFragment extends DialogFragment 
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
         dismiss();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

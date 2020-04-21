@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripCardAdapter;
+import co.smartreceipts.android.databinding.TripsFragmentLayoutBinding;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.fragments.WBListFragment;
 import co.smartreceipts.android.model.Trip;
@@ -108,6 +109,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     private boolean hasResults = false;
 
+    private TripsFragmentLayoutBinding binding;
 
     public static TripFragment newInstance() {
         return new TripFragment();
@@ -136,12 +138,12 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
-        final View rootView = inflater.inflate(R.layout.trip_fragment_layout, container, false);
-        progressBar = rootView.findViewById(R.id.progress);
-        noDataAlert = rootView.findViewById(R.id.no_data);
-        tooltipView = rootView.findViewById(R.id.trip_tooltip);
-        rootView.findViewById(R.id.trip_action_new).setOnClickListener(v -> tripMenu(null));
-        return rootView;
+        binding = TripsFragmentLayoutBinding.inflate(inflater, container, false);
+        progressBar = binding.layoutTripCardList.progress;
+        noDataAlert = binding.layoutTripCardList.noData;
+        tooltipView = binding.tripTooltip;
+        binding.layoutTripCardList.tripActionNew.setOnClickListener(v -> tripMenu(null));
+        return binding.getRoot();
     }
 
     @Override
@@ -195,6 +197,12 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onDestroy() {
         tripTableController.unsubscribe(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override

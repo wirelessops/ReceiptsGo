@@ -25,6 +25,7 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripFragmentPagerAdapter;
 import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.databinding.ReportInfoViewPagerBinding;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.LastTripMonitor;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
@@ -58,6 +59,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private ReportInfoViewPagerBinding binding;
 
     @NonNull
     public static ReportInfoFragment newInstance() {
@@ -89,7 +91,8 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.report_info_view_pager, container, false);
+        binding = ReportInfoViewPagerBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -100,9 +103,9 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             new ChildFragmentNavigationHandler(this).addChild(ReportTooltipFragment.newInstance(), R.id.top_tooltip);
         }
 
-        viewPager = view.findViewById(R.id.pager);
+        viewPager = binding.pager;
         viewPager.setOffscreenPageLimit(3); // Set this to 3, since we have 4 tabs
-        tabLayout = view.findViewById(R.id.tabs);
+        tabLayout = binding.tabs;
 
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
@@ -200,5 +203,11 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public void navigateToBackup() {
         navigationHandler.navigateToBackupMenu();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

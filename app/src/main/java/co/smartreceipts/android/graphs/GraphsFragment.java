@@ -43,10 +43,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.GraphsFragmentBinding;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
@@ -67,28 +65,17 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     private static final float EXTRA_TOP_OFFSET_NORMAL = 25f;
     private static final float EXTRA_TOP_OFFSET_SMALL = 10f;
 
-    @BindView(R.id.empty_text)
-    TextView emptyText;
-
-    @BindView(R.id.progress)
-    ProgressBar progress;
-
-    @BindView(R.id.dates_line_chart)
-    LineChart datesLineChart;
-
-    @BindView(R.id.categories_pie_chart)
-    PieChart categoriesPieChart;
-
-    @BindView(R.id.reimbursable_horizontal_bar_chart)
-    HorizontalBarChart reimbursableBarChart;
-
-    @BindView(R.id.payment_methods_bar_chart)
-    BarChart paymentMethodsBarChart;
+    private TextView emptyText;
+    private ProgressBar progress;
+    private LineChart datesLineChart;
+    private PieChart categoriesPieChart;
+    private HorizontalBarChart reimbursableBarChart;
+    private BarChart paymentMethodsBarChart;
 
     @Inject
     GraphsPresenter presenter;
 
-    private Unbinder unbinder;
+    private GraphsFragmentBinding binding;
     private boolean isGraphPresenterSubscribed = false;
     private final IValueFormatter valueFormatter = new DefaultValueFormatter(1);
 
@@ -106,13 +93,21 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.graphs_fragment, container, false);
+        binding = GraphsFragmentBinding.inflate(inflater, container, false);
+
+        emptyText = binding.emptyText;
+        progress = binding.progress;
+        datesLineChart = binding.datesLineChart;
+        categoriesPieChart = binding.categoriesPieChart;
+        reimbursableBarChart = binding.reimbursableHorizontalBarChart;
+        paymentMethodsBarChart = binding.paymentMethodsBarChart;
+
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.unbinder = ButterKnife.bind(this, view);
 
         initDatesLineChart();
         initCategoriesPieChart();
@@ -147,8 +142,8 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
     @Override
     public void onDestroyView() {
-        this.unbinder.unbind();
         super.onDestroyView();
+        binding = null;
     }
 
     @Override

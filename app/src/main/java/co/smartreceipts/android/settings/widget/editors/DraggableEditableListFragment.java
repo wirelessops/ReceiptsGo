@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.SimpleRecyclerViewBinding;
 import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import co.smartreceipts.analytics.log.Logger;
@@ -26,6 +28,7 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     private Toolbar toolbar;
 
     private boolean isOnDragMode = false;
+    private SimpleRecyclerViewBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,11 +38,11 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.simple_recycler_view, container, false);
-        toolbar = rootView.findViewById(R.id.toolbar);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = SimpleRecyclerViewBinding.inflate(inflater, container, false);
+        toolbar = binding.toolbar.toolbar;
 
-        return rootView;
+        return binding.getRoot();
     }
 
     @Override
@@ -116,6 +119,12 @@ public abstract class DraggableEditableListFragment<T extends Draggable> extends
     public void onStop() {
         getTableController().unsubscribe(this);
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     /**

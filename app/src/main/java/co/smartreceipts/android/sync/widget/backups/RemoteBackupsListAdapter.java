@@ -45,7 +45,7 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
                                     @NonNull BackupProvidersManager backupProvidersManager, @NonNull UserPreferenceManager preferences,
                                     @NonNull NetworkManager networkManager) {
         this(headerView, navigationHandler, backupProvidersManager, preferences,
-                networkManager, Collections.<RemoteBackupMetadata>emptyList());
+                networkManager, Collections.emptyList());
     }
 
     public RemoteBackupsListAdapter(@NonNull View headerView, @NonNull NavigationHandler navigationHandler,

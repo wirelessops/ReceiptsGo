@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.smartreceipts.android.R
+import co.smartreceipts.android.databinding.AccountInfoFragmentBinding
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.core.identity.store.EmailAddress
@@ -20,7 +21,6 @@ import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.account_info_fragment.*
-import kotlinx.android.synthetic.main.account_info_fragment.view.*
 import javax.inject.Inject
 
 
@@ -47,6 +47,9 @@ class AccountFragment : Fragment(), AccountView {
 
     override val logoutButtonClicks: Observable<Unit> get() = logout_button.clicks()
 
+    private var _binding: AccountInfoFragmentBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -63,16 +66,16 @@ class AccountFragment : Fragment(), AccountView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.account_info_fragment, container, false)
+        _binding = AccountInfoFragmentBinding.inflate(inflater, container, false)
 
         subscriptionsAdapter = SubscriptionsListAdapter(dateFormatter)
-        view.subscriptions_list.apply {
+        binding.subscriptionsList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = subscriptionsAdapter
         }
 
         organizationsAdapter = OrganizationsListAdapter()
-        view.organizations_list.apply {
+        binding.organizationsList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = organizationsAdapter
         }
@@ -80,7 +83,7 @@ class AccountFragment : Fragment(), AccountView {
         applySettingsClicks = organizationsAdapter.getApplySettingsStream()
         uploadSettingsClicks = organizationsAdapter.getUploadSettingsStream()
 
-        return view
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -214,6 +217,11 @@ class AccountFragment : Fragment(), AccountView {
         @JvmStatic fun newInstance() = AccountFragment()
 
         const val OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN = "out_bool_was_previously_sent_to_login_screen"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

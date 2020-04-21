@@ -27,12 +27,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.android.databinding.OcrConfigurationFragmentBinding;
+import co.smartreceipts.android.databinding.SimpleRecyclerViewBinding;
 import co.smartreceipts.core.identity.store.EmailAddress;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.analytics.log.Logger;
@@ -54,14 +53,12 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Inject
     Analytics analytics;
 
-    @BindView(R.id.ocr_is_enabled)
-    CheckBox ocrIsEnabledCheckbox;
-
-    @BindView(R.id.ocr_save_scans_to_improve_results)
-    CheckBox allowUsToSaveImagesRemotelyCheckbox;
+    private CheckBox ocrIsEnabledCheckbox;
+    private CheckBox allowUsToSaveImagesRemotelyCheckbox;
 
     private OcrPurchasesListAdapter ocrPurchasesListAdapter;
-    private Unbinder unbinder;
+    private SimpleRecyclerViewBinding rootBinding;
+    private OcrConfigurationFragmentBinding headerBinding;
 
     private String delayedPurchaseId = null;
     private PublishSubject<String> delayedPurchaseIdSubject = PublishSubject.create();
@@ -99,16 +96,17 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.simple_recycler_view, container, false);
-        final RecyclerView recyclerView = rootView.findViewById(android.R.id.list);
-        final View headerView = inflater.inflate(R.layout.ocr_configuration_fragment, null);
+        rootBinding = SimpleRecyclerViewBinding.inflate(inflater, container, false);
 
-        this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter(headerView);
-        this.unbinder = ButterKnife.bind(this, headerView);
-
+        final RecyclerView recyclerView = rootBinding.list;
+        headerBinding = OcrConfigurationFragmentBinding.inflate(inflater, container, false);
+        this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter(headerBinding.getRoot());
         recyclerView.setAdapter(this.ocrPurchasesListAdapter);
 
-        return rootView;
+        ocrIsEnabledCheckbox = headerBinding.ocrIsEnabled;
+        allowUsToSaveImagesRemotelyCheckbox = headerBinding.ocrSaveScansToImproveResults;
+
+        return rootBinding.getRoot();
     }
 
     @Override
@@ -159,9 +157,10 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @Override
     public void onDestroyView() {
-        unbinder.unbind();
         ocrPurchasesListAdapter = null;
         super.onDestroyView();
+        rootBinding = null;
+        headerBinding = null;
     }
 
     @Override

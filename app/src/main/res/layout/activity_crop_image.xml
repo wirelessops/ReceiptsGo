@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/crop_toolbar"
+        android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
     <me.pqpo.smartcropperlib.view.CropImageView
@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:padding="@dimen/padding_large"
         app:layout_constraintBottom_toTopOf="@id/button_rotate_left"
-        app:layout_constraintTop_toBottomOf="@id/crop_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ProgressBar
         android:id="@+id/progress_crop"
@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@id/button_rotate_left"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/crop_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ImageView
         android:id="@+id/button_rotate_left"

@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import butterknife.BindViews
-import butterknife.ButterKnife
-import butterknife.ViewCollections
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.R
@@ -21,6 +18,7 @@ import co.smartreceipts.android.autocomplete.AutoCompleteResult
 import co.smartreceipts.android.autocomplete.distance.DistanceAutoCompleteField
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView
+import co.smartreceipts.android.databinding.UpdateDistanceBinding
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.distance.editor.currency.DistanceCurrencyCodeSupplier
 import co.smartreceipts.android.fragments.WBFragment
@@ -33,7 +31,6 @@ import co.smartreceipts.android.persistence.DatabaseHelper
 import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsPresenter
 import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsView
 import co.smartreceipts.android.utils.SoftKeyboardManager
-import co.smartreceipts.android.utils.butterknife.ButterKnifeActions
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding3.widget.textChanges
 import dagger.android.support.AndroidSupportInjection
@@ -66,8 +63,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     @Inject
     lateinit var paymentMethodsPresenter: PaymentMethodsPresenter
 
-    @BindViews(R.id.distance_input_guide_image_payment_method, R.id.distance_input_payment_method)
-    lateinit var paymentMethodsViewsList: List<@JvmSuppressWildcards View>
+    private lateinit var paymentMethodsViewsList: List<@JvmSuppressWildcards View>
 
     override val editableItem: Distance?
         get() = arguments?.getParcelable(Distance.PARCEL_KEY)
@@ -82,6 +78,9 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     private var focusedView: View? = null
 
     private lateinit var paymentMethodsAdapter: FooterButtonArrayAdapter<PaymentMethod>
+
+    private var _binding: UpdateDistanceBinding? = null
+    private val binding get() = _binding!!
 
     override val createDistanceClicks: Observable<Distance>
         get() = _createDistanceClicks
@@ -145,9 +144,11 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val ourView: View = inflater.inflate(R.layout.update_distance, container, false)
-        ButterKnife.bind(this, ourView)
-        return ourView
+        _binding = UpdateDistanceBinding.inflate(inflater, container, false)
+
+        paymentMethodsViewsList = listOf(binding.distanceInputGuideImagePaymentMethod, binding.distanceInputPaymentMethod)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -229,6 +230,11 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun present(uiIndicator: UiIndicator<Int>) {
         when (uiIndicator.state) {
             UiIndicator.State.Success -> navigationHandler.navigateBack()
@@ -307,10 +313,10 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     override fun togglePaymentMethodFieldVisibility(): Consumer<in Boolean> {
         return Consumer { isVisible ->
-            if (isVisible) {
-                ViewCollections.run(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE))
-            } else {
-                ViewCollections.run(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.GONE))
+            run {
+                for (v in paymentMethodsViewsList) {
+                    v.visibility = if (isVisible) View.VISIBLE else View.GONE
+                }
             }
         }
     }

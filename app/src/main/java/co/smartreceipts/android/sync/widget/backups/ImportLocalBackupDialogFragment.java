@@ -10,7 +10,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.google.common.base.Preconditions;
@@ -19,6 +22,7 @@ import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.databinding.DialogImportBackupBinding;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ImportLocalBackupDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
@@ -30,6 +34,8 @@ public class ImportLocalBackupDialogFragment extends DialogFragment implements D
 
     private Uri mUri;
     private CheckBox mOverwriteCheckBox;
+    private ViewGroup container;
+    private DialogImportBackupBinding binding;
 
     public static ImportLocalBackupDialogFragment newInstance(@NonNull Uri uri) {
         final ImportLocalBackupDialogFragment fragment = new ImportLocalBackupDialogFragment();
@@ -52,15 +58,22 @@ public class ImportLocalBackupDialogFragment extends DialogFragment implements D
         Preconditions.checkNotNull(mUri, "ImportBackupDialogFragment requires a valid SMR Uri");
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.container = container;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_import_backup, null);
-        mOverwriteCheckBox = dialogView.findViewById(R.id.dialog_import_overwrite);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        binding = DialogImportBackupBinding.inflate(inflater, container, false);
+        mOverwriteCheckBox = binding.dialogImportOverwrite;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(dialogView);
+        builder.setView(binding.getRoot());
         builder.setTitle(R.string.import_string);
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.dialog_import_positive, this);
@@ -74,5 +87,11 @@ public class ImportLocalBackupDialogFragment extends DialogFragment implements D
             navigationHandler.showDialog(ImportLocalBackupWorkerProgressDialogFragment.newInstance(mUri, mOverwriteCheckBox.isChecked()));
         }
         dismiss();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
