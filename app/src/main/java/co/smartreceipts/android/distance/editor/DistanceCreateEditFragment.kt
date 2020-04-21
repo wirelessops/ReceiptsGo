@@ -353,11 +353,15 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             when (field) {
                 DistanceAutoCompleteField.Location -> {
                     text_distance_location.setAdapter(resultsAdapter)
-                    text_distance_location.showDropDown()
+                    if (text_distance_location.hasFocus()) {
+                        text_distance_location.showDropDown()
+                    }
                 }
                 DistanceAutoCompleteField.Comment -> {
                     text_distance_comment.setAdapter(resultsAdapter)
-                    text_distance_comment.showDropDown()
+                    if (text_distance_comment.hasFocus()) {
+                        text_distance_comment.showDropDown()
+                    }
                 }
                 else -> throw IllegalArgumentException("Unsupported field type: $field")
             }

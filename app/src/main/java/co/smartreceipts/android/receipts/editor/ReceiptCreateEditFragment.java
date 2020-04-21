@@ -855,7 +855,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         final AutoCompleteArrayAdapter<Receipt> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
         if (field == ReceiptAutoCompleteField.Name) {
             nameBox.setAdapter(resultsAdapter);
-            nameBox.showDropDown();
+            if (nameBox.hasFocus()) {
+                nameBox.showDropDown();
+            }
             nameBox.setOnItemClickListener((parent, view, position, id) -> {
                 final Object selectedItem = parent.getAdapter().getItem(position);
                 // Whenever we select an old item, attempt to map our price and category to the same
@@ -880,7 +882,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             });
         } else if (field == ReceiptAutoCompleteField.Comment) {
             commentBox.setAdapter(resultsAdapter);
-            commentBox.showDropDown();
+            if (commentBox.hasFocus()) {
+                commentBox.showDropDown();
+            }
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }

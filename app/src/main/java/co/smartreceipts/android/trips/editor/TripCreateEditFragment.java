@@ -454,13 +454,19 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         final AutoCompleteArrayAdapter<Trip> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
         if (field == TripAutoCompleteField.Name) {
             nameBox.setAdapter(resultsAdapter);
-            nameBox.showDropDown();
+            if (nameBox.hasFocus()) {
+                nameBox.showDropDown();
+            }
         } else if (field == TripAutoCompleteField.Comment) {
             commentBox.setAdapter(resultsAdapter);
-            commentBox.showDropDown();
+            if (commentBox.hasFocus()) {
+                commentBox.showDropDown();
+            }
         } else if (field == TripAutoCompleteField.CostCenter) {
             costCenterBox.setAdapter(resultsAdapter);
-            costCenterBox.showDropDown();
+            if (costCenterBox.hasFocus()) {
+                costCenterBox.showDropDown();
+            }
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }
