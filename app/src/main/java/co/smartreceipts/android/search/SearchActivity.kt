@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import co.smartreceipts.android.R
+import co.smartreceipts.android.databinding.ActivitySearchBinding
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.Trip
@@ -18,7 +19,6 @@ import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
-
 
 class SearchActivity : AppCompatActivity(), SearchView {
 
@@ -43,12 +43,15 @@ class SearchActivity : AppCompatActivity(), SearchView {
 
     private lateinit var adapter: SearchResultsDelegationAdapter
 
+    private lateinit var binding: ActivitySearchBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // sets the focus and opens the keyboard
         search_view.isIconified = false
@@ -62,7 +65,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
     override fun onResume() {
         super.onResume()
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(binding.toolbar)
 
         supportActionBar?.apply {
             setHomeButtonEnabled(true)

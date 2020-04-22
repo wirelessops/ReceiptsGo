@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.DialogReceiptMoveCopyBinding;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
@@ -42,6 +44,8 @@ public class ReceiptMoveCopyDialogFragment extends DialogFragment implements Dia
     private Receipt mReceipt;
     private TableEventsListener<Trip> mTripTableEventsListener;
     private Spinner mTripSpinner;
+    private ViewGroup container;
+    private DialogReceiptMoveCopyBinding binding;
 
     public static ReceiptMoveCopyDialogFragment newInstance(@NonNull Receipt receipt) {
         final ReceiptMoveCopyDialogFragment fragment = new ReceiptMoveCopyDialogFragment();
@@ -64,18 +68,24 @@ public class ReceiptMoveCopyDialogFragment extends DialogFragment implements Dia
         mTripTableEventsListener = new UpdateAdapterTrips();
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.container = container;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
-        final View dialogView = inflater.inflate(R.layout.dialog_receipt_move_copy, null);
-        mTripSpinner = (Spinner) dialogView.findViewById(R.id.move_copy_spinner);
+        binding = DialogReceiptMoveCopyBinding.inflate(inflater, container, false);
+        mTripSpinner = binding.moveCopySpinner;
         mTripSpinner.setPrompt(getString(R.string.report));
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.move_copy_item, mReceipt.getName()));
-        builder.setView(dialogView);
+        builder.setView(binding.getRoot());
         builder.setCancelable(true);
 
         // Note: we change this order from standard Android, so move appears next to copy
@@ -115,6 +125,12 @@ public class ReceiptMoveCopyDialogFragment extends DialogFragment implements Dia
         } else {
             dismiss();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     private final class UpdateAdapterTrips extends StubTableEventsListener<Trip> {

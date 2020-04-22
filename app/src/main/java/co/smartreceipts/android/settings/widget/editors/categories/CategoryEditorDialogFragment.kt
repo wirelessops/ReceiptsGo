@@ -8,10 +8,11 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
-import butterknife.BindView
-import butterknife.ButterKnife
 import co.smartreceipts.android.R
+import co.smartreceipts.android.databinding.CategoryEditorBinding
 import co.smartreceipts.android.model.Category
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController
 import dagger.android.support.AndroidSupportInjection
@@ -37,11 +38,13 @@ class CategoryEditorDialogFragment : DialogFragment(),
     private val saveClickStream = PublishSubject.create<Any>()
     private val cancelClickStream = PublishSubject.create<Any>()
 
-    @BindView(R.id.category_input_name)
-    lateinit var nameBox: EditText
+    private lateinit var nameBox: EditText
+    private lateinit var codeBox: EditText
 
-    @BindView(R.id.category_input_code)
-    lateinit var codeBox: EditText
+    private var _binding: CategoryEditorBinding? = null
+    private val binding get() = _binding!!
+
+    private var container: ViewGroup? = null
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -54,11 +57,18 @@ class CategoryEditorDialogFragment : DialogFragment(),
         presenter = CategoryEditorPresenter(this, this, categoriesTableController, category, savedInstanceState)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.container = container
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = LayoutInflater.from(activity)
-        val dialogView = inflater.inflate(R.layout.category_editor, null)
-        ButterKnife.bind(this, dialogView)
+        _binding = CategoryEditorBinding.inflate(inflater, container, false)
+
+        nameBox = binding.categoryInputName
+        codeBox = binding.categoryInputCode
 
         val title: Int
         val positiveButton: Int
@@ -74,7 +84,7 @@ class CategoryEditorDialogFragment : DialogFragment(),
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(title)
-        builder.setView(dialogView)
+        builder.setView(binding.root)
         builder.setPositiveButton(positiveButton, this)
         builder.setNegativeButton(android.R.string.cancel, this)
         return builder.create()
@@ -122,6 +132,11 @@ class CategoryEditorDialogFragment : DialogFragment(),
 
     override fun dismissEditor() {
         dismiss()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

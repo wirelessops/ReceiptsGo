@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
 import co.smartreceipts.android.R;
@@ -40,6 +42,7 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
     }
 
     @Override
+    @NonNull
     public AbstractDraggableItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_draggable_spinner_card, parent, false);
@@ -47,7 +50,7 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
     }
 
     @Override
-    public void onBindViewHolder(AbstractDraggableItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AbstractDraggableItemViewHolder holder, int position) {
         ColumnViewHolder columnHolder = (ColumnViewHolder) holder;
 
         columnHolder.dragHandle.setVisibility(isOnDragMode ? View.VISIBLE : View.GONE);

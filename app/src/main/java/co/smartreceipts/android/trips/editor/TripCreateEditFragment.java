@@ -33,9 +33,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter;
@@ -48,6 +45,7 @@ import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
+import co.smartreceipts.android.databinding.UpdateTripBinding;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.editor.Editor;
@@ -108,40 +106,20 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     private CurrencyListEditorPresenter currencyListEditorPresenter;
     private DefaultCurrencyListEditorView defaultCurrencyListEditorView;
 
-    // Butterknife Fields
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private Tooltip tooltipView;
+    private AutoCompleteTextView nameBox;
+    private DateEditText startDateBox;
+    private DateEditText endDateBox;
+    private  Spinner currencySpinner;
+    private AutoCompleteTextView commentBox;
+    private AutoCompleteTextView costCenterBox;
+    private View costCenterBoxLayout;
 
-    @BindView(R.id.tooltip)
-    Tooltip tooltipView;
-
-    @BindView(R.id.dialog_tripmenu_name)
-    AutoCompleteTextView nameBox;
-
-    @BindView(R.id.dialog_tripmenu_start)
-    DateEditText startDateBox;
-
-    @BindView(R.id.dialog_tripmenu_end)
-    DateEditText endDateBox;
-
-    @BindView(R.id.dialog_tripmenu_currency)
-    Spinner currencySpinner;
-
-    @BindView(R.id.dialog_tripmenu_comment)
-    AutoCompleteTextView commentBox;
-
-    @BindView(R.id.dialog_tripmenu_cost_center)
-    AutoCompleteTextView costCenterBox;
-
-    @BindView(R.id.dialog_tripmenu_cost_center_layout)
-    View costCenterBoxLayout;
-
-    // Butterknife unbinding
-    private Unbinder unbinder;
+    private UpdateTripBinding binding;
 
     // Misc Views
     private View focusedView;
-
 
     public static TripCreateEditFragment newInstance() {
         return new TripCreateEditFragment();
@@ -177,13 +155,24 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.update_trip, container, false);
+        binding = UpdateTripBinding.inflate(inflater, container, false);
+
+        toolbar = binding.toolbar.toolbar;
+        tooltipView = binding.tooltip;
+        nameBox = binding.dialogTripmenuName;
+        startDateBox = binding.dialogTripmenuStart;
+        endDateBox = binding.dialogTripmenuEnd;
+        currencySpinner = binding.dialogTripmenuCurrency;
+        commentBox = binding.dialogTripmenuComment;
+        costCenterBox = binding.dialogTripmenuCostCenter;
+        costCenterBoxLayout = binding.dialogTripmenuCostCenterLayout;
+
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.unbinder = ButterKnife.bind(this, view);
 
         // Apply white-label settings via our 'Flex' mechanism to update defaults
         flex.applyCustomSettings(nameBox);
@@ -286,8 +275,8 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     public void onDestroyView() {
         Logger.debug(this, "onDestroyView");
         focusedView = null;
-        unbinder.unbind();
         super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -465,13 +454,19 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         final AutoCompleteArrayAdapter<Trip> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
         if (field == TripAutoCompleteField.Name) {
             nameBox.setAdapter(resultsAdapter);
-            nameBox.showDropDown();
+            if (nameBox.hasFocus()) {
+                nameBox.showDropDown();
+            }
         } else if (field == TripAutoCompleteField.Comment) {
             commentBox.setAdapter(resultsAdapter);
-            commentBox.showDropDown();
+            if (commentBox.hasFocus()) {
+                commentBox.showDropDown();
+            }
         } else if (field == TripAutoCompleteField.CostCenter) {
             costCenterBox.setAdapter(resultsAdapter);
-            costCenterBox.showDropDown();
+            if (costCenterBox.hasFocus()) {
+                costCenterBox.showDropDown();
+            }
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }

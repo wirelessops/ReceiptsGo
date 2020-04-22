@@ -1,5 +1,6 @@
 package co.smartreceipts.android.settings.widget.editors.adapters;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
@@ -60,7 +61,7 @@ public abstract class DraggableCardsAdapter<T extends Draggable> extends Recycle
     }
 
     @Override
-    public final ItemDraggableRange onGetItemDraggableRange(AbstractDraggableItemViewHolder holder, int position) {
+    public final ItemDraggableRange onGetItemDraggableRange(@NonNull AbstractDraggableItemViewHolder holder, int position) {
         // no drag-sortable range specified
         return null;
     }

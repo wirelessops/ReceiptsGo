@@ -16,7 +16,6 @@ import java.util.List;
 
 import co.smartreceipts.android.R;
 
-
 public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
 
     @StringRes

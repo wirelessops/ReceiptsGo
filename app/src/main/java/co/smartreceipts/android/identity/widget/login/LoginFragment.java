@@ -28,10 +28,8 @@ import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.LoginFragmentBinding;
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.analytics.log.Logger;
@@ -39,7 +37,6 @@ import co.smartreceipts.android.widget.model.UiIndicator;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import kotlin.Unit;
-
 
 public class LoginFragment extends Fragment implements LoginView {
 
@@ -49,25 +46,14 @@ public class LoginFragment extends Fragment implements LoginView {
     @Inject
     LoginRouter router;
 
-    @BindView(R.id.login_fields_hint)
-    TextView loginFieldsHintMessage;
+    private TextView loginFieldsHintMessage;
+    private EditText emailInput;
+    private EditText passwordInput;
+    private ProgressBar progress;
+    private Button loginButton;
+    private Button signUpButton;
 
-    @BindView(R.id.login_field_email)
-    EditText emailInput;
-
-    @BindView(R.id.login_field_password)
-    EditText passwordInput;
-
-    @BindView(R.id.progress)
-    ProgressBar progress;
-
-    @BindView(R.id.login_button)
-    Button loginButton;
-
-    @BindView(R.id.sign_up_button)
-    Button signUpButton;
-
-    private Unbinder unbinder;
+    private LoginFragmentBinding binding;
 
     @NonNull
     public static LoginFragment newInstance() {
@@ -88,14 +74,22 @@ public class LoginFragment extends Fragment implements LoginView {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = LoginFragmentBinding.inflate(inflater, container, false);
+
+        loginFieldsHintMessage = binding.loginFieldsHint;
+        emailInput = binding. loginFieldEmail;
+        passwordInput = binding.loginFieldPassword;
+        progress = binding.progress;
+        loginButton = binding.loginButton;
+        signUpButton = binding.signUpButton;
+
+        return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.unbinder = ButterKnife.bind(this, view);
         this.emailInput.requestFocus();
         SoftKeyboardManager.showKeyboard(this.emailInput);
     }
@@ -103,7 +97,7 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
@@ -149,8 +143,8 @@ public class LoginFragment extends Fragment implements LoginView {
     public void onDestroyView() {
         Logger.debug(this, "onDestroyView");
         SoftKeyboardManager.hideKeyboard(emailInput);
-        this.unbinder.unbind();
         super.onDestroyView();
+        binding = null;
     }
 
     @Override

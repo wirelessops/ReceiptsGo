@@ -92,8 +92,8 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 		if (convertView == null) {
 			holder = new MyViewHolder();
 			convertView = mInflater.inflate(mListItemId, parent, false);
-			holder.top = (TextView) convertView.findViewById(android.R.id.text1);
-			holder.bottom = (TextView) convertView.findViewById(android.R.id.text2);
+			holder.top = convertView.findViewById(android.R.id.text1);
+			holder.bottom = convertView.findViewById(android.R.id.text2);
 			convertView.setTag(holder);
 		}
 		else {

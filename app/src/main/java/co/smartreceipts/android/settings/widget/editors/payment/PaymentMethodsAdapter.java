@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
 import co.smartreceipts.android.R;
@@ -23,6 +25,7 @@ public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<Payment
     }
 
     @Override
+    @NonNull
     public AbstractDraggableItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_dragable_editable_card, parent, false);
@@ -30,7 +33,7 @@ public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<Payment
     }
 
     @Override
-    public void onBindViewHolder(AbstractDraggableItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AbstractDraggableItemViewHolder holder, int position) {
         PaymentMethodViewHolder paymentMethodHolder = (PaymentMethodViewHolder) holder;
         PaymentMethod method = items.get(position);
 
