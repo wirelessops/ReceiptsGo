@@ -30,14 +30,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.databinding.ReportReceiptsFragmentBinding;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.fragments.ImportPhotoPdfDialogFragment;
 import co.smartreceipts.android.fragments.ReceiptMoveCopyDialogFragment;
@@ -116,33 +114,18 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     @Inject
     Picasso picasso;
 
+    private ProgressBar loadingProgress;
+    private TextView noDataAlert;
+    private View receiptActionCameraButton;
+    private View receiptActionTextButton;
+    private View receiptActionImportButton;
+    private FloatingActionMenu floatingActionMenu;
+    private View floatingActionMenuActiveMaskView;
 
-    @BindView(R.id.progress)
-    ProgressBar loadingProgress;
-
-    @BindView(R.id.no_data)
-    TextView noDataAlert;
-
-    @BindView(R.id.receipt_action_camera)
-    View receiptActionCameraButton;
-
-    @BindView(R.id.receipt_action_text)
-    View receiptActionTextButton;
-
-    @BindView(R.id.receipt_action_import)
-    View receiptActionImportButton;
-
-    @BindView(R.id.fab_menu)
-    FloatingActionMenu floatingActionMenu;
-
-    @BindView(R.id.fab_active_mask)
-    View floatingActionMenuActiveMaskView;
-
-    // Non Butter Knife Views
     private Alerter alerter;
     private Alert alert;
 
-    private Unbinder unbinder;
+    private ReportReceiptsFragmentBinding binding;
 
     private Uri imageUri;
 
@@ -182,15 +165,23 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
                 .setIcon(R.drawable.ic_receipt_white_24dp);
 
         // And inflate the root view
-        return inflater.inflate(R.layout.receipt_fragment_layout, container, false);
+        binding = ReportReceiptsFragmentBinding.inflate(inflater, container, false);
+
+        loadingProgress = binding.progress;
+        noDataAlert = binding.noData;
+        receiptActionCameraButton = binding.receiptActionCamera;
+        receiptActionTextButton = binding.receiptActionText;
+        receiptActionImportButton = binding.receiptActionImport;
+        floatingActionMenu = binding.fabMenu;
+        floatingActionMenuActiveMaskView = binding.fabActiveMask;
+
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Logger.debug(this, "onViewCreated");
-
-        this.unbinder = ButterKnife.bind(this, view);
 
         receiptActionTextButton.setVisibility(configurationManager.isEnabled(ConfigurableResourceFeature.TextOnlyReceipts) ? View.VISIBLE : View.GONE);
         floatingActionMenuActiveMaskView.setOnClickListener(v -> {
@@ -271,7 +262,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         return actionBarSubtitleUpdatesListener;
     }
 
-
     @Override
     public void present(@NotNull UiIndicator<Integer> indicator) {
         if (loadingProgress != null) {
@@ -303,7 +293,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     }
 
     @Override
-    public void navigateToCropActivity(File file, int requestCode) {
+    public void navigateToCropActivity(@NonNull File file, int requestCode) {
         navigationHandler.navigateToCropActivity(this, file, requestCode);
     }
 
@@ -371,8 +361,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         Logger.debug(this, "onDestroyView");
         this.alert = null;
         this.alerter = null;
-        this.unbinder.unbind();
         super.onDestroyView();
+        binding = null;
     }
 
     @Override

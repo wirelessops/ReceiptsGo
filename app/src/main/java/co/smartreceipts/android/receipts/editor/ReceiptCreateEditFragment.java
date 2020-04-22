@@ -43,11 +43,6 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.BindView;
-import butterknife.BindViews;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import butterknife.ViewCollections;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.FooterButtonArrayAdapter;
@@ -63,6 +58,7 @@ import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompleteField;
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
+import co.smartreceipts.android.databinding.UpdateReceiptBinding;
 import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.editor.Editor;
@@ -99,7 +95,6 @@ import co.smartreceipts.android.receipts.editor.toolbar.ReceiptsEditorToolbarVie
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
-import co.smartreceipts.android.utils.butterknife.ButterKnifeActions;
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.utils.rx.RxSchedulers;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
@@ -178,60 +173,25 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Named(RxSchedulers.MAIN)
     Scheduler mainScheduler;
 
-    // Butterknife Fields
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private AutoCompleteTextView nameBox;
+    private EditText priceBox;
+    private AutoCompleteTextView taxBox;
+    private Spinner currencySpinner;
+    private NetworkRequestAwareEditText exchangeRateBox;
+    private EditText exchangedPriceInBaseCurrencyBox;
+    private TextView receiptInputExchangeRateBaseCurrencyTextView;
+    private DateEditText dateBox;
+    private Spinner categoriesSpinner;
+    private AutoCompleteTextView commentBox;
+    private Spinner paymentMethodsSpinner;
+    private CheckBox reimbursableCheckbox;
+    private CheckBox fullPageCheckbox;
+    private Button decimalSeparatorButton;
+    private View taxInputWrapper;
 
-    @BindView(R.id.DIALOG_RECEIPTMENU_NAME)
-    AutoCompleteTextView nameBox;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_PRICE)
-    EditText priceBox;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_TAX)
-    AutoCompleteTextView taxBox;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_CURRENCY)
-    Spinner currencySpinner;
-
-    @BindView(R.id.receipt_input_exchange_rate)
-    NetworkRequestAwareEditText exchangeRateBox;
-
-    @BindView(R.id.receipt_input_exchanged_result)
-    EditText exchangedPriceInBaseCurrencyBox;
-
-    @BindView(R.id.receipt_input_exchange_rate_base_currency)
-    TextView receiptInputExchangeRateBaseCurrencyTextView;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_DATE)
-    DateEditText dateBox;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_CATEGORY)
-    Spinner categoriesSpinner;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_COMMENT)
-    AutoCompleteTextView commentBox;
-
-    @BindView(R.id.receipt_input_payment_method)
-    Spinner paymentMethodsSpinner;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)
-    CheckBox reimbursableCheckbox;
-
-    @BindView(R.id.DIALOG_RECEIPTMENU_FULLPAGE)
-    CheckBox fullPageCheckbox;
-
-    @BindView(R.id.decimalSeparatorButton)
-    Button decimalSeparatorButton;
-
-    @BindView(R.id.receipt_input_tax_wrapper)
-    View taxInputWrapper;
-
-    @BindViews({R.id.receipt_input_guide_image_payment_method, R.id.receipt_input_payment_method})
-    List<View> paymentMethodsViewsList;
-
-    @BindViews({R.id.receipt_input_guide_image_exchange_rate, R.id.receipt_input_exchange_rate, R.id.receipt_input_exchanged_result, R.id.receipt_input_exchange_rate_base_currency})
-    List<View> exchangeRateViewsList;
+    private List<View> paymentMethodsViewsList;
+    private List<View> exchangeRateViewsList;
 
     // Flex fields (ie for white-label projects)
     EditText extraEditText1;
@@ -239,10 +199,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     EditText extraEditText3;
 
     // Misc views
-    View focusedView;
-
-    // Butterknife unbinding
-    private Unbinder unbinder;
+    private View focusedView;
+    private UpdateReceiptBinding binding;
 
     // Metadata
     private OcrResponse ocrResponse;
@@ -280,12 +238,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         ocrResponse = (OcrResponse) getArguments().getSerializable(ARG_OCR);
         receiptInputCache = new ReceiptInputCache(requireFragmentManager());
         categoriesList = emptyList();
-        categoriesAdapter = new FooterButtonArrayAdapter<>(requireActivity(), new ArrayList<Category>(),
+        categoriesAdapter = new FooterButtonArrayAdapter<>(requireActivity(), new ArrayList<>(),
                 R.string.manage_categories, v -> {
             analytics.record(Events.Informational.ClickedManageCategories);
             navigationHandler.navigateToCategoriesEditor();
         });
-        paymentMethodsAdapter = new FooterButtonArrayAdapter<>(requireActivity(), new ArrayList<PaymentMethod>(),
+        paymentMethodsAdapter = new FooterButtonArrayAdapter<>(requireActivity(), new ArrayList<>(),
                 R.string.manage_payment_methods, v -> {
             analytics.record(Events.Informational.ClickedManagePaymentMethods);
             navigationHandler.navigateToPaymentMethodsEditor();
@@ -311,13 +269,41 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.update_receipt, container, false);
+        binding = UpdateReceiptBinding.inflate(inflater, container, false);
+
+        toolbar = binding.toolbar.toolbar;
+        nameBox = binding.DIALOGRECEIPTMENUNAME;
+        priceBox = binding.DIALOGRECEIPTMENUPRICE;
+        taxBox = binding.DIALOGRECEIPTMENUTAX;
+        currencySpinner = binding.DIALOGRECEIPTMENUCURRENCY;
+        exchangeRateBox = binding.receiptInputExchangeRate;
+        exchangedPriceInBaseCurrencyBox = binding.receiptInputExchangedResult;
+        receiptInputExchangeRateBaseCurrencyTextView = binding.receiptInputExchangeRateBaseCurrency;
+        dateBox = binding.DIALOGRECEIPTMENUDATE;
+        categoriesSpinner = binding.DIALOGRECEIPTMENUCATEGORY;
+        commentBox = binding.DIALOGRECEIPTMENUCOMMENT;
+        paymentMethodsSpinner = binding.receiptInputPaymentMethod;
+        reimbursableCheckbox = binding.DIALOGRECEIPTMENUEXPENSABLE;
+        fullPageCheckbox = binding.DIALOGRECEIPTMENUFULLPAGE;
+        decimalSeparatorButton = binding.decimalSeparatorButton;
+        taxInputWrapper = binding.receiptInputTaxWrapper;
+
+        paymentMethodsViewsList = new ArrayList<>();
+        paymentMethodsViewsList.add(binding.receiptInputGuideImagePaymentMethod);
+        paymentMethodsViewsList.add(paymentMethodsSpinner);
+
+        exchangeRateViewsList = new ArrayList<>();
+        exchangeRateViewsList.add(binding.receiptInputGuideImageExchangeRate);
+        exchangeRateViewsList.add(exchangeRateBox);
+        exchangeRateViewsList.add(exchangedPriceInBaseCurrencyBox);
+        exchangeRateViewsList.add(receiptInputExchangeRateBaseCurrencyTextView);
+
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.unbinder = ButterKnife.bind(this, view);
 
         if (savedInstanceState == null) {
             if (isNewReceipt()) {
@@ -628,8 +614,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         extraEditText2 = null;
         extraEditText3 = null;
         focusedView = null;
-        unbinder.unbind();
         super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -740,8 +726,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Consumer<? super Boolean> toggleExchangeRateFieldVisibility() {
-        return (Consumer<Boolean>) isVisible ->
-                ViewCollections.run(exchangeRateViewsList, ButterKnifeActions.setVisibility(isVisible ? View.VISIBLE : View.GONE));
+        return (Consumer<Boolean>) isVisible -> {
+            for (View v : exchangeRateViewsList) {
+                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            }
+        };
     }
 
     @NonNull
@@ -866,7 +855,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         final AutoCompleteArrayAdapter<Receipt> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
         if (field == ReceiptAutoCompleteField.Name) {
             nameBox.setAdapter(resultsAdapter);
-            nameBox.showDropDown();
+            if (nameBox.hasFocus()) {
+                nameBox.showDropDown();
+            }
             nameBox.setOnItemClickListener((parent, view, position, id) -> {
                 final Object selectedItem = parent.getAdapter().getItem(position);
                 // Whenever we select an old item, attempt to map our price and category to the same
@@ -891,7 +882,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             });
         } else if (field == ReceiptAutoCompleteField.Comment) {
             commentBox.setAdapter(resultsAdapter);
-            commentBox.showDropDown();
+            if (commentBox.hasFocus()) {
+                commentBox.showDropDown();
+            }
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }
@@ -915,10 +908,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Consumer<? super Boolean> togglePaymentMethodFieldVisibility() {
         return isVisible -> {
-            if (isVisible) {
-                ViewCollections.run(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.VISIBLE));
-            } else {
-                ViewCollections.run(paymentMethodsViewsList, ButterKnifeActions.setVisibility(View.GONE));
+            for (View v : paymentMethodsViewsList) {
+                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
             }
         };
     }

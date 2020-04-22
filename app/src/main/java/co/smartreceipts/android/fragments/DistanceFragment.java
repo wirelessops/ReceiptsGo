@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.DistanceAdapter;
+import co.smartreceipts.android.databinding.ReportDistanceListBinding;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
@@ -61,6 +62,8 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     private TextView noDataAlert;
     private Distance lastInsertedDistance;
 
+    private ReportDistanceListBinding binding;
+
     public static DistanceFragment newInstance() {
         return new DistanceFragment();
     }
@@ -83,13 +86,13 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
-        final View view = inflater.inflate(R.layout.report_distance_list, container, false);
-        progressDialog = view.findViewById(R.id.progress);
-        noDataAlert = view.findViewById(R.id.no_data);
+        binding = ReportDistanceListBinding.inflate(inflater, container, false);
+        progressDialog = binding.progress;
+        noDataAlert = binding.noData;
         noDataAlert.setText(R.string.distance_no_data);
-        view.findViewById(R.id.distance_action_new).setOnClickListener(v ->
+        binding.distanceActionNew.setOnClickListener(v ->
                 navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate()));
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -223,5 +226,11 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
         if (isAdded()) {
             Toast.makeText(getActivity(), stringResId, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

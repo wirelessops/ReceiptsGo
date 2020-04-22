@@ -128,6 +128,10 @@ android {
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     dependencies {
         implementation fileTree(dir: 'libs', include: '*.jar')
         implementation project(':core')
@@ -173,9 +177,6 @@ android {
 
         implementation "commons-io:commons-io:$IO_UTILS_VERSION"
         implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
-
-        implementation "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
-        kapt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
         implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
         implementation "com.github.clans:fab:$FAB_MENU_VERSION"

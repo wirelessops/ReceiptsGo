@@ -3,6 +3,7 @@
     style="@style/Widget.SmartReceipts.RelativeLayout">
 
     <include
+        android:id="@+id/layoutTripCardList"
         layout="@layout/trip_card_list_no_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,7 +13,6 @@
         android:id="@+id/trip_tooltip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
         android:visibility="gone" />
 
 </RelativeLayout>

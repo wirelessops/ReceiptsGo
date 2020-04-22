@@ -9,7 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
@@ -17,9 +19,9 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.DialogReceiptAttachmentBinding;
 import co.smartreceipts.android.model.Receipt;
 import dagger.android.support.AndroidSupportInjection;
-
 
 public class ReceiptAttachmentDialogFragment extends DialogFragment {
 
@@ -27,7 +29,8 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
     ReceiptAttachmentManager receiptAttachmentManager;
 
     private Receipt receipt;
-
+    private ViewGroup container;
+    private DialogReceiptAttachmentBinding binding;
 
     public static ReceiptAttachmentDialogFragment newInstance(@NonNull Receipt receipt) {
         final ReceiptAttachmentDialogFragment dialogFragment = new ReceiptAttachmentDialogFragment();
@@ -50,13 +53,19 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         Preconditions.checkNotNull(receipt, "ReceiptAttachmentDialogFragment requires a valid Receipt");
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.container = container;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         final Fragment parentFragment = getParentFragment();
 
-        if (parentFragment == null || !(parentFragment instanceof Listener)) {
+        if (!(parentFragment instanceof Listener)) {
             throw new IllegalStateException("Parent fragment must implement ReceiptAttachmentDialogFragment.Listener interface");
         }
 
@@ -64,24 +73,24 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         dialogBuilder.setTitle(receipt.getName())
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
 
-        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_receipt_attachment, null);
-        dialogBuilder.setView(dialogView);
+        binding = DialogReceiptAttachmentBinding.inflate(getActivity().getLayoutInflater(), container, false);
+        dialogBuilder.setView(binding.getRoot());
 
         final AlertDialog dialog = dialogBuilder.create();
 
-        dialogView.findViewById(R.id.attach_photo).setOnClickListener(v -> {
+        binding.attachPhoto.setOnClickListener(v -> {
             ((Listener) parentFragment).setImageUri(receiptAttachmentManager.attachPhoto(parentFragment));
             dialog.dismiss();
         });
 
-        dialogView.findViewById(R.id.attach_picture).setOnClickListener(v -> {
+        binding.attachPicture.setOnClickListener(v -> {
             if (!receiptAttachmentManager.attachPicture(parentFragment, false)) {
                 Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
             }
             dialog.dismiss();
         });
 
-        dialogView.findViewById(R.id.attach_file).setOnClickListener(v -> {
+        binding.attachFile.setOnClickListener(v -> {
             if (!receiptAttachmentManager.attachFile(parentFragment, false)) {
                 Toast.makeText(getContext(), getString(R.string.error_no_file_intent_dialog_title), Toast.LENGTH_SHORT).show();
             }
@@ -89,10 +98,15 @@ public class ReceiptAttachmentDialogFragment extends DialogFragment {
         });
 
         return dialog;
-
     }
 
     public interface Listener {
         void setImageUri(Uri uri);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

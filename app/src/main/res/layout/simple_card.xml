@@ -8,7 +8,8 @@
     android:layout_marginStart="@dimen/margin_tiny"
     android:layout_marginEnd="@dimen/margin_tiny"
     android:layout_marginTop="@dimen/margin_tiniest"
-    android:layout_marginBottom="@dimen/margin_tiniest" >
+    android:layout_marginBottom="@dimen/margin_tiniest"
+    tools:viewBindingIgnore="true" >
 
 	<TextView
         android:id="@+id/price"

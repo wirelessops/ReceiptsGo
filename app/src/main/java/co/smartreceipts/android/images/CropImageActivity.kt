@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.smartreceipts.android.R
+import co.smartreceipts.android.databinding.ActivityCropImageBinding
 import co.smartreceipts.android.utils.StrictModeConfiguration
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding3.view.clicks
@@ -43,6 +44,8 @@ class CropImageActivity : AppCompatActivity(), CropView {
 
     private var autoCrop = true
 
+    private lateinit var binding: ActivityCropImageBinding
+
     @Inject
     lateinit var presenter: CropImagePresenter
 
@@ -52,7 +55,8 @@ class CropImageActivity : AppCompatActivity(), CropView {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_crop_image)
+        binding = ActivityCropImageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // setting default result
         val intent = Intent()
@@ -64,7 +68,7 @@ class CropImageActivity : AppCompatActivity(), CropView {
     override fun onResume() {
         super.onResume()
 
-        setSupportActionBar(findViewById(R.id.crop_toolbar))
+        setSupportActionBar(binding.toolbar.toolbar)
 
         supportActionBar?.apply {
             setTitle(R.string.menu_receiptimage_edit)
