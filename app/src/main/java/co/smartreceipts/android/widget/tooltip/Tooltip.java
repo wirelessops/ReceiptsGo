@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.databinding.AppTooltipBinding;
 import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -49,13 +47,13 @@ public class Tooltip extends RelativeLayout {
     }
 
     private void init() {
-        AppTooltipBinding binding = AppTooltipBinding.inflate(LayoutInflater.from(getContext()), this, false);
-        messageText = binding.tooltipMessage;
-        buttonNo = binding.tooltipNo;
-        buttonYes = binding.tooltipYes;
-        buttonCancel = binding.tooltipCancel;
-        closeIcon = binding.tooltipCloseIcon;
-        errorIcon = binding.tooltipErrorIcon;
+        inflate(getContext(), R.layout.app_tooltip, this);
+        messageText = findViewById(R.id.tooltip_message);
+        buttonNo = findViewById(R.id.tooltip_no);
+        buttonYes = findViewById(R.id.tooltip_yes);
+        buttonCancel = findViewById(R.id.tooltip_cancel);
+        closeIcon = findViewById(R.id.tooltip_close_icon);
+        errorIcon = findViewById(R.id.tooltip_error_icon);
 
         setVisibility(VISIBLE);
     }
