@@ -22,7 +22,7 @@ class ApplicationAwareAndroidJUnitRunner : AndroidJUnitRunner() {
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
         Log.d(TAG, "Launching our ApplicationAwareAndroidJUnitRunner")
-        runnerArgs = RunnerArgs.Builder().fromManifest(this).fromBundle(arguments).build()
+        runnerArgs = RunnerArgs.Builder().fromManifest(this).fromBundle(null, arguments).build()
         runnerArgs.tests?.let { tests ->
             tests.forEach {
                 val methods = Class.forName(it.testClassName).declaredMethods

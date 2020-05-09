@@ -3,7 +3,7 @@ package co.smartreceipts.android.test.espresso
 import android.content.Context
 import android.util.Log
 import androidx.annotation.CallSuper
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity

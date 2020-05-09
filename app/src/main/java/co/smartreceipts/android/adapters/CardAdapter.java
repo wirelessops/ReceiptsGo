@@ -243,7 +243,7 @@ public class CardAdapter<T> extends BaseAdapter {
             paint.setAntiAlias(true);
             paint.setTextSize(cardPriceTextSize * PRICE_WIDTH_BUFFER);
             paint.setTypeface(Typeface.DEFAULT_BOLD); // Set in the Price field
-            int curr = 0, measured = 0;
+            int curr = 0, measured;
             final int size = data.size();
             for (int i = 0; i < size; i++) {
                 measured = (int) paint.measureText(getPrice(data.get(i)));

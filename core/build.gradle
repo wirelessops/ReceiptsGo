@@ -30,6 +30,11 @@ android {
      * Note: core module doesn't have flavor-dependent code but it needs flavors because of transitive analytics module
      */
     flavorDimensions "isFloss"
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     productFlavors {
         floss {
             dimension "isFloss"

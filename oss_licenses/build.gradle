@@ -26,6 +26,11 @@ android {
     buildToolsVersion = rootProject.ext.buildToolsVersion
 
     flavorDimensions "isFloss"
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     productFlavors {
         floss {
             dimension "isFloss"
