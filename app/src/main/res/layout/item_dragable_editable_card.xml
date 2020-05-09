@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/card_date_size"
-            tools:text="Summary" />
+            android:text="@string/DIALOG_RECEIPTMENU_HINT_EXPENSABLE" />
     </LinearLayout>
 
     <ImageView
@@ -61,8 +61,7 @@
         android:background="@drawable/default_selector"
         android:contentDescription="@string/delete"
         android:padding="8dp"
-        app:srcCompat="@drawable/ic_delete_24dp"
-        />
+        app:srcCompat="@drawable/ic_delete_24dp" />
 
     <View
         android:id="@+id/divider"
@@ -78,7 +77,6 @@
         android:background="@drawable/default_selector"
         android:contentDescription="@string/edit"
         android:padding="8dp"
-        app:srcCompat="@drawable/ic_edit_24dp"
-        />
+        app:srcCompat="@drawable/ic_edit_24dp" />
 
 </RelativeLayout>

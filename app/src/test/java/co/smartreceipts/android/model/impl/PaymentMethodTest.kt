@@ -25,6 +25,7 @@ class PaymentMethodTest {
         private val PM_UUID = UUID.randomUUID()
         private const val METHOD = "method"
         private const val CUSTOM_ORDER_ID: Long = 2
+        private const val REIMBURSABLE: Boolean = false
     }
 
     // Class under test
@@ -35,7 +36,7 @@ class PaymentMethodTest {
     @Before
     fun setUp() {
         syncState = DefaultObjects.newDefaultSyncState()
-        paymentMethod = PaymentMethod(ID, PM_UUID, METHOD, syncState, CUSTOM_ORDER_ID)
+        paymentMethod = PaymentMethod(ID, PM_UUID, METHOD, REIMBURSABLE, syncState, CUSTOM_ORDER_ID)
     }
 
     @Test
@@ -59,20 +60,25 @@ class PaymentMethodTest {
     }
 
     @Test
+    fun getReimbursable() {
+        assertEquals(REIMBURSABLE, paymentMethod.isReimbursable)
+    }
+
+    @Test
     fun equals() {
         assertEquals(paymentMethod, paymentMethod)
         assertEquals(
             paymentMethod,
-            PaymentMethod(ID, PM_UUID, METHOD, syncState, CUSTOM_ORDER_ID)
+            PaymentMethod(ID, PM_UUID, METHOD, REIMBURSABLE, syncState, CUSTOM_ORDER_ID)
         )
         assertThat(paymentMethod, not(equalTo(Any())))
         assertThat(paymentMethod, not(equalTo(mock(PaymentMethod::class.java))))
-        assertThat(paymentMethod,not(equalTo(PaymentMethod(-1, PM_UUID, METHOD, syncState, CUSTOM_ORDER_ID))))
+        assertThat(paymentMethod, not(equalTo(PaymentMethod(-1, PM_UUID, METHOD, REIMBURSABLE, syncState, CUSTOM_ORDER_ID))))
         assertThat(
             paymentMethod,
             not(
                 equalTo(
-                    PaymentMethod(ID, PM_UUID, "abcd", syncState, CUSTOM_ORDER_ID)
+                    PaymentMethod(ID, PM_UUID, "abcd", REIMBURSABLE, syncState, CUSTOM_ORDER_ID)
                 )
             )
         )
@@ -80,7 +86,7 @@ class PaymentMethodTest {
             paymentMethod,
             not(
                 equalTo(
-                    PaymentMethod(ID, PM_UUID, "abcd", syncState, (CUSTOM_ORDER_ID + 1))
+                    PaymentMethod(ID, PM_UUID, "abcd", REIMBURSABLE, syncState, (CUSTOM_ORDER_ID + 1))
                 )
             )
         )
@@ -88,7 +94,7 @@ class PaymentMethodTest {
             paymentMethod,
             not(
                 equalTo(
-                    PaymentMethod(ID, UUID.randomUUID(), METHOD, syncState, (CUSTOM_ORDER_ID + 1))
+                    PaymentMethod(ID, UUID.randomUUID(), METHOD, REIMBURSABLE, syncState, (CUSTOM_ORDER_ID + 1))
                 )
             )
         )
@@ -105,9 +111,9 @@ class PaymentMethodTest {
     @Test
     fun compare() {
         val paymentMethod2 =
-            PaymentMethod(ID, PM_UUID, METHOD, syncState, (CUSTOM_ORDER_ID + 1))
+            PaymentMethod(ID, PM_UUID, METHOD, REIMBURSABLE, syncState, (CUSTOM_ORDER_ID + 1))
         val paymentMethod0 =
-            PaymentMethod(ID, PM_UUID, METHOD, syncState, (CUSTOM_ORDER_ID - 1))
+            PaymentMethod(ID, PM_UUID, METHOD, REIMBURSABLE, syncState, (CUSTOM_ORDER_ID - 1))
 
         val list = mutableListOf<PaymentMethod>().apply {
             add(paymentMethod)

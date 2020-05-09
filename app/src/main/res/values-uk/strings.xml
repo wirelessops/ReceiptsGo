@@ -55,6 +55,11 @@
     <string name="reports_title">Звіти</string>
     <string name="search_empty">Нічого не знайдено</string>
     <string name="search_hint">Ви можете шукати звіти або квитанції за назвою, коментарями, ціною або категорією</string>
+    <string name="item_removed_from_auto_complete">%s видалено з результатів автоматичного завершення</string>
+    <string name="delete_failed">Автоматичне завершення результату не вдалося видалити</string>
+    <string name="result_restored">Автозаповнення результату відновлено</string>
+    <string name="result_restore_failed">Не вдалося відновити результат автоматичного завершення</string>
+    <string name="undo">Скасувати</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Смарт Чеки Плюс</string>

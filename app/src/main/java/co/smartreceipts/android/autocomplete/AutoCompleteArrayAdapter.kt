@@ -3,14 +3,21 @@ package co.smartreceipts.android.autocomplete
 import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
+import co.smartreceipts.android.R
+import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 
 
 /**
  * Modifies the core [ArrayAdapter] contract to address a bug that is specific to auto-completion
  */
 class AutoCompleteArrayAdapter<Type>(context: Context,
-                                     autoCompleteResults: List<AutoCompleteResult<Type>>)
-    : ArrayAdapter<AutoCompleteResult<Type>>(context, android.R.layout.simple_dropdown_item_1line, autoCompleteResults) {
+                                     autoCompleteResults: MutableList<AutoCompleteResult<Type>>,
+                                     private val view: AutoCompleteView<Type>)
+    : ArrayAdapter<AutoCompleteResult<Type>>(context, R.layout.auto_complete_view, autoCompleteResults) {
 
     /**
      * Note: We override the default ArrayAdapter$ArrayFilter logic here, since this filter object's
@@ -26,5 +33,22 @@ class AutoCompleteArrayAdapter<Type>(context: Context,
         } else {
             super.notifyDataSetChanged()
         }
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val listItem = convertView ?: LayoutInflater.from(context).inflate(R.layout.auto_complete_view, parent, false)
+        val result = getItem(position)
+
+        val name = listItem.findViewById(R.id.auto_complete_name) as TextView
+        name.text = result!!.displayName
+        name.setOnClickListener {
+            view.fillValueField(result)
+        }
+
+        val image = listItem.findViewById(R.id.imgAutoCompleteDelete) as ImageView
+        image.setOnClickListener {
+            view.sendAutoCompleteHideEvent(result)
+        }
+        return listItem
     }
 }
