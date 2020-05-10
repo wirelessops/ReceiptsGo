@@ -1,11 +1,13 @@
 package co.smartreceipts.android.receipts.editor;
 
+import androidx.annotation.NonNull;
+
+import com.hadisatrio.optional.Optional;
+
 import java.sql.Date;
 import java.util.TimeZone;
 
-import javax.inject.Inject;
-
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompleteField;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Receipt;
@@ -14,7 +16,6 @@ import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
@@ -22,25 +23,84 @@ import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.analytics.log.Logger;
+import dagger.internal.Preconditions;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 
-@FragmentScope
 public class ReceiptCreateEditFragmentPresenter {
 
-    @Inject
-    ReceiptCreateEditFragment fragment;
-    @Inject
-    UserPreferenceManager preferenceManager;
-    @Inject
-    PurchaseManager purchaseManager;
-    @Inject
-    PurchaseWallet purchaseWallet;
-    @Inject
-    ReceiptTableController receiptTableController;
-    @Inject
-    OrderingPreferencesManager orderingPreferencesManager;
+    private final ReceiptCreateEditFragment fragment;
+    private final UserPreferenceManager preferenceManager;
+    private final PurchaseManager purchaseManager;
+    private final PurchaseWallet purchaseWallet;
+    private final ReceiptTableController receiptTableController;
+    private final CompositeDisposable compositeDisposable;
+    private int positionToRemoveOrAdd;
 
-    @Inject
-    ReceiptCreateEditFragmentPresenter() {
+    ReceiptCreateEditFragmentPresenter(@NonNull ReceiptCreateEditFragment fragment,
+                                       @NonNull UserPreferenceManager preferenceManager,
+                                       @NonNull PurchaseManager purchaseManager,
+                                       @NonNull PurchaseWallet purchaseWallet,
+                                       @NonNull ReceiptTableController receiptTableController) {
+        this.fragment = Preconditions.checkNotNull(fragment);
+        this.preferenceManager = Preconditions.checkNotNull(preferenceManager);
+        this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
+        this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
+        this.receiptTableController = Preconditions.checkNotNull(receiptTableController);
+        this.compositeDisposable = new CompositeDisposable();
+    }
+
+    public void subscribe() {
+        compositeDisposable.add(fragment.getHideAutoCompleteVisibilityClick()
+                .flatMap(autoCompleteClickEvent -> {
+                    positionToRemoveOrAdd = autoCompleteClickEvent.getPosition();
+                    if (autoCompleteClickEvent.getType() == ReceiptAutoCompleteField.Name) {
+                        return updateReceipt(autoCompleteClickEvent.getItem().getFirstItem(),
+                                new ReceiptBuilderFactory(autoCompleteClickEvent.getItem().getFirstItem())
+                                        .setNameHiddenFromAutoComplete(true)
+                                        .build());
+                    } else if (autoCompleteClickEvent.getType() == ReceiptAutoCompleteField.Comment) {
+                        return updateReceipt(autoCompleteClickEvent.getItem().getFirstItem(),
+                                new ReceiptBuilderFactory(autoCompleteClickEvent.getItem().getFirstItem())
+                                        .setCommentHiddenFromAutoComplete(true)
+                                        .build());
+                    } else {
+                        throw new UnsupportedOperationException("Unknown type: " + autoCompleteClickEvent.getType());
+                    }
+                })
+                .subscribe(receiptOptional -> {
+                    if (receiptOptional.isPresent()) {
+                        fragment.removeValueFromAutoComplete(positionToRemoveOrAdd);
+                    }
+                }));
+
+        compositeDisposable.add(fragment.getUnHideAutoCompleteVisibilityClick()
+                .flatMap(autoCompleteClickEvent -> {
+                    if (autoCompleteClickEvent.getType() == ReceiptAutoCompleteField.Name) {
+                        return updateReceipt(autoCompleteClickEvent.getItem().getFirstItem(),
+                                new ReceiptBuilderFactory(autoCompleteClickEvent.getItem().getFirstItem())
+                                        .setNameHiddenFromAutoComplete(false)
+                                        .build());
+                    } else if (autoCompleteClickEvent.getType() == ReceiptAutoCompleteField.Comment) {
+                        return updateReceipt(autoCompleteClickEvent.getItem().getFirstItem(),
+                                new ReceiptBuilderFactory(autoCompleteClickEvent.getItem().getFirstItem())
+                                        .setCommentHiddenFromAutoComplete(false)
+                                        .build());
+                    } else {
+                        throw new UnsupportedOperationException("Unknown type: " + autoCompleteClickEvent.getType());
+                    }
+                })
+                .subscribe(receiptOptional -> {
+                    if (receiptOptional.isPresent()) {
+                        fragment.sendAutoCompleteUnHideEvent(positionToRemoveOrAdd);
+                    } else {
+                        fragment.displayAutoCompleteError();
+                    }
+                }));
+    }
+
+    public void unsubscribe() {
+        compositeDisposable.clear();
     }
 
     boolean isIncludeTaxField() {
@@ -165,6 +225,10 @@ public class ReceiptCreateEditFragmentPresenter {
             }
         }
         return false;
+    }
+
+    public Observable<Optional<Receipt>> updateReceipt(Receipt oldReceipt, Receipt newReceipt) {
+        return receiptTableController.update(oldReceipt, newReceipt, new DatabaseOperationMetadata());
     }
 
 }

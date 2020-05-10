@@ -17,8 +17,8 @@ import org.robolectric.RobolectricTestRunner
 class AutoCompletePresenterTest {
 
     companion object {
-        private val FIELD_1_RESULTS = listOf(AutoCompleteResult("1a", Any()), AutoCompleteResult("1b", Any()))
-        private val FIELD_2_RESULTS = listOf(AutoCompleteResult("2a", Any()), AutoCompleteResult("2b", Any()))
+        private val FIELD_1_RESULTS = mutableListOf(AutoCompleteResult("1a", Any()), AutoCompleteResult("1b", Any()))
+        private val FIELD_2_RESULTS = mutableListOf(AutoCompleteResult("2a", Any()), AutoCompleteResult("2b", Any()))
     }
 
     // Class under test

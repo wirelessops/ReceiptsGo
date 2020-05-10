@@ -65,9 +65,7 @@ constructor(
                 if (data?.data == null && proposedImageSaveLocation == null) {
                     emitter.onError(FileNotFoundException("Unknown intent data and proposed save location for request $requestCode with result $resultCode"))
                 } else {
-                    val uri: Uri? = data?.data ?: proposedImageSaveLocation
-
-                    when (uri) {
+                    when (val uri: Uri? = data?.data ?: proposedImageSaveLocation) {
                         null -> emitter.onError(FileNotFoundException("Null Uri for request $requestCode with result $resultCode"))
                         else -> {
                             Logger.info(this, "Image save location determined as {}", uri)

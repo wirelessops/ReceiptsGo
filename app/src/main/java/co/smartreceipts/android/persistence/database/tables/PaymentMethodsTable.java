@@ -23,6 +23,7 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod> {
     public static final String TABLE_NAME = "paymentmethods";
 
     public static final String COLUMN_METHOD = "method";
+    public static final String COLUMN_REIMBURSABLE = "expenseable";
 
     public PaymentMethodsTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
                                @NonNull OrderingPreferencesManager orderingPreferencesManager) {
@@ -37,6 +38,7 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod> {
         final String sql = "CREATE TABLE " + getTableName() + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_METHOD + " TEXT, "
+                + COLUMN_REIMBURSABLE + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
                 + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
                 + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
@@ -89,6 +91,12 @@ public final class PaymentMethodsTable extends AbstractSqlTable<PaymentMethod> {
 
         if (oldVersion <= 18) { // v18 => 19 added UUID column
             onUpgradeToAddUUID(db, oldVersion);
+        }
+
+        if (oldVersion <= 21) { // v20 => 21 added reimbursable column
+            final String alterPaymentMethods = "ALTER TABLE " + getTableName() + " ADD COLUMN " + COLUMN_REIMBURSABLE + " BOOLEAN DEFAULT 0";
+            Logger.debug(this, alterPaymentMethods);
+            db.execSQL(alterPaymentMethods);
         }
     }
 

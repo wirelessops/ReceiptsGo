@@ -55,6 +55,11 @@
     <string name="reports_title">Отчёты</string>
     <string name="search_empty">Результаты не найдены</string>
     <string name="search_hint">Вы можете искать отчеты или чеки по имени, комментарию, цене или категории</string>
+    <string name="item_removed_from_auto_complete">%s удалены из результатов автозаполнения</string>
+    <string name="delete_failed">Не удалось удалить результат автоматического завершения</string>
+    <string name="result_restored">Автозаполненный результат восстановлен</string>
+    <string name="result_restore_failed">Автозаполнение результата не удалось восстановить</string>
+    <string name="undo">Отменить</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Смарт Чеки Плюс</string>

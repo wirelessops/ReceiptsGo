@@ -211,6 +211,7 @@ android {
 
         // Espresso Tests
         androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
+        androidTestImplementation "androidx.test.ext:junit:$JUNIT_EXT_VERSION"
         androidTestImplementation "androidx.test:runner:$ANDROID_TEST_RUNNER_VERSION"
         androidTestImplementation "androidx.test:rules:$ANDROID_TEST_RUNNER_VERSION"
         androidTestUtil "androidx.test:orchestrator:$ANDROID_TEST_RUNNER_VERSION"

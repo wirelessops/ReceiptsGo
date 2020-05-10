@@ -131,7 +131,9 @@ public class DistanceTableTest {
                 .setComment(COMMENT)
                 .setRate(RATE)
                 .setCurrency(CURRENCY_CODE)
-                .setPaymentMethod(mPaymentMethod);
+                .setPaymentMethod(mPaymentMethod)
+                .setLocationHiddenFromAutoComplete(false)
+                .setCommentHiddenFromAutoComplete(false);
         mDistance1 = mDistanceTable.insert(mBuilder.setDistance(DISTANCE_1).setLocation(LOCATION_1).setTrip(mTrip1).build(), new DatabaseOperationMetadata()).blockingGet();
         mDistance2 = mDistanceTable.insert(mBuilder.setDistance(DISTANCE_2).setLocation(LOCATION_2).setTrip(mTrip2).build(), new DatabaseOperationMetadata()).blockingGet();
     }

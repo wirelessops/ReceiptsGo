@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.date.DisplayableDate;
+import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -49,6 +50,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
     private SyncState syncState;
     private long orderId;
     private UUID uuid;
+    private AutoCompleteMetadata autoCompleteMetadata;
 
     public ReceiptBuilderFactory() {
         this(Keyed.MISSING_ID);
@@ -66,6 +68,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         syncState = new DefaultSyncState();
         orderId = ReceiptsOrderer.Companion.getDefaultCustomOrderId(date);
         uuid = Keyed.Companion.getMISSING_UUID();
+        autoCompleteMetadata = new AutoCompleteMetadata(false, false, false, false);
     }
 
     public ReceiptBuilderFactory(@NonNull Receipt receipt) {
@@ -90,6 +93,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         syncState = receipt.getSyncState();
         orderId = receipt.getCustomOrderId();
         uuid = receipt.getUuid();
+        autoCompleteMetadata = receipt.getAutoCompleteMetadata();
     }
 
     public ReceiptBuilderFactory(int id, @NonNull Receipt receipt) {
@@ -276,6 +280,16 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
+    public ReceiptBuilderFactory setNameHiddenFromAutoComplete(boolean isHiddenFromAutoComplete) {
+        this.autoCompleteMetadata.setNameHiddenFromAutoComplete(isHiddenFromAutoComplete);
+        return this;
+    }
+
+    public ReceiptBuilderFactory setCommentHiddenFromAutoComplete(boolean isHiddenFromAutoComplete) {
+        this.autoCompleteMetadata.setCommentHiddenFromAutoComplete(isHiddenFromAutoComplete);
+        return this;
+    }
+
     @Override
     @NonNull
     public Receipt build() {
@@ -284,7 +298,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
                 paymentMethod == null ? PaymentMethod.Companion.getNONE() : paymentMethod, name,
                 category == null ? new CategoryBuilderFactory().build() : category, comment,
                 priceBuilderFactory.build(), taxBuilderFactory.build(), displayableDate, isReimbursable,
-                isFullPage, isSelected, extraEditText1, extraEditText2, extraEditText3, syncState, orderId);
+                isFullPage, isSelected, extraEditText1, extraEditText2, extraEditText3, syncState, orderId, autoCompleteMetadata);
     }
 
 }

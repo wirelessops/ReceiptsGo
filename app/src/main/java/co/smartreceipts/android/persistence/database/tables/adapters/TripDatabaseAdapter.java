@@ -77,6 +77,9 @@ public final class TripDatabaseAdapter implements DatabaseAdapter<Trip> {
                 .setComment(comment)
                 .setCostCenter(costCenter)
                 .setDefaultCurrency(defaultCurrency, preferences.get(UserPreference.General.DefaultCurrency))
+                .setNameHiddenFromAutoComplete(isNameHiddenFromAutoComplete)
+                .setCommentHiddenFromAutoComplete(isCommentHiddenFromAutoComplete)
+                .setCostCenterHiddenFromAutoComplete(isCostCenterHiddenFromAutoComplete)
                 .setSyncState(syncState)
                 .build();
     }
@@ -94,6 +97,9 @@ public final class TripDatabaseAdapter implements DatabaseAdapter<Trip> {
         values.put(TripsTable.COLUMN_COST_CENTER, trip.getCostCenter());
         values.put(TripsTable.COLUMN_DEFAULT_CURRENCY, trip.getDefaultCurrencyCode());
         values.put(TripsTable.COLUMN_UUID, trip.getUuid().toString());
+        values.put(TripsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE, trip.getAutoCompleteMetadata().isNameHiddenFromAutoComplete());
+        values.put(TripsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE, trip.getAutoCompleteMetadata().isCommentHiddenFromAutoComplete());
+        values.put(TripsTable.COLUMN_COSTCENTER_HIDDEN_AUTO_COMPLETE, trip.getAutoCompleteMetadata().isCostCenterHiddenFromAutoComplete());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(syncStateAdapter.write(trip.getSyncState()));
         } else {

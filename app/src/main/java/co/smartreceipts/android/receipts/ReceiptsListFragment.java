@@ -293,7 +293,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     }
 
     @Override
-    public void navigateToCropActivity(@NonNull File file, int requestCode) {
+    public void navigateToCropActivity(@NotNull File file, int requestCode) {
         navigationHandler.navigateToCropActivity(this, file, requestCode);
     }
 
