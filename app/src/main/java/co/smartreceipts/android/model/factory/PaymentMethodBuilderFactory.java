@@ -17,6 +17,7 @@ import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
  */
 public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod> {
 
+    private boolean _reimbursable;
     private int _id;
     private UUID _uuid;
     private String _method;
@@ -32,6 +33,7 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
         _method = "";
         _syncState = new DefaultSyncState();
         _customOrderId = 0;
+        _reimbursable = false;
     }
 
     public PaymentMethodBuilderFactory(final PaymentMethod paymentMethod) {
@@ -40,6 +42,7 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
         _method = paymentMethod.getMethod();
         _syncState = paymentMethod.getSyncState();
         _customOrderId = paymentMethod.getCustomOrderId();
+        _reimbursable = paymentMethod.isReimbursable();
     }
 
     /**
@@ -80,6 +83,11 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
         return this;
     }
 
+    public PaymentMethodBuilderFactory setReimbursable(boolean reimbursable) {
+        _reimbursable = reimbursable;
+        return this;
+    }
+
 
     /**
      * Defines the "custom_order_id" for this payment method
@@ -97,6 +105,6 @@ public class PaymentMethodBuilderFactory implements BuilderFactory<PaymentMethod
      */
     @NonNull
     public PaymentMethod build() {
-        return new PaymentMethod(_id, _uuid, _method, _syncState, _customOrderId);
+        return new PaymentMethod(_id, _uuid, _method, _reimbursable, _syncState, _customOrderId);
     }
 }

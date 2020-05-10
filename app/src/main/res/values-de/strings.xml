@@ -55,6 +55,11 @@
     <string name="reports_title">Berichte</string>
     <string name="search_empty">Keine Ergebnisse gefunden</string>
     <string name="search_hint">Sie können nach Berichten oder Belegen nach Name, Kommentar, Preis oder Kategorie suchen</string>
+    <string name="item_removed_from_auto_complete">%s aus den Ergebnissen der automatischen Vervollständigung entfernt</string>
+    <string name="delete_failed">Ergebnis der automatischen Vervollständigung konnte nicht gelöscht werden</string>
+    <string name="result_restored">Automatisch vervollständigtes Ergebnis wiederhergestellt</string>
+    <string name="result_restore_failed">Ergebnis der automatischen Vervollständigung konnte nicht wiederhergestellt werden</string>
+    <string name="undo">Rückgängig machen</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart-Plus-Receipts</string>

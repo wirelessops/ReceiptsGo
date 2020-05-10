@@ -3,6 +3,7 @@ package co.smartreceipts.android.model.impl
 import co.smartreceipts.android.DefaultObjects
 import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.date.DisplayableDate
+import co.smartreceipts.android.model.AutoCompleteMetadata
 import co.smartreceipts.android.model.Price
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
@@ -54,6 +55,8 @@ class TripTest {
 
     private var price: Price = PriceBuilderFactory().setPrice(0.0).setCurrency(CURRENCY).build()
 
+    private var autoCompleteMetadata: AutoCompleteMetadata = AutoCompleteMetadata(isNameHiddenFromAutoComplete = NAME_HIDDEN_AUTO_COMPLETE, isCommentHiddenFromAutoComplete = COMMENT_HIDDEN_AUTO_COMPLETE, isLocationHiddenFromAutoComplete = false, isCostCenterHiddenFromAutoComplete = COST_CENTER_HIDDEN_AUTO_COMPLETE)
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -61,7 +64,7 @@ class TripTest {
         syncState = DefaultObjects.newDefaultSyncState()
         trip = Trip(
             ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT,
-            COST_CENTER, syncState, price, price
+            COST_CENTER, syncState, price, price, autoCompleteMetadata
         )
     }
 
@@ -108,6 +111,21 @@ class TripTest {
     @Test
     fun getEndTimeZone() {
         assertEquals(END_TIMEZONE, trip.endTimeZone)
+    }
+
+    @Test
+    fun getNameHiddenFromAutoComplete() {
+        assertEquals(NAME_HIDDEN_AUTO_COMPLETE, trip.autoCompleteMetadata.isNameHiddenFromAutoComplete)
+    }
+
+    @Test
+    fun getCommentHiddenFromAutoComplete() {
+        assertEquals(COMMENT_HIDDEN_AUTO_COMPLETE, trip.autoCompleteMetadata.isCommentHiddenFromAutoComplete)
+    }
+
+    @Test
+    fun getCostCenterHiddenFromAutoComplete() {
+        assertEquals(COST_CENTER_HIDDEN_AUTO_COMPLETE, trip.autoCompleteMetadata.isCostCenterHiddenFromAutoComplete)
     }
 
     @Test
@@ -165,20 +183,20 @@ class TripTest {
         assertTrue(
             trip.compareTo(
                 Trip(
-                    ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT, COST_CENTER, syncState, price, price
+                    ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT, COST_CENTER, syncState, price, price, autoCompleteMetadata
                 )
             ) == 0
         )
         assertTrue(
                 trip > Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, DisplayableDate(Date(END_DATE.time * 2), END_TIMEZONE), CURRENCY, COMMENT,
-                        COST_CENTER, syncState, price, price
+                        COST_CENTER, syncState, price, price, autoCompleteMetadata
                 )
         )
         assertTrue(
                 trip < Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, DisplayableDate(Date(0), END_TIMEZONE), CURRENCY, COMMENT, COST_CENTER,
-                        syncState, price, price
+                        syncState, price, price, autoCompleteMetadata
                 )
         )
     }
@@ -190,7 +208,7 @@ class TripTest {
             trip,
             Trip(
                 ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT, COST_CENTER,
-                    syncState, price, price
+                    syncState, price, price, autoCompleteMetadata
             )
         )
         assertThat(trip, not(equalTo(Any())))
@@ -201,7 +219,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, File(""), START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT, COST_CENTER,
-                            syncState, price, price
+                            syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -212,7 +230,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, DisplayableDate(Date(System.currentTimeMillis()), START_TIMEZONE), END_DISPLAYABLE_DATE, CURRENCY,
-                        COMMENT, COST_CENTER, syncState, price, price
+                        COMMENT, COST_CENTER, syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -223,7 +241,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, DisplayableDate(START_DATE, TimeZone.getTimeZone(TimeZone.getAvailableIDs()[2])), END_DISPLAYABLE_DATE,
-                        CURRENCY, COMMENT, COST_CENTER, syncState, price, price
+                        CURRENCY, COMMENT, COST_CENTER, syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -234,7 +252,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, DisplayableDate(Date(System.currentTimeMillis()), END_TIMEZONE), CURRENCY,
-                        COMMENT, COST_CENTER, syncState, price, price
+                        COMMENT, COST_CENTER, syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -245,7 +263,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, DisplayableDate(END_DATE, TimeZone.getTimeZone(TimeZone.getAvailableIDs()[2])),
-                        CURRENCY, COMMENT, COST_CENTER, syncState, price, price
+                        CURRENCY, COMMENT, COST_CENTER, syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -257,7 +275,7 @@ class TripTest {
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE,
                         PriceCurrency.getInstance("EUR"), COMMENT, COST_CENTER,
-                            syncState, price, price
+                            syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -268,7 +286,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, "bad",
-                        COST_CENTER, syncState, price, price
+                        COST_CENTER, syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -279,7 +297,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT, "bad",
-                            syncState, price, price
+                            syncState, price, price, autoCompleteMetadata
                     )
                 )
             )
@@ -288,12 +306,12 @@ class TripTest {
         // Special equals cases (source, price, and daily subtotal don't count):
         val tripWithPrice = Trip(
             ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT,
-            COST_CENTER, syncState, price, price
+            COST_CENTER, syncState, price, price, autoCompleteMetadata
         )
 
         val tripWithDailySubTotal = Trip(
             ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT,
-            COST_CENTER, syncState, price, price
+            COST_CENTER, syncState, price, price, autoCompleteMetadata
         )
 
         tripWithPrice.price = price
@@ -302,7 +320,7 @@ class TripTest {
             trip,
             Trip(
                 ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE, CURRENCY, COMMENT, COST_CENTER,
-                    syncState, price, price
+                    syncState, price, price, autoCompleteMetadata
             )
         )
         assertEquals(trip, tripWithPrice)

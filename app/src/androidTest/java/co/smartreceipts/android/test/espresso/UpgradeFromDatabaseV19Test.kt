@@ -1,7 +1,7 @@
 package co.smartreceipts.android.test.espresso
 
 import androidx.test.filters.LargeTest
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import co.smartreceipts.android.test.runner.BeforeApplicationOnCreate
 import co.smartreceipts.android.test.utils.TestResourceReader
 import org.junit.runner.RunWith
@@ -16,7 +16,7 @@ class UpgradeFromDatabaseV19Test : UpgradeFromKnownDatabaseValidator() {
         @JvmStatic
         @BeforeApplicationOnCreate
         fun setUpBeforeApplicationOnCreate() {
-            UpgradeFromKnownDatabaseValidator.setUpBeforeApplicationOnCreate(TestResourceReader.V19_DATABASE)
+            setUpBeforeApplicationOnCreate(TestResourceReader.V19_DATABASE)
         }
 
     }

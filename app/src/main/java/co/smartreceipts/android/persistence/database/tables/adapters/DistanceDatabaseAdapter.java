@@ -97,7 +97,9 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
                 .setCurrency(rateCurrency)
                 .setComment(comment)
                 .setSyncState(syncState)
-                .setPaymentMethod(paymentMethod);
+                .setPaymentMethod(paymentMethod)
+                .setLocationHiddenFromAutoComplete(isLocationHiddenFromAutoComplete)
+                .setCommentHiddenFromAutoComplete(isCommentHiddenFromAutoComplete);
 
         return builder.build();
     }
@@ -117,6 +119,8 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
         values.put(DistanceTable.COLUMN_COMMENT, distance.getComment().trim());
         values.put(DistanceTable.COLUMN_UUID, distance.getUuid().toString());
         values.put(DistanceTable.COLUMN_PAYMENT_METHOD_ID, distance.getPaymentMethod().getId());
+        values.put(DistanceTable.COLUMN_LOCATION_HIDDEN_AUTO_COMPLETE, distance.getAutoCompleteMetadata().isLocationHiddenFromAutoComplete());
+        values.put(DistanceTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE, distance.getAutoCompleteMetadata().isCommentHiddenFromAutoComplete());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(distance.getSyncState()));
         } else {

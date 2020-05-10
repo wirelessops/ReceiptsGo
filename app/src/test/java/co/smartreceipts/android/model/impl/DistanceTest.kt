@@ -56,7 +56,8 @@ class DistanceTest {
         trip = DefaultObjects.newDefaultTrip()
         syncState = DefaultObjects.newDefaultSyncState()
         distance = DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
-            .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState).build()
+            .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState)
+                .setLocationHiddenFromAutoComplete(LOCATION_HIDDEN_AUTO_COMPLETE).setCommentHiddenFromAutoComplete(COMMENT_HIDDEN_AUTO_COMPLETE).build()
     }
 
     @After
@@ -136,23 +137,36 @@ class DistanceTest {
     }
 
     @Test
+    fun getLocationHiddenFromAutoComplete() {
+        assertEquals(LOCATION_HIDDEN_AUTO_COMPLETE, distance.autoCompleteMetadata.isLocationHiddenFromAutoComplete)
+    }
+
+    @Test
+    fun getCommentHiddenFromAutoComplete() {
+        assertEquals(COMMENT_HIDDEN_AUTO_COMPLETE, distance.autoCompleteMetadata.isCommentHiddenFromAutoComplete)
+    }
+
+    @Test
     fun compareTo() {
         assertTrue(
             distance.compareTo(
                 DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
-                    .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState).build()
+                    .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState)
+                        .setLocationHiddenFromAutoComplete(LOCATION_HIDDEN_AUTO_COMPLETE).setCommentHiddenFromAutoComplete(COMMENT_HIDDEN_AUTO_COMPLETE).build()
             ) == 0
         )
         assertTrue(
             distance.compareTo(
                 DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
-                    .setCurrency(CURRENCY).setDate(DATE.time * 2).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState).build()
+                    .setCurrency(CURRENCY).setDate(DATE.time * 2).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState)
+                        .setLocationHiddenFromAutoComplete(LOCATION_HIDDEN_AUTO_COMPLETE).setCommentHiddenFromAutoComplete(COMMENT_HIDDEN_AUTO_COMPLETE).build()
             ) > 0
         )
         assertTrue(
             distance.compareTo(
                 DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
-                    .setCurrency(CURRENCY).setDate(Date(0)).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState).build()
+                    .setCurrency(CURRENCY).setDate(Date(0)).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState)
+                        .setLocationHiddenFromAutoComplete(LOCATION_HIDDEN_AUTO_COMPLETE).setCommentHiddenFromAutoComplete(COMMENT_HIDDEN_AUTO_COMPLETE).build()
             ) < 0
         )
     }
@@ -163,7 +177,8 @@ class DistanceTest {
         Assert.assertEquals(
             distance,
             DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
-                .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState).build()
+                .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState)
+                    .setLocationHiddenFromAutoComplete(LOCATION_HIDDEN_AUTO_COMPLETE).setCommentHiddenFromAutoComplete(COMMENT_HIDDEN_AUTO_COMPLETE).build()
         )
         assertThat(distance, not(equalTo(Any())))
         assertThat(distance, not(equalTo(mock(Distance::class.java))))

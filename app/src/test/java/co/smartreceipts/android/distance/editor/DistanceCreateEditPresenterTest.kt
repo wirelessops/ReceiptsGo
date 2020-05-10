@@ -24,7 +24,8 @@ class DistanceCreateEditPresenterTest {
     private val view = mock<DistanceCreateEditView>()
     private val interactor = mock<DistanceCreateEditInteractor>()
 
-    private val distanceAutoCompletePresenter = mock<AutoCompletePresenter<Distance>>()
+    private val autoCompletePresenter = mock<AutoCompletePresenter<Distance>>()
+    private val distanceAutoCompletePresenter = mock<DistanceAutoCompletePresenter>()
     private val distance = mock<Distance>()
     private val newDistance = mock<Distance>()
 
@@ -33,13 +34,15 @@ class DistanceCreateEditPresenterTest {
         whenever(view.createDistanceClicks).thenReturn(Observable.never())
         whenever(view.deleteDistanceClicks).thenReturn(Observable.never())
         whenever(view.updateDistanceClicks).thenReturn(Observable.never())
+        whenever(view.hideAutoCompleteVisibilityClick).thenReturn(Observable.never())
+        whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(Observable.never())
         whenever(view.editableItem).thenReturn((distance))
 
         doNothing().whenever(interactor).deleteDistance(distance)
         whenever(interactor.createDistance(distance)).thenReturn(Observable.just(Optional.of(distance)))
         whenever(interactor.updateDistance(distance, newDistance)).thenReturn(Observable.just(Optional.of(newDistance)))
 
-        presenter = DistanceCreateEditPresenter(view, interactor, distanceAutoCompletePresenter)
+        presenter = DistanceCreateEditPresenter(view, interactor, autoCompletePresenter, distanceAutoCompletePresenter)
     }
 
     @Test

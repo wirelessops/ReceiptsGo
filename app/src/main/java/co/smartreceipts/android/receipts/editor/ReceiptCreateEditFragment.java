@@ -26,6 +26,7 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -67,6 +68,7 @@ import co.smartreceipts.android.fragments.ReceiptInputCache;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.keyboard.decimal.SamsungDecimalInputPresenter;
 import co.smartreceipts.android.keyboard.decimal.SamsungDecimalInputView;
+import co.smartreceipts.android.model.AutoCompleteUpdateEvent;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
@@ -80,7 +82,10 @@ import co.smartreceipts.android.ocr.widget.tooltip.ReceiptCreateEditFragmentTool
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController;
+import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
+import co.smartreceipts.android.purchases.PurchaseManager;
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.receipts.editor.currency.ReceiptCurrencyCodeSupplier;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.exchange.CurrencyExchangeRateEditorPresenter;
@@ -105,6 +110,8 @@ import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 import kotlin.Unit;
 import wb.android.flex.Flex;
 
@@ -118,7 +125,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         SamsungDecimalInputView,
         AutoCompleteView<Receipt>,
         ReceiptsEditorToolbarView,
-        PaymentMethodsView  {
+        PaymentMethodsView {
 
     public static final String ARG_FILE = "arg_file";
     public static final String ARG_OCR = "arg_ocr";
@@ -133,10 +140,19 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     ExchangeRateServiceManager exchangeRateServiceManager;
 
     @Inject
+    PurchaseManager purchaseManager;
+
+    @Inject
+    PurchaseWallet purchaseWallet;
+
+    @Inject
     Analytics analytics;
 
     @Inject
     CategoriesTableController categoriesTableController;
+
+    @Inject
+    ReceiptTableController receiptTableController;
 
     @Inject
     NavigationHandler navigationHandler;
@@ -149,9 +165,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Inject
     DateFormatter dateFormatter;
-
-    @Inject
-    ReceiptCreateEditFragmentPresenter presenter;
 
     @Inject
     SamsungDecimalInputPresenter samsungDecimalInputPresenter;
@@ -209,6 +222,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private CurrencyListEditorPresenter currencyListEditorPresenter;
     private ReceiptPricingPresenter receiptPricingPresenter;
     private CurrencyExchangeRateEditorPresenter currencyExchangeRateEditorPresenter;
+    private ReceiptCreateEditFragmentPresenter presenter;
 
     // Database monitor callbacks
     private TableEventsListener<Category> categoryTableEventsListener;
@@ -218,6 +232,15 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private List<Category> categoriesList;
     private FooterButtonArrayAdapter<Category> categoriesAdapter;
     private FooterButtonArrayAdapter<PaymentMethod> paymentMethodsAdapter;
+    private AutoCompleteArrayAdapter<Receipt> resultsAdapter;
+    private Snackbar snackbar;
+    private boolean shouldHideResults;
+    private AutoCompleteResult<Receipt> itemToRemoveOrReAdd;
+
+    private Subject<AutoCompleteUpdateEvent<Receipt>> _hideAutoCompleteVisibilityClicks =
+            PublishSubject.<AutoCompleteUpdateEvent<Receipt>>create().toSerialized();
+    private Subject<AutoCompleteUpdateEvent<Receipt>> _unHideAutoCompleteVisibilityClicks =
+            PublishSubject.<AutoCompleteUpdateEvent<Receipt>>create().toSerialized();
 
     @NonNull
     public static ReceiptCreateEditFragment newInstance() {
@@ -256,6 +279,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
         receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getEditableItem(), savedInstanceState, ioScheduler, mainScheduler);
         currencyExchangeRateEditorPresenter = new CurrencyExchangeRateEditorPresenter(this, this, defaultCurrencyListEditorView, this, exchangeRateServiceManager, database, getParentTrip(), getEditableItem(), savedInstanceState);
+        presenter = new ReceiptCreateEditFragmentPresenter(this, userPreferenceManager, purchaseManager, purchaseWallet, receiptTableController);
     }
 
     Trip getParentTrip() {
@@ -307,7 +331,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
         if (savedInstanceState == null) {
             if (isNewReceipt()) {
-                new ChildFragmentNavigationHandler(this).addChild(new ReceiptCreateEditFragmentTooltipFragment(), R.id.update_receipt_tooltip);
+                new ChildFragmentNavigationHandler(this).addChild(
+                        new ReceiptCreateEditFragmentTooltipFragment(), R.id.update_receipt_tooltip);
             }
         }
 
@@ -527,6 +552,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         currencyExchangeRateEditorPresenter.subscribe();
         receiptsEditorToolbarPresenter.subscribe();
         paymentMethodsPresenter.subscribe();
+        presenter.subscribe();
 
         // Attempt to update our lists in case they were changed in the background
         categoriesTableController.get();
@@ -585,7 +611,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         super.onPause();
     }
 
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -604,6 +629,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         currencyExchangeRateEditorPresenter.unsubscribe();
         autoCompletePresenter.unsubscribe();
         samsungDecimalInputPresenter.unsubscribe();
+        presenter.unsubscribe();
+        if (snackbar != null && snackbar.isShown()) {
+            snackbar.dismiss();
+        }
         super.onStop();
     }
 
@@ -852,41 +881,26 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Override
     public void displayAutoCompleteResults(@NotNull AutoCompleteField field, @NotNull List<AutoCompleteResult<Receipt>> autoCompleteResults) {
-        final AutoCompleteArrayAdapter<Receipt> resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults);
-        if (field == ReceiptAutoCompleteField.Name) {
-            nameBox.setAdapter(resultsAdapter);
-            if (nameBox.hasFocus()) {
-                nameBox.showDropDown();
+        if (!shouldHideResults) {
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
             }
-            nameBox.setOnItemClickListener((parent, view, position, id) -> {
-                final Object selectedItem = parent.getAdapter().getItem(position);
-                // Whenever we select an old item, attempt to map our price and category to the same
-                if (selectedItem instanceof AutoCompleteResult) {
-                    //noinspection unchecked
-                    final AutoCompleteResult<Receipt> selectedAutoCompleteResult = (AutoCompleteResult<Receipt>) selectedItem;
-                    final Receipt firstReceipt = selectedAutoCompleteResult.getFirstItem();
-
-                    // Only update the price if: no text is set AND the next item price == the first
-                    if (priceBox.getText().length() == 0) {
-                        final Receipt secondReceipt = selectedAutoCompleteResult.getSecondItem();
-                        if (secondReceipt != null && firstReceipt.getPrice().getDecimalFormattedPrice().equals(secondReceipt.getPrice().getDecimalFormattedPrice())) {
-                            priceBox.setText(firstReceipt.getPrice().getDecimalFormattedPrice());
-                        }
-                    }
-
-                    final int categoryIndex = categoriesList.indexOf(firstReceipt.getCategory());
-                    if (categoryIndex > 0) {
-                        categoriesSpinner.setSelection(categoryIndex);
-                    }
+            resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults, this);
+            if (field == ReceiptAutoCompleteField.Name) {
+                nameBox.setAdapter(resultsAdapter);
+                if (nameBox.hasFocus()) {
+                    nameBox.showDropDown();
                 }
-            });
-        } else if (field == ReceiptAutoCompleteField.Comment) {
-            commentBox.setAdapter(resultsAdapter);
-            if (commentBox.hasFocus()) {
-                commentBox.showDropDown();
+            } else if (field == ReceiptAutoCompleteField.Comment) {
+                commentBox.setAdapter(resultsAdapter);
+                if (commentBox.hasFocus()) {
+                    commentBox.showDropDown();
+                }
+            } else {
+                throw new IllegalArgumentException("Unsupported field type: " + field);
             }
         } else {
-            throw new IllegalArgumentException("Unsupported field type: " + field);
+            shouldHideResults = false;
         }
     }
 
@@ -919,6 +933,19 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         if (isAdded()) {
             paymentMethodsAdapter.update(list);
             paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
+            paymentMethodsSpinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            final PaymentMethod paymentMethod = paymentMethodsAdapter.getItem(i);
+                            reimbursableCheckbox.setChecked(paymentMethod.isReimbursable());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
             if (getEditableItem() != null) {
                 // Here we manually loop through all payment methods and check for id == id in case the user changed this via "Manage"
                 final PaymentMethod receiptPaymentMethod = getEditableItem().getPaymentMethod();
@@ -931,6 +958,96 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                 }
             }
         }
+    }
+
+    @Override
+    public void fillValueField(@NotNull AutoCompleteResult<Receipt> autoCompleteResult) {
+        final Receipt firstReceipt = autoCompleteResult.getFirstItem();
+        shouldHideResults = true;
+        if (nameBox.isPopupShowing()) {
+            // Whenever we select an old item, attempt to map our price and category to the same
+            // Only update the price if: no text is set AND the next item price == the first
+            if (priceBox.getText().length() == 0) {
+                final Receipt secondReceipt = autoCompleteResult.getSecondItem();
+                if (secondReceipt != null && firstReceipt.getPrice().getDecimalFormattedPrice().equals(secondReceipt.getPrice().getDecimalFormattedPrice())) {
+                    priceBox.setText(firstReceipt.getPrice().getDecimalFormattedPrice());
+                }
+            }
+
+            final int categoryIndex = categoriesList.indexOf(firstReceipt.getCategory());
+            if (categoryIndex > 0) {
+                categoriesSpinner.setSelection(categoryIndex);
+            }
+            nameBox.setText(autoCompleteResult.getDisplayName());
+            nameBox.setSelection(nameBox.getText().length());
+            nameBox.dismissDropDown();
+        } else {
+            commentBox.setText(autoCompleteResult.getDisplayName());
+            commentBox.setSelection(commentBox.getText().length());
+            commentBox.dismissDropDown();
+        }
+        SoftKeyboardManager.hideKeyboard(focusedView);
+    }
+
+    @Override
+    public void sendAutoCompleteHideEvent(@NotNull AutoCompleteResult<Receipt> autoCompleteResult) {
+        SoftKeyboardManager.hideKeyboard(focusedView);
+        if (nameBox.isPopupShowing()) {
+            _hideAutoCompleteVisibilityClicks.onNext(
+                    new AutoCompleteUpdateEvent(autoCompleteResult, ReceiptAutoCompleteField.Name, resultsAdapter.getPosition(autoCompleteResult)));
+        } else {
+            _hideAutoCompleteVisibilityClicks.onNext(
+                    new AutoCompleteUpdateEvent(autoCompleteResult, ReceiptAutoCompleteField.Comment, resultsAdapter.getPosition(autoCompleteResult)));
+        }
+    }
+
+    @Override
+    public void removeValueFromAutoComplete(int position) {
+        getActivity().runOnUiThread(() -> {
+            itemToRemoveOrReAdd = resultsAdapter.getItem(position);
+            resultsAdapter.remove(itemToRemoveOrReAdd);
+            resultsAdapter.notifyDataSetChanged();
+            View view = getActivity().findViewById(R.id.update_receipt_layout);
+            snackbar = Snackbar.make(view, getString(
+                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.undo, v -> {
+                if (nameBox.hasFocus()) {
+                    _unHideAutoCompleteVisibilityClicks.onNext(
+                            new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Name, position));
+                } else {
+                    _unHideAutoCompleteVisibilityClicks.onNext(
+                            new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Comment, position));
+                }
+            });
+            snackbar.show();
+        });
+    }
+
+    @Override
+    public void sendAutoCompleteUnHideEvent(int position) {
+        getActivity().runOnUiThread(() -> {
+            resultsAdapter.insert(itemToRemoveOrReAdd, position);
+            resultsAdapter.notifyDataSetChanged();
+            Toast.makeText(getContext(), R.string.result_restored, Toast.LENGTH_LONG).show();
+        });
+    }
+
+    @Override
+    public void displayAutoCompleteError() {
+        getActivity().runOnUiThread(() ->
+                Toast.makeText(getContext(), R.string.result_restore_failed, Toast.LENGTH_LONG).show());
+    }
+
+    @NotNull
+    @Override
+    public Observable<AutoCompleteUpdateEvent<Receipt>> getHideAutoCompleteVisibilityClick() {
+        return _hideAutoCompleteVisibilityClicks;
+    }
+
+    @NotNull
+    @Override
+    public Observable<AutoCompleteUpdateEvent<Receipt>> getUnHideAutoCompleteVisibilityClick() {
+        return _unHideAutoCompleteVisibilityClicks;
     }
 
     private class SpinnerSelectionListener implements AdapterView.OnItemSelectedListener {

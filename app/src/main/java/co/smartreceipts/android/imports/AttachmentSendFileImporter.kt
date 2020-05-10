@@ -29,9 +29,9 @@ class AttachmentSendFileImporter @Inject constructor(
 
     fun importAttachment(trip: Trip, receipt: Receipt, intentImportResult: IntentImportResult): Single<File> {
 
-        val importProcessor: FileImportProcessor = when {
-            intentImportResult.fileType == FileType.Image -> ImageImportProcessor(trip, storageManager, preferences, context)
-            intentImportResult.fileType == FileType.Pdf -> GenericFileImportProcessor(trip, storageManager, context)
+        val importProcessor: FileImportProcessor = when (intentImportResult.fileType) {
+            FileType.Image -> ImageImportProcessor(trip, storageManager, preferences, context)
+            FileType.Pdf -> GenericFileImportProcessor(trip, storageManager, context)
             else -> AutoFailImportProcessor()
         }
 

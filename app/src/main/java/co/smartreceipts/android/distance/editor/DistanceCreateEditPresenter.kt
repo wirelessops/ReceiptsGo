@@ -2,23 +2,25 @@ package co.smartreceipts.android.distance.editor
 
 import co.smartreceipts.android.R
 import co.smartreceipts.android.autocomplete.AutoCompletePresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.widget.model.UiIndicator
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
+import co.smartreceipts.core.di.scopes.FragmentScope
 import java.math.BigDecimal
 import javax.inject.Inject
 
 @FragmentScope
 class DistanceCreateEditPresenter @Inject constructor(
     view: DistanceCreateEditView, interactor: DistanceCreateEditInteractor,
-    private var distanceAutoCompletePresenter: AutoCompletePresenter<Distance>
+    private var autoCompletePresenter: AutoCompletePresenter<Distance>,
+    private var distanceAutoCompletePresenter: DistanceAutoCompletePresenter
 ) :
     BaseViperPresenter<DistanceCreateEditView, DistanceCreateEditInteractor>(view, interactor) {
 
     override fun subscribe() {
 
+        autoCompletePresenter.subscribe()
         distanceAutoCompletePresenter.subscribe()
 
         compositeDisposable.add(view.createDistanceClicks
@@ -26,7 +28,7 @@ class DistanceCreateEditPresenter @Inject constructor(
             .flatMap { interactor.createDistance(it) }
             .map { result ->
                 when {
-                    result.isPresent -> UiIndicator.success<Int>()
+                    result.isPresent -> UiIndicator.success()
                     else -> UiIndicator.error<Int>(R.string.distance_insert_failed)
                 }
             }
@@ -38,7 +40,7 @@ class DistanceCreateEditPresenter @Inject constructor(
             .flatMap { interactor.updateDistance(view.editableItem!!, it) }
             .map { result ->
                 when {
-                    result.isPresent -> UiIndicator.success<Int>()
+                    result.isPresent -> UiIndicator.success()
                     else -> UiIndicator.error<Int>(R.string.distance_update_failed)
                 }
             }
@@ -53,6 +55,7 @@ class DistanceCreateEditPresenter @Inject constructor(
     override fun unsubscribe() {
         super.unsubscribe()
 
+        autoCompletePresenter.unsubscribe()
         distanceAutoCompletePresenter.unsubscribe()
     }
 
@@ -68,6 +71,5 @@ class DistanceCreateEditPresenter @Inject constructor(
             ""
         }
     }
-
 
 }

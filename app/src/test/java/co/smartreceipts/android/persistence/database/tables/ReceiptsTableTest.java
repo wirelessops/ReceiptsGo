@@ -179,7 +179,9 @@ public class ReceiptsTableTest {
                 .setIsReimbursable(true)
                 .setCurrency(CURRENCY_CODE)
                 .setIsFullPage(false)
-                .setPaymentMethod(mPaymentMethod);
+                .setPaymentMethod(mPaymentMethod)
+                .setNameHiddenFromAutoComplete(false)
+                .setCommentHiddenFromAutoComplete(false);
         mReceipt1 = mReceiptsTable.insert(mBuilder.setName(NAME_1).setPrice(PRICE_1).setTrip(mTrip1).setDate(DATE_1).setIndex(1).setUuid(UUID_1).build(),
                 new DatabaseOperationMetadata()).blockingGet();
         mReceipt2 = mReceiptsTable.insert(mBuilder.setName(NAME_2).setPrice(PRICE_2).setTrip(mTrip2).setDate(DATE_2).setIndex(2).setUuid(UUID_2).build(),

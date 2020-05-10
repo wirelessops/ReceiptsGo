@@ -10,6 +10,7 @@ import java.util.TimeZone;
 
 import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.date.DisplayableDate;
+import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -38,7 +39,7 @@ public class DefaultObjects {
                 new File(new File("").getAbsolutePath()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
-                PriceCurrency.getDefaultCurrency(), "comment", "costCenter");
+                PriceCurrency.getDefaultCurrency(), "comment", "costCenter", newAutoCompleteMetadata());
     }
 
     @NonNull
@@ -69,4 +70,8 @@ public class DefaultObjects {
         return new ImmutablePriceImpl(new BigDecimal(2), PriceCurrency.getInstance("USD"), new ExchangeRate("USD", Collections.singletonMap("USD", 1.00d)));
     }
 
+    @NonNull
+    public static AutoCompleteMetadata newAutoCompleteMetadata() {
+        return new AutoCompleteMetadata(false, false, false, false);
+    }
 }

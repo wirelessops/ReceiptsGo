@@ -55,6 +55,11 @@
     <string name="reports_title">Relatórios</string>
     <string name="search_empty">Nenhum resultado encontrado</string>
     <string name="search_hint">Você pode procurar relatórios ou recibos por nome, comentário, preço ou categoria</string>
+    <string name="item_removed_from_auto_complete">%s removido dos resultados automáticos completos</string>
+    <string name="delete_failed">Falha ao excluir resultado automático completo</string>
+    <string name="result_restored">Resultado de conclusão automática restaurado</string>
+    <string name="result_restore_failed">Falha na restauração do resultado da conclusão automática</string>
+    <string name="undo">Desfazer</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>

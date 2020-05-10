@@ -158,8 +158,8 @@ class ReceiptsListPresenter @Inject constructor(
                         RequestCodes.NEW_RECEIPT_IMPORT_IMAGE,
                         RequestCodes.NEW_RECEIPT_CAMERA_IMAGE -> {
                             if (interactor.isCropScreenEnabled()) {
-                                val requestCode = when {
-                                    response.requestCode == RequestCodes.NEW_RECEIPT_IMPORT_IMAGE -> RequestCodes.NEW_RECEIPT_IMPORT_IMAGE_CROP
+                                val requestCode = when (response.requestCode) {
+                                    RequestCodes.NEW_RECEIPT_IMPORT_IMAGE -> RequestCodes.NEW_RECEIPT_IMPORT_IMAGE_CROP
                                     else -> RequestCodes.NEW_RECEIPT_CAMERA_IMAGE_CROP
                                 }
                                 view.navigateToCropActivity(file, requestCode)
@@ -175,8 +175,8 @@ class ReceiptsListPresenter @Inject constructor(
                         RequestCodes.ATTACH_GALLERY_IMAGE,
                         RequestCodes.ATTACH_CAMERA_IMAGE -> {
                             if (interactor.isCropScreenEnabled()) {
-                                val cropRequestCode = when {
-                                    response.requestCode == RequestCodes.ATTACH_GALLERY_IMAGE -> RequestCodes.ATTACH_GALLERY_IMAGE_CROP
+                                val cropRequestCode = when (response.requestCode) {
+                                    RequestCodes.ATTACH_GALLERY_IMAGE -> RequestCodes.ATTACH_GALLERY_IMAGE_CROP
                                     else -> RequestCodes.ATTACH_CAMERA_IMAGE_CROP
                                 }
                                 view.navigateToCropActivity(file, cropRequestCode)

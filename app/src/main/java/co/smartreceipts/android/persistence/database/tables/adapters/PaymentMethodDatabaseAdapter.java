@@ -37,18 +37,21 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
         final int uuidIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_UUID);
         final int methodIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_METHOD);
         final int customOrderIdIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_CUSTOM_ORDER_ID);
+        final int reimbursableIndex = cursor.getColumnIndex(PaymentMethodsTable.COLUMN_REIMBURSABLE);
 
         final int id = cursor.getInt(idIndex);
         final UUID uuid = UUID.fromString(cursor.getString(uuidIndex));
         final String method = cursor.getString(methodIndex);
         final SyncState syncState = mSyncStateAdapter.read(cursor);
         final long customOrderId = cursor.getLong(customOrderIdIndex);
+        final boolean reimbursable = cursor.getInt(reimbursableIndex) > 0;
         return new PaymentMethodBuilderFactory()
                 .setId(id)
                 .setUuid(uuid)
                 .setMethod(method)
                 .setSyncState(syncState)
                 .setCustomOrderId(customOrderId)
+                .setReimbursable(reimbursable)
                 .build();
     }
 
@@ -59,6 +62,7 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
         values.put(PaymentMethodsTable.COLUMN_METHOD, paymentMethod.getMethod());
         values.put(PaymentMethodsTable.COLUMN_CUSTOM_ORDER_ID, paymentMethod.getCustomOrderId());
         values.put(PaymentMethodsTable.COLUMN_UUID, paymentMethod.getUuid().toString());
+        values.put(PaymentMethodsTable.COLUMN_REIMBURSABLE, paymentMethod.isReimbursable());
         if (databaseOperationMetadata.getOperationFamilyType() == OperationFamilyType.Sync) {
             values.putAll(mSyncStateAdapter.write(paymentMethod.getSyncState()));
         } else {
@@ -77,6 +81,7 @@ public final class PaymentMethodDatabaseAdapter implements DatabaseAdapter<Payme
                 .setMethod(paymentMethod.getMethod())
                 .setSyncState(mSyncStateAdapter.get(paymentMethod.getSyncState(), databaseOperationMetadata))
                 .setCustomOrderId(paymentMethod.getCustomOrderId())
+                .setReimbursable(paymentMethod.isReimbursable())
                 .build();
     }
 }

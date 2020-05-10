@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
 import co.smartreceipts.analytics.log.Logger;
 
-/** 
+/**
  * Some (ie just one) phone manufacturers (ie Huawei) break the Android contract for calls to {@link Context#getExternalFilesDirs(String)}. 
  * Rather than returning {@link Context#getExternalFilesDir(String)} (ie the default entry) as the first entry in the 
  * array returned by the former call, it always returns the external sd card if presentFirstTimeInformation. This class provides a reflection-based

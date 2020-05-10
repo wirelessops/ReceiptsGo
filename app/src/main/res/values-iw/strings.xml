@@ -54,6 +54,11 @@
     <string name="reports_title">דיווחים</string>
     <string name="search_empty">לא נמצאו תוצאות</string>
     <string name="search_hint">אתה יכול לחפש דוחות או קבלות לפי שם, תגובה, מחיר או קטגוריה</string>
+    <string name="item_removed_from_auto_complete">%s הוסר מהתוצאות האוטומטיות</string>
+    <string name="delete_failed">התוצאה של השלמה אוטומטית נכשלה במחיקה</string>
+    <string name="result_restored">השבה אוטומטית של התוצאה</string>
+    <string name="result_restore_failed">התוצאה של השלמה אוטומטית נכשלה בשחזור</string>
+    <string name="undo">לבטל</string>
 
     <!-- =============== Subscriptions ================ -->
     <string name="pro_subscription">Smart Receipts Plus</string>
