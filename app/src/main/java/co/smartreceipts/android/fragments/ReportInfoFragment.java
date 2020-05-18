@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.base.Preconditions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,12 +27,18 @@ import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.TripFragmentPagerAdapter;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.databinding.ReportInfoViewPagerBinding;
+import co.smartreceipts.android.model.Price;
+import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.PriceBuilderFactory;
+import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.LastTripMonitor;
 import co.smartreceipts.android.persistence.database.controllers.impl.StubTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
 import co.smartreceipts.android.widget.tooltip.report.backup.BackupNavigator;
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateNavigator;
@@ -51,14 +58,19 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
 
     @Inject
     NavigationHandler navigationHandler;
-    
+
+    @Inject
+    DatabaseHelper database;
+
+    @Inject
+    UserPreferenceManager userPreferenceManager;
+
     private LastTripMonitor lastTripMonitor;
     private TripFragmentPagerAdapter fragmentPagerAdapter;
     private Trip trip;
     private ActionBarTitleUpdatesListener actionBarTitleUpdatesListener;
 
     private ViewPager viewPager;
-    private TabLayout tabLayout;
     private ReportInfoViewPagerBinding binding;
 
     @NonNull
@@ -105,11 +117,11 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
 
         viewPager = binding.pager;
         viewPager.setOffscreenPageLimit(3); // Set this to 3, since we have 4 tabs
-        tabLayout = binding.tabs;
+        TabLayout tabLayout = binding.tabs;
 
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
-        
+
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -191,7 +203,27 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     private void updateActionBarTitlePrice() {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(trip.getPrice().getCurrencyFormattedPrice() + " - " + trip.getName());
+            final List<Receipt> receipts = new ArrayList<>(database.getReceiptsTable().getBlocking(trip, false));
+            ArrayList<Price> total = new ArrayList<>();
+            if (!userPreferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable)) {
+                for (Receipt receipt : receipts) {
+                    total.add(receipt.getPrice());
+                    if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
+                        total.add(receipt.getTax());
+                    }
+                }
+            } else {
+                for (Receipt receipt : receipts) {
+                    if (receipt.isReimbursable()) {
+                        total.add(receipt.getPrice());
+                        if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
+                            total.add(receipt.getTax());
+                        }
+                    }
+                }
+            }
+            Price totalPrice = new PriceBuilderFactory().setPrices(total, trip.getTripCurrency()).build();
+            actionBar.setTitle(totalPrice.getCurrencyFormattedPrice() + " - " + trip.getName());
         }
     }
 
