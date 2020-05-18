@@ -29,12 +29,12 @@ class ReceiptNetExchangedPriceMinusTaxColumn(
 ) {
 
     override fun getPrice(receipt: Receipt): Price {
-        if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
-            return receipt.price
+        return if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
+            receipt.price
         } else {
             val factory = PriceBuilderFactory(receipt.price)
-            factory.setPrice(receipt.price.price.subtract(receipt.tax.price))
-            return factory.build()
+            factory.setPrice(receipt.price.price.subtract(receipt.tax.price).subtract(receipt.tax2.price))
+            factory.build()
         }
     }
 }

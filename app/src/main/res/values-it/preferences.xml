@@ -2,120 +2,84 @@
 <resources>
 
     <!-- ============== Preference Headers ================= -->
-    <string name="pref_header_key" translatable="false">HeaderKey</string>
     <string name="pref_general_header">Generali</string>
-    <string name="pref_general_header_key" translatable="false">pref_general_category_key</string>
     <string name="pref_receipt_header">Receipts</string>
-    <string name="pref_receipt_header_key" translatable="false">pref_receipt_category_key</string>
     <string name="pref_output_header">Report Output</string>
-    <string name="pref_output_header_key" translatable="false">pref_output_category_key</string>
     <string name="pref_email_header">Email</string>
-    <string name="pref_email_header_key" translatable="false">pref_email_category_key</string>
     <string name="pref_camera_header">Camera</string>
-    <string name="pref_camera_header_key" translatable="false">pref_camera_category_key</string>
     <string name="pref_layout_header">Personalizzazione Layout</string>
-    <string name="pref_layout_header_key">pref_layout_category_key</string>
     <string name="pref_distance_header">Distanza</string>
-    <string name="pref_distance_header_key" translatable="false">pref_distance_category_key</string>
     <string name="pref_pro_header">Smart Receipts Plus</string>
-    <string name="pref_pro_header_key" translatable="false">pref_pro_category_key</string>
     <string name="pref_help_header">Supporto</string>
-    <string name="pref_help_header_key" translatable="false">pref_help_category_key</string>
     <string name="pref_about_header">Crediti</string>
-    <string name="pref_about_header_key" translatable="false">pref_about_category_key</string>
     <string name="pref_privacy_header">Privacy</string>
-    <string name="pref_privacy_header_key" translatable="false">pref_privacy_category_key</string>
 
     <!-- ============== Preference General ================= -->
-    <string name="pref_general_trip_duration_key" translatable="false">TripDuration</string>
     <string name="pref_general_trip_duration_title">Durata predefinita trasferta</string>
-    <string name="pref_general_default_currency_key" translatable="false">isocurr</string>
     <string name="pref_general_default_currency_title">Valuta predefinita</string>
-    <string name="pref_general_default_date_separator_key" translatable="false">dateseparator</string>
     <string name="pref_general_default_date_separator_title">Separatore predefinito delle date</string>
-    <string name="pref_general_date_format_d_M_yyyy_entryValue" translatable="false">d_M_yyyy</string>
-    <string name="pref_general_date_format_yyyy_MM_dd_entryValue" translatable="false">yyyy_MM_dd</string>
-    <string-array name="pref_general_date_format_entryValues">
-        <item>@string/pref_general_date_format_default_entryValue</item>
-        <item>@string/pref_general_date_format_M_d_yyyy_entryValue</item>
-        <item>@string/pref_general_date_format_d_M_yyyy_entryValue</item>
-        <item>@string/pref_general_date_format_yyyy_MM_dd_entryValue</item>
-    </string-array>
-    <string name="pref_general_track_cost_center_key" translatable="false">trackcostcenter</string>
     <string name="pref_general_track_cost_center_title">Tracciare i centri di costo</string>
     <string name="pref_general_track_cost_center_summaryOn">Includere i centri di costo per i Report</string>
     <string name="pref_general_track_cost_center_summaryOff">Non includere i centri di costo per i Report</string>
-    <string name="pref_general_enable_crop_key" translatable="false">enablecrop</string>
     <string name="pref_general_enable_crop_title">Abilita schermo per il crop dell\'immagine</string>
     <string name="pref_general_enable_crop_summaryOn">Lo schermo di crop sarà visualizzato dopo aver scattato una foto</string>
     <string name="pref_general_enable_crop_summaryOff">Lo schermo di crop non sarà visualizzato dopo aver scattato una foto</string>
 
     <!-- ============== Preference Receipt ================= -->
-    <string name="pref_receipt_customize_categories_key" translatable="false">CustomCategories</string>
     <string name="pref_receipt_customize_categories_title">Personalizza le categorie delle ricevute</string>
     <string name="pref_receipt_customize_categories_summary">Toccare per aggiungere/modificare le categorie</string>
-    <string name="pref_receipt_predict_categories_key" translatable="false">PredictCats</string>
     <string name="pref_receipt_predict_categories_title">Predire le categorie delle ricevute</string>
     <string name="pref_receipt_predict_categories_summary">Compilare la categorie automaticamente secondo i dati precedenti</string>
-    <string name="pref_receipt_match_name_to_category_key" translatable="false">MatchNameCats</string>
     <string name="pref_receipt_match_name_to_category_title">Proponi il nome della categoria</string>
     <string name="pref_receipt_match_name_to_category_summary">Imposta automaticamente il nome della categoria</string>
-    <string name="pref_receipt_match_comment_to_category_key" translatable="false">MatchCommentCats</string>
     <string name="pref_receipt_match_comment_to_category_title">Proponi il commento alla categoria</string>
     <string name="pref_receipt_match_comment_to_category_summary">Imposta automaticamente il commento alla categoria</string>
-    <string name="pref_receipt_reimbursable_only_key" translatable="false">OnlyIncludeExpensable</string>
     <string name="pref_receipt_reimbursable_only_title">Solo report rimborsabili</string>
     <string name="pref_receipt_reimbursable_only_summary">Omette le altre ricevute da output</string>
-    <string name="pref_receipt_reimbursable_default_key" translatable="false">ExpensableDefault</string>
     <string name="pref_receipt_reimbursable_default_title">Ricevute predefinitite come rimborsabili</string>
-    <string name="pref_receipt_include_tax_field_key" translatable="false">IncludeTaxField</string>
+
     <string name="pref_receipt_include_tax_field_title">Includere il campo Imposta</string>
     <string name="pref_receipt_include_tax_field_summary">Inserisce automaticamente una linea per le imposte</string>
-    <string name="pref_receipt_tax_percent_key" translatable="false">TaxPercentage</string>
     <string name="pref_receipt_tax_percent_title">Valore percentuale di imposta perdefinito</string>
-    <string name="pref_receipt_pre_tax_key" translatable="false">PreTax</string>
+    <string name="pref_receipt_tax1_name_title">Nome fiscale</string>
+    <string name="pref_receipt_tax1_name_summary">Imposta il nome personalizzato per la tassa</string>
+
+    <string name="pref_receipt_include_tax2_field_title">Includi secondo campo fiscale</string>
+    <string name="pref_receipt_include_tax2_field_summary">Aggiunge un elemento pubblicitario per la seconda imposta</string>
+    <string name="pref_receipt_tax2_name_title">Secondo nome fiscale</string>
+    <string name="pref_receipt_tax2_name_summary">Imposta il nome personalizzato sulla seconda imposta</string>
+    <string name="pref_receipt_tax2_percent_title">Percentuale imposta seconda predefinita</string>
+
     <string name="pref_receipt_pre_tax_title">Il prezzo è predefinito esente da imposta</string>
     <string name="pref_receipt_pre_tax_summary_on">Calcola imposte dal prezzo imponibile</string>
     <string name="pref_receipt_pre_tax_summary_off">Calcola imposte dal prezzo imponibile</string>
-    <string name="pref_receipt_enable_autocomplete_key" translatable="false">EnableAutoCompleteSuggestions</string>
     <string name="pref_receipt_enable_autocomplete_title">Attiva suggerimenti con autocompletamento</string>
     <string name="pref_receipt_enable_autocomplete_summary">Suggerisce i valori dai precedenti</string>
-    <string name="pref_receipt_minimum_receipts_price_key" translatable="false">MinReceiptPrice</string>
     <string name="pref_receipt_minimum_receipts_price_title">Valore minimo della ricevuta</string>
     <string name="pref_receipt_minimum_receipts_price_summary_all">Include tutte le ricevute nel report</string>
     <string name="pref_receipt_minimum_receipts_price_summary_partial">Include solo le ricevute con valori superiori a %s</string>
-    <string name="pref_receipt_default_to_report_start_date_key" translatable="false">DefaultToFirstReportDate</string>
     <string name="pref_receipt_default_to_report_start_date_title">Valore predefinito alla data di inizio del Report</string>
     <string name="pref_receipt_default_to_report_start_date_summary">Imposta la data della ricevuta a quella del report delle date</string>
-    <string name="pref_receipt_show_id_key" translatable="false">ShowReceiptID</string>
     <string name="pref_receipt_show_id_title">Mostra ID ricevuta</string>
     <string name="pref_receipt_show_id_summary">Visualizza un campo ID auto generato</string>
-    <string name="pref_receipt_full_page_key" translatable="false">UseFullPage</string>
     <string name="pref_receipt_full_page_title">Preferenza pagina completa</string>
     <string name="pref_receipt_full_page_summary">Definisce la ricevuta come a piena pagina in forma predefinita</string>
-    <string name="pref_receipt_use_payment_methods_key" translatable="false">UsePaymentMethods</string>
     <string name="pref_receipt_use_payment_methods_title">Attiva modalità di pagamento</string>
     <string name="pref_receipt_use_payment_methods_summary">Selezionare per tracciare il metodo di pagamento della ricevuta</string>
-    <string name="pref_receipt_payment_methods_key" translatable="false">PaymentMethods</string>
     <string name="pref_receipt_payment_methods_title">Personalizza metodo di pagamento</string>
     <string name="pref_receipt_payment_methods_summary">Toccare per aggiungere/modificare i metodi di pagamento</string>
 
     <!-- ============= Preference Output ================= -->
-    <string name="pref_output_custom_csv_key" translatable="false">CustomizeCSVOutput</string>
     <string name="pref_output_custom_csv_title">Personalizzare l\'ouput CSV</string>
 
-    <string name="pref_output_custom_pdf_key" translatable="false">CustomizePDFOutput</string>
     <string name="pref_output_custom_pdf_title">Personalizzare l\'ouput PDF</string>
 
-    <string name="pref_output_username_key" translatable="false">UserName</string>
     <string name="pref_output_username_title">ID utente</string>
     <string name="pref_output_username_emptyValue">Usato come campo di output personalizzato</string>
 
-    <string name="pref_output_print_receipt_id_by_photo_key" translatable="false">PrintByIDPhotoKey</string>
     <string name="pref_output_print_receipt_id_by_photo_title">Stampa ID da foto</string>
     <string name="pref_output_print_receipt_id_by_photo_summary">Mostra l\'ID della ricevuta invece dell\'indice</string>
 
-    <string name="pref_output_print_receipt_comment_by_photo_key" translatable="false">PrintCommentByPhoto</string>
     <string name="pref_output_print_receipt_comment_by_photo_title">Stampa commento ricevuta per foto</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Mostra il commento sulla ricevuta sopra le foto nel PDF</string>
     <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Nascondi il commento sulla ricevuta sopra le foto nel PDF</string>
@@ -124,12 +88,10 @@
     <string name="pref_output_show_total_on_csv_summaryOn">Mostra il totale in una riga separata nel rapporto CSV</string>
     <string name="pref_output_show_total_on_csv_summaryOff">Nascondi la riga totale sul rapporto CSV</string>
 
-    <string name="pref_output_receipts_landscape_key" translatable="false">ReceiptsTableLandscape</string>
     <string name="pref_output_receipts_landscape_title">Stampa Tabella Ricevute in orizzontale</string>
     <string name="pref_output_receipts_landscape_on">Stampa la tabella delle ricevute in modalità orizzontale</string>
     <string name="pref_output_receipts_landscape_off">La tabella delle ricevute viene stampata in modalità orizzontale</string>
 
-    <string name="pref_output_pdf_page_size_key" translatable="false">PdfPageSize</string>
     <string name="pref_output_pdf_page_size_a4_entryValue" translatable="false">A4</string>
     <string name="pref_output_pdf_page_size_letter_entryValue" translatable="false">Letter</string>
     <string-array name="pref_output_pdf_page_size_value_entryValues">
@@ -142,121 +104,74 @@
     </string-array>
 
     <string name="pref_output_preferred_language_title">Lingua preferita dei Report</string>
-    <string name="pref_output_preferred_language_key" translatable="false">PreferredReportLanguage</string>
-    <string-array name="pref_output_preferred_language_entryValues">
-        <item>@string/language_en_entry</item>
-        <item>@string/language_de_entry</item>
-        <item>@string/language_es_entry</item>
-        <item>@string/language_fr_entry</item>
-        <item>@string/language_pt_entry</item>
-        <item>@string/language_ru_entry</item>
-        <item>@string/language_uk_entry</item>
-        <item>@string/language_iw_entry</item>
-        <item>@string/language_it_entry</item>
-    </string-array>
 
     <!-- ============== Preference Email ================= -->
-    <string name="pref_email_default_email_to_key" translatable="false">EmailTo</string>
     <string name="pref_email_default_email_to_title">Indirizzo destinatario predefinito</string>
-    <string name="pref_email_default_email_cc_key" translatable="false">EmailCC</string>
     <string name="pref_email_default_email_cc_title">Destinatario predefinito in CC</string>
-    <string name="pref_email_default_email_bcc_key" translatable="false">EmailBCC</string>
     <string name="pref_email_default_email_bcc_title">Destinatario predefinito in BCC</string>
     <string name="pref_email_default_email_emptyValue">Separare i valori con punto e virgola (;)</string>
-    <string name="pref_email_default_email_subject_key" translatable="false">EmailSubject</string>
     <string name="pref_email_default_email_subject_title">Oggetto email predefinito</string>
 
     <!-- ============= Preference Camera ================= -->
-    <string name="pref_camera_bw_key" translatable="false">SaveBW</string>
     <string name="pref_camera_bw_title">Convertire in toni di grigio</string>
     <string name="pref_camera_bw_summary">Salvare immagine in toni di grigio</string>
-    <string name="pref_camera_rotate_key" translatable="false">Camera_Rotate</string>
     <string name="pref_camera_rotate_title">Ruotare automaticamente le immagini</string>
     <string name="pref_camera_rotate_summaryOn">Ruotare immagine in senso orario</string>
     <string name="pref_camera_rotate_summaryOff">Non ruotare le immagini</string>
 
     <!-- ============= Preference Layout ================= -->
-    <string name="pref_layout_display_date_key" translatable="false">LayoutIncludeReceiptDate</string>
     <string name="pref_layout_display_date_title">Includere la data della Ricevuta</string>
     <string name="pref_layout_display_date_summary">Mostra la data della Ricevuta nella lista</string>
-    <string name="pref_layout_display_category_key" translatable="false">LayoutIncludeReceiptCategory</string>
     <string name="pref_layout_display_category_title">Includere la categoria della Ricevuta</string>
     <string name="pref_layout_display_category_summary">Mostra la categoria della ricevuta nella lista</string>
 
     <!-- ============= Preference Distance ================= -->
-    <string name="pref_distance_include_price_in_report_key" translatable="false">MileageTotalInReport</string>
     <string name="pref_distance_include_price_in_report_title">Aggiungere prezzo della distanza</string>
     <string name="pref_distance_include_price_in_report_summaryOn">Includere il prezzo della distanza nel totale del Report</string>
     <string name="pref_distance_include_price_in_report_summaryOff">Non includere il prezzo della distanza nel totale del Report</string>
-    <string name="pref_distance_rate_key" translatable="false">MileageRate</string>
     <string name="pref_distance_rate_title">Spesa chilometrica</string>
     <string name="pref_distance_rate_summaryOff">Valore di spesa per miglio o chilometro percorso</string>
     <string name="pref_distance_rate_summaryOn">%s per miglio o chilometro percorso</string>
-    <string name="pref_distance_print_table_key" translatable="false">MileagePrintTable</string>
     <string name="pref_distance_print_table_title">Includere tabella distanze</string>
     <string name="pref_distance_print_table_summaryOn">I report PDF/CSV includono la tabella delle distanze</string>
     <string name="pref_distance_print_table_summaryOff">I report PDF/CSV non includono la tabella delle distanze</string>
-    <string name="pref_distance_print_daily_key" translatable="false">MileageAddToPDF</string>
     <string name="pref_distance_print_daily_title">Report distanza giornaliera</string>
     <string name="pref_distance_print_daily_summaryOn">Mostrare la distanza come importo nella ricevuta</string>
     <string name="pref_distance_print_daily_summaryOff">Non mostrare la distanza come importo nella ricevuta</string>
-    <string name="pref_distance_as_price_key" translatable="false">DistanceAsPrice</string>
     <string name="pref_distance_as_price_title">Prezzo della distanza nel sottotitolo</string>
     <string name="pref_distance_as_price_summaryOn">Mostra il prezzo della distanza nel sottotitolo</string>
     <string name="pref_distance_as_price_summaryOff">Non mostra il prezzo della distanza nel sottotitolo</string>
 
     <!-- ================= Preference Plus ================== -->
-    <string name="pref_pro_pdf_footer_key" translatable="false">PdfFooterString</string>
     <string name="pref_pro_pdf_footer_title">Testo al piede del PDF</string>
-    <string name="pref_pro_separate_by_category_key" translatable="false">SeparateByCategory</string>
     <string name="pref_pro_separate_by_category_title">Separa pagamenti per categoria</string>
     <string name="pref_pro_separate_by_category_summaryOn">I report PDF/CSV includono una tabella separata per le le differenti categorie</string>
     <string name="pref_pro_separate_by_category_summaryOff">I report non PDF/CSV includono una tabella separata per le le differenti categorie</string>
-    <string name="pref_pro_categorical_summation_key" translatable="false">IncludeCategoricalSummation</string>
     <string name="pref_pro_categorical_summation_title">Includere totale delle categorie</string>
     <string name="pref_pro_categorical_summation_summaryOn">I Report PDF/CSV includono una tabella con i totali per categoria</string>
     <string name="pref_pro_categorical_summation_summaryOff">I Report non PDF/CSV includono una tabella con i totali per categoria</string>
-    <string name="pref_pro_omit_default_table_key" translatable="false">OmitDefaultPDFTable</string>
     <string name="pref_pro_omit_default_table_title">Omettere la tabella predefinita nel PDF</string>
 
     <!-- ============== Preference Support ================= -->
-    <string name="pref_help_send_love_key" translatable="false">SendLove</string>
     <string name="pref_help_send_love_title">Invia Amore</string>
-    <string name="pref_help_send_feedback_key" translatable="false">SendFeedback</string>
     <string name="pref_help_send_feedback_title">Invia Feedback</string>
-    <string name="pref_help_support_email_key" translatable="false">SupportEmail</string>
     <string name="pref_help_support_email_title">Email per supporto</string>
 
     <!-- =============== Preference About ================== -->
-    <string name="pref_about_version_key" translatable="false">VersionNo</string>
     <string name="pref_about_version_title">Versione</string>
-    <string name="pref_about_about_key" translatable="false">About</string>
     <string name="pref_about_about_title">Crediti</string>
     <string name="pref_about_about_dialogMessage" translatable="false">Smart Receipts è stato creato ed è manutenuto da Smart Receipts LLC. Software Licenziato sotto la GNU Affero General Public License</string>
-    <string name="pref_about_terms_key" translatable="false">TermsOfUse</string>
     <string name="pref_about_terms_title">Termini di uso</string>
     <string name="pref_about_terms_dialogMessage" translatable="false">Questo programma è software libero: È consentito redistribuirlo e/o modificarlo nei termini della licenza GNU Affero General Public License come pubblicata dalla Free Software Foundation, sia nella versione 3 o (a vostra discrezione), qualsiasi altra successiva versione.\n\nQuesto programma è distribuito nella speranza che possa essere utile, ma SENZA ALCUNA GARANZIA; Software anche privo della implicita garanzia di COMMERCIABILITÀ o IDONEITÀ PER UNO SCOPO SPECIFICO.  Consultare la GNU Affero General Public License per maggiori dettagli.\n\nVisualizzare una copia della GNU Affero General Public License su http://www.gnu.org/licenses/.</string>
     <string name="pref_about_oss_title">Software open source</string>
 
     <!-- ============== Preference Privacy ================= -->
-    <string name="pref_about_privacy_policy_key" translatable="false">PrivacyPolicy</string>
     <string name="pref_about_privacy_policy_title">Politica della Privacy</string>
-    <string name="pref_privacy_enable_analytics_key" translatable="false">EnableAnalytics</string>
     <string name="pref_privacy_enable_analytics_title">Condivisione con Analytics</string>
     <string name="pref_privacy_enable_analytics_summary">con Google/Firebase Analytics</string>
-    <string name="pref_privacy_enable_crash_tracking_key" translatable="false">EnableCrashTracking</string>
     <string name="pref_privacy_enable_crash_tracking_title">Condivione delle informazioni di crash</string>
     <string name="pref_privacy_enable_crash_tracking_summary">con Google Crashlytics</string>
-    <string name="pref_privacy_enable_ad_personalization_key" translatable="false">EnableAdPersonalization</string>
     <string name="pref_privacy_enable_ad_personalization_title">Personalizzazione degli annunci pubblicitari</string>
     <string name="pref_privacy_enable_ad_personalization_summary">Con Google AdMob</string>
-
-    <!-- =============== Preference Misc =================== -->
-    <string name="pref_no_category_auto_backup_wifi_only_key" translatable="false">AutoBackupWifiOnly</string>
-    <string name="pref_no_category_ocr_incognito_mode_key" translatable="false">OcrIncognitoMode</string>
-    <string name="pref_no_category_ocr_is_enabled_key" translatable="false">OcrIsEnabled</string>
-
-    <!-- ============== Preference Internal ================= -->
-    <string name="pref_internal_app_version_code" translatable="false">VersionCode</string>
 
 </resources>

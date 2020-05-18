@@ -75,8 +75,19 @@
     <string name="pref_receipt_include_tax_field_key" translatable="false">IncludeTaxField</string>
     <string name="pref_receipt_include_tax_field_title">Include Tax Field</string>
     <string name="pref_receipt_include_tax_field_summary">Adds a line item for taxes</string>
+    <string name="pref_receipt_include_tax2_field_key" translatable="false">IncludeTax2Field</string>
+    <string name="pref_receipt_include_tax2_field_title">Include Second Tax Field</string>
+    <string name="pref_receipt_include_tax2_field_summary">Adds a line item for the second tax</string>
     <string name="pref_receipt_tax_percent_key" translatable="false">TaxPercentage</string>
     <string name="pref_receipt_tax_percent_title">Default Tax Percentage</string>
+    <string name="pref_receipt_tax1_name_key">Tax1CustomName</string>
+    <string name="pref_receipt_tax1_name_title">Tax Name</string>
+    <string name="pref_receipt_tax1_name_summary">Set custom name to the tax</string>
+    <string name="pref_receipt_tax2_name_key">Tax2CustomName</string>
+    <string name="pref_receipt_tax2_name_title">Second Tax Name</string>
+    <string name="pref_receipt_tax2_name_summary">Set custom name to the second tax</string>
+    <string name="pref_receipt_tax2_percent_key" translatable="false">Tax2Percentage</string>
+    <string name="pref_receipt_tax2_percent_title">Default Second Tax Percentage</string>
     <string name="pref_receipt_pre_tax_key" translatable="false">PreTax</string>
     <string name="pref_receipt_pre_tax_title">Assume Price is Pre-Tax</string>
     <string name="pref_receipt_pre_tax_summary_on">Calculates Tax From a Pre-Tax Price</string>

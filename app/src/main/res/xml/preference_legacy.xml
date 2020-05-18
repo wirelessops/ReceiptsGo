@@ -19,19 +19,19 @@
             android:inputType="text"
             android:key="@string/pref_pro_pdf_footer_key"
             android:title="@string/pref_pro_pdf_footer_title" />
-        <wb.android.preferences.PlusCheckBoxPreference
+        <wb.android.preferences.DeactivatableCheckBoxPreference
             android:defaultValue="@bool/pref_pro_separate_by_category_defaultValue"
             android:key="@string/pref_pro_separate_by_category_key"
             android:summaryOff="@string/pref_pro_separate_by_category_summaryOff"
             android:summaryOn="@string/pref_pro_separate_by_category_summaryOn"
             android:title="@string/pref_pro_separate_by_category_title" />
-        <wb.android.preferences.PlusCheckBoxPreference
+        <wb.android.preferences.DeactivatableCheckBoxPreference
             android:defaultValue="@bool/pref_pro_categorical_summation_defaultValue"
             android:key="@string/pref_pro_categorical_summation_key"
             android:summaryOff="@string/pref_pro_categorical_summation_summaryOff"
             android:summaryOn="@string/pref_pro_categorical_summation_summaryOn"
             android:title="@string/pref_pro_categorical_summation_title" />
-        <wb.android.preferences.PlusCheckBoxPreference
+        <wb.android.preferences.DeactivatableCheckBoxPreference
             android:defaultValue="@bool/pref_pro_omit_default_table_defaultValue"
             android:key="@string/pref_pro_omit_default_table_key"
             android:title="@string/pref_pro_omit_default_table_title" />
@@ -39,7 +39,7 @@
 
     <PreferenceCategory
         android:key="@string/pref_general_header_key"
-        android:title="@string/pref_general_header" >
+        android:title="@string/pref_general_header">
         <co.smartreceipts.android.settings.widget.DefaultDurationEditTextPreference
             android:defaultValue="@integer/pref_general_trip_duration_defaultValue"
             android:inputType="number"
@@ -50,13 +50,13 @@
             android:key="@string/pref_general_default_currency_key"
             android:title="@string/pref_general_default_currency_title" />
         <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_general_default_date_separator_defaultValue"
             android:key="@string/pref_general_default_date_separator_key"
-            android:title="@string/pref_general_default_date_separator_title"
-            android:defaultValue="@string/pref_general_default_date_separator_defaultValue" />
+            android:title="@string/pref_general_default_date_separator_title" />
         <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_general_date_format_defaultValue"
             android:key="@string/pref_general_date_format_key"
-            android:title="@string/pref_general_date_format_title"
-            android:defaultValue="@string/pref_general_date_format_defaultValue" />
+            android:title="@string/pref_general_date_format_title" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_general_track_cost_center_defaultValue"
             android:key="@string/pref_general_track_cost_center_key"
@@ -73,7 +73,7 @@
 
     <PreferenceCategory
         android:key="@string/pref_receipt_header_key"
-        android:title="@string/pref_receipt_header" >
+        android:title="@string/pref_receipt_header">
         <Preference
             android:key="@string/pref_receipt_customize_categories_key"
             android:summary="@string/pref_receipt_customize_categories_summary"
@@ -135,6 +135,27 @@
             android:inputType="number|numberDecimal"
             android:key="@string/pref_receipt_tax_percent_key"
             android:title="@string/pref_receipt_tax_percent_title" />
+        <wb.android.preferences.SummaryEditTextPreference
+            android:defaultValue="@string/pref_receipt_tax1_name_defaultValue"
+            android:inputType="text"
+            android:key="@string/pref_receipt_tax1_name_key"
+            android:summary="@string/pref_receipt_tax1_name_summary"
+            android:title="@string/pref_receipt_tax1_name_title" />
+        <wb.android.preferences.DeactivatableCheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_include_tax2_field_defaultValue"
+            android:key="@string/pref_receipt_include_tax2_field_key"
+            android:summary="@string/pref_receipt_include_tax2_field_summary"
+            android:title="@string/pref_receipt_include_tax2_field_title" />
+        <co.smartreceipts.android.settings.widget.DefaultTaxPercentagePreference
+            android:inputType="number|numberDecimal"
+            android:key="@string/pref_receipt_tax2_percent_key"
+            android:title="@string/pref_receipt_tax2_percent_title" />
+        <wb.android.preferences.SummaryEditTextPreference
+            android:defaultValue="@string/pref_receipt_tax2_name_defaultValue"
+            android:inputType="text"
+            android:key="@string/pref_receipt_tax2_name_key"
+            android:summary="@string/pref_receipt_tax2_name_summary"
+            android:title="@string/pref_receipt_tax2_name_title" />
         <CheckBoxPreference
             android:defaultValue="@bool/pref_receipt_pre_tax_defaultValue"
             android:key="@string/pref_receipt_pre_tax_key"

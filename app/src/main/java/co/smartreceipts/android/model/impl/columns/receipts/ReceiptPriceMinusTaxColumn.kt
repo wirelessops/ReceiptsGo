@@ -47,7 +47,7 @@ class ReceiptPriceMinusTaxColumn(
             receipt.price
         } else {
             val factory = PriceBuilderFactory(receipt.price)
-            factory.setPrice(receipt.price.price.subtract(receipt.tax.price))
+            factory.setPrice(receipt.price.price.subtract(receipt.tax.price).subtract(receipt.tax2.price))
             factory.build()
         }
     }

@@ -50,7 +50,7 @@ import wb.android.storage.StorageManager;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
-    public static final int DATABASE_VERSION = 20;
+    public static final int DATABASE_VERSION = 21;
 
     @Deprecated
     public static final String NO_DATA = "null"; // TODO: Just set to null

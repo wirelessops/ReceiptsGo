@@ -97,6 +97,7 @@ public final class Events {
         public static final Event ClickedAutomaticBackupRecoveryHintTip = new DefaultEvent(Category.Informational, "ClickedAutomaticBackupRecoveryHintTip");
         public static final Event ClickedManageCategories = new DefaultEvent(Category.Informational, "ClickedManageCategories");
         public static final Event ClickedManagePaymentMethods = new DefaultEvent(Category.Informational, "ClickedManagePaymentMethods");
+        public static final Event ClickedConfigureSecondTaxTip = new DefaultEvent(Category.Informational, "ClickedConfigureSecondTaxTip");
     }
 
     public static final class Sync {

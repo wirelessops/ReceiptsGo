@@ -23,6 +23,10 @@
     <bool name="pref_receipt_show_id_defaultValue">false</bool>
     <bool name="pref_receipt_full_page_defaultValue">false</bool>
     <bool name="pref_receipt_use_payment_methods_defaultValue">false</bool>
+    <bool name="pref_receipt_include_tax2_field_defaultValue">false</bool>
+    <string name="pref_receipt_tax1_name_defaultValue">Tax1</string>
+    <string name="pref_receipt_tax2_name_defaultValue">Tax2</string>
+    <item name="pref_receipt_tax2_percent_defaultValue" format="float" type="dimen">0.0</item>
 
     <!-- ============= Preference Output ================= -->
     <string name="pref_output_username_defaultValue" />

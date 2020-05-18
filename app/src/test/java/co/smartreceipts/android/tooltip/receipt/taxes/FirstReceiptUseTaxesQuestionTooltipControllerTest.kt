@@ -63,8 +63,10 @@ class FirstReceiptUseTaxesQuestionTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(false))
         whenever(pdfColumnsOrderer.insertColumnAfter(any(), any())).thenReturn(Completable.complete())
         whenever(csvColumnsOrderer.insertColumnAfter(any(), any())).thenReturn(Completable.complete())
+
         firstReceiptUseTaxesQuestionTooltipController = FirstReceiptUseTaxesQuestionTooltipController(ApplicationProvider.getApplicationContext(), tooltipView, store, userPreferenceManager, pdfColumnsOrderer, csvColumnsOrderer, analytics, scheduler)
     }
 
@@ -88,6 +90,19 @@ class FirstReceiptUseTaxesQuestionTooltipControllerTest {
                 .assertValue(Optional.absent())
                 .assertComplete()
                 .assertNoErrors()
+    }
+
+    @Test
+    fun doNotDisplayTooltipWithTaxIncluded() {
+        whenever(store.hasUserInteractionWithTaxesQuestionOccurred()).thenReturn(Single.just(false))
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(true))
+
+        firstReceiptUseTaxesQuestionTooltipController.shouldDisplayTooltip()
+            .test()
+            .await()
+            .assertValue(Optional.absent())
+            .assertComplete()
+            .assertNoErrors()
     }
 
     @Test

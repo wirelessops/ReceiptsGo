@@ -138,6 +138,10 @@ public class UserPreferenceTest {
         Assert.assertEquals(name(UserPreference.Receipts.IncludeTaxField), "IncludeTaxField");
         Assert.assertEquals(UserPreference.Receipts.IncludeTaxField.getDefaultValue(), R.bool.pref_receipt_include_tax_field_defaultValue);
 
+        Assert.assertEquals(UserPreference.Receipts.IncludeTax2Field.getType(), Boolean.class);
+        Assert.assertEquals(name(UserPreference.Receipts.IncludeTax2Field), "IncludeTax2Field");
+        Assert.assertEquals(UserPreference.Receipts.IncludeTax2Field.getDefaultValue(), R.bool.pref_receipt_include_tax2_field_defaultValue);
+
         Assert.assertEquals(UserPreference.Receipts.UsePreTaxPrice.getType(), Boolean.class);
         Assert.assertEquals(name(UserPreference.Receipts.UsePreTaxPrice), "PreTax");
         Assert.assertEquals(UserPreference.Receipts.UsePreTaxPrice.getDefaultValue(), R.bool.pref_receipt_pre_tax_defaultValue);

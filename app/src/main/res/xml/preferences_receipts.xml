@@ -1,83 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-	<PreferenceCategory
-		android:key="@string/pref_receipt_header_key"
-	    android:title="@string/pref_receipt_header" >
-		<Preference 
-	    	android:key="@string/pref_receipt_customize_categories_key" 
-			android:title="@string/pref_receipt_customize_categories_title"
-			android:summary="@string/pref_receipt_customize_categories_summary" />
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_predict_categories_key"
-	        android:title="@string/pref_receipt_predict_categories_title"
-	        android:summary="@string/pref_receipt_predict_categories_summary"
-	        android:defaultValue="@bool/pref_receipt_predict_categories_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_enable_autocomplete_key"
-	        android:title="@string/pref_receipt_enable_autocomplete_title"
-	        android:summary="@string/pref_receipt_enable_autocomplete_summary"
-	        android:defaultValue="@bool/pref_receipt_enable_autocomplete_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_reimbursable_only_key"
-	        android:title="@string/pref_receipt_reimbursable_only_title"
-	        android:summary="@string/pref_receipt_reimbursable_only_summary"
-	        android:defaultValue="@bool/pref_receipt_reimbursable_only_defaultValue"/>
-		<CheckBoxPreference
-			android:key="@string/pref_receipt_reimbursable_default_key"
-			android:title="@string/pref_receipt_reimbursable_default_title"
-			android:defaultValue="@bool/pref_receipt_reimbursable_default_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_default_to_report_start_date_key"
-	        android:title="@string/pref_receipt_default_to_report_start_date_title"
-	        android:summary="@string/pref_receipt_default_to_report_start_date_summary"
-	        android:defaultValue="@bool/pref_receipt_default_to_report_start_date_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_match_name_to_category_key"
-	        android:title="@string/pref_receipt_match_name_to_category_title"
-	        android:summary="@string/pref_receipt_match_name_to_category_summary"
-	        android:defaultValue="@bool/pref_receipt_match_name_to_category_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_match_comment_to_category_key"
-	        android:title="@string/pref_receipt_match_comment_to_category_title"
-	        android:summary="@string/pref_receipt_match_comment_to_category_summary"
-	        android:defaultValue="@bool/pref_receipt_match_comment_to_category_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_show_id_key"
-	        android:title="@string/pref_receipt_show_id_title"
-	        android:summary="@string/pref_receipt_show_id_summary"
-	        android:defaultValue="@bool/pref_receipt_show_id_defaultValue"/>
-	    <CheckBoxPreference
-	        android:key="@string/pref_receipt_full_page_key"
-	        android:title="@string/pref_receipt_full_page_title"
-	        android:summary="@string/pref_receipt_full_page_summary"
-	        android:defaultValue="@bool/pref_receipt_full_page_defaultValue"/>
-	    <co.smartreceipts.android.settings.widget.MinimumPriceEditTextPreference
-	        android:key="@string/pref_receipt_minimum_receipts_price_key"
-	        android:title="@string/pref_receipt_minimum_receipts_price_title"
-	        android:inputType="number" />
-		<CheckBoxPreference
-	        android:key="@string/pref_receipt_include_tax_field_key"
-	        android:title="@string/pref_receipt_include_tax_field_title"
-	        android:summary="@string/pref_receipt_include_tax_field_summary"
-            android:defaultValue="@bool/pref_receipt_include_tax_field_defaultValue"/>
-	    <co.smartreceipts.android.settings.widget.DefaultTaxPercentagePreference
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="@string/pref_receipt_header_key"
+        android:title="@string/pref_receipt_header">
+        <Preference
+            android:key="@string/pref_receipt_customize_categories_key"
+            android:summary="@string/pref_receipt_customize_categories_summary"
+            android:title="@string/pref_receipt_customize_categories_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_predict_categories_defaultValue"
+            android:key="@string/pref_receipt_predict_categories_key"
+            android:summary="@string/pref_receipt_predict_categories_summary"
+            android:title="@string/pref_receipt_predict_categories_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_enable_autocomplete_defaultValue"
+            android:key="@string/pref_receipt_enable_autocomplete_key"
+            android:summary="@string/pref_receipt_enable_autocomplete_summary"
+            android:title="@string/pref_receipt_enable_autocomplete_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_reimbursable_only_defaultValue"
+            android:key="@string/pref_receipt_reimbursable_only_key"
+            android:summary="@string/pref_receipt_reimbursable_only_summary"
+            android:title="@string/pref_receipt_reimbursable_only_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_reimbursable_default_defaultValue"
+            android:key="@string/pref_receipt_reimbursable_default_key"
+            android:title="@string/pref_receipt_reimbursable_default_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_default_to_report_start_date_defaultValue"
+            android:key="@string/pref_receipt_default_to_report_start_date_key"
+            android:summary="@string/pref_receipt_default_to_report_start_date_summary"
+            android:title="@string/pref_receipt_default_to_report_start_date_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_match_name_to_category_defaultValue"
+            android:key="@string/pref_receipt_match_name_to_category_key"
+            android:summary="@string/pref_receipt_match_name_to_category_summary"
+            android:title="@string/pref_receipt_match_name_to_category_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_match_comment_to_category_defaultValue"
+            android:key="@string/pref_receipt_match_comment_to_category_key"
+            android:summary="@string/pref_receipt_match_comment_to_category_summary"
+            android:title="@string/pref_receipt_match_comment_to_category_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_show_id_defaultValue"
+            android:key="@string/pref_receipt_show_id_key"
+            android:summary="@string/pref_receipt_show_id_summary"
+            android:title="@string/pref_receipt_show_id_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_full_page_defaultValue"
+            android:key="@string/pref_receipt_full_page_key"
+            android:summary="@string/pref_receipt_full_page_summary"
+            android:title="@string/pref_receipt_full_page_title" />
+        <co.smartreceipts.android.settings.widget.MinimumPriceEditTextPreference
+            android:inputType="number"
+            android:key="@string/pref_receipt_minimum_receipts_price_key"
+            android:title="@string/pref_receipt_minimum_receipts_price_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_include_tax_field_defaultValue"
+            android:key="@string/pref_receipt_include_tax_field_key"
+            android:summary="@string/pref_receipt_include_tax_field_summary"
+            android:title="@string/pref_receipt_include_tax_field_title" />
+        <co.smartreceipts.android.settings.widget.DefaultTaxPercentagePreference
+            android:inputType="number|numberDecimal"
             android:key="@string/pref_receipt_tax_percent_key"
-            android:title="@string/pref_receipt_tax_percent_title"
-            android:inputType="number|numberDecimal" />
-		<CheckBoxPreference
+            android:title="@string/pref_receipt_tax_percent_title" />
+        <wb.android.preferences.SummaryEditTextPreference
+            android:defaultValue="@string/pref_receipt_tax1_name_defaultValue"
+            android:inputType="text"
+            android:key="@string/pref_receipt_tax1_name_key"
+            android:summary="@string/pref_receipt_tax1_name_summary"
+            android:title="@string/pref_receipt_tax1_name_title" />
+        <wb.android.preferences.DeactivatableCheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_include_tax2_field_defaultValue"
+            android:key="@string/pref_receipt_include_tax2_field_key"
+            android:summary="@string/pref_receipt_include_tax2_field_summary"
+            android:title="@string/pref_receipt_include_tax2_field_title" />
+        <co.smartreceipts.android.settings.widget.DefaultTaxPercentagePreference
+            android:inputType="number|numberDecimal"
+            android:key="@string/pref_receipt_tax2_percent_key"
+            android:title="@string/pref_receipt_tax2_percent_title" />
+        <wb.android.preferences.SummaryEditTextPreference
+            android:defaultValue="@string/pref_receipt_tax2_name_defaultValue"
+            android:inputType="text"
+            android:key="@string/pref_receipt_tax2_name_key"
+            android:summary="@string/pref_receipt_tax2_name_summary"
+            android:title="@string/pref_receipt_tax2_name_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_pre_tax_defaultValue"
             android:key="@string/pref_receipt_pre_tax_key"
-            android:title="@string/pref_receipt_pre_tax_title"
-            android:summaryOn="@string/pref_receipt_pre_tax_summary_on"
             android:summaryOff="@string/pref_receipt_pre_tax_summary_off"
-            android:defaultValue="@bool/pref_receipt_pre_tax_defaultValue"/>
-		<CheckBoxPreference
-	        android:key="@string/pref_receipt_use_payment_methods_key"
-	        android:title="@string/pref_receipt_use_payment_methods_title"
-	        android:summary="@string/pref_receipt_use_payment_methods_summary"
-            android:defaultValue="@bool/pref_receipt_use_payment_methods_defaultValue" />
-		<Preference 
-		    android:key="@string/pref_receipt_payment_methods_key" 
-			android:title="@string/pref_receipt_payment_methods_title"
-			android:summary="@string/pref_receipt_payment_methods_summary" />
-	</PreferenceCategory>
+            android:summaryOn="@string/pref_receipt_pre_tax_summary_on"
+            android:title="@string/pref_receipt_pre_tax_title" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/pref_receipt_use_payment_methods_defaultValue"
+            android:key="@string/pref_receipt_use_payment_methods_key"
+            android:summary="@string/pref_receipt_use_payment_methods_summary"
+            android:title="@string/pref_receipt_use_payment_methods_title" />
+        <Preference
+            android:key="@string/pref_receipt_payment_methods_key"
+            android:summary="@string/pref_receipt_payment_methods_summary"
+            android:title="@string/pref_receipt_payment_methods_title" />
+    </PreferenceCategory>
 </PreferenceScreen>

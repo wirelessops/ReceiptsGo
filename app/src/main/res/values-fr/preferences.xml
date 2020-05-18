@@ -54,8 +54,15 @@
 
     <string name="pref_receipt_include_tax_field_title">Inclure un champ taxe</string>
     <string name="pref_receipt_include_tax_field_summary">Ajoute une ligne pour les taxes</string>
-
     <string name="pref_receipt_tax_percent_title">Pourcentage d\'impôt par défaut</string>
+    <string name="pref_receipt_tax1_name_title">Nom de taxe</string>
+    <string name="pref_receipt_tax1_name_summary">Définir un nom personnalisé sur la taxe</string>
+
+    <string name="pref_receipt_include_tax2_field_title">Inclure le deuxième champ de taxe</string>
+    <string name="pref_receipt_include_tax2_field_summary">Ajoute un élément de campagne pour la deuxième taxe</string>
+    <string name="pref_receipt_tax2_name_title">Deuxième nom de taxe</string>
+    <string name="pref_receipt_tax2_name_summary">Définir un nom personnalisé sur la deuxième taxe</string>
+    <string name="pref_receipt_tax2_percent_title">Deuxième pourcentage de taxe par défaut</string>
 
     <string name="pref_receipt_pre_tax_title">Supposer que le prix est hors taxe</string>
     <string name="pref_receipt_pre_tax_summary_on">Calcule les taxes à partir du prix hors taxe</string>

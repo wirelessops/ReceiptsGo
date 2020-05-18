@@ -43,13 +43,22 @@ class ReceiptPricingPresenterTest {
     private lateinit var tax: Price
 
     @Mock
+    private lateinit var tax2: Price
+
+    @Mock
     private lateinit var displayReceiptPriceConsumer: Consumer<Price>
 
     @Mock
     private lateinit var displayReceiptTaxConsumer: Consumer<Price>
 
     @Mock
+    private lateinit var displayReceiptTax2Consumer: Consumer<Price>
+
+    @Mock
     private lateinit var toggleReceiptTaxFieldVisibilityConsumer: Consumer<Boolean>
+
+    @Mock
+    private lateinit var toggleReceiptTax2FieldVisibilityConsumer: Consumer<Boolean>
 
     private val userPreferenceChangeStream = PublishSubject.create<UserPreference<*>>()
 
@@ -58,31 +67,49 @@ class ReceiptPricingPresenterTest {
         MockitoAnnotations.initMocks(this)
         doReturn(displayReceiptPriceConsumer).whenever(view).displayReceiptPrice()
         doReturn(displayReceiptTaxConsumer).whenever(view).displayReceiptTax()
+        doReturn(displayReceiptTax2Consumer).whenever(view).displayReceiptTax2()
         doReturn(toggleReceiptTaxFieldVisibilityConsumer).whenever(view).toggleReceiptTaxFieldVisibility()
+        doReturn(toggleReceiptTax2FieldVisibilityConsumer).whenever(view).toggleReceiptTax2FieldVisibility()
         whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(true))
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTax2Field)).thenReturn(Single.just(false))
         whenever(userPreferenceManager.userPreferenceChangeStream).thenReturn(userPreferenceChangeStream)
         whenever(receipt.price).thenReturn(price)
         whenever(receipt.tax).thenReturn(tax)
+        whenever(receipt.tax2).thenReturn(tax2)
     }
 
     @Test
-    fun subscribeWithTaxesEnabled() {
+    fun subscribeWithTwoTaxesEnabled() {
         whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(true))
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTax2Field)).thenReturn(Single.just(true))
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
         verify(toggleReceiptTaxFieldVisibilityConsumer).accept(true)
+        verify(toggleReceiptTax2FieldVisibilityConsumer).accept(true)
+    }
+
+    @Test
+    fun subscribeWithOneTaxEnabled() {
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(true))
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTax2Field)).thenReturn(Single.just(false))
+        val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
+        presenter.subscribe()
+        verify(toggleReceiptTaxFieldVisibilityConsumer).accept(true)
+        verify(toggleReceiptTax2FieldVisibilityConsumer).accept(false)
     }
 
     @Test
     fun subscribeWithTaxesDisabled() {
         whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(false))
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTax2Field)).thenReturn(Single.just(false))
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
         verify(toggleReceiptTaxFieldVisibilityConsumer).accept(false)
+        verify(toggleReceiptTax2FieldVisibilityConsumer).accept(false)
     }
 
     @Test
-    fun subscribeAndChangeTaxesFromEnabledToDisabled() {
+    fun subscribeAndChangeTaxFromEnabledToDisabled() {
         whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(true), Single.just(false))
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
@@ -92,13 +119,26 @@ class ReceiptPricingPresenterTest {
     }
 
     @Test
+    fun subscribeAndChangeTax2FromEnabledToDisabled() {
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTax2Field)).thenReturn(Single.just(true), Single.just(false))
+        val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
+        presenter.subscribe()
+        verify(toggleReceiptTax2FieldVisibilityConsumer).accept(true)
+        userPreferenceChangeStream.onNext(UserPreference.Receipts.IncludeTax2Field)
+        verify(toggleReceiptTax2FieldVisibilityConsumer).accept(false)
+    }
+
+    @Test
     fun subscribeAndChangeOtherPreferencesDoesNothing() {
         whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTaxField)).thenReturn(Single.just(true))
+        whenever(userPreferenceManager.getSingle(UserPreference.Receipts.IncludeTax2Field)).thenReturn(Single.just(true))
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
         verify(toggleReceiptTaxFieldVisibilityConsumer).accept(true)
+        verify(toggleReceiptTax2FieldVisibilityConsumer).accept(true)
         userPreferenceChangeStream.onNext(UserPreference.General.DateSeparator)
         verifyNoMoreInteractions(toggleReceiptTaxFieldVisibilityConsumer)
+        verifyNoMoreInteractions(toggleReceiptTax2FieldVisibilityConsumer)
     }
 
     @Test
@@ -107,14 +147,16 @@ class ReceiptPricingPresenterTest {
         presenter.subscribe()
         verifyZeroInteractions(displayReceiptPriceConsumer)
         verifyZeroInteractions(displayReceiptTaxConsumer)
+        verifyZeroInteractions(displayReceiptTax2Consumer)
     }
 
     @Test
     fun subscribeWithReceiptAndNullState() {
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, null, Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
-        verify<Consumer<Price>>(displayReceiptPriceConsumer).accept(price)
-        verify<Consumer<Price>>(displayReceiptTaxConsumer).accept(tax)
+        verify(displayReceiptPriceConsumer).accept(price)
+        verify(displayReceiptTaxConsumer).accept(tax)
+        verify(displayReceiptTax2Consumer).accept(tax2)
     }
 
     @Test
@@ -123,6 +165,7 @@ class ReceiptPricingPresenterTest {
         presenter.subscribe()
         verifyZeroInteractions(displayReceiptPriceConsumer)
         verifyZeroInteractions(displayReceiptTaxConsumer)
+        verifyZeroInteractions(displayReceiptTax2Consumer)
     }
 
 }

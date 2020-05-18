@@ -107,12 +107,20 @@ public class ReceiptCreateEditFragmentPresenter {
         return preferenceManager.get(UserPreference.Receipts.IncludeTaxField);
     }
 
+    boolean isIncludeTax2Field() {
+        return preferenceManager.get(UserPreference.Receipts.IncludeTax2Field);
+    }
+
     boolean isUsePreTaxPrice() {
         return preferenceManager.get(UserPreference.Receipts.UsePreTaxPrice);
     }
 
     float getDefaultTaxPercentage() {
         return preferenceManager.get(UserPreference.Receipts.DefaultTaxPercentage);
+    }
+
+    float getDefaultTax2Percentage() {
+        return preferenceManager.get(UserPreference.Receipts.DefaultTax2Percentage);
     }
 
     boolean isReceiptDateDefaultsToReportStartDate() {
@@ -180,7 +188,7 @@ public class ReceiptCreateEditFragmentPresenter {
         return true;
     }
 
-    void saveReceipt(Date date, TimeZone timeZone, String price, String tax,
+    void saveReceipt(Date date, TimeZone timeZone, String price, String tax, String tax2,
                      String exchangeRate, String comment, PaymentMethod paymentMethod,
                      boolean isReimbursable, boolean isFullPage,
                      String name, Category category, String currency,
@@ -196,6 +204,7 @@ public class ReceiptCreateEditFragmentPresenter {
                 .setTimeZone(timeZone)
                 .setPrice(price)
                 .setTax(tax)
+                .setTax2(tax2)
                 .setExchangeRate(new ExchangeRateBuilderFactory().setBaseCurrency(currency)
                         .setRate(parentTrip.getTripCurrency(), exchangeRate)
                         .build())

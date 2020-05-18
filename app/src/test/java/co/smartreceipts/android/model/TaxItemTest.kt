@@ -86,4 +86,21 @@ class TaxItemTest {
         assertEquals(postTax2.tax!!.toDouble(), 33.52, TestUtils.EPSILON.toDouble())
         assertEquals(postTax2.toString(), "33.52")
     }
+
+    @Test
+    fun setPriceDifferentLocaleSeparatorTest() {
+        val priceDot = "5.0"
+        val priceComma = "5,0"
+
+        val percent = 100.0f
+
+        val taxDot = TaxItem(percent, true)
+        taxDot.setPrice(priceDot)
+
+        TestLocaleToggler.setDefaultLocale(Locale.GERMANY)
+        val taxComma = TaxItem(percent, true)
+        taxComma.setPrice(priceComma)
+
+        assertEquals(0,  taxComma.tax.compareTo(taxDot.tax))
+    }
 }
