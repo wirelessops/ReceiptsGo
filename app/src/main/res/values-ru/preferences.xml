@@ -55,8 +55,15 @@
 
     <string name="pref_receipt_include_tax_field_title">Включить поле \"Налог\"</string>
     <string name="pref_receipt_include_tax_field_summary">Добавляет строку с информацией о налогах</string>
-
+    <string name="pref_receipt_tax1_name_title">Название Налога</string>
+    <string name="pref_receipt_tax1_name_summary">Устанавливает название налога</string>
     <string name="pref_receipt_tax_percent_title">Процент налога по умолчанию</string>
+
+    <string name="pref_receipt_include_tax2_field_title">Включить поле \"Второй Налог\"</string>
+    <string name="pref_receipt_include_tax2_field_summary">Добавляет поле для второго налога</string>
+    <string name="pref_receipt_tax2_name_title">Название Второго Налога</string>
+    <string name="pref_receipt_tax2_name_summary">Устанавливает название второго налога</string>
+    <string name="pref_receipt_tax2_percent_title">Процент второго налога по умолчанию</string>
 
     <string name="pref_receipt_pre_tax_title">Использовать цену без налогов</string>
     <string name="pref_receipt_pre_tax_summary_on">Рассчитывает налог на основе цены без налога</string>

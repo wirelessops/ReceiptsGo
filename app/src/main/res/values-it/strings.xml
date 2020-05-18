@@ -519,6 +519,7 @@
     <string name="tooltip_review_privacy">Toccare per visualizzare le impostazioni della privacy</string>
     <string name="tooltip_automatic_backups_recovery_hint">Avete configurato i backup automatici? Toccare per ripristinare</string>
     <string name="tooltip_first_report_hint">Benvenuto! Creiamo il tuo primo folder per Report. Denominalo come preferito. Clicca il segno di spunta per salvarlo ed inizire ad inserire le prima ricevute!</string>
+    <string name="tooltip_include_second_tax_hint">Tocca per configurare il secondo campo fiscale</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Aggiungere le prime ricevute per visualizzare i grafici.</string>

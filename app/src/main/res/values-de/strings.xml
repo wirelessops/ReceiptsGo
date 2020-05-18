@@ -501,6 +501,7 @@
     <string name="tooltip_review_privacy">Tippen Sie hier, um Ihre Datenschutzeinstellungen zu überprüfen</string>
     <string name="tooltip_automatic_backups_recovery_hint">Haben Sie zuvor automatische backups konfiguriert? Zum Wiederherstellen hier tippen</string>
     <string name="tooltip_first_report_hint">Willkommen! Lassen Sie uns Ihren ersten Berichtsordner erstellen. Nennen Sie es nach diesem Monat, diesem Jahr, Ihrer aktuellen Geschäftsreise oder nach allem, was Sie wünschen. Klicken Sie dann auf das Häkchen, um es zu speichern und fügen Sie Ihre ersten Quittungen hinzu!</string>
+    <string name="tooltip_include_second_tax_hint">Tippen Sie hier, um das zweite Steuerfeld zu konfigurieren</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Fügen Sie Ihre ersten Quittungen hinzu, um Grafiken zu sehen.</string>

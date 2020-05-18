@@ -501,6 +501,7 @@
     <string name="tooltip_review_privacy">Toque para rever suas configurações de privacidade</string>
     <string name="tooltip_automatic_backups_recovery_hint">Você configurou anteriormente backups automáticos? Toque aqui para restaurar</string>
     <string name="tooltip_first_report_hint">Bem vinda! Vamos criar sua primeira pasta de relatórios. Nomeie-o após este mês, este ano, sua viagem de negócios atual ou qualquer coisa que você desejar. Em seguida, clique na marca de seleção para salvá-lo e começar a adicionar seus primeiros recibos!</string>
+    <string name="tooltip_include_second_tax_hint">Toque para configurar o segundo campo de imposto</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Adicione seus primeiros recibos para ver gráficos.</string>

@@ -9,6 +9,7 @@ import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
 import co.smartreceipts.android.tooltip.receipt.paymentmethods.FirstReceiptUsePaymentMethodsQuestionTooltipController
 import co.smartreceipts.android.tooltip.receipt.taxes.FirstReceiptUseTaxesQuestionTooltipController
+import co.smartreceipts.android.tooltip.receipt.taxes.ConfigureSecondTaxHintTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import javax.inject.Inject
 import javax.inject.Provider
@@ -20,14 +21,17 @@ import javax.inject.Provider
  * also tied to that scope
  */
 @FragmentScope
-class TooltipControllerProvider @Inject constructor(private val automaticBackupRecoveryHintTooltipProvider: Provider<AutomaticBackupRecoveryHintUserController>,
-                                                    private val firstReportHintTooltipProvider: Provider<FirstReportHintTooltipController>,
-                                                    private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
-                                                    private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>,
-                                                    private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>,
-                                                    private val firstReceiptUseTaxesQuestionTooltipProvider: Provider<FirstReceiptUseTaxesQuestionTooltipController>,
-                                                    private val firstReceiptUsePaymentMethodsQuestionTooltipProvider: Provider<FirstReceiptUsePaymentMethodsQuestionTooltipController>,
-                                                    private val croppingTooltipProvider: Provider<ImageCroppingTooltipController>) {
+class TooltipControllerProvider @Inject constructor(
+    private val automaticBackupRecoveryHintTooltipProvider: Provider<AutomaticBackupRecoveryHintUserController>,
+    private val firstReportHintTooltipProvider: Provider<FirstReportHintTooltipController>,
+    private val privacyPolicyTooltipProvider: Provider<PrivacyPolicyTooltipController>,
+    private val rateThisAppTooltipProvider: Provider<RateThisAppTooltipController>,
+    private val ocrInformationTooltipProvider: Provider<OcrInformationTooltipController>,
+    private val firstReceiptUseTaxesQuestionTooltipProvider: Provider<FirstReceiptUseTaxesQuestionTooltipController>,
+    private val firstReceiptUsePaymentMethodsQuestionTooltipProvider: Provider<FirstReceiptUsePaymentMethodsQuestionTooltipController>,
+    private val croppingTooltipProvider: Provider<ImageCroppingTooltipController>,
+    private val configureSecondTaxHintTooltipProvider: Provider<ConfigureSecondTaxHintTooltipController>
+) {
 
     /**
      * Fetches the appropriate [TooltipController] for a given [TooltipType]
@@ -45,6 +49,7 @@ class TooltipControllerProvider @Inject constructor(private val automaticBackupR
             TooltipType.FirstReceiptUseTaxesQuestion -> firstReceiptUseTaxesQuestionTooltipProvider.get()
             TooltipType.FirstReceiptUsePaymentMethodsQuestion -> firstReceiptUsePaymentMethodsQuestionTooltipProvider.get()
             TooltipType.ImageCropping -> croppingTooltipProvider.get()
+            TooltipType.ConfigureSecondTaxHint -> configureSecondTaxHintTooltipProvider.get()
         }
     }
 }

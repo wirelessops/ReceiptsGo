@@ -38,9 +38,19 @@
     <string name="pref_receipt_reimbursable_only_title">דווח רק על קבלות ברות-החזר</string>
     <string name="pref_receipt_reimbursable_only_summary">הסר קבלות אחרות מהדוח</string>
     <string name="pref_receipt_reimbursable_default_title">קבלות מסומנות כברות-החזר כברירת מחדל</string>
+
     <string name="pref_receipt_include_tax_field_title">הוסף שדה מס</string>
     <string name="pref_receipt_include_tax_field_summary">מוסיף שורה עבור מיסים</string>
     <string name="pref_receipt_tax_percent_title">אחוז מס ברירת-מחדל</string>
+    <string name="pref_receipt_tax1_name_title">שם מס</string>
+    <string name="pref_receipt_tax1_name_summary">הגדר שם מותאם אישית למס</string>
+
+    <string name="pref_receipt_include_tax2_field_title">כלול שדה מס שני</string>
+    <string name="pref_receipt_include_tax2_field_summary">מוסיף פריט שורה עבור המס השני</string>
+    <string name="pref_receipt_tax2_name_title">שם מס שני</string>
+    <string name="pref_receipt_tax2_name_summary">הגדר שם מותאם אישית למס השני</string>
+    <string name="pref_receipt_tax2_percent_title">אחוז המס השני ברירת המחדל</string>
+
     <string name="pref_receipt_pre_tax_title">הנח שמחיר הוא לפני מס</string>
     <string name="pref_receipt_pre_tax_summary_on">מחשב מס ממחיר טרום ניכוי מס</string>
     <string name="pref_receipt_pre_tax_summary_off">מחשב מס ממחיר לאחר ניכוי מס</string>

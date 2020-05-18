@@ -501,6 +501,7 @@
     <string name="tooltip_review_privacy">Appuyez pour examiner vos paramètres de confidentialité</string>
     <string name="tooltip_automatic_backups_recovery_hint">Avez-vous déjà configuré des sauvegardes automatiques? Appuyez ici pour restaurer</string>
     <string name="tooltip_first_report_hint">Bienvenue! Créons votre premier dossier de rapport. Nommez-le après ce mois, cette année, votre voyage d\'affaires actuel ou tout ce que vous souhaitez. Cliquez ensuite sur la coche pour le sauvegarder et commencez à ajouter vos premiers reçus!</string>
+    <string name="tooltip_include_second_tax_hint">Appuyez pour configurer le deuxième champ de taxe</string>
 
     <!-- ================== Graph titles ==================== -->
     <string name="graphs_no_data">Ajoutez vos premiers reçus pour voir les graphiques.</string>

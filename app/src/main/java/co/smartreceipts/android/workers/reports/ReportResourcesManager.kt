@@ -8,6 +8,7 @@ import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.android.R
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject
@@ -34,6 +35,18 @@ class ReportResourcesManager @Inject constructor(private var context: Context,
     }
 
     fun getFlexString(@StringRes resId: Int): String {
-        return flex.getString(getLocalizedContext(), resId)
+
+        // Note: this hack is needed to override tax1 and tax2 column names to names that user set
+        return when (resId) {
+            R.string.pref_receipt_tax1_name_defaultValue -> {
+                preferenceManager.get(UserPreference.Receipts.Tax1Name)
+            }
+            R.string.pref_receipt_tax2_name_defaultValue -> {
+                preferenceManager.get(UserPreference.Receipts.Tax2Name)
+            }
+            else -> {
+                flex.getString(getLocalizedContext(), resId)
+            }
+        }
     }
 }

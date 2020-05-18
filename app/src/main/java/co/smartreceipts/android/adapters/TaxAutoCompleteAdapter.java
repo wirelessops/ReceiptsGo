@@ -1,7 +1,6 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,10 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.Vector;
 
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.model.TaxItem;
 
 public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements TextWatcher, View.OnFocusChangeListener {
@@ -42,10 +44,10 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 	
 	public TaxAutoCompleteAdapter(Context context, TextView priceBox, AutoCompleteTextView taxBox,
 								  boolean usePreTaxPrice, float defaultValue, boolean isNewReceipt) {
-		super(context, android.R.layout.two_line_list_item);
+		super(context, R.layout.item_tax_autocomplete);
 		mInflater = LayoutInflater.from(context);
 		mData = new Vector<>();
-		mListItemId = android.R.layout.two_line_list_item;
+		mListItemId = R.layout.item_tax_autocomplete;
 		mDefaultValue = new TaxItem(defaultValue, usePreTaxPrice);
 		mPriceBox = new WeakReference<>(priceBox);
 		mTaxBox = new WeakReference<>(taxBox);
@@ -76,8 +78,8 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 	}
 
 	private static class MyViewHolder {
-		public TextView top;
-		public TextView bottom;
+		public TextView tax_value;
+		public TextView tax_percent;
 	}
 	
 	@NonNull
@@ -92,8 +94,8 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 		if (convertView == null) {
 			holder = new MyViewHolder();
 			convertView = mInflater.inflate(mListItemId, parent, false);
-			holder.top = convertView.findViewById(android.R.id.text1);
-			holder.bottom = convertView.findViewById(android.R.id.text2);
+			holder.tax_value = convertView.findViewById(R.id.text_tax_value);
+			holder.tax_percent = convertView.findViewById(R.id.text_tax_percent);
 			convertView.setTag(holder);
 		}
 		else {
@@ -101,8 +103,8 @@ public class TaxAutoCompleteAdapter extends ArrayAdapter<TaxItem> implements Tex
 		}
 		TaxItem item = getItem(position);
 		item.setPrice(priceBox.getText().toString());
-		holder.top.setText(item.toString());
-		holder.bottom.setText(item.getPercentAsString());
+		holder.tax_value.setText(item.toString());
+		holder.tax_percent.setText(item.getPercentAsString());
 		return convertView;
 	}
 

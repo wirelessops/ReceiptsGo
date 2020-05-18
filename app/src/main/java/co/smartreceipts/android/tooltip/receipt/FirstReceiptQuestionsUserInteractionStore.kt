@@ -23,6 +23,11 @@ class FirstReceiptQuestionsUserInteractionStore @Inject constructor(private val 
                 .subscribeOn(scheduler)
     }
 
+    fun hasUserInteractionWithSecondTaxHintOccurred(): Single<Boolean> {
+        return Single.fromCallable { preferences.get().getBoolean(KEY_SECOND_TAX_HINT, false) }
+            .subscribeOn(scheduler)
+    }
+
     fun setInteractionWithTaxesQuestionHasOccurred(value: Boolean) {
         preferences.get().edit().putBoolean(KEY_TAXES_QUESTION, value).apply()
     }
@@ -31,8 +36,13 @@ class FirstReceiptQuestionsUserInteractionStore @Inject constructor(private val 
         preferences.get().edit().putBoolean(KEY_PAYMENT_METHODS_QUESTION, value).apply()
     }
 
+    fun setInteractionWithSecondTaxHintOccured(value: Boolean) {
+        preferences.get().edit().putBoolean(KEY_SECOND_TAX_HINT, value).apply()
+    }
+
     companion object {
         private const val KEY_TAXES_QUESTION = "user_interacted_with_taxes_question"
         private const val KEY_PAYMENT_METHODS_QUESTION = "user_interacted_with_payment_methods_question"
+        private const val KEY_SECOND_TAX_HINT = "user_interacted_with_second_tax_hint"
     }
 }

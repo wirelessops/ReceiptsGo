@@ -68,6 +68,7 @@ public class GroupingController {
                     for (Receipt receipt : categoryGroupingResult.getReceipts()) {
                         prices.add(receipt.getPrice());
                         taxes.add(receipt.getTax());
+                        taxes.add(receipt.getTax2());
                     }
 
                     final Price price = new PriceBuilderFactory().setPrices(prices, trip.getTripCurrency()).build();

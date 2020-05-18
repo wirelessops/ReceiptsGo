@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
+import co.smartreceipts.android.R
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -90,6 +88,23 @@ class ReportResourcesManagerTest {
         verify(context).createConfigurationContext(configurationCaptor.capture())
         assertEquals("en", configurationCaptor.value.locales.toLanguageTags())
         assertEquals(result, localizedContext)
+    }
+
+    @Test
+    fun getCorrectedStringsForTaxColumnNames() {
+        whenever(preferenceManager[UserPreference.Receipts.Tax1Name]).thenReturn("tax1 custom name")
+        whenever(preferenceManager[UserPreference.Receipts.Tax2Name]).thenReturn("tax2 custom name")
+
+        whenever(flex.getString(any(), eq(R.string.pref_receipt_tax1_name_defaultValue))).thenReturn("tax1")
+        whenever(flex.getString(any(), eq(R.string.pref_receipt_tax2_name_defaultValue))).thenReturn("tax2")
+
+        val tax1 = reportResourcesManager.getFlexString(R.string.pref_receipt_tax1_name_defaultValue)
+        val tax2 = reportResourcesManager.getFlexString(R.string.pref_receipt_tax2_name_defaultValue)
+
+        assertEquals("tax1 custom name", tax1)
+        assertEquals("tax2 custom name", tax2)
+
+        verifyZeroInteractions(flex)
     }
 
     private fun setDefaultLocaleForConfiguration(locale: Locale) {
