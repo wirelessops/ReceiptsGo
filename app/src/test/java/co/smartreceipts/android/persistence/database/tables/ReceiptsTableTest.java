@@ -214,6 +214,7 @@ public class ReceiptsTableTest {
         assertTrue(creatingTable.contains("categoryKey INTEGER"));
         assertTrue(creatingTable.contains("price DECIMAL(10, 2)"));
         assertTrue(creatingTable.contains("tax DECIMAL(10, 2)"));
+        assertTrue(creatingTable.contains("tax2 DECIMAL(10, 2)"));
         assertTrue(creatingTable.contains("exchange_rate DECIMAL(10, 10)"));
         assertTrue(creatingTable.contains("rcpt_date DATE"));
         assertTrue(creatingTable.contains("timezone TEXT"));
@@ -255,6 +256,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -276,6 +278,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -297,6 +300,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -318,6 +322,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -339,6 +344,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -360,6 +366,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -381,6 +388,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -402,6 +410,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -423,6 +432,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(times(1));
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -444,6 +454,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(never());
         verifyV18Upgrade(times(1));
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -465,6 +476,29 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(never());
         verifyV18Upgrade(never());
         verifyV19Upgrade(times(1));
+        verifyV20Upgrade(times(1));
+    }
+
+    @Test
+    public void onUpgradeFromV20() {
+        final int oldVersion = 20;
+        final int newVersion = DatabaseHelper.DATABASE_VERSION;
+
+        final TableDefaultsCustomizer customizer = mock(TableDefaultsCustomizer.class);
+        mReceiptsTable.onUpgrade(mSQLiteDatabase, oldVersion, newVersion, customizer);
+        verifyZeroInteractions(customizer);
+        verifyV1Upgrade(never());
+        verifyV3Upgrade(never());
+        verifyV4Upgrade(never());
+        verifyV7Upgrade(never());
+        verifyV11Upgrade(never());
+        verifyV12Upgrade(never());
+        verifyV13Upgrade(never());
+        verifyV14Upgrade(never());
+        verifyV15Upgrade(never());
+        verifyV18Upgrade(never());
+        verifyV19Upgrade(never());
+        verifyV20Upgrade(times(1));
     }
 
     @Test
@@ -486,6 +520,7 @@ public class ReceiptsTableTest {
         verifyV15Upgrade(never());
         verifyV18Upgrade(never());
         verifyV19Upgrade(never());
+        verifyV20Upgrade(never());
     }
 
     private void verifyV1Upgrade(@NonNull VerificationMode verificationMode) {
@@ -638,6 +673,10 @@ public class ReceiptsTableTest {
     private void verifyV19Upgrade(@NonNull VerificationMode verificationMode) {
         verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_NAME_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0");
         verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_COMMENT_HIDDEN_AUTO_COMPLETE + " BOOLEAN DEFAULT 0");
+    }
+
+    private void verifyV20Upgrade(@NonNull VerificationMode verificationMode) {
+        verify(mSQLiteDatabase, verificationMode).execSQL("ALTER TABLE " + ReceiptsTable.TABLE_NAME + " ADD " + ReceiptsTable.COLUMN_TAX2 + " DECIMAL(10, 2) DEFAULT 0.00");
     }
 
     @Test

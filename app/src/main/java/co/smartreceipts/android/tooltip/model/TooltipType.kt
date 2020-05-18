@@ -22,6 +22,7 @@ enum class TooltipType(val displayStyle: TooltipDisplayStyle,
     RateThisApp(TooltipDisplayStyle.Question, 50, false, false, false, false),
     PrivacyPolicy(TooltipDisplayStyle.Informational, 10, false, true, false, false),
     OcrInformation(TooltipDisplayStyle.Informational, 5, false, true, false, false),
-    ImageCropping(TooltipDisplayStyle.Question, 101, false, false, false, true)
+    ImageCropping(TooltipDisplayStyle.Question, 101, false, false, false, true),
+    ConfigureSecondTaxHint(TooltipDisplayStyle.Informational, 40, false, true, false, false)
 
 }

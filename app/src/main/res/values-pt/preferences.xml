@@ -54,8 +54,15 @@
 
     <string name="pref_receipt_include_tax_field_title">Incluir campo de impostos</string>
     <string name="pref_receipt_include_tax_field_summary">Adicionar um item de linha para os impostos</string>
-
     <string name="pref_receipt_tax_percent_title">Percentual padrão de imposto</string>
+    <string name="pref_receipt_tax1_name_title">Nome do imposto</string>
+    <string name="pref_receipt_tax1_name_summary">Defina o nome personalizado como imposto</string>
+
+    <string name="pref_receipt_include_tax2_field_title">Incluir segundo campo de imposto</string>
+    <string name="pref_receipt_include_tax2_field_summary">Adiciona um item de linha para o segundo imposto</string>
+    <string name="pref_receipt_tax2_name_title">Segundo nome fiscal</string>
+    <string name="pref_receipt_tax2_name_summary">Defina o nome personalizado como o segundo imposto</string>
+    <string name="pref_receipt_tax2_percent_title">Porcentagem padrão do segundo imposto</string>
 
     <string name="pref_receipt_pre_tax_title">Pressuposição de preço com impostos</string>
     <string name="pref_receipt_pre_tax_summary_on">Calcular impostos com base no preço com impostos</string>

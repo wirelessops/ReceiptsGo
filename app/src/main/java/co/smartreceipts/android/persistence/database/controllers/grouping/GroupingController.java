@@ -62,12 +62,13 @@ public class GroupingController {
     public Observable<SumCategoryGroupingResult> getSummationByCategory(Trip trip) {
         return getReceiptsGroupedByCategory(trip)
                 .map(categoryGroupingResult -> {
-                    List<Price> prices = new ArrayList<Price>();
-                    List<Price> taxes = new ArrayList<Price>();
+                    List<Price> prices = new ArrayList<>();
+                    List<Price> taxes = new ArrayList<>();
 
                     for (Receipt receipt : categoryGroupingResult.getReceipts()) {
                         prices.add(receipt.getPrice());
                         taxes.add(receipt.getTax());
+                        taxes.add(receipt.getTax2());
                     }
 
                     final Price price = new PriceBuilderFactory().setPrices(prices, trip.getTripCurrency()).build();
@@ -168,7 +169,7 @@ public class GroupingController {
     }
 
     private Price getReceiptsPriceSum(List<Receipt> receipts, PriceCurrency desiredCurrency) {
-        List<Price> prices = new ArrayList<Price>();
+        List<Price> prices = new ArrayList<>();
 
         for (Receipt receipt : receipts) {
             prices.add(receipt.getPrice());

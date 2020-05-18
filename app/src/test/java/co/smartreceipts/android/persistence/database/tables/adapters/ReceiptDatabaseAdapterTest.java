@@ -58,6 +58,7 @@ public class ReceiptDatabaseAdapterTest {
     private static final Category CATEGORY = new Category(CATEGORY_ID, CATEGORY_UUID, CATEGORY_NAME, "code");
     private static final double PRICE = 12.55d;
     private static final double TAX = 2.50d;
+    private static final double TAX2 = 2.80d;
     private static final String CURRENCY_CODE = "USD";
     private static final double EXCHANGE_RATE_FOR_USD = 1.00d;
     private static final ExchangeRate EXCHANGE_RATE = new ExchangeRate(CURRENCY_CODE, Collections.singletonMap(CURRENCY_CODE, EXCHANGE_RATE_FOR_USD));
@@ -105,7 +106,7 @@ public class ReceiptDatabaseAdapterTest {
     Receipt mReceipt;
 
     @Mock
-    Price mPrice, mTax;
+    Price mPrice, mTax, mTax2;
 
     @Mock
     SyncStateAdapter mSyncStateAdapter;
@@ -145,6 +146,7 @@ public class ReceiptDatabaseAdapterTest {
         final int uuidIndex = 21;
         final int nameHiddenFromAutoCompleteIndex = 22;
         final int commentHiddenFromAutoCompleteIndex = 23;
+        final int tax2Index = 24;
 
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_ID)).thenReturn(idIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PATH)).thenReturn(pathIndex);
@@ -153,6 +155,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_CATEGORY_ID)).thenReturn(categoryIdIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_PRICE)).thenReturn(priceIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_TAX)).thenReturn(taxIndex);
+        when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_TAX2)).thenReturn(tax2Index);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_EXCHANGE_RATE)).thenReturn(exchangeRateIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_DATE)).thenReturn(dateIndex);
         when(mCursor.getColumnIndex(ReceiptsTable.COLUMN_TIMEZONE)).thenReturn(timezoneIndex);
@@ -176,6 +179,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mCursor.getInt(categoryIdIndex)).thenReturn(CATEGORY_ID);
         when(mCursor.getDouble(priceIndex)).thenReturn(PRICE);
         when(mCursor.getDouble(taxIndex)).thenReturn(TAX);
+        when(mCursor.getDouble(tax2Index)).thenReturn(TAX2);
         when(mCursor.getDouble(exchangeRateIndex)).thenReturn(EXCHANGE_RATE_FOR_USD);
         when(mCursor.getLong(dateIndex)).thenReturn(DATE);
         when(mCursor.getString(timezoneIndex)).thenReturn(TIMEZONE);
@@ -201,6 +205,7 @@ public class ReceiptDatabaseAdapterTest {
         when(mReceipt.getCategory()).thenReturn(CATEGORY);
         when(mReceipt.getPrice()).thenReturn(mPrice);
         when(mReceipt.getTax()).thenReturn(mTax);
+        when(mReceipt.getTax2()).thenReturn(mTax2);
         when(mReceipt.getDate()).thenReturn(new Date(DATE));
         when(mReceipt.getCustomOrderId()).thenReturn(CUSTOM_ORDER_ID);
         when(mReceipt.getTimeZone()).thenReturn(TimeZone.getTimeZone(TIMEZONE));
@@ -232,6 +237,10 @@ public class ReceiptDatabaseAdapterTest {
         when(mTax.getCurrencyCode()).thenReturn(CURRENCY_CODE);
         when(mTax.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
         when(mTax.getExchangeRate()).thenReturn(EXCHANGE_RATE);
+        when(mTax2.getPrice()).thenReturn(new BigDecimal(TAX2));
+        when(mTax2.getCurrencyCode()).thenReturn(CURRENCY_CODE);
+        when(mTax2.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mTax2.getExchangeRate()).thenReturn(EXCHANGE_RATE);
 
         when(mTripsTable.findByPrimaryKey(PARENT_TRIP_ID)).thenReturn(Single.just(mTrip));
         when(mPaymentMethodsTable.findByPrimaryKey(PAYMENT_METHOD_ID)).thenReturn(Single.just(PAYMENT_METHOD));
@@ -260,6 +269,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(RECEIPT_FILE)
@@ -294,6 +304,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(null)
@@ -325,6 +336,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(RECEIPT_FILE)
@@ -356,6 +368,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(RECEIPT_FILE)
@@ -389,6 +402,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setFile(RECEIPT_FILE)
                 .setDate(DATE)
@@ -422,6 +436,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(RECEIPT_FILE)
@@ -456,6 +471,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(RECEIPT_FILE)
@@ -494,6 +510,7 @@ public class ReceiptDatabaseAdapterTest {
         assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger(ReceiptsTable.COLUMN_CATEGORY_ID));
         assertEquals(PRICE, contentValues.getAsDouble(ReceiptsTable.COLUMN_PRICE), 0.0001d);
         assertEquals(TAX, contentValues.getAsDouble(ReceiptsTable.COLUMN_TAX), 0.0001d);
+        assertEquals(TAX2, contentValues.getAsDouble(ReceiptsTable.COLUMN_TAX2), 0.0001d);
         assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble(ReceiptsTable.COLUMN_EXCHANGE_RATE), 0.0001d);
         assertEquals(DATE, (long) contentValues.getAsLong(ReceiptsTable.COLUMN_DATE));
         assertEquals(TIMEZONE, contentValues.getAsString(ReceiptsTable.COLUMN_TIMEZONE));
@@ -529,6 +546,7 @@ public class ReceiptDatabaseAdapterTest {
         assertEquals(CATEGORY_ID, (int) contentValues.getAsInteger(ReceiptsTable.COLUMN_CATEGORY_ID));
         assertEquals(PRICE, contentValues.getAsDouble(ReceiptsTable.COLUMN_PRICE), 0.0001d);
         assertEquals(TAX, contentValues.getAsDouble(ReceiptsTable.COLUMN_TAX), 0.0001d);
+        assertEquals(TAX2, contentValues.getAsDouble(ReceiptsTable.COLUMN_TAX2), 0.0001d);
         assertEquals(EXCHANGE_RATE_FOR_USD, contentValues.getAsDouble(ReceiptsTable.COLUMN_EXCHANGE_RATE), 0.0001d);
         assertEquals(DATE, (long) contentValues.getAsLong(ReceiptsTable.COLUMN_DATE));
         assertEquals(TIMEZONE, contentValues.getAsString(ReceiptsTable.COLUMN_TIMEZONE));
@@ -556,6 +574,7 @@ public class ReceiptDatabaseAdapterTest {
                 .setName(NAME)
                 .setPrice(PRICE)
                 .setTax(TAX)
+                .setTax2(TAX2)
                 .setExchangeRate(EXCHANGE_RATE)
                 .setCategory(CATEGORY)
                 .setFile(RECEIPT_FILE)

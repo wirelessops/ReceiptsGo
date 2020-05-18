@@ -54,8 +54,15 @@
 
     <string name="pref_receipt_include_tax_field_title">Steuern ausweisen</string>
     <string name="pref_receipt_include_tax_field_summary">Fügt einen Einzelposten für Steuern hinzu</string>
-
     <string name="pref_receipt_tax_percent_title">Standardsteuersatz</string>
+    <string name="pref_receipt_tax1_name_title">Steuername</string>
+    <string name="pref_receipt_tax1_name_summary">Legen Sie den benutzerdefinierten Namen für die Steuer fest</string>
+
+    <string name="pref_receipt_include_tax2_field_title">Zweites Steuerfeld einschließen</string>
+    <string name="pref_receipt_include_tax2_field_summary">Fügt eine Werbebuchung für die zweite Steuer hinzu</string>
+    <string name="pref_receipt_tax2_name_title">Zweiter Steuername</string>
+    <string name="pref_receipt_tax2_name_summary">Setzen Sie den benutzerdefinierten Namen auf die zweite Steuer</string>
+    <string name="pref_receipt_tax2_percent_title">Standard zweiter Steuerprozentsatz</string>
 
     <string name="pref_receipt_pre_tax_title">Bruttopreise annehmen</string>
     <string name="pref_receipt_pre_tax_summary_on">Berechnet Steuern aus einem Vorsteuer-Preis</string>

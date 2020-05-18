@@ -36,7 +36,6 @@
         app:layout_constraintTop_toBottomOf="@id/update_receipt_tooltip">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_large">
@@ -80,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_PRICE_SHORT"
-                app:layout_constraintEnd_toStartOf="@id/receipt_input_tax_wrapper"
+                app:layout_constraintEnd_toStartOf="@id/decimalSeparatorButton"
                 app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_price"
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_name_wrapper">
 
@@ -88,28 +87,6 @@
                     android:id="@+id/DIALOG_RECEIPTMENU_PRICE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberDecimal|numberSigned"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/receipt_input_tax_wrapper"
-                style="@style/Widget.SmartReceipts.TextInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
-                app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
-                app:layout_constraintEnd_toStartOf="@id/decimalSeparatorButton"
-                app:layout_constraintStart_toEndOf="@id/receipt_input_price_wrapper"
-                app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper">
-
-                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
-                    android:id="@+id/DIALOG_RECEIPTMENU_TAX"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:completionThreshold="1"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal|numberSigned"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
@@ -125,7 +102,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintEnd_toStartOf="@id/DIALOG_RECEIPTMENU_CURRENCY"
-                app:layout_constraintStart_toEndOf="@id/receipt_input_tax_wrapper"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_price_wrapper"
                 app:layout_constraintTop_toTopOf="@id/receipt_input_price_wrapper"
                 tools:text="."
                 tools:visibility="visible" />
@@ -201,6 +178,61 @@
                 tools:visibility="visible" />
 
             <ImageView
+                android:id="@+id/receipt_input_guide_image_tax"
+                style="@style/Widget.SmartReceipts.GuideImage"
+                android:src="@drawable/ic_business_center_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/receipt_input_tax1_wrapper"
+                app:layout_constraintTop_toTopOf="@id/receipt_input_tax1_wrapper"
+                app:layout_constraintEnd_toStartOf="@+id/receipt_input_tax1_wrapper"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/receipt_input_tax1_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_tax"
+                app:layout_constraintEnd_toStartOf="@id/receipt_input_tax2_wrapper"
+                app:layout_constraintTop_toBottomOf="@id/receipt_input_exchanged_result">
+
+                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
+                    android:id="@+id/DIALOG_RECEIPTMENU_TAX1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/receipt_input_tax2_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_tax1_wrapper"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/receipt_input_exchanged_result">
+
+                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
+                    android:id="@+id/DIALOG_RECEIPTMENU_TAX2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
                 android:id="@+id/receipt_input_guide_image_date"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_DATE"
@@ -220,7 +252,7 @@
                 android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_date"
-                app:layout_constraintTop_toBottomOf="@+id/receipt_input_exchanged_result" />
+                app:layout_constraintTop_toBottomOf="@+id/receipt_input_tax1_wrapper" />
 
             <ImageView
                 android:id="@+id/receipt_input_guide_image_category"

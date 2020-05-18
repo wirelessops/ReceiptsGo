@@ -7,20 +7,16 @@ import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.core.sync.model.SyncState
 import java.util.*
 
-/**
- * Provides a column that returns the category code for a particular receipt
- */
-class ReceiptTaxColumn(id: Int, syncState: SyncState, customOrderId: Long, uuid: UUID) :
+class ReceiptTax1Column(id: Int, syncState: SyncState, customOrderId: Long, uuid: UUID) :
     AbstractColumnImpl<Receipt>(
         id,
-        ReceiptColumnDefinitions.ActualDefinition.TAX,
+        ReceiptColumnDefinitions.ActualDefinition.TAX1,
         syncState,
         customOrderId,
         uuid
     ) {
 
-    override fun getValue(rowItem: Receipt): String =
-        PriceBuilderFactory(rowItem.tax).setPrice(rowItem.tax.price.add(rowItem.tax2.price)).build().decimalFormattedPrice
+    override fun getValue(rowItem: Receipt): String = rowItem.tax.decimalFormattedPrice
 
     override fun getFooter(rows: List<Receipt>): String {
         return if (rows.isNotEmpty()) {
@@ -28,7 +24,6 @@ class ReceiptTaxColumn(id: Int, syncState: SyncState, customOrderId: Long, uuid:
             val prices = ArrayList<Price>()
             for (receipt in rows) {
                 prices.add(receipt.tax)
-                prices.add(receipt.tax2)
             }
 
             val total = PriceBuilderFactory().setPrices(prices, tripCurrency).build()

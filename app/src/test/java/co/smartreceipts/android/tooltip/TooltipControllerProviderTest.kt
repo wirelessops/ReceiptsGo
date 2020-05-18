@@ -8,6 +8,7 @@ import co.smartreceipts.android.tooltip.privacy.PrivacyPolicyTooltipController
 import co.smartreceipts.android.tooltip.rating.RateThisAppTooltipController
 import co.smartreceipts.android.tooltip.receipt.paymentmethods.FirstReceiptUsePaymentMethodsQuestionTooltipController
 import co.smartreceipts.android.tooltip.receipt.taxes.FirstReceiptUseTaxesQuestionTooltipController
+import co.smartreceipts.android.tooltip.receipt.taxes.ConfigureSecondTaxHintTooltipController
 import co.smartreceipts.android.tooltip.report.FirstReportHintTooltipController
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -47,6 +48,9 @@ class TooltipControllerProviderTest {
     @Mock
     private lateinit var croppingTooltipController: ImageCroppingTooltipController
 
+    @Mock
+    private lateinit var includeSecondTaxHintTooltipController: ConfigureSecondTaxHintTooltipController
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -57,7 +61,8 @@ class TooltipControllerProviderTest {
             Provider { return@Provider ocrInformationTooltipController },
             Provider { return@Provider firstReceiptUseTaxesQuestionTooltipController },
             Provider { return@Provider firstReceiptUsePaymentMethodsQuestionTooltipProvider },
-            Provider { return@Provider croppingTooltipController })
+            Provider { return@Provider croppingTooltipController },
+            Provider { return@Provider includeSecondTaxHintTooltipController })
     }
 
     @Test
@@ -98,6 +103,11 @@ class TooltipControllerProviderTest {
     @Test
     fun getImageCroppingTooltipController() {
         assertTrue(tooltipControllerProvider.get(TooltipType.ImageCropping) is ImageCroppingTooltipController)
+    }
+
+    @Test
+    fun getIncludeSecondTaxHintTooltipController() {
+        assertTrue(tooltipControllerProvider.get(TooltipType.ConfigureSecondTaxHint) is ConfigureSecondTaxHintTooltipController)
     }
 
 }

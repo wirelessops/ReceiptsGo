@@ -122,6 +122,7 @@ public class ReceiptUtils {
         Assert.assertEquals(receipt1.getName(), receipt2.getName());
         Assert.assertEquals(receipt1.getPrice(), receipt2.getPrice());
         Assert.assertEquals(receipt1.getTax(), receipt2.getTax());
+        Assert.assertEquals(receipt1.getTax2(), receipt2.getTax2());
         Assert.assertEquals(receipt1.getTimeZone(), receipt2.getTimeZone());
         Assert.assertEquals(receipt1.getPaymentMethod(), receipt2.getPaymentMethod());
     }

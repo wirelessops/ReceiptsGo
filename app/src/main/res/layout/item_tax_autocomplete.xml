@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_small">
+
+    <TextView
+        android:id="@+id/text_tax_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        tools:text="5.00 USD" />
+
+    <TextView
+        android:id="@+id/text_tax_percent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_weight="2"
+        android:background="@drawable/bg_rounded_rectangle"
+        android:backgroundTint="@color/window_background_color"
+        android:gravity="center"
+        tools:text="5.00%" />
+
+</LinearLayout>

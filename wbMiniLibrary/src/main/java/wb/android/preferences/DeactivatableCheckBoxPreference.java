@@ -3,33 +3,30 @@ package wb.android.preferences;
 import android.content.Context;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 
-public class PlusCheckBoxPreference extends CheckBoxPreference implements Preference.OnPreferenceChangeListener {
+public class DeactivatableCheckBoxPreference extends CheckBoxPreference implements DeactivatablePreference, Preference.OnPreferenceChangeListener {
 
     private OnPreferenceChangeListener mOnPreferenceChangeListener;
 
-    /**
-     * All this enabled stuff is a nifty hack for Pro subscription upsells
-     */
-    private boolean mAppearsEnabled = true;
+    private ViewStateChanger stateChanger = new ViewStateChanger();
 
 
-    public PlusCheckBoxPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DeactivatableCheckBoxPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         super.setOnPreferenceChangeListener(this); //Must use the super's method here (since we overwrite)
     }
 
-    public PlusCheckBoxPreference(Context context, AttributeSet attrs) {
+    public DeactivatableCheckBoxPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         super.setOnPreferenceChangeListener(this); //Must use the super's method here (since we overwrite)
     }
 
-    public PlusCheckBoxPreference(Context context) {
+    public DeactivatableCheckBoxPreference(Context context) {
         super(context);
         super.setOnPreferenceChangeListener(this); //Must use the super's method here (since we overwrite)
     }
@@ -48,13 +45,14 @@ public class PlusCheckBoxPreference extends CheckBoxPreference implements Prefer
         mOnPreferenceChangeListener = onPreferenceChangeListener;
     }
 
+    @Override
     public void setAppearsEnabled(boolean appearsEnabled) {
-        mAppearsEnabled = appearsEnabled;
+        stateChanger.setEnabled(appearsEnabled);
     }
 
     @Override
     protected void onClick() {
-        if (mAppearsEnabled) {
+        if (stateChanger.isEnabled()) {
             super.onClick();
         }
     }
@@ -62,17 +60,7 @@ public class PlusCheckBoxPreference extends CheckBoxPreference implements Prefer
     @Override
     protected void onBindView(@NonNull View view) {
         super.onBindView(view);
-        boolean viewEnabled = isEnabled() && mAppearsEnabled;
-        enableView(view, viewEnabled);
-    }
-
-    private void enableView(@NonNull View view, boolean enabled) {
-        view.setEnabled(enabled);
-        if (view instanceof ViewGroup) {
-            final ViewGroup viewGroup = (ViewGroup) view;
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                enableView(viewGroup.getChildAt(i), enabled);
-            }
-        }
+        boolean viewEnabled = isEnabled() && stateChanger.isEnabled();
+        stateChanger.enableView(view, viewEnabled);
     }
 }

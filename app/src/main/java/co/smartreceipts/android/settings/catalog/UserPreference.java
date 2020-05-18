@@ -37,9 +37,14 @@ public final class UserPreference<T> {
         public static final UserPreference<Boolean> MatchReceiptCommentToCategory = new UserPreference<>(Boolean.class, R.string.pref_receipt_match_comment_to_category_key, R.bool.pref_receipt_match_comment_to_category_defaultValue);
         public static final UserPreference<Boolean> ShowReceiptID = new UserPreference<>(Boolean.class, R.string.pref_receipt_show_id_key, R.bool.pref_receipt_show_id_defaultValue);
         public static final UserPreference<Boolean> IncludeTaxField = new UserPreference<>(Boolean.class, R.string.pref_receipt_include_tax_field_key, R.bool.pref_receipt_include_tax_field_defaultValue);
+        public static final UserPreference<Boolean> IncludeTax2Field = new UserPreference<>(Boolean.class, R.string.pref_receipt_include_tax2_field_key, R.bool.pref_receipt_include_tax2_field_defaultValue);
         public static final UserPreference<Boolean> UsePreTaxPrice = new UserPreference<>(Boolean.class, R.string.pref_receipt_pre_tax_key, R.bool.pref_receipt_pre_tax_defaultValue);
         public static final UserPreference<Boolean> DefaultToFullPage = new UserPreference<>(Boolean.class, R.string.pref_receipt_full_page_key, R.bool.pref_receipt_full_page_defaultValue);
         public static final UserPreference<Boolean> UsePaymentMethods = new UserPreference<>(Boolean.class, R.string.pref_receipt_use_payment_methods_key, R.bool.pref_receipt_use_payment_methods_defaultValue);
+        public static final UserPreference<String> Tax1Name = new UserPreference<>(String.class, R.string.pref_receipt_tax1_name_key, R.string.pref_receipt_tax1_name_defaultValue);
+        public static final UserPreference<String> Tax2Name = new UserPreference<>(String.class, R.string.pref_receipt_tax2_name_key, R.string.pref_receipt_tax2_name_defaultValue);
+        public static final UserPreference<Float> DefaultTax2Percentage = new UserPreference<>(Float.class, R.string.pref_receipt_tax2_percent_key, R.dimen.pref_receipt_tax2_percent_defaultValue);
+
     }
 
     public static final class ReportOutput {

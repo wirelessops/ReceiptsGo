@@ -47,7 +47,7 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
 
     override fun getSupportedTooltips(): List<TooltipType> {
         return listOf(TooltipType.FirstReceiptUseTaxesQuestion, TooltipType.FirstReceiptUsePaymentMethodsQuestion, TooltipType.OcrInformation,
-            TooltipType.ImageCropping)
+            TooltipType.ImageCropping, TooltipType.ConfigureSecondTaxHint)
     }
 
     override fun display(tooltip: TooltipMetadata) {

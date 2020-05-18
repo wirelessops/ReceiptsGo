@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.date.DateFormatter;
@@ -34,10 +35,12 @@ import co.smartreceipts.android.filters.LegacyReceiptFilter;
 import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.ColumnDefinitions;
 import co.smartreceipts.android.model.Distance;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.comparators.ReceiptDateComparator;
 import co.smartreceipts.android.model.converters.DistanceToReceiptsConverter;
+import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.categories.CategoryColumnDefinitions;
 import co.smartreceipts.android.model.impl.columns.distance.DistanceColumnDefinitions;
 import co.smartreceipts.android.persistence.DatabaseHelper;
@@ -50,8 +53,6 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.ImageUtils;
 import co.smartreceipts.android.utils.IntentUtils;
-import co.smartreceipts.core.utils.UriUtils;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.workers.reports.Report;
 import co.smartreceipts.android.workers.reports.ReportGenerationException;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
@@ -61,6 +62,7 @@ import co.smartreceipts.android.workers.reports.formatting.SmartReceiptsFormatta
 import co.smartreceipts.android.workers.reports.pdf.PdfBoxFullPdfReport;
 import co.smartreceipts.android.workers.reports.pdf.PdfBoxImagesOnlyReport;
 import co.smartreceipts.android.workers.reports.pdf.misc.TooManyColumnsException;
+import co.smartreceipts.core.utils.UriUtils;
 import wb.android.storage.StorageManager;
 
 //TODO: Redo this class... Really sloppy
@@ -566,7 +568,8 @@ public class EmailAssistant {
                 canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_PRICE) + ": " + receipt.getPrice().getDecimalFormattedPrice() + " " + receipt.getPrice().getCurrencyCode(), xPad / 2, y, brush);
                 y += spacing;
                 if (mPreferenceManager.get(UserPreference.Receipts.IncludeTaxField)) {
-                    canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_TAX) + ": " + receipt.getTax().getDecimalFormattedPrice() + " " + receipt.getPrice().getCurrencyCode(), xPad / 2, y, brush);
+                    Price totalTax = new PriceBuilderFactory(receipt.getTax()).setPrice(receipt.getTax().getPrice().add(receipt.getTax2().getPrice())).build();
+                    canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_TAX) + ": " + totalTax.getDecimalFormattedPrice() + " " + receipt.getPrice().getCurrencyCode(), xPad / 2, y, brush);
                     y += spacing;
                 }
                 canvas.drawText(reportResourcesManager.getFlexString(R.string.RECEIPTMENU_FIELD_DATE) + ": " + dateFormatter.getFormattedDate(receipt.getDate(), receipt.getTimeZone()), xPad / 2, y, brush);

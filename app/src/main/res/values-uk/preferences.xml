@@ -55,8 +55,15 @@
 
     <string name="pref_receipt_include_tax_field_title">Включити поле \"Податок\"</string>
     <string name="pref_receipt_include_tax_field_summary">Додає строку з інформацією про податки</string>
+    <string name="pref_receipt_tax1_name_title">Назва Податку</string>
+    <string name="pref_receipt_tax1_name_summary">Встановлює назву податку</string>
+    <string name="pref_receipt_tax_percent_title">Вiдсоток податку за замовчуванням</string>
 
-    <string name="pref_receipt_tax_percent_title">Процент податку за замовчуванням</string>
+    <string name="pref_receipt_include_tax2_field_title">Включити поле \"Другий Податок\"</string>
+    <string name="pref_receipt_include_tax2_field_summary">Додає поле для другого податку</string>
+    <string name="pref_receipt_tax2_name_title">Назва Другого Податку</string>
+    <string name="pref_receipt_tax2_name_summary">Встановлює назву другого податку</string>
+    <string name="pref_receipt_tax2_percent_title">Вiдсоток другого податку за замовчуванням</string>
 
     <string name="pref_receipt_pre_tax_title">Використовувати вартість без податків</string>
     <string name="pref_receipt_pre_tax_summary_on">Розраховує податок на базі вартості без податку</string>

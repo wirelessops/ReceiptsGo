@@ -20,18 +20,33 @@ public interface ReceiptPricingView {
     Consumer<? super Price> displayReceiptPrice();
 
     /**
-     * @return a {@link Consumer} that will display the tax {@link Price} for the current {@link Receipt}
+     * @return a {@link Consumer} that will display the tax1 {@link Price} for the current {@link Receipt}
      */
     @NonNull
     @UiThread
     Consumer<? super Price> displayReceiptTax();
 
     /**
-     * @return a {@link Consumer} that will toggle the tax field visibility based on a {@link Boolean} value
+     * @return a {@link Consumer} that will display the tax2 {@link Price} for the current {@link Receipt}
+     */
+    @NonNull
+    @UiThread
+    Consumer<? super Price> displayReceiptTax2();
+
+    /**
+     * @return a {@link Consumer} that will toggle the tax1 field visibility based on a {@link Boolean} value
      * where {@code true} indicates that it's visible and {@code false} indicates that it is not
      */
     @NonNull
     @UiThread
     Consumer<? super Boolean> toggleReceiptTaxFieldVisibility();
+
+    /**
+     * @return a {@link Consumer} that will toggle the tax2 field visibility based on a {@link Boolean} value
+     * where {@code true} indicates that it's visible and {@code false} indicates that it is not
+     */
+    @NonNull
+    @UiThread
+    Consumer<? super Boolean> toggleReceiptTax2FieldVisibility();
 
 }

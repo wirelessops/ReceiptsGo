@@ -66,6 +66,8 @@ class ReceiptColumnDefinitions @Inject constructor(
         PAYMENT_METHOD(27, R.string.column_item_payment_method, R.string.original_column_item_payment_method_en_us_name),
         PRICE_WITH_CURRENCY(28, R.string.RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY),
         IMAGE_HASH(29, R.string.column_item_image_hash, R.string.original_column_item_image_hash_en_us_name),
+        TAX1(30, R.string.pref_receipt_tax1_name_defaultValue),
+        TAX2(31, R.string.pref_receipt_tax2_name_defaultValue),
 
         EXTRA_EDITTEXT_1(100, R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1),
         EXTRA_EDITTEXT_2(101, R.string.RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2),
@@ -189,6 +191,8 @@ class ReceiptColumnDefinitions @Inject constructor(
             PRICE_EXCHANGED -> ReceiptExchangedPriceColumn(id, syncState, localizedContext, customOrderId, uuid)
             PRICE_WITH_CURRENCY -> ReceiptPriceWithCurrencyColumn(id, syncState, customOrderId, uuid)
             TAX -> ReceiptTaxColumn(id, syncState, customOrderId, uuid)
+            TAX1 -> ReceiptTax1Column(id, syncState, customOrderId, uuid)
+            TAX2 -> ReceiptTax2Column(id, syncState, customOrderId, uuid)
             TAX_EXCHANGED -> ReceiptExchangedTaxColumn(id, syncState, localizedContext, customOrderId, uuid)
             PRICE_PLUS_TAX_EXCHANGED -> ReceiptNetExchangedPricePlusTaxColumn(id, syncState, localizedContext, preferences, customOrderId, uuid)
             PRICE_MINUS_TAX_EXCHANGED -> ReceiptNetExchangedPriceMinusTaxColumn(id, syncState, localizedContext, preferences, customOrderId, uuid)

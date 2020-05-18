@@ -51,15 +51,19 @@ public class ReceiptsTotals {
             if (!preferences.get(UserPreference.Receipts.OnlyIncludeReimbursable) || receipt.isReimbursable()) {
                 grandTotal.add(receipt.getPrice());
                 taxesTotal.add(receipt.getTax());
+                taxesTotal.add(receipt.getTax2());
                 receiptsWithOutTaxTotal.add(receipt.getPrice());
                 receiptsWithTaxTotal.add(receipt.getPrice());
                 if (preferences.get(UserPreference.Receipts.UsePreTaxPrice)) {
                     // Add the taxes to these two, since we're in pre tax mode (ie the price doesn't include the tax)
                     grandTotal.add(receipt.getTax());
+                    grandTotal.add(receipt.getTax2());
                     receiptsWithTaxTotal.add(receipt.getTax());
+                    receiptsWithTaxTotal.add(receipt.getTax2());
                 } else {
                     // In post-tax mode, we'll add the tax as a negative value (ie subtract it)
                     receiptsWithOutTaxTotal.add(new PriceBuilderFactory(receipt.getTax()).setPrice(receipt.getTax().getPrice().multiply(new BigDecimal(-1))).build());
+                    receiptsWithOutTaxTotal.add(new PriceBuilderFactory(receipt.getTax2()).setPrice(receipt.getTax2().getPrice().multiply(new BigDecimal(-1))).build());
                 }
 
                 // Add reimbursable totals
@@ -67,6 +71,7 @@ public class ReceiptsTotals {
                     reimbursableGrandTotal.add(receipt.getPrice());
                     if (preferences.get(UserPreference.Receipts.UsePreTaxPrice)) {
                         reimbursableGrandTotal.add(receipt.getTax());
+                        reimbursableGrandTotal.add(receipt.getTax2());
                     }
                 }
             }
