@@ -51,29 +51,30 @@ class BaseEspressoTests {
     fun launchTripEditorAndCreateTestTripAndNavigateBackToTheTripPage() {
         launchTripEditor()
 
-        // Create a trip, entitled "Test"
-        onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test"), closeSoftKeyboard())
+        // Create a trip, entitled "Test2"
+        onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test2"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1)) // Wait a second to ensure that everything loaded
+        // Wait a second to ensure that everything loaded
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Up Button Navigation
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
-//        onView(allOf(instanceOf(ImageButton::class.java), withParent(withId(R.id.toolbar)))).perform(click())
 
-        // Verify that we have a list item with test
-        onView(withId(R.id.title)).check(matches(withText("Test")))
+        // Verify that we have a list item with Test2
+        onView(withId(R.id.title)).check(matches(withText("Test2")))
     }
 
     @Test
     fun launchTripEditorCreateTripAddTextOnlyReceipt() {
         launchTripEditor()
 
-        // Create a trip, entitled "Test"
-        onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test"), closeSoftKeyboard())
+        // Create a trip, entitled "Test3"
+        onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test3"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1)) // Wait a second to ensure that everything loaded
+        // Wait a second to ensure that everything loaded
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu (specific to our clans fab library)
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -91,16 +92,22 @@ class BaseEspressoTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
         onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
         onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
         onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
         onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
         //todo following view doesn't apply to fire department variant, find a way to test variants
 //        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
 
         // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test"))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
+
+        // Wait a second to ensure that everything loaded
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
     }
 
 }
