@@ -31,7 +31,7 @@ public class ManualBackupTask {
 
     private final Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy;
     private final PersistenceManager persistenceManager;
-    private final Scheduler observeonscheduler;
+    private final Scheduler observeOnScheduler;
     private final Scheduler subscribeOnScheduler;
     private ReplaySubject<File> backupBehaviorSubject;
 
@@ -41,13 +41,13 @@ public class ManualBackupTask {
         this(smartReceiptsTemporaryFileCacheLazy, persistenceManager, Schedulers.io(), Schedulers.io());
     }
 
-    ManualBackupTask(@NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
-                     @NonNull PersistenceManager persistenceManager,
-                     @NonNull Scheduler observeOnScheduler,
-                     @NonNull Scheduler subscribeOnScheduler) {
+    private ManualBackupTask(@NonNull Lazy<SmartReceiptsTemporaryFileCache> smartReceiptsTemporaryFileCacheLazy,
+                             @NonNull PersistenceManager persistenceManager,
+                             @NonNull Scheduler observeOnScheduler,
+                             @NonNull Scheduler subscribeOnScheduler) {
         this.smartReceiptsTemporaryFileCacheLazy = Preconditions.checkNotNull(smartReceiptsTemporaryFileCacheLazy);
         this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
-        this.observeonscheduler = Preconditions.checkNotNull(observeOnScheduler);
+        this.observeOnScheduler = Preconditions.checkNotNull(observeOnScheduler);
         this.subscribeOnScheduler = Preconditions.checkNotNull(subscribeOnScheduler);
     }
 
@@ -56,7 +56,7 @@ public class ManualBackupTask {
         if (backupBehaviorSubject == null) {
             backupBehaviorSubject = ReplaySubject.create();
             backupDataToSingle()
-                    .observeOn(observeonscheduler)
+                    .observeOn(observeOnScheduler)
                     .subscribeOn(subscribeOnScheduler)
                     .toObservable()
                     .subscribe(backupBehaviorSubject);

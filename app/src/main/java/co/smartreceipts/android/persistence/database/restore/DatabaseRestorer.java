@@ -1,6 +1,5 @@
 package co.smartreceipts.android.persistence.database.restore;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -30,27 +29,24 @@ import wb.android.storage.StorageManager;
 @ApplicationScope
 public class DatabaseRestorer {
 
-    private final Context context;
     private final DatabaseHelper databaseHelper;
     private final ImportedDatabaseFetcher importedDatabaseFetcher;
     private final DatabaseMergerFactory databaseMergerFactory;
 
     @Inject
-    public DatabaseRestorer(@NonNull DatabaseContext context,
-                            @NonNull DatabaseHelper databaseHelper,
-                            @NonNull StorageManager storageManager,
-                            @NonNull UserPreferenceManager preferences,
-                            @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
-                            @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
-                            @NonNull OrderingPreferencesManager orderingPreferencesManager) {
-        this(context, databaseHelper, new ImportedDatabaseFetcher(context, storageManager, preferences, receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager), new DatabaseMergerFactory());
+    DatabaseRestorer(@NonNull DatabaseContext context,
+                     @NonNull DatabaseHelper databaseHelper,
+                     @NonNull StorageManager storageManager,
+                     @NonNull UserPreferenceManager preferences,
+                     @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
+                     @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
+                     @NonNull OrderingPreferencesManager orderingPreferencesManager) {
+        this(databaseHelper, new ImportedDatabaseFetcher(context, storageManager, preferences, receiptColumnDefinitions, tableDefaultsCustomizer, orderingPreferencesManager), new DatabaseMergerFactory());
     }
 
-    public DatabaseRestorer(@NonNull Context context,
-                            @NonNull DatabaseHelper databaseHelper,
-                            @NonNull ImportedDatabaseFetcher importedDatabaseFetcher,
-                            @NonNull DatabaseMergerFactory databaseMergerFactory) {
-        this.context = Preconditions.checkNotNull(context);
+    private DatabaseRestorer(@NonNull DatabaseHelper databaseHelper,
+                             @NonNull ImportedDatabaseFetcher importedDatabaseFetcher,
+                             @NonNull DatabaseMergerFactory databaseMergerFactory) {
         this.databaseHelper = Preconditions.checkNotNull(databaseHelper);
         this.importedDatabaseFetcher = Preconditions.checkNotNull(importedDatabaseFetcher);
         this.databaseMergerFactory = Preconditions.checkNotNull(databaseMergerFactory);
