@@ -77,15 +77,15 @@ public class GoogleDriveBackupManager implements BackupProvider {
     private CompositeDisposable intentsCompositeDisposable = new CompositeDisposable();
 
     @Inject
-    public GoogleDriveBackupManager(@NonNull Context context,
-                                    @NonNull DatabaseHelper databaseHelper,
-                                    @NonNull GoogleDriveTableManager googleDriveTableManager,
-                                    @NonNull NetworkManager networkManager,
-                                    @NonNull Analytics analytics,
-                                    @NonNull ReceiptTableController receiptTableController,
-                                    @NonNull DatabaseRestorer databaseRestorer,
-                                    @NonNull NoOpBackupProvider noOpBackupProvider,
-                                    @NonNull DriveAccountHelper driveAccountHelper) {
+    GoogleDriveBackupManager(@NonNull Context context,
+                             @NonNull DatabaseHelper databaseHelper,
+                             @NonNull GoogleDriveTableManager googleDriveTableManager,
+                             @NonNull NetworkManager networkManager,
+                             @NonNull Analytics analytics,
+                             @NonNull ReceiptTableController receiptTableController,
+                             @NonNull DatabaseRestorer databaseRestorer,
+                             @NonNull NoOpBackupProvider noOpBackupProvider,
+                             @NonNull DriveAccountHelper driveAccountHelper) {
 
         this.context = context;
         this.databaseHelper = databaseHelper;

@@ -45,11 +45,11 @@ public class ManualRestoreTask {
         this(context, persistenceManager, databaseRestorer, Schedulers.io(), Schedulers.io());
     }
 
-    ManualRestoreTask(@NonNull Context context,
-                      @NonNull PersistenceManager persistenceManager,
-                      @NonNull DatabaseRestorer databaseRestorer,
-                      @NonNull Scheduler observeOnScheduler,
-                      @NonNull Scheduler subscribeOnScheduler) {
+    private ManualRestoreTask(@NonNull Context context,
+                              @NonNull PersistenceManager persistenceManager,
+                              @NonNull DatabaseRestorer databaseRestorer,
+                              @NonNull Scheduler observeOnScheduler,
+                              @NonNull Scheduler subscribeOnScheduler) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.persistenceManager = Preconditions.checkNotNull(persistenceManager);
         this.databaseRestorer = Preconditions.checkNotNull(databaseRestorer);
@@ -89,9 +89,8 @@ public class ManualRestoreTask {
                     return unzipAllFilesAndGetImportDatabaseFile(localZipFile, overwrite)
                             .flatMapCompletable(importDatabaseFile -> databaseRestorer.restoreDatabase(importDatabaseFile, overwrite));
                 })
-                .doOnError(error -> {
-                    Logger.error(ManualRestoreTask.this, "Caught exception during import.", error);
-                });
+                .doOnError(error ->
+                        Logger.error(ManualRestoreTask.this, "Caught exception during import.", error));
 
     }
 
@@ -147,9 +146,8 @@ public class ManualRestoreTask {
                 }
             }
         })
-        .doOnSuccess(wasCopySuccessful -> {
-            Logger.info(ManualRestoreTask.this, "Successfully copied our backup to our local path");
-        });
+        .doOnSuccess(wasCopySuccessful ->
+                Logger.info(ManualRestoreTask.this, "Successfully copied our backup to our local path"));
     }
 
     @NonNull
@@ -181,11 +179,13 @@ public class ManualRestoreTask {
                 throw new IOException("Failed to find our import database file");
             }
 
+            // delete the zip file since we've successfully exported the data from it
+            external.delete(localZipFile);
+
             return importDatabaseFile;
         })
-        .doOnSuccess(importDatabaseFile -> {
-            Logger.info(ManualRestoreTask.this, "Successfully unzipped our backup and configured all local files");
-        });
+        .doOnSuccess(importDatabaseFile ->
+                Logger.info(ManualRestoreTask.this, "Successfully unzipped our backup and configured all local files"));
     }
 
     private static final class RestoreRequest {
@@ -193,7 +193,7 @@ public class ManualRestoreTask {
         private final Uri uri;
         private final boolean overwrite;
 
-        public RestoreRequest(@NonNull Uri uri, boolean overwrite) {
+        RestoreRequest(@NonNull Uri uri, boolean overwrite) {
             this.uri = Preconditions.checkNotNull(uri);
             this.overwrite = overwrite;
         }

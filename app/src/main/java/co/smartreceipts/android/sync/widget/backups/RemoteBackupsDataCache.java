@@ -32,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.ReplaySubject;
 import wb.android.storage.StorageManager;
 
-public class RemoteBackupsDataCache {
+class RemoteBackupsDataCache {
 
     private final Context mContext;
     private final BackupProvidersManager mBackupProvidersManager;
@@ -40,9 +40,9 @@ public class RemoteBackupsDataCache {
     private final DatabaseHelper mDatabaseHelper;
     private RemoteBackupsResultsCacheHeadlessFragment mHeadlessFragment;
 
-    public RemoteBackupsDataCache(@NonNull FragmentManager fragmentManager, @NonNull Context context,
-                                  @NonNull BackupProvidersManager backupProvidersManager, @NonNull NetworkManager networkManager,
-                                  @NonNull DatabaseHelper databaseHelper) {
+    RemoteBackupsDataCache(@NonNull FragmentManager fragmentManager, @NonNull Context context,
+                           @NonNull BackupProvidersManager backupProvidersManager, @NonNull NetworkManager networkManager,
+                           @NonNull DatabaseHelper databaseHelper) {
         mContext = Preconditions.checkNotNull(context.getApplicationContext());
         mBackupProvidersManager = Preconditions.checkNotNull(backupProvidersManager);
         mNetworkManager = Preconditions.checkNotNull(networkManager);
@@ -58,7 +58,7 @@ public class RemoteBackupsDataCache {
     }
 
     @NonNull
-    public synchronized Observable<List<RemoteBackupMetadata>> getBackups(@NonNull SyncProvider syncProvider) {
+    synchronized Observable<List<RemoteBackupMetadata>> getBackups(@NonNull SyncProvider syncProvider) {
         if (mHeadlessFragment.getBackupsReplaySubjectMap == null) {
             mHeadlessFragment.getBackupsReplaySubjectMap = new HashMap<>();
         }
@@ -80,14 +80,14 @@ public class RemoteBackupsDataCache {
         return backupsReplaySubject;
     }
 
-    public synchronized void clearGetBackupsResults() {
+    synchronized void clearGetBackupsResults() {
         if (mHeadlessFragment.getBackupsReplaySubjectMap != null) {
             mHeadlessFragment.getBackupsReplaySubjectMap.clear();
         }
     }
 
     @NonNull
-    public synchronized Observable<Boolean> deleteBackup(@Nullable RemoteBackupMetadata remoteBackupMetadata) {
+    synchronized Observable<Boolean> deleteBackup(@Nullable RemoteBackupMetadata remoteBackupMetadata) {
         if (mHeadlessFragment.deleteBackupReplaySubjectMap == null) {
             mHeadlessFragment.deleteBackupReplaySubjectMap = new HashMap<>();
         }
@@ -119,7 +119,7 @@ public class RemoteBackupsDataCache {
     }
 
     @NonNull
-    public synchronized Observable<Boolean> restoreBackup(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean overwriteExistingData) {
+    synchronized Observable<Boolean> restoreBackup(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean overwriteExistingData) {
         if (mHeadlessFragment.restoreBackupReplaySubjectMap == null) {
             mHeadlessFragment.restoreBackupReplaySubjectMap = new HashMap<>();
         }
@@ -137,7 +137,7 @@ public class RemoteBackupsDataCache {
     }
 
     @NonNull
-    public synchronized Observable<File> downloadBackup(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean debugMode) {
+    synchronized Observable<File> downloadBackup(@NonNull final RemoteBackupMetadata remoteBackupMetadata, final boolean debugMode) {
         if (mHeadlessFragment.downloadBackupReplaySubjectMap == null) {
             mHeadlessFragment.downloadBackupReplaySubjectMap = new HashMap<>();
         }
@@ -182,7 +182,7 @@ public class RemoteBackupsDataCache {
         }
     }
 
-    public synchronized void removeCachedRestoreBackupFor(@NonNull final RemoteBackupMetadata remoteBackupMetadata) {
+    synchronized void removeCachedRestoreBackupFor(@NonNull final RemoteBackupMetadata remoteBackupMetadata) {
         if (mHeadlessFragment.restoreBackupReplaySubjectMap != null) {
             mHeadlessFragment.restoreBackupReplaySubjectMap.remove(remoteBackupMetadata);
         }
