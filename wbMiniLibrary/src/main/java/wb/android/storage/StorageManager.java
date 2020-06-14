@@ -1,6 +1,5 @@
 package wb.android.storage;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -56,14 +55,14 @@ public class StorageManager {
 		return _externalInstance;
 	}
 
-	public static final SDCardFileManager getExternalInstance(Context context) throws SDCardStateException {
+	public static SDCardFileManager getExternalInstance(Context context) {
 		if (_externalInstance != null)
 			return _externalInstance;
 		_externalInstance = new SDCardFileManager(context);
 		return _externalInstance;
 	}
 
-	public static final InternalStorageManager getInternalInstance(Context context) {
+	public static InternalStorageManager getInternalInstance(Context context) {
 		if (_internalInstance != null)
 			return _internalInstance;
 		_internalInstance = new InternalStorageManager(context);
@@ -81,12 +80,7 @@ public class StorageManager {
 
 	public void initialize() {
 		// Attempt to pre-fetch our root
-		Executors.newSingleThreadExecutor().execute(new Runnable() {
-			@Override
-			public void run() {
-				root.get();
-			}
-		});
+		Executors.newSingleThreadExecutor().execute(root::get);
 	}
 
 	public File getRoot() {
@@ -102,7 +96,7 @@ public class StorageManager {
 		return mkdirHelper(root, name);
 	}
 
-	private final File mkdirHelper(final File root, final String name) {
+	private File mkdirHelper(final File root, final String name) {
 		final File dir = new File(root, name);
 		if (!dir.exists()) {
 			final boolean success = dir.mkdir();
@@ -121,11 +115,13 @@ public class StorageManager {
 	}
 
 	/**
-	 * Attempts to rename oldFile with name newName. It returns a new file if successful and the oldFile if not
+	 * Attempts to rename oldFile with name newName.
 	 * 
 	 * @param oldFile
+     *              - File to be renamed
 	 * @param newName
-	 * @return
+     *              - What to rename the file
+	 * @return {code file} if the rename was successful, {code oldFile} if not
 	 */
 	public File rename(final File oldFile, final String newName) {
 		final File file = this.getFile(oldFile.getParentFile(), newName);
@@ -137,11 +133,13 @@ public class StorageManager {
 	}
 
 	/**
-	 * Attempts to rename oldFile with name newName. It returns a new file if successful and the oldFile if not
+	 * Attempts to rename oldFile with name newName.
 	 *
 	 * @param oldFile
+     *              - File to be renamed
 	 * @param file
-	 * @return
+     *              - What to rename the file
+	 * @return {code file} if the rename was successful, {code oldFile} if not
 	 */
 	public File rename(final File oldFile, final File file) {
 		final boolean success = oldFile.renameTo(file);
@@ -163,7 +161,7 @@ public class StorageManager {
 		return deleteHelper(file);
 	}
 
-	private final boolean deleteHelper(final File file) {
+	private boolean deleteHelper(final File file) {
 		if (file == null || !file.exists())
 			return true;
 		if (!file.canWrite())
@@ -180,9 +178,9 @@ public class StorageManager {
 			return false;
 		if (dir.isDirectory()) {
 			final File[] files = dir.listFiles();
-			final int len = files.length;
-			for (int i = 0; i < len; i++)
-				deleteRecursively(files[i]);
+			for (File file : files) {
+				deleteRecursively(file);
+			}
 			if (dir.listFiles().length > 0)
 				return false;
 		}
@@ -214,7 +212,7 @@ public class StorageManager {
 		return writeHelper(dir, filename, data);
 	}
 
-	private final boolean writeHelper(final File dir, final String filename, final byte[] data) {
+	private boolean writeHelper(final File dir, final String filename, final byte[] data) {
 		if (data == null || filename == null || dir == null)
 			return false;
 		String path = dir.toString();
@@ -236,7 +234,7 @@ public class StorageManager {
 		return writeHelper(dir, filename, data);
 	}
 
-	private final boolean writeHelper(final File dir, final String filename, final String data) {
+	private boolean writeHelper(final File dir, final String filename, final String data) {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
@@ -252,7 +250,7 @@ public class StorageManager {
 		return writeBitmapHelper(dir, bitmap, filename, format, quality, userComment);
 	}
 
-	private final boolean writeBitmapHelper(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality, final String userComment) {
+	private boolean writeBitmapHelper(final File dir, final Bitmap bitmap, final String filename, final CompressFormat format, int quality, final String userComment) {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
@@ -397,8 +395,7 @@ public class StorageManager {
 				}
 			}
 			File[] files = listFilesAndDirectories(source);
-			for (int i = 0; i < files.length; i++) {
-				File sourceSub = files[i];
+			for (File sourceSub : files) {
 				File destSub = getFile(destination, sourceSub.getName());
 				copy(sourceSub, destSub, overwrite);
 			}
@@ -487,7 +484,7 @@ public class StorageManager {
 		return root.get().listFiles();
 	}
 
-	public File[] listFilesAndDirectories(final File root) {
+	private File[] listFilesAndDirectories(final File root) {
 		return root.listFiles();
 	}
 
@@ -499,12 +496,8 @@ public class StorageManager {
 		return listFilesHelper(root);
 	}
 
-	private final File[] listFilesHelper(final File root) {
-		FileFilter filesFilter = new FileFilter() {
-			public final boolean accept(File file) {
-				return !file.isDirectory();
-			}
-		};
+	private File[] listFilesHelper(final File root) {
+		FileFilter filesFilter = file -> !file.isDirectory();
 		return this.list(root, filesFilter);
 	}
 
@@ -516,12 +509,8 @@ public class StorageManager {
 		return listDirsHelper(root);
 	}
 
-	private final File[] listDirsHelper(final File root) {
-		FileFilter dirsFilter = new FileFilter() {
-			public final boolean accept(File file) {
-				return file.isDirectory();
-			}
-		};
+	private File[] listDirsHelper(final File root) {
+		FileFilter dirsFilter = File::isDirectory;
 		return this.list(root, dirsFilter);
 	}
 
@@ -541,17 +530,8 @@ public class StorageManager {
 		return listHelper(root, extension);
 	}
 
-	private final File[] listHelper(final File root, final String extension) {
-		FileFilter ff = new FileFilter() {
-			@Override
-			@SuppressLint("DefaultLocale")
-			public boolean accept(File pathname) {
-				if (pathname.getName().toLowerCase().endsWith(extension))
-					return true;
-				else
-					return false;
-			}
-		};
+	private File[] listHelper(final File root, final String extension) {
+		FileFilter ff = pathname -> pathname.getName().toLowerCase().endsWith(extension);
 		return list(root, ff);
 	}
 
@@ -559,7 +539,7 @@ public class StorageManager {
 		return getMutableMemoryEfficientBitmapHelper(file, Bitmap.Config.RGB_565, 1024);
 	}
 
-	private final Bitmap getMutableMemoryEfficientBitmapHelper(File file, Bitmap.Config config, int maxDimension) {
+	private Bitmap getMutableMemoryEfficientBitmapHelper(File file, Bitmap.Config config, int maxDimension) {
 		FileInputStream fis = null;
 		try {
 			// Decode image size
@@ -602,7 +582,7 @@ public class StorageManager {
 		return getFOSHelper(dir, filename);
 	}
 
-	private final FileOutputStream getFOSHelper(File dir, String filename) throws FileNotFoundException {
+	private FileOutputStream getFOSHelper(File dir, String filename) throws FileNotFoundException {
 		String path = dir.toString();
 		if (!path.endsWith(File.separator))
 			path += File.separator;
@@ -648,8 +628,8 @@ public class StorageManager {
 				files = listFilesAndDirectories(file);
 			else
 				files = list(file, filter);
-			for (int i = 0; i < files.length; i++) {
-				zipBufferedRecursively(files[i], base, zipStream, buffer, filter);
+			for (File value : files) {
+				zipBufferedRecursively(value, base, zipStream, buffer, filter);
 			}
 		}
 		else {
@@ -688,7 +668,7 @@ public class StorageManager {
 			archive = new ZipFile(zip);
 			Enumeration<? extends ZipEntry> e = archive.entries();
 			while (e.hasMoreElements()) {
-				ZipEntry entry = (ZipEntry) e.nextElement();
+				ZipEntry entry = e.nextElement();
 				File file;
 				if ("receipts.db-wal".equals(entry.getName())) {
 					// A hack to make this work for WAL files
@@ -763,8 +743,8 @@ public class StorageManager {
 			}
 			byte[] b = complete.digest();
 			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < b.length; i++) {
-				builder.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
+			for (byte value : b) {
+				builder.append(Integer.toString((value & 0xff) + 0x100, 16).substring(1));
 			}
 			return builder.toString();
 		}
@@ -807,8 +787,8 @@ public class StorageManager {
 
 			byte[] b = complete.digest();
 			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < b.length; i++) {
-				builder.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
+			for (byte value : b) {
+				builder.append(Integer.toString((value & 0xff) + 0x100, 16).substring(1));
 			}
 			return builder.toString();
 		}

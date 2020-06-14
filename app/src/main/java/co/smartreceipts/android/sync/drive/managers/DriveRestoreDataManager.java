@@ -52,9 +52,9 @@ public class DriveRestoreDataManager {
                                     @NonNull DatabaseRestorer databaseRestorer,
                                     @NonNull File storageDirectory,
                                     @NonNull DriveDownloader driveDownloader) {
-        mDriveDatabaseManager = Preconditions.checkNotNull(driveDatabaseManager);
+        this.mDriveDatabaseManager = Preconditions.checkNotNull(driveDatabaseManager);
         this.databaseRestorer = Preconditions.checkNotNull(databaseRestorer);
-        mStorageDirectory = Preconditions.checkNotNull(storageDirectory);
+        this.mStorageDirectory = Preconditions.checkNotNull(storageDirectory);
         this.driveDownloader = Preconditions.checkNotNull(driveDownloader);
     }
 
@@ -238,7 +238,7 @@ public class DriveRestoreDataManager {
         private final String parentTripName;
         private final String fileName;
 
-        public PartialReceipt(@NonNull String driveId, @NonNull String parentTripName, @NonNull String fileName) {
+        PartialReceipt(@NonNull String driveId, @NonNull String parentTripName, @NonNull String fileName) {
             this.driveId = new Identifier(driveId);
             this.parentTripName = Preconditions.checkNotNull(parentTripName);
             this.fileName = Preconditions.checkNotNull(fileName);

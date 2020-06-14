@@ -29,12 +29,12 @@ class ImportedDatabaseFetcher {
     private final TableDefaultsCustomizer tableDefaultsCustomizer;
     private final OrderingPreferencesManager orderingPreferencesManager;
 
-    public ImportedDatabaseFetcher(@NonNull DatabaseContext context,
-                                   @NonNull StorageManager storageManager,
-                                   @NonNull UserPreferenceManager preferences,
-                                   @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
-                                   @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
-                                   @NonNull OrderingPreferencesManager orderingPreferencesManager) {
+    ImportedDatabaseFetcher(@NonNull DatabaseContext context,
+                            @NonNull StorageManager storageManager,
+                            @NonNull UserPreferenceManager preferences,
+                            @NonNull ReceiptColumnDefinitions receiptColumnDefinitions,
+                            @NonNull TableDefaultsCustomizer tableDefaultsCustomizer,
+                            @NonNull OrderingPreferencesManager orderingPreferencesManager) {
         this.context = Preconditions.checkNotNull(context);
         this.storageManager = Preconditions.checkNotNull(storageManager);
         this.preferences = Preconditions.checkNotNull(preferences);
