@@ -56,6 +56,5 @@ dependencies {
     notFlossImplementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
 
     // Crashlytics
-    notFlossImplementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS_VERSION"
-
+    notFlossImplementation "com.google.firebase:firebase-crashlytics:$CRASHLYTICS_VERSION"
 }

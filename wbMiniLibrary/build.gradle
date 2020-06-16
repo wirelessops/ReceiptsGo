@@ -9,7 +9,7 @@ dependencies {
     api "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.exifinterface:exifinterface:1.1.0'
+    implementation 'androidx.exifinterface:exifinterface:1.2.0'
 
 }
 
