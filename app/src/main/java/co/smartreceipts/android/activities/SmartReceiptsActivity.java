@@ -341,7 +341,6 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         }
     }
 
-
     @Nullable
     @Override
     public Searchable getSearchResult() {
