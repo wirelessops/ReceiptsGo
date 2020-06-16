@@ -78,7 +78,7 @@ jobs:
   test:
     branches:
       only:
-        - master
+        - /master/
         - /release_.*/
     docker:
       - image: circleci/android:api-28  # gcloud is baked into this image -alpha
