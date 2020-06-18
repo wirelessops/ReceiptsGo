@@ -29,9 +29,13 @@
 -dontwarn com.amazonaws.http.**
 -dontwarn com.amazonaws.metrics.**
 
-### Fabric
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
+### Crashlytics
+# Keep file names and line numbers.
+-keepattributes SourceFile,LineNumberTable
+# Optional: Keep custom exceptions.
+-keep public class * extends java.lang.Exception
+-keep class com.google.firebase.crashlytics.** { *; }
+-dontwarn com.google.firebase.crashlytics.**
 
 
 ##### FireBase ProGuard configurations #####

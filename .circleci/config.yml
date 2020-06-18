@@ -1,4 +1,3 @@
-version: 2
 jobs:
   build:
     branches:
@@ -75,3 +74,84 @@ jobs:
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: app/build/test-results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+  test:
+    branches:
+      only:
+        - /master/
+        - /release_.*/
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-28  # gcloud is baked into this image -alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - run:
+          name: Get JSON & GPG Keys From Env-Var
+          command: |
+            echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
+            echo -e $GPG_KEY > smart_receipts_key.asc
+            - run:
+                name: Import gpg key into gpg, decrypt secrets
+                command: |
+                  gpg --import smart_receipts_key.asc
+                  gpg --decrypt secrets.tar.gpg > secrets.tar
+                  tar -vxf secrets.tar
+                  rm secrets.tar
+      - run:
+          name: Store Google Service Account
+          command: echo $GCLOUD_SERVICE_KEY > test_lab_account_key.json
+      - run:
+          name: Authorize gcloud and set config defaults
+          command: |
+            sudo gcloud auth activate-service-account --key-file=test_lab_account_key.json
+            sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Build debug and test APKs for Free, Plus, and Floss variants
+          command: |
+            ./gradlew :app:assembleFreeDebug
+            ./gradlew :app:assembleFreeDebugAndroidTest
+            ./gradlew :app:assemblePlusFlavorDebug
+            ./gradlew :app:assemblePlusFlavorDebugAndroidTest
+            ./gradlew :app:assembleFlossFlavorDebug
+            ./gradlew :app:assembleFlossFlavorDebugAndroidTest
+      - run:
+          name: Test Free Variant with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app app/build/outputs/apk/free/debug/app-free-debug.apk \
+              --test app/build/outputs/apk/androidTest/free/debug/app-free-debug-androidTest.apk \
+              --device model=taimen,version=27 \
+              --environment-variables clearPackageData=true \
+              --use-orchestrator \
+              --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
+      - run:
+          name: Test Plus Variant with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app app/build/outputs/apk/plusFlavor/debug/app-plusFlavor-debug.apk \
+              --test app/build/outputs/apk/androidTest/plusFlavor/debug/app-plusFlavor-debug-androidTest.apk \
+              --device model=taimen,version=27 \
+              --environment-variables clearPackageData=true \
+              --use-orchestrator \
+              --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
+      - run:
+          name: Test Floss Variant with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app app/build/outputs/apk/flossFlavor/debug/app-flossFlavor-debug.apk \
+              --test app/build/outputs/apk/androidTest/flossFlavor/debug/app-flossFlavor-debug-androidTest.apk \
+              --device model=taimen,version=27 \
+              --environment-variables clearPackageData=true \
+              --use-orchestrator \
+              --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
+      - run:
+          name: Install gsutil dependency and copy test results data
+          command: |
+            sudo pip install -U crcmod
+            sudo gsutil -m cp -r -U `sudo gsutil ls gs://smartreceipts-circleci-testlab/TestResults | tail -1` ${CIRCLE_ARTIFACTS}/ | true
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
