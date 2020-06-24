@@ -55,6 +55,8 @@ dependencies {
 
     notFlossImplementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
 
+    // Recommended: Add the Firebase SDK for Google Analytics.
+    implementation "com.google.firebase:firebase-analytics:$FIREBASE_ANALYTICS_VERSION"
     // Crashlytics
     notFlossImplementation "com.google.firebase:firebase-crashlytics:$CRASHLYTICS_VERSION"
 }
