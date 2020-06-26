@@ -1,8 +1,5 @@
 jobs:
   build:
-    branches:
-      only:
-        - /release_.*/
     working_directory: ~/code
     docker:
       - image: circleci/android:api-28
@@ -75,10 +72,6 @@ jobs:
           path: app/build/test-results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
   test:
-    branches:
-      only:
-        - /master/
-        - /release_.*/
     working_directory: ~/code
     docker:
       - image: circleci/android:api-28  # gcloud is baked into this image -alpha
@@ -154,4 +147,13 @@ workflows:
   build_and_test:
     jobs:
       - build
+        filters:
+          branches:
+            only:
+              - /release_.*/
       - test
+        filters:
+          branches:
+            only:
+              - master
+              - /release_.*/
