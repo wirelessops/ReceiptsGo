@@ -78,7 +78,7 @@ public class DatabaseRestorer {
                                 databaseHelper.getWritableDatabase().setTransactionSuccessful();
                                 databaseHelper.getWritableDatabase().endTransaction();
                                 for (final Table table : databaseHelper.getTables()) {
-                                    // Clear all our of in-memory caches
+                                    // Clear all of our in-memory caches
                                     table.clearCache();
                                 }
                             })
