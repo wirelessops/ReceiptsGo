@@ -12,37 +12,37 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-#      - run:
-#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-#         command: sudo chmod +x ./gradlew
+      #      - run:
+      #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+      #         command: sudo chmod +x ./gradlew
       - run:
           name: Bump Version & Push To Repo
           command: |
-             cd scripts
-             ./version-bumper.sh
-             printf "\n"
-             echo "-- Pushing To Github --"
-             printf "\n"
-             git pull https://${GITHUB_API_TOKEN}@github.com/wbaumann/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
-             git config credential.helper 'cache --timeout=120'
-             git config user.email ${GITHUB_EMAIL}
-             git config user.name ${GITHUB_USERNAME}
-             git add ../app/build.gradle
-             git commit -m "Bumping Project Version [ci skip]"
-             cd ..
-             git push https://${GITHUB_API_TOKEN}@github.com/wbaumann/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
+            cd scripts
+            ./version-bumper.sh
+            printf "\n"
+            echo "-- Pushing To Github --"
+            printf "\n"
+            git pull https://${GITHUB_API_TOKEN}@github.com/wbaumann/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
+            git config credential.helper 'cache --timeout=120'
+            git config user.email ${GITHUB_EMAIL}
+            git config user.name ${GITHUB_USERNAME}
+            git add ../app/build.gradle
+            git commit -m "Bumping Project Version [ci skip]"
+            cd ..
+            git push https://${GITHUB_API_TOKEN}@github.com/wbaumann/SmartReceiptsLibrary.git ${CIRCLE_BRANCH}
       - run:
           name: Get JSON & GPG Keys From Env-Var
           command: |
-             echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
-             echo -e $GPG_KEY > smart_receipts_key.asc
+            echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
+            echo -e $GPG_KEY > smart_receipts_key.asc
       - run:
           name: Import gpg key into gpg, decrypt secrets
           command: |
-             gpg --import smart_receipts_key.asc
-             gpg --decrypt secrets.tar.gpg > secrets.tar
-             tar -vxf secrets.tar
-             rm secrets.tar
+            gpg --import smart_receipts_key.asc
+            gpg --decrypt secrets.tar.gpg > secrets.tar
+            tar -vxf secrets.tar
+            rm secrets.tar
       - run:
           name: Approve SDK Licenses
           # Captures SIGPIPE 141 error but still allow repeating "y" to accept all licenses
@@ -80,11 +80,6 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Build debug and test APKs for Free variant
-          command: |
-            ./gradlew :app:assembleFreeDebug
-            ./gradlew :app:assembleFreeDebugAndroidTest
-      - run:
           name: Get JSON & GPG Keys From Env-Var
           command: |
             echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
@@ -101,6 +96,11 @@ jobs:
           command: |
             sudo gcloud auth activate-service-account --key-file=test_lab_account_key.json
             sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Build debug and test APKs for Free variant
+          command: |
+            ./gradlew :app:assembleFreeDebug
+            ./gradlew :app:assembleFreeDebugAndroidTest
       - run:
           name: Test Free Variant with Firebase Test Lab
           command: >
@@ -120,11 +120,6 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Build debug and test APKs for Plus variant
-          command: |
-            ./gradlew :app:assemblePlusFlavorDebug
-            ./gradlew :app:assemblePlusFlavorDebugAndroidTest
-      - run:
           name: Get JSON & GPG Keys From Env-Var
           command: |
             echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
@@ -141,6 +136,11 @@ jobs:
           command: |
             sudo gcloud auth activate-service-account --key-file=test_lab_account_key.json
             sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Build debug and test APKs for Plus variant
+          command: |
+            ./gradlew :app:assemblePlusFlavorDebug
+            ./gradlew :app:assemblePlusFlavorDebugAndroidTest
       - run:
           name: Test Plus Variant with Firebase Test Lab
           command: >
@@ -160,11 +160,6 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Build debug and test APKs for Floss variant
-          command: |
-            ./gradlew :app:assembleFlossFlavorDebug
-            ./gradlew :app:assembleFlossFlavorDebugAndroidTest
-      - run:
           name: Get JSON & GPG Keys From Env-Var
           command: |
             echo ${PLAYSTORE_SERVICE_KEY} > app/GPLAY_KEY.json
@@ -181,6 +176,11 @@ jobs:
           command: |
             sudo gcloud auth activate-service-account --key-file=test_lab_account_key.json
             sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Build debug and test APKs for Floss variant
+          command: |
+            ./gradlew :app:assembleFlossFlavorDebug
+            ./gradlew :app:assembleFlossFlavorDebugAndroidTest
       - run:
           name: Test Floss Variant with Firebase Test Lab
           command: >
