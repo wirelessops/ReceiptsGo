@@ -64,7 +64,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Caching Vars
     private ArrayList<CharSequence> mFullCurrencyList;
     private ArrayList<CharSequence> mMostRecentlyUsedCurrencyList;
-    private final ReceiptColumnDefinitions mReceiptColumnDefinitions;
 
     // Other vars
     private final DatabaseContext mContext;
@@ -105,15 +104,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         mContext = context;
         mPreferences = preferences;
-        mReceiptColumnDefinitions = receiptColumnDefinitions;
         mCustomizations = tableDefaultsCustomizer;
 
         // Tables:
         mTables = new ArrayList<>();
         mTripsTable = new TripsTable(this, storageManager, preferences);
         mCategoriesTable = new CategoriesTable(this, orderingPreferencesManager);
-        mCSVTable = new CSVTable(this, mReceiptColumnDefinitions, orderingPreferencesManager);
-        mPDFTable = new PDFTable(this, mReceiptColumnDefinitions, orderingPreferencesManager);
+        mCSVTable = new CSVTable(this, receiptColumnDefinitions, orderingPreferencesManager);
+        mPDFTable = new PDFTable(this, receiptColumnDefinitions, orderingPreferencesManager);
         mPaymentMethodsTable = new PaymentMethodsTable(this, orderingPreferencesManager);
         mDistanceTable = new DistanceTable(this, mTripsTable, mPaymentMethodsTable, preferences);
         mReceiptsTable = new ReceiptsTable(this, mTripsTable, mPaymentMethodsTable, mCategoriesTable, storageManager, preferences, orderingPreferencesManager);
@@ -214,8 +212,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This class is not synchronized! Sync outside of it
      *
-     * @param trip
-     * @return
+     * @param trip The trip we want the prices of
      */
     public void getTripPriceAndDailyPrice(final Trip trip) {
         queryTripPrice(trip);
@@ -239,9 +236,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (mPreferences.get(UserPreference.Distance.IncludeDistancePriceInReports)) {
             final List<Distance> distances = mDistanceTable.getBlocking(trip, true);
-            for (final Distance distance : distances) {
-                prices.add(distance);
-            }
+            prices.addAll(distances);
         }
 
         trip.setPrice(new PriceBuilderFactory().setPriceables(prices, trip.getTripCurrency()).build());
@@ -279,19 +274,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Single<Integer> getNextReceiptAutoIncrementIdHelper() {
         return Single.fromCallable(() -> {
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = null;
 
-            try {
-                cursor = db.rawQuery("SELECT seq FROM SQLITE_SEQUENCE WHERE name=?", new String[]{ReceiptsTable.TABLE_NAME});
+            try (Cursor cursor = db.rawQuery("SELECT seq FROM SQLITE_SEQUENCE WHERE name=?", new String[]{ReceiptsTable.TABLE_NAME})) {
                 if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() > 0) {
                     return cursor.getInt(0) + 1;
                 } else {
                     return 0;
-                }
-
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
                 }
             }
         });
@@ -325,10 +313,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                     builder.append(" OR ");
                                 }
 
-                                builder.append(searchColumns[i])
-                                        .append(" like '")
-                                        .append(input)
-                                        .append("%' ");
+                                if (searchColumns[i].equals(ReceiptsTable.COLUMN_COMMENT)) {
+                                    builder.append(searchColumns[i])
+                                            .append(" like '%")
+                                            .append(input)
+                                            .append("%' ");
+                                } else {
+                                    builder.append(searchColumns[i])
+                                            .append(" like '")
+                                            .append(input)
+                                            .append("%' ");
+                                }
                             }
 
                             if (orderByColumn != null) {
