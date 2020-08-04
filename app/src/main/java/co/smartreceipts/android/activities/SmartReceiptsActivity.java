@@ -133,7 +133,6 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         if (persistenceManager.getStorageManager().getRoot() == null) {
             Toast.makeText(SmartReceiptsActivity.this, flex.getString(this, R.string.SD_WARNING), Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override

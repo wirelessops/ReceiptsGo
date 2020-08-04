@@ -192,6 +192,16 @@ public class DriveStreamsManager implements GoogleApiClient.ConnectionCallbacks 
     }
 
     @NonNull
+    public Single<File> renameBackup(@NonNull final Identifier identifier, @NonNull final String newFileName) {
+        Preconditions.checkNotNull(identifier);
+        Preconditions.checkNotNull(newFileName);
+
+        return newBlockUntilConnectedCompletable()
+                .andThen(driveDataStreams.renameBackup(identifier, newFileName))
+                .doOnError(throwable -> driveErrorStream.onNext(Optional.of(syncErrorTranslator.get(throwable))));
+    }
+
+    @NonNull
     public Single<Boolean> delete(@NonNull final Identifier identifier) {
         Preconditions.checkNotNull(identifier);
 

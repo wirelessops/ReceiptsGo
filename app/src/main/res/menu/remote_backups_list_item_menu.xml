@@ -4,6 +4,9 @@
     <item android:id="@+id/remote_backups_list_item_menu_restore"
         android:title="@string/remote_backups_list_item_menu_restore"/>
 
+    <item android:id="@+id/remote_backups_list_item_menu_rename"
+        android:title="@string/rename"/>
+
     <item android:id="@+id/remote_backups_list_item_menu_delete"
         android:title="@string/delete"/>
 

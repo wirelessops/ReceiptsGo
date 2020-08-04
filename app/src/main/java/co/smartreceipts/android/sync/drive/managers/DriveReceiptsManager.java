@@ -30,7 +30,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class DriveReceiptsManager {
 
     private final TableController<Receipt> mReceiptTableController;

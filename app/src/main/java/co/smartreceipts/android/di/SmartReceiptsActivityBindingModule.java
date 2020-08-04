@@ -1,5 +1,6 @@
 package co.smartreceipts.android.di;
 
+import co.smartreceipts.android.sync.widget.backups.RenameRemoteBackupDialogFragment;
 import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment;
 import co.smartreceipts.android.distance.editor.di.DistanceCreateEditFragmentModule;
@@ -86,6 +87,10 @@ public abstract class SmartReceiptsActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = ReceiptCreateEditFragmentTooltipFragmentModule.class)
     public abstract ReceiptCreateEditFragmentTooltipFragment receiptCreateEditFragmentTooltipFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract RenameRemoteBackupDialogFragment renameRemoteBackupDialogFragment();
 
     @FragmentScope
     @ContributesAndroidInjector
