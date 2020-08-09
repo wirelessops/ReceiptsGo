@@ -39,6 +39,7 @@
     <string name="next_id">Próxima ID: %d</string>
     <string name="no">Nº</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Renomear</string>
     <string name="report">Relatório</string>
     <string name="report_attached">Um relatório anexo</string>
     <string name="reports_attached">%s relatórios anexos</string>
@@ -276,6 +277,10 @@
     <string name="receipt_attach_image">Escolha uma foto</string>
     <string name="receipt_attach_file">Anexar arquivo</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Novo nome de arquivo</string>
+    <string name="new_filename_empty_error">O novo nome do arquivo não pode estar vazio</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Exportar recibos?</string>
     <string name="dialog_export_text">Você pode importar seus dados novamente clicando no arquivo SmartReceipts.SMR, que será gerado ao clicar abaixo</string>
@@ -307,10 +312,14 @@
     <string name="remote_backups_list_item_menu_download_images">Baixar para ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Download</string>
 
+    <string name="dialog_remote_backup_rename_progress">Renomeando seu backup de %s para %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Renomeado com êxito o backup, atualizando a lista agora&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Falha ao renomear este backup</string>
+
     <string name="dialog_remote_backup_delete_message">Tem certeza de que deseja excluir o backup do dispositivo %s? Essa operação não pode ser desfeita.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Tem certeza de que deseja excluir o backup deste dispositivo? Essa operação não pode ser desfeita. É possível desabilitar o backup automático depois que a operação for concluída, ou todos os dados locais serão sincronizados novamente.</string>
     <string name="dialog_remote_backup_delete_progress">Excluindo seu backup do dispositivo %s…</string>
-    <string name="dialog_remote_backup_delete_toast_success">Backup excluído com êxito</string>
+    <string name="dialog_remote_backup_delete_toast_success">Backup excluído com sucesso, atualizando a lista agora&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Falha ao excluir esse backup</string>
     <string name="dialog_remote_backup_download_progress">Baixando imagens para o arquivo ZIP…</string>
 

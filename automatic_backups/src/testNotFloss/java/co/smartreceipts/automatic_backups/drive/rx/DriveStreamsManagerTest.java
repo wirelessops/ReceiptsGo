@@ -274,6 +274,17 @@ public class DriveStreamsManagerTest {
     }
 
     @Test
+    public void rename() throws Exception {
+        final String newFileName = "Test Name";
+        when(driveDataStreams.renameBackup(identifier, newFileName)).thenReturn(Single.just(driveFile));
+
+        final TestObserver<File> testObserver = driveStreamsManager.renameBackup(identifier, newFileName).test();
+        testObserver.assertValue(driveFile);
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+    }
+
+    @Test
     public void deleteDriveFileWithIdentifierSuccessfully() throws Exception {
         when(currentSyncState.getSyncId(SyncProvider.GoogleDrive)).thenReturn(identifier);
         when(driveDataStreams.delete(identifier)).thenReturn(Single.just(true));

@@ -208,6 +208,21 @@ public class GoogleDriveBackupManager implements BackupProvider {
 
     @NonNull
     @Override
+    public Single<com.google.api.services.drive.model.File> renameBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata, @NonNull String newFileName) {
+        Logger.info(this, "Renaming drive backup: {}", remoteBackupMetadata);
+        final DriveClientInitializer driveClientInitializerRef;
+        synchronized (initializationLock) {
+            driveClientInitializerRef = driveClientInitializer;
+        }
+        if (driveClientInitializerRef != null) {
+            return driveClientInitializerRef.getDriveStreamsManager().renameBackup(remoteBackupMetadata.getId(), newFileName);
+        } else {
+            return noOpBackupProvider.renameBackup(remoteBackupMetadata, newFileName);
+        }
+    }
+
+    @NonNull
+    @Override
     public Single<Boolean> deleteBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata) {
         //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(remoteBackupMetadata);

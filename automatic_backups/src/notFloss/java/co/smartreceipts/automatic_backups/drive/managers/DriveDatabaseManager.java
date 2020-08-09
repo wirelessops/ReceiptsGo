@@ -21,7 +21,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class DriveDatabaseManager {
 
     private final Context mContext;
@@ -67,7 +66,7 @@ public class DriveDatabaseManager {
                             }, throwable -> {
                                 mIsSyncInProgress.set(false);
                                 mAnalytics.record(new ErrorEvent(DriveDatabaseManager.this, throwable));
-                                Logger.error(DriveDatabaseManager.this, "Failed to synced our database", throwable);
+                                Logger.error(DriveDatabaseManager.this, "Failed to sync our database", throwable);
                             });
                 } else {
                     Logger.debug(DriveDatabaseManager.this, "A sync is already in progress. Ignoring subsequent one for now");

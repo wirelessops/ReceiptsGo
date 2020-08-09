@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,8 +77,8 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     private CheckBox wifiOnlyCheckbox;
     private View existingBackupsSection;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
-    private SimpleRecyclerViewBinding rootBinding;
     private BackupsHeaderBinding headerBinding;
 
     @Override
@@ -99,7 +100,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     @Override
     @SuppressLint("InflateParams")
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootBinding = SimpleRecyclerViewBinding.inflate(inflater, container, false);
+        SimpleRecyclerViewBinding rootBinding = SimpleRecyclerViewBinding.inflate(inflater, container, false);
         recyclerView = rootBinding.list;
 
         headerBinding = BackupsHeaderBinding.inflate(inflater, container, false);
@@ -108,6 +109,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
         backupConfigButtonText = headerBinding.automaticBackupConfigButtonText;
         wifiOnlyCheckbox = headerBinding.autoBackupWifiOnly;
         existingBackupsSection = headerBinding.existingBackupsSection;
+        progressBar = headerBinding.backupsProgressBar;
 
         View exportButton = headerBinding.manualBackupExport;
         View importButton = headerBinding.manualBackupImport;
@@ -238,6 +240,9 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
                 backupConfigButtonText.setText(R.string.auto_backup_source_google_drive);
                 backupConfigButtonImage.setImageResource(R.drawable.ic_cloud_done_24dp);
                 wifiOnlyCheckbox.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setAdapter(new RemoteBackupsListAdapter(headerBinding.getRoot(), navigationHandler,
+                        backupProvidersManager, persistenceManager.getPreferenceManager(), networkManager));
             } else {
                 throw new IllegalArgumentException("Unsupported sync provider type was specified");
             }
@@ -248,6 +253,7 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
                             existingBackupsSection.setVisibility(View.GONE);
                         } else {
                             existingBackupsSection.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                         }
                         final RemoteBackupsListAdapter remoteBackupsListAdapter =
                                 new RemoteBackupsListAdapter(headerBinding.getRoot(), navigationHandler,

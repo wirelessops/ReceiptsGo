@@ -75,6 +75,12 @@ public class NoOpBackupProvider implements BackupProvider {
 
     @NonNull
     @Override
+    public Single<com.google.api.services.drive.model.File> renameBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata, @NonNull String newFileName) {
+        return Single.just(new com.google.api.services.drive.model.File());
+    }
+
+    @NonNull
+    @Override
     public Single<Boolean> deleteBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata) {
         return Single.just(false);
     }

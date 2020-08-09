@@ -216,6 +216,19 @@ class DriveDataStreams {
     }
 
     @NonNull
+    public synchronized Single<File> renameBackup(@NonNull final Identifier driveIdentifier, @NonNull String newFileName) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(driveIdentifier);
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(newFileName);
+
+        // Note: (https://developers.google.com/drive/android/trash) If the target of the trash/untrash operation is a folder, all descendants of that folder are similarly trashed or untrashed
+        return driveServiceHelper.renameBackup(driveIdentifier.getId(), newFileName)
+                .doOnSuccess(ignore -> Logger.info(DriveDataStreams.this, "Successfully renamed resource"))
+                .doOnError(throwable -> Logger.error(DriveDataStreams.this, "Failed to rename file with id: {}", driveIdentifier));
+    }
+
+    @NonNull
     public synchronized Single<Boolean> delete(@NonNull final Identifier driveIdentifier) {
         //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(driveIdentifier);

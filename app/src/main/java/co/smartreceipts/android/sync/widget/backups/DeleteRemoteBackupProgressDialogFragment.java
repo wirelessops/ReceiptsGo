@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.ErrorEvent;
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.SmartReceiptsApplication;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.core.sync.errors.SyncErrorType;
@@ -27,7 +26,6 @@ import co.smartreceipts.analytics.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-
 
 public class DeleteRemoteBackupProgressDialogFragment extends DialogFragment {
 
@@ -94,7 +92,6 @@ public class DeleteRemoteBackupProgressDialogFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final SmartReceiptsApplication smartReceiptsApplication = ((SmartReceiptsApplication)getActivity().getApplication());
         remoteBackupsDataCache = new RemoteBackupsDataCache(getFragmentManager(), getContext(),
                 backupProvidersManager, networkManager, database);
     }

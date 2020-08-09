@@ -41,6 +41,7 @@
     <string name="next_id">Prossimo ID: %d</string>
     <string name="no">No</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Rinominare</string>
     <string name="report">Report</string>
     <string name="report_attached">1 report allegato</string>
     <string name="reports_attached">%s reports allegati</string>
@@ -287,6 +288,9 @@
     <string name="receipt_attach_image">Seleziona una foto</string>
     <string name="receipt_attach_file">Allega file</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Nuovo nome file</string>
+    <string name="new_filename_empty_error">Il nome del nuovo file non può essere vuoto</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Esportare le ricevute?</string>
@@ -319,10 +323,14 @@
     <string name="remote_backups_list_item_menu_download_images">Scarica ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Scarica</string>
 
+    <string name="dialog_remote_backup_rename_progress">Rinominare il backup da %s a %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Backup rinominato correttamente, elenco di aggiornamento ora&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Impossibile rinominare questo backup</string>
+
     <string name="dialog_remote_backup_delete_message">Siete sicuri di voler cancellare il backup dal dispositivo %s ? Questa operazione non può essere annullata.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Siete sicuri di voler cancellare il backup dal dispositivo? Questa operazione non può essere annullata. Prego notaer che potete disabilitare il backup automatico dopo che questa operazione è completa o tutti i dati locali possono essere risincronizzati.</string>
     <string name="dialog_remote_backup_delete_progress">Il vostro backup dal dispositivo %s in cancellazione&#8230;</string>
-    <string name="dialog_remote_backup_delete_toast_success">Questo backup è stato cancellato con successo</string>
+    <string name="dialog_remote_backup_delete_toast_success">Backup eliminato correttamente, elenco di aggiornamento ora&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Cancellazione del backup fallita</string>
     <string name="dialog_remote_backup_download_progress">Immagini scaricate nel file ZIP&#8230;</string>
 

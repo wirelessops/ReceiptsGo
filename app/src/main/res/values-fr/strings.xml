@@ -39,6 +39,7 @@
     <string name="next_id">ID suivant : %d</string>
     <string name="no">Non</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Renommer</string>
     <string name="report">Rapport</string>
     <string name="report_attached">1 rapport joint</string>
     <string name="reports_attached">%s rapports joints</string>
@@ -276,6 +277,10 @@
     <string name="receipt_attach_image">Choisissez une photo</string>
     <string name="receipt_attach_file">Pièce jointe</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Nouveau nom de fichier</string>
+    <string name="new_filename_empty_error">Le nouveau nom de fichier ne peut pas être vide</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Exporter vos reçus ?</string>
     <string name="dialog_export_text">Vous pouvez réimporter vos données en cliquant sur le fichier SmartReceipts.SMR qui est généré en cliquant ci-dessous.</string>
@@ -307,17 +312,21 @@
     <string name="remote_backups_list_item_menu_download_images">Télécharger en ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Débogage] Télécharger</string>
 
+    <string name="dialog_remote_backup_rename_progress">Renommer votre sauvegarde de %s en %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Sauvegarde renommée avec succès, actualisation de la liste maintenant&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Échec du changement de nom de cette sauvegarde</string>
+
     <string name="dialog_remote_backup_delete_message">Êtes-vous sûr de vouloir supprimer votre sauvegarde de l’appareil %s ? Cette opération est irréversible.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Êtes-vous sûr de vouloir supprimer votre sauvegarde de cet appareil ? Cette opération est irréversible. Veuillez noter que vous pouvez désactiver les sauvegardes automatiques après cette opération ou toutes les données locales peuvent être resynchronisées.</string>
-    <string name="dialog_remote_backup_delete_progress">Suppression de votre sauvegarde de l\'appareil %s…</string>
-    <string name="dialog_remote_backup_delete_toast_success">Sauvegarde supprimée avec succès</string>
+    <string name="dialog_remote_backup_delete_progress">Suppression de votre sauvegarde de l\'appareil %s&#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">Sauvegarde supprimée avec succès, actualisation de la liste maintenant&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Impossible de supprimer cette sauvegarde</string>
-    <string name="dialog_remote_backup_download_progress">Téléchargement d\'images vers le fichier ZIP…</string>
+    <string name="dialog_remote_backup_download_progress">Téléchargement d\'images vers le fichier ZIP&#8230;</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Restauration avec Google Drive</string>
     <string name="dialog_remote_backup_drive_restore_message">Nous rencontrons des difficultés pour synchroniser vos données. Pour les récupérer, nous aimerions effacer votre sauvegarde Drive et resynchroniser vos données. Si vous voyez ce message souvent, veuillez nous contacter pour une assistance supplémentaire.</string>
-    <string name="dialog_remote_backup_restore_progress">Effacement de votre sauvegarde pour préparer la resynchronisation…</string>
-    <string name="dialog_remote_backup_restore_toast_success">Sauvegarde effacée avec succès. Resynchronisation…</string>
+    <string name="dialog_remote_backup_restore_progress">Effacement de votre sauvegarde pour préparer la resynchronisation&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Sauvegarde effacée avec succès. Resynchronisation&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_failure">Impossible de resynchroniser cette sauvegarde</string>
 
     <string name="automatic_backups_info_dialog_message">Les sauvegardes automatiques ne sont pas activées.</string>

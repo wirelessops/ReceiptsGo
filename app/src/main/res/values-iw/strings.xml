@@ -39,6 +39,7 @@
     <string name="next_id">%s :המזהה הבא</string>
     <string name="no">לא</string>
     <string name="pdf">PDF</string>
+    <string name="rename">שנה שם</string>
     <string name="report">דו״ח</string>
     <string name="report_attached">דוח 1 מצורף</string>
     <string name="reports_attached">דוחות מצורפים %s</string>
@@ -291,6 +292,9 @@
     <string name="receipt_attach_image">בחר תמונה</string>
     <string name="receipt_attach_file">צרף קובץ</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">שם קובץ חדש</string>
+    <string name="new_filename_empty_error">שם קובץ חדש לא יכול להיות ריק</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">ייצא את הקבלות שלך?</string>
@@ -340,10 +344,13 @@
     <string name="remote_backups_list_item_menu_restore">שחזר</string>
     <string name="remote_backups_list_item_menu_download_images">הורד כקובץ זיפ</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] הורד</string>
+    <string name="dialog_remote_backup_rename_progress">שינוי שם הגיבוי מ- %s ל- %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">שינוי שם בהצלחה לגיבוי, מרענן את הרשימה כעת&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">שינוי שם הגיבוי נכשל</string>
     <string name="dialog_remote_backup_delete_message">אתה בטוח שאתה רוצה למחוק את הגיבויים שלך ממכשיר %s? פעולה זו הינה בלתי הפיכה.</string>
     <string name="dialog_remote_backup_delete_message_this_device">אתה בטוח שאתה רוצה למחוק את הגיבוי שלך מהמכשיר הזה? הפעולה הינה בלתי הפיכה. אנא שים לב שרצוי לכבות את פונקציית הגיבויים האוטומטיים אחרי שהפעולה הזו הושלמה או שכל המידע המקומי עלול להיות מסונכרן שוב.</string>
     <string name="dialog_remote_backup_delete_progress">מחק את הגיבוי שלך ממכשיר %s &#8230;</string>
-    <string name="dialog_remote_backup_delete_toast_success">הגיבוי נמחק בהצלחה</string>
+    <string name="dialog_remote_backup_delete_toast_success">הגיבוי שנמחק בהצלחה מרענן כעת&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">מחיקת הגיבוי נכשלה</string>
     <string name="dialog_remote_backup_download_progress">מוריד קבצים לקובץ זיפ&#8230;</string>
     <string name="dialog_remote_backup_drive_restore_title">שחזור דרייב</string>

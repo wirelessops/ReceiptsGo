@@ -39,6 +39,7 @@
     <string name="next_id">Siguiente ID: %d</string>
     <string name="no">No</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Rebautizar</string>
     <string name="report">Informe</string>
     <string name="report_attached">1 informe adjunto</string>
     <string name="reports_attached">%s informes adjuntos</string>
@@ -276,6 +277,10 @@
     <string name="receipt_attach_image">Elige una foto</string>
     <string name="receipt_attach_file">Adjuntar archivo</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Nuevo nombre de archivo</string>
+    <string name="new_filename_empty_error">El nuevo nombre de archivo no puede estar vacío</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">¿Exportar los recibos?</string>
     <string name="dialog_export_text">Puedes importar de nuevo tus datos haciendo clic en el archivo SmartReceipts.SMR, que se genera haciendo clic a continuación.</string>
@@ -307,17 +312,21 @@
     <string name="remote_backups_list_item_menu_download_images">Descargar a ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Depuración] Descargar</string>
 
+    <string name="dialog_remote_backup_rename_progress">Cambiar el nombre de su copia de seguridad de %s a %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Copia de seguridad exitosamente renombrada, lista de actualización ahora&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Error al cambiar el nombre de esta copia de seguridad</string>
+
     <string name="dialog_remote_backup_delete_message">¿Estás seguro que deseas eliminar tu copia de seguridad del dispositivo %s? Esta operación no se puede deshacer.</string>
     <string name="dialog_remote_backup_delete_message_this_device">¿Estás seguro que deseas eliminar tu copia de seguridad de este dispositivo? Esta operación no se puede deshacer. Por favor ten en cuenta que debes deshabilitar las copias de seguridad automáticas luego de terminar esta operación, o todos los datos locales pueden ser sincronizados de nuevo.</string>
-    <string name="dialog_remote_backup_delete_progress">Eliminando tu copia de seguridad del dispositivo %s…</string>
-    <string name="dialog_remote_backup_delete_toast_success">Copia de seguridad eliminada correctamente</string>
+    <string name="dialog_remote_backup_delete_progress">Eliminando tu copia de seguridad del dispositivo %s&#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">Copia de seguridad eliminada con éxito, lista de actualización ahora&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">No se pudo eliminar esta copia de seguridad</string>
-    <string name="dialog_remote_backup_download_progress">Descargando imágenes a archivo ZIP…</string>
+    <string name="dialog_remote_backup_download_progress">Descargando imágenes a archivo ZIP&#8230;</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Restauración de Drive</string>
     <string name="dialog_remote_backup_drive_restore_message">Estamos teniendo problemas para sincronizar tus datos. Para recuperar, nos gustaría borrar tu copia de seguridad de Drive y sincronizar de nuevo. Si ves este mensaje con frecuencia, por favor contáctanos para obtener más asistencia.</string>
-    <string name="dialog_remote_backup_restore_progress">Borrando tu copia de seguridad para preparar una resincronización…</string>
-    <string name="dialog_remote_backup_restore_toast_success">Se borró correctamente la copia de seguridad. Sincronizando de nuevo…</string>
+    <string name="dialog_remote_backup_restore_progress">Borrando tu copia de seguridad para preparar una resincronización&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Se borró correctamente la copia de seguridad. Sincronizando de nuevo&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_failure">No se pudo sincronizar de nuevo esta copia de seguridad</string>
 
     <string name="automatic_backups_info_dialog_message">Las copias de seguridad automáticas no están habilitadas en el momento.</string>

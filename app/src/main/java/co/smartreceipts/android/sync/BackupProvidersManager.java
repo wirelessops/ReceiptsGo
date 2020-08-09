@@ -124,6 +124,12 @@ public class BackupProvidersManager implements BackupProvider {
 
     @NonNull
     @Override
+    public Single<com.google.api.services.drive.model.File> renameBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata, @NonNull String newFileName) {
+        return backupProvider.renameBackup(remoteBackupMetadata, newFileName);
+    }
+
+    @NonNull
+    @Override
     public Single<Boolean> deleteBackup(@NonNull RemoteBackupMetadata remoteBackupMetadata) {
         return backupProvider.deleteBackup(remoteBackupMetadata);
     }
