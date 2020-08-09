@@ -41,6 +41,7 @@
     <string name="next_id">Next ID: %d</string>
     <string name="no">No</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Rename</string>
     <string name="report">Report</string>
     <string name="report_attached">1 report attached</string>
     <string name="reports_attached">%s reports attached</string>
@@ -287,6 +288,9 @@
     <string name="receipt_attach_image">Pick a photo</string>
     <string name="receipt_attach_file">Attach file</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">New File Name</string>
+    <string name="new_filename_empty_error">New file name cannot be empty</string>
 
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Export your receipts?</string>
@@ -319,10 +323,14 @@
     <string name="remote_backups_list_item_menu_download_images">Download to ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Download</string>
 
+    <string name="dialog_remote_backup_rename_progress">Renaming your backup from %s to %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Successfully renamed backup, refreshing list now&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Failed to rename this backup</string>
+
     <string name="dialog_remote_backup_delete_message">Are you sure you wish to delete your backup from the %s device? This operation cannot be undone.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Are you sure you wish to delete your backup of this device? This operation cannot be undone. Please note that you may wish to turn off automatic backups after this operation completes or all local data may be re-synced.</string>
     <string name="dialog_remote_backup_delete_progress">Deleting your backup from the %s device&#8230;</string>
-    <string name="dialog_remote_backup_delete_toast_success">Successfully deleted this backup</string>
+    <string name="dialog_remote_backup_delete_toast_success">Successfully deleted backup, refreshing list now&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Failed to delete this backup</string>
     <string name="dialog_remote_backup_download_progress">Downloading images to ZIP File&#8230;</string>
 

@@ -39,6 +39,7 @@
     <string name="next_id">Следующий ID: %d</string>
     <string name="no">Нет</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Rename</string>
     <string name="report">Отчет</string>
     <string name="report_attached">1 Отчет приложен</string>
     <string name="reports_attached">%s отчетов приложено</string>
@@ -278,6 +279,10 @@
     <string name="receipt_attach_image">Выбрать изображение</string>
     <string name="receipt_attach_file">Прикрепить файл</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Новое имя файла</string>
+    <string name="new_filename_empty_error">Новое имя файла не может быть пустым</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Экспортировать ваши чеки?</string>
     <string name="dialog_export_text">Вы можете повторно импортировать ваши данные, нажав на файл SmartReceipts.SMR, генерируемый нажатием ниже.</string>
@@ -309,17 +314,21 @@
     <string name="remote_backups_list_item_menu_download_images">Скачать в ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Скачать</string>
 
+    <string name="dialog_remote_backup_rename_progress">Переименование резервной копии с %s на %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Успешно переименована резервная копия, обновляется список&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Не удалось переименовать эту резервную копию</string>
+
     <string name="dialog_remote_backup_delete_message">Вы уверены, что хотите удалить резервную копию с устройства %s? Эта операция не может быть отменена.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Вы уверены, что хотите удалить резервную копию с этого устройства? Эта операция не сможет быть отменена. Пожалуйста, обратите внимание, что вы можете отключить автоматическое резервное копирование после того, как эта операция завершится, или все локальные данные могут быть повторно синхронизированы.</string>
-    <string name="dialog_remote_backup_delete_progress">Удаление резервной копии с устройства %s…</string>
-    <string name="dialog_remote_backup_delete_toast_success">Резервная копия успешно удалена</string>
+    <string name="dialog_remote_backup_delete_progress">Удаление резервной копии с устройства %s&#8230;</string>
+    -<string name="dialog_remote_backup_delete_toast_success">Успешно удалена резервная копия, обновляется список&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Не удалось удалить эту резервную копию</string>
-    <string name="dialog_remote_backup_download_progress">Загрузка изображений в ZIP-файл…</string>
+    <string name="dialog_remote_backup_download_progress">Загрузка изображений в ZIP-файл&#8230;</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Восстановление диска</string>
     <string name="dialog_remote_backup_drive_restore_message">Возникли проблемы при синхронизации ваших данных. Для их восстановления мы хотели бы очистить резервную копию диска и повторить синхронизацию. Если вы часто видите это сообщение, обратитесь к нам для получения дополнительной поддержки.</string>
-    <string name="dialog_remote_backup_restore_progress">Очистка резервной копии для подготовки к повторной синхронизации…</string>
-    <string name="dialog_remote_backup_restore_toast_success">Резервная копия успешно очищена. Повторная синхронизация…</string>
+    <string name="dialog_remote_backup_restore_progress">Очистка резервной копии для подготовки к повторной синхронизации&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Резервная копия успешно очищена. Повторная синхронизация&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_failure">Не удалось повторно синхронизировать эту резервную копию</string>
 
     <string name="automatic_backups_info_dialog_message">Автоматическое резервное копирование сейчас выключено.</string>

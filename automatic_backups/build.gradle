@@ -49,11 +49,11 @@ dependencies {
     implementation project(':wbMiniLibrary')
 
     implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
-
-    notFlossImplementation "com.google.android.gms:play-services-auth:$DRIVE_API_VERSION"
-    notFlossImplementation("com.google.apis:google-api-services-drive:$GOOGLE_API_SERVICES_VERSION") {
+    implementation("com.google.apis:google-api-services-drive:$GOOGLE_API_SERVICES_VERSION") {
         exclude group: 'org.apache.httpcomponents'
     }
+
+    notFlossImplementation "com.google.android.gms:play-services-auth:$DRIVE_API_VERSION"
 
     notFlossImplementation("com.google.api-client:google-api-client-android:$GOOGLE_API_CLIENT_VERSION") {
         exclude group: 'org.apache.httpcomponents'

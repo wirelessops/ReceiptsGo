@@ -94,6 +94,9 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
                         if (item.getItemId() == R.id.remote_backups_list_item_menu_restore) {
                             navigationHandler.showDialog(ImportRemoteBackupDialogFragment.newInstance(metadata));
                             return true;
+                        } else if (item.getItemId() == R.id.remote_backups_list_item_menu_rename) {
+                            navigationHandler.showDialog(RenameRemoteBackupDialogFragment.newInstance(metadata));
+                            return true;
                         } else if (item.getItemId() == R.id.remote_backups_list_item_menu_delete) {
                             navigationHandler.showDialog(DeleteRemoteBackupDialogFragment.newInstance(metadata));
                             return true;

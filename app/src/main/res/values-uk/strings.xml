@@ -39,6 +39,7 @@
     <string name="next_id">Наступний ID: %d</string>
     <string name="no">Ні</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Перейменуйте</string>
     <string name="report">Звіт</string>
     <string name="report_attached">1 Звіт прикладений</string>
     <string name="reports_attached">%s звітів прикладено</string>
@@ -278,6 +279,10 @@
     <string name="receipt_attach_image">Обрати зображення</string>
     <string name="receipt_attach_file">Прикріпити файл</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Нове ім\'я файлу</string>
+    <string name="new_filename_empty_error">Ім\'я нового файлу не може бути порожнім</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Експортувати ваші чеки?</string>
     <string name="dialog_export_text">Ви можете повторно імпортувати ваші дані, натиснувши на файл SmartReceipts.SMR, що генерується натисканням нижче.</string>
@@ -309,17 +314,21 @@
     <string name="remote_backups_list_item_menu_download_images">Скачати в ZIP</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Скачати</string>
 
+    <string name="dialog_remote_backup_rename_progress">Перейменування резервної копії від %s до %s&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Резервне копіювання, оновлення списку успішно перейменовано зараз&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Не вдалося перейменувати цю резервну копію</string>
+
     <string name="dialog_remote_backup_delete_message">Ви впевнені, що хочете видалити резервну копію з пристрою %s? Ця операція не може бути скасована.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Ви впевнені, що хочете видалити резервну копію з цього пристрою? Ця операція не зможе бути скасована. Будь ласка, зверніть увагу, що ви можете відключити автоматичне резервне копіювання після того, як ця операція завершиться, або всі локальні дані можуть бути повторно синхронізовані.</string>
-    <string name="dialog_remote_backup_delete_progress">Видалення резервної копії з пристрою %s…</string>
-    <string name="dialog_remote_backup_delete_toast_success">Резервна копія вдало видалена</string>
+    <string name="dialog_remote_backup_delete_progress">Видалення резервної копії з пристрою %s&#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">Резервна копія успішно видалена, оновлений список зараз&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Не вдалося видалити цю резервну копію</string>
-    <string name="dialog_remote_backup_download_progress">Завантаження зображень в ZIP-файл…</string>
+    <string name="dialog_remote_backup_download_progress">Завантаження зображень в ZIP-файл&#8230;</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Відновлення диску</string>
     <string name="dialog_remote_backup_drive_restore_message">Виникли проблеми при синхронізації ваших даних. Для їх відновлення ми хотіли б очистити резервну копію диску та повторити синхронізацію. Якщо ви часто бачите це повідомлення, зверніться до нас для отримання додаткової підтримки.</string>
-    <string name="dialog_remote_backup_restore_progress">Очищення резервної копії для підготовки до повторної синхронізації…</string>
-    <string name="dialog_remote_backup_restore_toast_success">Резервна копія вдало очищена. Повторна синхронізація…</string>
+    <string name="dialog_remote_backup_restore_progress">Очищення резервної копії для підготовки до повторної синхронізації&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Резервна копія вдало очищена. Повторна синхронізація&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_failure">Не вдалося повторно синхронізувати цю резервну копію</string>
 
     <string name="automatic_backups_info_dialog_message">Автоматичне резервне копіювання зараз вимкнено.</string>

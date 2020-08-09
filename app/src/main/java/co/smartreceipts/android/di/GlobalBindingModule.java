@@ -25,6 +25,7 @@ import co.smartreceipts.android.sync.widget.backups.DownloadRemoteBackupImagesPr
 import co.smartreceipts.android.sync.widget.backups.ExportBackupWorkerProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupWorkerProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupWorkerProgressDialogFragment;
+import co.smartreceipts.android.sync.widget.backups.RenameRemoteBackupProgressDialogFragment;
 import co.smartreceipts.core.di.scopes.ActivityScope;
 import co.smartreceipts.core.di.scopes.FragmentScope;
 import dagger.Module;
@@ -61,6 +62,10 @@ public abstract class GlobalBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     public abstract PDFColumnsListFragment pdfColumnsListFragment();
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    public abstract RenameRemoteBackupProgressDialogFragment renameRemoteBackupProgressDialogFragment();
 
     @FragmentScope
     @ContributesAndroidInjector

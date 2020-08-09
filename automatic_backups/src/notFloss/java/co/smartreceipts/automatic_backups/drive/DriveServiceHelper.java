@@ -207,4 +207,16 @@ public class DriveServiceHelper {
             });
   }
 
+  public Single<File> renameBackup(String fileId, String newFileName) {
+    return getFile(fileId)
+            .flatMap(file -> {
+              File driveFile = new File();
+              // File's new content.
+              driveFile.setDescription(newFileName);
+
+              return Single.fromCallable(() ->
+                      driveService.files().update(fileId, driveFile).execute());
+            });
+  }
+
 }

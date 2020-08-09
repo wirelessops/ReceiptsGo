@@ -8,6 +8,7 @@ import co.smartreceipts.core.sync.model.RemoteBackupMetadata
 import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.core.sync.model.impl.Identifier
 import com.hadisatrio.optional.Optional
+import com.google.api.services.drive.model.File
 import io.reactivex.Single
 import io.reactivex.subjects.Subject
 
@@ -26,6 +27,8 @@ class DriveStreamsManager(context: Context, driveServiceHelper: DriveServiceHelp
     fun uploadFileToDrive(currentSyncState: SyncState, file: java.io.File): Single<SyncState?> = Single.never()
 
     fun updateDriveFile(currentSyncState: SyncState, file: java.io.File): Single<SyncState?> = Single.never()
+
+    fun renameBackup(identifier: Identifier, newFileName: String): Single<File> = Single.never()
 
     fun deleteDriveFile(currentSyncState: SyncState, isFullDelete: Boolean): Single<SyncState?> = Single.never()
 

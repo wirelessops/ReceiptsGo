@@ -39,6 +39,7 @@
     <string name="next_id">Nächste ID: %d</string>
     <string name="no">Nein</string>
     <string name="pdf">PDF</string>
+    <string name="rename">Umbenennen</string>
     <string name="report">Bericht</string>
     <string name="report_attached">1 Bericht beigefügt</string>
     <string name="reports_attached">%s Berichte beigefügt</string>
@@ -276,6 +277,10 @@
     <string name="receipt_attach_image">Wähle ein Foto aus</string>
     <string name="receipt_attach_file">Datei anhängen</string>
 
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Neuer Dateiname</string>
+    <string name="new_filename_empty_error">Der neue Dateiname darf nicht leer sein</string>
+
     <!-- ==================== dialog export / import ====================== -->
     <string name="dialog_export_title">Exportieren Sie Ihre Belege?</string>
     <string name="dialog_export_text">Sie können Ihre Daten durch Klicken auf die SmartReceipts.SMR Datei wieder importieren, die durch Klicken hier unten erstellt wird.</string>
@@ -307,17 +312,21 @@
     <string name="remote_backups_list_item_menu_download_images">Auf ZIP herunterladen</string>
     <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Herunterladen</string>
 
+    <string name="dialog_remote_backup_rename_progress">Benennen Sie Ihr Backup von %s in %s um&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_success">Backup erfolgreich umbenannt, Liste jetzt aktualisieren&#8230;</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Fehler beim Umbenennen dieser Sicherung</string>
+
     <string name="dialog_remote_backup_delete_message">Sind Sie sicher, dass Sie Ihre Sicherungskopie vom %s Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
     <string name="dialog_remote_backup_delete_message_this_device">Sind Sie sicher, dass Sie Ihren Backup auf diesem Gerät löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte beachten Sie, dass Sie die automatische Sicherung ausschalten sollten, sobald dieser Vorgang abgeschlossen ist - ansonsten werden alle lokalen Daten neu synchronisiert.</string>
-    <string name="dialog_remote_backup_delete_progress">Löschen Sie Ihren Backup vom %s Gerät …</string>
-    <string name="dialog_remote_backup_delete_toast_success">Backup erfolgreich gelöscht</string>
+    <string name="dialog_remote_backup_delete_progress">Löschen Sie Ihren Backup vom %s Gerät&#8230;</string>
+    <string name="dialog_remote_backup_delete_toast_success">Backup erfolgreich gelöscht, Liste jetzt aktualisieren&#8230;</string>
     <string name="dialog_remote_backup_delete_toast_failure">Löschen dieses Backups ist nicht erfolgt</string>
-    <string name="dialog_remote_backup_download_progress">Herunterladen von Bildern auf ZIP-Datei …</string>
+    <string name="dialog_remote_backup_download_progress">Herunterladen von Bildern auf ZIP-Datei&#8230;</string>
 
     <string name="dialog_remote_backup_drive_restore_title">Laufwerk Wiederherstellung</string>
     <string name="dialog_remote_backup_drive_restore_message">Wir haben Probleme mit dem Synchronisieren Ihrer Daten. Zum Wiederherstellen  möchten wir Ihr Backup-Laufwerk löschen und erneut synchronisieren. Wenn Sie diese Meldung häufig zu sehen bekommen, kontaktieren Sie uns für weitere Unterstützung.</string>
-    <string name="dialog_remote_backup_restore_progress">Leeren des Backup zur Vorbereitung einer erneuten Synchronisierung…</string>
-    <string name="dialog_remote_backup_restore_toast_success">Backup erfolgreich gelöscht. Re-Synchronisierung …</string>
+    <string name="dialog_remote_backup_restore_progress">Leeren des Backup zur Vorbereitung einer erneuten Synchronisierung&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Backup erfolgreich gelöscht. Re-Synchronisierung&#8230;</string>
     <string name="dialog_remote_backup_restore_toast_failure">Resynchroniserung des Backups ist fehlgeschlagen</string>
 
     <string name="automatic_backups_info_dialog_message">Automatische Backups sind derzeit nicht aktiviert.</string>
