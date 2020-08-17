@@ -1,14 +1,6 @@
 package co.smartreceipts.android.receipts.editor.pricing
 
 import android.os.Bundle
-
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
-
 import co.smartreceipts.android.model.Price
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.settings.UserPreferenceManager
@@ -19,10 +11,13 @@ import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyZeroInteractions
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.MockitoAnnotations
+import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class ReceiptPricingPresenterTest {
@@ -145,9 +140,9 @@ class ReceiptPricingPresenterTest {
     fun subscribeWithNullReceipt() {
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, null, null, Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
-        verifyZeroInteractions(displayReceiptPriceConsumer)
-        verifyZeroInteractions(displayReceiptTaxConsumer)
-        verifyZeroInteractions(displayReceiptTax2Consumer)
+        verifyNoInteractions(displayReceiptPriceConsumer)
+        verifyNoInteractions(displayReceiptTaxConsumer)
+        verifyNoInteractions(displayReceiptTax2Consumer)
     }
 
     @Test
@@ -163,9 +158,9 @@ class ReceiptPricingPresenterTest {
     fun subscribeWithReceiptAndNonNullState() {
         val presenter = ReceiptPricingPresenter(view, userPreferenceManager, receipt, Bundle(), Schedulers.trampoline(), Schedulers.trampoline())
         presenter.subscribe()
-        verifyZeroInteractions(displayReceiptPriceConsumer)
-        verifyZeroInteractions(displayReceiptTaxConsumer)
-        verifyZeroInteractions(displayReceiptTax2Consumer)
+        verifyNoInteractions(displayReceiptPriceConsumer)
+        verifyNoInteractions(displayReceiptTaxConsumer)
+        verifyNoInteractions(displayReceiptTax2Consumer)
     }
 
 }

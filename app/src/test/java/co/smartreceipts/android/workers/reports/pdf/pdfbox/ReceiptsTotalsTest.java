@@ -1,5 +1,6 @@
 package co.smartreceipts.android.workers.reports.pdf.pdfbox;
 
+import org.joda.money.CurrencyUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Arrays;
 import java.util.Collections;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
@@ -48,7 +48,7 @@ public class ReceiptsTotalsTest {
         priceTenUsd = new PriceBuilderFactory().setPrice(10).setCurrency("USD").build();
         priceOneUsd = new PriceBuilderFactory().setPrice(1).setCurrency("USD").build();
 
-        when(trip.getTripCurrency()).thenReturn(PriceCurrency.getInstance("USD"));
+        when(trip.getTripCurrency()).thenReturn(CurrencyUnit.USD);
 
         when(reimbursableReceipt1.getPrice()).thenReturn(priceFiveUsd);
         when(reimbursableReceipt1.getTax()).thenReturn(priceTwoEurThatConvertsToOneUsd);

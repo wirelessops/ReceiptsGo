@@ -13,7 +13,7 @@ import java.util.TimeZone;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
-import co.smartreceipts.android.model.impl.ImmutablePriceImpl;
+import co.smartreceipts.android.model.impl.SinglePriceImpl;
 import co.smartreceipts.android.utils.TripUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -24,9 +24,9 @@ import static org.junit.Assert.assertTrue;
 public class TripFilterTest {
 
     // Test constants for Price checking
-    private static final Price PRICE_NORMAL = new ImmutablePriceImpl(new BigDecimal(100.00d), TripUtils.Constants.CURRENCY, new ExchangeRateBuilderFactory().setBaseCurrency(TripUtils.Constants.CURRENCY).build());
-    private static final Price PRICE_HIGH = new ImmutablePriceImpl(new BigDecimal(150.00d), TripUtils.Constants.CURRENCY, new ExchangeRateBuilderFactory().setBaseCurrency(TripUtils.Constants.CURRENCY).build());
-    private static final Price PRICE_LOW = new ImmutablePriceImpl(new BigDecimal(50.00d), TripUtils.Constants.CURRENCY, new ExchangeRateBuilderFactory().setBaseCurrency(TripUtils.Constants.CURRENCY).build());
+    private static final Price PRICE_NORMAL = new SinglePriceImpl(new BigDecimal(100.00d), TripUtils.Constants.CURRENCY, new ExchangeRateBuilderFactory().setBaseCurrency(TripUtils.Constants.CURRENCY).build());
+    private static final Price PRICE_HIGH = new SinglePriceImpl(new BigDecimal(150.00d), TripUtils.Constants.CURRENCY, new ExchangeRateBuilderFactory().setBaseCurrency(TripUtils.Constants.CURRENCY).build());
+    private static final Price PRICE_LOW = new SinglePriceImpl(new BigDecimal(50.00d), TripUtils.Constants.CURRENCY, new ExchangeRateBuilderFactory().setBaseCurrency(TripUtils.Constants.CURRENCY).build());
 
     // Test constants for Date checking
     private static final TimeZone TZ = TimeZone.getTimeZone("America/New_York");

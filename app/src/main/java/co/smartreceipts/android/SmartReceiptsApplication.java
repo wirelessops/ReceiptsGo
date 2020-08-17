@@ -27,6 +27,7 @@ import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.rating.data.AppRatingPreferencesStorage;
+import co.smartreceipts.android.receipts.editor.currency.CurrencyInitializer;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
@@ -71,6 +72,9 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
 
     @Inject
     ExtraInitializer extraInitializer;
+
+    @Inject
+    CurrencyInitializer currencyInitializer;
 
     @Inject
     IdentityManager identityManager;
@@ -206,6 +210,7 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         memoryLeakMonitor.initialize();
         extraInitializer.init();
+        currencyInitializer.init();
 
         PDFBoxResourceLoader.init(getApplicationContext());
 

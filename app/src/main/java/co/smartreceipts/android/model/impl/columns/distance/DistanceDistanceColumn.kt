@@ -19,6 +19,6 @@ class DistanceDistanceColumn(id: Int, syncState: SyncState) : AbstractColumnImpl
         for (i in rows.indices) {
             distance = distance.add(rows[i].distance)
         }
-        return ModelUtils.getDecimalFormattedValue(distance)
+        return ModelUtils.getDecimalFormattedValue(distance, Distance.DISTANCE_PRECISION)
     }
 }

@@ -27,6 +27,7 @@ import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import co.smartreceipts.android.model.utils.CurrencyUtils;
+import co.smartreceipts.android.model.utils.CurrencyWithDecimalPlaces;
 import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
 import co.smartreceipts.android.persistence.database.tables.CSVTable;
 import co.smartreceipts.android.persistence.database.tables.CategoriesTable;
@@ -289,8 +290,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (mFullCurrencyList != null) {
             return mFullCurrencyList;
         }
+
         mFullCurrencyList = new ArrayList<>();
-        mFullCurrencyList.addAll(CurrencyUtils.getAllCurrencies());
+
+        for (CurrencyWithDecimalPlaces currency : CurrencyUtils.INSTANCE.getCurrencies()) {
+            mFullCurrencyList.add(currency.getCurrencyCode());
+        }
         mFullCurrencyList.addAll(0, getMostRecentlyUsedCurrencies());
         return mFullCurrencyList;
     }

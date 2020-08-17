@@ -5,13 +5,14 @@ import androidx.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
+import org.joda.money.CurrencyUnit;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Category;
@@ -244,7 +245,7 @@ public class ReceiptBuilderFactory implements BuilderFactory<Receipt> {
         return this;
     }
 
-    public ReceiptBuilderFactory setCurrency(PriceCurrency currency) {
+    public ReceiptBuilderFactory setCurrency(CurrencyUnit currency) {
         priceBuilderFactory.setCurrency(currency);
         taxBuilderFactory.setCurrency(currency);
         tax2BuilderFactory.setCurrency(currency);

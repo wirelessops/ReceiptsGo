@@ -7,16 +7,19 @@ import androidx.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
+import org.joda.money.CurrencyUnit;
+
 import java.io.File;
 import java.sql.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.utils.CurrencyUtils;
 import co.smartreceipts.core.sync.model.SyncState;
 import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 
@@ -32,7 +35,7 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
     private String comment, costCenter;
     private Date startDate, endDate;
     private TimeZone startTimeZone, endTimeZone;
-    private PriceCurrency defaultCurrency;
+    private CurrencyUnit defaultCurrency;
     private SyncState syncState;
     private AutoCompleteMetadata autoCompleteMetadata;
 
@@ -42,7 +45,7 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         dir = new File("");
         comment = "";
         costCenter = "";
-        defaultCurrency = PriceCurrency.getDefaultCurrency();
+        defaultCurrency = CurrencyUnit.of(Locale.getDefault());
         startDate = new Date(System.currentTimeMillis());
         endDate = startDate;
         startTimeZone = TimeZone.getDefault();
@@ -57,7 +60,7 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         dir = trip.getDirectory();
         comment = trip.getComment();
         costCenter = trip.getCostCenter();
-        defaultCurrency = PriceCurrency.getInstance(trip.getDefaultCurrencyCode());
+        defaultCurrency = CurrencyUnit.of(trip.getDefaultCurrencyCode());
         startDate = trip.getStartDate();
         endDate = trip.getEndDate();
         startTimeZone = trip.getStartTimeZone();
@@ -125,7 +128,7 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         return this;
     }
 
-    public TripBuilderFactory setDefaultCurrency(@NonNull PriceCurrency currency) {
+    public TripBuilderFactory setDefaultCurrency(@NonNull CurrencyUnit currency) {
         defaultCurrency = Preconditions.checkNotNull(currency);
         return this;
     }
@@ -134,15 +137,19 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         if (TextUtils.isEmpty(currencyCode)) {
             throw new IllegalArgumentException("The currency code cannot be null or empty");
         }
-        defaultCurrency = PriceCurrency.getInstance(currencyCode);
+
+        if (CurrencyUtils.INSTANCE.isCurrencySupported(currencyCode)) {
+            defaultCurrency = CurrencyUnit.of(currencyCode);
+        }
+
         return this;
     }
 
     public TripBuilderFactory setDefaultCurrency(@Nullable String currencyCode, @NonNull String missingCodeDefault) {
-        if (TextUtils.isEmpty(currencyCode)) {
-            defaultCurrency = PriceCurrency.getInstance(missingCodeDefault);
+        if (TextUtils.isEmpty(currencyCode) || !CurrencyUtils.INSTANCE.isCurrencySupported(currencyCode)) {
+            defaultCurrency = CurrencyUnit.of(missingCodeDefault);
         } else {
-            defaultCurrency = PriceCurrency.getInstance(currencyCode);
+            defaultCurrency = CurrencyUnit.of(currencyCode);
         }
         return this;
     }

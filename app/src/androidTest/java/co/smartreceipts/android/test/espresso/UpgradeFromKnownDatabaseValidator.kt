@@ -232,7 +232,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("11/16/16", dateFormatter.getFormattedDate(report1.startDisplayableDate))
         assertEquals("11/20/16", dateFormatter.getFormattedDate(report1.endDisplayableDate))
         assertEquals("$45.00", report1.price.currencyFormattedPrice)
-        assertEquals("USD", report1.tripCurrency.currencyCode)
+        assertEquals("USD", report1.tripCurrency.code)
         assertEquals("Comment", report1.comment)
         assertEquals("Cost Center", report1.costCenter)
 
@@ -259,7 +259,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("11/17/16", dateFormatter.getFormattedDate(report2.startDisplayableDate))
         assertEquals("11/20/16", dateFormatter.getFormattedDate(report2.endDisplayableDate))
         assertEquals("$50.00", report2.price.currencyFormattedPrice)
-        assertEquals("USD", report2.tripCurrency.currencyCode)
+        assertEquals("USD", report2.tripCurrency.code)
         assertEquals("", report2.comment)
         assertEquals("", report2.costCenter)
 
@@ -292,7 +292,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("11/17/16", dateFormatter.getFormattedDate(report3.startDisplayableDate))
         assertEquals("11/20/16", dateFormatter.getFormattedDate(report3.endDisplayableDate))
         assertEquals("$68.60", report3.price.currencyFormattedPrice)
-        assertEquals("USD", report3.tripCurrency.currencyCode)
+        assertEquals("USD", report3.tripCurrency.code)
         assertEquals("", report3.comment)
         assertEquals("", report3.costCenter)
 

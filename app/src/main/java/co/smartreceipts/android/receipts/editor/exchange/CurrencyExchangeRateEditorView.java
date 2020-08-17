@@ -5,7 +5,8 @@ import androidx.annotation.UiThread;
 
 import com.hadisatrio.optional.Optional;
 
-import co.smartreceipts.android.currency.PriceCurrency;
+import org.joda.money.CurrencyUnit;
+
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.gson.ExchangeRate;
@@ -35,11 +36,11 @@ public interface CurrencyExchangeRateEditorView {
     Consumer<? super UiIndicator<ExchangeRate>> displayExchangeRate();
 
     /**
-     * @return a {@link Consumer} that will display the base {@link PriceCurrency} for a given {@link Trip}
+     * @return a {@link Consumer} that will display the base {@link CurrencyUnit} for a given {@link Trip}
      */
     @NonNull
     @UiThread
-    Consumer<? super PriceCurrency> displayBaseCurrency();
+    Consumer<? super CurrencyUnit> displayBaseCurrency();
 
     /**
      * @return a {@link Consumer} that will display the exchanged {@link Price}, using the base currency
@@ -86,4 +87,16 @@ public interface CurrencyExchangeRateEditorView {
     @UiThread
     Observable<Object> getUserInitiatedExchangeRateRetries();
 
+    /**
+     * @return an {@link Observable} that will emit a {@link String} any time the user changes the value for the currency
+     */
+    @NonNull
+    @UiThread
+    Observable<String> getCurrencySpinnerChanges();
+
+    /**
+     * Updates all price views to match new decimal places value
+     */
+    @UiThread
+    void updatePricesDecimalPlaces(int decimalPlaces);
 }

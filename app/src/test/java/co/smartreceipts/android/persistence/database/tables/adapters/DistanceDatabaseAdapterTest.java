@@ -3,6 +3,7 @@ package co.smartreceipts.android.persistence.database.tables.adapters;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import org.joda.money.CurrencyUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,6 @@ import java.sql.Date;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -149,7 +149,7 @@ public class DistanceDatabaseAdapterTest {
 
         when(mTrip.getId()).thenReturn(PARENT_ID);
         when(mPrice.getCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mPrice.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mPrice.getCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
 
         when(mTripsTable.findByPrimaryKey(PARENT_ID)).thenReturn(Single.just(mTrip));
         when(mPaymentMethodsTable.findByPrimaryKey(PAYMENT_METHOD_ID)).thenReturn(Single.just(PAYMENT_METHOD));

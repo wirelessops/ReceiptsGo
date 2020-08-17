@@ -24,16 +24,19 @@ import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
+import org.joda.money.CurrencyUnit;
 
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter;
@@ -42,7 +45,6 @@ import co.smartreceipts.android.autocomplete.AutoCompletePresenter;
 import co.smartreceipts.android.autocomplete.AutoCompleteResult;
 import co.smartreceipts.android.autocomplete.AutoCompleteView;
 import co.smartreceipts.android.autocomplete.trip.TripAutoCompleteField;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
@@ -63,7 +65,6 @@ import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.trips.editor.date.TripDateView;
 import co.smartreceipts.android.trips.editor.date.TripDatesPresenter;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.tooltip.Tooltip;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
@@ -368,7 +369,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         if (currencySpinner.getSelectedItem() != null) {
             currencyCode = currencySpinner.getSelectedItem().toString();
         } else {
-            currencyCode = PriceCurrency.getDefaultCurrency().getCurrencyCode();
+            currencyCode = CurrencyUnit.of(Locale.getDefault()).getCode();
         }
 
         if (presenter.checkTrip(name, startDateText, startDateBox.getDate(), endDateText, endDateBox.getDate())) {

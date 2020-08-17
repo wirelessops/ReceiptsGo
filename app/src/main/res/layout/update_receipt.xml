@@ -83,12 +83,10 @@
                 app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_price"
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_name_wrapper">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <co.smartreceipts.android.widget.ui.PriceInputEditText
                     android:id="@+id/DIALOG_RECEIPTMENU_PRICE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberDecimal|numberSigned"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,15 +145,13 @@
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_price_wrapper"
                 tools:visibility="visible" />
 
-            <EditText
+            <co.smartreceipts.android.widget.ui.PriceInputEditText
                 android:id="@+id/receipt_input_exchanged_result"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:layout_marginEnd="@dimen/margin_tiny"
                 android:hint="@string/receipt_input_exchanged_result_hint"
-                android:imeOptions="actionNext"
-                android:inputType="numberDecimal|numberSigned"
                 android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/receipt_input_exchange_rate_base_currency"
@@ -181,11 +177,10 @@
                 android:id="@+id/receipt_input_guide_image_tax"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:src="@drawable/ic_business_center_24dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/receipt_input_tax1_wrapper"
-                app:layout_constraintTop_toTopOf="@id/receipt_input_tax1_wrapper"
                 app:layout_constraintEnd_toStartOf="@+id/receipt_input_tax1_wrapper"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/receipt_input_tax1_wrapper" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/receipt_input_tax1_wrapper"
@@ -193,8 +188,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
-                app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_tax"
                 app:layout_constraintEnd_toStartOf="@id/receipt_input_tax2_wrapper"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_tax"
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_exchanged_result">
 
                 <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
@@ -214,11 +209,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_TAX"
-                app:layout_constraintStart_toEndOf="@id/receipt_input_tax1_wrapper"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone"
-                tools:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/receipt_input_exchanged_result">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/receipt_input_tax1_wrapper"
+                app:layout_constraintTop_toBottomOf="@id/receipt_input_exchanged_result"
+                tools:visibility="visible">
 
                 <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/DIALOG_RECEIPTMENU_TAX2"

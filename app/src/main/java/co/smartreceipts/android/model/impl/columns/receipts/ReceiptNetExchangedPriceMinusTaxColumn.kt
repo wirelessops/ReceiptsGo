@@ -1,7 +1,6 @@
 package co.smartreceipts.android.model.impl.columns.receipts
 
 import android.content.Context
-
 import co.smartreceipts.android.model.Price
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
@@ -32,9 +31,9 @@ class ReceiptNetExchangedPriceMinusTaxColumn(
         return if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
             receipt.price
         } else {
-            val factory = PriceBuilderFactory(receipt.price)
-            factory.setPrice(receipt.price.price.subtract(receipt.tax.price).subtract(receipt.tax2.price))
-            factory.build()
+            PriceBuilderFactory(receipt.price)
+                .setPrice(receipt.price.price.subtract(receipt.tax.price).subtract(receipt.tax2.price))
+                .build()
         }
     }
 }

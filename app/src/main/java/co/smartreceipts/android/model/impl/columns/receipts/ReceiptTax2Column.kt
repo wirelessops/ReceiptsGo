@@ -28,7 +28,7 @@ class ReceiptTax2Column(id: Int, syncState: SyncState, customOrderId: Long, uuid
 
             val total = PriceBuilderFactory().setPrices(prices, tripCurrency).build()
 
-            if (total.currencyCodeCount == 1) total.decimalFormattedPrice else total.currencyCodeFormattedPrice
+            if (total.isSingleCurrency) total.decimalFormattedPrice else total.currencyCodeFormattedPrice
         } else {
             ""
         }

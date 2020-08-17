@@ -9,8 +9,11 @@ import androidx.annotation.NonNull;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
+import org.joda.money.CurrencyUnit;
+
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Locale;
 import java.util.UUID;
 
 import co.smartreceipts.android.model.Category;
@@ -19,6 +22,7 @@ import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
+import co.smartreceipts.android.model.utils.CurrencyUtils;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
@@ -150,7 +154,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
                 .setTimeZone(timezone)
                 .setComment(comment)
                 .setIsReimbursable(reimbursable)
-                .setCurrency(currency)
+                .setCurrency(CurrencyUtils.INSTANCE.isCurrencySupported(currency) ? CurrencyUnit.of(currency) : CurrencyUnit.of(Locale.getDefault()))
                 .setIsFullPage(fullPage)
                 .setIndex(index)
                 .setNameHiddenFromAutoComplete(isNameHiddenFromAutoComplete)

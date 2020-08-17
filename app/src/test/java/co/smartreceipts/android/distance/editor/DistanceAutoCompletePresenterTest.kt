@@ -3,7 +3,6 @@ package co.smartreceipts.android.distance.editor
 import co.smartreceipts.android.DefaultObjects
 import co.smartreceipts.android.autocomplete.AutoCompleteResult
 import co.smartreceipts.android.autocomplete.distance.DistanceAutoCompleteField
-import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.model.AutoCompleteUpdateEvent
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory
@@ -12,6 +11,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
+import org.joda.money.CurrencyUnit
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +33,7 @@ class DistanceAutoCompletePresenterTest {
 
     @Before
     fun setUp() {
-        distance = DistanceBuilderFactory().setCurrency(PriceCurrency.getInstance("USD"))
+        distance = DistanceBuilderFactory().setCurrency(CurrencyUnit.USD)
                 .setTrip(DefaultObjects.newDefaultTrip()).build()
         autoCompleteResult = AutoCompleteResult(distance.location, distance)
         autoCompleteUpdateEventLocation = AutoCompleteUpdateEvent(autoCompleteResult, DistanceAutoCompleteField.Location, 0)

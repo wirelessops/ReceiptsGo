@@ -3,6 +3,7 @@ package co.smartreceipts.android.persistence.database.tables.adapters;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import org.joda.money.CurrencyUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import java.util.Collections;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -227,19 +227,19 @@ public class ReceiptDatabaseAdapterTest {
         when(mTrip.getName()).thenReturn(PARENT_DIR.getName());
         when(mTrip.getDirectory()).thenReturn(PARENT_DIR);
         when(mTrip.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mTrip.getTripCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mTrip.getTripCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
 
         when(mPrice.getPrice()).thenReturn(new BigDecimal(PRICE));
         when(mPrice.getCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mPrice.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mPrice.getCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
         when(mPrice.getExchangeRate()).thenReturn(EXCHANGE_RATE);
         when(mTax.getPrice()).thenReturn(new BigDecimal(TAX));
         when(mTax.getCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mTax.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mTax.getCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
         when(mTax.getExchangeRate()).thenReturn(EXCHANGE_RATE);
         when(mTax2.getPrice()).thenReturn(new BigDecimal(TAX2));
         when(mTax2.getCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mTax2.getCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mTax2.getCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
         when(mTax2.getExchangeRate()).thenReturn(EXCHANGE_RATE);
 
         when(mTripsTable.findByPrimaryKey(PARENT_TRIP_ID)).thenReturn(Single.just(mTrip));
