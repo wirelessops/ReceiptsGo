@@ -4,13 +4,14 @@ import android.content.Context;
 
 import junit.framework.Assert;
 
+import org.joda.money.CurrencyUnit;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.model.Category;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
@@ -23,7 +24,7 @@ public class ReceiptUtils {
         public static final Category CATEGORY = new CategoryBuilderFactory().setName("Lunch").setCode("LNCH").build();
         public static final String COMMENT = "";
         public static final String CURRENCY_CODE = "USD";
-        public static final PriceCurrency CURRENCY = PriceCurrency.getInstance(CURRENCY_CODE);
+        public static final CurrencyUnit CURRENCY = CurrencyUnit.of(CURRENCY_CODE);
         public static final long DATE_MILLIS = 1409703721000L; // 09/02/2014 @ 8:22EDT
         public static final Date DATE = new Date(DATE_MILLIS);
         public static final String SLASH_FORMATTED_DATE = "Sep/02/2014";

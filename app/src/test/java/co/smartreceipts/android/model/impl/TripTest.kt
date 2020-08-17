@@ -1,17 +1,17 @@
 package co.smartreceipts.android.model.impl
 
 import co.smartreceipts.android.DefaultObjects
-import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.AutoCompleteMetadata
 import co.smartreceipts.android.model.Price
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
-import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.testParcel
+import co.smartreceipts.core.sync.model.SyncState
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.IsNot.not
+import org.joda.money.CurrencyUnit
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -42,7 +42,7 @@ class TripTest {
         private val END_DISPLAYABLE_DATE = DisplayableDate(END_DATE, END_TIMEZONE)
         private const val COMMENT = "Comment"
         private const val COST_CENTER = "Cost Center"
-        private val CURRENCY = PriceCurrency.getInstance("USD")
+        private val CURRENCY = CurrencyUnit.USD
         private const val NAME_HIDDEN_AUTO_COMPLETE = false
         private const val COMMENT_HIDDEN_AUTO_COMPLETE = false
         private const val COST_CENTER_HIDDEN_AUTO_COMPLETE = false
@@ -53,7 +53,7 @@ class TripTest {
 
     private lateinit var syncState: SyncState
 
-    private var price: Price = PriceBuilderFactory().setPrice(0.0).setCurrency(CURRENCY).build()
+    private var price: Price = PriceBuilderFactory().setCurrency(CURRENCY).build()
 
     private var autoCompleteMetadata: AutoCompleteMetadata = AutoCompleteMetadata(isNameHiddenFromAutoComplete = NAME_HIDDEN_AUTO_COMPLETE, isCommentHiddenFromAutoComplete = COMMENT_HIDDEN_AUTO_COMPLETE, isLocationHiddenFromAutoComplete = false, isCostCenterHiddenFromAutoComplete = COST_CENTER_HIDDEN_AUTO_COMPLETE)
 
@@ -160,7 +160,7 @@ class TripTest {
 
     @Test
     fun getDefaultCurrencyCode() {
-        assertEquals(CURRENCY.currencyCode, trip.defaultCurrencyCode)
+        assertEquals(CURRENCY.code, trip.defaultCurrencyCode)
     }
 
     @Test
@@ -274,7 +274,7 @@ class TripTest {
                 equalTo(
                     Trip(
                         ID, TRIP_UUID, DIRECTORY, START_DISPLAYABLE_DATE, END_DISPLAYABLE_DATE,
-                        PriceCurrency.getInstance("EUR"), COMMENT, COST_CENTER,
+                        CurrencyUnit.EUR, COMMENT, COST_CENTER,
                             syncState, price, price, autoCompleteMetadata
                     )
                 )

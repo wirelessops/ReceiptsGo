@@ -19,12 +19,12 @@ class CategoryPriceColumn(id: Int, syncState: SyncState) :
     }
 
     override fun getFooter(rows: List<SumCategoryGroupingResult>): String {
-        return if (!rows.isEmpty()) {
+        return if (rows.isNotEmpty()) {
             val prices = ArrayList<Price>()
 
             for (row in rows) {
                 for (entry in row.netPrice.immutableOriginalPrices.entries) {
-                    prices.add(PriceBuilderFactory().setCurrency(entry.key).setPrice(entry.value).build())
+                    prices.add(PriceBuilderFactory().setCurrency(entry.key).setPrice(entry.value.amount).build())
                 }
             }
 

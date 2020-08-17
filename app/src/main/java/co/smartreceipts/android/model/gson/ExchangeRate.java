@@ -3,18 +3,19 @@ package co.smartreceipts.android.model.gson;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.joda.money.CurrencyUnit;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.utils.ModelUtils;
 
 /**
  * <p>
  * Tracks the exchange rate from a base currency to a set of other currencies. The base currency
  * is defined in {@link #getBaseCurrency()} and can be exchanged to another currency via the rate
- * from {@link #getExchangeRate(String)} or {@link #getExchangeRate(PriceCurrency)}.
+ * from {@link #getExchangeRate(String)} or {@link #getExchangeRate(CurrencyUnit)}.
  * </p>
  * <p>
  * For example, if you had a price defined in "EUR" (the base currency) and wished to exchange it
@@ -37,14 +38,14 @@ public class ExchangeRate implements Serializable {
     /**
      * Gets the base currency for this exchange rate. All exchange rates will be compared against this.
      *
-     * @return the base {@link PriceCurrency}
+     * @return the base {@link CurrencyUnit}
      */
     @Nullable
-    public PriceCurrency getBaseCurrency() {
+    public CurrencyUnit getBaseCurrency() {
         if (base == null) {
             return null;
         } else {
-            return PriceCurrency.getInstance(base);
+            return CurrencyUnit.of(base);
         }
     }
 
@@ -61,11 +62,11 @@ public class ExchangeRate implements Serializable {
     /**
      * Tests if this exchange rate is properly defined in order to support an exchange rate for a given currency
      *
-     * @param currency the {@link PriceCurrency} to test if we have a valid rate
+     * @param currency the {@link CurrencyUnit} to test if we have a valid rate
      * @return {@code true} if we have a valid exchange rate. {@code false} otherwise
      */
-    public boolean supportsExchangeRateFor(@NonNull PriceCurrency currency) {
-        return supportsExchangeRateFor(currency.getCurrencyCode());
+    public boolean supportsExchangeRateFor(@NonNull CurrencyUnit currency) {
+        return supportsExchangeRateFor(currency.getCode());
     }
 
     /**
@@ -93,12 +94,12 @@ public class ExchangeRate implements Serializable {
     /**
      * Gets the exchange rate from the base currency to a currency of your choice
      *
-     * @param exchangeCurrency the {@link PriceCurrency} to exchange to
+     * @param exchangeCurrency the {@link CurrencyUnit} to exchange to
      * @return the exchange rate or {@code null} if we did not define one for this currency
      */
     @Nullable
-    public BigDecimal getExchangeRate(@NonNull PriceCurrency exchangeCurrency) {
-        return getExchangeRate(exchangeCurrency.getCurrencyCode());
+    public BigDecimal getExchangeRate(@NonNull CurrencyUnit exchangeCurrency) {
+        return getExchangeRate(exchangeCurrency.getCode());
     }
 
     /**
@@ -125,12 +126,12 @@ public class ExchangeRate implements Serializable {
      * A "decimal-formatted" price, which would appear to the end user as "25.20" or "25,20" instead of
      * showing naively as "25.2"
      *
-     * @param exchangeCurrency the {@link PriceCurrency} to exchange to
+     * @param exchangeCurrency the {@link CurrencyUnit} to exchange to
      * @return the decimal exchange rate or an empty string if we did not define one for this currency
      */
     @NonNull
-    public String getDecimalFormattedExchangeRate(@NonNull PriceCurrency exchangeCurrency) {
-        return getDecimalFormattedExchangeRate(exchangeCurrency.getCurrencyCode());
+    public String getDecimalFormattedExchangeRate(@NonNull CurrencyUnit exchangeCurrency) {
+        return getDecimalFormattedExchangeRate(exchangeCurrency.getCode());
     }
 
     /**

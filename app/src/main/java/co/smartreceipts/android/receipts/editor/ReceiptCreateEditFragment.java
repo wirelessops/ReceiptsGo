@@ -31,9 +31,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.view.RxView;
+import com.jakewharton.rxbinding3.widget.RxAdapterView;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
+import org.joda.money.CurrencyUnit;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -45,19 +47,19 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import co.smartreceipts.analytics.Analytics;
+import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.FooterButtonArrayAdapter;
 import co.smartreceipts.android.adapters.TaxAutoCompleteAdapter;
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.autocomplete.AutoCompleteArrayAdapter;
 import co.smartreceipts.android.autocomplete.AutoCompleteField;
 import co.smartreceipts.android.autocomplete.AutoCompletePresenter;
 import co.smartreceipts.android.autocomplete.AutoCompleteResult;
 import co.smartreceipts.android.autocomplete.AutoCompleteView;
 import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompleteField;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.databinding.UpdateReceiptBinding;
@@ -102,15 +104,16 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.utils.rx.RxSchedulers;
 import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.rxbinding2.RxTextViewExtensions;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
+import co.smartreceipts.android.widget.ui.PriceInputEditText;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
@@ -190,12 +193,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     private Toolbar toolbar;
     private AutoCompleteTextView nameBox;
-    private EditText priceBox;
+    private PriceInputEditText priceBox;
     private AutoCompleteTextView taxBox1;
     private AutoCompleteTextView taxBox2;
     private Spinner currencySpinner;
     private NetworkRequestAwareEditText exchangeRateBox;
-    private EditText exchangedPriceInBaseCurrencyBox;
+    private PriceInputEditText exchangedPriceInBaseCurrencyBox;
     private TextView receiptInputExchangeRateBaseCurrencyTextView;
     private DateEditText dateBox;
     private Spinner categoriesSpinner;
@@ -624,6 +627,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
+
+        if (focusedView instanceof PriceInputEditText && !hasFocus) {
+            // format price
+            ((PriceInputEditText) focusedView).formatPriceText();
+        }
+
         focusedView = hasFocus ? view : null;
         if (isNewReceipt() && hasFocus) {
             // Only launch if we have focus and it's a new receipt
@@ -840,8 +849,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @NonNull
     @UiThread
     @Override
-    public Consumer<? super PriceCurrency> displayBaseCurrency() {
-        return (Consumer<PriceCurrency>) priceCurrency -> receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCurrencyCode());
+    public Consumer<? super CurrencyUnit> displayBaseCurrency() {
+        return (Consumer<CurrencyUnit>) priceCurrency -> receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCode());
     }
 
     @NonNull
@@ -875,6 +884,22 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Observable<Boolean> getExchangedPriceInBaseCurrencyFocusChanges() {
         return RxView.focusChanges(exchangedPriceInBaseCurrencyBox);
+    }
+
+    @NonNull
+    @Override
+    public Observable<String> getCurrencySpinnerChanges() {
+        return RxAdapterView.itemSelections(currencySpinner)
+                .skipInitialValue()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .map(i -> currencySpinner.getItemAtPosition(i).toString());
+    }
+
+    @UiThread
+    @Override
+    public void updatePricesDecimalPlaces(int decimalPlaces) {
+        priceBox.setDecimalPlaces(decimalPlaces);
+        exchangedPriceInBaseCurrencyBox.setDecimalPlaces(decimalPlaces);
     }
 
     @NonNull

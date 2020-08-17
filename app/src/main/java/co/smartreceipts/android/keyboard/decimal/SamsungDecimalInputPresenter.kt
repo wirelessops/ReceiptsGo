@@ -4,6 +4,7 @@ import android.content.Context
 import android.provider.Settings
 import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -56,7 +57,7 @@ class SamsungDecimalInputPresenter(view: SamsungDecimalInputView,
                 .subscribe { view.appendDecimalSeparatorToFocusedVied(it) })
     }
 
-    private fun getDecimalSeparator() : String = DecimalFormatSymbols.getInstance().decimalSeparator.toString()
+    private fun getDecimalSeparator() : String = ModelUtils.decimalSeparator.toString()
 
     companion object {
 

@@ -4,16 +4,11 @@ import androidx.annotation.NonNull;
 
 import java.util.TimeZone;
 
-import co.smartreceipts.android.currency.PriceCurrency;
-import co.smartreceipts.android.model.utils.ModelUtils;
-
 public class TestTimezoneToggler {
 
     private static TimeZone originalTimeZone;
 
     public static void setDefaultTimeZone(@NonNull TimeZone timeZone) {
-        PriceCurrency.clearStaticCachesForTesting();
-        ModelUtils.clearStaticCachesForTesting();
         originalTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(timeZone);
     }

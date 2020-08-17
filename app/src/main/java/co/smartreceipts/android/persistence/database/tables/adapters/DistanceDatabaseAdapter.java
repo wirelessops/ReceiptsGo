@@ -2,18 +2,23 @@ package co.smartreceipts.android.persistence.database.tables.adapters;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
+import org.joda.money.CurrencyUnit;
+
 import java.math.BigDecimal;
+import java.util.Locale;
 import java.util.UUID;
 
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory;
+import co.smartreceipts.android.model.utils.CurrencyUtils;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.operations.OperationFamilyType;
 import co.smartreceipts.android.persistence.database.tables.DistanceTable;
@@ -94,7 +99,7 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
                 .setDate(date)
                 .setTimezone(timezone)
                 .setRate(rate)
-                .setCurrency(rateCurrency)
+                .setCurrency(CurrencyUtils.INSTANCE.isCurrencySupported(rateCurrency) ? CurrencyUnit.of(rateCurrency) : CurrencyUnit.of(Locale.getDefault()))
                 .setComment(comment)
                 .setSyncState(syncState)
                 .setPaymentMethod(paymentMethod)

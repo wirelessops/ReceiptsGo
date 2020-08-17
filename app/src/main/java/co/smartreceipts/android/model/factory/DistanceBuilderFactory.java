@@ -7,13 +7,15 @@ import androidx.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
+import org.joda.money.CurrencyUnit;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.date.DisplayableDate;
 import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Distance;
@@ -21,7 +23,6 @@ import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
-import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.core.sync.model.SyncState;
 import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 
@@ -41,7 +42,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     private Date date;
     private TimeZone timeZone;
     private BigDecimal rate;
-    private PriceCurrency currency;
+    private CurrencyUnit currency;
     private String comment;
     private PaymentMethod paymentMethod;
     private SyncState syncState;
@@ -59,6 +60,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         date = new Date(System.currentTimeMillis());
         timeZone = TimeZone.getDefault();
         rate = BigDecimal.ZERO;
+        currency = CurrencyUnit.of(Locale.getDefault());
         comment = "";
         syncState = new DefaultSyncState();
         autoCompleteMetadata = new AutoCompleteMetadata(false, false, false, false);
@@ -150,7 +152,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         return this;
     }
 
-    public DistanceBuilderFactory setCurrency(PriceCurrency currency) {
+    public DistanceBuilderFactory setCurrency(CurrencyUnit currency) {
         this.currency = currency;
         return this;
     }
@@ -159,7 +161,7 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
         if (TextUtils.isEmpty(currencyCode)) {
             throw new IllegalArgumentException("The currency code cannot be null or empty");
         }
-        currency = PriceCurrency.getInstance(currencyCode);
+        currency = CurrencyUnit.of(currencyCode);
         return this;
     }
 
@@ -192,10 +194,12 @@ public final class DistanceBuilderFactory implements BuilderFactory<Distance> {
     @NonNull
     public Distance build() {
         final BigDecimal scaledDistance = distance.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
-        final BigDecimal scaledRate = rate.setScale(ROUNDING_PRECISION, RoundingMode.HALF_UP);
+        final BigDecimal scaledRate = rate.setScale(ROUNDING_PRECISION, RoundingMode.HALF_EVEN);
 
-        final int precision = ModelUtils.getDecimalFormattedValue(distance.multiply(rate), Distance.RATE_PRECISION).endsWith("0") ? Price.TOTAL_DECIMAL_PRECISION : Distance.RATE_PRECISION;
-        Price price = new PriceBuilderFactory().setCurrency(currency).setPrice(distance.multiply(rate)).setDecimalPrecision(precision).build();
+        Price price = new PriceBuilderFactory()
+                .setCurrency(currency)
+                .setPrice(distance.multiply(rate))
+                .build();
 
         final DisplayableDate displayableDate = new DisplayableDate(date, timeZone);
 

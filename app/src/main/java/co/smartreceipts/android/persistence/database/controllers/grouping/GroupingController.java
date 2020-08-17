@@ -5,6 +5,8 @@ import android.content.Context;
 import com.github.mikephil.charting.data.Entry;
 import com.google.common.base.Preconditions;
 
+import org.joda.money.CurrencyUnit;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -13,15 +15,13 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.android.currency.PriceCurrency;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
-import co.smartreceipts.android.model.impl.ImmutableNetPriceImpl;
+import co.smartreceipts.android.model.impl.MultiplePriceImpl;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.CategoryGroupingResult;
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
@@ -30,6 +30,7 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumReimbursementGroupingResult;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -72,12 +73,12 @@ public class GroupingController {
                     }
 
                     final Price price = new PriceBuilderFactory().setPrices(prices, trip.getTripCurrency()).build();
-                    Preconditions.checkArgument(price instanceof ImmutableNetPriceImpl);
-                    ImmutableNetPriceImpl priceNet = (ImmutableNetPriceImpl) price;
+                    Preconditions.checkArgument(price instanceof MultiplePriceImpl);
+                    MultiplePriceImpl priceNet = (MultiplePriceImpl) price;
 
                     final Price tax = new PriceBuilderFactory().setPrices(taxes, trip.getTripCurrency()).build();
-                    Preconditions.checkArgument(tax instanceof ImmutableNetPriceImpl);
-                    ImmutableNetPriceImpl taxNet = (ImmutableNetPriceImpl) tax;
+                    Preconditions.checkArgument(tax instanceof MultiplePriceImpl);
+                    MultiplePriceImpl taxNet = (MultiplePriceImpl) tax;
 
                     return new SumCategoryGroupingResult(categoryGroupingResult.getCategory(), trip.getTripCurrency(),
                             priceNet, taxNet, categoryGroupingResult.getReceipts().size());
@@ -168,15 +169,10 @@ public class GroupingController {
                 .flatMapIterable(receipts -> receipts);
     }
 
-    private Price getReceiptsPriceSum(List<Receipt> receipts, PriceCurrency desiredCurrency) {
-        List<Price> prices = new ArrayList<>();
-
-        for (Receipt receipt : receipts) {
-            prices.add(receipt.getPrice());
-        }
+    private Price getReceiptsPriceSum(List<Receipt> receipts, CurrencyUnit desiredCurrency) {
 
         return new PriceBuilderFactory()
-                .setPrices(prices, desiredCurrency)
+                .setPriceables(receipts, desiredCurrency)
                 .build();
     }
 

@@ -27,14 +27,9 @@ abstract class AbstractExchangedPriceColumn(
         val price = getPrice(rowItem)
         val exchangeRate = price.exchangeRate
         val baseCurrency = rowItem.trip.tripCurrency
+
         return if (exchangeRate.supportsExchangeRateFor(baseCurrency)) {
-            ModelUtils.getDecimalFormattedValue(
-                price.price.multiply(
-                    exchangeRate.getExchangeRate(
-                        baseCurrency
-                    )
-                )
-            )
+            ModelUtils.getDecimalFormattedValue(price.price.multiply(exchangeRate.getExchangeRate(baseCurrency)), baseCurrency.decimalPlaces)
         } else {
             localizedContext.getString(R.string.undefined)
         }

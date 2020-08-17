@@ -2,11 +2,12 @@ package co.smartreceipts.android.persistence.database.tables;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 
-import android.text.TextUtils;
-
+import org.joda.money.CurrencyUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,6 @@ import java.util.UUID;
 
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
@@ -149,9 +149,9 @@ public class ReceiptsTableTest {
         when(mTrip1.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
         when(mTrip2.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
         when(mTrip3.getDefaultCurrencyCode()).thenReturn(CURRENCY_CODE);
-        when(mTrip1.getTripCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
-        when(mTrip2.getTripCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
-        when(mTrip3.getTripCurrency()).thenReturn(PriceCurrency.getInstance(CURRENCY_CODE));
+        when(mTrip1.getTripCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
+        when(mTrip2.getTripCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
+        when(mTrip3.getTripCurrency()).thenReturn(CurrencyUnit.of(CURRENCY_CODE));
 
         when(mTripsTable.findByPrimaryKey(TRIP_ID_1)).thenReturn(Single.just(mTrip1));
         when(mTripsTable.findByPrimaryKey(TRIP_ID_2)).thenReturn(Single.just(mTrip2));

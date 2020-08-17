@@ -1,7 +1,6 @@
 package co.smartreceipts.android.model
 
 import android.os.Parcelable
-import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.factory.PriceBuilderFactory
 import co.smartreceipts.android.search.Searchable
@@ -9,6 +8,7 @@ import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.core.sync.model.Syncable
 import co.smartreceipts.core.sync.model.impl.DefaultSyncState
 import kotlinx.android.parcel.Parcelize
+import org.joda.money.CurrencyUnit
 import java.io.File
 import java.sql.Date
 import java.util.*
@@ -30,9 +30,9 @@ class Trip @JvmOverloads constructor(
      */
     val endDisplayableDate: DisplayableDate,
     /**
-     * The [PriceCurrency] which this trip is tracked in
+     * The [CurrencyUnit] which this trip is tracked in
      */
-    val tripCurrency: PriceCurrency,
+    val tripCurrency: CurrencyUnit,
     /**
      * The user defined comment [String] for this trip
      */
@@ -48,12 +48,12 @@ class Trip @JvmOverloads constructor(
     /**
      * As the price of a trip exists as a function of its receipt children (and not itself), [Price] must be var
      */
-    override var price: Price = PriceBuilderFactory().setPrice(0.0).setCurrency(tripCurrency).build(),
+    override var price: Price = PriceBuilderFactory().setCurrency(tripCurrency).build(),
     /**
      * The daily sub-total [Price] (i.e. all expenditures that occurred today) for this trip,
      * daily sub-total of a trip exists as a function of it's receipt children (and not itself)
      */
-    var dailySubTotal: Price = PriceBuilderFactory().setPrice(0.0).setCurrency(tripCurrency).build(),
+    var dailySubTotal: Price = PriceBuilderFactory().setCurrency(tripCurrency).build(),
     val autoCompleteMetadata: AutoCompleteMetadata
 ) : Keyed, Parcelable, Priceable, Comparable<Trip>, Syncable, Searchable {
 
@@ -88,10 +88,9 @@ class Trip @JvmOverloads constructor(
     val directoryPath: String get() = directory.absolutePath
 
     /**
-     * The default currency code representation for this trip or [PriceCurrency.MISSING_CURRENCY]
-     * if it cannot be found
+     * The default currency code representation for this trip
      */
-    val defaultCurrencyCode: String get() = tripCurrency.currencyCode
+    val defaultCurrencyCode: String get() = tripCurrency.code
 
     /**
      * Tests if a particular date is included with the bounds of this particular trip When performing the test, it uses

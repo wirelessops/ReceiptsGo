@@ -36,19 +36,19 @@ class ReceiptPriceMinusTaxColumn(
 
             val total = PriceBuilderFactory().setPrices(prices, tripCurrency).build()
 
-            if (total.currencyCodeCount == 1) total.decimalFormattedPrice else total.currencyCodeFormattedPrice
+            if (total.isSingleCurrency) total.decimalFormattedPrice else total.currencyCodeFormattedPrice
         } else {
             ""
         }
     }
 
     private fun getPrice(receipt: Receipt): Price {
-        return if (userPreferenceManager.get(UserPreference.Receipts.UsePreTaxPrice)) {
+        return if (userPreferenceManager[UserPreference.Receipts.UsePreTaxPrice]) {
             receipt.price
         } else {
-            val factory = PriceBuilderFactory(receipt.price)
-            factory.setPrice(receipt.price.price.subtract(receipt.tax.price).subtract(receipt.tax2.price))
-            factory.build()
+            PriceBuilderFactory(receipt.price)
+                .setPrice(receipt.price.price.subtract(receipt.tax.price).subtract(receipt.tax2.price))
+                .build()
         }
     }
 }

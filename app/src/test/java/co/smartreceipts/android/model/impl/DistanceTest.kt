@@ -1,20 +1,18 @@
 package co.smartreceipts.android.model.impl
 
 import co.smartreceipts.android.DefaultObjects
-import co.smartreceipts.android.currency.PriceCurrency
 import co.smartreceipts.android.model.Distance
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.model.factory.DistanceBuilderFactory
-import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.android.utils.TestLocaleToggler
 import co.smartreceipts.android.utils.testParcel
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
+import co.smartreceipts.core.sync.model.SyncState
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.IsNot.not
+import org.joda.money.CurrencyUnit
 import org.junit.After
 import org.junit.Assert
-import org.junit.Assert.assertThat
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +35,7 @@ class DistanceTest {
         private val DISTANCE = BigDecimal(12.55)
         private val RATE = BigDecimal(0.33)
         private val DATE = Date(1409703721000L)
-        private val CURRENCY = PriceCurrency.getInstance("USD")
+        private val CURRENCY = CurrencyUnit.USD
         private val TIMEZONE = TimeZone.getDefault()
         private const val COMMENT = "Comment"
         private const val LOCATION_HIDDEN_AUTO_COMPLETE = false
@@ -133,7 +131,7 @@ class DistanceTest {
 
     @Test
     fun getSyncState() {
-        Assert.assertEquals(syncState, distance.syncState)
+        assertEquals(syncState, distance.syncState)
     }
 
     @Test
@@ -173,8 +171,8 @@ class DistanceTest {
 
     @Test
     fun equals() {
-        Assert.assertEquals(distance, distance)
-        Assert.assertEquals(
+        assertEquals(distance, distance)
+        assertEquals(
             distance,
             DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
                 .setCurrency(CURRENCY).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT).setSyncState(syncState)
@@ -236,7 +234,7 @@ class DistanceTest {
             not(
                 equalTo(
                     DistanceBuilderFactory(ID).setUuid(DIST_UUID).setTrip(trip).setLocation(LOCATION).setDistance(DISTANCE).setRate(RATE)
-                        .setCurrency(PriceCurrency.getInstance("EUR")).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT)
+                        .setCurrency(CurrencyUnit.EUR).setDate(DATE).setTimezone(TIMEZONE).setComment(COMMENT)
                         .setSyncState(syncState).build()
                 )
             )
@@ -277,7 +275,7 @@ class DistanceTest {
     fun parcelEquality() {
         val distanceFromParcel = distance.testParcel()
 
-        junit.framework.Assert.assertNotSame(distance, distanceFromParcel)
+        assertNotSame(distance, distanceFromParcel)
         assertEquals(distance, distanceFromParcel)
 
     }

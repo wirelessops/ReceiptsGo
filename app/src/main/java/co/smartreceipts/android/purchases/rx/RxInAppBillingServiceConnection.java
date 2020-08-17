@@ -15,7 +15,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 
-
 public class RxInAppBillingServiceConnection {
 
     private final Context context;
