@@ -13,7 +13,7 @@ fun tripAdapterDelegate(itemClickedListener: (Trip) -> Unit, dateFormatter: Date
         itemView.setOnClickListener { itemClickedListener(item) }
 
         bind {
-            price.text = item.price.getCurrencyFormattedPrice()
+            price.text = item.price.currencyFormattedPrice
             title.text = item.name
 
             val start = dateFormatter.getFormattedDate(item.startDisplayableDate)

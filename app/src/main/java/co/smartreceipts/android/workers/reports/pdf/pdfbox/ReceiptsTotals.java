@@ -4,13 +4,14 @@ import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import org.joda.money.CurrencyUnit;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.PriceBuilderFactory;
@@ -85,7 +86,7 @@ public class ReceiptsTotals {
             reimbursableGrandTotal.add(distance.getPrice());
         }
 
-        final PriceCurrency tripCurrency = trip.getTripCurrency();
+        final CurrencyUnit tripCurrency = trip.getTripCurrency();
         grandTotalPrice = new PriceBuilderFactory().setPrices(grandTotal, tripCurrency).build();
         receiptsWithTaxPrice = new PriceBuilderFactory().setPrices(receiptsWithTaxTotal, tripCurrency).build();
         reimbursableGrandTotalPrice = new PriceBuilderFactory().setPrices(reimbursableGrandTotal, tripCurrency).build();

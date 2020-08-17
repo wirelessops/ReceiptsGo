@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.hadisatrio.optional.Optional;
 
+import org.joda.money.CurrencyUnit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +18,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
@@ -28,6 +30,7 @@ import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
+import co.smartreceipts.android.utils.TestLocaleToggler;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -43,7 +46,6 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -92,7 +94,7 @@ public class CurrencyExchangeRateEditorPresenterTest {
     Consumer<UiIndicator<ExchangeRate>> displayExchangeRateConsumer;
 
     @Mock
-    Consumer<PriceCurrency> displayBaseCurrencyConsumer;
+    Consumer<CurrencyUnit> displayBaseCurrencyConsumer;
 
     @Mock
     Consumer<Optional<Price>> displayExchangedPriceInBaseCurrencyConsumer;
@@ -114,6 +116,7 @@ public class CurrencyExchangeRateEditorPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        TestLocaleToggler.setDefaultLocale(Locale.US);
         when(trip.getDefaultCurrencyCode()).thenReturn(TRIP_CURRENCY);
         doReturn(toggleExchangeRateFieldVisibilityConsumer).when(currencyExchangeRateEditorView).toggleExchangeRateFieldVisibility();
         doReturn(displayExchangeRateConsumer).when(currencyExchangeRateEditorView).displayExchangeRate();
@@ -134,11 +137,16 @@ public class CurrencyExchangeRateEditorPresenterTest {
         when(exchangeRateServiceManager.getExchangeRateOrInitiatePurchase(any(Date.class), anyString(), anyString())).thenReturn(Observable.just(UiIndicator.success(EXCHANGE_RATE)));
     }
 
+    @After
+    public void tearDown() {
+        TestLocaleToggler.resetDefaultLocale();
+    }
+
     @Test
     public void subscribeDisplaysBaseCurrency() throws Exception {
         presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
         presenter.subscribe();
-        verify(displayBaseCurrencyConsumer).accept(PriceCurrency.getInstance(TRIP_CURRENCY));
+        verify(displayBaseCurrencyConsumer).accept(CurrencyUnit.of(TRIP_CURRENCY));
     }
 
     @Test
@@ -312,6 +320,8 @@ public class CurrencyExchangeRateEditorPresenterTest {
 
     @Test
     public void userEditsPriceThenExchangeRateFieldsWithCommaForDecimal() throws Exception {
+        TestLocaleToggler.setDefaultLocale(Locale.FRANCE);
+
         presenter = new CurrencyExchangeRateEditorPresenter(currencyExchangeRateEditorView, receiptPricingView, currencyListEditorView, receiptDateView, exchangeRateServiceManager, databaseHelper, trip, null, null, Schedulers.trampoline(), Schedulers.trampoline(), Schedulers.trampoline());
         presenter.subscribe();
 

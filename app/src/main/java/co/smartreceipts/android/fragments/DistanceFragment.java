@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.DistanceAdapter;
@@ -36,7 +37,6 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
-import co.smartreceipts.analytics.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 
 public class DistanceFragment extends WBListFragment implements TripForeignKeyTableEventsListener<Distance> {
@@ -217,7 +217,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
                 for (final Distance distance : distances) {
                     distanceTotal = distanceTotal.add(distance.getDistance());
                 }
-                actionBar.setSubtitle(getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal)));
+                actionBar.setSubtitle(getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal, Distance.DISTANCE_PRECISION)));
             }
         }
     }

@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 
 import com.hadisatrio.optional.Optional;
 
+import org.joda.money.CurrencyUnit;
+
 import java.sql.Date;
 import java.util.TimeZone;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompleteField;
 import co.smartreceipts.android.model.Category;
 import co.smartreceipts.android.model.PaymentMethod;
@@ -22,7 +25,6 @@ import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.analytics.log.Logger;
 import dagger.internal.Preconditions;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -97,6 +99,13 @@ public class ReceiptCreateEditFragmentPresenter {
                         fragment.displayAutoCompleteError();
                     }
                 }));
+
+        compositeDisposable.add(fragment.getCurrencySpinnerChanges()
+                .map(CurrencyUnit::of)
+                .map(CurrencyUnit::getDecimalPlaces)
+                .distinctUntilChanged()
+                .subscribe(decimalPlaces -> fragment.updatePricesDecimalPlaces(decimalPlaces))
+        );
     }
 
     public void unsubscribe() {

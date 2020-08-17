@@ -77,12 +77,10 @@
                 app:layout_constraintEnd_toStartOf="@id/spinner_currency"
                 app:layout_constraintTop_toBottomOf="@id/distance_value_wrapper">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <co.smartreceipts.android.widget.ui.PriceInputEditText
                     android:id="@+id/text_distance_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="number|numberDecimal"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
             </com.google.android.material.textfield.TextInputLayout>

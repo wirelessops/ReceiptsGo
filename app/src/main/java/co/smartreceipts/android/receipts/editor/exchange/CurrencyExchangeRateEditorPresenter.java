@@ -1,6 +1,7 @@
 package co.smartreceipts.android.receipts.editor.exchange;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
@@ -8,10 +9,12 @@ import androidx.core.util.Pair;
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
 
+import org.joda.money.CurrencyUnit;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 
-import co.smartreceipts.android.currency.PriceCurrency;
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Receipt;
@@ -22,7 +25,6 @@ import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.receipts.editor.date.ReceiptDateView;
 import co.smartreceipts.android.receipts.editor.pricing.EditableReceiptPricingView;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.utils.rx.PriceCharSequenceToBigDecimalObservableTransformer;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
@@ -180,10 +182,11 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
                     selectedCurrencyConnectableObservable,
                     (priceDecimal, exchangeRateDecimal, selectedReceiptCurrencyCode) -> {
                         if (priceDecimal.isPresent() && exchangeRateDecimal.isPresent()) {
-                            final PriceBuilderFactory priceBuilderFactory = new PriceBuilderFactory();
-                            priceBuilderFactory.setCurrency(trip.getDefaultCurrencyCode());
-                            priceBuilderFactory.setPrice(priceDecimal.get().multiply(exchangeRateDecimal.get()));
-                            return Optional.of(priceBuilderFactory.build());
+                            final Price price = new PriceBuilderFactory()
+                                    .setCurrency(trip.getDefaultCurrencyCode())
+                                    .setPrice(priceDecimal.get().multiply(exchangeRateDecimal.get()))
+                                    .build();
+                            return Optional.of(price);
                         } else {
                             return Optional.<Price>absent();
                         }
@@ -267,7 +270,7 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
         // Display the base currency of the price
         compositeDisposable.add(Observable.just(trip)
                 .map(Trip::getDefaultCurrencyCode)
-                .map(PriceCurrency::getInstance)
+                .map(CurrencyUnit::of)
                 .subscribe(view.displayBaseCurrency()));
 
         // And start our ConnectableObservables

@@ -3,9 +3,9 @@ package co.smartreceipts.android.model.impl;
 import co.smartreceipts.android.model.Price;
 
 /**
- * Provides common methods that all {@link co.smartreceipts.android.model.Price} implementations use
+ * Provides common methods that all {@link Price} implementations use
  */
-abstract class AbstractPriceImpl implements Price {
+public abstract class AbstractPriceImpl implements Price {
 
     protected static final float EPSILON = 1f / (Price.ROUNDING_PRECISION + 2f);
 
@@ -19,7 +19,7 @@ abstract class AbstractPriceImpl implements Price {
         if (!getCurrency().equals(that.getCurrency())) {
             return false;
         }
-        if (Math.abs(getPrice().floatValue() - that.getPrice().floatValue()) > EPSILON) {
+        if (Math.abs(getPriceAsFloat() - that.getPriceAsFloat()) > EPSILON) {
             return false;
         }
         return getCurrencyFormattedPrice().equals(that.getCurrencyFormattedPrice());

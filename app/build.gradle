@@ -201,6 +201,8 @@ android {
 
         implementation "com.github.pqpo:SmartCropper:$SMART_CROPPER_VERSION"
 
+        implementation "org.joda:joda-money:$JODA_MONEY_VERSION"
+
         // Dagger
         kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
         kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"

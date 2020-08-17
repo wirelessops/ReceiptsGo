@@ -2,11 +2,12 @@ package co.smartreceipts.android.model.factory;
 
 import androidx.annotation.NonNull;
 
+import org.joda.money.CurrencyUnit;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.smartreceipts.android.currency.PriceCurrency;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.utils.ModelUtils;
 
@@ -23,8 +24,8 @@ public final class ExchangeRateBuilderFactory implements BuilderFactory<Exchange
         _rates = new HashMap<>();
     }
 
-    public ExchangeRateBuilderFactory setBaseCurrency(@NonNull PriceCurrency baseCurrency) {
-        _baseCurrencyCode = baseCurrency.getCurrencyCode();
+    public ExchangeRateBuilderFactory setBaseCurrency(@NonNull CurrencyUnit baseCurrency) {
+        _baseCurrencyCode = baseCurrency.getCode();
         return this;
     }
 
@@ -48,16 +49,16 @@ public final class ExchangeRateBuilderFactory implements BuilderFactory<Exchange
         return setRate(currencyCode, ModelUtils.tryParse(rateString, new BigDecimal(-1)));
     }
 
-    public ExchangeRateBuilderFactory setRate(@NonNull PriceCurrency currency, double rate) {
-        return setRate(currency.getCurrencyCode(), rate);
+    public ExchangeRateBuilderFactory setRate(@NonNull CurrencyUnit currency, double rate) {
+        return setRate(currency.getCode(), rate);
     }
 
-    public ExchangeRateBuilderFactory setRate(@NonNull PriceCurrency currency, @NonNull BigDecimal rate) {
-        return setRate(currency.getCurrencyCode(), rate.doubleValue());
+    public ExchangeRateBuilderFactory setRate(@NonNull CurrencyUnit currency, @NonNull String rateString) {
+        return setRate(currency.getCode(), ModelUtils.tryParse(rateString, new BigDecimal(-1)));
     }
 
-    public ExchangeRateBuilderFactory setRate(@NonNull PriceCurrency currency, @NonNull String rateString) {
-        return setRate(currency.getCurrencyCode(), ModelUtils.tryParse(rateString, new BigDecimal(-1)));
+    public ExchangeRateBuilderFactory setRate(@NonNull CurrencyUnit currency, @NonNull BigDecimal rate) {
+        return setRate(currency.getCode(), rate);
     }
 
     @Override
