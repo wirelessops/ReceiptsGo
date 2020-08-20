@@ -8,6 +8,7 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -260,7 +261,9 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.DefaultBold))));
 
         // Print the grand total (reimbursable)
-        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !data.getGrandTotalPrice().equals(data.getReimbursableGrandTotalPrice())) {
+        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable)
+                && !data.getGrandTotalPrice().equals(data.getReimbursableGrandTotalPrice())
+                && data.getReimbursableGrandTotalPrice().getPrice().compareTo(BigDecimal.ZERO) != 0) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
                     pdDocument,
@@ -268,7 +271,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.DefaultBold))));
         }
-
 
         for (final GridRowRenderer headerRow : headerRows) {
             headerRow.getRenderingFormatting().addFormatting(new Alignment(Alignment.Type.Start));
