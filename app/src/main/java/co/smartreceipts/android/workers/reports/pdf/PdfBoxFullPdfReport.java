@@ -19,6 +19,7 @@ import co.smartreceipts.android.persistence.database.controllers.grouping.result
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import wb.android.storage.StorageManager;
@@ -60,12 +61,14 @@ public class PdfBoxFullPdfReport extends PdfBoxAbstractReport {
                 break;
             }
         }
-        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getReportResourcesManager(), isMultiCurrency)
+
+        boolean taxEnabled = userPreferenceManager.get(UserPreference.Receipts.IncludeTaxField);
+
+        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(getReportResourcesManager(), isMultiCurrency, taxEnabled)
                 .getAllColumns();
 
         // Grouping by Category Receipts Tables
         final List<CategoryGroupingResult> groupingResults = groupingController.getReceiptsGroupedByCategory(trip).toList().blockingGet();
-
 
         pdfBoxReportFile.addSection(pdfBoxReportFile.createReceiptsTableSection(trip,
                 receipts, columns, distances, distanceColumns, categories, categoryColumns,

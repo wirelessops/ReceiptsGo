@@ -43,7 +43,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     private static final int EMPTY_ROW_HEIGHT_NORMAL = 40;
     private static final int EMPTY_ROW_HEIGHT_SMALL = 10;
 
-
     private final List<Receipt> receipts;
     private final List<Column<Receipt>> receiptColumns;
 
@@ -85,7 +84,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
         this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
     }
-
 
     @Override
     public void writeSection(@NonNull PDDocument doc, @NonNull PdfBoxWriter writer) throws IOException {
@@ -294,6 +292,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     }
 
     private List<GridRowRenderer> writeDistancesTable(@NonNull List<Distance> distances, @NonNull PDDocument pdDocument) throws IOException {
+
         final PdfTableGenerator<Distance> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext,
                 reportResourcesManager, distanceColumns, pdDocument, null,true, true);
         return pdfTableGenerator.generate(distances);

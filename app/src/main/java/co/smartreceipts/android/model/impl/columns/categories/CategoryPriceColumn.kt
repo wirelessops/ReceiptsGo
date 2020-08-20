@@ -6,7 +6,6 @@ import co.smartreceipts.android.model.impl.columns.AbstractColumnImpl
 import co.smartreceipts.android.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
 import co.smartreceipts.core.sync.model.SyncState
 
-
 class CategoryPriceColumn(id: Int, syncState: SyncState) :
     AbstractColumnImpl<SumCategoryGroupingResult>(
         id,
