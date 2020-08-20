@@ -169,6 +169,7 @@
         <item>@string/language_uk_entry</item>
         <item>@string/language_iw_entry</item>
         <item>@string/language_it_entry</item>
+        <item>@string/language_no_entry</item>
     </string-array>
 
     <!-- ============== Preference Email ================= -->

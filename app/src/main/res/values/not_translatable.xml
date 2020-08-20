@@ -43,5 +43,6 @@
     <string name="language_uk_entry" translatable="false">uk</string>
     <string name="language_iw_entry" translatable="false">iw</string>
     <string name="language_it_entry" translatable="false">it</string>
+    <string name="language_no_entry" translatable="false">no</string>
 
 </resources>
