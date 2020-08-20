@@ -32,7 +32,6 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
     private final PDDocument pdDocument;
     private final List<PdfBoxSection> sections;
 
-
     public PdfBoxReportFile(@NonNull ReportResourcesManager reportResourcesManager,
                             @NonNull UserPreferenceManager preferences,
                             @NonNull DateFormatter dateFormatter) throws IOException {
@@ -49,7 +48,6 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
         pdfBoxContext = new DefaultPdfBoxContext(reportResourcesManager.getLocalizedContext(),
                 fontManager, colorManager, preferences, dateFormatter);
     }
-
 
     @Override
     public void writeFile(@NonNull OutputStream outStream, @NonNull Trip trip, @NonNull List<Receipt> receipts,
@@ -91,7 +89,6 @@ public class PdfBoxReportFile implements PdfReportFile, PdfBoxSectionFactory {
                 receipts, columns, distances, distanceColumns, categories, categoryColumns,
                 groupingResults, purchaseWallet);
     }
-
 
     @NonNull
     @Override

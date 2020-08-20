@@ -8,6 +8,7 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +42,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
 
     private static final int EMPTY_ROW_HEIGHT_NORMAL = 40;
     private static final int EMPTY_ROW_HEIGHT_SMALL = 10;
-
 
     private final List<Receipt> receipts;
     private final List<Column<Receipt>> receiptColumns;
@@ -84,7 +84,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
         this.reportResourcesManager = Preconditions.checkNotNull(reportResourcesManager);
     }
-
 
     @Override
     public void writeSection(@NonNull PDDocument doc, @NonNull PdfBoxWriter writer) throws IOException {
@@ -260,7 +259,9 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                 pdfBoxContext.getFontManager().getFont(PdfFontStyle.DefaultBold))));
 
         // Print the grand total (reimbursable)
-        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable) && !data.getGrandTotalPrice().equals(data.getReimbursableGrandTotalPrice())) {
+        if (!preferenceManager.get(UserPreference.Receipts.OnlyIncludeReimbursable)
+                && !data.getGrandTotalPrice().equals(data.getReimbursableGrandTotalPrice())
+                && data.getReimbursableGrandTotalPrice().getPrice().compareTo(BigDecimal.ZERO) != 0) {
             headerRows.add(new GridRowRenderer(new TextRenderer(
                     pdfBoxContext.getAndroidContext(),
                     pdDocument,
@@ -268,7 +269,6 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
                     pdfBoxContext.getColorManager().getColor(PdfColorStyle.Default),
                     pdfBoxContext.getFontManager().getFont(PdfFontStyle.DefaultBold))));
         }
-
 
         for (final GridRowRenderer headerRow : headerRows) {
             headerRow.getRenderingFormatting().addFormatting(new Alignment(Alignment.Type.Start));
@@ -292,6 +292,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     }
 
     private List<GridRowRenderer> writeDistancesTable(@NonNull List<Distance> distances, @NonNull PDDocument pdDocument) throws IOException {
+
         final PdfTableGenerator<Distance> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext,
                 reportResourcesManager, distanceColumns, pdDocument, null,true, true);
         return pdfTableGenerator.generate(distances);

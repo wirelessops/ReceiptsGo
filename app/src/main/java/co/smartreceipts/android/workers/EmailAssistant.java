@@ -374,7 +374,10 @@ public class EmailAssistant {
                                 break;
                             }
                         }
-                        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(reportResourcesManager, isMultiCurrency)
+
+                        boolean taxEnabled = mPreferenceManager.get(UserPreference.Receipts.IncludeTaxField);
+
+                        final List<Column<SumCategoryGroupingResult>> categoryColumns = new CategoryColumnDefinitions(reportResourcesManager, isMultiCurrency, taxEnabled)
                                 .getAllColumns();
 
                         data += "\n\n";
