@@ -17,7 +17,7 @@ public abstract class AbstractReport implements Report {
 
     private final ReportResourcesManager reportResourcesManager;
     private final DatabaseHelper databaseHelper;
-    private final UserPreferenceManager userPreferenceManager;
+    public final UserPreferenceManager userPreferenceManager;
     private final StorageManager storageManager;
     private final DateFormatter dateFormatter;
 
