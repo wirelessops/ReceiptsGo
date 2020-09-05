@@ -38,9 +38,11 @@ class PaymentMethodsPresenter @Inject constructor(view: PaymentMethodsView,
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribe { t: MutableList<PaymentMethod>? ->
-                    val paymentMethods = ArrayList(t)
-                    paymentMethods.add(PaymentMethod.NONE)
-                    view.displayPaymentMethods(paymentMethods)
+                    if (t != null) {
+                        val paymentMethods = ArrayList(t.toMutableList())
+                        paymentMethods.add(PaymentMethod.NONE)
+                        view.displayPaymentMethods(paymentMethods)
+                    }
                 })
     }
 
