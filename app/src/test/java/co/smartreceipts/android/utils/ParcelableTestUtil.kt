@@ -31,8 +31,8 @@ fun marshall(bundle: Bundle): ByteArray =
 inline fun <reified R : Parcelable> unmarshallParcelable(bytes: ByteArray): R = unmarshall(bytes)
     .readBundle()
     .run {
-        classLoader = R::class.java.classLoader
-        getParcelable(R::class.java.name)
+        this!!.classLoader = R::class.java.classLoader
+        getParcelable(R::class.java.name)!!
     }
 
 @VisibleForTesting

@@ -46,6 +46,11 @@ android {
             keyPassword System.getenv("KEY_PASSWORD")
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -126,10 +131,6 @@ android {
             }
         }
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
-    }
-
-    viewBinding {
-        enabled = true
     }
 
     dependencies {

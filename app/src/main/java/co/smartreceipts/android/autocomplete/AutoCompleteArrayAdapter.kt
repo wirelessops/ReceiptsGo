@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 
-
 /**
  * Modifies the core [ArrayAdapter] contract to address a bug that is specific to auto-completion
  */

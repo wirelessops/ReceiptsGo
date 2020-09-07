@@ -108,6 +108,6 @@ class ReportResourcesManagerTest {
     }
 
     private fun setDefaultLocaleForConfiguration(locale: Locale) {
-        configuration.locales = LocaleList(locale)
+        configuration.setLocales(LocaleList(locale))
     }
 }

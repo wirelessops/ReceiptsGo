@@ -74,11 +74,11 @@ class ReceiptImageFragment : WBFragment() {
     @Inject
     lateinit var picasso: Lazy<Picasso>
 
-    private lateinit var receipt: Receipt
     private lateinit var imageUpdatedListener: ImageUpdatedListener
     private lateinit var compositeDisposable: CompositeDisposable
 
     private var imageUri: Uri? = null
+    private var receipt: Receipt? = null
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -103,12 +103,12 @@ class ReceiptImageFragment : WBFragment() {
         rootView.button_edit_photo.setOnClickListener { view ->
             analytics.record(Events.Receipts.ReceiptImageViewEditPhoto)
             imageCroppingPreferenceStorage.setCroppingScreenWasShown(true)
-            navigationHandler.navigateToCropActivity(this, receipt.file!!, RequestCodes.EDIT_IMAGE_CROP)
+            navigationHandler.navigateToCropActivity(this, receipt!!.file!!, RequestCodes.EDIT_IMAGE_CROP)
         }
 
         rootView.button_retake_photo.setOnClickListener { view ->
             analytics.record(Events.Receipts.ReceiptImageViewRetakePhoto)
-            imageUri = CameraInteractionController(this@ReceiptImageFragment).retakePhoto(receipt)
+            imageUri = CameraInteractionController(this@ReceiptImageFragment).retakePhoto(receipt!!)
         }
 
         return rootView
@@ -140,7 +140,7 @@ class ReceiptImageFragment : WBFragment() {
                     Logger.error(this, "An error occurred while cropping the image")
                 }
                 else -> {
-                    picasso.get().invalidate(receipt.file!!)
+                    picasso.get().invalidate(receipt!!.file!!)
                     loadImage()
                 }
             }
@@ -165,7 +165,7 @@ class ReceiptImageFragment : WBFragment() {
                         receipt_image_progress.visibility = View.VISIBLE
                         activityFileResultImporter.importFile(
                             locatorResponse.requestCode,
-                            locatorResponse.resultCode, locatorResponse.uri!!, receipt.trip
+                            locatorResponse.resultCode, locatorResponse.uri!!, receipt!!.trip
                         )
                     }
                 }
@@ -176,8 +176,8 @@ class ReceiptImageFragment : WBFragment() {
                 when {
                     throwable.isPresent -> Toast.makeText(activity, getFlexString(R.string.IMG_SAVE_ERROR), Toast.LENGTH_SHORT).show()
                     else -> {
-                        val retakeReceipt = ReceiptBuilderFactory(receipt).setFile(file).build()
-                        receiptTableController.update(receipt, retakeReceipt, DatabaseOperationMetadata())
+                        val retakeReceipt = ReceiptBuilderFactory(receipt!!).setFile(file).build()
+                        receiptTableController.update(receipt!!, retakeReceipt, DatabaseOperationMetadata())
                     }
                 }
                 receipt_image_progress.visibility = View.GONE
@@ -192,7 +192,7 @@ class ReceiptImageFragment : WBFragment() {
         actionBar?.apply {
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
-            title = receipt.name
+            title = receipt!!.name
         }
         receiptTableController.subscribe(imageUpdatedListener)
 
@@ -228,7 +228,7 @@ class ReceiptImageFragment : WBFragment() {
                 true
             }
             R.id.action_share -> {
-                receipt.file?.let {
+                receipt!!.file?.let {
                     val sendIntent = IntentUtils.getSendIntent(requireActivity(), it)
                     startActivity(Intent.createChooser(sendIntent, resources.getString(R.string.send_email)))
                 }
@@ -241,8 +241,8 @@ class ReceiptImageFragment : WBFragment() {
 
     private fun loadImage() {
 
-        if (receipt.hasImage()) {
-            receipt.file?.let {
+        if (receipt!!.hasImage()) {
+            receipt!!.file?.let {
                 receipt_image_progress.visibility = View.VISIBLE
 
                 picasso.get().load(it).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside()
