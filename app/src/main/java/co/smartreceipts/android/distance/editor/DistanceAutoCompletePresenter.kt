@@ -20,10 +20,10 @@ class DistanceAutoCompletePresenter @Inject constructor(
                 .flatMap { t ->
                     positionToRemoveOrAdd = t.position
                     when (t.type) {
-                        DistanceAutoCompleteField.Location -> interactor.updateDistance(t.item.firstItem, DistanceBuilderFactory(t.item.firstItem)
+                        DistanceAutoCompleteField.Location -> interactor.updateDistance(t.item!!.firstItem, DistanceBuilderFactory(t.item.firstItem)
                                 .setLocationHiddenFromAutoComplete(true)
                                 .build())
-                        DistanceAutoCompleteField.Comment -> interactor.updateDistance(t.item.firstItem, DistanceBuilderFactory(t.item.firstItem)
+                        DistanceAutoCompleteField.Comment -> interactor.updateDistance(t.item!!.firstItem, DistanceBuilderFactory(t.item.firstItem)
                                 .setCommentHiddenFromAutoComplete(true)
                                 .build())
                         else -> throw UnsupportedOperationException("Unknown type: " + t.type)
@@ -39,10 +39,10 @@ class DistanceAutoCompletePresenter @Inject constructor(
         compositeDisposable.add(view.unHideAutoCompleteVisibilityClick
                 .flatMap { t ->
                     when (t.type) {
-                        DistanceAutoCompleteField.Location -> interactor.updateDistance(t.item.firstItem, DistanceBuilderFactory(t.item.firstItem)
+                        DistanceAutoCompleteField.Location -> interactor.updateDistance(t.item!!.firstItem, DistanceBuilderFactory(t.item.firstItem)
                                 .setLocationHiddenFromAutoComplete(false)
                                 .build())
-                        DistanceAutoCompleteField.Comment -> interactor.updateDistance(t.item.firstItem, DistanceBuilderFactory(t.item.firstItem)
+                        DistanceAutoCompleteField.Comment -> interactor.updateDistance(t.item!!.firstItem, DistanceBuilderFactory(t.item.firstItem)
                                 .setCommentHiddenFromAutoComplete(false)
                                 .build())
                         else -> throw UnsupportedOperationException("Unknown type: " + t.type)

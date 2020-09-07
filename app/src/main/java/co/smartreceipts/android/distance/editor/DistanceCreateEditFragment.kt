@@ -49,6 +49,7 @@ import javax.inject.Inject
 
 class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.OnFocusChangeListener,
         PaymentMethodsView {
+
     @Inject
     lateinit var presenter: DistanceCreateEditPresenter
 
@@ -89,7 +90,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     private lateinit var paymentMethodsAdapter: FooterButtonArrayAdapter<PaymentMethod>
 
-    private lateinit var itemToRemoveOrReAdd: AutoCompleteResult<Distance>
+    private var itemToRemoveOrReAdd: AutoCompleteResult<Distance>? = null
 
     private var _binding: UpdateDistanceBinding? = null
     private val binding get() = _binding!!
@@ -437,7 +438,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             resultsAdapter.notifyDataSetChanged()
             val view = activity!!.findViewById<ConstraintLayout>(R.id.update_distance_layout)
             snackbar = Snackbar.make(view, getString(
-                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.displayName), Snackbar.LENGTH_LONG)
+                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd!!.displayName), Snackbar.LENGTH_LONG)
             snackbar.setAction(R.string.undo) {
                 if (text_distance_location.hasFocus()) {
                     _unHideAutoCompleteVisibilityClicks.onNext(
