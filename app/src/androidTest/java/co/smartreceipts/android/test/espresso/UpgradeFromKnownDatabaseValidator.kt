@@ -436,7 +436,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
         assertEquals("€0.00", receipt.tax.currencyFormattedPrice)
         assertEquals("EUR", receipt.price.exchangeRate.baseCurrencyCode)
         assertTrue(receipt.price.exchangeRate.supportsExchangeRateFor("USD"))
-        assertEquals("2.000000", receipt.price.exchangeRate.getDecimalFormattedExchangeRate("USD"))
+        assertEquals("2.000,000", receipt.price.exchangeRate.getDecimalFormattedExchangeRate("USD"))
         assertEquals("EUR", receipt.tax.currencyCode)
         assertEquals("11/20/16", dateFormatter.getFormattedDate(receipt.displayableDate))
         assertEquals(category, receipt.category)
