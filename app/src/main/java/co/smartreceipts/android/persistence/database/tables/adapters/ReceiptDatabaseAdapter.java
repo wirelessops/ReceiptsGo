@@ -13,6 +13,7 @@ import org.joda.money.CurrencyUnit;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -183,24 +184,26 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
          * TODO: Longer term, everything should be saved with a decimal point
          * https://code.google.com/p/android/issues/detail?id=22219
          */
+        final String decimalSeparator = String.valueOf(DecimalFormatSymbols.getInstance().getDecimalSeparator());
+
         if (!TextUtils.isEmpty(priceString) && priceString.contains(",")) {
-            builder.setPrice(priceString);
+            builder.setPrice(priceString.replace(",", decimalSeparator));
         } else {
             builder.setPrice(priceDouble);
         }
         if (!TextUtils.isEmpty(taxString) && taxString.contains(",")) {
-            builder.setTax(taxString);
+            builder.setTax(taxString.replace(",", decimalSeparator));
         } else {
             builder.setTax(taxDouble);
         }
         if (!TextUtils.isEmpty(tax2String) && tax2String.contains(",")) {
-            builder.setTax2(tax2String);
+            builder.setTax2(tax2String.replace(",", decimalSeparator));
         } else {
             builder.setTax2(tax2Double);
         }
         final ExchangeRateBuilderFactory exchangeRateBuilder = new ExchangeRateBuilderFactory().setBaseCurrency(currency);
         if (!TextUtils.isEmpty(exchangeRateString) && exchangeRateString.contains(",")) {
-            exchangeRateBuilder.setRate(trip.getTripCurrency(), exchangeRateString);
+            exchangeRateBuilder.setRate(trip.getTripCurrency(), exchangeRateString.replace(",", decimalSeparator));
         } else {
             exchangeRateBuilder.setRate(trip.getTripCurrency(), exchangeRateDouble);
         }
