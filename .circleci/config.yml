@@ -2,7 +2,7 @@ jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-28
+      - image: circleci/android:api-29
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -74,7 +74,7 @@ jobs:
   buildAndTestFreeAPK:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-28  # gcloud is baked into this image
+      - image: circleci/android:api-29  # gcloud is baked into this image
     steps:
       - checkout
       - restore_cache:
@@ -107,14 +107,14 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/free/debug/app-free-debug.apk \
               --test app/build/outputs/apk/androidTest/free/debug/app-free-debug-androidTest.apk \
-              --device model=taimen,version=27 \
+              --device model=flame,version=29 \
               --environment-variables clearPackageData=true \
               --use-orchestrator \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}-free
   buildAndTestPlusAPK:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-28  # gcloud is baked into this image
+      - image: circleci/android:api-29  # gcloud is baked into this image
     steps:
       - checkout
       - restore_cache:
@@ -147,14 +147,14 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/plusFlavor/debug/app-plusFlavor-debug.apk \
               --test app/build/outputs/apk/androidTest/plusFlavor/debug/app-plusFlavor-debug-androidTest.apk \
-              --device model=taimen,version=27 \
+              --device model=flame,version=29 \
               --environment-variables clearPackageData=true \
               --use-orchestrator \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}-plus
   buildAndTestFlossAPK:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-28  # gcloud is baked into this image
+      - image: circleci/android:api-29  # gcloud is baked into this image
     steps:
       - checkout
       - restore_cache:
@@ -187,7 +187,7 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/flossFlavor/debug/app-flossFlavor-debug.apk \
               --test app/build/outputs/apk/androidTest/flossFlavor/debug/app-flossFlavor-debug-androidTest.apk \
-              --device model=taimen,version=27 \
+              --device model=flame,version=29 \
               --environment-variables clearPackageData=true \
               --use-orchestrator \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}-floss
@@ -206,15 +206,18 @@ workflows:
               only:
                 - master
                 - /release_.*/
+                - TestLabFixes2
       - buildAndTestPlusAPK:
           filters:
             branches:
               only:
                 - master
                 - /release_.*/
+                - TestLabFixes2
       - buildAndTestFlossAPK:
           filters:
             branches:
               only:
                 - master
                 - /release_.*/
+                - TestLabFixes2
