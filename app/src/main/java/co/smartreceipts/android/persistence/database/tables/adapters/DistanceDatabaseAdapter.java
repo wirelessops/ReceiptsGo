@@ -11,7 +11,6 @@ import com.hadisatrio.optional.Optional;
 import org.joda.money.CurrencyUnit;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 import java.util.UUID;
 
 import co.smartreceipts.android.model.Distance;
@@ -99,7 +98,7 @@ public final class DistanceDatabaseAdapter implements SelectionBackedDatabaseAda
                 .setDate(date)
                 .setTimezone(timezone)
                 .setRate(rate)
-                .setCurrency(CurrencyUtils.INSTANCE.isCurrencySupported(rateCurrency) ? CurrencyUnit.of(rateCurrency) : CurrencyUnit.of(Locale.getDefault()))
+                .setCurrency(CurrencyUtils.INSTANCE.isCurrencySupported(rateCurrency) ? CurrencyUnit.of(rateCurrency) : CurrencyUtils.INSTANCE.getDefaultCurrency())
                 .setComment(comment)
                 .setSyncState(syncState)
                 .setPaymentMethod(paymentMethod)

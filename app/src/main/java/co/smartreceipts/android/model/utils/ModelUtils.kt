@@ -75,7 +75,7 @@ object ModelUtils {
     @JvmStatic
     @JvmOverloads
     fun getDecimalFormattedValue(decimal: BigDecimal, precision: Int = Price.TOTAL_DECIMAL_PRECISION): String {
-        val money = BigMoney.of(CurrencyUnit.of(Locale.getDefault()), decimal)
+        val money = BigMoney.of(CurrencyUnit.of(Currency.getInstance(Locale.getDefault()).currencyCode), decimal)
 
         return moneyFormatter.print(money.withScale(precision, RoundingMode.HALF_EVEN))
     }
@@ -106,7 +106,7 @@ object ModelUtils {
      *
      * @param decimal          - the [BigDecimal] to format
      * @param currency         - the [CurrencyUnit] to use. If this is {@code null}, return {@link #getDecimalFormattedValue(BigDecimal)}
-     * @param decimalPrecision - the desired decimal precision to use (eg 2 => "USD 25.20", 3 => "USD 25.200")
+     * @param precision - the desired decimal precision to use (eg 2 => "USD 25.20", 3 => "USD 25.200")
      * @return - the currency formatted price [String]
      */
     @JvmStatic
