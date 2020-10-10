@@ -550,4 +550,7 @@
     <string name="organization_update_error">Something went wrong while updating organization</string>
     <string name="organization_update">Update organization settings</string>
 
+    <!-- ================== Leak Canary ==================== -->
+    <string name="leak_canary_test_class_name">co.smartreceipts.android</string>
+
 </resources>

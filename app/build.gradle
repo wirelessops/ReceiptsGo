@@ -225,8 +225,6 @@ android {
 
         // Leak Canary
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
-        debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$LEAK_CANARY_VERSION"
-        releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
 
         // Special dependencies for free flavor
         freeImplementation "com.google.android.gms:play-services-analytics:$GOOGLE_ANALYTICS_VERSION"
