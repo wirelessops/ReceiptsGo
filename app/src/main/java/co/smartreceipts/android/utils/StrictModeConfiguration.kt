@@ -45,6 +45,7 @@ object StrictModeConfiguration {
                 var hasPreferenceReadWrite = false
                 var hasBridgingQuery = false
                 var hasEmailAttachments = false
+                var hasLeakCanary = false
                 stackTrace.forEach { stackTraceElement ->
                     if (stackTraceElement.toString().contains("LayoutInflater.createView")) {
                         hasInflationTraceElement = true
@@ -65,10 +66,13 @@ object StrictModeConfiguration {
                     if (stackTraceElement.toString().contains("EmailAssistant.onAttachmentsCreated")) {
                         hasEmailAttachments = true
                     }
+                    if (stackTraceElement.toString().contains("leakcanary.internal.HeapDumpControl")) {
+                        hasLeakCanary = true
+                    }
                 }
                 val isWhiteListed = (hasInflationTraceElement and hasDexTraceElement) or
                         hasPreferenceManagerInflation or hasPreferenceReadWrite or hasBridgingQuery or
-                        hasEmailAttachments
+                        hasEmailAttachments or hasLeakCanary
                 if (!isWhiteListed) {
                     throw it
                 } else {
