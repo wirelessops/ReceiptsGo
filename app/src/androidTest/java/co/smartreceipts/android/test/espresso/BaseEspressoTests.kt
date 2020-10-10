@@ -61,6 +61,9 @@ class BaseEspressoTests {
         // Up Button Navigation
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
 
+        // Wait a second to ensure that everything loaded
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
         // Verify that we have a list item with Test2
         onView(withId(R.id.title)).check(matches(withText("Test2")))
     }
