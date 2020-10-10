@@ -75,6 +75,8 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29  # gcloud is baked into this image
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
       - restore_cache:
@@ -115,6 +117,8 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29  # gcloud is baked into this image
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
       - restore_cache:
@@ -155,6 +159,8 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29  # gcloud is baked into this image
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
       - restore_cache:
