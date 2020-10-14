@@ -179,7 +179,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Logger.debug(this, "onViewCreated");
 
