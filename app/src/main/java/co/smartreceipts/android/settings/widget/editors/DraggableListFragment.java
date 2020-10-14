@@ -12,14 +12,13 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 
 import java.util.List;
 
+import co.smartreceipts.android.R;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Draggable;
 import co.smartreceipts.android.persistence.database.controllers.TableController;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableCardsAdapter;
-
-import static android.R.id.list;
 
 /**
  * Basic fragment which contains recycler view with draggable items
@@ -43,7 +42,7 @@ public abstract class DraggableListFragment<T extends Draggable, E extends Dragg
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = getView().findViewById(list);
+        recyclerView = getView().findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         setDragAndDrop();
