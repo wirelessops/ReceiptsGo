@@ -1,5 +1,7 @@
 package co.smartreceipts.android.test.espresso
 
+import android.view.View
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -9,7 +11,10 @@ import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import org.hamcrest.Description
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
+import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,6 +50,12 @@ class BaseEspressoTests {
         // Create a trip, entitled "Test"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
+
+        // Wait a second to ensure that everything loaded
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Verify that we have an empty report
+        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
     }
 
     @Test
@@ -59,13 +70,13 @@ class BaseEspressoTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Up Button Navigation
-        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
+        Espresso.pressBack()
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test2
-        onView(withId(R.id.title)).check(matches(withText("Test2")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test2")))
     }
 
     @Test
@@ -110,7 +121,24 @@ class BaseEspressoTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
+    }
+
+    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
+        return object : TypeSafeMatcher<View?>() {
+            var currentIndex = 0
+            override fun describeTo(description: Description) {
+                description.appendText("with index: ")
+                description.appendValue(index)
+                matcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: View?): Boolean {
+                return matcher.matches(view) && currentIndex++ == index
+            }
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -19,7 +20,10 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import org.hamcrest.Description
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
+import org.hamcrest.TypeSafeMatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -104,10 +108,12 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -175,10 +181,12 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -246,10 +254,12 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -312,13 +322,15 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        Thread.sleep(TimeUnit.SECONDS.toMillis(7))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -398,10 +410,12 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -485,10 +499,12 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
+//                .check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -542,7 +558,7 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -570,7 +586,7 @@ class ReportGenerationTests {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait a second to ensure that everything loaded
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -582,4 +598,18 @@ class ReportGenerationTests {
         onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_SELECTION)).inRoot(withDecorView(not(mIntentsRule.activity.window.decorView))).check(matches(isDisplayed()))
     }
 
+    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
+        return object : TypeSafeMatcher<View?>() {
+            var currentIndex = 0
+            override fun describeTo(description: Description) {
+                description.appendText("with index: ")
+                description.appendValue(index)
+                matcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: View?): Boolean {
+                return matcher.matches(view) && currentIndex++ == index
+            }
+        }
+    }
 }
