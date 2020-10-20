@@ -20,6 +20,8 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import org.awaitility.kotlin.await
+import org.awaitility.kotlin.untilCallTo
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
@@ -65,6 +67,11 @@ class ReportGenerationTests {
         // Create a trip with the passed report name
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText(reportName), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
+
+        await.untilCallTo {
+            // Verify that we have an empty report
+            onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
+        }
     }
 
     @Test
@@ -73,9 +80,6 @@ class ReportGenerationTests {
 
         // Create our trip
         createReport("PDF Report")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -104,13 +108,12 @@ class ReportGenerationTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
-//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
-//                .check(matches(withText("Test Receipt")))
+        // Wait until everything loads
+        await.untilCallTo {
+            // Verify that we have a list item with Test Receipt
+            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//            onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+        }
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -124,20 +127,22 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        // give app time to generate files and display intent chooser
 
-        // Verify the intent chooser with a PDF report was displayed
-        intended(allOf(
-                hasAction(Intent.ACTION_CHOOSER),
-                hasExtra(`is`(Intent.EXTRA_INTENT),
-                        allOf(
-                                hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                hasType("application/pdf"),
-                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
-                        )
-                )
-        ))
+        await.untilCallTo {
+            // Verify the intent chooser with a PDF report was displayed
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/pdf"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                            )
+                    )
+            ))
+        }
     }
 
     @Test
@@ -146,9 +151,6 @@ class ReportGenerationTests {
 
         // Create our trip
         createReport("PDF Report No Table")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -177,14 +179,12 @@ class ReportGenerationTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
-//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
-//                .check(matches(withText("Test Receipt")))
-
+        // Wait until everything loads
+        await.untilCallTo {
+            // Verify that we have a list item with Test Receipt
+            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//            onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+        }
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
 
@@ -197,20 +197,21 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
-
-        // Verify the intent chooser with a PDF report was displayed
-        intended(allOf(
-                hasAction(Intent.ACTION_CHOOSER),
-                hasExtra(`is`(Intent.EXTRA_INTENT),
-                        allOf(
-                                hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                hasType("application/pdf"),
-                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
-                        )
-                )
-        ))
+        // give app time to generate files and display intent chooser
+        await.untilCallTo {
+            // Verify the intent chooser with a PDF report was displayed
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/pdf"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                            )
+                    )
+            ))
+        }
     }
 
     @Test
@@ -219,9 +220,6 @@ class ReportGenerationTests {
 
         // Create our trip
         createReport("CSV Report")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -250,13 +248,12 @@ class ReportGenerationTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
-//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
-//                .check(matches(withText("Test Receipt")))
+        // Wait until everything loads
+        await.untilCallTo {
+            // Verify that we have a list item with Test Receipt
+            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+        }
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -270,29 +267,27 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
-
-        // Verify the intent chooser with a CSV report was displayed
-        intended(allOf(
-                hasAction(Intent.ACTION_CHOOSER),
-                hasExtra(`is`(Intent.EXTRA_INTENT),
-                        allOf(
-                                hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                hasType("text/comma-separated-values"),
-                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
-                        )
-                )
-        ))
+        // give app time to generate files and display intent chooser
+        await.untilCallTo {
+            // Verify the intent chooser with a CSV report was displayed
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("text/comma-separated-values"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                            )
+                    )
+            ))
+        }
     }
 
     @Test
     fun createTripAddReceiptGenerateZip() {
         // Create our trip
         createReport("Zip Report")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -321,13 +316,12 @@ class ReportGenerationTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(7))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
-//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
-//                .check(matches(withText("Test Receipt")))
+        // Wait until everything loads
+        await.untilCallTo {
+            // Verify that we have a list item with Test Receipt
+            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+        }
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -341,33 +335,35 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
-
         // Verify the intent chooser with a Zip file was displayed
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/octet-stream"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
-                            )
-                    )
-            ))
+            await.untilCallTo {
+                intended(allOf(
+                        hasAction(Intent.ACTION_CHOOSER),
+                        hasExtra(`is`(Intent.EXTRA_INTENT),
+                                allOf(
+                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                        hasType("application/octet-stream"),
+                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                        hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
+                                )
+                        )
+                ))
+            }
         } else {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/zip"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            )
-                    ),
-                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
-            ))
+            await.untilCallTo {
+                intended(allOf(
+                        hasAction(Intent.ACTION_CHOOSER),
+                        hasExtra(`is`(Intent.EXTRA_INTENT),
+                                allOf(
+                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                        hasType("application/zip"),
+                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                )
+                        ),
+                        hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+                ))
+            }
         }
     }
 
@@ -375,9 +371,6 @@ class ReportGenerationTests {
     fun createTripAddReceiptGenerateZipWithMetadata() {
         // Create our trip
         createReport("Zip Report with Metadata")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -406,13 +399,12 @@ class ReportGenerationTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
-//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
-//                .check(matches(withText("Test Receipt")))
+        // Wait until everything loads
+        await.untilCallTo {
+            // Verify that we have a list item with Test Receipt
+            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+        }
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -426,33 +418,38 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        // give app time to generate files and display intent chooser
+
 
         // Verify the intent chooser with a Zip file was displayed
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/octet-stream"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
-                            )
-                    )
-            ))
+            await.untilCallTo {
+                intended(allOf(
+                        hasAction(Intent.ACTION_CHOOSER),
+                        hasExtra(`is`(Intent.EXTRA_INTENT),
+                                allOf(
+                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                        hasType("application/octet-stream"),
+                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                        hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
+                                )
+                        )
+                ))
+            }
         } else {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/zip"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            )
-                    ),
-                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
-            ))
+            await.untilCallTo {
+                intended(allOf(
+                        hasAction(Intent.ACTION_CHOOSER),
+                        hasExtra(`is`(Intent.EXTRA_INTENT),
+                                allOf(
+                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                        hasType("application/zip"),
+                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                )
+                        ),
+                        hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+                ))
+            }
         }
     }
 
@@ -464,9 +461,6 @@ class ReportGenerationTests {
 
         // Create our trip
         createReport("All File Type Report")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Open the fab menu
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -495,13 +489,12 @@ class ReportGenerationTests {
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
-//        onView(RecyclerViewMatcher(R.id.list).atPositionOnView(1, R.id.title))
-//                .check(matches(withText("Test Receipt")))
+        // Wait until everything loads
+        await.untilCallTo {
+            // Verify that we have a list item with Test Receipt
+            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+        }
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -519,33 +512,35 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
-
         // Verify the intent chooser with all files was displayed
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/octet-stream"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri, uri1, uri2))
-                            )
-                    )
-            ))
+            await.untilCallTo {
+                intended(allOf(
+                        hasAction(Intent.ACTION_CHOOSER),
+                        hasExtra(`is`(Intent.EXTRA_INTENT),
+                                allOf(
+                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                        hasType("application/octet-stream"),
+                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                        hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri, uri1, uri2))
+                                )
+                        )
+                ))
+            }
         } else {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/octet-stream"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            )
-                    ),
-                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
-            ))
+            await.untilCallTo {
+                intended(allOf(
+                        hasAction(Intent.ACTION_CHOOSER),
+                        hasExtra(`is`(Intent.EXTRA_INTENT),
+                                allOf(
+                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                        hasType("application/octet-stream"),
+                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                )
+                        ),
+                        hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+                ))
+            }
         }
     }
 
@@ -553,9 +548,6 @@ class ReportGenerationTests {
     fun createTripNoReceiptError() {
         // Create our trip
         createReport("Empty Report No Receipts Error")
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
