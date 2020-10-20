@@ -221,6 +221,9 @@ android {
         androidTestImplementation "androidx.test.ext:junit:$JUNIT_EXT_VERSION"
         androidTestImplementation "androidx.test:runner:$ANDROID_TEST_RUNNER_VERSION"
         androidTestImplementation "androidx.test:rules:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestImplementation ("org.awaitility:awaitility-kotlin:$AWAITILITY_VERSION") {
+            exclude group: 'org.hamcrest'
+        }
         androidTestUtil "androidx.test:orchestrator:$ANDROID_TEST_RUNNER_VERSION"
 
         // Leak Canary
