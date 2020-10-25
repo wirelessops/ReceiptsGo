@@ -83,7 +83,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.tripsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have an empty report
@@ -127,7 +128,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.receiptsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have a list item with Test Receipt
@@ -197,7 +199,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.receiptsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have a list item with Test Receipt
@@ -267,7 +270,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.receiptsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have a list item with Test Receipt
@@ -335,7 +339,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.receiptsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have a list item with Test Receipt
@@ -417,7 +422,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.receiptsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have a list item with Test Receipt
@@ -506,7 +512,8 @@ class ReportGenerationTests {
         // Wait until everything loads
         await.untilCallTo {
             databaseHelper.receiptsTable.blocking
-        } matches { mutableList -> mutableList!!.size == 1
+        } matches {
+            mutableList -> mutableList!!.size == 1
         }
 
         // Verify that we have a list item with Test Receipt
