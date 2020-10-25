@@ -19,8 +19,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import co.smartreceipts.android.R
+import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.persistence.DatabaseHelper
+import org.awaitility.Awaitility
 import org.awaitility.kotlin.await
+import org.awaitility.kotlin.matches
 import org.awaitility.kotlin.untilCallTo
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -30,6 +34,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -40,10 +45,17 @@ class ReportGenerationTests {
     @get:Rule
     val mIntentsRule = IntentsTestRule(SmartReceiptsActivity::class.java)
 
+    private lateinit var databaseHelper: DatabaseHelper
     private var authority: String = ""
 
     @Before
     fun setUp() {
+        Awaitility.setDefaultPollDelay(Duration.ofSeconds(10))
+        Awaitility.setDefaultTimeout(Duration.ofSeconds(60))
+
+        val application = mIntentsRule.activity.application as SmartReceiptsApplication
+        databaseHelper = application.databaseHelper
+
         authority = String.format(Locale.US, "%s.fileprovider", InstrumentationRegistry.getInstrumentation().targetContext.packageName)
 
         // By default Espresso Intents does not stub any Intents. Stubbing needs to be setup before
@@ -68,10 +80,14 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText(reportName), closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
 
+        // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have an empty report
-            onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
+            databaseHelper.tripsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have an empty report
+        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
     }
 
     @Test
@@ -110,10 +126,13 @@ class ReportGenerationTests {
 
         // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have a list item with Test Receipt
-            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//            onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+            databaseHelper.receiptsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -127,22 +146,18 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        // give app time to generate files and display intent chooser
-
-        await.untilCallTo {
-            // Verify the intent chooser with a PDF report was displayed
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/pdf"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
-                            )
-                    )
-            ))
-        }
+        // Verify the intent chooser with a PDF report was displayed
+        intended(allOf(
+                hasAction(Intent.ACTION_CHOOSER),
+                hasExtra(`is`(Intent.EXTRA_INTENT),
+                        allOf(
+                                hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                hasType("application/pdf"),
+                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                        )
+                )
+        ))
     }
 
     @Test
@@ -181,10 +196,14 @@ class ReportGenerationTests {
 
         // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have a list item with Test Receipt
-            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//            onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+            databaseHelper.receiptsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
 
@@ -197,21 +216,18 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        // give app time to generate files and display intent chooser
-        await.untilCallTo {
-            // Verify the intent chooser with a PDF report was displayed
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/pdf"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
-                            )
-                    )
-            ))
-        }
+        // Verify the intent chooser with a PDF report was displayed
+        intended(allOf(
+                hasAction(Intent.ACTION_CHOOSER),
+                hasExtra(`is`(Intent.EXTRA_INTENT),
+                        allOf(
+                                hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                hasType("application/pdf"),
+                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                        )
+                )
+        ))
     }
 
     @Test
@@ -250,10 +266,13 @@ class ReportGenerationTests {
 
         // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have a list item with Test Receipt
-            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+            databaseHelper.receiptsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -267,21 +286,18 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        // give app time to generate files and display intent chooser
-        await.untilCallTo {
-            // Verify the intent chooser with a CSV report was displayed
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("text/comma-separated-values"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
-                            )
-                    )
-            ))
-        }
+        // Verify the intent chooser with a CSV report was displayed
+        intended(allOf(
+                hasAction(Intent.ACTION_CHOOSER),
+                hasExtra(`is`(Intent.EXTRA_INTENT),
+                        allOf(
+                                hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                hasType("text/comma-separated-values"),
+                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                        )
+                )
+        ))
     }
 
     @Test
@@ -318,10 +334,13 @@ class ReportGenerationTests {
 
         // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have a list item with Test Receipt
-            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+            databaseHelper.receiptsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -337,33 +356,29 @@ class ReportGenerationTests {
 
         // Verify the intent chooser with a Zip file was displayed
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            await.untilCallTo {
-                intended(allOf(
-                        hasAction(Intent.ACTION_CHOOSER),
-                        hasExtra(`is`(Intent.EXTRA_INTENT),
-                                allOf(
-                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                        hasType("application/octet-stream"),
-                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                        hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
-                                )
-                        )
-                ))
-            }
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/octet-stream"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
+                            )
+                    )
+            ))
         } else {
-            await.untilCallTo {
-                intended(allOf(
-                        hasAction(Intent.ACTION_CHOOSER),
-                        hasExtra(`is`(Intent.EXTRA_INTENT),
-                                allOf(
-                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                        hasType("application/zip"),
-                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                )
-                        ),
-                        hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
-                ))
-            }
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/zip"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            )
+                    ),
+                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+            ))
         }
     }
 
@@ -401,10 +416,13 @@ class ReportGenerationTests {
 
         // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have a list item with Test Receipt
-            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+            databaseHelper.receiptsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -423,33 +441,29 @@ class ReportGenerationTests {
 
         // Verify the intent chooser with a Zip file was displayed
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            await.untilCallTo {
-                intended(allOf(
-                        hasAction(Intent.ACTION_CHOOSER),
-                        hasExtra(`is`(Intent.EXTRA_INTENT),
-                                allOf(
-                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                        hasType("application/octet-stream"),
-                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                        hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
-                                )
-                        )
-                ))
-            }
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/octet-stream"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
+                            )
+                    )
+            ))
         } else {
-            await.untilCallTo {
-                intended(allOf(
-                        hasAction(Intent.ACTION_CHOOSER),
-                        hasExtra(`is`(Intent.EXTRA_INTENT),
-                                allOf(
-                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                        hasType("application/zip"),
-                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                )
-                        ),
-                        hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
-                ))
-            }
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/zip"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            )
+                    ),
+                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+            ))
         }
     }
 
@@ -491,10 +505,13 @@ class ReportGenerationTests {
 
         // Wait until everything loads
         await.untilCallTo {
-            // Verify that we have a list item with Test Receipt
-            onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
+            databaseHelper.receiptsTable.blocking
+        } matches { mutableList -> mutableList!!.size == 1
         }
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
@@ -514,33 +531,29 @@ class ReportGenerationTests {
 
         // Verify the intent chooser with all files was displayed
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            await.untilCallTo {
-                intended(allOf(
-                        hasAction(Intent.ACTION_CHOOSER),
-                        hasExtra(`is`(Intent.EXTRA_INTENT),
-                                allOf(
-                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                        hasType("application/octet-stream"),
-                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                        hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri, uri1, uri2))
-                                )
-                        )
-                ))
-            }
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/octet-stream"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri, uri1, uri2))
+                            )
+                    )
+            ))
         } else {
-            await.untilCallTo {
-                intended(allOf(
-                        hasAction(Intent.ACTION_CHOOSER),
-                        hasExtra(`is`(Intent.EXTRA_INTENT),
-                                allOf(
-                                        hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                        hasType("application/octet-stream"),
-                                        hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                )
-                        ),
-                        hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
-                ))
-            }
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/octet-stream"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            )
+                    ),
+                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+            ))
         }
     }
 
