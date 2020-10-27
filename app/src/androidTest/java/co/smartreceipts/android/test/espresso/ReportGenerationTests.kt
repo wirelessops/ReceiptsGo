@@ -50,7 +50,7 @@ class ReportGenerationTests {
 
     @Before
     fun setUp() {
-        Awaitility.setDefaultPollDelay(Duration.ofSeconds(10))
+        Awaitility.setDefaultPollDelay(Duration.ofSeconds(1))
         Awaitility.setDefaultTimeout(Duration.ofSeconds(60))
 
         val application = mIntentsRule.activity.application as SmartReceiptsApplication
