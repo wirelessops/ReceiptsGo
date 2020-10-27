@@ -78,6 +78,11 @@ class ReportGenerationTests {
 
         // Create a trip with the passed report name
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText(reportName), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -123,6 +128,11 @@ class ReportGenerationTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -194,6 +204,11 @@ class ReportGenerationTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -265,6 +280,11 @@ class ReportGenerationTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -334,6 +354,11 @@ class ReportGenerationTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -417,6 +442,11 @@ class ReportGenerationTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -507,6 +537,11 @@ class ReportGenerationTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads

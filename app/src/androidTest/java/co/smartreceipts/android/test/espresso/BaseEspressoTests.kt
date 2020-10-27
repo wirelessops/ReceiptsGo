@@ -26,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -67,6 +68,11 @@ class BaseEspressoTests {
 
         // Create a trip, entitled "Test"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -86,6 +92,11 @@ class BaseEspressoTests {
 
         // Create a trip, entitled "Test2"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test2"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -119,6 +130,11 @@ class BaseEspressoTests {
 
         // Create a trip, entitled "Test3"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test3"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
@@ -156,6 +172,11 @@ class BaseEspressoTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
