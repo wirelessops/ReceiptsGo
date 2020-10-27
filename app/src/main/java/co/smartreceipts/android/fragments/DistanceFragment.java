@@ -70,7 +70,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -84,7 +84,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         binding = ReportDistanceListBinding.inflate(inflater, container, false);
         progressDialog = binding.progress;
@@ -132,7 +132,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         final Distance distance = distanceAdapter.getItem(position);
         navigationHandler.navigateToEditDistanceFragment(trip, distance);
     }

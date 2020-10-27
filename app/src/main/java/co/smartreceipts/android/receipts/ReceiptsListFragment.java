@@ -138,7 +138,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }

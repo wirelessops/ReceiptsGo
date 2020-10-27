@@ -56,7 +56,7 @@ public class ReceiptMoveCopyDialogFragment extends DialogFragment implements Dia
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }

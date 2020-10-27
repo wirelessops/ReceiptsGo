@@ -26,7 +26,7 @@ public class ImportPhotoPdfDialogFragment extends DialogFragment implements Dial
     ReceiptAttachmentManager receiptAttachmentManager;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }

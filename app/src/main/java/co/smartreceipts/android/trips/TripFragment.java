@@ -116,7 +116,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -136,7 +136,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         binding = TripsFragmentLayoutBinding.inflate(inflater, container, false);
         progressBar = binding.layoutTripCardList.progress;
@@ -247,7 +247,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         routeToViewReceipts(tripCardAdapter.getItem(position));
     }
 
