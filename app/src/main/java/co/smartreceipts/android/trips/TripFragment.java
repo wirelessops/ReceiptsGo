@@ -100,7 +100,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     private TripCardAdapter tripCardAdapter;
 
-
     private ProgressBar progressBar;
     private TextView noDataAlert;
     private Tooltip tooltipView;
