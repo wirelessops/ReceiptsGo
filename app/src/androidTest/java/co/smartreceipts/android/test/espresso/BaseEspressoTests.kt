@@ -47,8 +47,7 @@ class BaseEspressoTests {
         databaseHelper = application.databaseHelper
     }
 
-    @Test
-    fun launchTripEditor() {
+    private fun launchTripEditor() {
         // Click on the "new report" button
         onView(withId(R.id.trip_action_new)).perform(click())
 
