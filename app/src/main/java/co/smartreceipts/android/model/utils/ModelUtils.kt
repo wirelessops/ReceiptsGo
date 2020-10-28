@@ -75,7 +75,7 @@ object ModelUtils {
     @JvmStatic
     @JvmOverloads
     fun getDecimalFormattedValue(decimal: BigDecimal, precision: Int = Price.TOTAL_DECIMAL_PRECISION): String {
-        val money = BigMoney.of(CurrencyUnit.of(Currency.getInstance(Locale.getDefault()).currencyCode), decimal)
+        val money = BigMoney.of(CurrencyUtils.getDefaultCurrency(), decimal)
 
         return moneyFormatter.print(money.withScale(precision, RoundingMode.HALF_EVEN))
     }
