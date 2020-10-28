@@ -136,7 +136,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
     private Receipt highlightedReceipt = null;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
