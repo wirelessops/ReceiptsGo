@@ -130,7 +130,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
                 tripCardAdapter.setSelectedItem(selectedTrip);
             }
         }
-        tripTableController.subscribe(this);
     }
 
     @Override
@@ -160,6 +159,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onStart();
         Logger.debug(this, "onStart");
         tooltipPresenter.subscribe();
+        tripTableController.subscribe(this);
         tripTableController.get();
     }
 
