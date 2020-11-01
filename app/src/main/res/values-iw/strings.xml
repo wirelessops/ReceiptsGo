@@ -91,10 +91,10 @@
     <string name="report_pdf_generation_error">שגיאה בייצור הדוח</string>
     <string name="report_pdf_error_too_many_columns_title">יותר מדי עמודות</string>
 	<string name="report_pdf_error_too_many_columns_message">.אין מספיק מקום ע״מ להכיל את כל העמודות בדוח. אנא נסה להגביל את מספר העמודות בהגדרות</string>
-
 	<string name="report_pdf_error_too_many_columns_message_landscape">.אין מספיק מקום ע״מ להכיל את כל העמודות בדוח. אנא נסה להגביל את מספר העמודות בהגדרות או עבור למצב מסך מאוזן</string>
-	
     <string name="report_pdf_error_go_to_settings">עבור להגדרות</string>
+    <string name="report_error_memory">שגיאה: אין מספיק זיכרון בכדי להחתים את התמונות. נסה לעצור כמה אפליקציות אחרות ונסה שוב.</string>
+    <string name="report_error_undetermined">משהו השתבש בעת יצירת דוחות …</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(רשות) רוצה להגדיר סריקות אוטומטיות? לחץ כאן</string>

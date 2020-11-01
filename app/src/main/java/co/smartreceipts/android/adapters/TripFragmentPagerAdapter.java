@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.fragments.DistanceFragment;
-import co.smartreceipts.android.fragments.GenerateReportFragment;
+import co.smartreceipts.android.workers.widget.GenerateReportFragment;
 import co.smartreceipts.android.graphs.GraphsFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.core.utils.UriUtils;
 
@@ -25,9 +27,8 @@ public class IntentUtils {
 
     private static final String AUTHORITY_FORMAT = "%s.fileprovider";
 
-    private IntentUtils() {
-
-    }
+    @Inject
+    public IntentUtils() {}
 
     /**
      * All PDF Viewers that I tested don't work with File Providers yet, so this is our fallback way
@@ -101,7 +102,7 @@ public class IntentUtils {
     }
 
     @NonNull
-    public static Intent getSendIntent(@NonNull Context context, @NonNull List<File> files) {
+    public Intent getSendIntent(@NonNull Context context, @NonNull List<File> files) {
         Preconditions.checkNotNull(context);
         Preconditions.checkNotNull(files);
 

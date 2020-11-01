@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.workers.reports.AbstractReport;
 import co.smartreceipts.android.workers.reports.ReportGenerationException;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
@@ -23,12 +22,6 @@ import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import wb.android.storage.StorageManager;
 
 public abstract class PdfBoxAbstractReport extends AbstractReport {
-
-    public PdfBoxAbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
-                                @NonNull PersistenceManager persistenceManager,
-                                @NonNull DateFormatter dateFormatter) {
-        super(reportResourcesManager, persistenceManager, dateFormatter);
-    }
 
     public PdfBoxAbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
                                 @NonNull DatabaseHelper db,

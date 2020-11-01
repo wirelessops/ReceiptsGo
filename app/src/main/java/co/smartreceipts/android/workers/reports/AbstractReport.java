@@ -6,7 +6,6 @@ import com.google.common.base.Preconditions;
 
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import wb.android.storage.StorageManager;
 
@@ -20,13 +19,6 @@ public abstract class AbstractReport implements Report {
     public final UserPreferenceManager userPreferenceManager;
     private final StorageManager storageManager;
     private final DateFormatter dateFormatter;
-
-    protected AbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
-                             @NonNull PersistenceManager persistenceManager,
-                             @NonNull DateFormatter dateFormatter) {
-        this(reportResourcesManager, persistenceManager.getDatabase(),
-                persistenceManager.getPreferenceManager(), persistenceManager.getStorageManager(), dateFormatter);
-    }
 
     protected AbstractReport(@NonNull ReportResourcesManager reportResourcesManager,
                              @NonNull DatabaseHelper db,
