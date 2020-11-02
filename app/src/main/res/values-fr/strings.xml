@@ -94,6 +94,8 @@
     <string name="report_pdf_error_too_many_columns_message">Espace insuffisant pour insérer toutes les colonnes dans le rapport. Veuillez essayer de limiter le nombre de colonnes dans les paramètres.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Espace insuffisant pour insérer toutes les colonnes dans le rapport. Veuillez essayer de limiter le nombre de colonnes dans les paramètres ou essayer d\'utiliser le mode paysage.</string>
     <string name="report_pdf_error_go_to_settings">Aller aux paramètres</string>
+    <string name="report_error_memory">Erreur: mémoire insuffisante pour tamponner les images. Essayez d\'arrêter d\'autres applications et réessayez.</string>
+    <string name="report_error_undetermined">Une erreur s\'est produite lors de la génération des rapports…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(Optionnel) Configurer les scans automatiques ? Appuyez ici.</string>

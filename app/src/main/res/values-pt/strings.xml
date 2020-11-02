@@ -94,6 +94,8 @@
     <string name="report_pdf_error_too_many_columns_message">Não há espaço suficiente para todas as colunas no relatório. Tente limitar o número de colunas nas Configurações</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Não há espaço suficiente para todas as colunas no relatório. Tente limitar o número de colunas nas Configurações</string>
     <string name="report_pdf_error_go_to_settings">Acesse as Configurações</string>
+    <string name="report_error_memory">Erro: Memória insuficiente para carimbar as imagens. Tente interromper alguns outros aplicativos e tente novamente.</string>
+    <string name="report_error_undetermined">Algo deu errado ao gerar relatórios…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(Opcional) Deseja configurar as varreduras automáticas? Clique aqui</string>

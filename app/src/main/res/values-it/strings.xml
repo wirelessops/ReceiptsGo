@@ -95,6 +95,8 @@
     <string name="report_pdf_error_too_many_columns_message">Spazio insufficiente per le colonne nel report. Si prega di limitare il numero di colonne nelle impostazioni.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Spazio insufficiente per le colonne nel report. Si prega di limitare il numero di colonne nelle impostazioni o utilizzare il formato orizzontale.</string>
     <string name="report_pdf_error_go_to_settings">Vai alle Impostazioni</string>
+    <string name="report_error_memory">Errore: memoria insufficiente per stampare le immagini. Prova a interrompere alcune altre app e riprova.</string>
+    <string name="report_error_undetermined">Qualcosa è andato storto durante la generazione dei rapporti…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">[Opzionale] Configurare la scansione automatica? Toccare qui.</string>

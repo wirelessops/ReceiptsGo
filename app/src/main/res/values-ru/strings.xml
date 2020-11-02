@@ -94,6 +94,8 @@
     <string name="report_pdf_error_too_many_columns_message">Не хватает места, чтобы разместить все колонки в отчете. Пожалуйста, попробуйте ограничить количество колонок в настройках.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Не хватает места, чтобы разместить все колонки в отчете. Попробуйте ограничить количество колонок в настройках или использовать ландшафтный режим.</string>
     <string name="report_pdf_error_go_to_settings">Перейти к настройкам</string>
+    <string name="report_error_memory">Ошибка: недостаточно памяти для печати изображений. Попробуйте остановить другие приложения и повторите попытку.</string>
+    <string name="report_error_undetermined">Что-то пошло не так при создании отчетов…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(Необязательно) Настроить автоматическое сканирование? Нажмите здесь.</string>

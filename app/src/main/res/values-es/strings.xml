@@ -94,6 +94,8 @@
     <string name="report_pdf_error_too_many_columns_message">No hay suficiente espacio para incluir todas las columnas en el informe. Por favor intenta limitar el número de columnas en Ajustes.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">No hay suficiente espacio para incluir todas las columnas en el informe. Por favor intenta limitar el número de columnas en Ajustes o usa el modo horizontal.</string>
     <string name="report_pdf_error_go_to_settings">Ir a Ajustes</string>
+    <string name="report_error_memory">Error: no hay suficiente memoria para estampar las imágenes. Intente detener algunas otras aplicaciones y vuelva a intentarlo.</string>
+    <string name="report_error_undetermined">Se produjo un error al generar informes…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(Opcional) ¿Configurar escaneos automáticos? Toca aquí.</string>
