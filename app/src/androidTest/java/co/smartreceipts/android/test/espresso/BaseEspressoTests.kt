@@ -1,31 +1,26 @@
 package co.smartreceipts.android.test.espresso
 
-import android.view.View
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import co.smartreceipts.android.R
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.persistence.DatabaseHelper
-import org.awaitility.Awaitility
-import org.awaitility.kotlin.await
-import org.awaitility.kotlin.matches
-import org.awaitility.kotlin.untilCallTo
-import org.hamcrest.Description
-import org.hamcrest.Matcher
+import co.smartreceipts.android.test.utils.CustomActions.Companion.waitForView
+import co.smartreceipts.android.test.utils.CustomActions.Companion.withIndex
 import org.hamcrest.Matchers.*
-import org.hamcrest.TypeSafeMatcher
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 @LargeTest
@@ -34,17 +29,20 @@ class BaseEspressoTests {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(SmartReceiptsActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(SmartReceiptsActivity::class.java)
 
+    private lateinit var activity: SmartReceiptsActivity
+    private lateinit var application: SmartReceiptsApplication
     private lateinit var databaseHelper: DatabaseHelper
 
     @Before
     fun setUp() {
-        Awaitility.setDefaultPollDelay(Duration.ofSeconds(1))
-        Awaitility.setDefaultTimeout(Duration.ofSeconds(60))
-
-        val application = activityTestRule.activity.application as SmartReceiptsApplication
-        databaseHelper = application.databaseHelper
+        Intents.init()
+        activityScenarioRule.scenario.onActivity { activity ->
+            this.activity = activity
+            application = activity.application as SmartReceiptsApplication
+            databaseHelper = application.databaseHelper
+        }
     }
 
     private fun launchTripEditor() {
@@ -75,11 +73,7 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.tripsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.no_data, 10000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -99,11 +93,7 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.tripsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.no_data, 10000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -112,15 +102,11 @@ class BaseEspressoTests {
         Espresso.pressBack()
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.tripsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.trip_action_new, 10000))
+        Thread.sleep(TimeUnit.SECONDS.toMillis(3))
 
         // Verify that we have a list item with Test2
         onView(withId(R.id.title)).check(matches(withText("Test2")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test2")))
     }
 
     @Test
@@ -137,11 +123,7 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.tripsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.no_data, 10000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -179,30 +161,16 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.receiptsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.title, 10000))
 
         // Verify that we have a list item with Test Receipt
         onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
     }
 
-    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
-        return object : TypeSafeMatcher<View?>() {
-            var currentIndex = 0
-            override fun describeTo(description: Description) {
-                description.appendText("with index: ")
-                description.appendValue(index)
-                matcher.describeTo(description)
-            }
-
-            override fun matchesSafely(view: View?): Boolean {
-                return matcher.matches(view) && currentIndex++ == index
-            }
-        }
+    @After
+    @Throws(Exception::class)
+    fun tearDown() {
+        Intents.release()
     }
 
 }

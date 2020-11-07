@@ -5,16 +5,16 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
-import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
@@ -22,19 +22,14 @@ import co.smartreceipts.android.R
 import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.persistence.DatabaseHelper
-import org.awaitility.Awaitility
-import org.awaitility.kotlin.await
-import org.awaitility.kotlin.matches
-import org.awaitility.kotlin.untilCallTo
-import org.hamcrest.Description
-import org.hamcrest.Matcher
+import co.smartreceipts.android.test.utils.CustomActions.Companion.waitForView
+import co.smartreceipts.android.test.utils.CustomActions.Companion.withIndex
 import org.hamcrest.Matchers.*
-import org.hamcrest.TypeSafeMatcher
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -43,18 +38,20 @@ import java.util.concurrent.TimeUnit
 class ReportGenerationTests {
 
     @get:Rule
-    val mIntentsRule = IntentsTestRule(SmartReceiptsActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(SmartReceiptsActivity::class.java)
 
-    private lateinit var databaseHelper: DatabaseHelper
     private var authority: String = ""
+    private lateinit var activity: Activity
+    private lateinit var databaseHelper: DatabaseHelper
 
     @Before
     fun setUp() {
-        Awaitility.setDefaultPollDelay(Duration.ofSeconds(1))
-        Awaitility.setDefaultTimeout(Duration.ofSeconds(60))
-
-        val application = mIntentsRule.activity.application as SmartReceiptsApplication
-        databaseHelper = application.databaseHelper
+        Intents.init()
+        activityScenarioRule.scenario.onActivity { activity ->
+            this.activity = activity
+            val application = activity.application as SmartReceiptsApplication
+            databaseHelper = application.databaseHelper
+        }
 
         authority = String.format(Locale.US, "%s.fileprovider", InstrumentationRegistry.getInstrumentation().targetContext.packageName)
 
@@ -86,11 +83,7 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.tripsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.no_data, 10000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -130,21 +123,16 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        await.untilCallTo {
-            databaseHelper.receiptsTable.blocking
-        } matches {
-            mutableList -> mutableList!!.size == 1
-        }
+        onView(isRoot()).perform(waitForView(R.id.title, 10000))
 
         // Verify that we have a list item with Test Receipt
         onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-//        onView(withIndex(withId(R.id.title), 0)).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait to ensure everything loads
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 10000))
     }
 
     @Test
@@ -161,6 +149,9 @@ class ReportGenerationTests {
 
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
+
+        // Wait until everything loads
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
         // Verify the intent chooser with a PDF report was displayed
         intended(allOf(
@@ -191,6 +182,9 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
+        // Wait until everything loads
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+
         // Verify the intent chooser with a PDF report was displayed
         intended(allOf(
                 hasAction(Intent.ACTION_CHOOSER),
@@ -220,6 +214,9 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
+        // Wait until everything loads
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+
         // Verify the intent chooser with a CSV report was displayed
         intended(allOf(
                 hasAction(Intent.ACTION_CHOOSER),
@@ -247,20 +244,14 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        // Verify the intent chooser with a Zip file was displayed
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/octet-stream"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
-                            )
-                    )
-            ))
+            // Verify the toast was displayed
+            onView(withText(R.string.report_error_undetermined)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
         } else {
+            // Wait until everything loads
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+
+            // Verify the intent chooser with a Zip file was displayed
             intended(allOf(
                     hasAction(Intent.ACTION_CHOOSER),
                     hasExtra(`is`(Intent.EXTRA_INTENT),
@@ -270,7 +261,7 @@ class ReportGenerationTests {
                                     hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             )
                     ),
-                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+                    hasExtra(Intent.EXTRA_TITLE, activity.resources.getString(R.string.send_email))
             ))
         }
     }
@@ -288,20 +279,14 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        // Verify the intent chooser with a Zip file was displayed
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            intended(allOf(
-                    hasAction(Intent.ACTION_CHOOSER),
-                    hasExtra(`is`(Intent.EXTRA_INTENT),
-                            allOf(
-                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
-                                    hasType("application/octet-stream"),
-                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-                                    hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())
-                            )
-                    )
-            ))
+            // Verify the toast was displayed
+            onView(withText(R.string.report_error_undetermined)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
         } else {
+            // Wait until everything loads
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+
+            // Verify the intent chooser with a Zip file was displayed
             intended(allOf(
                     hasAction(Intent.ACTION_CHOOSER),
                     hasExtra(`is`(Intent.EXTRA_INTENT),
@@ -311,13 +296,13 @@ class ReportGenerationTests {
                                     hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             )
                     ),
-                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+                    hasExtra(Intent.EXTRA_TITLE, activity.resources.getString(R.string.send_email))
             ))
         }
     }
 
     @Test
-    fun createTripAddReceiptGenerateAllReports() {
+    fun createTripAddReceiptGenerateMultipleReports() {
         val uri = Uri.parse("content://$authority/public-files-path/All File Type Report/All File Type Report.pdf".replace(" ", "%20"))
         val uri1 = Uri.parse("content://$authority/public-files-path/All File Type Report/All File Type ReportImages.pdf".replace(" ", "%20"))
         val uri2 = Uri.parse("content://$authority/public-files-path/All File Type Report/All File Type Report.csv".replace(" ", "%20"))
@@ -331,8 +316,8 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
         onView(withId(R.id.dialog_email_checkbox_pdf_images)).perform(click())
         onView(withId(R.id.dialog_email_checkbox_csv)).perform(click())
-        onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
-        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
+//        onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
+//        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
 
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
@@ -351,6 +336,9 @@ class ReportGenerationTests {
                     )
             ))
         } else {
+            // Wait until everything loads
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+
             intended(allOf(
                     hasAction(Intent.ACTION_CHOOSER),
                     hasExtra(`is`(Intent.EXTRA_INTENT),
@@ -360,7 +348,7 @@ class ReportGenerationTests {
                                     hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             )
                     ),
-                    hasExtra(Intent.EXTRA_TITLE, mIntentsRule.activity.resources.getString(R.string.send_email))
+                    hasExtra(Intent.EXTRA_TITLE, activity.resources.getString(R.string.send_email))
             ))
         }
     }
@@ -373,8 +361,8 @@ class ReportGenerationTests {
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait to ensure everything loads
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 10000))
 
         // Check all of the file type boxes
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
@@ -387,7 +375,7 @@ class ReportGenerationTests {
         onView(withId(R.id.receipt_action_send)).perform(click())
 
         // Verify the toast was displayed
-        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS)).inRoot(withDecorView(not(mIntentsRule.activity.window.decorView))).check(matches(isDisplayed()))
+        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
     }
 
     @Test
@@ -398,28 +386,19 @@ class ReportGenerationTests {
         // Go to generate screen
         onView(withText(R.string.report_info_generate)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait to ensure everything loads
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 10000))
 
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
         // Verify the toast was displayed
-        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_SELECTION)).inRoot(withDecorView(not(mIntentsRule.activity.window.decorView))).check(matches(isDisplayed()))
+        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_SELECTION)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
     }
 
-    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
-        return object : TypeSafeMatcher<View?>() {
-            var currentIndex = 0
-            override fun describeTo(description: Description) {
-                description.appendText("with index: ")
-                description.appendValue(index)
-                matcher.describeTo(description)
-            }
-
-            override fun matchesSafely(view: View?): Boolean {
-                return matcher.matches(view) && currentIndex++ == index
-            }
-        }
+    @After
+    @Throws(Exception::class)
+    fun tearDown() {
+        Intents.release()
     }
 }
