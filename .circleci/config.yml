@@ -101,7 +101,7 @@ jobs:
       - run:
           name: Build debug and test APKs for Free variant
           command: |
-            rm -fr ~/.gradle/daemon/
+#            rm -fr ~/.gradle/daemon/
             ./gradlew :app:assembleFreeDebug
             ./gradlew :app:assembleFreeDebugAndroidTest
       - run:
@@ -144,7 +144,7 @@ jobs:
       - run:
           name: Build debug and test APKs for Plus variant
           command: |
-            rm -fr ~/.gradle/daemon/
+#            rm -fr ~/.gradle/daemon/
             ./gradlew :app:assemblePlusFlavorDebug
             ./gradlew :app:assemblePlusFlavorDebugAndroidTest
       - run:
@@ -187,7 +187,7 @@ jobs:
       - run:
           name: Build debug and test APKs for Floss variant
           command: |
-            rm -fr ~/.gradle/daemon/
+#            rm -fr ~/.gradle/daemon/
             ./gradlew :app:assembleFlossFlavorDebug
             ./gradlew :app:assembleFlossFlavorDebugAndroidTest
       - run:
