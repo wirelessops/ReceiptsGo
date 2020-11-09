@@ -103,7 +103,7 @@ class BaseEspressoTests {
 
         // Wait until everything loads
         onView(isRoot()).perform(waitForView(R.id.trip_action_new, 10000))
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3))
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
         // Verify that we have a list item with Test2
         onView(withId(R.id.title)).check(matches(withText("Test2")))
