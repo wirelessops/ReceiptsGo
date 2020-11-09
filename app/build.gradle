@@ -29,7 +29,7 @@ android {
 
         // Required for espresso (plus clears the app on launch)
         testInstrumentationRunner "co.smartreceipts.android.test.runner.ApplicationAwareAndroidJUnitRunner"
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+        testInstrumentationRunnerArguments clearPackageData: 'true', listener: 'co.smartreceipts.android.test.runner.CrashingRunListener'
     }
 
 
