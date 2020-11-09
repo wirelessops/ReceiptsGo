@@ -77,7 +77,7 @@ jobs:
       - image: circleci/android:api-29  # gcloud is baked into this image
     environment:
 #      JVM_OPTS: -Xmx3200m
-      GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+      GRADLE_OPTS: -Xmx3200m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
     steps:
       - checkout
       - restore_cache:
@@ -120,7 +120,7 @@ jobs:
       - image: circleci/android:api-29  # gcloud is baked into this image
     environment:
 #      JVM_OPTS: -Xmx3200m
-      GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+      GRADLE_OPTS: -Xmx3200m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
     steps:
       - checkout
       - restore_cache:
@@ -163,7 +163,7 @@ jobs:
       - image: circleci/android:api-29  # gcloud is baked into this image
     environment:
 #      JVM_OPTS: -Xmx3200m
-      GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+      GRADLE_OPTS: -Xmx3200m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
     steps:
       - checkout
       - restore_cache:
