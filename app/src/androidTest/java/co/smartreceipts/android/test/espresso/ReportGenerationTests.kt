@@ -83,7 +83,7 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.no_data, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 10000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
