@@ -48,7 +48,6 @@ class ReceiptAutoCompletePresenterTest {
 
         whenever(view.hideAutoCompleteVisibilityClick).thenReturn(Observable.never())
         whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(Observable.never())
-        whenever(view.currencySpinnerChanges).thenReturn(Observable.never())
     }
 
     @Test

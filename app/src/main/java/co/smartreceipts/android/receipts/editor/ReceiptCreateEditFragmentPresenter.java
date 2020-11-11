@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.hadisatrio.optional.Optional;
 
-import org.joda.money.CurrencyUnit;
-
 import java.sql.Date;
 import java.util.TimeZone;
 
@@ -99,13 +97,6 @@ public class ReceiptCreateEditFragmentPresenter {
                         fragment.displayAutoCompleteError();
                     }
                 }));
-
-        compositeDisposable.add(fragment.getCurrencySpinnerChanges()
-                .map(CurrencyUnit::of)
-                .map(CurrencyUnit::getDecimalPlaces)
-                .distinctUntilChanged()
-                .subscribe(decimalPlaces -> fragment.updatePricesDecimalPlaces(decimalPlaces))
-        );
     }
 
     public void unsubscribe() {

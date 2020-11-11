@@ -31,7 +31,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.view.RxView;
-import com.jakewharton.rxbinding3.widget.RxAdapterView;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
@@ -113,7 +112,6 @@ import co.smartreceipts.android.widget.ui.PriceInputEditText;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
@@ -850,7 +848,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Consumer<? super CurrencyUnit> displayBaseCurrency() {
-        return (Consumer<CurrencyUnit>) priceCurrency -> receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCode());
+        return (Consumer<CurrencyUnit>) priceCurrency -> {
+            receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCode());
+            exchangedPriceInBaseCurrencyBox.setDecimalPlaces(priceCurrency.getDecimalPlaces());
+        };
     }
 
     @NonNull
@@ -886,20 +887,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         return RxView.focusChanges(exchangedPriceInBaseCurrencyBox);
     }
 
-    @NonNull
-    @Override
-    public Observable<String> getCurrencySpinnerChanges() {
-        return RxAdapterView.itemSelections(currencySpinner)
-                .skipInitialValue()
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .map(i -> currencySpinner.getItemAtPosition(i).toString());
-    }
-
     @UiThread
     @Override
-    public void updatePricesDecimalPlaces(int decimalPlaces) {
+    public void updatePriceDecimalPlaces(int decimalPlaces) {
         priceBox.setDecimalPlaces(decimalPlaces);
-        exchangedPriceInBaseCurrencyBox.setDecimalPlaces(decimalPlaces);
     }
 
     @NonNull
