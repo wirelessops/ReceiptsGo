@@ -100,12 +100,9 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
         final ConnectableObservable<String> selectedCurrencyConnectableObservable = Observable.fromCallable(this.databaseHelper::getCurrenciesList)
                 .subscribeOn(ioScheduler)
                 .observeOn(mainThreadScheduler)
-                .flatMap(currenciesList -> {
-                    //noinspection ConstantConditions
-                    return currencyListEditorView.currencyClicks()
-                            .filter(currencyIndex -> currencyIndex >= 0)
-                            .map(currenciesList::get);
-                })
+                .flatMap(currenciesList -> currencyListEditorView.currencyClicks()
+                        .filter(currencyIndex -> currencyIndex >= 0)
+                        .map(currenciesList::get))
                 .map(CharSequence::toString)
                 .publish();
 
@@ -139,6 +136,15 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
                 })
                 .observeOn(mainThreadScheduler)
                 .subscribe(view.displayExchangeRate()));
+
+        // Update price decimal places when the currency is changed
+        compositeDisposable.add(selectedCurrencyConnectableObservable
+                .map(CurrencyUnit::of)
+                .map(CurrencyUnit::getDecimalPlaces)
+                .distinctUntilChanged()
+                .observeOn(mainThreadScheduler)
+                .subscribe(view::updatePriceDecimalPlaces)
+        );
 
         // Fetch the exchange rate whenever the user clicks the "retry" button. Note: This variant can also attempt a purchase
         this.compositeDisposable.add(currencyDatePairConnectableObservable
@@ -177,36 +183,36 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
 
         // For the selected currency, multiple the exchange rate by receipt price (whenever either changes) to get the base currency total
         this.compositeDisposable.add(Observable.combineLatest(
-                    receiptPriceChangesAsDecimalConnectableObservable,
-                    exchangeRateChangesAsDecimalConnectableObservable,
-                    selectedCurrencyConnectableObservable,
-                    (priceDecimal, exchangeRateDecimal, selectedReceiptCurrencyCode) -> {
-                        if (priceDecimal.isPresent() && exchangeRateDecimal.isPresent()) {
-                            final Price price = new PriceBuilderFactory()
-                                    .setCurrency(trip.getDefaultCurrencyCode())
-                                    .setPrice(priceDecimal.get().multiply(exchangeRateDecimal.get()))
-                                    .build();
-                            return Optional.of(price);
-                        } else {
-                            return Optional.<Price>absent();
-                        }
+                receiptPriceChangesAsDecimalConnectableObservable,
+                exchangeRateChangesAsDecimalConnectableObservable,
+                selectedCurrencyConnectableObservable,
+                (priceDecimal, exchangeRateDecimal, selectedReceiptCurrencyCode) -> {
+                    if (priceDecimal.isPresent() && exchangeRateDecimal.isPresent()) {
+                        final Price price = new PriceBuilderFactory()
+                                .setCurrency(trip.getDefaultCurrencyCode())
+                                .setPrice(priceDecimal.get().multiply(exchangeRateDecimal.get()))
+                                .build();
+                        return Optional.of(price);
+                    } else {
+                        return Optional.<Price>absent();
                     }
-                )
+                }
+        )
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .doOnNext(exchangedPriceInBaseCurrency -> Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Updating the exchanged price in base currency: {}", exchangedPriceInBaseCurrency))
                 .flatMapSingle(exchangedPriceInBaseCurrency ->
                         // Note: we use this to ensure we don't mess things up while the user is typing
                         view.getExchangedPriceInBaseCurrencyFocusChanges()
-                        .firstOrError()
-                        .map(isFocused -> {
-                            if (!isFocused) {
-                                return Optional.of(exchangedPriceInBaseCurrency);
-                            } else {
-                                return Optional.<Price>absent();
-                            }
-                        })
-                        .doOnSuccess(ignored -> Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Allowing base rate changes as the field is not currently focuses"))
+                                .firstOrError()
+                                .map(isFocused -> {
+                                    if (!isFocused) {
+                                        return Optional.of(exchangedPriceInBaseCurrency);
+                                    } else {
+                                        return Optional.<Price>absent();
+                                    }
+                                })
+                                .doOnSuccess(ignored -> Logger.debug(CurrencyExchangeRateEditorPresenter.this, "Allowing base rate changes as the field is not currently focuses"))
                 )
                 .filter(Optional::isPresent)
                 .doOnError(exception -> Logger.error(CurrencyExchangeRateEditorPresenter.this, "Failed to exchanged price in base currency", exception))
