@@ -73,7 +73,8 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.fab_menu, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -93,7 +94,8 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.fab_menu, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -102,8 +104,8 @@ class BaseEspressoTests {
         Espresso.pressBack()
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.trip_action_new, 10000))
-        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+        onView(isRoot()).perform(waitForView(R.id.trip_action_new, 20000))
+        onView(isRoot()).perform(waitForView(R.id.title, 20000))
 
         // Verify that we have a list item with Test2
         onView(withId(R.id.title)).check(matches(withText("Test2")))
@@ -123,7 +125,8 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.fab_menu, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -161,7 +164,8 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.title, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.title, 20000))
 
         // Verify that we have a list item with Test Receipt
         onView(withId(R.id.title)).check(matches(withText("Test Receipt")))

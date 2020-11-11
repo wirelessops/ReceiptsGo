@@ -83,7 +83,8 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.fab_menu, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
 
         // Verify that we have an empty report
         onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
@@ -123,7 +124,8 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.title, 10000))
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.title, 20000))
 
         // Verify that we have a list item with Test Receipt
         onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
@@ -132,7 +134,7 @@ class ReportGenerationTests {
         onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait to ensure everything loads
-        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 10000))
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
     }
 
     @Test
@@ -362,7 +364,7 @@ class ReportGenerationTests {
         onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait to ensure everything loads
-        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 10000))
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
 
         // Check all of the file type boxes
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
@@ -387,7 +389,7 @@ class ReportGenerationTests {
         onView(withText(R.string.report_info_generate)).perform(click())
 
         // Wait to ensure everything loads
-        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 10000))
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
 
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
