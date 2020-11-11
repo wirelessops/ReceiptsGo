@@ -88,15 +88,8 @@ public interface CurrencyExchangeRateEditorView {
     Observable<Object> getUserInitiatedExchangeRateRetries();
 
     /**
-     * @return an {@link Observable} that will emit a {@link String} any time the user changes the value for the currency
-     */
-    @NonNull
-    @UiThread
-    Observable<String> getCurrencySpinnerChanges();
-
-    /**
-     * Updates all price views to match new decimal places value
+     * Updates price view to match new decimal places value
      */
     @UiThread
-    void updatePricesDecimalPlaces(int decimalPlaces);
+    void updatePriceDecimalPlaces(int decimalPlaces);
 }
