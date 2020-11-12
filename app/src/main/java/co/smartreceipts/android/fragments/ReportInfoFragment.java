@@ -79,7 +79,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }

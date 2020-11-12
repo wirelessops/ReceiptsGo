@@ -4,21 +4,28 @@ import android.app.Activity
 import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
-import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import co.smartreceipts.android.R
+import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.android.test.utils.CustomActions.Companion.waitForView
+import co.smartreceipts.android.test.utils.CustomActions.Companion.withIndex
 import org.hamcrest.Matchers.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,12 +38,21 @@ import java.util.concurrent.TimeUnit
 class ReportGenerationTests {
 
     @get:Rule
-    val mIntentsRule = IntentsTestRule(SmartReceiptsActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(SmartReceiptsActivity::class.java)
 
     private var authority: String = ""
+    private lateinit var activity: Activity
+    private lateinit var databaseHelper: DatabaseHelper
 
     @Before
     fun setUp() {
+        Intents.init()
+        activityScenarioRule.scenario.onActivity { activity ->
+            this.activity = activity
+            val application = activity.application as SmartReceiptsApplication
+            databaseHelper = application.databaseHelper
+        }
+
         authority = String.format(Locale.US, "%s.fileprovider", InstrumentationRegistry.getInstrumentation().targetContext.packageName)
 
         // By default Espresso Intents does not stub any Intents. Stubbing needs to be setup before
@@ -59,7 +75,66 @@ class ReportGenerationTests {
 
         // Create a trip with the passed report name
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText(reportName), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
+
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
+
+        // Verify that we have an empty report
+        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
+    }
+
+    private fun createReceiptGoToGenerate() {
+        // Open the fab menu
+        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
+
+        // Click on "text only" button
+        onView(withId(R.id.receipt_action_text)).perform(click())
+
+        // Verify that all the relevant views are displayed
+        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
+        //todo following view doesn't apply to fire department variant, find a way to test variants
+//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
+
+        // Create a receipt, entitled "Test" priced at $12.34
+        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
+        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
+        onView(withId(R.id.action_save)).perform(click())
+
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.title, 20000))
+
+        // Verify that we have a list item with Test Receipt
+        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+
+        // Go to generate screen
+        onView(withText(R.string.report_info_generate)).perform(click())
+
+        // Wait to ensure everything loads
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
     }
 
     @Test
@@ -69,47 +144,7 @@ class ReportGenerationTests {
         // Create our trip
         createReport("PDF Report")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
-
-        // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
-
-        // Verify that all the relevant views are displayed
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
-        //todo following view doesn't apply to fire department variant, find a way to test variants
-//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
-
-        // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-
-        // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        createReceiptGoToGenerate()
 
         // Check the box for Full PDF Report
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
@@ -117,10 +152,21 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        // Wait until everything loads
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
         // Verify the intent chooser with a PDF report was displayed
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND_MULTIPLE), hasType("application/pdf"), hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))))))
+        intended(allOf(
+                hasAction(Intent.ACTION_CHOOSER),
+                hasExtra(`is`(Intent.EXTRA_INTENT),
+                        allOf(
+                                hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                hasType("application/pdf"),
+                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                        )
+                )
+        ))
     }
 
     @Test
@@ -130,47 +176,7 @@ class ReportGenerationTests {
         // Create our trip
         createReport("PDF Report No Table")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
-
-        // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
-
-        // Verify that all the relevant views are displayed
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
-        //todo following view doesn't apply to fire department variant, find a way to test variants
-//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
-
-        // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-
-        // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        createReceiptGoToGenerate()
 
         // Check the box for PDF Report - No Table
         onView(withId(R.id.dialog_email_checkbox_pdf_images)).perform(click())
@@ -178,10 +184,21 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        // Wait until everything loads
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
         // Verify the intent chooser with a PDF report was displayed
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND_MULTIPLE), hasType("application/pdf"), hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))))))
+        intended(allOf(
+                hasAction(Intent.ACTION_CHOOSER),
+                hasExtra(`is`(Intent.EXTRA_INTENT),
+                        allOf(
+                                hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                hasType("application/pdf"),
+                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                        )
+                )
+        ))
     }
 
     @Test
@@ -191,47 +208,7 @@ class ReportGenerationTests {
         // Create our trip
         createReport("CSV Report")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
-
-        // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
-
-        // Verify that all the relevant views are displayed
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
-        //todo following view doesn't apply to fire department variant, find a way to test variants
-//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
-
-        // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-
-        // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        createReceiptGoToGenerate()
 
         // Check the box for CSV File
         onView(withId(R.id.dialog_email_checkbox_csv)).perform(click())
@@ -239,10 +216,21 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        // Wait until everything loads
+        Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
         // Verify the intent chooser with a CSV report was displayed
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND_MULTIPLE), hasType("text/comma-separated-values"), hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))))))
+        intended(allOf(
+                hasAction(Intent.ACTION_CHOOSER),
+                hasExtra(`is`(Intent.EXTRA_INTENT),
+                        allOf(
+                                hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                hasType("text/comma-separated-values"),
+                                hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+                        )
+                )
+        ))
     }
 
     @Test
@@ -250,47 +238,7 @@ class ReportGenerationTests {
         // Create our trip
         createReport("Zip Report")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
-
-        // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
-
-        // Verify that all the relevant views are displayed
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
-        //todo following view doesn't apply to fire department variant, find a way to test variants
-//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
-
-        // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-
-        // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        createReceiptGoToGenerate()
 
         // Check the box for Zip - Receipts Files
         onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
@@ -298,10 +246,26 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            // Verify the toast was displayed
+            onView(withText(R.string.report_error_undetermined)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
+        } else {
+            // Wait until everything loads
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
-        // Verify the intent chooser with a Zip file was displayed
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND_MULTIPLE), hasType("application/octet-stream"), hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())))))
+            // Verify the intent chooser with a Zip file was displayed
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/zip"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            )
+                    ),
+                    hasExtra(Intent.EXTRA_TITLE, activity.resources.getString(R.string.send_email))
+            ))
+        }
     }
 
     @Test
@@ -309,47 +273,7 @@ class ReportGenerationTests {
         // Create our trip
         createReport("Zip Report with Metadata")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
-
-        // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
-
-        // Verify that all the relevant views are displayed
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
-        //todo following view doesn't apply to fire department variant, find a way to test variants
-//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
-
-        // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-
-        // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        createReceiptGoToGenerate()
 
         // Check the box for Zip - Receipt Files with Metadata
         onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
@@ -357,14 +281,30 @@ class ReportGenerationTests {
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            // Verify the toast was displayed
+            onView(withText(R.string.report_error_undetermined)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
+        } else {
+            // Wait until everything loads
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5))
 
-        // Verify the intent chooser with a Zip file was displayed
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND_MULTIPLE), hasType("application/octet-stream"), hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), hasExtra(Intent.EXTRA_STREAM, ArrayList<Uri>())))))
+            // Verify the intent chooser with a Zip file was displayed
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/zip"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            )
+                    ),
+                    hasExtra(Intent.EXTRA_TITLE, activity.resources.getString(R.string.send_email))
+            ))
+        }
     }
 
     @Test
-    fun createTripAddReceiptGenerateAllReports() {
+    fun createTripAddReceiptGenerateMultipleReports() {
         val uri = Uri.parse("content://$authority/public-files-path/All File Type Report/All File Type Report.pdf".replace(" ", "%20"))
         val uri1 = Uri.parse("content://$authority/public-files-path/All File Type Report/All File Type ReportImages.pdf".replace(" ", "%20"))
         val uri2 = Uri.parse("content://$authority/public-files-path/All File Type Report/All File Type Report.csv".replace(" ", "%20"))
@@ -372,62 +312,47 @@ class ReportGenerationTests {
         // Create our trip
         createReport("All File Type Report")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
-
-        // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
-
-        // Verify that all the relevant views are displayed
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
-        //todo following view doesn't apply to fire department variant, find a way to test variants
-//        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
-
-        // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
-        // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
-
-        // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
-
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        createReceiptGoToGenerate()
 
         // Check all of the file type boxes
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
         onView(withId(R.id.dialog_email_checkbox_pdf_images)).perform(click())
         onView(withId(R.id.dialog_email_checkbox_csv)).perform(click())
-        onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
-        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
+//        onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
+//        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
 
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
-        Thread.sleep(TimeUnit.SECONDS.toMillis(3)) // give app time to generate files and display intent chooser
-
         // Verify the intent chooser with all files was displayed
-        intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(`is`(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND_MULTIPLE), hasType("application/octet-stream"), hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri, uri1, uri2))))))
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/octet-stream"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
+                                    hasExtra(Intent.EXTRA_STREAM, arrayListOf(uri, uri1, uri2))
+                            )
+                    )
+            ))
+        } else {
+            // Wait until everything loads
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5))
+
+            intended(allOf(
+                    hasAction(Intent.ACTION_CHOOSER),
+                    hasExtra(`is`(Intent.EXTRA_INTENT),
+                            allOf(
+                                    hasAction(Intent.ACTION_SEND_MULTIPLE),
+                                    hasType("application/octet-stream"),
+                                    hasFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            )
+                    ),
+                    hasExtra(Intent.EXTRA_TITLE, activity.resources.getString(R.string.send_email))
+            ))
+        }
     }
 
     @Test
@@ -435,14 +360,11 @@ class ReportGenerationTests {
         // Create our trip
         createReport("Empty Report No Receipts Error")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait to ensure everything loads
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
 
         // Check all of the file type boxes
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
@@ -455,7 +377,7 @@ class ReportGenerationTests {
         onView(withId(R.id.receipt_action_send)).perform(click())
 
         // Verify the toast was displayed
-        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS)).inRoot(withDecorView(not(mIntentsRule.activity.window.decorView))).check(matches(isDisplayed()))
+        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
     }
 
     @Test
@@ -463,20 +385,22 @@ class ReportGenerationTests {
         // Create our trip
         createReport("Empty Report None Selected Error")
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
-
         // Go to generate screen
-        onView(withText("GENERATE")).perform(click())
+        onView(withText(R.string.report_info_generate)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait to ensure everything loads
+        onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
 
         // Tap on the generate button
         onView(withId(R.id.receipt_action_send)).perform(click())
 
         // Verify the toast was displayed
-        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_SELECTION)).inRoot(withDecorView(not(mIntentsRule.activity.window.decorView))).check(matches(isDisplayed()))
+        onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_SELECTION)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
     }
 
+    @After
+    @Throws(Exception::class)
+    fun tearDown() {
+        Intents.release()
+    }
 }

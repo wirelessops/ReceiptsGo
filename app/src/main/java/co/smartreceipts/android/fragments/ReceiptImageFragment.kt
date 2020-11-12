@@ -80,7 +80,7 @@ class ReceiptImageFragment : WBFragment() {
     private var imageUri: Uri? = null
     private var receipt: Receipt? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
@@ -217,8 +217,8 @@ class ReceiptImageFragment : WBFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_share, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_share, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

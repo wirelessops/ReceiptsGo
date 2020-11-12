@@ -10,6 +10,7 @@ import co.smartreceipts.android.date.DateUtils
 import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.android.model.utils.CurrencyUtils
 import dagger.Lazy
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -70,7 +71,7 @@ class UserPreferenceManager constructor(private val context: Context,
                                 val assignedCurrencyCode = context.getString(UserPreference.General.DefaultCurrency.defaultValue)
                                 if (TextUtils.isEmpty(assignedCurrencyCode)) {
                                     try {
-                                        val currencyCode = Currency.getInstance(Locale.getDefault()).currencyCode
+                                        val currencyCode = CurrencyUtils.getDefaultCurrency()!!.code
                                         preferences.get().edit().putString(preferenceName, currencyCode).apply()
                                         Logger.debug(this@UserPreferenceManager, "Assigned locale default currency code {}", currencyCode)
                                     } catch (e: IllegalArgumentException) {

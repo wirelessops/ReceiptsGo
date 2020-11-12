@@ -14,6 +14,7 @@ import org.joda.money.CurrencyUnit;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -155,7 +156,7 @@ public final class ReceiptDatabaseAdapter implements SelectionBackedDatabaseAdap
                 .setTimeZone(timezone)
                 .setComment(comment)
                 .setIsReimbursable(reimbursable)
-                .setCurrency(CurrencyUtils.INSTANCE.isCurrencySupported(currency) ? CurrencyUnit.of(currency) : CurrencyUnit.of(Locale.getDefault()))
+                .setCurrency(CurrencyUtils.INSTANCE.isCurrencySupported(currency) ? CurrencyUnit.of(currency) : CurrencyUtils.INSTANCE.getDefaultCurrency())
                 .setIsFullPage(fullPage)
                 .setIndex(index)
                 .setNameHiddenFromAutoComplete(isNameHiddenFromAutoComplete)

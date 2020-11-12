@@ -1,15 +1,23 @@
 package co.smartreceipts.android.test.espresso
 
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import co.smartreceipts.android.R
+import co.smartreceipts.android.SmartReceiptsApplication
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.persistence.DatabaseHelper
+import co.smartreceipts.android.test.utils.CustomActions.Companion.waitForView
+import co.smartreceipts.android.test.utils.CustomActions.Companion.withIndex
 import org.hamcrest.Matchers.*
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,10 +29,23 @@ class BaseEspressoTests {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(SmartReceiptsActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(SmartReceiptsActivity::class.java)
 
-    @Test
-    fun launchTripEditor() {
+    private lateinit var activity: SmartReceiptsActivity
+    private lateinit var application: SmartReceiptsApplication
+    private lateinit var databaseHelper: DatabaseHelper
+
+    @Before
+    fun setUp() {
+        Intents.init()
+        activityScenarioRule.scenario.onActivity { activity ->
+            this.activity = activity
+            application = activity.application as SmartReceiptsApplication
+            databaseHelper = application.databaseHelper
+        }
+    }
+
+    private fun launchTripEditor() {
         // Click on the "new report" button
         onView(withId(R.id.trip_action_new)).perform(click())
 
@@ -44,7 +65,19 @@ class BaseEspressoTests {
 
         // Create a trip, entitled "Test"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
+
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
+
+        // Verify that we have an empty report
+        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
     }
 
     @Test
@@ -53,13 +86,26 @@ class BaseEspressoTests {
 
         // Create a trip, entitled "Test2"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test2"), closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
+        // Wait a second to ensure the keyboard closed
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
 
+        // Save the trip
+        onView(withId(R.id.action_save)).perform(click())
+
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
+
+        // Verify that we have an empty report
+        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
+
         // Up Button Navigation
-        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
+        Espresso.pressBack()
+
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.trip_action_new, 20000))
+        onView(isRoot()).perform(waitForView(R.id.title, 20000))
 
         // Verify that we have a list item with Test2
         onView(withId(R.id.title)).check(matches(withText("Test2")))
@@ -71,10 +117,19 @@ class BaseEspressoTests {
 
         // Create a trip, entitled "Test3"
         onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText("Test3"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the trip
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
+
+        // Verify that we have an empty report
+        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
 
         // Open the fab menu (specific to our clans fab library)
         onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
@@ -101,13 +156,25 @@ class BaseEspressoTests {
         // Create a receipt, entitled "Test" priced at $12.34
         onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
         onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+
+        // Wait a second to ensure the keyboard closed
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+
+        // Save the receipt
         onView(withId(R.id.action_save)).perform(click())
 
-        // Wait a second to ensure that everything loaded
-        Thread.sleep(TimeUnit.SECONDS.toMillis(1))
+        // Wait until everything loads
+        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.title, 20000))
 
         // Verify that we have a list item with Test Receipt
         onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+    }
+
+    @After
+    @Throws(Exception::class)
+    fun tearDown() {
+        Intents.release()
     }
 
 }

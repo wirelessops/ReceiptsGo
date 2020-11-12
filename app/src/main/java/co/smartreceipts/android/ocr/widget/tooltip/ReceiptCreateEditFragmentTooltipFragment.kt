@@ -25,7 +25,7 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
 
     private lateinit var tooltipView: Tooltip
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
