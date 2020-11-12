@@ -10,19 +10,12 @@ import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.DatabaseHelper;
-import co.smartreceipts.android.persistence.PersistenceManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 import co.smartreceipts.android.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import wb.android.storage.StorageManager;
 
 public class PdfBoxImagesOnlyReport extends PdfBoxAbstractReport {
-
-    public PdfBoxImagesOnlyReport(@NonNull ReportResourcesManager reportResourcesManager,
-                                  @NonNull PersistenceManager persistenceManager,
-                                  DateFormatter dateFormatter) {
-        super(reportResourcesManager, persistenceManager, dateFormatter);
-    }
 
     public PdfBoxImagesOnlyReport(@NonNull ReportResourcesManager reportResourcesManager,
                                   @NonNull DatabaseHelper db,

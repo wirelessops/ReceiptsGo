@@ -94,6 +94,8 @@
     <string name="report_pdf_error_too_many_columns_message">Бракує місця, щоб розмістити всі колонки в звіті. Будь ласка, спробуйте обмежити кількість колонок в налаштуваннях.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Бракує місця, щоб розмістити всі колонки в звіті. Будь ласка, спробуйте обмежити кількість колонок в налаштуваннях або використовувати ландшафтний режим.</string>
     <string name="report_pdf_error_go_to_settings">Перейти до налаштувань</string>
+    <string name="report_error_memory">Помилка: Недостатньо пам\'яті для штампування зображень. Спробуйте зупинити деякі інші програми та повторіть спробу.</string>
+    <string name="report_error_undetermined">Щось пішло не так під час створення звітів…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(Необов\'язково) Налаштувати автоматичне сканування? Натисніть тут.</string>
