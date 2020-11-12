@@ -95,6 +95,8 @@
     <string name="report_pdf_error_too_many_columns_message">There is not enough space to fit all the columns in the report. Please try limiting the number of columns in Settings.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">There is not enough space to fit all the columns in the report. Please try limiting the number of columns in Settings or use landscape mode.</string>
     <string name="report_pdf_error_go_to_settings">Go to settings</string>
+    <string name="report_error_memory">Error: Not enough memory to stamp the images. Try stopping some other apps and try again.</string>
+    <string name="report_error_undetermined">Something went wrong while generating reports…</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">[Optional] Configure Automatic Scans? Tap here.</string>

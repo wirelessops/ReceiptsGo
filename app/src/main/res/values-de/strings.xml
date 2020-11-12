@@ -94,6 +94,8 @@
     <string name="report_pdf_error_too_many_columns_message">Es gibt nicht genug Platz, um alle Spalten in den Bericht aufzunehmen. Bitte versuchen Sie die Anzahl der Spalten in den Einstellungen zu begrenzen.</string>
     <string name="report_pdf_error_too_many_columns_message_landscape">Es gibt nicht genug Platz, um alle Spalten in den Bericht einzufügen. Bitte versuchen Sie die Anzahl der Spalten in den Einstellungen zu begrenzen oder Querformat verwenden.</string>
     <string name="report_pdf_error_go_to_settings">Zu den Einstellungen gehen</string>
+    <string name="report_error_memory">Fehler: Nicht genügend Speicher zum Stempeln der Bilder. Stoppen Sie einige andere Apps und versuchen Sie es erneut.</string>
+    <string name="report_error_undetermined">Beim Erstellen von Berichten ist ein Fehler aufgetreten.</string>
 
     <!-- ===================== ocr ======================== -->
     <string name="ocr_informational_tooltip_configure_text">(Optional) Automatische Scans konfigurieren ? Hier klicken.</string>

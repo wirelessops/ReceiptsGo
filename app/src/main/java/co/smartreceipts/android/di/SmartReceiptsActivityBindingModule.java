@@ -1,11 +1,8 @@
 package co.smartreceipts.android.di;
 
-import co.smartreceipts.android.sync.widget.backups.RenameRemoteBackupDialogFragment;
-import co.smartreceipts.core.di.scopes.FragmentScope;
 import co.smartreceipts.android.distance.editor.DistanceCreateEditFragment;
 import co.smartreceipts.android.distance.editor.di.DistanceCreateEditFragmentModule;
 import co.smartreceipts.android.fragments.DistanceFragment;
-import co.smartreceipts.android.fragments.GenerateReportFragment;
 import co.smartreceipts.android.fragments.ReceiptImageFragment;
 import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.graphs.GraphsFragment;
@@ -28,12 +25,16 @@ import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupDialogFrag
 import co.smartreceipts.android.sync.widget.backups.ExportBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ImportRemoteBackupDialogFragment;
+import co.smartreceipts.android.sync.widget.backups.RenameRemoteBackupDialogFragment;
 import co.smartreceipts.android.sync.widget.errors.DriveRecoveryDialogFragment;
 import co.smartreceipts.android.trips.TripFragment;
 import co.smartreceipts.android.trips.di.TripFragmentModule;
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment;
 import co.smartreceipts.android.trips.editor.di.TripCreateEditFragmentModule;
 import co.smartreceipts.android.widget.tooltip.report.ReportTooltipFragment;
+import co.smartreceipts.android.workers.widget.GenerateReportFragment;
+import co.smartreceipts.android.workers.widget.di.GenerateReportModule;
+import co.smartreceipts.core.di.scopes.FragmentScope;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -73,7 +74,7 @@ public abstract class SmartReceiptsActivityBindingModule {
     public abstract DistanceCreateEditFragment distanceCreateEditFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = GenerateReportModule.class)
     public abstract GenerateReportFragment generateReportFragment();
 
     @FragmentScope
