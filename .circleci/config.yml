@@ -215,18 +215,15 @@ workflows:
               only:
                 - master
                 - /release_.*/
-                - TestLabFixes2
       - buildAndTestPlusAPK:
           filters:
             branches:
               only:
                 - master
                 - /release_.*/
-                - TestLabFixes2
       - buildAndTestFlossAPK:
           filters:
             branches:
               only:
                 - master
                 - /release_.*/
-                - TestLabFixes2
