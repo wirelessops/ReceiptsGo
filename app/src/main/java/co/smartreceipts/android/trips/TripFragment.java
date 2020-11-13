@@ -2,7 +2,6 @@ package co.smartreceipts.android.trips;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.os.Bundle;
@@ -100,7 +99,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     private TripCardAdapter tripCardAdapter;
 
-
     private ProgressBar progressBar;
     private TextView noDataAlert;
     private Tooltip tooltipView;
@@ -116,7 +114,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -132,11 +130,10 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
                 tripCardAdapter.setSelectedItem(selectedTrip);
             }
         }
-        tripTableController.subscribe(this);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         binding = TripsFragmentLayoutBinding.inflate(inflater, container, false);
         progressBar = binding.layoutTripCardList.progress;
@@ -162,6 +159,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         super.onStart();
         Logger.debug(this, "onStart");
         tooltipPresenter.subscribe();
+        tripTableController.subscribe(this);
         tripTableController.get();
     }
 
@@ -247,7 +245,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         routeToViewReceipts(tripCardAdapter.getItem(position));
     }
 
@@ -285,14 +283,14 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         if (isResumed()) {
             if (e instanceof SQLiteDatabaseCorruptException) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.dialog_sql_corrupt_title).setMessage(R.string.dialog_sql_corrupt_message).setPositiveButton(R.string.dialog_sql_corrupt_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        Intent intent = EmailAssistant.getEmailDeveloperIntent(getString(R.string.dialog_sql_corrupt_intent_subject), getString(R.string.dialog_sql_corrupt_intent_text));
-                        getActivity().startActivity(Intent.createChooser(intent, getResources().getString(R.string.dialog_sql_corrupt_chooser)));
-                        dialog.dismiss();
-                    }
-                }).show();
+                builder.setTitle(R.string.dialog_sql_corrupt_title)
+                        .setMessage(R.string.dialog_sql_corrupt_message)
+                        .setPositiveButton(R.string.dialog_sql_corrupt_positive, (dialog, position) -> {
+                            Intent intent = EmailAssistant.getEmailDeveloperIntent(getString(R.string.dialog_sql_corrupt_intent_subject), getString(R.string.dialog_sql_corrupt_intent_text));
+                            getActivity().startActivity(Intent.createChooser(intent, getResources().getString(R.string.dialog_sql_corrupt_chooser)));
+                            dialog.dismiss();
+                        }
+                ).show();
             } else {
                 Toast.makeText(getActivity(), R.string.database_get_error, Toast.LENGTH_LONG).show();
             }

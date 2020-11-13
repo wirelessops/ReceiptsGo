@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 dependencies {
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    api "androidx.legacy:legacy-support-v4:$LEGACY_SUPPORT_V4_VERSION"
 
     // Dagger
     api "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
     api "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.exifinterface:exifinterface:1.2.0'
+    implementation "androidx.exifinterface:exifinterface:$EXIFINTERFACE_VERSION"
 
 }
 

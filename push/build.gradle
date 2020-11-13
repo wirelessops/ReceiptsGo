@@ -51,8 +51,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
     // firebase
-    notFlossImplementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
-    notFlossImplementation "com.google.firebase:firebase-crash:$FIREBASE_CRASH_VERSION"
+    notFlossImplementation "com.google.firebase:firebase-crashlytics:$CRASHLYTICS_VERSION"
     // we must use api here during to this dagger issue https://github.com/google/dagger/issues/970 (stackoverflow https://stackoverflow.com/questions/47124987/dagger-2-cannot-access-retrofit)
     notFlossApi "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"
 

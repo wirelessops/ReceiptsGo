@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============== Preference Headers ================= -->
+    <string name="pref_general_header">Generelt</string>
+    <string name="pref_receipt_header">Kvitteringer</string>
+    <string name="pref_output_header">Rapport</string>
+    <string name="pref_email_header">E-post</string>
+    <string name="pref_camera_header">Kamera</string>
+    <string name="pref_layout_header">Tilpasning av layout</string>
+    <string name="pref_layout_header_key">pref_layout_category_key</string>
+    <string name="pref_distance_header">Avstand</string>
+    <string name="pref_pro_header">Smart Receipts Plus</string>
+    <string name="pref_help_header">Support</string>
+    <string name="pref_about_header">Om</string>
+    <string name="pref_privacy_header">Personvern</string>
+
+    <!-- ============== Preference General ================= -->
+    <string name="pref_general_trip_duration_title">Standard avstand</string>
+    <string name="pref_general_default_currency_title">Standard valuta</string>
+    <string name="pref_general_default_date_separator_title">Standard dato skilletegn</string>
+    <string name="pref_general_date_format_title">Foretrukket dato format</string>
+    <string-array name="pref_general_date_format_entryValues">
+        <item>@string/pref_general_date_format_default_entryValue</item>
+        <item>@string/pref_general_date_format_M_d_yyyy_entryValue</item>
+        <item>@string/pref_general_date_format_d_M_yyyy_entryValue</item>
+        <item>@string/pref_general_date_format_yyyy_MM_dd_entryValue</item>
+    </string-array>
+    <string name="pref_general_track_cost_center_title">Spor kostnadssenter</string>
+    <string name="pref_general_track_cost_center_summaryOn">Inkluder kostnadssenter i rapporter</string>
+    <string name="pref_general_track_cost_center_summaryOff">Ikke inkluder kostnadssenter i rapporter</string>
+    <string name="pref_general_enable_crop_title">Aktiver bildebeskjæring</string>
+    <string name="pref_general_enable_crop_summaryOn">Etter du tar bilde, vil du se mulighet for bildebeskjæring</string>
+    <string name="pref_general_enable_crop_summaryOff">Etter du tar bilde, vil du ikke se mulighet for bildebeskjæring</string>
+
+    <!-- ============== Preference Receipt ================= -->
+    <string name="pref_receipt_customize_categories_title">Tilpass kvitteringskategorier</string>
+    <string name="pref_receipt_customize_categories_summary">Trykk her for å legge til/redigere kategorier</string>
+    <string name="pref_receipt_predict_categories_title">Forutsi kvitteringskategorier</string>
+    <string name="pref_receipt_predict_categories_summary">Auto-fyll kategori basert på tidligere data</string>
+    <string name="pref_receipt_match_name_to_category_title">Match navn til kategori</string>
+    <string name="pref_receipt_match_name_to_category_summary">Sett automatiske navn til kategori</string>
+    <string name="pref_receipt_match_comment_to_category_title">Match kommentar til kategori</string>
+    <string name="pref_receipt_match_comment_to_category_summary">Sett automatiske kommentarer til kategori</string>
+    <string name="pref_receipt_reimbursable_only_title">Rapporter kun refunderbart</string>
+    <string name="pref_receipt_reimbursable_only_summary">Utelat andre kvitteringer fra rapporten</string>
+    <string name="pref_receipt_reimbursable_default_title">Som standard er kvitteringer refunderbart</string>
+    <string name="pref_receipt_include_tax_field_title">Inkluder moms</string>
+    <string name="pref_receipt_include_tax_field_summary">Legger til en linje for moms</string>
+    <string name="pref_receipt_include_tax2_field_title">Inkluder moms felt nummer to</string>
+    <string name="pref_receipt_include_tax2_field_summary">Legger til en linje for moms felt nummer to</string>
+    <string name="pref_receipt_tax_percent_title">Standard momsprosent</string>
+    <string name="pref_receipt_tax1_name_key">Moms1 egendefinert navn</string>
+    <string name="pref_receipt_tax1_name_title">Momsnavn</string>
+    <string name="pref_receipt_tax1_name_summary">Sett egendefinert navn til moms</string>
+    <string name="pref_receipt_tax2_name_key">Moms2 egendefinert navn</string>
+    <string name="pref_receipt_tax2_name_title">Momsnavn nummer to</string>
+    <string name="pref_receipt_tax2_name_summary">Sett egendefinert navn til moms nummer to</string>
+    <string name="pref_receipt_tax2_percent_title">Standard momsprosent nummer to</string>
+    <string name="pref_receipt_pre_tax_title">Anta at prisen er uten moms</string>
+    <string name="pref_receipt_pre_tax_summary_on">Kalkulerer moms fra pris uten moms</string>
+    <string name="pref_receipt_pre_tax_summary_off">Kalkulerer moms fra pris med moms</string>
+    <string name="pref_receipt_enable_autocomplete_title">Aktiver forslag for autofullfør</string>
+    <string name="pref_receipt_enable_autocomplete_summary">Foreslå verdier fra tidligere verdier</string>
+    <string name="pref_receipt_minimum_receipts_price_title">Minimums kvitteringspris</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_all">Inkluder alle kvitteringer i rapporten</string>
+    <string name="pref_receipt_minimum_receipts_price_summary_partial">Rapporter bare kvitteringspriser over %s</string>
+    <string name="pref_receipt_default_to_report_start_date_title">Standard rapport startdato</string>
+    <string name="pref_receipt_default_to_report_start_date_summary">Angir kvitteringsdato for å matche rapportdato</string>
+    <string name="pref_receipt_show_id_title">Vis kvitteringsID</string>
+    <string name="pref_receipt_show_id_summary">Viser auto-genererte ID felt</string>
+    <string name="pref_receipt_full_page_title">Anta full side</string>
+    <string name="pref_receipt_full_page_summary">Marker kvitteringer som fullside som standard</string>
+    <string name="pref_receipt_use_payment_methods_title">Aktiver betalingsmåter</string>
+    <string name="pref_receipt_use_payment_methods_summary">Velg for å spore betalingsmåter for kvitteringer</string>
+    <string name="pref_receipt_payment_methods_title">Tilpass betalingsmåter</string>
+    <string name="pref_receipt_payment_methods_summary">Trykk her for å legge til/redigere betalingsmåter</string>
+
+    <!-- ============= Preference Output ================= -->
+    <string name="pref_output_custom_csv_title">Tilpass CSV utskrift</string>
+
+    <string name="pref_output_custom_pdf_title">Tilpass PDF utskrift</string>
+
+    <string name="pref_output_username_title">Bruker ID</string>
+    <string name="pref_output_username_emptyValue">Brukes som en tilpasset utskrift</string>
+
+    <string name="pref_output_print_receipt_id_by_photo_title">Skriv ut ID etter bilde</string>
+    <string name="pref_output_print_receipt_id_by_photo_summary">Viser kvitteringsID i stedet for indeks</string>
+
+    <string name="pref_output_print_receipt_comment_by_photo_title">Skriv ut kvitteringskommentar etter bilde</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOn">Viser kvitteringskommentar over PDF bilder</string>
+    <string name="pref_output_print_receipt_comment_by_photo_summaryOff">Skjul kvitteringskommentar over PDF bilder</string>
+
+    <string name="pref_output_show_total_on_csv_title">Vis totalen i CSV rapport</string>
+    <string name="pref_output_show_total_on_csv_summaryOn">Viser totalen i egen linje i CSV rapporten</string>
+    <string name="pref_output_show_total_on_csv_summaryOff">Skjul totalen i egen linje i CSV rapporten</string>
+
+    <string name="pref_output_receipts_landscape_title">Skriv ut kvitteringstavellen i liggende utskrift</string>
+    <string name="pref_output_receipts_landscape_on">Kvitteringstabellen er skrevet ut liggende </string>
+    <string name="pref_output_receipts_landscape_off">Kvitteringstabellen er skrevet ut stående</string>
+
+    <string-array name="pref_output_pdf_page_size_value_entryValues">
+        <item>@string/pref_output_pdf_page_size_a4_entryValue</item>
+        <item>@string/pref_output_pdf_page_size_letter_entryValue</item>
+    </string-array>
+    <string-array name="pref_output_pdf_page_size_value_entries">
+        <item>@string/pref_output_pdf_page_size_a4_entry</item>
+        <item>@string/pref_output_pdf_page_size_letter_entry</item>
+    </string-array>
+
+    <!-- ============== Preference Email ================= -->
+    <string name="pref_email_default_email_to_title">Default Email To Recipient</string>
+    <string name="pref_email_default_email_cc_title">Default Email CC Recipient</string>
+    <string name="pref_email_default_email_bcc_title">Default Email BCC Recipient</string>
+    <string name="pref_email_default_email_emptyValue">Separate values with a semicolon (;)</string>
+    <string name="pref_email_default_email_subject_title">Default Email Subject</string>
+
+    <!-- ============= Preference Camera ================= -->
+    <string name="pref_camera_bw_title">Konverter til gråskala</string>
+    <string name="pref_camera_bw_summary">Lagre bilde i svarthvitt</string>
+    <string name="pref_camera_rotate_title">Automatisk roter bilder</string>
+    <string name="pref_camera_rotate_summaryOn">Prøv å roter bilder stående</string>
+    <string name="pref_camera_rotate_summaryOff">Ikke roter bilder</string>
+
+    <!-- ============= Preference Layout ================= -->
+    <string name="pref_layout_display_date_title">Inkluder kvitteringsdato</string>
+    <string name="pref_layout_display_date_summary">Viser kvitteringsdatoen i listen</string>
+    <string name="pref_layout_display_category_title">Inkluder kvitteringskategori</string>
+    <string name="pref_layout_display_category_summary">Viser kvitteringskategorien i listen</string>
+
+    <!-- ============= Preference Distance ================= -->
+    <string name="pref_distance_include_price_in_report_title">Legg til avstandspris i rapporten</string>
+    <string name="pref_distance_include_price_in_report_summaryOn">Inkluderer avstandspris i rapportens total</string>
+    <string name="pref_distance_include_price_in_report_summaryOff">Ekskluderer avstandspris i rapportens total</string>
+    <string name="pref_distance_rate_title">Drivstoffsats</string>
+    <string name="pref_distance_rate_summaryOff">Sats per km eller mi reist</string>
+    <string name="pref_distance_rate_summaryOn">%s per km eller mi</string>
+    <string name="pref_distance_print_table_key" translatable="false">MileagePrintTable</string>
+    <string name="pref_distance_print_table_title">Inkluder avstandstabell</string>
+    <string name="pref_distance_print_table_summaryOn">PDF/CSV rapport inkluderer avstandstabell</string>
+    <string name="pref_distance_print_table_summaryOff">PDF/CSV rapport inkluderer ikke avstandstabell</string>
+    <string name="pref_distance_print_daily_key" translatable="false">MileageAddToPDF</string>
+    <string name="pref_distance_print_daily_title">Rapport med daglig avstand</string>
+    <string name="pref_distance_print_daily_summaryOn">Vis avstand som egen linje</string>
+    <string name="pref_distance_print_daily_summaryOff">Ikke vis avstand som egen linje</string>
+    <string name="pref_distance_as_price_key" translatable="false">DistanceAsPrice</string>
+    <string name="pref_distance_as_price_title">Avstandspris i undertittel</string>
+    <string name="pref_distance_as_price_summaryOn">Vis avstandspris totalen i app undertittel</string>
+    <string name="pref_distance_as_price_summaryOff">Vis avstandsdistanse i app undertittel</string>
+
+    <!-- ================= Preference Plus ================== -->
+    <string name="pref_pro_pdf_footer_key" translatable="false">PdfFooterString</string>
+    <string name="pref_pro_pdf_footer_title">PDF bunntekst</string>
+    <string name="pref_pro_separate_by_category_key" translatable="false">SeparateByCategory</string>
+    <string name="pref_pro_separate_by_category_title">Del betalinger etter kategori</string>
+    <string name="pref_pro_separate_by_category_summaryOn">PDF/CSV rapporter inkluderer egne tabeller for ulike kategorierer</string>
+    <string name="pref_pro_separate_by_category_summaryOff">PDF/CSV rapporter inkluderer ikke egne tabeller for ulike kategorierer</string>
+    <string name="pref_pro_categorical_summation_title">Inkluder kategorisammendrag</string>
+    <string name="pref_pro_categorical_summation_summaryOn">PDF/CSV rapporter inkluderer tabell med sammendraget av hver kategori</string>
+    <string name="pref_pro_categorical_summation_summaryOff">PDF/CSV rapporter inkluderer ikke tabell med sammendraget av hver kategori</string>
+    <string name="pref_pro_omit_default_table_title">Utelat standard PDF tabell</string>
+
+    <!-- ============== Preference Support ================= -->
+    <string name="pref_help_send_love_title">Send kjærlighet</string>
+    <string name="pref_help_send_feedback_title">Send tilbakemelding</string>
+    <string name="pref_help_support_email_title">E-post for support</string>
+
+    <!-- =============== Preference About ================== -->
+    <string name="pref_about_version_title">Versjon</string>
+    <string name="pref_about_about_title">Om</string>
+    <string name="pref_about_terms_title">Vilkår for bruk</string>
+    <string name="pref_about_oss_title">Åpen kildekode</string>
+
+    <!-- ============== Preference Privacy ================= -->
+    <string name="pref_about_privacy_policy_title">Personvern</string>
+    <string name="pref_privacy_enable_analytics_title">Del analytiks</string>
+    <string name="pref_privacy_enable_analytics_summary">Med Google/Firebase Analytics</string>
+    <string name="pref_privacy_enable_crash_tracking_title">Del kræsjinformasjon</string>
+    <string name="pref_privacy_enable_crash_tracking_summary">Med Google Crashlytics</string>
+    <string name="pref_privacy_enable_ad_personalization_title">Tillatt personlige reklamer</string>
+    <string name="pref_privacy_enable_ad_personalization_summary">Med Google AdMob</string>
+
+    <!-- =============== Preference Misc =================== -->
+
+</resources>

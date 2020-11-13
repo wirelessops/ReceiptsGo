@@ -5,6 +5,7 @@ import android.os.StrictMode
 import co.smartreceipts.android.BuildConfig
 import co.smartreceipts.analytics.log.Logger
 import java.util.concurrent.Executors
+import kotlin.math.min
 
 /**
  * A simple wrapper around our [StrictMode] configuration to allow us to enable this for testing
@@ -12,7 +13,7 @@ import java.util.concurrent.Executors
  */
 object StrictModeConfiguration {
 
-    private val MAX_STACK_DEPTH_TO_CHECK = 15
+    private const val MAX_STACK_DEPTH_TO_CHECK = 15
 
     /**
      * Enables strict mode
@@ -33,14 +34,18 @@ object StrictModeConfiguration {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             // We use a custom policy to white-list specific failures
             threadPolicyBuilder.penaltyListener(Executors.newSingleThreadExecutor(), StrictMode.OnThreadViolationListener {
-                // This we use this to check for a strict mode violation that occurs due to instant run
+                // We use this to check for a strict mode violation that occurs due to instant run
                 // https://stackoverflow.com/questions/51021362/strictmode-disk-read-violation-on-empty-activitys-setcontentview
                 val stackTrace = it.stackTrace.asList()
                 stackTrace.reversed()
-                stackTrace.subList(0, Math.min(stackTrace.size, MAX_STACK_DEPTH_TO_CHECK))
+                stackTrace.subList(0, min(stackTrace.size, MAX_STACK_DEPTH_TO_CHECK))
                 var hasInflationTraceElement = false
                 var hasDexTraceElement = false
                 var hasPreferenceManagerInflation = false
+                var hasPreferenceReadWrite = false
+                var hasBridgingQuery = false
+                var hasEmailAttachments = false
+                var hasLeakCanary = false
                 stackTrace.forEach { stackTraceElement ->
                     if (stackTraceElement.toString().contains("LayoutInflater.createView")) {
                         hasInflationTraceElement = true
@@ -51,8 +56,23 @@ object StrictModeConfiguration {
                     if (stackTraceElement.toString().contains("PreferenceManager.inflateFromResource")) {
                         hasPreferenceManagerInflation = true
                     }
+                    if (stackTraceElement.toString().contains("CrashReporter.initialize") ||
+                            stackTraceElement.toString().contains("SharedPreferencesImpl.awaitLoadedLocked")) {
+                        hasPreferenceReadWrite = true
+                    }
+                    if (stackTraceElement.toString().contains("TripForeignKeyAbstractSqlTable.getBlocking")) {
+                        hasBridgingQuery = true
+                    }
+                    if (stackTraceElement.toString().contains("EmailAssistant.onAttachmentsCreated")) {
+                        hasEmailAttachments = true
+                    }
+                    if (stackTraceElement.toString().contains("leakcanary.internal.HeapDumpControl")) {
+                        hasLeakCanary = true
+                    }
                 }
-                val isWhiteListed = (hasInflationTraceElement and hasDexTraceElement) or hasPreferenceManagerInflation
+                val isWhiteListed = (hasInflationTraceElement and hasDexTraceElement) or
+                        hasPreferenceManagerInflation or hasPreferenceReadWrite or hasBridgingQuery or
+                        hasEmailAttachments or hasLeakCanary
                 if (!isWhiteListed) {
                     throw it
                 } else {
@@ -97,7 +117,6 @@ object StrictModeConfiguration {
 
         return temporaryPolicyChange(func, newPolicy)
     }
-
 
     private fun <T> temporaryPolicyChange(func: () -> T?, newThreadPolicy: StrictMode.ThreadPolicy): T? {
         return if (BuildConfig.DEBUG) {

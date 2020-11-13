@@ -55,6 +55,7 @@ import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.AutoCompleteUpdateEvent;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.utils.CurrencyUtils;
 import co.smartreceipts.android.persistence.DatabaseHelper;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
@@ -369,7 +370,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         if (currencySpinner.getSelectedItem() != null) {
             currencyCode = currencySpinner.getSelectedItem().toString();
         } else {
-            currencyCode = CurrencyUnit.of(Locale.getDefault()).getCode();
+            currencyCode = CurrencyUtils.INSTANCE.getDefaultCurrency().getCode();
         }
 
         if (presenter.checkTrip(name, startDateText, startDateBox.getDate(), endDateText, endDateBox.getDate())) {

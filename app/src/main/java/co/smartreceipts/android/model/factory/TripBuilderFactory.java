@@ -11,7 +11,6 @@ import org.joda.money.CurrencyUnit;
 
 import java.io.File;
 import java.sql.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -45,7 +44,7 @@ public final class TripBuilderFactory implements BuilderFactory<Trip> {
         dir = new File("");
         comment = "";
         costCenter = "";
-        defaultCurrency = CurrencyUnit.of(Locale.getDefault());
+        defaultCurrency = CurrencyUtils.INSTANCE.getDefaultCurrency();
         startDate = new Date(System.currentTimeMillis());
         endDate = startDate;
         startTimeZone = TimeZone.getDefault();

@@ -51,7 +51,7 @@ class AccountFragment : Fragment(), AccountView {
     private val binding get() = _binding!!
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
@@ -93,13 +93,13 @@ class AccountFragment : Fragment(), AccountView {
         (fragmentActivity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu?.clear()
+        menu.clear()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return if (item?.itemId == android.R.id.home) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) {
             router.navigateBack()
             true
         } else {

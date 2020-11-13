@@ -24,6 +24,7 @@ import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.DataPoint;
 import co.smartreceipts.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.android.ad.InterstitialAdPresenter;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
@@ -59,6 +60,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     @Inject
     AdPresenter adPresenter;
+
+    @Inject
+    InterstitialAdPresenter interstitialAdPresenter;
 
     @Inject
     Flex flex;

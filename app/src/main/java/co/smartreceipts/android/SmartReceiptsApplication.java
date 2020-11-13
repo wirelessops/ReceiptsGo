@@ -35,7 +35,6 @@ import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.android.utils.leaks.MemoryLeakMonitor;
 import co.smartreceipts.android.utils.rx.DefaultRxErrorHandler;
 import co.smartreceipts.android.versioning.AppVersionManager;
 import co.smartreceipts.aws.cognito.CognitoManager;
@@ -114,9 +113,6 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
 
     @Inject
     AppVersionManager appVersionManager;
-
-    @Inject
-    MemoryLeakMonitor memoryLeakMonitor;
 
     @Inject
     DateFormatter dateFormatter;
@@ -208,7 +204,6 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
         receiptsOrderer.initialize();
         picassoInitializer.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
-        memoryLeakMonitor.initialize();
         extraInitializer.init();
         currencyInitializer.init();
 
