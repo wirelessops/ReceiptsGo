@@ -33,7 +33,7 @@ import io.reactivex.Single;
 
 public class DriveRestoreDataManager {
 
-    private static final Integer ALLOWED_DOWNLOAD_FAILURES = 5;
+    private static final Integer ALLOWED_DOWNLOAD_FAILURES = 10;
 
     private final DriveDatabaseManager mDriveDatabaseManager;
     private final DatabaseRestorer databaseRestorer;

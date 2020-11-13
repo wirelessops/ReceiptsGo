@@ -118,7 +118,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     private val _unHideAutoCompleteVisibilityClicks: Subject<AutoCompleteUpdateEvent<Distance>> =
             PublishSubject.create<AutoCompleteUpdateEvent<Distance>>().toSerialized()
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
@@ -236,12 +236,12 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
         currencyListEditorPresenter.onSaveInstanceState(outState)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(if (editableItem == null) R.menu.menu_save else R.menu.menu_save_delete, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(if (editableItem == null) R.menu.menu_save else R.menu.menu_save_delete, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
                 navigationHandler.navigateBack()
                 return true

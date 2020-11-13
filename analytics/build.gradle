@@ -53,8 +53,6 @@ dependencies {
     // Logger
     api "org.slf4j:slf4j-api:$SLF4J_VERSION"
 
-    notFlossImplementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
-
     // Recommended: Add the Firebase SDK for Google Analytics.
     implementation "com.google.firebase:firebase-analytics:$FIREBASE_ANALYTICS_VERSION"
     // Crashlytics

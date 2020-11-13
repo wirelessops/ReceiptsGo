@@ -85,8 +85,8 @@ class SearchActivity : AppCompatActivity(), SearchView {
         super.onStop()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return if (item?.itemId == android.R.id.home) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) {
             finish()
             true
         } else {

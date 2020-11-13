@@ -8,7 +8,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.date.DisplayableDate;
@@ -22,6 +21,7 @@ import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.model.impl.SinglePriceImpl;
+import co.smartreceipts.android.model.utils.CurrencyUtils;
 import co.smartreceipts.core.sync.model.SyncState;
 import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
 import co.smartreceipts.core.sync.model.impl.Identifier;
@@ -41,7 +41,7 @@ public class DefaultObjects {
                 new File(new File("").getAbsolutePath()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
-                CurrencyUnit.of(Locale.getDefault()), "comment", "costCenter", newAutoCompleteMetadata());
+                CurrencyUtils.INSTANCE.getDefaultCurrency(), "comment", "costCenter", newAutoCompleteMetadata());
     }
 
     @NonNull
@@ -50,7 +50,7 @@ public class DefaultObjects {
                 new File(new File("").getAbsolutePath()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
                 new DisplayableDate(new Date(System.currentTimeMillis()), TimeZone.getDefault()),
-                CurrencyUnit.of(Locale.getDefault()), "comment", "costCenter", newDefaultSyncState(),
+                CurrencyUtils.INSTANCE.getDefaultCurrency(), "comment", "costCenter", newDefaultSyncState(),
                 price, newAutoCompleteMetadata());
     }
 

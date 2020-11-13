@@ -40,7 +40,7 @@ public abstract class DraggableListFragment<T extends Draggable, E extends Dragg
     protected abstract TableController<T> getTableController();
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = getView().findViewById(list);

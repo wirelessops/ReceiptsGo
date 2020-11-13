@@ -46,7 +46,7 @@ class CategoryEditorDialogFragment : DialogFragment(),
 
     private var container: ViewGroup? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
