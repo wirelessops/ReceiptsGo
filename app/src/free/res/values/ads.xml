@@ -5,4 +5,5 @@
     <string name="aerserv_site_id">PLACEHOLDER</string>
     <string name="aerserv_placement_id">PLACEHOLDER</string>
     <string name="admob_ad_id">PLACEHOLDER</string>
+    <string name="admob_interstitial_ad_unit_id">PLACEHOLDER</string>
 </resources>
