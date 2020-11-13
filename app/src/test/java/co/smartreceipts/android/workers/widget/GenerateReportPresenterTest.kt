@@ -2,11 +2,13 @@ package co.smartreceipts.android.workers.widget
 
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
+import co.smartreceipts.android.ad.InterstitialAdPresenter
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import co.smartreceipts.android.workers.EmailAssistant
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,6 +27,7 @@ class GenerateReportPresenterTest {
 
     private val analytics = mock<Analytics>()
     private val generateInfoTooltipManager = mock<GenerateInfoTooltipManager>()
+    private val interstitialAdPresenter = mock<InterstitialAdPresenter>()
     private val trip = mock<Trip>()
 
     @Before
@@ -32,7 +35,7 @@ class GenerateReportPresenterTest {
         whenever(view.generateReportClicks).thenReturn(Observable.never())
         whenever(interactor.isLandscapeReportEnabled()).thenReturn(false)
 
-        presenter = GenerateReportPresenter(view, interactor, analytics, generateInfoTooltipManager)
+        presenter = GenerateReportPresenter(view, interactor, analytics, generateInfoTooltipManager, interstitialAdPresenter)
     }
 
     @Test(expected = IllegalStateException::class)
@@ -70,5 +73,14 @@ class GenerateReportPresenterTest {
         verify(interactor).generateReport(trip, options)
 
         verify(view).present(success)
+
+        verifyZeroInteractions(interstitialAdPresenter)
+    }
+
+    @Test
+    fun showAdsTest() {
+        presenter.showInterstitialAd()
+
+        verify(interstitialAdPresenter).showAd()
     }
 }
