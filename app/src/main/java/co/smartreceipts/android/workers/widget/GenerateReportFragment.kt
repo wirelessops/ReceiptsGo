@@ -130,7 +130,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
                 progress.visibility = View.GONE
 
                 try {
-                    startActivity(Intent.createChooser(result.intent, requireContext().getString(R.string.send_email)))
+                    startActivityForResult(Intent.createChooser(result.intent, requireContext().getString(R.string.send_email)), SHARE_REPORT_REQUEST_CODE)
                 } catch (e: ActivityNotFoundException) {
                     val builder = AlertDialog.Builder(context)
                     builder.setTitle(R.string.error_no_send_intent_dialog_title)
@@ -208,10 +208,18 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
         _binding = null
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            SHARE_REPORT_REQUEST_CODE -> presenter.showInterstitialAd()
+        }
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(): GenerateReportFragment {
             return GenerateReportFragment()
         }
+
+        private const val SHARE_REPORT_REQUEST_CODE = 486
     }
 }

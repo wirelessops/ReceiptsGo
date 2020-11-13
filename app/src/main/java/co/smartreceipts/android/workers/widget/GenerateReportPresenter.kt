@@ -2,6 +2,7 @@ package co.smartreceipts.android.workers.widget
 
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
+import co.smartreceipts.android.ad.InterstitialAdPresenter
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
@@ -14,9 +15,10 @@ import javax.inject.Inject
 class GenerateReportPresenter @Inject constructor(
     view: GenerateReportView, interactor: GenerateReportInteractor,
     private val analytics: Analytics,
-    private val generateInfoTooltipManager: GenerateInfoTooltipManager
+    private val generateInfoTooltipManager: GenerateInfoTooltipManager,
+    private val interstitialAdPresenter: InterstitialAdPresenter
 ) :
-    BaseViperPresenter<GenerateReportView, GenerateReportInteractor>(view, interactor)  {
+    BaseViperPresenter<GenerateReportView, GenerateReportInteractor>(view, interactor) {
 
     private var trip: Trip? = null
 
@@ -45,6 +47,10 @@ class GenerateReportPresenter @Inject constructor(
     }
 
     fun isLandscapeReportEnabled(): Boolean = interactor.isLandscapeReportEnabled()
+
+    fun showInterstitialAd() {
+        interstitialAdPresenter.showAd()
+    }
 
 
     private fun recordOptionsAnalyticsEvents(options: EnumSet<EmailOptions>) {
