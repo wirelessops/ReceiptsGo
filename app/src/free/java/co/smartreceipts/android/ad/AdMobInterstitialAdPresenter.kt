@@ -3,6 +3,8 @@ package co.smartreceipts.android.ad
 import android.content.Context
 import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.core.di.scopes.ApplicationScope
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -10,7 +12,8 @@ import com.google.android.gms.ads.InterstitialAd
 import javax.inject.Inject
 
 @ApplicationScope
-class AdMobInterstitialAdPresenter @Inject constructor(context: Context) : InterstitialAdPresenter {
+class AdMobInterstitialAdPresenter @Inject constructor(context: Context, private val purchaseWallet: PurchaseWallet) :
+    InterstitialAdPresenter {
 
     private var interstitialAd: InterstitialAd = InterstitialAd(context)
 
@@ -31,6 +34,10 @@ class AdMobInterstitialAdPresenter @Inject constructor(context: Context) : Inter
     }
 
     override fun showAd() {
+        if (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)) {
+            return
+        }
+
         if (interstitialAd.isLoaded) {
             interstitialAd.show()
         } else when {
