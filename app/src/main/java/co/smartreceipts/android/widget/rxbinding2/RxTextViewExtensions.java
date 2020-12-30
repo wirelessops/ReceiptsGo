@@ -1,8 +1,9 @@
 package co.smartreceipts.android.widget.rxbinding2;
 
+import android.widget.TextView;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
-import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 import com.hadisatrio.optional.Optional;
@@ -30,7 +31,7 @@ public class RxTextViewExtensions {
         Preconditions.checkNotNull(view, "view == null");
         return (Consumer<Price>) price -> {
             final String currentPrice = view.getText().toString();
-            final String proposedPrice = price.getDecimalFormattedPrice();
+            final String proposedPrice = price.getPrice().toPlainString();
             if (!proposedPrice.equals(currentPrice)) {
                 view.setText(proposedPrice);
             }
@@ -51,7 +52,7 @@ public class RxTextViewExtensions {
         Preconditions.checkNotNull(view, "view == null");
         return (Consumer<Optional<Price>>) price -> {
             final String currentPrice = view.getText().toString();
-            final String proposedPrice = price.isPresent() ? price.get().getDecimalFormattedPrice() : "";
+            final String proposedPrice = price.isPresent() ? price.get().getPrice().toPlainString() : "";
             if (!proposedPrice.equals(currentPrice)) {
                 view.setText(proposedPrice);
             }

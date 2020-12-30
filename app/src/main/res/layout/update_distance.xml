@@ -61,11 +61,11 @@
                 android:id="@+id/image_guide_price"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_PRICE_SHORT"
+                android:src="@drawable/ic_receipt_white_24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/text_distance_rate_wrapper"
                 app:layout_constraintEnd_toStartOf="@id/text_distance_rate_wrapper"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/text_distance_rate_wrapper"
-                android:src="@drawable/ic_receipt_white_24dp" />
+                app:layout_constraintTop_toTopOf="@id/text_distance_rate_wrapper" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_distance_rate_wrapper"
@@ -73,14 +73,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/distance_rate_field"
-                app:layout_constraintStart_toEndOf="@id/image_guide_price"
                 app:layout_constraintEnd_toStartOf="@id/spinner_currency"
+                app:layout_constraintStart_toEndOf="@id/image_guide_price"
                 app:layout_constraintTop_toBottomOf="@id/distance_value_wrapper">
 
-                <co.smartreceipts.android.widget.ui.PriceInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_distance_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number|numberDecimal"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -101,11 +103,11 @@
                 android:id="@+id/image_guide_location"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                android:src="@drawable/ic_location_24dp"
                 app:layout_constraintBottom_toBottomOf="@id/text_distance_location"
                 app:layout_constraintEnd_toStartOf="@id/text_distance_location"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/text_distance_location"
-                android:src="@drawable/ic_location_24dp"/>
+                app:layout_constraintTop_toTopOf="@id/text_distance_location" />
 
             <AutoCompleteTextView
                 android:id="@+id/text_distance_location"
@@ -125,11 +127,11 @@
                 android:id="@+id/image_guide_date"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_DATE"
+                android:src="@drawable/ic_date_24dp"
                 app:layout_constraintBottom_toBottomOf="@id/text_distance_date"
                 app:layout_constraintEnd_toStartOf="@id/text_distance_date"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/text_distance_date"
-                android:src="@drawable/ic_date_24dp"/>
+                app:layout_constraintTop_toTopOf="@id/text_distance_date" />
 
             <co.smartreceipts.android.date.DateEditText
                 android:id="@+id/text_distance_date"
@@ -147,11 +149,11 @@
                 android:id="@+id/image_guide_comment"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
+                android:src="@drawable/ic_comment_24dp"
                 app:layout_constraintBottom_toBottomOf="@id/text_distance_comment"
                 app:layout_constraintEnd_toStartOf="@id/text_distance_comment"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/text_distance_comment"
-                android:src="@drawable/ic_comment_24dp"/>
+                app:layout_constraintTop_toTopOf="@id/text_distance_comment" />
 
             <AutoCompleteTextView
                 android:id="@+id/text_distance_comment"

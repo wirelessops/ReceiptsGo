@@ -34,7 +34,6 @@ import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsPre
 import co.smartreceipts.android.receipts.editor.paymentmethods.PaymentMethodsView
 import co.smartreceipts.android.utils.SoftKeyboardManager
 import co.smartreceipts.android.widget.model.UiIndicator
-import co.smartreceipts.android.widget.ui.PriceInputEditText
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding3.widget.textChanges
 import dagger.android.support.AndroidSupportInjection
@@ -48,7 +47,7 @@ import java.util.*
 import javax.inject.Inject
 
 class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.OnFocusChangeListener,
-        PaymentMethodsView {
+    PaymentMethodsView {
 
     @Inject
     lateinit var presenter: DistanceCreateEditPresenter
@@ -114,9 +113,9 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     private val _updateDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
     private val _deleteDistanceClicks: Subject<Distance> = PublishSubject.create<Distance>().toSerialized()
     private val _hideAutoCompleteVisibilityClicks: Subject<AutoCompleteUpdateEvent<Distance>> =
-            PublishSubject.create<AutoCompleteUpdateEvent<Distance>>().toSerialized()
+        PublishSubject.create<AutoCompleteUpdateEvent<Distance>>().toSerialized()
     private val _unHideAutoCompleteVisibilityClicks: Subject<AutoCompleteUpdateEvent<Distance>> =
-            PublishSubject.create<AutoCompleteUpdateEvent<Distance>>().toSerialized()
+        PublishSubject.create<AutoCompleteUpdateEvent<Distance>>().toSerialized()
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -124,11 +123,6 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     }
 
     override fun onFocusChange(view: View, hasFocus: Boolean) {
-        if (focusedView is PriceInputEditText && !hasFocus) {
-            // format rate on focus lose
-            (focusedView as PriceInputEditText).formatPriceText()
-        }
-
         focusedView = if (hasFocus) view else null
         if (editableItem == null && hasFocus) {
             // Only launch if we have focus and it's a new distance
@@ -196,8 +190,6 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             setTitle(if (editableItem == null) R.string.dialog_mileage_title_create else R.string.dialog_mileage_title_update)
             subtitle = ""
         }
-
-        text_distance_rate.setDecimalPlaces(Distance.RATE_PRECISION)
 
         if (editableItem == null) {
             // New Distance

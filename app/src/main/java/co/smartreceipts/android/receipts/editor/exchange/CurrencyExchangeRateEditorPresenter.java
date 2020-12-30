@@ -137,15 +137,6 @@ public class CurrencyExchangeRateEditorPresenter extends BasePresenter<CurrencyE
                 .observeOn(mainThreadScheduler)
                 .subscribe(view.displayExchangeRate()));
 
-        // Update price decimal places when the currency is changed
-        compositeDisposable.add(selectedCurrencyConnectableObservable
-                .map(CurrencyUnit::of)
-                .map(CurrencyUnit::getDecimalPlaces)
-                .distinctUntilChanged()
-                .observeOn(mainThreadScheduler)
-                .subscribe(view::updatePriceDecimalPlaces)
-        );
-
         // Fetch the exchange rate whenever the user clicks the "retry" button. Note: This variant can also attempt a purchase
         this.compositeDisposable.add(currencyDatePairConnectableObservable
                 .switchMap(currencyDatePair -> view.getUserInitiatedExchangeRateRetries().map(userRetry -> currencyDatePair))

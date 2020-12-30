@@ -83,10 +83,12 @@
                 app:layout_constraintStart_toEndOf="@id/receipt_input_guide_image_price"
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_name_wrapper">
 
-                <co.smartreceipts.android.widget.ui.PriceInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/DIALOG_RECEIPTMENU_PRICE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal|numberSigned"
                     android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -145,13 +147,15 @@
                 app:layout_constraintTop_toBottomOf="@id/receipt_input_price_wrapper"
                 tools:visibility="visible" />
 
-            <co.smartreceipts.android.widget.ui.PriceInputEditText
+            <EditText
                 android:id="@+id/receipt_input_exchanged_result"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:layout_marginEnd="@dimen/margin_tiny"
                 android:hint="@string/receipt_input_exchanged_result_hint"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal|numberSigned"
                 android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/receipt_input_exchange_rate_base_currency"

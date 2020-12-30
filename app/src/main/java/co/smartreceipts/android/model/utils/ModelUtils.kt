@@ -137,18 +137,7 @@ object ModelUtils {
             throw NumberFormatException("Cannot parse an empty string")
         }
 
-        // Note: for some locales grouping separator symbol is non-breaking space (code = 160),
-        // but incoming string may contain general space => need to prepare such string before parsing
-        val groupingSeparator = decimalFormat.decimalFormatSymbols.groupingSeparator.toString()
-        val nonBreakingSpace = ("\u00A0").toString()
-
-        val parsedNumber =
-            when (groupingSeparator) {
-                nonBreakingSpace -> decimalFormat.parse(number.replace(" ", nonBreakingSpace))
-                else -> decimalFormat.parse(number)
-            }
-
-        return BigDecimal(parsedNumber.toString())
+        return BigDecimal(number.replace(",", "."))
     }
 
     /**

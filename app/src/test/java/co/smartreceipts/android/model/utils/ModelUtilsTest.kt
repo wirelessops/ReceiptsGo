@@ -63,17 +63,10 @@ class ModelUtilsTest {
         assertEquals(BigDecimal(0), ModelUtils.tryParse(null))
         assertEquals(BigDecimal(1), ModelUtils.tryParse(null, BigDecimal(1)))
 
-        TestLocaleToggler.setDefaultLocale(Locale.US)
         assertTrue(ModelUtils.tryParse("2.00").compareTo(BigDecimal("2.00")) == 0)
-        assertTrue(ModelUtils.tryParse("-2.00").compareTo(BigDecimal("-2.00")) == 0)
-        assertTrue(ModelUtils.tryParse("1,050,555.256").compareTo(BigDecimal("1050555.256")) == 0)
-        assertTrue(ModelUtils.tryParse("1050555.256").compareTo(BigDecimal("1050555.256")) == 0)
-
-        TestLocaleToggler.setDefaultLocale(Locale.FRANCE)
         assertTrue(ModelUtils.tryParse("2,00").compareTo(BigDecimal("2.00")) == 0)
-        assertTrue(ModelUtils.tryParse("-2,00").compareTo(BigDecimal("-2.00")) == 0)
-        assertTrue(ModelUtils.tryParse("1 050 555,256").compareTo(BigDecimal("1050555.256")) == 0)
-        assertTrue(ModelUtils.tryParse("105 0555,256").compareTo(BigDecimal("1050555.256")) == 0)
+        assertTrue(ModelUtils.tryParse("-2.00").compareTo(BigDecimal("-2.00")) == 0)
+        assertTrue(ModelUtils.tryParse("1050555.256").compareTo(BigDecimal("1050555.256")) == 0)
     }
 
     @Test
