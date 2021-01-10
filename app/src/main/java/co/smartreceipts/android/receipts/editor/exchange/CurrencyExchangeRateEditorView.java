@@ -86,10 +86,4 @@ public interface CurrencyExchangeRateEditorView {
     @NonNull
     @UiThread
     Observable<Object> getUserInitiatedExchangeRateRetries();
-
-    /**
-     * Updates price view to match new decimal places value
-     */
-    @UiThread
-    void updatePriceDecimalPlaces(int decimalPlaces);
 }

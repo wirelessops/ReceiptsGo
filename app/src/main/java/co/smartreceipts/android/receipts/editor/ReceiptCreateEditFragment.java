@@ -38,6 +38,7 @@ import org.joda.money.CurrencyUnit;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +109,6 @@ import co.smartreceipts.android.widget.NetworkRequestAwareEditText;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.rxbinding2.RxTextViewExtensions;
 import co.smartreceipts.android.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
-import co.smartreceipts.android.widget.ui.PriceInputEditText;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -191,12 +191,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     private Toolbar toolbar;
     private AutoCompleteTextView nameBox;
-    private PriceInputEditText priceBox;
+    private EditText priceBox;
     private AutoCompleteTextView taxBox1;
     private AutoCompleteTextView taxBox2;
     private Spinner currencySpinner;
     private NetworkRequestAwareEditText exchangeRateBox;
-    private PriceInputEditText exchangedPriceInBaseCurrencyBox;
+    private EditText exchangedPriceInBaseCurrencyBox;
     private TextView receiptInputExchangeRateBaseCurrencyTextView;
     private DateEditText dateBox;
     private Spinner categoriesSpinner;
@@ -625,12 +625,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
-
-        if (focusedView instanceof PriceInputEditText && !hasFocus) {
-            // format price
-            ((PriceInputEditText) focusedView).formatPriceText();
-        }
-
         focusedView = hasFocus ? view : null;
         if (isNewReceipt() && hasFocus) {
             // Only launch if we have focus and it's a new receipt
@@ -829,7 +823,9 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Success) {
                 if (exchangeRateUiIndicator.getData().isPresent()) {
                     if (TextUtils.isEmpty(exchangeRateBox.getText()) || exchangedPriceInBaseCurrencyBox.isFocused()) {
-                        exchangeRateBox.setText(exchangeRateUiIndicator.getData().get().getDecimalFormattedExchangeRate(getParentTrip().getDefaultCurrencyCode()));
+                        final BigDecimal exchangeRate = exchangeRateUiIndicator.getData().get().getExchangeRate(getParentTrip().getTripCurrency());
+                        final String exchangeRateString = exchangeRate != null ? exchangeRate.setScale(ExchangeRate.PRECISION, RoundingMode.HALF_UP).toPlainString() : "";
+                        exchangeRateBox.setText(exchangeRateString);
                     } else {
                         Logger.warn(ReceiptCreateEditFragment.this, "Ignoring remote exchange rate result now that one is already set");
                     }
@@ -850,7 +846,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     public Consumer<? super CurrencyUnit> displayBaseCurrency() {
         return (Consumer<CurrencyUnit>) priceCurrency -> {
             receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCode());
-            exchangedPriceInBaseCurrencyBox.setDecimalPlaces(priceCurrency.getDecimalPlaces());
         };
     }
 
@@ -885,12 +880,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Observable<Boolean> getExchangedPriceInBaseCurrencyFocusChanges() {
         return RxView.focusChanges(exchangedPriceInBaseCurrencyBox);
-    }
-
-    @UiThread
-    @Override
-    public void updatePriceDecimalPlaces(int decimalPlaces) {
-        priceBox.setDecimalPlaces(decimalPlaces);
     }
 
     @NonNull
