@@ -71,8 +71,9 @@ object StrictModeConfiguration {
                     }
                 }
                 val isWhiteListed = (hasInflationTraceElement and hasDexTraceElement) or
-                        hasPreferenceManagerInflation or hasPreferenceReadWrite or hasBridgingQuery or
-                        hasEmailAttachments or hasLeakCanary
+                        hasDexTraceElement or hasPreferenceManagerInflation or
+                        hasPreferenceReadWrite or hasBridgingQuery or hasEmailAttachments or
+                        hasLeakCanary
                 if (!isWhiteListed) {
                     throw it
                 } else {
