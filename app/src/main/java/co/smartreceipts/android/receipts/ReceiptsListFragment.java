@@ -375,7 +375,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
     @Override
     public final void showReceiptMenu(final Receipt receipt) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_SmartReceipts_Dialog);
         builder.setTitle(receipt.getName())
                 .setCancelable(true)
                 .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());

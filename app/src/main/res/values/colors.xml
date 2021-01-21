@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <color name="background">#F3F2F8</color>
+    <color name="violet">#45289F</color>
+    <color name="violet_dark">#301B92</color>
+    <color name="bottom_navigation_color">@android:color/white</color>
+    <color name="navigation_inactive">#1A0A0114</color>
 
     <!-- Palette for Core App (Material Palette) -->
     <color name="smart_receipts_colorPrimary">#4527a0</color>
@@ -11,12 +17,12 @@
     <color name="smart_receipts_ripple_dark">#44000000</color>
     <color name="smart_receipts_colorSuccess">#2e7d32</color>
     <color name="smart_receipts_colorError">#c62828</color>
-    <color name="text_primary_color">#DFFFFFFF</color>
-    <color name="text_secondary_color">#8AFFFFFF</color>
+    <color name="text_primary_color">@android:color/black</color>
+    <color name="text_secondary_color">#1A0A0114</color>
     <color name="accent_text_primary_color">@color/text_primary_color</color>
     <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="fab_transparency_mask">#40FFFFFF</color>
-    <color name="window_background_color">#0B0114</color>
+    <color name="window_background_color">@color/background</color>
     <color name="transparent_overlay">#66000000</color>
 
     <!-- Palette for lists and cards -->

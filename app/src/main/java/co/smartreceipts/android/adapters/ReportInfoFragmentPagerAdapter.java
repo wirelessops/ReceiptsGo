@@ -1,24 +1,21 @@
 package co.smartreceipts.android.adapters;
 
-import android.content.res.Resources;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.fragments.DistanceFragment;
-import co.smartreceipts.android.workers.widget.GenerateReportFragment;
 import co.smartreceipts.android.graphs.GraphsFragment;
 import co.smartreceipts.android.receipts.ReceiptsListFragment;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
+import co.smartreceipts.android.workers.widget.GenerateReportFragment;
 
-public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
+public class ReportInfoFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final int MAX_FRAGMENT_COUNT = 4;
 
-    private final Resources resources;
     private final ConfigurationManager configurationManager;
 
     private final int graphsTabPosition;
@@ -26,19 +23,17 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
     private final int distanceTabPosition;
     private final int generateTabPosition;
 
-    public TripFragmentPagerAdapter(Resources resources, @NonNull FragmentManager fragmentManager, @NonNull ConfigurationManager configurationManager) {
+    public ReportInfoFragmentPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull ConfigurationManager configurationManager) {
         super(fragmentManager);
-        this.resources = resources;
         this.configurationManager = configurationManager;
 
         boolean distanceAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.DistanceScreen);
         boolean graphsAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.GraphsScreen);
 
-        graphsTabPosition = graphsAvailable ? 0 : -1;
-        receiptsTabPosition = graphsAvailable ? 1 : 0;
+        receiptsTabPosition = 0;
         distanceTabPosition = distanceAvailable ? receiptsTabPosition + 1 : -1;
         generateTabPosition = distanceAvailable ? distanceTabPosition + 1 : receiptsTabPosition + 1;
-
+        graphsTabPosition = graphsAvailable ? generateTabPosition + 1 : -1;
     }
 
 
@@ -47,13 +42,7 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
         boolean distanceAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.DistanceScreen);
         boolean graphsAvailable = configurationManager.isEnabled(ConfigurableResourceFeature.GraphsScreen);
 
-        if (distanceAvailable && graphsAvailable) {
-            return MAX_FRAGMENT_COUNT;
-        } else if (!distanceAvailable && !graphsAvailable) {
-            return MAX_FRAGMENT_COUNT - 2;
-        } else {
-            return MAX_FRAGMENT_COUNT - 1;
-        }
+        return MAX_FRAGMENT_COUNT - (distanceAvailable ? 0 : 1) - (graphsAvailable ? 0 : 1);
     }
 
     @Override
@@ -66,16 +55,6 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
         throw new IllegalArgumentException("Unexpected Fragment Position");
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        if (position == graphsTabPosition) return resources.getString(R.string.report_info_graphs);
-        if (position == receiptsTabPosition) return resources.getString(R.string.report_info_receipts);
-        if (position == distanceTabPosition) return resources.getString(R.string.report_info_distance);
-        if (position == generateTabPosition) return resources.getString(R.string.report_info_generate);
-
-        throw new IllegalArgumentException("Unexpected Fragment Position");
-    }
-
     public int getGenerateTabPosition() {
         return generateTabPosition;
     }
@@ -84,4 +63,11 @@ public class TripFragmentPagerAdapter extends FragmentPagerAdapter {
         return receiptsTabPosition;
     }
 
+    public int getDistancesTabPosition() {
+        return distanceTabPosition;
+    }
+
+    public int getGraphsTabPosition() {
+        return graphsTabPosition;
+    }
 }
