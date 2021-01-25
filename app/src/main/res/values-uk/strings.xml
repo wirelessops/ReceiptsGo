@@ -213,7 +213,6 @@
     <string name="toast_attachment_error">Не вдається прикріпити цей файл.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s до %2$s</string>
     <string name="trip_no_data">Судячи з усього, в даний час у вас немає звітів. Натисніть на кнопку + (плюс), щоб почати.</string>
 
     <!-- ================= Receipt Adapter =================== -->

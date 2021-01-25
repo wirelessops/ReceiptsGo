@@ -212,7 +212,6 @@
     <string name="toast_attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%2$s %1$s אל</string>
 	<string name="trip_no_data">אין לך דוחות מוגדרים כרגע. נסה ללחוץ על + על מנת להתחיל.</string>
 	
 

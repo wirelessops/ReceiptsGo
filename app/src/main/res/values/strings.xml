@@ -212,7 +212,7 @@
     <string name="toast_attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s to %2$s</string>
+    <string name="trip_adapter_list_item_to">%1$s ➝ %2$s</string>
     <string name="trip_no_data">You don\'t seem to have any reports defined at the moment. Try clicking the "+" (plus) button to get started.</string>
 
     <!-- ================= Receipt Adapter =================== -->

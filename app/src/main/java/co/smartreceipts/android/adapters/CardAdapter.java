@@ -1,8 +1,6 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -31,10 +29,6 @@ import co.smartreceipts.core.sync.provider.SyncProvider;
 
 public class CardAdapter<T> extends BaseAdapter {
 
-    private static final int MAX_PRICE_WIDTH_DIVIDER = 2;
-    private static final int MIN_PRICE_WIDTH_DIVIDER = 6;
-    private static final float PRICE_WIDTH_BUFFER = 1.1f;
-
     protected final BackupProvidersManager backupProvidersManager;
     protected final Drawable cloudDisabledDrawable;
     protected final Drawable notSyncedDrawable;
@@ -43,12 +37,8 @@ public class CardAdapter<T> extends BaseAdapter {
     private final LayoutInflater inflater;
     private final UserPreferenceManager preferences;
     private final Context context;
-    private final float cardPriceTextSize;
 
     private List<T> data;
-
-    private int listViewWidth, priceLayoutWidth;
-    private int oldLongestPriceWidth, newLongestPriceWidth;
 
     private T selectedItem;
 
@@ -66,35 +56,21 @@ public class CardAdapter<T> extends BaseAdapter {
         cloudDisabledDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_off_24dp, context.getTheme());
         notSyncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_queue_24dp, context.getTheme());
         syncedDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_cloud_done_24dp, context.getTheme());
-
-        cardPriceTextSize = this.context.getResources().getDimension(getCardPriceTextSizeResource());
     }
 
     @Override
     public int getCount() {
-        if (data == null) {
-            return 0;
-        } else {
-            return data.size();
-        }
+        return data == null ? 0 : data.size();
     }
 
     @Override
     public T getItem(int i) {
-        if (data == null) {
-            return null;
-        } else {
-            return data.get(i);
-        }
+        return data == null ? null : data.get(i);
     }
 
     @NonNull
     public ArrayList<T> getData() {
-        if (data == null) {
-            return new ArrayList<>();
-        } else {
-            return new ArrayList<>(data);
-        }
+        return data == null ? new ArrayList<>() : new ArrayList<>(data);
     }
 
     public long getItemId(int i) {
@@ -109,69 +85,62 @@ public class CardAdapter<T> extends BaseAdapter {
         return preferences;
     }
 
-    private static class MyViewHolder {
+    private static class TripDistanceViewHolder {
         public TextView price;
         public TextView name;
-        public TextView date;
-        public TextView category;
-        public TextView marker;
+        public TextView details;
         public ImageView syncState;
+        public ImageView selectionMarker;
     }
 
     @Override
     public View getView(final int i, View convertView, ViewGroup parent) {
 
-        if (listViewWidth <= 0 || listViewWidth != parent.getWidth() || oldLongestPriceWidth != newLongestPriceWidth) {
-            listViewWidth = parent.getWidth();
-
-            oldLongestPriceWidth = newLongestPriceWidth;
-            int maxPriceLayoutWidth = (listViewWidth / MAX_PRICE_WIDTH_DIVIDER); // Set to half width
-            int minPriceLayoutWidth = (listViewWidth / MIN_PRICE_WIDTH_DIVIDER); // Set to 1/6 width
-
-            priceLayoutWidth = newLongestPriceWidth;
-            if (newLongestPriceWidth < minPriceLayoutWidth) {
-                priceLayoutWidth = minPriceLayoutWidth;
-            } else if (newLongestPriceWidth > maxPriceLayoutWidth) {
-                priceLayoutWidth = maxPriceLayoutWidth;
-            }
-        }
-
-
-        MyViewHolder holder;
+        TripDistanceViewHolder holder;
         final T data = getItem(i);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.simple_card, parent, false);
-            holder = new MyViewHolder();
-            holder.price = convertView.findViewById(R.id.price);
-            holder.name = convertView.findViewById(R.id.title);
-            holder.date = convertView.findViewById(R.id.date);
-            holder.category = convertView.findViewById(android.R.id.text1);
-            holder.marker = convertView.findViewById(android.R.id.text2);
-            holder.syncState = convertView.findViewById(R.id.card_sync_state);
+            convertView = inflater.inflate(R.layout.item_trip_or_distance_card, parent, false);
+            holder = new TripDistanceViewHolder();
+            holder.price = convertView.findViewById(R.id.text_price);
+            holder.name = convertView.findViewById(R.id.text_name);
+            holder.details = convertView.findViewById(R.id.text_details);
+            holder.selectionMarker = convertView.findViewById(R.id.image_selection_marker);
+            holder.syncState = convertView.findViewById(R.id.image_sync_state);
             convertView.setTag(holder);
         } else {
-            holder = (MyViewHolder) convertView.getTag();
+            holder = (TripDistanceViewHolder) convertView.getTag();
         }
 
 
-        if (holder.price.getLayoutParams().width != priceLayoutWidth) {
-            holder.price.getLayoutParams().width = priceLayoutWidth;
-            holder.price.requestLayout();
-        }
         setPriceTextView(holder.price, data);
         setNameTextView(holder.name, data);
-        setDateTextView(holder.date, data);
-        setCategory(holder.category, data);
-        setMarker(holder.marker, data);
+        setDetailsTextView(holder.details, data);
         setSyncStateImage(holder.syncState, data);
 
         if (selectedItem != null && this.data.indexOf(selectedItem) == i) {
             convertView.setSelected(true);
+            showItemSelection(holder, true);
         } else {
             convertView.setSelected(false);
+            showItemSelection(holder, false);
         }
 
         return convertView;
+    }
+
+    private void showItemSelection(TripDistanceViewHolder holder, boolean isSelected) {
+        final int colorSelected = context.getResources().getColor(R.color.smart_receipts_colorPrimary);
+        final int colorDefault = context.getResources().getColor(R.color.text_primary_color);
+
+        if (isSelected) {
+            holder.selectionMarker.setVisibility(View.VISIBLE);
+            holder.name.setTextColor(colorSelected);
+            holder.price.setTextColor(colorSelected);
+        } else {
+            holder.selectionMarker.setVisibility(View.GONE);
+            holder.name.setTextColor(colorDefault);
+            holder.price.setTextColor(colorDefault);
+        }
     }
 
     public void setSelectedItem(@Nullable T item) {
@@ -179,30 +148,15 @@ public class CardAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-
     protected String getPrice(T data) {
         return "";
     }
 
-    protected void setPriceTextView(TextView textView, T data) {
+    protected void setPriceTextView(TextView textView, T data) { }
 
-    }
+    protected void setNameTextView(TextView textView, T data) { }
 
-    protected void setNameTextView(TextView textView, T data) {
-
-    }
-
-    protected void setDateTextView(TextView textView, T data) {
-
-    }
-
-    protected void setCategory(TextView textView, T data) {
-        textView.setVisibility(View.GONE);
-    }
-
-    protected void setMarker(TextView textView, T data) {
-        textView.setVisibility(View.GONE);
-    }
+    protected void setDetailsTextView(TextView textView, T data) { }
 
     protected void setSyncStateImage(ImageView image, T data) {
         image.setClickable(false);
@@ -227,32 +181,9 @@ public class CardAdapter<T> extends BaseAdapter {
         }
     }
 
-    protected int getCardPriceTextSizeResource() {
-        return R.dimen.card_price_size;
-    }
-
     public final synchronized void notifyDataSetChanged(List<T> newData) {
         data = new ArrayList<>(newData);
-        calculateLongestPriceWidth();
         super.notifyDataSetChanged();
-    }
-
-    private void calculateLongestPriceWidth() {
-        if (data != null && data.size() != 0) {
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setTextSize(cardPriceTextSize * PRICE_WIDTH_BUFFER);
-            paint.setTypeface(Typeface.DEFAULT_BOLD); // Set in the Price field
-            int curr = 0, measured;
-            final int size = data.size();
-            for (int i = 0; i < size; i++) {
-                measured = (int) paint.measureText(getPrice(data.get(i)));
-                if (measured > curr) {
-                    curr = measured;
-                }
-            }
-            newLongestPriceWidth = curr;
-        }
     }
 
 }

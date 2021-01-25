@@ -48,9 +48,8 @@
     <style name="Widget.SmartReceipts.ListView" parent="Widget">
         <item name="android:layout_height">match_parent</item>
 		<item name="android:layout_width">match_parent</item>
-		<item name="android:padding">@dimen/card_divider_padding</item>
 		<item name="android:divider">@android:color/transparent</item>
- 		<item name="android:dividerHeight">@dimen/card_divider_padding</item>
+ 		<item name="android:dividerHeight">@dimen/list_divider_height</item>
  		<item name="android:drawSelectorOnTop">false</item>
  		<item name="android:clipToPadding">false</item>
     	<item name="android:scrollbarStyle">outsideOverlay</item>
@@ -74,10 +73,9 @@
     <style name="Widget.SmartReceipts.TextView.NoData" parent="Widget.SmartReceipts.TextView">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:padding">@dimen/no_data_padding</item>
-        <item name="android:text">@string/trip_no_data</item>
+        <item name="android:padding">@dimen/padding_large</item>
         <item name="android:textSize">@dimen/no_data_textSize</item>
-        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:textColor">@color/text_secondary_color</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -150,6 +148,7 @@
         <item name="android:background">@drawable/button_background_tertiary</item>
     </style>
 
+<!--    TODO style for new FAB-->
     <style name="Widget.SmartReceipts.FloatingActionButton">
         <item name="fab_colorNormal">@color/smart_receipts_colorPrimaryDark</item>
         <item name="fab_colorPressed">@color/smart_receipts_colorPrimaryDark_pressed</item>

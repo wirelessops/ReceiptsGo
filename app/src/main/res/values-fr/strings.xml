@@ -211,7 +211,6 @@
     <string name="toast_attachment_error">Impossible de joindre ce fichier.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s à %2$s</string>
     <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.</string>
 
     <!-- ================= Receipt Adapter =================== -->

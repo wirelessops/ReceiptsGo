@@ -6,10 +6,9 @@
 
     <!-- List -->
     <dimen name="no_data_textSize">16sp</dimen>
-    <dimen name="no_data_padding">22dp</dimen>
+    <dimen name="list_divider_height">1dp</dimen>
     
     <!-- Cards -->
-    <dimen name="card_divider_padding">6dp</dimen>
     <dimen name="card_price_size">24sp</dimen>
     <dimen name="card_name_size">18sp</dimen>
     <dimen name="card_date_size">14sp</dimen>
@@ -26,6 +25,7 @@
     <dimen name="margin_tiniest">4dp</dimen>
     <dimen name="margin_tiny">8dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
 
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_normal">8dp</dimen>

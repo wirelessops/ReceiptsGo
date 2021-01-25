@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.SmartReceipts.RelativeLayout" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SmartReceipts.RelativeLayout">
 
     <ListView
-        style="@style/Widget.SmartReceipts.ListView"
         android:id="@android:id/list"
+        style="@style/Widget.SmartReceipts.ListView"
         android:visibility="invisible" />
 
     <ProgressBar
-        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
-        android:id="@+id/progress" />
+        android:id="@+id/progress"
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading" />
 
     <TextView
-        style="@style/Widget.SmartReceipts.TextView.NoData"
         android:id="@+id/no_data"
+        style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/trip_no_data"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
-    <com.github.clans.fab.FloatingActionButton
-        style="@style/Widget.SmartReceipts.FloatingActionButton"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/trip_action_new"
-        android:src="@drawable/fab_add"
-        android:layout_alignParentBottom="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_large"
+        android:backgroundTint="@color/smart_receipts_colorPrimaryDark"
+        android:padding="@dimen/padding_large"
+        android:src="@drawable/ic_round_add_24"
+        app:borderWidth="0dp"
+        app:tint="@android:color/white" />
 
 </RelativeLayout>

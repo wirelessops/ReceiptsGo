@@ -1,8 +1,9 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
@@ -40,7 +41,7 @@ public class TripCardAdapter extends CardAdapter<Trip> {
 	}
 	
 	@Override
-	protected void setDateTextView(TextView textView, Trip data) {
+	protected void setDetailsTextView(TextView textView, Trip data) {
 		final String start = dateFormatter.getFormattedDate(data.getStartDisplayableDate());
 		final String end = dateFormatter.getFormattedDate(data.getEndDisplayableDate());
 		textView.setText(getContext().getString(R.string.trip_adapter_list_item_to, start, end));

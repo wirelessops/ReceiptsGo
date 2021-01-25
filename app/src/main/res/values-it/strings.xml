@@ -212,7 +212,6 @@
     <string name="toast_attachment_error">Impossibile allegare questo file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s a %2$s</string>
     <string name="trip_no_data">Non appare alcun report definito al momento. Cliccare il "+" (più) per iniziare.</string>
 
     <!-- ================= Receipt Adapter =================== -->

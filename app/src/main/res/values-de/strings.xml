@@ -211,7 +211,6 @@
     <string name="toast_attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s bis %2$s</string>
     <string name="trip_no_data">Sie scheinen zur Zeit keine definierten Berichte haben. Zum Beginnen tippen Sie auf die + (plus) Taste.</string>
 
     <!-- ================= Receipt Adapter =================== -->

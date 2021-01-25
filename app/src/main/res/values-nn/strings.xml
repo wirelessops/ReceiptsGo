@@ -209,7 +209,6 @@
     <string name="toast_attachment_error">Kan ikke legge ved denne filen.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s til %2$s</string>
     <string name="trip_no_data">Du har ingen rapporter definert for øyeblikket. Prøv å trykk på "+" (pluss) knappen for å komme i gang.</string>
 
     <!-- ================= Receipt Adapter =================== -->
