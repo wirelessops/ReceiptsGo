@@ -148,19 +148,16 @@
         <item name="android:background">@drawable/button_background_tertiary</item>
     </style>
 
-<!--    TODO style for new FAB-->
     <style name="Widget.SmartReceipts.FloatingActionButton">
-        <item name="fab_colorNormal">@color/smart_receipts_colorPrimaryDark</item>
-        <item name="fab_colorPressed">@color/smart_receipts_colorPrimaryDark_pressed</item>
-        <item name="fab_colorRipple">@color/smart_receipts_ripple_dark</item>
-        <item name="fab_size">normal</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/margin_large</item>
+        <item name="android:backgroundTint">@color/smart_receipts_colorPrimaryDark</item>
+        <item name="android:padding">@dimen/padding_large</item>
+        <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_marginRight">@dimen/fab_margins</item>
-        <item name="android:layout_marginBottom">@dimen/fab_margins</item>
-        <item name="android:layout_marginLeft">@dimen/fab_margins</item>
+        <item name="borderWidth">0dp</item>
+        <item name="tint">@android:color/white</item>
     </style>
 
     <style name="Widget.SmartReceipts.FloatingActionButton.Menu">

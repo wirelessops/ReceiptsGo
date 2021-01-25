@@ -1,28 +1,25 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import android.text.TextUtils;
-import android.view.View;
+import android.graphics.Typeface;
 import android.widget.TextView;
 
-import com.google.common.base.Preconditions;
+import androidx.annotation.NonNull;
 
-import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 
 public class DistanceAdapter extends CardAdapter<Distance> {
 
-    private final DateFormatter dateFormatter;
+    // TODO: 25.01.2021 add view types, and sticky date headers
+    // TODO: 26.01.2021 if we need title to scroll - it also should be a view type to save RecyclerView inner optimizations
+    // TODO: 26.01.2021 OR add something that will separate "DISTANCE" header and scrollable part
 
     public DistanceAdapter(@NonNull Context context,
                            @NonNull UserPreferenceManager preferences,
-                           @NonNull BackupProvidersManager backupProvidersManager,
-                           @NonNull DateFormatter dateFormatter) {
+                           @NonNull BackupProvidersManager backupProvidersManager) {
         super(context, preferences, backupProvidersManager);
-        this.dateFormatter = Preconditions.checkNotNull(dateFormatter);
     }
 
     @Override
@@ -32,29 +29,24 @@ public class DistanceAdapter extends CardAdapter<Distance> {
 
     @Override
     protected void setPriceTextView(TextView textView, Distance data) {
-        textView.setText(data.getDecimalFormattedDistance());
+        textView.setText(data.getPrice().getCurrencyFormattedPrice());
     }
 
     @Override
     protected void setNameTextView(TextView textView, Distance data) {
-        if (!TextUtils.isEmpty(data.getLocation())) {
-            textView.setText(data.getLocation());
-            textView.setVisibility(View.VISIBLE);
-        } else if (!TextUtils.isEmpty(data.getComment())) {
-            textView.setText(data.getComment());
-            textView.setVisibility(View.VISIBLE);
+        textView.setText(data.getDecimalFormattedDistance());
+    }
+
+    @Override
+    protected void setDetailsTextView(TextView textView, Distance data) {
+        final String location = data.getLocation();
+
+        if (!location.isEmpty()) {
+            textView.setText(location);
         } else {
-            textView.setVisibility(View.GONE);
+            textView.setText(data.getComment());
         }
-    }
 
-    @Override
-    protected void setCategory(TextView textView, Distance data) {
-        textView.setText(dateFormatter.getFormattedDate(data.getDisplayableDate()));
-    }
-
-    @Override
-    protected void setDateTextView(TextView textView, Distance data) {
-        textView.setText(data.getPrice().getCurrencyFormattedPrice());
+        textView.setTypeface(null, Typeface.BOLD);
     }
 }

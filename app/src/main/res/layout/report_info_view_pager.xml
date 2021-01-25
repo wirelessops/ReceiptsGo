@@ -43,13 +43,9 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/smart_receipts_colorPrimaryDark"
+        style="@style/Widget.SmartReceipts.FloatingActionButton"
         android:src="@drawable/ic_round_add_24"
-        app:borderWidth="0dp"
         app:layout_anchor="@id/bottom_app_bar"
-        app:layout_anchorGravity="top|center_horizontal"
-        app:tint="@android:color/white" />
+        app:layout_anchorGravity="top|center_horizontal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

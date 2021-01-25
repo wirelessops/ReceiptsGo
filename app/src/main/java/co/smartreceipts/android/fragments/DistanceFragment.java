@@ -25,7 +25,6 @@ import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.DistanceAdapter;
 import co.smartreceipts.android.databinding.ReportDistanceListBinding;
-import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
 import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.model.Trip;
@@ -49,9 +48,6 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
 
     @Inject
     BackupProvidersManager backupProvidersManager;
-
-    @Inject
-    DateFormatter dateFormatter;
 
     @Inject
     NavigationHandler navigationHandler;
@@ -79,7 +75,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        distanceAdapter = new DistanceAdapter(requireContext(), preferenceManager, backupProvidersManager, dateFormatter);
+        distanceAdapter = new DistanceAdapter(requireContext(), preferenceManager, backupProvidersManager);
     }
 
 
@@ -89,7 +85,6 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
         binding = ReportDistanceListBinding.inflate(inflater, container, false);
         progressDialog = binding.progress;
         noDataAlert = binding.noData;
-        noDataAlert.setText(R.string.distance_no_data);
         binding.distanceActionNew.setOnClickListener(v ->
                 navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate()));
         return binding.getRoot();

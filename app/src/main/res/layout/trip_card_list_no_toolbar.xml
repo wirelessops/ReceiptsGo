@@ -22,15 +22,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/trip_action_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margin_large"
-        android:backgroundTint="@color/smart_receipts_colorPrimaryDark"
-        android:padding="@dimen/padding_large"
+        style="@style/Widget.SmartReceipts.FloatingActionButton"
         android:src="@drawable/ic_round_add_24"
-        app:borderWidth="0dp"
-        app:tint="@android:color/white" />
+         />
 
 </RelativeLayout>
