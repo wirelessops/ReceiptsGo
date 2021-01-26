@@ -24,13 +24,11 @@ import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
-import org.joda.money.CurrencyUnit;
 
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -591,22 +589,24 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public void removeValueFromAutoComplete(int position) {
         getActivity().runOnUiThread(() -> {
-            itemToRemoveOrReAdd = resultsAdapter.getItem(position);
-            resultsAdapter.remove(itemToRemoveOrReAdd);
-            resultsAdapter.notifyDataSetChanged();
-            View view = getActivity().findViewById(R.id.update_trip_layout);
-            snackbar = Snackbar.make(view, getString(
-                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.undo, v -> {
-                if (nameBox.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Name, position));
-                } else if (commentBox.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Comment, position));
-                } else {
-                    _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.CostCenter, position));
-                }
-            });
-            snackbar.show();
+            if (position >= 0 && position < resultsAdapter.getCount()) {
+                itemToRemoveOrReAdd = resultsAdapter.getItem(position);
+                resultsAdapter.remove(itemToRemoveOrReAdd);
+                resultsAdapter.notifyDataSetChanged();
+                View view = getActivity().findViewById(R.id.update_trip_layout);
+                snackbar = Snackbar.make(view, getString(
+                        R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.undo, v -> {
+                    if (nameBox.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Name, position));
+                    } else if (commentBox.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Comment, position));
+                    } else {
+                        _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.CostCenter, position));
+                    }
+                });
+                snackbar.show();
+            }
         });
     }
 

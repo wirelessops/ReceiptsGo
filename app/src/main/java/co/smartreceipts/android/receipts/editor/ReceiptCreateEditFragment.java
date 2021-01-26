@@ -1056,22 +1056,24 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public void removeValueFromAutoComplete(int position) {
         getActivity().runOnUiThread(() -> {
-            itemToRemoveOrReAdd = resultsAdapter.getItem(position);
-            resultsAdapter.remove(itemToRemoveOrReAdd);
-            resultsAdapter.notifyDataSetChanged();
-            View view = getActivity().findViewById(R.id.update_receipt_layout);
-            snackbar = Snackbar.make(view, getString(
-                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.undo, v -> {
-                if (nameBox.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(
-                            new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Name, position));
-                } else {
-                    _unHideAutoCompleteVisibilityClicks.onNext(
-                            new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Comment, position));
-                }
-            });
-            snackbar.show();
+            if (position >= 0 && position < resultsAdapter.getCount()) {
+                itemToRemoveOrReAdd = resultsAdapter.getItem(position);
+                resultsAdapter.remove(itemToRemoveOrReAdd);
+                resultsAdapter.notifyDataSetChanged();
+                View view = getActivity().findViewById(R.id.update_receipt_layout);
+                snackbar = Snackbar.make(view, getString(
+                        R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.undo, v -> {
+                    if (nameBox.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(
+                                new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Name, position));
+                    } else {
+                        _unHideAutoCompleteVisibilityClicks.onNext(
+                                new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Comment, position));
+                    }
+                });
+                snackbar.show();
+            }
         });
     }
 

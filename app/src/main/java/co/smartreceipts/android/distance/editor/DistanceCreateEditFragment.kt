@@ -425,22 +425,26 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     override fun removeValueFromAutoComplete(position: Int) {
         activity!!.runOnUiThread {
-            itemToRemoveOrReAdd = resultsAdapter.getItem(position)
-            resultsAdapter.remove(itemToRemoveOrReAdd)
-            resultsAdapter.notifyDataSetChanged()
-            val view = activity!!.findViewById<ConstraintLayout>(R.id.update_distance_layout)
-            snackbar = Snackbar.make(view, getString(
-                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd!!.displayName), Snackbar.LENGTH_LONG)
-            snackbar.setAction(R.string.undo) {
-                if (text_distance_location.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(
-                            AutoCompleteUpdateEvent(itemToRemoveOrReAdd, DistanceAutoCompleteField.Location, position))
-                } else {
-                    _unHideAutoCompleteVisibilityClicks.onNext(
-                            AutoCompleteUpdateEvent(itemToRemoveOrReAdd, DistanceAutoCompleteField.Comment, position))
+            if (position in 0 until resultsAdapter.count) {
+                itemToRemoveOrReAdd = resultsAdapter.getItem(position)
+                resultsAdapter.remove(itemToRemoveOrReAdd)
+                resultsAdapter.notifyDataSetChanged()
+                val view = activity!!.findViewById<ConstraintLayout>(R.id.update_distance_layout)
+                snackbar = Snackbar.make(view, getString(
+                        R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd!!.displayName), Snackbar.LENGTH_LONG)
+                snackbar.setAction(R.string.undo) {
+                    if (text_distance_location.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(
+                            AutoCompleteUpdateEvent(itemToRemoveOrReAdd, DistanceAutoCompleteField.Location, position)
+                        )
+                    } else {
+                        _unHideAutoCompleteVisibilityClicks.onNext(
+                            AutoCompleteUpdateEvent(itemToRemoveOrReAdd, DistanceAutoCompleteField.Comment, position)
+                        )
+                    }
                 }
+                snackbar.show()
             }
-            snackbar.show()
         }
     }
 
