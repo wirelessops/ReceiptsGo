@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.common.base.Preconditions;
@@ -110,7 +111,19 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = ReportInfoViewPagerBinding.inflate(inflater, container, false);
+
+        binding.fab.setOnClickListener(v -> {
+            Fragment currentPage = getCurrentViewPagerFragment();
+            if (currentPage instanceof FabClickListener) {
+                ((FabClickListener) currentPage).onFabClick();
+            }
+        });
+
         return binding.getRoot();
+    }
+
+    private Fragment getCurrentViewPagerFragment() {
+        return getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + viewPager.getCurrentItem());
     }
 
     @Override

@@ -31,9 +31,4 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/distance_action_new"
-        style="@style/Widget.SmartReceipts.FloatingActionButton"
-        android:src="@drawable/ic_round_add_24" />
-
 </RelativeLayout>

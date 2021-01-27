@@ -38,7 +38,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import dagger.android.support.AndroidSupportInjection;
 
-public class DistanceFragment extends WBListFragment implements TripForeignKeyTableEventsListener<Distance> {
+public class DistanceFragment extends WBListFragment implements TripForeignKeyTableEventsListener<Distance>, FabClickListener {
 
     @Inject
     UserPreferenceManager preferenceManager;
@@ -85,8 +85,6 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
         binding = ReportDistanceListBinding.inflate(inflater, container, false);
         progressDialog = binding.progress;
         noDataAlert = binding.noData;
-        binding.distanceActionNew.setOnClickListener(v ->
-                navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate()));
         return binding.getRoot();
     }
 
@@ -124,6 +122,11 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
+    }
+
+    @Override
+    public void onFabClick() {
+        navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate());
     }
 
     @Override
