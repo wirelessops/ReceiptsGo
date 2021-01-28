@@ -20,7 +20,6 @@ import co.smartreceipts.android.widget.model.UiIndicator
 import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.account_info_fragment.*
 import javax.inject.Inject
 
 
@@ -45,7 +44,7 @@ class AccountFragment : Fragment(), AccountView {
     override lateinit var uploadSettingsClicks: Observable<OrganizationModel>
 
 
-    override val logoutButtonClicks: Observable<Unit> get() = logout_button.clicks()
+    override val logoutButtonClicks: Observable<Unit> get() = binding.logoutButton.clicks()
 
     private var _binding: AccountInfoFragmentBinding? = null
     private val binding get() = _binding!!
@@ -139,28 +138,28 @@ class AccountFragment : Fragment(), AccountView {
     }
 
     override fun presentEmail(emailAddress: EmailAddress) {
-        login_field_email.text = emailAddress
+        binding.loginFieldEmail.text = emailAddress
     }
 
     override fun presentOrganizations(uiIndicator: UiIndicator<List<OrganizationModel>>) {
         when (uiIndicator.state) {
             UiIndicator.State.Success -> {
-                progress_bar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
 
-                organization_group.visibility = View.VISIBLE
+                binding.organizationGroup.visibility = View.VISIBLE
                 organizationsAdapter.setOrganizations(uiIndicator.data.get())
             }
             UiIndicator.State.Loading -> {
-                organization_group.visibility = View.GONE
-                progress_bar.visibility = View.VISIBLE
+                binding.organizationGroup.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
             }
             UiIndicator.State.Error -> {
-                organization_group.visibility = View.GONE
-                progress_bar.visibility = View.GONE
+                binding.organizationGroup.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
             }
             UiIndicator.State.Idle -> {
-                organization_group.visibility = View.GONE
-                progress_bar.visibility = View.GONE
+                binding.organizationGroup.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
             }
         }
     }
@@ -182,14 +181,14 @@ class AccountFragment : Fragment(), AccountView {
     override fun presentUpdatingResult(uiIndicator: UiIndicator<Unit>) {
         when (uiIndicator.state) {
             UiIndicator.State.Loading -> {
-                progress_bar.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
             }
             UiIndicator.State.Success -> {
                 Toast.makeText(context, getString(R.string.organization_update_success), Toast.LENGTH_SHORT).show()
-                progress_bar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
             }
             UiIndicator.State.Error -> {
-                progress_bar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
                 Toast.makeText(context, getString(R.string.organization_update_error), Toast.LENGTH_SHORT).show()
             }
             else -> {
@@ -199,15 +198,15 @@ class AccountFragment : Fragment(), AccountView {
     }
 
     override fun presentOcrScans(remainingScans: Int) {
-        ocr_scans_remaining.text = getString(R.string.ocr_configuration_scans_remaining, remainingScans)
+        binding.ocrScansRemaining.text = getString(R.string.ocr_configuration_scans_remaining, remainingScans)
 
         val listener: View.OnClickListener = View.OnClickListener { router.navigateToOcrFragment() }
-        ocr_scans_remaining.setOnClickListener(listener)
-        ocr_label.setOnClickListener(listener)
+        binding.ocrScansRemaining.setOnClickListener(listener)
+        binding.ocrLabel.setOnClickListener(listener)
     }
 
     override fun presentSubscriptions(subscriptions: List<RemoteSubscription>) {
-        subscriptions_group.visibility = View.VISIBLE
+        binding.subscriptionsGroup.visibility = View.VISIBLE
 
         subscriptionsAdapter.setSubscriptions(subscriptions)
     }

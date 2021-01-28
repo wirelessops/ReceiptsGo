@@ -17,7 +17,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jakewharton.rxbinding3.widget.RxCompoundButton;
 
@@ -98,7 +97,6 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
         this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter();
         binding.purchasesList.setAdapter(this.ocrPurchasesListAdapter);
-        binding.purchasesList.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         ocrIsEnabledCheckbox = binding.ocrIsEnabled;
         allowUsToSaveImagesRemotelyCheckbox = binding.ocrSaveScansToImproveResults;

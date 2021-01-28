@@ -194,7 +194,7 @@ android {
             transitive = true
         }
 
-        implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:$ADAPTER_DELEGATES_VERSION"
+        implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$ADAPTER_DELEGATES_VERSION"
 
         implementation "com.github.pqpo:SmartCropper:$SMART_CROPPER_VERSION"
 

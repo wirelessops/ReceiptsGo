@@ -6,44 +6,48 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import co.smartreceipts.android.R
+import co.smartreceipts.android.databinding.ItemReceiptCardBinding
 import co.smartreceipts.android.model.Receipt
 import co.smartreceipts.core.sync.provider.SyncProvider
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_receipt_card.*
-
 
 fun receiptAdapterDelegate(itemClickedListener: (Receipt) -> Unit, syncProvider: SyncProvider) =
-    adapterDelegateLayoutContainer<Receipt, Any>(R.layout.item_receipt_card) {
+    adapterDelegateViewBinding<Receipt, Any, ItemReceiptCardBinding>(
+        { layoutInflater, root -> ItemReceiptCardBinding.inflate(layoutInflater, root, false) }
+    ) {
 
         itemView.setOnClickListener { itemClickedListener(item) }
 
         bind {
-            card_menu.visibility = View.GONE
 
-            title.text = item.name
-            price.text = item.price.currencyFormattedPrice
+            binding.apply {
+                cardMenu.visibility = View.GONE
 
-            card_category.visibility = View.VISIBLE
-            card_category.text = item.category.name
+                title.text = item.name
+                price.text = item.price.currencyFormattedPrice
+
+                cardCategory.visibility = View.VISIBLE
+                cardCategory.text = item.category.name
+            }
 
             if (item.hasPDF()) {
-                setIcon(card_image, R.drawable.ic_file_black_24dp)
+                setIcon(binding.cardImage, R.drawable.ic_file_black_24dp)
             } else if (item.hasImage() && item.file != null) {
-                card_image.setPadding(0, 0, 0, 0)
+                binding.cardImage.setPadding(0, 0, 0, 0)
                 Picasso.get()
                     .load(item.file!!)
                     .fit()
                     .centerCrop()
-                    .into(card_image)
+                    .into(binding.cardImage)
             } else {
-                setIcon(card_image, R.drawable.ic_receipt_white_24dp)
+                setIcon(binding.cardImage, R.drawable.ic_receipt_white_24dp)
             }
 
             if (syncProvider == SyncProvider.GoogleDrive) {
                 when {
-                    item.syncState.isSynced(SyncProvider.GoogleDrive) -> card_sync_state.setImageResource(R.drawable.ic_cloud_done_24dp)
-                    else -> card_sync_state.setImageResource(R.drawable.ic_cloud_queue_24dp)
+                    item.syncState.isSynced(SyncProvider.GoogleDrive) -> binding.cardSyncState.setImageResource(R.drawable.ic_cloud_done_24dp)
+                    else -> binding.cardSyncState.setImageResource(R.drawable.ic_cloud_queue_24dp)
                 }
             }
         }

@@ -41,7 +41,6 @@ import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
-import kotlinx.android.synthetic.main.update_distance.*
 import java.sql.Date
 import java.util.*
 import javax.inject.Inject
@@ -157,7 +156,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
         currencyListEditorPresenter =
             CurrencyListEditorPresenter(
-                DefaultCurrencyListEditorView(requireContext()) { spinner_currency },
+                DefaultCurrencyListEditorView(requireContext()) { binding.spinnerCurrency },
                 database,
                 DistanceCurrencyCodeSupplier(parentTrip, editableItem),
                 savedInstanceState
@@ -179,8 +178,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
         // Toolbar stuff
         when {
-            navigationHandler.isDualPane -> toolbar.visibility = View.GONE
-            else -> setSupportActionBar(toolbar as Toolbar)
+            navigationHandler.isDualPane -> binding.toolbar.toolbar.visibility = View.GONE
+            else -> setSupportActionBar(binding.toolbar.toolbar)
         }
 
         supportActionBar?.apply {
@@ -191,18 +190,20 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             subtitle = ""
         }
 
-        if (editableItem == null) {
-            // New Distance
-            text_distance_date.date = suggestedDate
-            text_distance_rate.setText(presenter.getDefaultDistanceRate())
-        } else {
-            // Update distance
-            text_distance_value.setText(editableItem!!.decimalFormattedDistance)
-            text_distance_rate.setText(editableItem!!.decimalFormattedRate)
-            text_distance_location.setText(editableItem!!.location)
-            text_distance_comment.setText(editableItem!!.comment)
-            text_distance_date.date = editableItem!!.date
-            text_distance_date.timeZone = editableItem!!.timeZone
+        binding.apply {
+            if (editableItem == null) {
+                // New Distance
+                textDistanceDate.date = suggestedDate
+                textDistanceRate.setText(presenter.getDefaultDistanceRate())
+            } else {
+                // Update distance
+                textDistanceValue.setText(editableItem!!.decimalFormattedDistance)
+                textDistanceRate.setText(editableItem!!.decimalFormattedRate)
+                textDistanceLocation.setText(editableItem!!.location)
+                textDistanceComment.setText(editableItem!!.comment)
+                textDistanceDate.date = editableItem!!.date
+                textDistanceDate.timeZone = editableItem!!.timeZone
+            }
         }
     }
 
@@ -268,20 +269,20 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     }
 
     private fun setUpFocusBehavior() {
-        text_distance_value.onFocusChangeListener = this
-        text_distance_rate.onFocusChangeListener = this
-        text_distance_location.onFocusChangeListener = this
-        text_distance_date.onFocusChangeListener = this
-        spinner_currency.onFocusChangeListener = this
-        text_distance_comment.onFocusChangeListener = this
-        distance_input_payment_method.onFocusChangeListener = this
+        binding.textDistanceValue.onFocusChangeListener = this
+        binding.textDistanceRate.onFocusChangeListener = this
+        binding.textDistanceLocation.onFocusChangeListener = this
+        binding.textDistanceDate.onFocusChangeListener = this
+        binding.spinnerCurrency.onFocusChangeListener = this
+        binding.textDistanceComment.onFocusChangeListener = this
+        binding.distanceInputPaymentMethod.onFocusChangeListener = this
 
         // And ensure that we do not show the keyboard when clicking these views
         val hideSoftKeyboardOnTouchListener = SoftKeyboardManager.HideSoftKeyboardOnTouchListener()
-        spinner_currency.setOnTouchListener(hideSoftKeyboardOnTouchListener)
-        distance_input_payment_method.setOnTouchListener(hideSoftKeyboardOnTouchListener)
+        binding.spinnerCurrency.setOnTouchListener(hideSoftKeyboardOnTouchListener)
+        binding.distanceInputPaymentMethod.setOnTouchListener(hideSoftKeyboardOnTouchListener)
 
-        text_distance_date.apply {
+        binding.textDistanceDate.apply {
             isFocusable = false
             isFocusableInTouchMode = false
             setDateFormatter(dateFormatter)
@@ -290,7 +291,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
         // Focused View
         if (focusedView == null) {
-            focusedView = text_distance_value
+            focusedView = binding.textDistanceValue
         }
 
     }
@@ -299,27 +300,27 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     private fun constructDistance(): Distance {
         val distanceBuilder: DistanceBuilderFactory = when (editableItem) {
             null -> DistanceBuilderFactory()
-                .setDistance(ModelUtils.tryParse(text_distance_value.text.toString()))
-                .setRate(ModelUtils.tryParse(text_distance_rate.text.toString()))
+                .setDistance(ModelUtils.tryParse(binding.textDistanceValue.text.toString()))
+                .setRate(ModelUtils.tryParse(binding.textDistanceRate.text.toString()))
             else -> DistanceBuilderFactory(editableItem!!)
-                .setDistance(ModelUtils.tryParse(text_distance_value.text.toString(), editableItem!!.distance))
-                .setRate(ModelUtils.tryParse(text_distance_rate.text.toString(), editableItem!!.rate))
+                .setDistance(ModelUtils.tryParse(binding.textDistanceValue.text.toString(), editableItem!!.distance))
+                .setRate(ModelUtils.tryParse(binding.textDistanceRate.text.toString(), editableItem!!.rate))
         }
 
         val paymentMethod: PaymentMethod? =
             if (presenter.isUsePaymentMethods()) {
-                distance_input_payment_method.selectedItem as PaymentMethod
+                binding.distanceInputPaymentMethod.selectedItem as PaymentMethod
             } else {
                 null
             }
 
         return distanceBuilder
             .setTrip(parentTrip)
-            .setLocation(text_distance_location.text.toString())
-            .setDate(text_distance_date.date)
-            .setTimezone(text_distance_date.timeZone)
-            .setCurrency(spinner_currency.selectedItem.toString())
-            .setComment(text_distance_comment.text.toString())
+            .setLocation(binding.textDistanceLocation.text.toString())
+            .setDate(binding.textDistanceDate.date)
+            .setTimezone(binding.textDistanceDate.timeZone)
+            .setCurrency(binding.spinnerCurrency.selectedItem.toString())
+            .setComment(binding.textDistanceComment.text.toString())
             .setPaymentMethod(paymentMethod)
             .build()
     }
@@ -347,14 +348,14 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     override fun displayPaymentMethods(list: List<PaymentMethod>) {
         if (isAdded) {
             paymentMethodsAdapter.update(list)
-            distance_input_payment_method.adapter = paymentMethodsAdapter
+            binding.distanceInputPaymentMethod.adapter = paymentMethodsAdapter
             if (editableItem != null) {
                 // Here we manually loop through all payment methods and check for id == id in case the user changed this via "Manage"
                 val distancePaymentMethod = editableItem!!.paymentMethod
                 for (i in 0 until paymentMethodsAdapter.count) {
                     val paymentMethod = paymentMethodsAdapter.getItem(i)
                     if (paymentMethod != null && paymentMethod.id == distancePaymentMethod.id) {
-                        distance_input_payment_method.setSelection(i)
+                        binding.distanceInputPaymentMethod.setSelection(i)
                         break
                     }
                 }
@@ -364,8 +365,8 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     override fun getTextChangeStream(field: AutoCompleteField): Observable<CharSequence> {
         return when (field) {
-            DistanceAutoCompleteField.Location -> text_distance_location.textChanges()
-            DistanceAutoCompleteField.Comment -> text_distance_comment.textChanges()
+            DistanceAutoCompleteField.Location -> binding.textDistanceLocation.textChanges()
+            DistanceAutoCompleteField.Comment -> binding.textDistanceComment.textChanges()
             else -> throw IllegalArgumentException("Unsupported field type: $field")
         }
     }
@@ -379,15 +380,19 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
                 resultsAdapter = AutoCompleteArrayAdapter(requireContext(), results, this)
                 when (field) {
                     DistanceAutoCompleteField.Location -> {
-                        text_distance_location.setAdapter(resultsAdapter)
-                        if (text_distance_location.hasFocus()) {
-                            text_distance_location.showDropDown()
+                        binding.textDistanceLocation.apply {
+                            setAdapter(resultsAdapter)
+                            if (hasFocus()) {
+                                showDropDown()
+                            }
                         }
                     }
                     DistanceAutoCompleteField.Comment -> {
-                        text_distance_comment.setAdapter(resultsAdapter)
-                        if (text_distance_comment.hasFocus()) {
-                            text_distance_comment.showDropDown()
+                        binding.textDistanceComment.apply {
+                            setAdapter(resultsAdapter)
+                            if (hasFocus()) {
+                                showDropDown()
+                            }
                         }
                     }
                     else -> throw IllegalArgumentException("Unsupported field type: $field")
@@ -400,14 +405,18 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     override fun fillValueField(autoCompleteResult: AutoCompleteResult<Distance>) {
         shouldHideResults = true
-        if (text_distance_location.isPopupShowing) {
-            text_distance_location.setText(autoCompleteResult.displayName)
-            text_distance_location.setSelection(text_distance_location.text.length)
-            text_distance_location.dismissDropDown()
+        if (binding.textDistanceLocation.isPopupShowing) {
+            binding.textDistanceLocation.apply {
+                setText(autoCompleteResult.displayName)
+                setSelection(text.length)
+                dismissDropDown()
+            }
         } else {
-            text_distance_comment.setText(autoCompleteResult.displayName)
-            text_distance_comment.setSelection(text_distance_comment.text.length)
-            text_distance_comment.dismissDropDown()
+            binding.textDistanceComment.apply {
+                setText(autoCompleteResult.displayName)
+                setSelection(text.length)
+                dismissDropDown()
+            }
         }
         SoftKeyboardManager.hideKeyboard(focusedView)
     }
@@ -415,7 +424,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     override fun sendAutoCompleteHideEvent(autoCompleteResult: AutoCompleteResult<Distance>) {
         SoftKeyboardManager.hideKeyboard(focusedView)
         itemToRemoveOrReAdd = autoCompleteResult
-        when(text_distance_location.isPopupShowing) {
+        when(binding.textDistanceLocation.isPopupShowing) {
             true -> _hideAutoCompleteVisibilityClicks.onNext(
                         AutoCompleteUpdateEvent(autoCompleteResult, DistanceAutoCompleteField.Location, resultsAdapter.getPosition(autoCompleteResult)))
             false -> _hideAutoCompleteVisibilityClicks.onNext(
@@ -433,7 +442,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
                 snackbar = Snackbar.make(view, getString(
                         R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd!!.displayName), Snackbar.LENGTH_LONG)
                 snackbar.setAction(R.string.undo) {
-                    if (text_distance_location.hasFocus()) {
+                    if (binding.textDistanceLocation.hasFocus()) {
                         _unHideAutoCompleteVisibilityClicks.onNext(
                             AutoCompleteUpdateEvent(itemToRemoveOrReAdd, DistanceAutoCompleteField.Location, position)
                         )

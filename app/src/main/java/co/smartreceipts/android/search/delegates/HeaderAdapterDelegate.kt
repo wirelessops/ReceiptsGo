@@ -1,13 +1,14 @@
 package co.smartreceipts.android.search.delegates
 
-import co.smartreceipts.android.R
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import kotlinx.android.synthetic.main.item_header.*
+import co.smartreceipts.android.databinding.ItemHeaderBinding
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
-fun headerAdapterDelegate() = adapterDelegateLayoutContainer<HeaderItem, Any>(R.layout.item_header) {
+fun headerAdapterDelegate() = adapterDelegateViewBinding<HeaderItem, Any, ItemHeaderBinding>(
+    { layoutInflater, root -> ItemHeaderBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
-        card_header.text = item.header
+        binding.cardHeader.text = item.header
     }
 }
 

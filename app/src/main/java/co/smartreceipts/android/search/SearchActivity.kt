@@ -17,7 +17,6 @@ import co.smartreceipts.android.search.delegates.HeaderItem
 import co.smartreceipts.android.sync.BackupProvidersManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
 class SearchActivity : AppCompatActivity(), SearchView {
@@ -30,7 +29,7 @@ class SearchActivity : AppCompatActivity(), SearchView {
     }
 
     override val inputChanges
-        get() = search_view.queryTextChanges().skipInitialValue()
+        get() = binding.searchView.queryTextChanges().skipInitialValue()
 
     @Inject
     lateinit var presenter: SearchPresenter
@@ -54,12 +53,17 @@ class SearchActivity : AppCompatActivity(), SearchView {
         setContentView(binding.root)
 
         // sets the focus and opens the keyboard
-        search_view.isIconified = false
+        binding.searchView.isIconified = false
 
-        adapter = SearchResultsDelegationAdapter({ navigateToTrip(it) }, { navigateToReceipt(it) }, dateFormatter, backupProvidersManager.syncProvider)
+        adapter = SearchResultsDelegationAdapter(
+            { navigateToTrip(it) },
+            { navigateToReceipt(it) },
+            dateFormatter,
+            backupProvidersManager.syncProvider
+        )
 
-        results_list.layoutManager = LinearLayoutManager(this)
-        results_list.adapter = adapter
+        binding.resultsList.layoutManager = LinearLayoutManager(this)
+        binding.resultsList.adapter = adapter
     }
 
     override fun onResume() {
@@ -95,21 +99,23 @@ class SearchActivity : AppCompatActivity(), SearchView {
     }
 
     override fun presentSearchResults(searchResults: SearchInteractor.SearchResults) {
-        TransitionManager.beginDelayedTransition(container, AutoTransition().setDuration(100))
+        TransitionManager.beginDelayedTransition(binding.container, AutoTransition().setDuration(100))
 
-        if (searchResults.isEmpty()) {
-            results_list.visibility = View.GONE
+        binding.apply {
+            if (searchResults.isEmpty()) {
+                resultsList.visibility = View.GONE
 
-            search_hint.visibility = if (search_view.query.isEmpty()) View.VISIBLE else View.GONE
-            no_results_text.visibility = if (search_view.query.isNotEmpty()) View.VISIBLE else View.GONE
+                searchHint.visibility = if (searchView.query.isEmpty()) View.VISIBLE else View.GONE
+                noResultsText.visibility = if (searchView.query.isNotEmpty()) View.VISIBLE else View.GONE
 
-        } else {
-            results_list.visibility = View.VISIBLE
-            search_hint.visibility = View.GONE
-            no_results_text.visibility = View.GONE
+            } else {
+                resultsList.visibility = View.VISIBLE
+                searchHint.visibility = View.GONE
+                noResultsText.visibility = View.GONE
+            }
         }
 
-        val results : MutableList<Any> = arrayListOf()
+        val results: MutableList<Any> = arrayListOf()
         if (searchResults.trips.isNotEmpty()) {
             results.add(HeaderItem(getString(R.string.reports_title)))
             results.addAll(searchResults.trips)

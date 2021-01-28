@@ -14,6 +14,7 @@ import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
+import co.smartreceipts.android.databinding.ReceiptImageFragmentBinding
 import co.smartreceipts.android.images.CropImageActivity
 import co.smartreceipts.android.imports.CameraInteractionController
 import co.smartreceipts.android.imports.RequestCodes
@@ -33,8 +34,6 @@ import com.squareup.picasso.Picasso
 import dagger.Lazy
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.receipt_image_view.*
-import kotlinx.android.synthetic.main.receipt_image_view.view.*
 import wb.android.flex.Flex
 import javax.inject.Inject
 
@@ -74,6 +73,9 @@ class ReceiptImageFragment : WBFragment() {
     @Inject
     lateinit var picasso: Lazy<Picasso>
 
+    private var _binding: ReceiptImageFragmentBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var imageUpdatedListener: ImageUpdatedListener
     private lateinit var compositeDisposable: CompositeDisposable
 
@@ -98,20 +100,20 @@ class ReceiptImageFragment : WBFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.receipt_image_view, container, false)
+        _binding = ReceiptImageFragmentBinding.inflate(inflater, container, false)
 
-        rootView.button_edit_photo.setOnClickListener { view ->
+        binding.buttonEditPhoto.setOnClickListener { view ->
             analytics.record(Events.Receipts.ReceiptImageViewEditPhoto)
             imageCroppingPreferenceStorage.setCroppingScreenWasShown(true)
             navigationHandler.navigateToCropActivity(this, receipt!!.file!!, RequestCodes.EDIT_IMAGE_CROP)
         }
 
-        rootView.button_retake_photo.setOnClickListener { view ->
+        binding.buttonRetakePhoto.setOnClickListener { view ->
             analytics.record(Events.Receipts.ReceiptImageViewRetakePhoto)
             imageUri = CameraInteractionController(this@ReceiptImageFragment).retakePhoto(receipt!!)
         }
 
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -157,12 +159,12 @@ class ReceiptImageFragment : WBFragment() {
             .subscribe { locatorResponse ->
                 when {
                     locatorResponse.throwable.isPresent -> {
-                        receipt_image_progress.visibility = View.GONE
+                        binding.receiptImageProgress.visibility = View.GONE
                         Toast.makeText(activity, getFlexString(R.string.FILE_SAVE_ERROR), Toast.LENGTH_SHORT).show()
                         activityFileResultLocator.markThatResultsWereConsumed()
                     }
                     else -> {
-                        receipt_image_progress.visibility = View.VISIBLE
+                        binding.receiptImageProgress.visibility = View.VISIBLE
                         activityFileResultImporter.importFile(
                             locatorResponse.requestCode,
                             locatorResponse.resultCode, locatorResponse.uri!!, receipt!!.trip
@@ -180,7 +182,7 @@ class ReceiptImageFragment : WBFragment() {
                         receiptTableController.update(receipt!!, retakeReceipt, DatabaseOperationMetadata())
                     }
                 }
-                receipt_image_progress.visibility = View.GONE
+                binding.receiptImageProgress.visibility = View.GONE
                 activityFileResultLocator.markThatResultsWereConsumed()
                 activityFileResultImporter.markThatResultsWereConsumed()
             })
@@ -243,21 +245,21 @@ class ReceiptImageFragment : WBFragment() {
 
         if (receipt!!.hasImage()) {
             receipt!!.file?.let {
-                receipt_image_progress.visibility = View.VISIBLE
+                binding.receiptImageProgress.visibility = View.VISIBLE
 
                 picasso.get().load(it).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().centerInside()
-                    .into(receipt_image_imageview, object : Callback {
+                    .into(binding.receiptImageImageview, object : Callback {
 
                         override fun onSuccess() {
-                            receipt_image_progress.visibility = View.GONE
+                            binding.receiptImageProgress.visibility = View.GONE
 
-                            receipt_image_imageview.visibility = View.VISIBLE
-                            button_edit_photo.visibility = View.VISIBLE
-                            button_retake_photo.visibility = View.VISIBLE
+                            binding.receiptImageImageview.visibility = View.VISIBLE
+                            binding.buttonEditPhoto.visibility = View.VISIBLE
+                            binding.buttonRetakePhoto.visibility = View.VISIBLE
                         }
 
                         override fun onError(e: Exception) {
-                            receipt_image_progress.visibility = View.GONE
+                            binding.receiptImageProgress.visibility = View.GONE
                             Toast.makeText(requireContext(), getFlexString(R.string.IMG_OPEN_ERROR), Toast.LENGTH_SHORT).show()
                         }
                     })
@@ -279,7 +281,7 @@ class ReceiptImageFragment : WBFragment() {
 
         override fun onUpdateFailure(oldReceipt: Receipt, e: Throwable?, databaseOperationMetadata: DatabaseOperationMetadata) {
             if (databaseOperationMetadata.operationFamilyType != OperationFamilyType.Sync) {
-                receipt_image_progress.visibility = View.GONE
+                binding.receiptImageProgress.visibility = View.GONE
                 Toast.makeText(requireContext(), getFlexString(R.string.database_error), Toast.LENGTH_SHORT).show()
             }
         }
