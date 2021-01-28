@@ -17,7 +17,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jakewharton.rxbinding3.widget.RxCompoundButton;
 
@@ -27,14 +27,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.R;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.android.databinding.OcrConfigurationFragmentBinding;
-import co.smartreceipts.android.databinding.SimpleRecyclerViewBinding;
-import co.smartreceipts.core.identity.store.EmailAddress;
-import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.R;
+import co.smartreceipts.android.databinding.OcrConfigurationFragmentBinding;
+import co.smartreceipts.android.purchases.model.AvailablePurchase;
+import co.smartreceipts.core.identity.store.EmailAddress;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -42,7 +41,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class OcrConfigurationFragment extends Fragment implements OcrConfigurationView {
 
-    private static String OUT_STRING_DELAYED_PURCHASE = "out_string_delayed_purchase_id";
+    private static final String OUT_STRING_DELAYED_PURCHASE = "out_string_delayed_purchase_id";
 
     @Inject
     OcrConfigurationPresenter presenter;
@@ -57,8 +56,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     private CheckBox allowUsToSaveImagesRemotelyCheckbox;
 
     private OcrPurchasesListAdapter ocrPurchasesListAdapter;
-    private SimpleRecyclerViewBinding rootBinding;
-    private OcrConfigurationFragmentBinding headerBinding;
+    private OcrConfigurationFragmentBinding binding;
 
     private String delayedPurchaseId = null;
     private PublishSubject<String> delayedPurchaseIdSubject = PublishSubject.create();
@@ -96,17 +94,16 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootBinding = SimpleRecyclerViewBinding.inflate(inflater, container, false);
+        binding = OcrConfigurationFragmentBinding.inflate(inflater, container, false);
 
-        final RecyclerView recyclerView = rootBinding.list;
-        headerBinding = OcrConfigurationFragmentBinding.inflate(inflater, container, false);
-        this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter(headerBinding.getRoot());
-        recyclerView.setAdapter(this.ocrPurchasesListAdapter);
+        this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter();
+        binding.purchasesList.setAdapter(this.ocrPurchasesListAdapter);
+        binding.purchasesList.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        ocrIsEnabledCheckbox = headerBinding.ocrIsEnabled;
-        allowUsToSaveImagesRemotelyCheckbox = headerBinding.ocrSaveScansToImproveResults;
+        ocrIsEnabledCheckbox = binding.ocrIsEnabled;
+        allowUsToSaveImagesRemotelyCheckbox = binding.ocrSaveScansToImproveResults;
 
-        return rootBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
@@ -159,8 +156,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     public void onDestroyView() {
         ocrPurchasesListAdapter = null;
         super.onDestroyView();
-        rootBinding = null;
-        headerBinding = null;
+        binding = null;
     }
 
     @Override

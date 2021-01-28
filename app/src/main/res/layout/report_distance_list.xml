@@ -5,13 +5,11 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
-        android:text="@string/distance"
-        android:textColor="@color/text_primary_color"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:text="@string/distance" />
 
     <ListView
         android:id="@android:id/list"

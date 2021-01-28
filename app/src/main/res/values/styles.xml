@@ -118,6 +118,14 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="Widget.SmartReceipts.TextView.FragmentTitle">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="Widget.SmartReceipts.Button" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button</item>
         <item name="android:textStyle">bold</item>
