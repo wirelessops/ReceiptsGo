@@ -81,10 +81,6 @@ public class CardAdapter<T> extends BaseAdapter {
         return context;
     }
 
-    public final UserPreferenceManager getPreferences() {
-        return preferences;
-    }
-
     private static class TripDistanceViewHolder {
         public TextView price;
         public TextView name;

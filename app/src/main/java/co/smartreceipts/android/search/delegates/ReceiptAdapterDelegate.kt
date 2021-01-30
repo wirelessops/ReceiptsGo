@@ -44,6 +44,7 @@ fun receiptAdapterDelegate(itemClickedListener: (Receipt) -> Unit, syncProvider:
                 setIcon(binding.cardImage, R.drawable.ic_receipt_white_24dp)
             }
 
+            // TODO: 28.01.2021 why this logic is not same with CardAdapter?
             if (syncProvider == SyncProvider.GoogleDrive) {
                 when {
                     item.syncState.isSynced(SyncProvider.GoogleDrive) -> binding.cardSyncState.setImageResource(R.drawable.ic_cloud_done_24dp)

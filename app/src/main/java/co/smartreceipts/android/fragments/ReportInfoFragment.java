@@ -344,5 +344,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             binding.fab.show();
             binding.bottomAppBar.placeholder.setVisibility(View.VISIBLE);
         }
+
+        binding.bottomAppBar.getRoot().performShow();
     }
 }
