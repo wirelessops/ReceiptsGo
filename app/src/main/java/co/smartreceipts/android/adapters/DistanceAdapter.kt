@@ -7,4 +7,9 @@ import co.smartreceipts.android.sync.BackupProvidersManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class DistanceAdapter(distanceClickListener: (Distance) -> Unit, backupProvidersManager: BackupProvidersManager) :
-    ListDelegationAdapter<List<Any>>(doubleHeaderAdapterDelegate(), distanceAdapterDelegate(distanceClickListener, backupProvidersManager))
+    ListDelegationAdapter<List<Any>>(
+        doubleHeaderAdapterDelegate(),
+        distanceAdapterDelegate(distanceClickListener, backupProvidersManager)
+    )
+
+interface DistanceListItem

@@ -1,5 +1,6 @@
 package co.smartreceipts.android.search.delegates
 
+import co.smartreceipts.android.adapters.DistanceListItem
 import co.smartreceipts.android.databinding.ItemHeaderDoubleBinding
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
@@ -13,4 +14,4 @@ fun doubleHeaderAdapterDelegate() = adapterDelegateViewBinding<DoubleHeaderItem,
     }
 }
 
-data class DoubleHeaderItem(val headerLeft: String, val headerRight: String)
+data class DoubleHeaderItem(val headerLeft: String, val headerRight: String) : DistanceListItem

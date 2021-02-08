@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.SmartReceipts.RelativeLayout">
@@ -7,30 +7,49 @@
     <TextView
         android:id="@+id/title"
         style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:text="@string/distance" />
+        android:text="@string/distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_distances"
         style="@style/Widget.SmartReceipts.ListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title"
+        android:layout_height="0dp"
         android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:listitem="@layout/item_trip_or_distance_card" />
 
     <ProgressBar
         android:id="@+id/progress"
-        style="@style/Widget.SmartReceipts.ProgressBar.Loading" />
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/no_data_image"
+        style="@style/Widget.SmartReceipts.ImageView.NoData"
+        android:src="@drawable/ic_distances"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/no_data"
+        android:id="@+id/no_data_text"
         style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/distance_no_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_data_image" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/no_data"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
+        app:constraint_referenced_ids="no_data_text, no_data_image"
         tools:visibility="visible" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

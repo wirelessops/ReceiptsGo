@@ -6,6 +6,7 @@
     <color name="violet_dark">#301B92</color>
     <color name="bottom_navigation_color">@android:color/white</color>
     <color name="navigation_inactive">#B5B3B8</color>
+    <color name="no_data_image_tint">#D9D7E0</color>
 
     <!-- Palette for Core App (Material Palette) -->
     <color name="smart_receipts_colorPrimary">@color/violet</color>

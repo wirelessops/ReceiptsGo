@@ -25,6 +25,7 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.DistanceAdapter;
+import co.smartreceipts.android.adapters.DistanceListItem;
 import co.smartreceipts.android.databinding.ReportDistanceListBinding;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
@@ -48,7 +49,6 @@ import kotlin.Unit;
 
 public class DistanceFragment extends WBFragment implements TripForeignKeyTableEventsListener<Distance>, FabClickListener {
 
-    // TODO: 26.01.2021 if we need title to scroll - it also should be an item type to save RecyclerView inner optimizations
     // TODO: 27.01.2021 probably would be better to make deletion process similar to other items (show this option on long tap)
 
 
@@ -147,8 +147,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
     public void onGetSuccess(@NonNull List<Distance> distances, @NonNull Trip trip) {
         if (isAdded()) {
             // TODO: 29.01.2021 presenter + interactor
-            // TODO: 29.01.2021 create interface instead of using Object
-            final List<Object> resultList = new ArrayList<>();
+            final List<DistanceListItem> resultList = new ArrayList<>();
 
             Observable.fromIterable(distances)
                     .subscribeOn(Schedulers.computation())
@@ -172,6 +171,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
                     )
                     .toList()
                     .subscribe(pairs -> {
+                        // add content
                         for (Pair<DoubleHeaderItem, List<Distance>> pair : pairs) {
                             resultList.add(pair.component1());
                             resultList.addAll(pair.component2());
