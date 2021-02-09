@@ -8,7 +8,7 @@ fun headerAdapterDelegate() = adapterDelegateViewBinding<HeaderItem, Any, ItemHe
 ) {
 
     bind {
-        binding.cardHeader.text = item.header
+        binding.header.text = item.header
     }
 }
 

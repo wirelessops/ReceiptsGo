@@ -179,13 +179,16 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
 
                         distanceAdapter.setItems(resultList);
                         distanceAdapter.notifyDataSetChanged();
-                        binding.progress.setVisibility(View.GONE);
-                        if (distances.isEmpty()) {
-                            binding.listDistances.setVisibility(View.GONE);
-                            binding.noData.setVisibility(View.VISIBLE);
-                        } else {
-                            binding.noData.setVisibility(View.GONE);
-                            binding.listDistances.setVisibility(View.VISIBLE);
+                        
+                        if (binding != null) {
+                            binding.progress.setVisibility(View.GONE);
+                            if (distances.isEmpty()) {
+                                binding.listDistances.setVisibility(View.GONE);
+                                binding.noData.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.noData.setVisibility(View.GONE);
+                                binding.listDistances.setVisibility(View.VISIBLE);
+                            }
                         }
                         updateSubtitle();
                     });

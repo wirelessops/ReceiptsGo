@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/title"
         style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
-        android:text="@string/distance"
+        android:text="@string/report_info_distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,12 +20,15 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
-        tools:listitem="@layout/item_trip_or_distance_card" />
+        tools:listitem="@layout/item_default_content" />
 
     <ProgressBar
         android:id="@+id/progress"
-        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading"/>
 
     <ImageView
         android:id="@+id/no_data_image"

@@ -7,6 +7,9 @@
     <color name="bottom_navigation_color">@android:color/white</color>
     <color name="navigation_inactive">#B5B3B8</color>
     <color name="no_data_image_tint">#D9D7E0</color>
+    <color name="receipt_image_tint">#E1E0E2</color>
+
+    <color name="text_secondary_pale">#A7A3AB</color>
 
     <!-- Palette for Core App (Material Palette) -->
     <color name="smart_receipts_colorPrimary">@color/violet</color>
@@ -19,7 +22,7 @@
     <color name="smart_receipts_colorSuccess">#2e7d32</color>
     <color name="smart_receipts_colorError">#c62828</color>
     <color name="text_primary_color">@android:color/black</color>
-    <color name="text_secondary_color">#7F7A86</color>
+    <color name="text_secondary_color">#716C76</color>
     <color name="accent_text_primary_color">@color/text_primary_color</color>
     <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="fab_transparency_mask">#40FFFFFF</color>

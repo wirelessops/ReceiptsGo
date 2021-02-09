@@ -1,9 +1,11 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Preconditions;
 
@@ -14,6 +16,8 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 
 public class TripCardAdapter extends CardAdapter<Trip> {
+
+	// TODO: 2/9/21 migrate to adapter delegates
 
     private final DateFormatter dateFormatter;
 
@@ -45,6 +49,9 @@ public class TripCardAdapter extends CardAdapter<Trip> {
 		final String start = dateFormatter.getFormattedDate(data.getStartDisplayableDate());
 		final String end = dateFormatter.getFormattedDate(data.getEndDisplayableDate());
 		textView.setText(getContext().getString(R.string.trip_adapter_list_item_to, start, end));
+		textView.setTypeface(null, Typeface.NORMAL);
+		textView.setTextColor(ContextCompat.getColor(textView.getContext(), R.color.text_secondary_color));
+
 	}
 
 }

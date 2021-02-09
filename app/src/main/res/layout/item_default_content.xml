@@ -5,19 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="1dp"
-    android:background="@color/bottom_navigation_color">
+    android:background="@color/bottom_navigation_color"
+    android:paddingTop="@dimen/padding_normal"
+    android:paddingBottom="@dimen/padding_normal">
 
     <TextView
         android:id="@+id/text_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginBottom="@dimen/margin_tiny"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/text_primary_color"
         android:textSize="15sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/text_details"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,6 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_tiny"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="@dimen/margin_normal"
         android:ellipsize="end"
         android:gravity="end"
@@ -35,27 +40,28 @@
         android:textColor="@color/text_primary_color"
         android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/text_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="@id/text_name"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="$800" />
 
     <TextView
         android:id="@+id/text_details"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_tiny"
+        android:layout_marginBottom="@dimen/margin_tiny"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/text_secondary_pale"
         android:textSize="13sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/image_sync_state"
         app:layout_constraintStart_toStartOf="@id/text_name"
         app:layout_constraintTop_toBottomOf="@id/text_name"
-        tools:text="12.04.2020 -> 12.02.2021" />
+        tools:text="12.04.2020 -> 12.02.2021"
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -68,10 +74,11 @@
         android:id="@+id/image_sync_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/text_details"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginBottom="@dimen/margin_tiny"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/text_price"
         app:layout_constraintTop_toBottomOf="@id/text_price"
-        app:layout_constraintTop_toTopOf="@id/text_details"
         app:tint="@color/navigation_inactive"
         tools:src="@drawable/ic_cloud_done_24dp" />
 

@@ -95,7 +95,7 @@ public class CardAdapter<T> extends BaseAdapter {
         TripDistanceViewHolder holder;
         final T data = getItem(i);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_trip_or_distance_card, parent, false);
+            convertView = inflater.inflate(R.layout.item_default_content, parent, false);
             holder = new TripDistanceViewHolder();
             holder.price = convertView.findViewById(R.id.text_price);
             holder.name = convertView.findViewById(R.id.text_name);

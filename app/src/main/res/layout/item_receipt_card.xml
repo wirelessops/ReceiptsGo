@@ -1,118 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_tiniest"
-    android:layout_marginEnd="@dimen/margin_tiny"
-    android:layout_marginStart="@dimen/margin_tiny"
-    android:layout_marginTop="@dimen/margin_tiniest"
-    android:background="@drawable/card_selector"
-    app:cardCornerRadius="@dimen/card_corner_radius">
+    android:layout_marginBottom="1dp"
+    android:background="@color/bottom_navigation_color">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/receipt_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/content"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/content"
+        tools:background="@color/no_data_image_tint" />
 
-        <ImageView
-            android:id="@+id/card_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="@dimen/padding_small"
-            android:src="@drawable/ic_menu_24dp"
-            android:tint="@color/text_secondary_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+    <include
+        android:id="@+id/content"
+        layout="@layout/item_default_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/receipt_image"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/card_sync_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_tiny"
-            android:layout_marginStart="@dimen/margin_tiny"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="@dimen/padding_small"
-            android:tint="@color/text_secondary_color"
-            app:srcCompat="@drawable/ic_cloud_off_24dp"
-            app:layout_constraintEnd_toStartOf="@id/card_menu"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_tiny"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/text_primary_color"
-            android:textSize="@dimen/font_subhead"
-            app:layout_constraintEnd_toStartOf="@+id/card_sync_state"
-            app:layout_constraintStart_toEndOf="@id/card_image"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Title" />
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_tiny"
-            android:layout_toStartOf="@+id/card_category"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/text_primary_color"
-            android:textSize="@dimen/font_headline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/card_category"
-            app:layout_constraintStart_toEndOf="@id/card_image"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            tools:text="20$" />
-
-
-        <TextView
-            android:id="@+id/card_category"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/margin_tiny"
-            android:layout_marginEnd="@dimen/margin_tiny"
-            android:layout_marginTop="@dimen/margin_tiny"
-            android:ellipsize="end"
-            android:gravity="bottom"
-            android:lines="1"
-            android:maxWidth="70dp"
-            android:textColor="@color/text_primary_color"
-            android:textSize="@dimen/font_caption"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_menu"
-            tools:text="category long long name"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/card_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/card_image_background"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="@dimen/padding_normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:tint="@color/card_image_tint"
-            tools:src="@drawable/ic_file_black_24dp"
-            tools:ignore="ContentDescription" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
