@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,10 +29,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.R;
-import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.R;
+import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.databinding.ReportReceiptsFragmentBinding;
 import co.smartreceipts.android.date.DateFormatter;
@@ -63,7 +63,6 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.rxbinding2.RxFloatingActionMenu;
 import dagger.android.support.AndroidSupportInjection;
@@ -115,7 +114,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     Picasso picasso;
 
     private ProgressBar loadingProgress;
-    private TextView noDataAlert;
+    private View noDataAlert;
     private View receiptActionCameraButton;
     private View receiptActionTextButton;
     private View receiptActionImportButton;
