@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -113,8 +112,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     @Inject
     Picasso picasso;
 
-    private ProgressBar loadingProgress;
-    private View noDataAlert;
     private View receiptActionCameraButton;
     private View receiptActionTextButton;
     private View receiptActionImportButton;
@@ -165,8 +162,6 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         // And inflate the root view
         binding = ReportReceiptsFragmentBinding.inflate(inflater, container, false);
 
-        loadingProgress = binding.progress;
-        noDataAlert = binding.noData;
         receiptActionCameraButton = binding.receiptActionCamera;
         receiptActionTextButton = binding.receiptActionText;
         receiptActionImportButton = binding.receiptActionImport;
@@ -262,20 +257,20 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
     @Override
     public void present(@NotNull UiIndicator<Integer> indicator) {
-        if (loadingProgress != null) {
+        if (binding != null) {
             switch (indicator.getState()) {
                 case Loading:
-                    loadingProgress.setVisibility(View.VISIBLE);
+                    binding.progress.setVisibility(View.VISIBLE);
                     break;
                 case Error:
                 case Success:
-                    loadingProgress.setVisibility(View.GONE);
+                    binding.progress.setVisibility(View.GONE);
                     if (indicator.getData().isPresent()) {
                         Toast.makeText(getActivity(), getFlexString(indicator.getData().get()), Toast.LENGTH_SHORT).show();
                     }
                     break;
                 default:
-                    loadingProgress.setVisibility(View.GONE);
+                    binding.progress.setVisibility(View.GONE);
             }
         }
     }
@@ -349,7 +344,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         final Uri cachedImageSaveLocation = imageUri;
         imageUri = null;
 
-        loadingProgress.setVisibility(View.VISIBLE);
+        binding.progress.setVisibility(View.VISIBLE);
 
         presenter.handleActivityResult(requestCode, resultCode, data, cachedImageSaveLocation);
     }
@@ -366,6 +361,11 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     @Override
     protected PersistenceManager getPersistenceManager() {
         return persistenceManager;
+    }
+
+    @Override
+    protected void setNextId(int nextId) {
+        binding.textNextId.setText(getString(R.string.next_id, nextId));
     }
 
     public void showAttachmentDialog(@NonNull final Receipt receipt) {
@@ -420,12 +420,12 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         if (isAdded()) {
             super.onGetSuccess(receipts);
 
-            loadingProgress.setVisibility(View.GONE);
+            binding.progress.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             if (receipts.isEmpty()) {
-                noDataAlert.setVisibility(View.VISIBLE);
+                binding.noData.setVisibility(View.VISIBLE);
             } else {
-                noDataAlert.setVisibility(View.INVISIBLE);
+                binding.noData.setVisibility(View.INVISIBLE);
             }
             updateActionBarTitle(getUserVisibleHint());
 

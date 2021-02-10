@@ -47,10 +47,7 @@ public abstract class ReceiptsFragment extends DraggableListFragment<Receipt, Re
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(receiptId ->  {
                                     if (isResumed()) {
-                                        final ActionBar bar = getSupportActionBar();
-                                        if (bar != null) {
-                                            bar.setSubtitle(getString(R.string.next_id, receiptId));
-                                        }
+                                        setNextId(receiptId);
                                     }
                             });
                 } else {
@@ -62,5 +59,6 @@ public abstract class ReceiptsFragment extends DraggableListFragment<Receipt, Re
 
     protected abstract PersistenceManager getPersistenceManager();
 
+    protected abstract void setNextId(int nextId);
 
 }

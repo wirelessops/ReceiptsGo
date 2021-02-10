@@ -36,7 +36,7 @@
     <string name="item_name">שם</string>
     <string name="move">הזז</string>
     <string name="move_copy_item">\?%s הזז/העתק את</string>
-    <string name="next_id">%s :המזהה הבא</string>
+    <string name="next_id">%d :המזהה הבא</string>
     <string name="no">לא</string>
     <string name="pdf">PDF</string>
     <string name="rename">שנה שם</string>
