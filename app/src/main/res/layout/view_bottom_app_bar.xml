@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.bottomappbar.BottomAppBar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -9,7 +10,8 @@
     app:contentInsetStart="0dp"
     app:fabCradleMargin="@dimen/margin_tiny"
     app:fabCradleRoundedCornerRadius="8dp"
-    app:hideOnScroll="true">
+    app:hideOnScroll="true"
+    tools:ignore="BottomAppBar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +23,13 @@
             android:id="@+id/navigation_receipts"
             style="@style/Widget.SmartReceipts.BottomNavigationIcon"
             android:contentDescription="@string/report_info_receipts"
-            android:src="@drawable/ic_receipt_new" />
+            app:srcCompat="@drawable/ic_receipt_new" />
 
         <ImageView
             android:id="@+id/navigation_distances"
             style="@style/Widget.SmartReceipts.BottomNavigationIcon"
             android:contentDescription="@string/report_info_distance"
-            android:src="@drawable/ic_dist_rect" />
+            app:srcCompat="@drawable/ic_dist_rect" />
 
         <View
             android:id="@+id/placeholder"
@@ -40,13 +42,13 @@
             android:id="@+id/navigation_generate"
             style="@style/Widget.SmartReceipts.BottomNavigationIcon"
             android:contentDescription="@string/report_info_generate"
-            android:src="@drawable/ic_share" />
+            app:srcCompat="@drawable/ic_share" />
 
         <ImageView
             android:id="@+id/navigation_graphs"
             style="@style/Widget.SmartReceipts.BottomNavigationIcon"
             android:contentDescription="@string/report_info_graphs"
-            android:src="@drawable/ic_graphs" />
+            app:srcCompat="@drawable/ic_graphs" />
 
     </LinearLayout>
 

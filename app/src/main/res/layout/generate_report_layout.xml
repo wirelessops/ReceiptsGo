@@ -71,7 +71,7 @@
             android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
     </LinearLayout>
 
-    <com.github.clans.fab.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/receipt_action_send"
         style="@style/Widget.SmartReceipts.FloatingActionButton"
         android:src="@drawable/ic_send_24dp" />
