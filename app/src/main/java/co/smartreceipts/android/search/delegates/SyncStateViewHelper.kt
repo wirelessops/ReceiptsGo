@@ -11,6 +11,10 @@ import com.squareup.picasso.Picasso
 
 object SyncStateViewHelper {
 
+    /**
+     * This function sets correct sync state image for trip or distance object
+     * For receipts another logic should be used
+     */
     fun setSyncStateImage(image: ImageView, data: Syncable, backupProvidersManager: BackupProvidersManager) {
 
         val context = image.context
@@ -19,7 +23,7 @@ object SyncStateViewHelper {
         val notSyncedDrawable = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_cloud_queue_24dp, context.theme)
         val syncedDrawable = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_cloud_done_24dp, context.theme)
 
-        image.isClickable = false // TODO: 28.01.2021  check this for all cases
+        image.isClickable = false
 
             if (backupProvidersManager.syncProvider === SyncProvider.GoogleDrive) {
                 if (backupProvidersManager.lastDatabaseSyncTime.time >= data.syncState.lastLocalModificationTime.time

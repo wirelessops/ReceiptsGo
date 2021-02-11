@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.SmartReceipts.RelativeLayout">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@android:id/list"
         style="@style/Widget.SmartReceipts.ListView"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -23,7 +24,6 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/trip_action_new"
         style="@style/Widget.SmartReceipts.FloatingActionButton"
-        android:src="@drawable/ic_round_add_24"
-         />
+        android:src="@drawable/ic_round_add_24" />
 
 </RelativeLayout>

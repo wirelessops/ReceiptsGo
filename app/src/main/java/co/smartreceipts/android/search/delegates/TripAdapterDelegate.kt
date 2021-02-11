@@ -10,21 +10,45 @@ import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.sync.BackupProvidersManager
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
+interface SelectedItemIdHolder {
+    var selectedItemId: Int
+}
+
 fun tripAdapterDelegate(
-    itemClickedListener: (Trip) -> Unit, dateFormatter: DateFormatter, backupProvidersManager: BackupProvidersManager?
+    itemClickedListener: (Trip) -> Unit,
+    itemLongClickedListener: (Trip) -> Unit,
+    dateFormatter: DateFormatter,
+    backupProvidersManager: BackupProvidersManager? = null,
+    selectedItemIdHolder: SelectedItemIdHolder? = null
 ) =
     adapterDelegateViewBinding<Trip, Any, ItemDefaultContentBinding>({ layoutInflater, root ->
         ItemDefaultContentBinding.inflate(layoutInflater, root, false)
     }) {
 
-        // TODO: 28.01.2021 add nullable params and handle sync state images (from CardAdapter)
-        // TODO: 28.01.2021 don't forget about selection marker
-
-        // TODO: 2/9/21 use it for tripsFragment
+        val colorSelected = ContextCompat.getColor(context, R.color.smart_receipts_colorPrimary)
+        val colorDefault = ContextCompat.getColor(context, R.color.text_primary_color)
 
         itemView.setOnClickListener { itemClickedListener(item) }
 
+        itemView.setOnLongClickListener {
+            itemLongClickedListener(item)
+            true
+        }
+
         bind {
+
+            val selectedItemId = selectedItemIdHolder?.selectedItemId ?: -1
+
+            if (item.id == selectedItemId) {
+                binding.imageSelectionMarker.visibility = View.VISIBLE
+                binding.textName.setTextColor(colorSelected)
+                binding.textPrice.setTextColor(colorSelected)
+            } else {
+                binding.imageSelectionMarker.visibility = View.GONE
+                binding.textName.setTextColor(colorDefault)
+                binding.textPrice.setTextColor(colorDefault)
+            }
+
             binding.textPrice.text = item.price.currencyFormattedPrice
             binding.textName.text = item.name
 

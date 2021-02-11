@@ -17,6 +17,6 @@ class SearchResultsDelegationAdapter(
 ) : AsyncListDifferDelegationAdapter<Any>(
     SearchResultsDiffUtilCallback(),
     headerAdapterDelegate(),
-    tripAdapterDelegate(tripClickListener, dateFormatter, null),
+    tripAdapterDelegate(tripClickListener, {}, dateFormatter),
     receiptAdapterDelegate(receiptClickListener, syncProvider)
 )

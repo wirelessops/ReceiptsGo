@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,12 +24,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
-import co.smartreceipts.android.adapters.TripCardAdapter;
+import co.smartreceipts.android.adapters.TripAdapter;
 import co.smartreceipts.android.databinding.TripsFragmentLayoutBinding;
 import co.smartreceipts.android.date.DateFormatter;
-import co.smartreceipts.android.fragments.WBListFragment;
+import co.smartreceipts.android.fragments.WBFragment;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.LastTripMonitor;
 import co.smartreceipts.android.persistence.database.controllers.TableEventsListener;
@@ -43,7 +40,6 @@ import co.smartreceipts.android.purchases.plus.SmartReceiptsTitle;
 import co.smartreceipts.android.receipts.ReceiptsFragment;
 import co.smartreceipts.android.search.SearchResultKeeper;
 import co.smartreceipts.android.search.Searchable;
-import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.TooltipView;
@@ -52,17 +48,15 @@ import co.smartreceipts.android.tooltip.model.TooltipType;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
-import co.smartreceipts.analytics.log.Logger;
-import co.smartreceipts.android.widget.tooltip.Tooltip;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
+import kotlin.Unit;
 import wb.android.flex.Flex;
 
-public class TripFragment extends WBListFragment implements TableEventsListener<Trip>,
-        AdapterView.OnItemLongClickListener, TooltipView, ViewReceiptsInTripRouter {
+public class TripFragment extends WBFragment implements TableEventsListener<Trip>, TooltipView, ViewReceiptsInTripRouter {
 
-    private static final String OUT_SELECTED_TRIP = "out_selected_trip";
+    private static final String OUT_SELECTED_TRIP_ID = "out_selected_trip_id";
 
     @Inject
     Flex flex;
@@ -75,9 +69,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Inject
     BackupProvidersManager backupProvidersManager;
-
-    @Inject
-    UserPreferenceManager preferenceManager;
 
     @Inject
     NavigationHandler navigationHandler;
@@ -97,13 +88,9 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Inject
     DateFormatter dateFormatter;
 
-    private TripCardAdapter tripCardAdapter;
+    private TripAdapter tripCardAdapter;
 
-    private ProgressBar progressBar;
-    private TextView noDataAlert;
-    private Tooltip tooltipView;
-
-    private Trip selectedTrip;
+    private int selectedTripId;
 
     private boolean hasResults = false;
 
@@ -123,11 +110,22 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        tripCardAdapter = new TripCardAdapter(requireContext(), preferenceManager, backupProvidersManager, dateFormatter);
+
+        tripCardAdapter = new TripAdapter(
+                trip -> {
+                    routeToViewReceipts(trip);
+                    return Unit.INSTANCE;
+                },
+                trip -> {
+                    editTrip(trip);
+                    return Unit.INSTANCE;
+                },
+                dateFormatter, backupProvidersManager);
+
         if (savedInstanceState != null) {
-            selectedTrip = savedInstanceState.getParcelable(OUT_SELECTED_TRIP);
+            selectedTripId = savedInstanceState.getInt(OUT_SELECTED_TRIP_ID);
             if (navigationHandler.isDualPane()) {
-                tripCardAdapter.setSelectedItem(selectedTrip);
+                tripCardAdapter.setSelectedItemId(selectedTripId);
             }
         }
     }
@@ -136,9 +134,6 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         binding = TripsFragmentLayoutBinding.inflate(inflater, container, false);
-        progressBar = binding.layoutTripCardList.progress;
-        noDataAlert = binding.layoutTripCardList.noData;
-        tooltipView = binding.tripTooltip;
         binding.layoutTripCardList.tripActionNew.setOnClickListener(v -> tripMenu(null));
         return binding.getRoot();
     }
@@ -146,8 +141,8 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setListAdapter(tripCardAdapter); // Set this here to ensure this has been laid out already
-        getListView().setOnItemLongClickListener(this);
+        binding.layoutTripCardList.list.setAdapter(tripCardAdapter); // Set this here to ensure this has been laid out already
+
         final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         if (toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -174,7 +169,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
         }
         lastTripAutoNavigationController.subscribe();
         if (hasResults) {
-            updateViewVisibilities(tripCardAdapter.getData());
+            updateViewVisibilities(tripCardAdapter.getItems());
         }
     }
 
@@ -207,12 +202,12 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putParcelable(OUT_SELECTED_TRIP, selectedTrip);
+        outState.putInt(OUT_SELECTED_TRIP_ID, selectedTripId);
     }
 
     public final void tripMenu(final Trip trip) {
         if (trip == null) {
-            navigationHandler.navigateToCreateTripFragment(tripCardAdapter.getData());
+            navigationHandler.navigateToCreateTripFragment(tripCardAdapter.getItems());
         } else {
             navigationHandler.navigateToEditTripFragment(trip);
         }
@@ -245,22 +240,12 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     @Override
-    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
-        routeToViewReceipts(tripCardAdapter.getItem(position));
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id) {
-        editTrip(tripCardAdapter.getItem(position));
-        return true;
-    }
-
-    @Override
     public void onGetSuccess(@NonNull List<Trip> trips) {
         if (isAdded()) {
             updateViewVisibilities(trips);
             hasResults = true;
-            tripCardAdapter.notifyDataSetChanged(trips);
+            tripCardAdapter.setItems(trips);
+            tripCardAdapter.notifyDataSetChanged();
 
             if (getActivity() instanceof SearchResultKeeper) {
                 final SearchResultKeeper searchResultKeeper = (SearchResultKeeper) getActivity();
@@ -269,7 +254,7 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
                 if (searchResult instanceof Trip) {
                     final int index = trips.indexOf(searchResult);
                     if (index >= 0) {
-                        getListView().smoothScrollToPosition(index);
+                        binding.layoutTripCardList.list.smoothScrollToPosition(index);
                     }
 
                     searchResultKeeper.markSearchResultAsProcessed();
@@ -286,11 +271,11 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
                 builder.setTitle(R.string.dialog_sql_corrupt_title)
                         .setMessage(R.string.dialog_sql_corrupt_message)
                         .setPositiveButton(R.string.dialog_sql_corrupt_positive, (dialog, position) -> {
-                            Intent intent = EmailAssistant.getEmailDeveloperIntent(getString(R.string.dialog_sql_corrupt_intent_subject), getString(R.string.dialog_sql_corrupt_intent_text));
-                            getActivity().startActivity(Intent.createChooser(intent, getResources().getString(R.string.dialog_sql_corrupt_chooser)));
-                            dialog.dismiss();
-                        }
-                ).show();
+                                    Intent intent = EmailAssistant.getEmailDeveloperIntent(getString(R.string.dialog_sql_corrupt_intent_subject), getString(R.string.dialog_sql_corrupt_intent_text));
+                                    getActivity().startActivity(Intent.createChooser(intent, getResources().getString(R.string.dialog_sql_corrupt_chooser)));
+                                    dialog.dismiss();
+                                }
+                        ).show();
             } else {
                 Toast.makeText(getActivity(), R.string.database_get_error, Toast.LENGTH_LONG).show();
             }
@@ -364,55 +349,55 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
 
     @Override
     public void display(@NotNull TooltipMetadata tooltip) {
-        tooltipView.setTooltip(tooltip);
-        if (tooltipView.getVisibility() != View.VISIBLE) {
-            tooltipView.setVisibility(View.VISIBLE);
+        binding.tripTooltip.setTooltip(tooltip);
+        if (binding.tripTooltip.getVisibility() != View.VISIBLE) {
+            binding.tripTooltip.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void hideTooltip() {
-        if (tooltipView.getVisibility() != View.GONE) {
-            tooltipView.setVisibility(View.GONE);
+        if (binding.tripTooltip.getVisibility() != View.GONE) {
+            binding.tripTooltip.setVisibility(View.GONE);
         }
     }
 
     @NotNull
     @Override
     public Observable<Object> getTooltipClickStream() {
-        return tooltipView.getTooltipClickStream();
+        return binding.tripTooltip.getTooltipClickStream();
     }
 
     @NotNull
     @Override
     public Observable<Object> getButtonNoClickStream() {
-        return tooltipView.getButtonNoClickStream();
+        return binding.tripTooltip.getButtonNoClickStream();
     }
 
     @NotNull
     @Override
     public Observable<Object> getButtonYesClickStream() {
-        return tooltipView.getButtonYesClickStream();
+        return binding.tripTooltip.getButtonYesClickStream();
     }
 
     @NotNull
     @Override
     public Observable<Object> getButtonCancelClickStream() {
-        return tooltipView.getButtonCancelClickStream();
+        return binding.tripTooltip.getButtonCancelClickStream();
     }
 
     @NotNull
     @Override
     public Observable<Object> getCloseIconClickStream() {
-        return tooltipView.getCloseIconClickStream();
+        return binding.tripTooltip.getCloseIconClickStream();
     }
 
     @Override
     public void routeToViewReceipts(@NotNull Trip trip) {
         if (isResumed()) {
-            selectedTrip = trip;
+            selectedTripId = trip.getId();
             if (navigationHandler.isDualPane()) {
-                tripCardAdapter.setSelectedItem(trip);
+                tripCardAdapter.setSelectedItemId(trip.getId());
             }
             lastTripMonitor.setLastTrip(trip);
             lastTripAutoNavigationTracker.setHasNavigatedToLastTrip(true);
@@ -421,13 +406,10 @@ public class TripFragment extends WBListFragment implements TableEventsListener<
     }
 
     private void updateViewVisibilities(List<Trip> trips) {
-        progressBar.setVisibility(View.GONE);
-        getListView().setVisibility(View.VISIBLE);
-        if (trips.isEmpty()) {
-            noDataAlert.setVisibility(View.VISIBLE);
-        } else {
-            noDataAlert.setVisibility(View.INVISIBLE);
-        }
+        binding.layoutTripCardList.progress.setVisibility(View.GONE);
+        binding.layoutTripCardList.list.setVisibility(View.VISIBLE);
+
+        binding.layoutTripCardList.noData.setVisibility(trips.isEmpty() ? View.VISIBLE : View.INVISIBLE);
     }
 
     private String getFlexString(int id) {
