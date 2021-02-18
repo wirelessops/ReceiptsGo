@@ -61,6 +61,10 @@
     <dimen name="font_subhead">16sp</dimen>
     <dimen name="font_headline">24sp</dimen>
 
+    <!--Bottom Sheet Dialog Sizes-->
+    <dimen name="bottom_sheet_item_height">56dp</dimen>
+    <dimen name="bottom_sheet_corner_radius">16dp</dimen>
+
     <!-- Samsung Decimal Button -->
     <dimen name="samsung_decimal_separator_button_dimens">32dp</dimen>
 

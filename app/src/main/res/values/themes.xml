@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <style name="Theme.SmartReceipts" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
 
         <item name="android:popupMenuStyle">@style/Widget.SmartReceipts.PopupMenu</item>
@@ -13,6 +13,7 @@
         <item name="alertDialogStyle">@style/Theme.SmartReceipts.Dialog</item>
         <item name="alertDialogTheme">@style/Theme.SmartReceipts.Dialog</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.SmartReceipts.AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="Theme.SmartReceipts.OSS" parent="Theme.AppCompat">
@@ -34,6 +35,10 @@
         <item name="colorPrimaryDark">@color/smart_receipts_colorPrimaryDark</item>
         <item name="colorAccent">@color/smart_receipts_colorAccent</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
+    </style>
+
+    <style name="Theme.SmartReceipts.AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.SmartReceipts.BottomSheetModalStyle</item>
     </style>
 
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
@@ -34,6 +35,7 @@
         style="@style/Widget.SmartReceipts.FloatingActionButton"
         android:src="@drawable/ic_round_add_24"
         app:layout_anchor="@id/bottom_app_bar"
-        app:layout_anchorGravity="top|center_horizontal" />
+        app:layout_anchorGravity="top|center_horizontal"
+        tools:ignore="ContentDescription" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
