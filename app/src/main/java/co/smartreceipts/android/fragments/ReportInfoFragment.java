@@ -178,8 +178,11 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        final Toolbar toolbar = navigationHandler.isDualPane() ? getActivity().findViewById(R.id.toolbar) : binding.toolbar;
+        if (toolbar != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
     }
 
     @Override

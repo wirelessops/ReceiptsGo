@@ -179,7 +179,6 @@ android {
         implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
 
         implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
-        implementation "com.github.clans:fab:$FAB_MENU_VERSION"
 
         implementation "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
         implementation "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"

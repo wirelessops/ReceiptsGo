@@ -70,6 +70,7 @@ public final class UserPreference<T> {
     }
 
     public static final class Layout {
+        // TODO: 2/9/21  IncludeReceiptDateInLayout looks like it will not be used anymore - delete
         public static final UserPreference<Boolean> IncludeReceiptDateInLayout = new UserPreference<>(Boolean.class, R.string.pref_layout_display_date_key, R.bool.pref_layout_display_date_defaultValue);
         public static final UserPreference<Boolean> IncludeReceiptCategoryInLayout = new UserPreference<>(Boolean.class, R.string.pref_layout_display_category_key, R.bool.pref_layout_display_category_defaultValue);
     }

@@ -16,7 +16,6 @@ import co.smartreceipts.android.ocr.apis.model.OcrResponse
 import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterPresenter
 import co.smartreceipts.android.permissions.PermissionsDelegate
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
@@ -41,7 +40,6 @@ class ReceiptsListPresenterTest {
     private val interactor = mock<ReceiptsListInteractor>()
 
     private val ocrStatusAlerterPresenter = mock<OcrStatusAlerterPresenter>()
-    private val receiptCreateActionPresenter = mock<ReceiptCreateActionPresenter>()
     private val locator = mock<ActivityFileResultLocator>()
     private val importer = mock<ActivityFileResultImporter>()
     private val permissionsDelegate = mock<PermissionsDelegate>()
@@ -94,7 +92,7 @@ class ReceiptsListPresenterTest {
 
 
         presenter = ReceiptsListPresenter(
-            view, interactor, ocrStatusAlerterPresenter, receiptCreateActionPresenter, locator,
+            view, interactor, ocrStatusAlerterPresenter, locator,
             importer, permissionsDelegate, tripTableController, analytics
         )
     }
@@ -104,13 +102,11 @@ class ReceiptsListPresenterTest {
         presenter.subscribe()
 
         verify(ocrStatusAlerterPresenter).subscribe()
-        verify(receiptCreateActionPresenter).subscribe()
         verify(tripTableController).subscribe(any())
 
         presenter.unsubscribe()
 
         verify(ocrStatusAlerterPresenter).unsubscribe()
-        verify(receiptCreateActionPresenter).unsubscribe()
         verify(tripTableController).unsubscribe(any())
     }
 
