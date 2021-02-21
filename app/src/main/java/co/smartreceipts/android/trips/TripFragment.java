@@ -143,7 +143,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
         super.onActivityCreated(savedInstanceState);
         binding.layoutTripCardList.list.setAdapter(tripCardAdapter); // Set this here to ensure this has been laid out already
 
-        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        final Toolbar toolbar = (navigationHandler.isDualPane()) ? getActivity().findViewById(R.id.toolbar) : binding.toolbar.toolbar;
         if (toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         }

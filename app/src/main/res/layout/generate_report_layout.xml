@@ -1,86 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/generate_report_tooltip"
-        style="@style/Widget.SmartReceipts.Button.Secondary"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/generate_report_tooltip" />
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true"
+        android:scrollbars="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/generate_report_tooltip"
-        android:orientation="vertical"
-        android:padding="@dimen/generate_report_padding">
-
-        <CheckBox
-            android:id="@+id/dialog_email_checkbox_pdf_full"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/generate_report_item_separation"
-            android:paddingEnd="@dimen/generate_report_item_separation"
-            android:paddingStart="@dimen/generate_report_item_separation"
-            android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_FULL"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
+            android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/dialog_email_checkbox_pdf_images"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/generate_report_item_separation"
-            android:paddingEnd="@dimen/generate_report_item_separation"
-            android:paddingStart="@dimen/generate_report_item_separation"
-            android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_IMAGES"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
+            <TextView
+                style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:text="@string/report_info_generate" />
 
-        <CheckBox
-            android:id="@+id/dialog_email_checkbox_csv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/generate_report_item_separation"
-            android:paddingEnd="@dimen/generate_report_item_separation"
-            android:paddingStart="@dimen/generate_report_item_separation"
-            android:text="@string/DIALOG_EMAIL_CHECKBOX_CSV"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
+            <TextView
+                android:id="@+id/generate_report_tooltip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:background="@drawable/bg_rounded_rectangle"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:padding="@dimen/padding_large"
+                android:text="@string/generate_report_tooltip"
+                android:textColor="@color/smart_receipts_colorPrimary"
+                android:textSize="15sp" />
 
-        <CheckBox
-            android:id="@+id/dialog_email_checkbox_zip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/generate_report_item_separation"
-            android:paddingStart="@dimen/generate_report_item_separation"
-            android:layout_marginBottom="@dimen/generate_report_item_separation"
-            android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_large"
+                android:paddingBottom="@dimen/padding_normal"
+                android:text="@string/generate_report_subtitle"
+                android:textAllCaps="true"
+                android:textSize="13sp" />
 
-        <CheckBox
-            android:id="@+id/dialog_email_checkbox_zip_with_metadata"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/generate_report_item_separation"
-            android:paddingStart="@dimen/generate_report_item_separation"
-            android:layout_marginBottom="@dimen/generate_report_item_separation"
-            android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA"
-            android:textAppearance="@style/Widget.SmartReceipts.TextView.Title" />
-    </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/receipt_action_send"
-        style="@style/Widget.SmartReceipts.FloatingActionButton"
-        android:src="@drawable/ic_send_24dp" />
+            <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/dialog_email_checkbox_pdf_full"
+                    style="@style/Widget.SmartReceipts.GenerateCheckBox"
+                    android:drawableEnd="@drawable/ic_pdf"
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_FULL" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
+
+                <CheckBox
+                    android:id="@+id/dialog_email_checkbox_pdf_images"
+                    style="@style/Widget.SmartReceipts.GenerateCheckBox"
+                    android:drawableEnd="@drawable/ic_pdf"
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_IMAGES" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
+
+                <CheckBox
+                    android:id="@+id/dialog_email_checkbox_csv"
+                    style="@style/Widget.SmartReceipts.GenerateCheckBox"
+                    android:drawableEnd="@drawable/ic_csv"
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_CSV" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
+
+                <CheckBox
+                    android:id="@+id/dialog_email_checkbox_zip"
+                    style="@style/Widget.SmartReceipts.GenerateCheckBox"
+                    android:drawableEnd="@drawable/ic_zip"
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
+
+                <CheckBox
+                    android:id="@+id/dialog_email_checkbox_zip_with_metadata"
+                    style="@style/Widget.SmartReceipts.GenerateCheckBox"
+                    android:drawableEnd="@drawable/ic_zip"
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progress"
         style="@style/Widget.SmartReceipts.ProgressBar.Loading"
-        android:layout_centerInParent="true"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
-</RelativeLayout>
+</FrameLayout>

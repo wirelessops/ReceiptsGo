@@ -248,7 +248,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">אנא סמן לפחות קבלה אחת</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">אין קבלות בדוח הזה</string>
     <string name="generate_report_tooltip">לחץ להגדרת תצוגת הדוח</string>
-
+    <string name="generate_report_subtitle">בחר מה ליצור</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 

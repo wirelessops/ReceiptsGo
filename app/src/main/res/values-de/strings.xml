@@ -238,7 +238,8 @@
     <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Quittungs-Dateien</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Bitte wählen Sie mindestens einen Bericht</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Es gibt keine Belege in diesem Bericht</string>
-    <string name="generate_report_tooltip">Tippen Sie unten auf ein Berichtslayout.</string>
+    <string name="generate_report_tooltip">Tippen Sie unten auf ein Berichtslayout</string>
+    <string name="generate_report_subtitle">Wählen Sie aus, was generiert werden soll</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Name</string>

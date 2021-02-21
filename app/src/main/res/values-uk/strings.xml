@@ -241,6 +241,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Будь ласка, виберіть принаймні один звіт</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Цей звіт не містить чеків</string>
     <string name="generate_report_tooltip">Натисніть, щоб налаштувати зовнішній вигляд звіту</string>
+    <string name="generate_report_subtitle">Оберіть, що генерувати</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Ім\'я</string>

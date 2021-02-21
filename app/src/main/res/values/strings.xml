@@ -247,7 +247,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Please Check At Least One Report</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">There are No Receipts in this Report</string>
     <string name="generate_report_tooltip">Tap to configure the report layouts</string>
-
+    <string name="generate_report_subtitle">Choose what to generate</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 

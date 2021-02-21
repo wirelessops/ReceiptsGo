@@ -239,6 +239,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Por favor selecciona al menos un informe</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Este informe no tiene recibos</string>
     <string name="generate_report_tooltip">Toca para configurar los diseños del informe</string>
+    <string name="generate_report_subtitle">Elige que generar</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Nombre</string>

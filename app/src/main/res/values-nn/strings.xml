@@ -243,7 +243,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Vennligst huk av for minst en rapport</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Det er ingen kvitteringer i denne rapporten</string>
     <string name="generate_report_tooltip">Trykk for å konfigurere rapport utseende</string>
-
+    <string name="generate_report_subtitle">Velg hva du vil generere</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 

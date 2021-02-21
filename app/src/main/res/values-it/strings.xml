@@ -246,7 +246,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Prego selezionare almeno un Report</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">NOn ci sono Ricevute in questo Report</string>
     <string name="generate_report_tooltip">Toccare per configurare i layout dei Report</string>
-
+    <string name="generate_report_subtitle">Scegli cosa generare</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 

@@ -239,6 +239,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Veuillez vérifier au moins un rapport</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Il n’y a aucun reçu dans ce rapport</string>
     <string name="generate_report_tooltip">Cliquez pour configurer la mise en page du rapport</string>
+    <string name="generate_report_subtitle">Choisissez ce que vous voulez générer</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Nom</string>
