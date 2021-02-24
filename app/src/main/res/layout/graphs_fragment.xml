@@ -1,43 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/empty_text"
-        style="@style/Widget.SmartReceipts.TextView.NoData"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="@string/graphs_no_data"
-        android:visibility="gone"
-        tools:visibility="visible" />
+    <ImageView
+        android:id="@+id/no_data_image"
+        style="@style/Widget.SmartReceipts.ImageView.NoData"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_graphs" />
 
-    <ProgressBar style="@style/Widget.SmartReceipts.ProgressBar.Loading"
+    <TextView
+        android:id="@+id/no_data_text"
+        style="@style/Widget.SmartReceipts.TextView.NoData"
+        android:text="@string/graphs_no_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_data_image" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/no_data"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:constraint_referenced_ids="no_data_text, no_data_image" />
+
+    <ProgressBar
         android:id="@+id/progress"
-        android:layout_gravity="center" />
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadeScrollbars="true"
+        android:nestedScrollingEnabled="true"
         android:scrollbars="vertical">
 
         <LinearLayout
             android:id="@+id/graphs_linear_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_large"
             android:orientation="vertical">
+
+            <TextView
+                style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
+                android:text="@string/report_info_graphs" />
+
+            <TextView
+                android:id="@+id/dates_title"
+                style="@style/Widget.SmartReceipts.TextView.GraphTitle"
+                android:text="@string/graphs_expenditure_by_dates_title"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/dates_line_chart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/graph_height_default"
-                android:layout_marginBottom="@dimen/margin_normal"
+                android:background="@color/bottom_navigation_color"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/categories_title"
+                style="@style/Widget.SmartReceipts.TextView.GraphTitle"
+                android:text="@string/graphs_expenditure_by_categories_title"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
@@ -45,17 +82,29 @@
                 android:id="@+id/categories_pie_chart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/graph_height_default"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@color/bottom_navigation_color"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/reimbursable_title"
+                style="@style/Widget.SmartReceipts.TextView.GraphTitle"
+                android:text="@string/graphs_expenditure_by_reimbursable_title"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/reimbursable_horizontal_bar_chart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/graph_height_small"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_height="@dimen/graph_height_tiny"
+                android:background="@color/bottom_navigation_color"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/payment_methods_title"
+                style="@style/Widget.SmartReceipts.TextView.GraphTitle"
+                android:text="@string/graphs_expenditure_by_payment_methods_title"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
@@ -64,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/graph_height_small"
                 android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@color/bottom_navigation_color"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
@@ -72,4 +121,4 @@
 
     </ScrollView>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

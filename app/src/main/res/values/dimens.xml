@@ -5,7 +5,6 @@
 
 
     <!-- List -->
-    <dimen name="no_data_textSize">16sp</dimen>
     <dimen name="list_divider_height">1dp</dimen>
 
     <!-- Cards -->
@@ -50,16 +49,19 @@
 
     <!-- Graphs height-->
     <dimen name="graph_height_default">300dp</dimen>
-    <dimen name="graph_height_small">130dp</dimen>
+    <dimen name="graph_height_small">180dp</dimen>
+    <dimen name="graph_height_tiny">130dp</dimen>
 
     <!--Tooltip-->
     <dimen name="default_tooltip_horizontal_padding">8dp</dimen>
     <dimen name="default_tooltip_vertical_padding">16dp</dimen>
 
-    <!--Material Font Sizes-->
-    <dimen name="font_caption">12sp</dimen>
-    <dimen name="font_subhead">16sp</dimen>
-    <dimen name="font_headline">24sp</dimen>
+    <!--Fonts-->
+    <dimen name="font_headline">28sp</dimen>
+    <dimen name="font_headline2">17sp</dimen>
+    <dimen name="font_subhead">15sp</dimen>
+    <dimen name="font_caption">13sp</dimen>
+    <dimen name="font_no_data">16sp</dimen>
 
     <!--Bottom Sheet Dialog Sizes-->
     <dimen name="bottom_sheet_item_height">56dp</dimen>

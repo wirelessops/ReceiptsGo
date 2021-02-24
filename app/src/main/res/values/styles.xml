@@ -79,8 +79,9 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:padding">@dimen/padding_large</item>
-        <item name="android:textSize">@dimen/no_data_textSize</item>
+        <item name="android:textSize">@dimen/font_no_data</item>
         <item name="android:textColor">@color/text_secondary_color</item>
         <item name="android:gravity">center</item>
     </style>
@@ -134,13 +135,29 @@
     </style>
 
     <style name="Widget.SmartReceipts.TextView.FragmentTitle">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">@dimen/font_headline</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/text_primary_color</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/margin_normal</item>
         <item name="android:layout_marginTop">@dimen/margin_normal</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.TextView.GraphTitle">
+        <item name="android:textSize">@dimen/font_headline2</item>
+        <item name="android:paddingTop">@dimen/padding_normal</item>
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:paddingEnd">@dimen/padding_normal</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:background">@color/bottom_navigation_color</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Widget.SmartReceipts.GenerateCheckBox">
@@ -150,6 +167,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/padding_larger</item>
         <item name="android:paddingBottom">@dimen/padding_larger</item>
+        <item name="android:paddingStart">@dimen/padding_normal</item>
         <item name="android:layout_marginStart">@dimen/margin_normal</item>
         <item name="android:layout_marginEnd">@dimen/margin_normal</item>
         <item name="android:drawableTint">@color/navigation_inactive</item>
