@@ -32,11 +32,12 @@
                 android:padding="@dimen/padding_large"
                 android:text="@string/generate_report_tooltip"
                 android:textColor="@color/smart_receipts_colorPrimary"
-                android:textSize="15sp" />
+                android:textSize="@dimen/font_subhead" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:padding="@dimen/padding_large"
                 android:paddingBottom="@dimen/padding_normal"
                 android:text="@string/generate_report_subtitle"

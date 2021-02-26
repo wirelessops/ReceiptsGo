@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import com.google.common.base.Preconditions;
 import com.squareup.picasso.Picasso;
@@ -53,6 +52,8 @@ import co.smartreceipts.android.receipts.creator.ReceiptCreateActionView;
 import co.smartreceipts.android.receipts.creator.ReceiptCreationOption;
 import co.smartreceipts.android.receipts.creator.ReceiptCreationOptionsDialog;
 import co.smartreceipts.android.receipts.delete.DeleteReceiptDialogFragment;
+import co.smartreceipts.android.receipts.editor.ReceiptEditOption;
+import co.smartreceipts.android.receipts.editor.ReceiptEditOptionsDialog;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.search.SearchResultKeeper;
 import co.smartreceipts.android.search.Searchable;
@@ -135,6 +136,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
             highlightedReceipt = savedInstanceState.getParcelable(OUT_HIGHLIGHTED_RECEIPT);
         }
 
+        // listening for create receipt options
         getChildFragmentManager().setFragmentResultListener(ReceiptCreationOptionsDialog.REQUEST_KEY, this,
                 (requestKey, result) -> {
                     String creationOption = result.getString(ReceiptCreationOptionsDialog.RESULT_KEY);
@@ -147,6 +149,27 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
                         createNewReceiptViaFileImport();
                     } else if (creationOption.equals(ReceiptCreationOption.GALLERY.name())) {
                         createNewReceiptViaImageImport();
+                    }
+
+                });
+
+        // listening for edit receipt options
+        getChildFragmentManager().setFragmentResultListener(ReceiptEditOptionsDialog.REQUEST_KEY, this,
+                (requestKey, result) -> {
+                    String editOption = result.getString(ReceiptEditOptionsDialog.RESULT_KEY);
+
+                    if (editOption.equals(ReceiptEditOption.EDIT.name())) {
+                        analytics.record(Events.Receipts.ReceiptMenuEdit);
+                        navigateToEditReceipt(highlightedReceipt);
+                    } else if (editOption.equals(ReceiptEditOption.COPY_MOVE.name())) {
+                        analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
+                        navigationHandler.showDialog(ReceiptMoveCopyDialogFragment.newInstance(highlightedReceipt));
+                    } else if (editOption.equals(ReceiptEditOption.DELETE_ATTACHMENT.name())) {
+                        analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
+                        navigationHandler.showDialog(ReceiptRemoveAttachmentDialogFragment.newInstance(highlightedReceipt));
+                    } else if (editOption.equals(ReceiptEditOption.DELETE.name())) {
+                        analytics.record(Events.Receipts.ReceiptMenuDelete);
+                        navigationHandler.showDialog(DeleteReceiptDialogFragment.newInstance(highlightedReceipt));
                     }
 
                 });
@@ -218,21 +241,13 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     @Override
     public void onFabClick() {
         ReceiptCreationOptionsDialog dialog = ReceiptCreationOptionsDialog.newInstance();
-        final String tag = ReceiptCreationOptionsDialog.TAG;
-
-        dialog.show(getChildFragmentManager(), tag);
+        dialog.show(getChildFragmentManager(), ReceiptCreationOptionsDialog.TAG);
     }
 
     @NotNull
     @Override
     public Observable<Receipt> getItemClicks() {
-        return adapter.getItemClicks();
-    }
-
-    @NotNull
-    @Override
-    public Observable<Receipt> getItemMenuClicks() {
-        return adapter.getMenuClicks()
+        return adapter.getItemClicks()
                 .doOnNext(receipt -> highlightedReceipt = receipt);
     }
 
@@ -371,41 +386,9 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     }
 
     @Override
-    public final void showReceiptMenu(final Receipt receipt) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_SmartReceipts_Dialog);
-        builder.setTitle(receipt.getName())
-                .setCancelable(true)
-                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel());
-
-        final String receiptActionDelete = getString(R.string.receipt_dialog_action_delete);
-        final String receiptActionMoveCopy = getString(R.string.receipt_dialog_action_move_copy);
-        final String receiptActionRemoveAttachment = getString(R.string.receipt_dialog_action_remove_attachment);
-        final String[] receiptActions;
-        if (receipt.getFile() != null) {
-            receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy, receiptActionRemoveAttachment};
-        } else {
-            receiptActions = new String[]{receiptActionDelete, receiptActionMoveCopy};
-        }
-        builder.setItems(receiptActions, (dialog, item) -> {
-            final String selection = receiptActions[item];
-            if (selection != null) {
-                if (selection.equals(receiptActionDelete)) { // Delete Receipt
-                    analytics.record(Events.Receipts.ReceiptMenuDelete);
-                    final DeleteReceiptDialogFragment deleteReceiptDialogFragment = DeleteReceiptDialogFragment.newInstance(receipt);
-                    navigationHandler.showDialog(deleteReceiptDialogFragment);
-
-                } else if (selection.equals(receiptActionMoveCopy)) {// Move-Copy
-                    analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
-                    ReceiptMoveCopyDialogFragment.newInstance(receipt).show(getFragmentManager(), ReceiptMoveCopyDialogFragment.TAG);
-
-                } else if (selection.equals(receiptActionRemoveAttachment)) { // Remove Attachment
-                    analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
-                    navigationHandler.showDialog(ReceiptRemoveAttachmentDialogFragment.newInstance(receipt));
-                }
-            }
-            dialog.cancel();
-        });
-        builder.show();
+    public final void showReceiptEditOptionsDialog(final Receipt receipt) {
+        ReceiptEditOptionsDialog dialog = ReceiptEditOptionsDialog.newInstance(receipt.getName(), receipt.hasImage() || receipt.hasPDF());
+        dialog.show(getChildFragmentManager(), ReceiptEditOptionsDialog.TAG);
     }
 
     @Override
@@ -423,7 +406,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
             if (receipts.isEmpty()) {
                 binding.noData.setVisibility(View.VISIBLE);
             } else {
-                binding.noData.setVisibility(View.INVISIBLE);
+                binding.noData.setVisibility(View.GONE);
             }
             updateActionBarTitle(getUserVisibleHint());
 

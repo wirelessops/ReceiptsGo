@@ -57,20 +57,10 @@ class ReceiptsListPresenter @Inject constructor(
 
         compositeDisposable.add(view.itemClicks
             .subscribe { receipt ->
-                when {
-                    !importIntentMode -> {
-                        analytics.record(Events.Receipts.ReceiptMenuEdit)
-                        view.navigateToEditReceipt(receipt)
-                    }
-                    else -> attachImportIntent(receipt)
-                }
-            }
-        )
-
-        compositeDisposable.add(view.itemMenuClicks
-            .subscribe { receipt ->
                 if (!importIntentMode) {
-                    view.showReceiptMenu(receipt)
+                    view.showReceiptEditOptionsDialog(receipt)
+                } else {
+                    attachImportIntent(receipt)
                 }
             }
         )

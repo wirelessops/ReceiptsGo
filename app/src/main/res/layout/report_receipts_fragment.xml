@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"
         android:gravity="end"
-        android:textSize="15sp"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/font_subhead"
         app:layout_constraintBottom_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/title"
@@ -56,11 +57,9 @@
         android:id="@+id/no_data_text"
         style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/receipt_no_data"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_data_image"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@id/no_data_image" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/no_data"
@@ -69,12 +68,5 @@
         android:visibility="gone"
         app:constraint_referenced_ids="no_data_text, no_data_image"
         tools:visibility="visible" />
-
-    <View
-        android:id="@+id/fab_active_mask"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/fab_transparency_mask"
-        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

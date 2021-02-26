@@ -1,22 +1,15 @@
 package co.smartreceipts.android.receipts.creator
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.smartreceipts.android.databinding.DialogReceiptCreationBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import co.smartreceipts.android.widget.dialog.BaseBottomSheetDialog
 
 enum class ReceiptCreationOption { CAMERA, GALLERY, PDF, TEXT }
 
-class ReceiptCreationOptionsDialog : BottomSheetDialogFragment() {
-
-    private var _binding: DialogReceiptCreationBinding? = null
-    private val binding get() = _binding!!
-
+class ReceiptCreationOptionsDialog : BaseBottomSheetDialog() {
 
     companion object {
         const val TAG = "ReceiptCreationOptionsDialog"
@@ -28,11 +21,11 @@ class ReceiptCreationOptionsDialog : BottomSheetDialogFragment() {
         fun newInstance(): ReceiptCreationOptionsDialog = ReceiptCreationOptionsDialog()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    private var _binding: DialogReceiptCreationBinding? = null
+    private val binding get() = _binding!!
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DialogReceiptCreationBinding.inflate(inflater, container, false)
 
         binding.newImageCamera.setOnClickListener { setResult(ReceiptCreationOption.CAMERA) }
@@ -41,22 +34,6 @@ class ReceiptCreationOptionsDialog : BottomSheetDialogFragment() {
         binding.newText.setOnClickListener { setResult(ReceiptCreationOption.TEXT) }
 
         return binding.root
-    }
-
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-
-        val behavior = dialog.behavior
-        behavior.isFitToContents = true
-        behavior.skipCollapsed = true // allow ho skip collapsed state when the dialog is dismissing by swipe
-
-        // hack to set skip collapsed state when the dialog is opening
-        dialog.setOnShowListener { d ->
-            (d as BottomSheetDialog).behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
-        return dialog
     }
 
     private fun setResult(option: ReceiptCreationOption) {

@@ -56,7 +56,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     private final ShowAutomaticBackupsInformationOnClickListener showAutomaticBackupsInformationOnClickListener = new ShowAutomaticBackupsInformationOnClickListener();
 
     private final PublishSubject<Receipt> itemClickSubject = PublishSubject.create();
-    private final PublishSubject<Receipt> menuClickSubject = PublishSubject.create();
     private final PublishSubject<Receipt> imageClickSubject = PublishSubject.create();
 
     private final Drawable cloudDisabledDrawable;
@@ -158,11 +157,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     @NonNull
     Observable<Receipt> getItemClicks() {
         return itemClickSubject;
-    }
-
-    @NonNull
-    Observable<Receipt> getMenuClicks() {
-        return menuClickSubject;
     }
 
     @NonNull

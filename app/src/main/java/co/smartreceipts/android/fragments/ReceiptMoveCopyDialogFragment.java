@@ -6,14 +6,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.common.base.Preconditions;
 
@@ -33,8 +34,6 @@ import co.smartreceipts.android.persistence.database.controllers.impl.TripTableC
 import dagger.android.support.AndroidSupportInjection;
 
 public class ReceiptMoveCopyDialogFragment extends DialogFragment implements Dialog.OnClickListener {
-
-    public static final String TAG = ReceiptMoveCopyDialogFragment.class.getSimpleName();
 
     @Inject
     TripTableController tripTableController;

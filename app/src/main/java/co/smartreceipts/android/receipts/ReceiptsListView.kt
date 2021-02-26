@@ -14,8 +14,6 @@ interface ReceiptsListView {
 
     val itemClicks: Observable<Receipt>
 
-    val itemMenuClicks: Observable<Receipt>
-
     val itemImageClicks: Observable<Receipt>
 
     val actionBarUpdatesListener: StubTableEventsListener<Trip>
@@ -37,7 +35,7 @@ interface ReceiptsListView {
     fun navigateToCropActivity(file: File, requestCode: Int)
 
 
-    fun showReceiptMenu(receipt: Receipt)
+    fun showReceiptEditOptionsDialog(receipt: Receipt)
 
     fun showAttachmentDialog(receipt: Receipt)
 

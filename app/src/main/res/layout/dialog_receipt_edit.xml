@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/receipt_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_item_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_large"
+        android:paddingEnd="@dimen/padding_large"
+        android:textSize="@dimen/font_subhead"
+        tools:text="Receipt Name" />
+
+    <TextView
+        android:id="@+id/receipt_edit"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:text="@string/DIALOG_RECEIPTMENU_TITLE_EDIT"
+        app:drawableStartCompat="@drawable/ic_edit" />
+
+    <TextView
+        android:id="@+id/receipt_move_copy"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:text="@string/receipt_dialog_action_move_copy"
+        app:drawableStartCompat="@drawable/ic_move" />
+
+    <TextView
+        android:id="@+id/receipt_delete_attachment"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:text="@string/receipt_dialog_action_remove_attachment"
+        app:drawableStartCompat="@drawable/ic_attach" />
+
+    <TextView
+        android:id="@+id/receipt_delete"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:text="@string/delete"
+        android:textColor="@color/delete_warning_color"
+        app:drawableStartCompat="@drawable/ic_delete"
+        app:drawableTint="@color/delete_warning_color" />
+
+</LinearLayout>

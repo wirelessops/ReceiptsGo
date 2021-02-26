@@ -8,6 +8,8 @@
     <color name="navigation_inactive">#B5B3B8</color>
     <color name="no_data_image_tint">#D9D7E0</color>
     <color name="receipt_image_tint">#E1E0E2</color>
+    
+    <color name="delete_warning_color">#F93E2B</color>
 
     <color name="text_secondary_pale">#A7A3AB</color>
 
