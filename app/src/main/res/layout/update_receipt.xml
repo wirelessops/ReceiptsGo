@@ -280,7 +280,7 @@
                 android:id="@+id/receipt_input_guide_image_comment"
                 style="@style/Widget.SmartReceipts.GuideImage"
                 android:contentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
-                android:src="@drawable/ic_comment_24dp"
+                android:src="@drawable/ic_round_comment_24"
                 app:layout_constraintBottom_toBottomOf="@+id/DIALOG_RECEIPTMENU_COMMENT"
                 app:layout_constraintEnd_toStartOf="@+id/DIALOG_RECEIPTMENU_COMMENT"
                 app:layout_constraintStart_toStartOf="parent"

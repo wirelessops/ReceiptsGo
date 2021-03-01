@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/outline"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:background="@drawable/bg_spinner"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/start_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/outline"
+        app:layout_constraintStart_toStartOf="@id/outline"
+        app:layout_constraintTop_toTopOf="@id/outline"
+        app:tint="@color/navigation_inactive"
+        tools:srcCompat="@drawable/ic_round_money_24"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/dropdown_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_normal"
+        app:layout_constraintBottom_toBottomOf="@id/outline"
+        app:layout_constraintEnd_toEndOf="@id/outline"
+        app:layout_constraintTop_toTopOf="@id/outline"
+        app:srcCompat="@drawable/ic_arrow_drop_down_24"
+        app:tint="@color/text_secondary_color" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@null"
+        android:minHeight="@dimen/default_input_row_size"
+        android:padding="@dimen/padding_large"
+        android:paddingStart="20dp"
+        android:spinnerMode="dropdown"
+        android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
+        app:layout_constraintBottom_toBottomOf="@id/outline"
+        app:layout_constraintEnd_toStartOf="@id/dropdown_icon"
+        app:layout_constraintStart_toEndOf="@id/start_icon"
+        app:layout_constraintTop_toTopOf="@id/outline" />
+
+    <TextView
+        android:id="@+id/caption"
+        style="@style/Widget.SmartReceipts.TextView.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_tiny"
+        android:background="@color/background"
+        android:gravity="start"
+        app:layout_constraintBottom_toTopOf="@id/outline"
+        app:layout_constraintStart_toStartOf="@id/outline"
+        app:layout_constraintTop_toTopOf="@id/outline"
+        tools:text="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,4 +70,8 @@
     <!-- Samsung Decimal Button -->
     <dimen name="samsung_decimal_separator_button_dimens">32dp</dimen>
 
+    <!--Text Input-->
+    <dimen name="text_input_corner_radius">16dp</dimen>
+    <dimen name="text_input_outline_width">1dp</dimen>
+
 </resources>

@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
@@ -115,7 +116,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     private AutoCompleteTextView nameBox;
     private DateEditText startDateBox;
     private DateEditText endDateBox;
-    private  Spinner currencySpinner;
+    private Spinner currencySpinner;
     private AutoCompleteTextView commentBox;
     private AutoCompleteTextView costCenterBox;
     private View costCenterBoxLayout;
@@ -173,10 +174,10 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
         toolbar = binding.toolbar.toolbar;
         tooltipView = binding.tooltip;
-        nameBox = binding.dialogTripmenuName;
-        startDateBox = binding.dialogTripmenuStart;
-        endDateBox = binding.dialogTripmenuEnd;
-        currencySpinner = binding.dialogTripmenuCurrency;
+        nameBox = binding.name;
+        startDateBox = binding.startDate;
+        endDateBox = binding.endDate;
+        currencySpinner = binding.spinnerWrapper.spinner;
         commentBox = binding.dialogTripmenuComment;
         costCenterBox = binding.dialogTripmenuCostCenter;
         costCenterBoxLayout = binding.dialogTripmenuCostCenterLayout;
@@ -213,6 +214,13 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
         // Set Cost Center Visibility
         costCenterBoxLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);
+
+        // Config spinner
+        binding.spinnerWrapper.spinner.setPromptId(R.string.DIALOG_RECEIPTMENU_HINT_CURRENCY);
+        binding.spinnerWrapper.caption.setText(R.string.DIALOG_RECEIPTMENU_HINT_CURRENCY);
+        binding.spinnerWrapper.caption.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.bottom_navigation_color));
+        binding.spinnerWrapper.startIcon.setVisibility(View.VISIBLE);
+        binding.spinnerWrapper.startIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_round_money_24));
 
         setKeyboardRelatedListeners();
     }

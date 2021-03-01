@@ -23,7 +23,17 @@
     </style>
 
     <style name="Widget.SmartReceipts.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/smart_receipts_colorAccent</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">@dimen/text_input_outline_width</item>
+        <item name="boxStrokeColor">@color/smart_receipts_colorPrimary</item>
+        <item name="boxCornerRadiusTopStart">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/text_input_corner_radius</item>
+        <item name="startIconTint">@color/navigation_inactive</item>
     </style>
 
     <style name="Widget.SmartReceipts.RelativeLayout" parent="Widget">
