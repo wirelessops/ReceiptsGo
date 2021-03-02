@@ -146,6 +146,7 @@ android {
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+        implementation "androidx.core:core-ktx:$KTX_VERSION"
         implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
         implementation "androidx.cardview:cardview:$CARDVIEW_VERSION"
         implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT_VERSION"
@@ -233,6 +234,9 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
