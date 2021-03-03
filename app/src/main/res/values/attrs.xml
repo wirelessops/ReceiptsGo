@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="OutlinedSpinner">
+        <attr name="captionText" format="string" />
+        <attr name="startIcon" format="reference"/>
+        <attr name="captionBackgroundColor" format="color"/>
+    </declare-styleable>
+</resources>

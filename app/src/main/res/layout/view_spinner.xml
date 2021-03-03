@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <View
         android:id="@+id/outline"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginTop="@dimen/margin_tiniest"
         android:background="@drawable/bg_spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,19 +21,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="12dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/outline"
         app:layout_constraintStart_toStartOf="@id/outline"
         app:layout_constraintTop_toTopOf="@id/outline"
         app:tint="@color/navigation_inactive"
-        tools:srcCompat="@drawable/ic_round_money_24"
-        tools:visibility="visible" />
+        tools:srcCompat="@drawable/ic_round_money_24" />
 
     <ImageView
         android:id="@+id/dropdown_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="@id/outline"
         app:layout_constraintEnd_toEndOf="@id/outline"
         app:layout_constraintTop_toTopOf="@id/outline"
@@ -45,7 +48,7 @@
         android:layout_gravity="bottom"
         android:background="@null"
         android:minHeight="@dimen/default_input_row_size"
-        android:padding="@dimen/padding_large"
+        android:padding="12dp"
         android:paddingStart="20dp"
         android:spinnerMode="dropdown"
         android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
@@ -59,13 +62,12 @@
         style="@style/Widget.SmartReceipts.TextView.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_tiny"
+        android:layout_marginStart="12dp"
         android:background="@color/background"
         android:gravity="start"
+        android:paddingTop="2dp"
         app:layout_constraintBottom_toTopOf="@id/outline"
         app:layout_constraintStart_toStartOf="@id/outline"
         app:layout_constraintTop_toTopOf="@id/outline"
         tools:text="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

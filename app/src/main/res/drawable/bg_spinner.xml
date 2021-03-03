@@ -5,9 +5,4 @@
         android:width="@dimen/text_input_outline_width"
         android:color="@color/text_secondary_color" />
     <corners android:radius="@dimen/text_input_corner_radius" />
-    <padding
-        android:bottom="@dimen/padding_large"
-        android:left="@dimen/padding_large"
-        android:right="@dimen/padding_large"
-        android:top="@dimen/padding_large" />
 </shape>
