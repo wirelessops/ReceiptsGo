@@ -29,7 +29,6 @@ import co.smartreceipts.android.workers.EmailAssistant.EmailOptions
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.generate_report_layout.view.*
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject

@@ -86,13 +86,15 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <include
-                android:id="@+id/spinner_wrapper"
-                layout="@layout/view_spinner"
+            <co.smartreceipts.android.widget.ui.OutlinedSpinner
+                android:id="@+id/currency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                app:layout_constraintTop_toBottomOf="@id/trip_input_end_date_wrapper" />
+                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionText="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
+                app:startIcon="@drawable/ic_round_money_24"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_comment_wrapper"
