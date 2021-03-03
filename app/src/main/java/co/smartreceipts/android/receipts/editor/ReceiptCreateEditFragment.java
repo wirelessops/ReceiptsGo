@@ -208,9 +208,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private TextInputLayout taxInputWrapper1;
     private TextInputLayout taxInputWrapper2;
 
-    private List<View> paymentMethodsViewsList;
     private List<View> exchangeRateViewsList;
-    private List<View> taxViewsList;
 
     // Flex fields (ie for white-label projects)
     EditText extraEditText1;
@@ -302,37 +300,28 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         binding = UpdateReceiptBinding.inflate(inflater, container, false);
 
         toolbar = binding.toolbar.toolbar;
-        nameBox = binding.DIALOGRECEIPTMENUNAME;
-        priceBox = binding.DIALOGRECEIPTMENUPRICE;
-        taxBox1 = binding.DIALOGRECEIPTMENUTAX1;
-        taxBox2 = binding.DIALOGRECEIPTMENUTAX2;
-        currencySpinner = binding.DIALOGRECEIPTMENUCURRENCY;
-        exchangeRateBox = binding.receiptInputExchangeRate;
-        exchangedPriceInBaseCurrencyBox = binding.receiptInputExchangedResult;
+        nameBox = binding.receiptName;
+        priceBox = binding.receiptPrice;
+        taxBox1 = binding.receiptTax1;
+        taxBox2 = binding.receiptTax2;
+        currencySpinner = binding.receiptCurrency.get();
+        exchangeRateBox = binding.receiptExchangeRate;
+        exchangedPriceInBaseCurrencyBox = binding.receiptExchangedResult;
         receiptInputExchangeRateBaseCurrencyTextView = binding.receiptInputExchangeRateBaseCurrency;
-        dateBox = binding.DIALOGRECEIPTMENUDATE;
-        categoriesSpinner = binding.DIALOGRECEIPTMENUCATEGORY;
-        commentBox = binding.DIALOGRECEIPTMENUCOMMENT;
-        paymentMethodsSpinner = binding.receiptInputPaymentMethod;
-        reimbursableCheckbox = binding.DIALOGRECEIPTMENUEXPENSABLE;
-        fullPageCheckbox = binding.DIALOGRECEIPTMENUFULLPAGE;
+        dateBox = binding.receiptDate;
+        categoriesSpinner = binding.receiptCategory.get();
+        commentBox = binding.receiptComment;
+        paymentMethodsSpinner = binding.receiptPaymentMethod.get();
+        reimbursableCheckbox = binding.receiptExpensable;
+        fullPageCheckbox = binding.receiptFullpage;
         decimalSeparatorButton = binding.decimalSeparatorButton;
-        taxInputWrapper1 = binding.receiptInputTax1Wrapper;
-        taxInputWrapper2 = binding.receiptInputTax2Wrapper;
-
-        paymentMethodsViewsList = new ArrayList<>();
-        paymentMethodsViewsList.add(binding.receiptInputGuideImagePaymentMethod);
-        paymentMethodsViewsList.add(paymentMethodsSpinner);
+        taxInputWrapper1 = binding.receiptTax1Wrapper;
+        taxInputWrapper2 = binding.receiptTax2Wrapper;
 
         exchangeRateViewsList = new ArrayList<>();
-        exchangeRateViewsList.add(binding.receiptInputGuideImageExchangeRate);
         exchangeRateViewsList.add(exchangeRateBox);
         exchangeRateViewsList.add(exchangedPriceInBaseCurrencyBox);
         exchangeRateViewsList.add(receiptInputExchangeRateBaseCurrencyTextView);
-
-        taxViewsList = new ArrayList<>();
-        taxViewsList.add(taxInputWrapper1);
-        taxViewsList.add(binding.receiptInputGuideImageTax);
 
         return binding.getRoot();
     }
@@ -362,7 +351,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         flex.applyCustomSettings(fullPageCheckbox);
 
         // Apply white-label settings via our 'Flex' mechanism to add custom fields
-        final LinearLayout extras = (LinearLayout) flex.getSubView(getActivity(), view, R.id.DIALOG_RECEIPTMENU_EXTRAS);
+        final LinearLayout extras = (LinearLayout) flex.getSubView(getActivity(), view, R.id.receipt_extras);
         this.extraEditText1 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_1));
         this.extraEditText2 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_2));
         this.extraEditText3 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_3));
@@ -759,11 +748,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Consumer<? super Boolean> toggleReceiptTaxFieldVisibility() {
-        return (Consumer<Boolean>) isVisible -> {
-            for (View v : taxViewsList) {
-                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            }
-        };
+        return (Consumer<Boolean>) isVisible -> taxInputWrapper1.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @NonNull
@@ -973,11 +958,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @NonNull
     @Override
     public Consumer<? super Boolean> togglePaymentMethodFieldVisibility() {
-        return isVisible -> {
-            for (View v : paymentMethodsViewsList) {
-                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            }
-        };
+        return isVisible -> paymentMethodsSpinner.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @Override

@@ -36,15 +36,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/distance_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
                     android:imeOptions="actionNext"
                     android:inputType="number|numberSigned|numberDecimal"
-                    android:padding="@dimen/padding_large"
-                    android:singleLine="true"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                     android:textStyle="bold" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -66,13 +61,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:imeOptions="actionNext"
-                    android:inputType="number|numberDecimal"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    android:inputType="number|numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,14 +90,10 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    android:inputType="textCapSentences" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -121,12 +108,7 @@
 
                 <co.smartreceipts.android.date.DateEditText
                     android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    style="@style/Widget.SmartReceipts.OutlinedEditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,14 +123,10 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    android:inputType="textCapSentences|textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

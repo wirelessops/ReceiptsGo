@@ -37,15 +37,10 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:maxLength="50"
-                    android:minHeight="@dimen/default_input_row_size"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead"
                     android:textStyle="bold" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -59,12 +54,7 @@
 
                 <co.smartreceipts.android.date.DateEditText
                     android:id="@+id/start_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:minHeight="@dimen/default_input_row_size"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    style="@style/Widget.SmartReceipts.OutlinedEditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,12 +67,7 @@
 
                 <co.smartreceipts.android.date.DateEditText
                     android:id="@+id/end_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:minHeight="@dimen/default_input_row_size"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    style="@style/Widget.SmartReceipts.OutlinedEditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,8 +78,7 @@
                 android:layout_marginTop="@dimen/margin_tiny"
                 app:captionBackgroundColor="@color/bottom_navigation_color"
                 app:captionText="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
-                app:startIcon="@drawable/ic_round_money_24"
-                />
+                app:startIcon="@drawable/ic_round_money_24" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_comment_wrapper"
@@ -107,15 +91,10 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/dialog_tripmenu_comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="@dimen/default_input_row_size"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    android:inputType="textCapSentences|textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,14 +110,9 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/dialog_tripmenu_cost_center"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
-                    android:inputType="textCapSentences"
-                    android:minHeight="@dimen/default_input_row_size"
-                    android:padding="@dimen/padding_large"
-                    android:textAppearance="@style/Widget.SmartReceipts.TextView.Subhead" />
+                    android:inputType="textCapSentences" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
