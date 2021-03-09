@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/card_background"
     android:padding="@dimen/padding_large"
+    android:layout_marginBottom="1dp"
     tools:viewBindingIgnore="true">
 
     <LinearLayout
@@ -19,21 +21,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="MI 8 SE" />
 
         <TextView
             android:id="@+id/remote_backup_provider"
             style="@style/Widget.SmartReceipts.TextView.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            tools:text="Google Drive" />
 
         <TextView
             android:id="@+id/remote_backup_date"
             style="@style/Widget.SmartReceipts.TextView.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end" />
+            tools:text="10.10.2010" />
 
     </LinearLayout>
 
@@ -41,11 +45,11 @@
         android:id="@+id/remote_backup_metadata_overflow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:tint="@color/text_primary_color"
-        android:src="@drawable/ic_menu_24dp" />
+        android:src="@drawable/ic_menu_24dp"
+        app:tint="@color/text_primary_color" />
 
 </RelativeLayout>

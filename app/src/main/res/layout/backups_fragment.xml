@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/padding_large">
+    android:paddingStart="@dimen/padding_large"
+    android:paddingEnd="@dimen/padding_large">
 
     <TextView
         style="@style/Widget.SmartReceipts.TextView.Body2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_tiny"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
         android:text="@string/manual_backup_title" />
 
     <TextView
@@ -23,69 +25,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_tiny"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_tiny"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/manual_backup_export"
-            style="@style/Widget.SmartReceipts.Button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:paddingEnd="@dimen/padding_large"
-            android:paddingStart="@dimen/padding_large">
+            android:layout_margin="@dimen/margin_normal"
+            android:text="@string/manual_backup_export"
+            app:icon="@drawable/ic_cloud_upload_24dp" />
 
-            <TextView
-                style="@style/Widget.SmartReceipts.TextView.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/padding_normal"
-                android:drawableStart="@drawable/ic_cloud_upload_24dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/accent_text_primary"
-                android:text="@string/manual_backup_export"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-        <FrameLayout
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/manual_backup_import"
-            style="@style/Widget.SmartReceipts.Button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:paddingEnd="@dimen/padding_large"
-            android:paddingStart="@dimen/padding_large">
-
-            <TextView
-                style="@style/Widget.SmartReceipts.TextView.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/padding_normal"
-                android:drawableStart="@drawable/ic_cloud_download_24dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/accent_text_primary"
-                android:text="@string/manual_backup_import"
-                android:textStyle="bold" />
-        </FrameLayout>
+            android:layout_margin="@dimen/margin_normal"
+            android:text="@string/manual_backup_import"
+            app:icon="@drawable/ic_cloud_download_24dp" />
     </LinearLayout>
 
-    <View
-        style="@style/Widget.View.Divider.Horizontal"
-        android:layout_marginBottom="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal" />
+    <View style="@style/Widget.View.Divider.Horizontal" />
 
     <TextView
         android:id="@+id/auto_backup_title"
         style="@style/Widget.SmartReceipts.TextView.Body2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_tiny"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
         android:text="@string/auto_backup_title" />
 
     <TextView
@@ -95,17 +65,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_tiny"
         android:drawablePadding="@dimen/padding_normal"
-        android:drawableStart="@android:drawable/stat_sys_warning"
+        android:drawableTint="@color/text_secondary_color"
         android:gravity="center_vertical"
-        android:text="@string/auto_backup_warning_none" />
+        android:text="@string/auto_backup_warning_none"
+        app:drawableStartCompat="@android:drawable/stat_sys_warning" />
 
     <CheckBox
         android:id="@+id/auto_backup_wifi_only"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_tiny"
-        android:paddingEnd="@dimen/padding_normal"
         android:paddingStart="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
         android:text="@string/auto_backup_wifi_only"
         android:textAppearance="@style/Widget.SmartReceipts.TextView.Body1" />
 
@@ -147,13 +118,15 @@
             style="@style/Widget.SmartReceipts.TextView.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
             android:text="@string/existing_backups_title" />
 
         <ProgressBar
             android:id="@+id/backupsProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

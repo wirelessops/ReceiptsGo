@@ -90,7 +90,7 @@ class ReceiptImageFragment : WBFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            receipt = arguments!!.getParcelable(Receipt.PARCEL_KEY)
+            receipt = requireArguments().getParcelable(Receipt.PARCEL_KEY)
         } else {
             receipt = savedInstanceState.getParcelable(KEY_OUT_RECEIPT)
             imageUri = savedInstanceState.getParcelable(KEY_OUT_URI)
@@ -99,7 +99,7 @@ class ReceiptImageFragment : WBFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ReceiptImageFragmentBinding.inflate(inflater, container, false)
 
         binding.buttonEditPhoto.setOnClickListener { view ->
@@ -124,9 +124,15 @@ class ReceiptImageFragment : WBFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val fragmentActivity = requireActivity()
-        val toolbar = fragmentActivity.findViewById<Toolbar>(R.id.toolbar)
-        (fragmentActivity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        val toolbar: Toolbar
+        if (navigationHandler.isDualPane) {
+            toolbar = requireActivity().findViewById(R.id.toolbar)
+            binding.toolbar.toolbar.visibility = View.GONE
+        } else {
+            toolbar = binding.toolbar.toolbar
+        }
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -208,6 +214,11 @@ class ReceiptImageFragment : WBFragment() {
         compositeDisposable.clear()
 
         super.onPause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

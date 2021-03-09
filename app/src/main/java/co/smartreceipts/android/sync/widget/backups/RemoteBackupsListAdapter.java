@@ -65,7 +65,7 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
         if (viewType == TYPE_HEADER) {
             return new HeaderViewHolder(headerView);
         } else {
-            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.remote_backups_list_item, parent, false);
+            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_remote_backup, parent, false);
             return new ItemViewHolder(view);
         }
     }

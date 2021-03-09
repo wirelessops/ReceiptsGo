@@ -30,6 +30,7 @@ import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.databinding.OcrConfigurationFragmentBinding;
 import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.core.identity.store.EmailAddress;
@@ -50,6 +51,9 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @Inject
     Analytics analytics;
+
+    @Inject
+    NavigationHandler navigationHandler;
 
     private CheckBox ocrIsEnabledCheckbox;
     private CheckBox allowUsToSaveImagesRemotelyCheckbox;
@@ -107,7 +111,14 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+
+        final Toolbar toolbar;
+        if (navigationHandler.isDualPane()) {
+            toolbar = getActivity().findViewById(R.id.toolbar);
+            binding.toolbar.toolbar.setVisibility(View.GONE);
+        } else {
+            toolbar = binding.toolbar.toolbar;
+        }
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
