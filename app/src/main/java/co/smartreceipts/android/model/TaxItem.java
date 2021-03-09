@@ -5,10 +5,9 @@ import android.text.TextUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.model.factory.PriceBuilderFactory;
 
 public class TaxItem {
 
@@ -58,14 +57,9 @@ public class TaxItem {
 			mPrice = BigDecimal.ZERO;
 			getTax();
 		}
-		try {
-			mPrice = new BigDecimal(NumberFormat.getInstance().parse(price.trim()).toString());
-			getTax();
-		}
-		catch (NumberFormatException | ParseException e) {
-			Logger.error(this, e);
-			mPrice = null;
-		}
+
+		mPrice = new PriceBuilderFactory().setPrice(price).build().getPrice();
+		getTax();
 	}
 	
 	public boolean isValid() {
