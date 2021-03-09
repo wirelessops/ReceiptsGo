@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="@id/outline"
         app:layout_constraintTop_toTopOf="@id/outline"
         app:tint="@color/navigation_inactive"
-        tools:srcCompat="@drawable/ic_round_money_24" />
+        tools:srcCompat="@drawable/ic_money" />
 
     <ImageView
         android:id="@+id/dropdown_icon"

@@ -306,7 +306,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
         val paymentMethod: PaymentMethod? =
             if (presenter.isUsePaymentMethods()) {
-                binding.paymentMethod.getSelectedItem() as PaymentMethod
+                binding.paymentMethod.get().selectedItem as PaymentMethod
             } else {
                 null
             }
@@ -316,7 +316,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
             .setLocation(binding.location.text.toString())
             .setDate(binding.date.date)
             .setTimezone(binding.date.timeZone)
-            .setCurrency(binding.spinnerCurrency.getSelectedItem().toString())
+            .setCurrency(binding.spinnerCurrency.get().selectedItem.toString())
             .setComment(binding.comment.text.toString())
             .setPaymentMethod(paymentMethod)
             .build()
@@ -339,14 +339,14 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     override fun displayPaymentMethods(list: List<PaymentMethod>) {
         if (isAdded) {
             paymentMethodsAdapter.update(list)
-            binding.paymentMethod.setAdapter(paymentMethodsAdapter)
+            binding.paymentMethod.get().adapter = paymentMethodsAdapter
             if (editableItem != null) {
                 // Here we manually loop through all payment methods and check for id == id in case the user changed this via "Manage"
                 val distancePaymentMethod = editableItem!!.paymentMethod
                 for (i in 0 until paymentMethodsAdapter.count) {
                     val paymentMethod = paymentMethodsAdapter.getItem(i)
                     if (paymentMethod != null && paymentMethod.id == distancePaymentMethod.id) {
-                        binding.paymentMethod.setSelection(i)
+                        binding.paymentMethod.get().setSelection(i)
                         break
                     }
                 }

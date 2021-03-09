@@ -4,13 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.Spinner
-import android.widget.SpinnerAdapter
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import co.smartreceipts.android.R
-import co.smartreceipts.android.databinding.ViewSpinnerBinding
+import co.smartreceipts.android.databinding.ViewOutlinedSpinnerBinding
 import co.smartreceipts.android.utils.Supplier
 
 class OutlinedSpinner @JvmOverloads constructor(
@@ -19,7 +18,7 @@ class OutlinedSpinner @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), Supplier<Spinner> {
 
-    private val binding: ViewSpinnerBinding = ViewSpinnerBinding.inflate(LayoutInflater.from(context), this)
+    private val binding: ViewOutlinedSpinnerBinding = ViewOutlinedSpinnerBinding.inflate(LayoutInflater.from(context), this)
 
     init {
         context.withStyledAttributes(attrs, R.styleable.OutlinedSpinner) {
@@ -35,10 +34,13 @@ class OutlinedSpinner @JvmOverloads constructor(
                 binding.startIcon.isVisible = false
             }
 
-            binding.caption.setBackgroundColor(captionBackgroundColor)
-            binding.caption.text = captionText
+            if (captionText != null && captionText.isNotEmpty()) {
+                binding.caption.setBackgroundColor(captionBackgroundColor)
+                binding.caption.text = captionText
+            } else {
+                binding.caption.isVisible = false
+            }
         }
-
     }
 
     override fun setOnTouchListener(l: OnTouchListener?) {
@@ -53,15 +55,7 @@ class OutlinedSpinner @JvmOverloads constructor(
         return binding.spinner
     }
 
-    fun getSelectedItem(): Any? {
-        return binding.spinner.selectedItem
-    }
-
-    fun setAdapter(adapter: SpinnerAdapter) {
-        binding.spinner.adapter = adapter
-    }
-
-    fun setSelection(position: Int) {
-        binding.spinner.setSelection(position)
+    fun setCaptionText(s: String) {
+        binding.caption.text = s
     }
 }

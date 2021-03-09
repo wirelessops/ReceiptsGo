@@ -17,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -197,7 +196,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private Spinner currencySpinner;
     private NetworkRequestAwareEditText exchangeRateBox;
     private EditText exchangedPriceInBaseCurrencyBox;
-    private TextView receiptInputExchangeRateBaseCurrencyTextView;
     private DateEditText dateBox;
     private Spinner categoriesSpinner;
     private AutoCompleteTextView commentBox;
@@ -207,8 +205,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     private Button decimalSeparatorButton;
     private TextInputLayout taxInputWrapper1;
     private TextInputLayout taxInputWrapper2;
-
-    private List<View> exchangeRateViewsList;
 
     // Flex fields (ie for white-label projects)
     EditText extraEditText1;
@@ -307,7 +303,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         currencySpinner = binding.receiptCurrency.get();
         exchangeRateBox = binding.receiptExchangeRate;
         exchangedPriceInBaseCurrencyBox = binding.receiptExchangedResult;
-        receiptInputExchangeRateBaseCurrencyTextView = binding.receiptInputExchangeRateBaseCurrency;
         dateBox = binding.receiptDate;
         categoriesSpinner = binding.receiptCategory.get();
         commentBox = binding.receiptComment;
@@ -317,11 +312,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         decimalSeparatorButton = binding.decimalSeparatorButton;
         taxInputWrapper1 = binding.receiptTax1Wrapper;
         taxInputWrapper2 = binding.receiptTax2Wrapper;
-
-        exchangeRateViewsList = new ArrayList<>();
-        exchangeRateViewsList.add(exchangeRateBox);
-        exchangeRateViewsList.add(exchangedPriceInBaseCurrencyBox);
-        exchangeRateViewsList.add(receiptInputExchangeRateBaseCurrencyTextView);
 
         return binding.getRoot();
     }
@@ -789,9 +779,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Consumer<? super Boolean> toggleExchangeRateFieldVisibility() {
         return (Consumer<Boolean>) isVisible -> {
-            for (View v : exchangeRateViewsList) {
-                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            }
+            final int visibility = isVisible ? View.VISIBLE : View.GONE;
+
+            binding.receiptExchangeRateWrapper.setVisibility(visibility);
+            binding.receiptExchangedWrapper.setVisibility(visibility);
+            binding.receiptExchangeBaseCurrency.setVisibility(visibility);
         };
     }
 
@@ -830,7 +822,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Consumer<? super CurrencyUnit> displayBaseCurrency() {
         return (Consumer<CurrencyUnit>) priceCurrency -> {
-            receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCode());
+            binding.receiptExchangeBaseCurrency.setText(priceCurrency.getCode());
         };
     }
 
@@ -958,7 +950,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @NonNull
     @Override
     public Consumer<? super Boolean> togglePaymentMethodFieldVisibility() {
-        return isVisible -> paymentMethodsSpinner.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        return isVisible -> binding.receiptPaymentMethod.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @Override

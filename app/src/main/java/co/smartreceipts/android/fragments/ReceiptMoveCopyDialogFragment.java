@@ -79,7 +79,7 @@ public class ReceiptMoveCopyDialogFragment extends DialogFragment implements Dia
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
         binding = DialogReceiptMoveCopyBinding.inflate(inflater, container, false);
-        mTripSpinner = binding.moveCopySpinner;
+        mTripSpinner = binding.moveCopySpinner.get();
         mTripSpinner.setPrompt(getString(R.string.report));
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
