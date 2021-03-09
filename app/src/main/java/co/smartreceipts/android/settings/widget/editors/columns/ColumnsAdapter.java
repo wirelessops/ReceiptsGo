@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +20,7 @@ import co.smartreceipts.android.persistence.database.operations.DatabaseOperatio
 import co.smartreceipts.android.settings.widget.editors.EditableItemListener;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import co.smartreceipts.android.widget.UserSelectionTrackingOnItemSelectedListener;
+import co.smartreceipts.android.widget.ui.OutlinedSpinner;
 import co.smartreceipts.android.workers.reports.ReportResourcesManager;
 
 public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt>> {
@@ -55,17 +54,16 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
 
         columnHolder.dragHandle.setVisibility(isOnDragMode ? View.VISIBLE : View.GONE);
         columnHolder.delete.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
-        columnHolder.column.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
         columnHolder.spinner.setEnabled(!isOnDragMode);
 
-        columnHolder.spinner.setAdapter(spinnerAdapter);
+        columnHolder.spinner.get().setAdapter(spinnerAdapter);
 
-        columnHolder.column.setText(context.getString(R.string.column_item, Integer.toString(position + 1))); //Add +1 to make it not 0-th index
+        columnHolder.spinner.setCaptionText(context.getString(R.string.column_item, Integer.toString(position + 1))); //Add +1 to make it not 0-th index
         final int selectedPosition = getSpinnerPositionByColumnType(position);
         if (selectedPosition >= 0) {
-            columnHolder.spinner.setSelection(selectedPosition);
+            columnHolder.spinner.get().setSelection(selectedPosition);
         }
-        columnHolder.spinner.setOnItemSelectedListener(new ColumnTypeChangeSelectionListener());
+        columnHolder.spinner.get().setOnItemSelectedListener(new ColumnTypeChangeSelectionListener());
         SpinnerTag spinnerTag = (SpinnerTag) columnHolder.spinner.getTag();
         spinnerTag.column = items.get(position);
 
@@ -113,15 +111,15 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
 
     private static class ColumnViewHolder extends AbstractDraggableItemViewHolder {
 
-        public TextView column;
-        public Spinner spinner;
+//        public TextView column;
+        public OutlinedSpinner spinner;
         public View delete;
         View dragHandle;
 
         ColumnViewHolder(View itemView) {
             super(itemView);
 
-            column = itemView.findViewById(android.R.id.title);
+//            column = itemView.findViewById(android.R.id.title);
             spinner = itemView.findViewById(R.id.column_spinner);
             delete = itemView.findViewById(R.id.delete);
             dragHandle = itemView.findViewById(R.id.drag_handle);
