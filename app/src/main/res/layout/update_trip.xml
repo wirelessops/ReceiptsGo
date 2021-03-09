@@ -5,7 +5,7 @@
     android:id="@+id/update_trip_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bottom_navigation_color"
+    android:background="@color/card_background"
     android:orientation="vertical">
 
     <include
@@ -76,9 +76,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionBackgroundColor="@color/card_background"
                 app:captionText="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
-                app:startIcon="@drawable/ic_round_money_24" />
+                app:startIcon="@drawable/ic_money" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/trip_input_comment_wrapper"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
-                app:startIconDrawable="@drawable/ic_round_comment_24">
+                app:startIconDrawable="@drawable/ic_comment">
 
 
                 <AutoCompleteTextView

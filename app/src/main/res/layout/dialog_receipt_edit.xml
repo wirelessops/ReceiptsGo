@@ -38,8 +38,8 @@
         android:id="@+id/receipt_delete"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
         android:text="@string/delete"
-        android:textColor="@color/delete_warning_color"
+        android:textColor="@color/warning_color"
         app:drawableStartCompat="@drawable/ic_delete"
-        app:drawableTint="@color/delete_warning_color" />
+        app:drawableTint="@color/warning_color" />
 
 </LinearLayout>

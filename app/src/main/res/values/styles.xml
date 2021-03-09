@@ -12,7 +12,9 @@
 
     <style name="Widget.View.Divider.Horizontal" parent="Widget">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
@@ -135,7 +137,7 @@
     </style>
 
     <style name="Widget.SmartReceipts.TextView.Body2">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/font_headline2</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/text_primary_color</item>
     </style>
@@ -172,7 +174,7 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:layout_marginTop">@dimen/margin_normal</item>
-        <item name="android:background">@color/bottom_navigation_color</item>
+        <item name="android:background">@color/card_background</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textColor">@color/text_primary_color</item>
         <item name="android:layout_width">match_parent</item>
@@ -197,7 +199,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">1dp</item>
-        <item name="android:background">@color/bottom_navigation_color</item>
+        <item name="android:background">@color/card_background</item>
     </style>
 
     <style name="Widget.SmartReceipts.Button" parent="@style/Widget.AppCompat.Button.Colored">

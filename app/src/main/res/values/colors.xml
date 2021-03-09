@@ -4,12 +4,12 @@
     <color name="background">#F3F2F8</color>
     <color name="violet">#45289F</color>
     <color name="violet_dark">#301B92</color>
-    <color name="bottom_navigation_color">@android:color/white</color>
+    <color name="card_background">@android:color/white</color>
     <color name="navigation_inactive">#B5B3B8</color>
     <color name="no_data_image_tint">#D9D7E0</color>
     <color name="receipt_image_tint">#E1E0E2</color>
     
-    <color name="delete_warning_color">#F93E2B</color>
+    <color name="warning_color">#F93E2B</color>
 
     <color name="text_secondary_pale">#A7A3AB</color>
 
@@ -32,7 +32,6 @@
     <color name="transparent_overlay">#66000000</color>
 
     <!-- Palette for lists and cards -->
-    <color name="card_background">#292929</color>
     <color name="list_background">@color/window_background_color</color>
     <color name="selected_card_background">#424242</color>
     <color name="card_image_background">#303030</color>

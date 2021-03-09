@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="1dp"
-    android:background="@color/bottom_navigation_color">
+    android:background="@color/card_background">
 
     <ImageView
         android:id="@+id/receipt_image"

@@ -4,7 +4,7 @@
     android:id="@+id/update_distance_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bottom_navigation_color"
+    android:background="@color/card_background"
     android:orientation="vertical">
 
     <include
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:paddingStart="@dimen/padding_small"
-                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionBackgroundColor="@color/card_background"
                 app:captionText="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
                 app:layout_constraintBottom_toBottomOf="@+id/text_distance_rate_wrapper"
                 app:layout_constraintStart_toEndOf="@id/text_distance_rate_wrapper"
@@ -119,7 +119,7 @@
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:hint="@string/distance_comment_field"
                 app:layout_constraintTop_toBottomOf="@id/distance_date_wrapper"
-                app:startIconDrawable="@drawable/ic_round_comment_24">
+                app:startIconDrawable="@drawable/ic_comment">
 
                 <AutoCompleteTextView
                     android:id="@+id/comment"
@@ -135,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionBackgroundColor="@color/card_background"
                 app:captionText="@string/payment_method"
                 app:layout_constraintTop_toBottomOf="@+id/distance_comment_wrapper"
                 app:startIcon="@drawable/ic_credit_card_24dp" />

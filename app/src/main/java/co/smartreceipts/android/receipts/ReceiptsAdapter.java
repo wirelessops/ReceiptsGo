@@ -296,7 +296,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
             image.setTag(receipt);
 
             if (receipt.hasPDF()) {
-                setIcon(image, R.drawable.ic_file_black_24dp);
+                setIcon(image, R.drawable.ic_pdf);
             } else if (receipt.hasImage() && receipt.getFile() != null) {
                 image.setPadding(0, 0, 0, 0);
                 picasso
@@ -306,7 +306,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
                         .transform(roundedImageTransformation)
                         .into(image);
             } else {
-                setIcon(image, R.drawable.ic_receipt_white_24dp);
+                setIcon(image, R.drawable.ic_resource_import);
             }
 
             price.setText(receipt.getPrice().getCurrencyFormattedPrice());

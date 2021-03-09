@@ -339,7 +339,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             binding.fab.hide();
             binding.bottomAppBar.placeholder.setVisibility(View.GONE);
         } else if (position == fragmentPagerAdapter.getReceiptsTabPosition() || position == fragmentPagerAdapter.getDistancesTabPosition()) {
-            binding.fab.setImageResource(R.drawable.ic_round_add_24);
+            binding.fab.setImageResource(R.drawable.ic_add_24dp);
             binding.fab.show();
             binding.bottomAppBar.placeholder.setVisibility(View.VISIBLE);
         } else if (position == fragmentPagerAdapter.getGenerateTabPosition()) {

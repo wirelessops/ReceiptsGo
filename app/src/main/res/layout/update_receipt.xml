@@ -5,7 +5,8 @@
     android:id="@+id/update_receipt_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bottom_navigation_color"
+    android:animateLayoutChanges="true"
+    android:background="@color/card_background"
     android:orientation="vertical">
 
     <include
@@ -97,7 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/padding_small"
-                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionBackgroundColor="@color/card_background"
                 app:captionText="@string/DIALOG_RECEIPTMENU_HINT_CURRENCY"
                 app:layout_constraintBottom_toBottomOf="@id/receipt_price_wrapper"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -113,11 +114,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/receipt_price_wrapper"
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE"
-                app:startIconDrawable="@drawable/ic_exchange_rate_24dp"
                 tools:visibility="visible">
 
                 <co.smartreceipts.android.widget.NetworkRequestAwareEditText
                     android:id="@+id/receipt_exchange_rate"
+                    android:drawableStart="@drawable/ic_exchange_rate_24dp"
+                    android:drawableTint="@color/navigation_inactive"
+                    android:drawablePadding="@dimen/padding_normal"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal|numberSigned" />
@@ -132,7 +135,7 @@
                 android:layout_marginEnd="@dimen/margin_tiny"
                 android:hint="@string/receipt_input_exchanged_result_hint"
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/receipt_input_exchange_rate_base_currency"
+                app:layout_constraintEnd_toStartOf="@id/receipt_exchange_base_currency"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/receipt_exchange_rate_wrapper"
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE"
@@ -147,7 +150,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/receipt_input_exchange_rate_base_currency"
+                android:id="@+id/receipt_exchange_base_currency"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:gravity="center"
@@ -225,7 +228,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionBackgroundColor="@color/card_background"
                 app:captionText="@string/DIALOG_RECEIPTMENU_HINT_CATEGORY"
                 app:layout_constraintTop_toBottomOf="@+id/receipt_date_wrapper"
                 app:startIcon="@drawable/ic_category_24dp" />
@@ -237,7 +240,7 @@
                 android:hint="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/receipt_category"
-                app:startIconDrawable="@drawable/ic_round_comment_24">
+                app:startIconDrawable="@drawable/ic_comment">
 
                 <AutoCompleteTextView
                     android:id="@+id/receipt_comment"
@@ -253,7 +256,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_tiny"
-                app:captionBackgroundColor="@color/bottom_navigation_color"
+                app:captionBackgroundColor="@color/card_background"
                 app:captionText="@string/payment_method"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/receipt_comment_wrapper"

@@ -1,6 +1,5 @@
 package co.smartreceipts.android.search.delegates
 
-import android.graphics.Typeface
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
@@ -37,7 +36,7 @@ fun receiptAdapterDelegate(itemClickedListener: (Receipt) -> Unit, syncProvider:
             }
 
             if (item.hasPDF()) {
-                setIcon(binding.receiptImage, R.drawable.ic_file_black_24dp)
+                setIcon(binding.receiptImage, R.drawable.ic_pdf)
             } else if (item.hasImage() && item.file != null) {
                 binding.receiptImage.setPadding(0, 0, 0, 0)
                 Picasso.get()
@@ -47,7 +46,7 @@ fun receiptAdapterDelegate(itemClickedListener: (Receipt) -> Unit, syncProvider:
                     .transform(transformation)
                     .into(binding.receiptImage)
             } else {
-                setIcon(binding.receiptImage, R.drawable.ic_receipt_white_24dp)
+                setIcon(binding.receiptImage, R.drawable.ic_resource_import)
             }
 
             binding.content.imageSyncState.setOnClickListener(null)

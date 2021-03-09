@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:backgroundTint="@color/bottom_navigation_color"
+    android:backgroundTint="@color/card_background"
     android:padding="0dp"
     app:contentInsetStart="0dp"
     app:fabCradleMargin="@dimen/margin_tiny"
