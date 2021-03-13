@@ -36,6 +36,7 @@
         <item name="boxCornerRadiusBottomEnd">@dimen/text_input_corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/text_input_corner_radius</item>
         <item name="startIconTint">@color/navigation_inactive</item>
+        <item name="boxStrokeErrorColor">@color/smart_receipts_colorError</item>
     </style>
     
     <style name="Widget.SmartReceipts.OutlinedEditText" parent="Widget.AppCompat.EditText">

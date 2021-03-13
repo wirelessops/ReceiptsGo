@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +16,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
             android:padding="@dimen/padding_large">
 
             <ProgressBar
@@ -39,51 +39,59 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/login_fields_title"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:text="@string/login_fields_hint_email" />
 
-            <EditText
-                android:id="@+id/login_field_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
                 android:layout_below="@id/login_fields_hint"
                 android:hint="@string/login_field_email_hint"
-                android:inputType="textEmailAddress" />
+                app:errorEnabled="true">
 
-            <EditText
-                android:id="@+id/login_field_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/login_field_email"
-                android:layout_marginBottom="@dimen/margin_normal"
+                <EditText
+                    android:id="@+id/login_field_email"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_wrapper"
+                style="@style/Widget.SmartReceipts.TextInputLayout"
+                android:layout_below="@id/email_wrapper"
                 android:hint="@string/login_field_password_hint"
-                android:inputType="textPassword" />
+                app:errorEnabled="true">
 
-            <LinearLayout
+                <EditText
+                    android:id="@+id/login_field_password"
+                    style="@style/Widget.SmartReceipts.OutlinedEditText"
+                    android:layout_below="@id/email_wrapper"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_button"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/login_field_password"
-                android:orientation="horizontal">
+                android:layout_below="@id/password_wrapper"
+                android:layout_gravity="center"
+                android:padding="@dimen/padding_large"
+                android:text="@string/login_button_text"
+                app:cornerRadius="@dimen/card_corner_radius" />
 
-                <Button
-                    android:id="@+id/login_button"
-                    style="@style/Widget.SmartReceipts.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="@string/login_button_text" />
-
-                <Button
-                    android:id="@+id/sign_up_button"
-                    style="@style/Widget.SmartReceipts.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/margin_tiny"
-                    android:layout_weight="1"
-                    android:text="@string/sign_up_button_text" />
-
-            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sign_up_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_button"
+                android:layout_gravity="center"
+                android:padding="@dimen/padding_large"
+                android:text="@string/sign_up_button_text"
+                app:cornerRadius="@dimen/card_corner_radius" />
 
         </RelativeLayout>
 

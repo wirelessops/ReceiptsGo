@@ -1,7 +1,6 @@
 package co.smartreceipts.android.identity.widget.login;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,19 +19,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
+import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.databinding.LoginFragmentBinding;
 import co.smartreceipts.android.identity.widget.login.model.UiInputValidationIndicator;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
@@ -45,6 +45,9 @@ public class LoginFragment extends Fragment implements LoginView {
 
     @Inject
     LoginRouter router;
+
+    @Inject
+    NavigationHandler navigationHandler;
 
     private TextView loginFieldsHintMessage;
     private EditText emailInput;
@@ -78,7 +81,7 @@ public class LoginFragment extends Fragment implements LoginView {
         binding = LoginFragmentBinding.inflate(inflater, container, false);
 
         loginFieldsHintMessage = binding.loginFieldsHint;
-        emailInput = binding. loginFieldEmail;
+        emailInput = binding.loginFieldEmail;
         passwordInput = binding.loginFieldPassword;
         progress = binding.progress;
         loginButton = binding.loginButton;
@@ -97,7 +100,14 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+
+        final Toolbar toolbar;
+        if (navigationHandler.isDualPane()) {
+            toolbar = getActivity().findViewById(R.id.toolbar);
+            binding.toolbar.toolbar.setVisibility(View.GONE);
+        } else {
+            toolbar = binding.toolbar.toolbar;
+        }
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
@@ -168,8 +178,8 @@ public class LoginFragment extends Fragment implements LoginView {
         loginFieldsHintMessage.setText(uiInputValidationIndicator.getMessage());
         loginButton.setEnabled(enableButtons);
         signUpButton.setEnabled(enableButtons);
-        highlightInput(emailInput, uiInputValidationIndicator.isEmailValid());
-        highlightInput(passwordInput, uiInputValidationIndicator.isPasswordValid());
+        highlightInput(binding.emailWrapper, uiInputValidationIndicator.isEmailValid() || emailInput.getText().toString().isEmpty());
+        highlightInput(binding.passwordWrapper, uiInputValidationIndicator.isPasswordValid() || passwordInput.getText().toString().isEmpty());
     }
 
     @NonNull
@@ -196,14 +206,8 @@ public class LoginFragment extends Fragment implements LoginView {
         return RxView.clicks(signUpButton);
     }
 
-    private void highlightInput(@NonNull EditText editText, boolean isValid) {
-        final int color;
-        if (isValid) {
-            color = ResourcesCompat.getColor(editText.getResources(), R.color.smart_receipts_colorSuccess, editText.getContext().getTheme());
-        } else {
-            color = ResourcesCompat.getColor(editText.getResources(), R.color.smart_receipts_colorAccent, editText.getContext().getTheme());
-        }
-        editText.getBackground().mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    private void highlightInput(@NonNull TextInputLayout inputLayout, boolean isValid) {
+        inputLayout.setError(isValid ? null : " ");
     }
 
 }
