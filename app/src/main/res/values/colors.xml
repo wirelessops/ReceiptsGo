@@ -13,6 +13,10 @@
 
     <color name="text_secondary_pale">#A7A3AB</color>
 
+    <color name="tooltip_bg">#5E5D63</color>
+    <color name="tooltip_button">#78777C</color>
+    <color name="tooltip_icon">#AEAEB1</color>
+
     <!-- Palette for Core App (Material Palette) -->
     <color name="smart_receipts_colorPrimary">@color/violet</color>
     <color name="smart_receipts_colorPrimaryDark">@color/violet_dark</color>

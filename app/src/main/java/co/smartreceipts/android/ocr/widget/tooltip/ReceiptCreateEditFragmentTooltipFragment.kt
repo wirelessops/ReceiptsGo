@@ -31,7 +31,7 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        tooltipView = Tooltip(context)
+        tooltipView = Tooltip(requireContext())
         return tooltipView
     }
 
@@ -63,13 +63,13 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
         }
     }
 
-    override fun getTooltipClickStream(): Observable<Any> = tooltipView.tooltipClickStream
+    override fun getTooltipClickStream(): Observable<Unit> = tooltipView.tooltipClickStream
 
-    override fun getButtonNoClickStream(): Observable<Any> = tooltipView.buttonNoClickStream
+    override fun getButtonNoClickStream(): Observable<Unit> = tooltipView.buttonNoClickStream
 
-    override fun getButtonYesClickStream(): Observable<Any> = tooltipView.buttonYesClickStream
+    override fun getButtonYesClickStream(): Observable<Unit> = tooltipView.buttonYesClickStream
 
-    override fun getButtonCancelClickStream(): Observable<Any> = tooltipView.buttonCancelClickStream
+    override fun getButtonCancelClickStream(): Observable<Unit> = tooltipView.buttonCancelClickStream
 
-    override fun getCloseIconClickStream(): Observable<Any> = tooltipView.closeIconClickStream
+    override fun getCloseIconClickStream(): Observable<Unit> = tooltipView.closeIconClickStream
 }

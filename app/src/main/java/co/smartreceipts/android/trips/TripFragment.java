@@ -205,7 +205,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
         outState.putInt(OUT_SELECTED_TRIP_ID, selectedTripId);
     }
 
-    public final void tripMenu(final Trip trip) {
+    public final void tripMenu(@Nullable final Trip trip) {
         if (trip == null) {
             navigationHandler.navigateToCreateTripFragment(tripCardAdapter.getItems());
         } else {
@@ -213,7 +213,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
         }
     }
 
-    public final void editTrip(final Trip trip) {
+    public final void editTrip(@NonNull final Trip trip) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] editTripItems = flex.getStringArray(getActivity(), R.array.EDIT_TRIP_ITEMS);
         builder.setTitle(trip.getName())
@@ -230,7 +230,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
                 }).show();
     }
 
-    public final void deleteTrip(final Trip trip) {
+    public final void deleteTrip(@NonNull final Trip trip) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.delete_item, trip.getName()))
                 .setMessage(getString(R.string.delete_sync_information))
@@ -364,31 +364,31 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
 
     @NotNull
     @Override
-    public Observable<Object> getTooltipClickStream() {
+    public Observable<Unit> getTooltipClickStream() {
         return binding.tripTooltip.getTooltipClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonNoClickStream() {
+    public Observable<Unit> getButtonNoClickStream() {
         return binding.tripTooltip.getButtonNoClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonYesClickStream() {
+    public Observable<Unit> getButtonYesClickStream() {
         return binding.tripTooltip.getButtonYesClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonCancelClickStream() {
+    public Observable<Unit> getButtonCancelClickStream() {
         return binding.tripTooltip.getButtonCancelClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getCloseIconClickStream() {
+    public Observable<Unit> getCloseIconClickStream() {
         return binding.tripTooltip.getCloseIconClickStream();
     }
 

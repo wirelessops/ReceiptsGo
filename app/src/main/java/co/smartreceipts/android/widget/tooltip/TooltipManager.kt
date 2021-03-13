@@ -1,6 +1,5 @@
-package co.smartreceipts.android.widget.tooltip;
+package co.smartreceipts.android.widget.tooltip
 
-public interface TooltipManager {
-
-    void tooltipWasDismissed();
+interface TooltipManager {
+    fun tooltipWasDismissed()
 }

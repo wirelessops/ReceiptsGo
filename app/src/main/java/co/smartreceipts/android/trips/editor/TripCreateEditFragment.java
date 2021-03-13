@@ -70,6 +70,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
+import kotlin.Unit;
 import wb.android.flex.Flex;
 
 public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
@@ -524,31 +525,31 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
     @NotNull
     @Override
-    public Observable<Object> getTooltipClickStream() {
+    public Observable<Unit> getTooltipClickStream() {
         return tooltipView.getTooltipClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonNoClickStream() {
+    public Observable<Unit> getButtonNoClickStream() {
         return tooltipView.getButtonNoClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonYesClickStream() {
+    public Observable<Unit> getButtonYesClickStream() {
         return tooltipView.getButtonYesClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonCancelClickStream() {
+    public Observable<Unit> getButtonCancelClickStream() {
         return tooltipView.getButtonCancelClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getCloseIconClickStream() {
+    public Observable<Unit> getCloseIconClickStream() {
         return tooltipView.getCloseIconClickStream();
     }
 
