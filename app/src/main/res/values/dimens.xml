@@ -61,6 +61,7 @@
     <dimen name="font_headline2">17sp</dimen>
     <dimen name="font_subhead">15sp</dimen>
     <dimen name="font_caption">13sp</dimen>
+    <dimen name="font_caption2">10sp</dimen>
     <dimen name="font_no_data">16sp</dimen>
 
     <!--Bottom Sheet Dialog Sizes-->
@@ -73,5 +74,8 @@
     <!--Text Input-->
     <dimen name="text_input_corner_radius">16dp</dimen>
     <dimen name="text_input_outline_width">1dp</dimen>
+
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="organization_card_corner_radius">14dp</dimen>
 
 </resources>

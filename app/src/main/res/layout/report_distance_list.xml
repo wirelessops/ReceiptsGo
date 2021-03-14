@@ -24,28 +24,28 @@
 
     <ProgressBar
         android:id="@+id/progress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/Widget.SmartReceipts.ProgressBar.Loading"/>
-
-    <ImageView
-        android:id="@+id/no_data_image"
-        style="@style/Widget.SmartReceipts.ImageView.NoData"
-        app:srcCompat="@drawable/ic_distances"
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/no_data_image"
+        style="@style/Widget.SmartReceipts.ImageView.NoData"
+        app:layout_constraintBottom_toTopOf="@id/no_data_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_distances" />
+
     <TextView
         android:id="@+id/no_data_text"
         style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/distance_no_data"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_data_image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/no_data"

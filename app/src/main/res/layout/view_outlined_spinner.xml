@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_tiniest"
-        android:background="@drawable/bg_spinner"
+        android:background="@drawable/bg_outlined_rounded_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -80,7 +80,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/padding_large"
                 android:text="@string/login_button_text"
-                app:cornerRadius="@dimen/card_corner_radius" />
+                app:cornerRadius="@dimen/button_corner_radius" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_up_button"
@@ -91,7 +91,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/padding_large"
                 android:text="@string/sign_up_button_text"
-                app:cornerRadius="@dimen/card_corner_radius" />
+                app:cornerRadius="@dimen/button_corner_radius" />
 
         </RelativeLayout>
 

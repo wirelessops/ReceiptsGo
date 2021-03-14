@@ -23,13 +23,13 @@
             android:id="@+id/navigation_receipts"
             style="@style/Widget.SmartReceipts.BottomNavigationIcon"
             android:contentDescription="@string/report_info_receipts"
-            app:srcCompat="@drawable/ic_receipt_new" />
+            app:srcCompat="@drawable/ic_receipt" />
 
         <ImageView
             android:id="@+id/navigation_distances"
             style="@style/Widget.SmartReceipts.BottomNavigationIcon"
             android:contentDescription="@string/report_info_distance"
-            app:srcCompat="@drawable/ic_dist_rect" />
+            app:srcCompat="@drawable/ic_distances_square" />
 
         <View
             android:id="@+id/placeholder"

@@ -138,6 +138,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     public void present(GraphUiIndicator uiIndicator) {
         binding.noData.setVisibility(View.GONE);
         binding.progress.setVisibility(View.GONE);
+        binding.graphsLinearLayout.setVisibility(View.VISIBLE);
 
         switch (uiIndicator.getGraphType()) {
             case SummationByDate:

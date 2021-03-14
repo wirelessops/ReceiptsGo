@@ -183,7 +183,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         this.alerter = Alerter.create(getActivity())
                 .setTitle(R.string.ocr_status_title)
                 .setBackgroundColorRes(R.color.smart_receipts_colorAccent)
-                .setIcon(R.drawable.ic_receipt_new);
+                .setIcon(R.drawable.ic_receipt);
 
         // And inflate the root view
         binding = ReportReceiptsFragmentBinding.inflate(inflater, container, false);

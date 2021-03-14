@@ -16,8 +16,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"
-        android:gravity="end"
         android:fontFamily="sans-serif"
+        android:gravity="end"
         android:textSize="@dimen/font_subhead"
         app:layout_constraintBottom_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,19 +47,19 @@
     <ImageView
         android:id="@+id/no_data_image"
         style="@style/Widget.SmartReceipts.ImageView.NoData"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/no_data_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_receipt_new" />
+        app:srcCompat="@drawable/ic_receipt" />
 
     <TextView
         android:id="@+id/no_data_text"
         style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/receipt_no_data"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_data_image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/no_data"

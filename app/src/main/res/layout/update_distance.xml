@@ -57,7 +57,7 @@
                 app:layout_constraintTop_toBottomOf="@id/distance_value_wrapper"
                 app:layout_constraintWidth_percent="0.5"
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_PRICE_SHORT"
-                app:startIconDrawable="@drawable/ic_receipt_new">
+                app:startIconDrawable="@drawable/ic_receipt">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/rate"
