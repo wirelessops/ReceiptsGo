@@ -10,6 +10,10 @@
     <color name="receipt_image_tint">#E1E0E2</color>
     
     <color name="warning_color">#F93E2B</color>
+    <color name="org_synced_color">#689752</color>
+    <color name="org_synced_bg">#D7F8D6</color>
+    <color name="org_unsynced_color">#978152</color>
+    <color name="org_unsynced_bg">#F8F3D6</color>
 
     <color name="text_secondary_pale">#A7A3AB</color>
 

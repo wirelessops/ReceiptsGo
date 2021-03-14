@@ -9,14 +9,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.smartreceipts.android.R
+import co.smartreceipts.android.activities.NavigationHandler
+import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.databinding.AccountInfoFragmentBinding
 import co.smartreceipts.android.date.DateFormatter
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
-import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.identity.widget.account.organizations.OrganizationsListAdapter
 import co.smartreceipts.android.identity.widget.account.subscriptions.SubscriptionsListAdapter
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
+import co.smartreceipts.core.identity.store.EmailAddress
 import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
@@ -33,6 +35,9 @@ class AccountFragment : Fragment(), AccountView {
 
     @Inject
     lateinit var dateFormatter: DateFormatter
+
+    @Inject
+    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
 
     private var wasPreviouslySentToLogin: Boolean = false
 
@@ -87,9 +92,15 @@ class AccountFragment : Fragment(), AccountView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val fragmentActivity = requireActivity()
-        val toolbar = fragmentActivity.findViewById<Toolbar>(R.id.toolbar)
-        (fragmentActivity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        val toolbar: Toolbar
+        if (navigationHandler.isDualPane) {
+            toolbar = requireActivity().findViewById(R.id.toolbar)
+            binding.toolbar.toolbar.visibility = View.GONE
+        } else {
+            toolbar = binding.toolbar.toolbar
+        }
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -213,7 +224,8 @@ class AccountFragment : Fragment(), AccountView {
 
 
     companion object {
-        @JvmStatic fun newInstance() = AccountFragment()
+        @JvmStatic
+        fun newInstance() = AccountFragment()
 
         const val OUT_BOOLEAN_WAS_PREVIOUSLY_SENT_TO_LOGIN_SCREEN = "out_bool_was_previously_sent_to_login_screen"
     }

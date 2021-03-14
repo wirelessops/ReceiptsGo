@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding_normal"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/padding_large"
+    android:paddingTop="@dimen/padding_large">
 
     <TextView
         android:id="@+id/subscription_info"
-        style="@style/Widget.SmartReceipts.TextView.Body2"
+        style="@style/Widget.SmartReceipts.TextView.Subhead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:textColor="@color/text_secondary_color"
         tools:text="Smart Receipts Plus" />
 
     <TextView
         android:id="@+id/subscription_expiration"
+        style="@style/TextAppearance.AppCompat.Caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/subscription_expiration"/>
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:textAllCaps="true"
+        android:textSize="@dimen/font_caption2"
+        tools:text="@string/subscription_expiration" />
 
 </LinearLayout>
