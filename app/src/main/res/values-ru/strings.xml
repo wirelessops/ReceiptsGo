@@ -39,7 +39,7 @@
     <string name="next_id">Следующий ID: %d</string>
     <string name="no">Нет</string>
     <string name="pdf">PDF</string>
-    <string name="rename">Rename</string>
+    <string name="rename">Переименовать</string>
     <string name="report">Отчет</string>
     <string name="report_attached">1 Отчет приложен</string>
     <string name="reports_attached">%s отчетов приложено</string>

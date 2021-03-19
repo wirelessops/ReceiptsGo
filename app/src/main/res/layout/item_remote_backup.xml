@@ -1,55 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="1dp"
     android:background="@color/card_background"
     android:padding="@dimen/padding_large"
-    android:layout_marginBottom="1dp"
     tools:viewBindingIgnore="true">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/remote_backup_device_name"
+        style="@style/Widget.SmartReceipts.TextView.Subhead"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:orientation="vertical">
+        android:layout_marginEnd="@dimen/margin_tiny"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/remote_backup_provider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="MI 8 SE" />
 
-        <TextView
-            android:id="@+id/remote_backup_device_name"
-            style="@style/Widget.SmartReceipts.TextView.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:textStyle="bold"
-            tools:text="MI 8 SE" />
+    <TextView
+        android:id="@+id/remote_backup_provider"
+        style="@style/Widget.SmartReceipts.TextView.Outlined"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Google Drive" />
 
-        <TextView
-            android:id="@+id/remote_backup_provider"
-            style="@style/Widget.SmartReceipts.TextView.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            tools:text="Google Drive" />
-
-        <TextView
-            android:id="@+id/remote_backup_date"
-            style="@style/Widget.SmartReceipts.TextView.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="10.10.2010" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/remote_backup_metadata_overflow"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/remote_backup_date"
+        style="@style/Widget.SmartReceipts.TextView.Body1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:src="@drawable/ic_menu_24dp"
-        app:tint="@color/text_primary_color" />
+        android:layout_marginTop="@dimen/margin_tiny"
+        app:layout_constraintTop_toBottomOf="@id/remote_backup_device_name"
+        tools:text="10.10.2010" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
