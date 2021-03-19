@@ -35,12 +35,8 @@
 
         <TextView
             android:id="@android:id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/Widget.SmartReceipts.TextView.Title"
             android:layout_marginBottom="@dimen/card_name_date_separator"
-            android:textColor="@color/text_primary_color"
-            android:textSize="@dimen/card_name_size"
-            android:textStyle="bold"
             tools:text="Title" />
 
         <TextView
@@ -48,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/DIALOG_RECEIPTMENU_HINT_EXPENSABLE"
-            android:textSize="@dimen/card_date_size" />
+            android:textSize="@dimen/font_subhead" />
     </LinearLayout>
 
     <ImageView
@@ -61,7 +57,7 @@
         android:contentDescription="@string/delete"
         android:padding="@dimen/padding_normal"
         app:srcCompat="@drawable/ic_delete"
-        app:tint="@color/text_secondary_color" />
+        app:tint="@color/warning_color" />
 
     <View
         android:id="@+id/divider"

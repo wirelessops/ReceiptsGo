@@ -1,11 +1,11 @@
 package co.smartreceipts.android.settings.widget.editors.categories
 
 import android.os.Bundle
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.model.Category
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata
-import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.widget.mvp.BasePresenter
 import io.reactivex.Observable
 
@@ -29,9 +29,7 @@ class CategoryEditorPresenter(view: CategoryEditorView,
                                 .setCustomOrderId(Long.MAX_VALUE)
                                 .build())
                     }
-                    .doOnNext {
-                        Logger.info(this, "Creating a new category")
-                    }
+                    .doOnNext { Logger.info(this, "Creating a new category") }
                     .subscribe {
                         categoriesTableController.insert(it, DatabaseOperationMetadata())
                         router.dismissEditor()
@@ -45,9 +43,7 @@ class CategoryEditorPresenter(view: CategoryEditorView,
                                 .setCode(view.getCode())
                                 .build())
                     }
-                    .doOnNext {
-                        Logger.info(this, "Updating an existing category")
-                    }
+                    .doOnNext { Logger.info(this, "Updating an existing category") }
                     .subscribe {
                         categoriesTableController.update(existingCategory, it, DatabaseOperationMetadata())
                         router.dismissEditor()

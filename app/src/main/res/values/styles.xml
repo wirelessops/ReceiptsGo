@@ -184,6 +184,20 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="Widget.SmartReceipts.TextView.Outlined">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_outlined_rounded_rectangle</item>
+        <item name="android:backgroundTint">@color/text_secondary_pale</item>
+        <item name="android:textSize">@dimen/font_caption2</item>
+        <item name="android:textColor">@color/text_secondary_pale</item>
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:paddingEnd">@dimen/padding_normal</item>
+        <item name="android:paddingTop">@dimen/padding_small</item>
+        <item name="android:paddingBottom">@dimen/padding_small</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="Widget.SmartReceipts.GenerateCheckBox">
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>

@@ -44,6 +44,6 @@
         android:contentDescription="@string/delete"
         android:padding="@dimen/padding_normal"
         app:srcCompat="@drawable/ic_delete"
-        app:tint="@color/text_secondary_color" />
+        app:tint="@color/warning_color" />
 
 </LinearLayout>

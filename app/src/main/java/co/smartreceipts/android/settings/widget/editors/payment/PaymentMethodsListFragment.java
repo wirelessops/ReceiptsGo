@@ -3,6 +3,8 @@ package co.smartreceipts.android.settings.widget.editors.payment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
@@ -16,11 +18,9 @@ import co.smartreceipts.android.persistence.database.controllers.impl.PaymentMet
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
 import co.smartreceipts.android.persistence.database.tables.ordering.OrderingPreferencesManager;
 import co.smartreceipts.android.settings.UserPreferenceManager;
-import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.settings.widget.editors.DraggableEditableListFragment;
 import co.smartreceipts.android.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
 import dagger.android.support.AndroidSupportInjection;
-import wb.android.dialog.fragments.EditTextDialogFragment;
 
 public class PaymentMethodsListFragment extends DraggableEditableListFragment<PaymentMethod> {
 
@@ -56,6 +56,37 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // listening for result of create/edit dialog
+        getChildFragmentManager().setFragmentResultListener(PaymentMethodEditorDialogFragment.REQUEST_KEY, this,
+                (requestKey, result) -> {
+                    @Nullable PaymentMethod editedMethod = result.getParcelable(PaymentMethod.PARCEL_KEY);
+                    String methodName = result.getString(PaymentMethodEditorDialogFragment.RESULT_NAME_KEY);
+                    boolean isReimbursable = result.getBoolean(PaymentMethodEditorDialogFragment.RESULT_IS_REIMBURSABLE_KEY);
+
+                    if (editedMethod == null) { // add new payment method
+                        final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
+                                .setMethod(methodName)
+                                .setCustomOrderId(Long.MAX_VALUE)
+                                .setReimbursable(isReimbursable)
+                                .build();
+                        getTableController().insert(paymentMethod, new DatabaseOperationMetadata());
+                        scrollToEnd();
+                    } else { // edit existing payment method
+                        final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory()
+                                .setMethod(methodName)
+                                .setCustomOrderId(editedMethod.getCustomOrderId())
+                                .setReimbursable(isReimbursable)
+                                .build();
+
+                        getTableController().update(editedMethod, newPaymentMethod, new DatabaseOperationMetadata());
+                    }
+                });
+    }
+
+    @Override
     protected DraggableEditableCardsAdapter<PaymentMethod> getAdapter() {
         return new PaymentMethodsAdapter(this);
     }
@@ -73,48 +104,12 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
 
     @Override
     protected void addItem() {
-        final EditTextDialogFragment.OnClickListener onClickListener = (text, isReimbursable, which) -> {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                final PaymentMethod paymentMethod = new PaymentMethodBuilderFactory()
-                        .setMethod(text)
-                        .setCustomOrderId(Long.MAX_VALUE)
-                        .setReimbursable(isReimbursable)
-                        .build();
-                getTableController().insert(paymentMethod, new DatabaseOperationMetadata());
-                scrollToEnd();
-            }
-        };
-        final String title = getString(R.string.payment_method_add);
-        final String positiveButtonText = getString(R.string.add);
-        showDialog(title, null, positiveButtonText, userPreferenceManager.get(UserPreference.Receipts.ReceiptsDefaultAsReimbursable), onClickListener);
-    }
-
-    private void showDialog(final String title, final String text, final String positiveButtonText, final boolean checkBoxChecked, final EditTextDialogFragment.OnClickListener onClickListener) {
-        final String negativeButtonText = getString(android.R.string.cancel);
-        final String hint = getString(R.string.payment_method);
-        if (getFragmentManager().findFragmentByTag(EditTextDialogFragment.TAG) == null) {
-            final EditTextDialogFragment fragment = EditTextDialogFragment.newInstance(title, text, hint, positiveButtonText, negativeButtonText,
-                    checkBoxChecked, getString(R.string.DIALOG_RECEIPTMENU_HINT_EXPENSABLE), onClickListener);
-            fragment.show(getFragmentManager(), EditTextDialogFragment.TAG);
-        }
+        showCreateEditDialog(null);
     }
 
     @Override
     public void onEditItem(PaymentMethod oldPaymentMethod, @Nullable PaymentMethod ignored) {
-        final EditTextDialogFragment.OnClickListener onClickListener = (text, isReimbursable, which) -> {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                final PaymentMethod newPaymentMethod = new PaymentMethodBuilderFactory()
-                        .setMethod(text)
-                        .setCustomOrderId(oldPaymentMethod.getCustomOrderId())
-                        .setReimbursable(isReimbursable)
-                        .build();
-
-                getTableController().update(oldPaymentMethod, newPaymentMethod, new DatabaseOperationMetadata());
-            }
-        };
-        final String title = getString(R.string.payment_method_edit);
-        final String positiveButtonText = getString(R.string.save);
-        showDialog(title, oldPaymentMethod.getMethod(), positiveButtonText, oldPaymentMethod.isReimbursable(), onClickListener);
+        showCreateEditDialog(oldPaymentMethod);
     }
 
     @Override
@@ -124,10 +119,15 @@ public class PaymentMethodsListFragment extends DraggableEditableListFragment<Pa
                 getTableController().delete(item, new DatabaseOperationMetadata());
             }
         };
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.delete_item, item.getMethod()));
         builder.setPositiveButton(R.string.delete, onClickListener);
         builder.setNegativeButton(android.R.string.cancel, onClickListener);
         builder.show();
+    }
+
+    private void showCreateEditDialog(@Nullable PaymentMethod paymentMethod) {
+        PaymentMethodEditorDialogFragment.newInstance(paymentMethod).show(getChildFragmentManager(), PaymentMethodEditorDialogFragment.TAG);
     }
 }

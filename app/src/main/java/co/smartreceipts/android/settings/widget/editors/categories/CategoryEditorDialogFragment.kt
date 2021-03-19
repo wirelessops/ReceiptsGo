@@ -5,14 +5,14 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import co.smartreceipts.android.R
-import co.smartreceipts.android.databinding.CategoryEditorBinding
+import co.smartreceipts.android.databinding.DialogCategoryEditorBinding
 import co.smartreceipts.android.model.Category
 import co.smartreceipts.android.persistence.database.controllers.impl.CategoriesTableController
 import dagger.android.support.AndroidSupportInjection
@@ -41,7 +41,7 @@ class CategoryEditorDialogFragment : DialogFragment(),
     private lateinit var nameBox: EditText
     private lateinit var codeBox: EditText
 
-    private var _binding: CategoryEditorBinding? = null
+    private var _binding: DialogCategoryEditorBinding? = null
     private val binding get() = _binding!!
 
     private var container: ViewGroup? = null
@@ -65,7 +65,7 @@ class CategoryEditorDialogFragment : DialogFragment(),
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = LayoutInflater.from(activity)
-        _binding = CategoryEditorBinding.inflate(inflater, container, false)
+        _binding = DialogCategoryEditorBinding.inflate(inflater, container, false)
 
         nameBox = binding.categoryInputName
         codeBox = binding.categoryInputCode
