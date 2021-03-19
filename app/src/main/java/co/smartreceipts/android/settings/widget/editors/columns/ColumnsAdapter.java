@@ -54,17 +54,17 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
 
         columnHolder.dragHandle.setVisibility(isOnDragMode ? View.VISIBLE : View.GONE);
         columnHolder.delete.setVisibility(isOnDragMode ? View.GONE : View.VISIBLE);
-        columnHolder.spinner.setEnabled(!isOnDragMode);
+        columnHolder.outlinedSpinner.setEnabled(!isOnDragMode);
 
-        columnHolder.spinner.get().setAdapter(spinnerAdapter);
+        columnHolder.outlinedSpinner.get().setAdapter(spinnerAdapter);
 
-        columnHolder.spinner.setCaptionText(context.getString(R.string.column_item, Integer.toString(position + 1))); //Add +1 to make it not 0-th index
+        columnHolder.outlinedSpinner.setCaptionText(context.getString(R.string.column_item, Integer.toString(position + 1))); //Add +1 to make it not 0-th index
         final int selectedPosition = getSpinnerPositionByColumnType(position);
         if (selectedPosition >= 0) {
-            columnHolder.spinner.get().setSelection(selectedPosition);
+            columnHolder.outlinedSpinner.get().setSelection(selectedPosition);
         }
-        columnHolder.spinner.get().setOnItemSelectedListener(new ColumnTypeChangeSelectionListener());
-        SpinnerTag spinnerTag = (SpinnerTag) columnHolder.spinner.getTag();
+        columnHolder.outlinedSpinner.get().setOnItemSelectedListener(new ColumnTypeChangeSelectionListener());
+        SpinnerTag spinnerTag = (SpinnerTag) columnHolder.outlinedSpinner.get().getTag();
         spinnerTag.column = items.get(position);
 
         columnHolder.delete.setOnClickListener(v -> listener.onDeleteItem(items.get(position)));
@@ -111,20 +111,18 @@ public class ColumnsAdapter extends DraggableEditableCardsAdapter<Column<Receipt
 
     private static class ColumnViewHolder extends AbstractDraggableItemViewHolder {
 
-//        public TextView column;
-        public OutlinedSpinner spinner;
+        public OutlinedSpinner outlinedSpinner;
         public View delete;
         View dragHandle;
 
         ColumnViewHolder(View itemView) {
             super(itemView);
 
-//            column = itemView.findViewById(android.R.id.title);
-            spinner = itemView.findViewById(R.id.column_spinner);
+            outlinedSpinner = itemView.findViewById(R.id.column_spinner);
             delete = itemView.findViewById(R.id.delete);
             dragHandle = itemView.findViewById(R.id.drag_handle);
 
-            spinner.setTag(new SpinnerTag());
+            outlinedSpinner.get().setTag(new SpinnerTag());
         }
     }
 
