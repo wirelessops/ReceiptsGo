@@ -118,8 +118,8 @@
 
                 <co.smartreceipts.android.widget.NetworkRequestAwareEditText
                     android:id="@+id/receipt_exchange_rate"
-                    android:drawableStart="@drawable/ic_exchange_rate_24dp"
-                    android:drawableTint="@color/navigation_inactive"
+                    app:drawableStartCompat="@drawable/ic_exchange_rate_24dp"
+                    app:drawableTint="@color/navigation_inactive"
                     android:drawablePadding="@dimen/padding_normal"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:imeOptions="actionNext"

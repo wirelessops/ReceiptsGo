@@ -1,7 +1,7 @@
 package co.smartreceipts.android.widget.tooltip
 
 import android.content.Context
-import android.content.res.ColorStateList
+import android.os.Build
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.AttributeSet
@@ -155,14 +155,23 @@ class Tooltip @JvmOverloads constructor(
     }
 
     private fun setErrorBackground() {
-        binding.container.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(context, R.color.smart_receipts_colorError)
-        )
+        val color = ContextCompat.getColor(context, R.color.smart_receipts_colorError)
+
+        // Note: setTint doesn't work on API 21
+        when (Build.VERSION.SDK_INT) {
+            21 -> binding.container.setBackgroundColor(color)
+            else -> binding.container.background.setTint(color)
+        }
     }
 
     private fun setInfoBackground() {
-        binding.container.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(context, R.color.tooltip_bg))
+        val color = ContextCompat.getColor(context, R.color.tooltip_bg)
+
+        // Note: setTint doesn't work on API 21
+        when (Build.VERSION.SDK_INT) {
+            21 -> binding.container.setBackgroundColor(color)
+            else -> binding.container.background.setTint(color)
+        }
     }
 
     private fun setViewStateError() {

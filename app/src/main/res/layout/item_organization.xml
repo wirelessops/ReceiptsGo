@@ -31,15 +31,7 @@
 
             <TextView
                 android:id="@+id/user_role"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_outlined_rounded_rectangle"
-                android:backgroundTint="@color/text_secondary_pale"
-                android:paddingHorizontal="@dimen/padding_normal"
-                android:paddingVertical="@dimen/padding_small"
-                android:textAllCaps="true"
-                android:textColor="@color/text_secondary_pale"
-                android:textSize="@dimen/font_caption2"
+                style="@style/Widget.SmartReceipts.TextView.Outlined"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="admin" />

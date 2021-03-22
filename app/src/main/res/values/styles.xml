@@ -208,7 +208,7 @@
         <item name="android:paddingStart">@dimen/padding_normal</item>
         <item name="android:layout_marginStart">@dimen/margin_normal</item>
         <item name="android:layout_marginEnd">@dimen/margin_normal</item>
-        <item name="android:drawableTint">@color/navigation_inactive</item>
+        <item name="drawableTint">@color/navigation_inactive</item>
         <item name="android:buttonTint">@color/smart_receipts_colorPrimary</item>
     </style>
 

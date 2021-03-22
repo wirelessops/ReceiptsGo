@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,7 +51,7 @@
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/dialog_email_checkbox_pdf_full"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    android:drawableEnd="@drawable/ic_pdf"
+                    app:drawableEndCompat="@drawable/ic_pdf"
                     android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_FULL" />
             </FrameLayout>
 
@@ -59,7 +60,7 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_pdf_images"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    android:drawableEnd="@drawable/ic_pdf"
+                    app:drawableEndCompat="@drawable/ic_pdf"
                     android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_IMAGES" />
             </FrameLayout>
 
@@ -68,7 +69,7 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_csv"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    android:drawableEnd="@drawable/ic_csv"
+                    app:drawableEndCompat="@drawable/ic_csv"
                     android:text="@string/DIALOG_EMAIL_CHECKBOX_CSV" />
             </FrameLayout>
 
@@ -77,7 +78,7 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_zip"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    android:drawableEnd="@drawable/ic_zip"
+                    app:drawableEndCompat="@drawable/ic_zip"
                     android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP" />
             </FrameLayout>
 
@@ -86,7 +87,7 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_zip_with_metadata"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    android:drawableEnd="@drawable/ic_zip"
+                    app:drawableEndCompat="@drawable/ic_zip"
                     android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA" />
             </FrameLayout>
 
