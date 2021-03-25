@@ -47,12 +47,10 @@
         android:scrollbars="vertical">
 
         <LinearLayout
-            android:id="@+id/graphs_linear_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_large"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <TextView
                 style="@style/Widget.SmartReceipts.TextView.FragmentTitle"

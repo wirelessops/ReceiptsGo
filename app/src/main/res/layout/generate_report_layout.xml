@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
+                android:backgroundTint="@color/card_background"
                 android:background="@drawable/bg_rounded_rectangle"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"

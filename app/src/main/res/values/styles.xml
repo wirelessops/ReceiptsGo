@@ -310,5 +310,9 @@
         <item name="android:drawablePadding">@dimen/padding_large</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
+    
+    <style name="Widget.SmartReceipts.SearchView" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlActivated">?attr/colorOnPrimary</item> <!-- sets the cursor color-->
+    </style>
 
 </resources>
