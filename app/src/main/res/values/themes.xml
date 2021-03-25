@@ -16,7 +16,7 @@
         <item name="bottomSheetDialogTheme">@style/Theme.SmartReceipts.AppBottomSheetDialogTheme</item>
     </style>
 
-    <style name="Theme.SmartReceipts.OSS" parent="Theme.AppCompat">
+    <style name="Theme.SmartReceipts.OSS" parent="Theme.SmartReceipts">
 
         <item name="android:popupMenuStyle">@style/Widget.SmartReceipts.PopupMenu</item>
         <item name="android:windowBackground">@color/window_background_color</item>
