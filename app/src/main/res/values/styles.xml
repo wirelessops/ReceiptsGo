@@ -113,7 +113,7 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_marginBottom">@dimen/margin_large</item>
         <item name="layout_constraintDimensionRatio">1</item>
-        <item name="layout_constraintWidth_percent">0.33</item>
+        <item name="layout_constraintHeight_percent">0.2</item>
         <item name="tint">@color/no_data_image_tint</item>
     </style>
 
