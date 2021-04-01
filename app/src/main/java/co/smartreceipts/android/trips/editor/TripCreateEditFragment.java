@@ -496,7 +496,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         }
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public Trip getEditableItem() {
         return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;

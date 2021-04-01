@@ -47,6 +47,7 @@ import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import co.smartreceipts.android.tooltip.model.TooltipType;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
+import co.smartreceipts.android.trips.navigation.NewTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.ViewReceiptsInTripRouter;
 import co.smartreceipts.android.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;
@@ -84,6 +85,9 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
 
     @Inject
     LastTripAutoNavigationTracker lastTripAutoNavigationTracker;
+
+    @Inject
+    NewTripAutoNavigationTracker newTripAutoNavigationTracker;
 
     @Inject
     DateFormatter dateFormatter;
@@ -171,11 +175,14 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
         if (hasResults) {
             updateViewVisibilities(tripCardAdapter.getItems());
         }
+
+        newTripAutoNavigationTracker.subscribe();
     }
 
     @Override
     public void onPause() {
         lastTripAutoNavigationController.unsubscribe();
+        newTripAutoNavigationTracker.unsubscribe();
         super.onPause();
     }
 
@@ -284,9 +291,9 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
 
     @Override
     public void onInsertSuccess(@NonNull Trip trip, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
-        if (isResumed()) {
+        // trying to reduce calling tableController.get(). On phones it'll be called from onStart(), but need to call it manually here for tablets
+        if (isResumed() && navigationHandler.isDualPane()) {
             tripTableController.get();
-            routeToViewReceipts(trip);
         }
     }
 
