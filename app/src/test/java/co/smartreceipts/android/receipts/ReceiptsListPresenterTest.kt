@@ -16,6 +16,7 @@ import co.smartreceipts.android.ocr.apis.model.OcrResponse
 import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterPresenter
 import co.smartreceipts.android.permissions.PermissionsDelegate
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
+import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager
 import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
@@ -45,6 +46,7 @@ class ReceiptsListPresenterTest {
     private val permissionsDelegate = mock<PermissionsDelegate>()
     private val tripTableController = mock<TripTableController>()
     private val analytics = mock<Analytics>()
+    private val receiptAttachmentManager = mock<ReceiptAttachmentManager>()
 
     private val locatorResultStream = PublishSubject.create<ActivityFileResultLocatorResponse>()
     private val importerResultStream = PublishSubject.create<ActivityFileResultImporterResponse>()
@@ -74,7 +76,6 @@ class ReceiptsListPresenterTest {
         whenever(view.trip).thenReturn(trip)
         whenever(view.itemClicks).thenReturn(Observable.never())
         whenever(view.itemImageClicks).thenReturn(Observable.never())
-        whenever(view.itemMenuClicks).thenReturn(Observable.never())
         whenever(view.actionBarUpdatesListener).thenReturn(mock())
 
         whenever(interactor.isCropScreenEnabled()).thenReturn(false)
@@ -93,7 +94,7 @@ class ReceiptsListPresenterTest {
 
         presenter = ReceiptsListPresenter(
             view, interactor, ocrStatusAlerterPresenter, locator,
-            importer, permissionsDelegate, tripTableController, analytics
+            importer, permissionsDelegate, tripTableController, receiptAttachmentManager, analytics
         )
     }
 
