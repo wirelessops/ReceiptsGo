@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/receipts_container"
     style="@style/Widget.SmartReceipts.RelativeLayout.SlidingPane">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/receipts_title"
         style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
         android:text="@string/report_info_receipts"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,10 +20,10 @@
         android:fontFamily="sans-serif"
         android:gravity="end"
         android:textSize="@dimen/font_subhead"
-        app:layout_constraintBottom_toBottomOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="@id/receipts_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/title"
-        app:layout_constraintTop_toTopOf="@id/title"
+        app:layout_constraintStart_toEndOf="@id/receipts_title"
+        app:layout_constraintTop_toTopOf="@id/receipts_title"
         tools:text="Next ID: 1" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,7 @@
         android:scrollbars="vertical"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/receipts_title"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_receipt_card" />
 

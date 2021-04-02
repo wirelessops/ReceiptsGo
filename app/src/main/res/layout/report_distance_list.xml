@@ -5,7 +5,7 @@
     style="@style/Widget.SmartReceipts.RelativeLayout">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/distances_title"
         style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
         android:text="@string/report_info_distance"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/distances_title"
         tools:listitem="@layout/item_default_content" />
 
     <ProgressBar
