@@ -14,6 +14,7 @@
         <item name="alertDialogTheme">@style/Theme.SmartReceipts.Dialog</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
         <item name="bottomSheetDialogTheme">@style/Theme.SmartReceipts.AppBottomSheetDialogTheme</item>
+        <item name="snackbarStyle">@style/Widget.SmartReceipts.Snackbar</item>
     </style>
 
     <style name="Theme.SmartReceipts.OSS" parent="Theme.SmartReceipts">

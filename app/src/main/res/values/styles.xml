@@ -315,4 +315,8 @@
         <item name="colorControlActivated">?attr/colorOnPrimary</item> <!-- sets the cursor color-->
     </style>
 
+    <style name="Widget.SmartReceipts.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="actionTextColorAlpha">0.5</item>
+    </style>
+
 </resources>
