@@ -47,10 +47,6 @@ import dagger.android.support.AndroidSupportInjection;
 
 public class ReportInfoFragment extends WBFragment implements GenerateNavigator, BackupNavigator, View.OnClickListener {
 
-    // TODO: 22.01.2021 tooltips redesign
-    // TODO: 26.01.2021 alert dialogs -> to bottom dialogs
-
-
     public static final String TAG = ReportInfoFragment.class.getSimpleName();
 
     private static final String KEY_OUT_TRIP = "key_out_trip";

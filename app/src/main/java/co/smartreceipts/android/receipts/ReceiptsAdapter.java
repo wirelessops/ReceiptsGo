@@ -65,8 +65,6 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
     private final Transformation roundedImageTransformation;
 
 
-    // TODO: 2/9/21 sticky headers look bad
-
     public ReceiptsAdapter(@NonNull Context context,
                            @NonNull UserPreferenceManager preferenceManager,
                            @NonNull DateFormatter dateFormatter,

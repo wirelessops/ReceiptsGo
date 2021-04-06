@@ -49,9 +49,6 @@ import kotlin.Unit;
 
 public class DistanceFragment extends WBFragment implements TripForeignKeyTableEventsListener<Distance>, FabClickListener {
 
-    // TODO: 27.01.2021 probably would be better to make deletion process similar to other items (show this option on long tap)
-
-
     @Inject
     UserPreferenceManager preferenceManager;
 
@@ -146,7 +143,6 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
     @Override
     public void onGetSuccess(@NonNull List<Distance> distances, @NonNull Trip trip) {
         if (isAdded()) {
-            // TODO: 29.01.2021 presenter + interactor
             final List<DistanceListItem> resultList = new ArrayList<>();
 
             Observable.fromIterable(distances)
