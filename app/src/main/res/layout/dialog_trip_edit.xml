@@ -7,33 +7,21 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/receipt_name"
+        android:id="@+id/trip_name"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
         android:textColor="@color/text_secondary_color"
-        tools:text="Receipt Name" />
+        tools:text="Trip Name" />
 
     <TextView
-        android:id="@+id/receipt_edit"
+        android:id="@+id/trip_edit"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:text="@string/DIALOG_RECEIPTMENU_TITLE_EDIT"
+        android:text="@string/dialog_trip_edit"
         app:drawableStartCompat="@drawable/ic_edit" />
 
     <TextView
-        android:id="@+id/receipt_move_copy"
+        android:id="@+id/trip_delete"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:text="@string/receipt_dialog_action_move_copy"
-        app:drawableStartCompat="@drawable/ic_move" />
-
-    <TextView
-        android:id="@+id/receipt_delete_attachment"
-        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:text="@string/receipt_dialog_action_remove_attachment"
-        app:drawableStartCompat="@drawable/ic_attach" />
-
-    <TextView
-        android:id="@+id/receipt_delete"
-        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:text="@string/delete"
+        android:text="@string/dialog_trip_delete"
         android:textColor="@color/warning_color"
         app:drawableStartCompat="@drawable/ic_delete"
         app:drawableTint="@color/warning_color" />

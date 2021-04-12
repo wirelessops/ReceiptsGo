@@ -387,11 +387,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Редагувати звіт</item>
-        <item>Видалити звіт</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Редагувати звіт</string>
+    <string name="dialog_trip_delete">Видалити звіт</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Порожня колонка</string>

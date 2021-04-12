@@ -45,6 +45,8 @@ import co.smartreceipts.android.tooltip.TooltipPresenter;
 import co.smartreceipts.android.tooltip.TooltipView;
 import co.smartreceipts.android.tooltip.model.TooltipMetadata;
 import co.smartreceipts.android.tooltip.model.TooltipType;
+import co.smartreceipts.android.trips.editor.TripEditOption;
+import co.smartreceipts.android.trips.editor.TripEditOptionsDialog;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationController;
 import co.smartreceipts.android.trips.navigation.LastTripAutoNavigationTracker;
 import co.smartreceipts.android.trips.navigation.NewTripAutoNavigationTracker;
@@ -57,7 +59,7 @@ import wb.android.flex.Flex;
 
 public class TripFragment extends WBFragment implements TableEventsListener<Trip>, TooltipView, ViewReceiptsInTripRouter {
 
-    private static final String OUT_SELECTED_TRIP_ID = "out_selected_trip_id";
+    private static final String OUT_SELECTED_TRIP = "out_selected_trip";
 
     @Inject
     Flex flex;
@@ -94,7 +96,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
 
     private TripAdapter tripCardAdapter;
 
-    private int selectedTripId;
+    private Trip selectedTrip = null;
 
     private boolean hasResults = false;
 
@@ -121,17 +123,29 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
                     return Unit.INSTANCE;
                 },
                 trip -> {
-                    editTrip(trip);
+                    showTripEditOptionsDialog(trip);
                     return Unit.INSTANCE;
                 },
                 dateFormatter, backupProvidersManager);
 
         if (savedInstanceState != null) {
-            selectedTripId = savedInstanceState.getInt(OUT_SELECTED_TRIP_ID);
+            selectedTrip = savedInstanceState.getParcelable(OUT_SELECTED_TRIP);
             if (navigationHandler.isDualPane()) {
-                tripCardAdapter.setSelectedItemId(selectedTripId);
+                tripCardAdapter.setSelectedItemId(selectedTrip.getId());
             }
         }
+
+        // listening for edit trip options
+        getChildFragmentManager().setFragmentResultListener(TripEditOptionsDialog.REQUEST_KEY, this,
+                (requestKey, result) -> {
+                    String editOption = result.getString(TripEditOptionsDialog.RESULT_KEY);
+
+                    if (editOption.equals(TripEditOption.EDIT.name())) {
+                        tripMenu(selectedTrip);
+                    } else if (editOption.equals(TripEditOption.DELETE.name())) {
+                        deleteTrip(selectedTrip);
+                    }
+                });
     }
 
     @Override
@@ -209,7 +223,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Logger.debug(this, "onSaveInstanceState");
-        outState.putInt(OUT_SELECTED_TRIP_ID, selectedTripId);
+        outState.putParcelable(OUT_SELECTED_TRIP, selectedTrip);
     }
 
     public final void tripMenu(@Nullable final Trip trip) {
@@ -220,24 +234,15 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
         }
     }
 
-    public final void editTrip(@NonNull final Trip trip) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final String[] editTripItems = flex.getStringArray(getActivity(), R.array.EDIT_TRIP_ITEMS);
-        builder.setTitle(trip.getName())
-                .setCancelable(true)
-                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel())
-                .setItems(editTripItems, (dialog, item) -> {
-                    final String selection = editTripItems[item];
-                    if (selection == editTripItems[0]) {
-                        TripFragment.this.tripMenu(trip);
-                    } else if (selection == editTripItems[1]) {
-                        TripFragment.this.deleteTrip(trip);
-                    }
-                    dialog.cancel();
-                }).show();
+    private void showTripEditOptionsDialog(@NonNull final Trip trip) {
+        selectedTrip = trip;
+
+        TripEditOptionsDialog dialog = TripEditOptionsDialog.newInstance(trip.getName());
+        dialog.show(getChildFragmentManager(), TripEditOptionsDialog.TAG);
     }
 
-    public final void deleteTrip(@NonNull final Trip trip) {
+
+    private void deleteTrip(@NonNull final Trip trip) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.delete_item, trip.getName()))
                 .setMessage(getString(R.string.delete_sync_information))
@@ -402,7 +407,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
     @Override
     public void routeToViewReceipts(@NotNull Trip trip) {
         if (isResumed()) {
-            selectedTripId = trip.getId();
+            selectedTrip = trip;
             if (navigationHandler.isDualPane()) {
                 tripCardAdapter.setSelectedItemId(trip.getId());
             }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import co.smartreceipts.android.databinding.DialogReceiptEditBinding
 import co.smartreceipts.android.widget.dialog.BaseBottomSheetDialog
 
@@ -23,11 +24,7 @@ class ReceiptEditOptionsDialog : BaseBottomSheetDialog() {
         @JvmStatic
         fun newInstance(receiptName: String, hasAttachment: Boolean): ReceiptEditOptionsDialog {
             val dialog = ReceiptEditOptionsDialog()
-
-            val args = Bundle()
-            args.putString(RECEIPT_NAME_KEY, receiptName)
-            args.putBoolean(ATTACHMENT_KEY, hasAttachment)
-            dialog.arguments = args
+            dialog.arguments = bundleOf(Pair(RECEIPT_NAME_KEY, receiptName), Pair(ATTACHMENT_KEY, hasAttachment))
 
             return dialog
         }
@@ -63,10 +60,7 @@ class ReceiptEditOptionsDialog : BaseBottomSheetDialog() {
     }
 
     private fun setResult(option: ReceiptEditOption) {
-        val bundle = Bundle()
-        bundle.putString(RESULT_KEY, option.name)
-
-        parentFragmentManager.setFragmentResult(REQUEST_KEY, bundle)
+        parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(Pair(RESULT_KEY, option.name)))
 
         dismiss()
     }

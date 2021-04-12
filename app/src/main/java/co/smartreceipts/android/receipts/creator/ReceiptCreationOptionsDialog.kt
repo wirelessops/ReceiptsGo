@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import co.smartreceipts.android.databinding.DialogReceiptCreationBinding
 import co.smartreceipts.android.widget.dialog.BaseBottomSheetDialog
 
@@ -37,10 +38,7 @@ class ReceiptCreationOptionsDialog : BaseBottomSheetDialog() {
     }
 
     private fun setResult(option: ReceiptCreationOption) {
-        val bundle = Bundle()
-        bundle.putString(RESULT_KEY, option.name)
-
-        parentFragmentManager.setFragmentResult(REQUEST_KEY, bundle)
+        parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(Pair(RESULT_KEY, option.name)))
 
         dismiss()
     }

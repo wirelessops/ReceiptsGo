@@ -6,13 +6,9 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_sheet_item_height"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/padding_large"
-        android:paddingEnd="@dimen/padding_large"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
         android:text="@string/DIALOG_RECEIPTMENU_TITLE_NEW"
-        android:textSize="@dimen/font_subhead" />
+        android:textColor="@color/text_secondary_color" />
 
     <TextView
         android:id="@+id/new_import_image"

@@ -395,11 +395,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Modifica Report</item>
-        <item>Elimina Report</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Modifica Report</string>
+    <string name="dialog_trip_delete">Elimina Report</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Colonna vuota</string>
