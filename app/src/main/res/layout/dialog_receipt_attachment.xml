@@ -3,31 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/receipt_name"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:textColor="@color/text_secondary_color"
+        tools:text="Receipt Name" />
 
     <TextView
         android:id="@+id/attach_photo"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:paddingStart="@dimen/padding_larger"
-        android:paddingEnd="@dimen/padding_larger"
         android:text="@string/receipt_attach_photo"
         app:drawableStartCompat="@drawable/ic_camera" />
 
     <TextView
         android:id="@+id/attach_picture"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:layout_gravity="center_vertical"
-        android:paddingStart="@dimen/padding_larger"
-        android:paddingEnd="@dimen/padding_larger"
         android:text="@string/receipt_attach_image"
         app:drawableStartCompat="@drawable/ic_gallery" />
 
     <TextView
         android:id="@+id/attach_file"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
-        android:paddingStart="@dimen/padding_larger"
-        android:paddingEnd="@dimen/padding_larger"
         android:text="@string/receipt_attach_file"
         app:drawableStartCompat="@drawable/ic_pdf" />
 

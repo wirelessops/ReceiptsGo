@@ -46,6 +46,11 @@ class TripEditOptionsDialog : BaseBottomSheetDialog() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setResult(option: TripEditOption) {
         parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(Pair(RESULT_KEY, option.name)))
 

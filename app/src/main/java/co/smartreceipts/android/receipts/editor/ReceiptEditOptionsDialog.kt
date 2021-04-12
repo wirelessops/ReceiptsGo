@@ -59,6 +59,11 @@ class ReceiptEditOptionsDialog : BaseBottomSheetDialog() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setResult(option: ReceiptEditOption) {
         parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(Pair(RESULT_KEY, option.name)))
 
