@@ -227,6 +227,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_save, menu);
+        menu.findItem(R.id.menu_main_search).setVisible(false);
     }
 
     @Override

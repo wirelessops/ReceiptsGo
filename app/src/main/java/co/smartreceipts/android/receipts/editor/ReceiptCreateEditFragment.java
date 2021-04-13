@@ -586,6 +586,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_save, menu);
+        menu.findItem(R.id.menu_main_search).setVisible(false);
     }
 
     @Override

@@ -228,6 +228,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(if (editableItem == null) R.menu.menu_save else R.menu.menu_save_delete, menu)
+        menu.findItem(R.id.menu_main_search).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
