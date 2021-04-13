@@ -52,7 +52,7 @@
             android:name=".activities.SmartReceiptsActivity"
             android:label="@string/sr_app_name"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
 
             <!-- Main Launcher filter -->
             <intent-filter>
