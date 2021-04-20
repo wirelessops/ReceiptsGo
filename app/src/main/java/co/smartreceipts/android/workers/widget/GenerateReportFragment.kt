@@ -48,11 +48,11 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
 
 
-    private lateinit var pdfFullCheckbox: CheckBox
-    private lateinit var pdfImagesCheckbox: CheckBox
-    private lateinit var csvCheckbox: CheckBox
-    private lateinit var zipCheckbox: CheckBox
-    private lateinit var zipWithMetadataCheckbox: CheckBox
+    private var pdfFullCheckbox: CheckBox? = null
+    private var pdfImagesCheckbox: CheckBox? = null
+    private var csvCheckbox: CheckBox? = null
+    private var zipCheckbox: CheckBox? = null
+    private var zipWithMetadataCheckbox: CheckBox? = null
 
     private var _binding: GenerateReportLayoutBinding? = null
     private val binding get() = _binding!!
@@ -63,11 +63,11 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
         get() = fabClicks.map {
             val options = EnumSet.noneOf(EmailOptions::class.java)
 
-            if (pdfFullCheckbox.isChecked) options.add(EmailOptions.PDF_FULL)
-            if (pdfImagesCheckbox.isChecked) options.add(EmailOptions.PDF_IMAGES_ONLY)
-            if (csvCheckbox.isChecked) options.add(EmailOptions.CSV)
-            if (zipWithMetadataCheckbox.isChecked) options.add(EmailOptions.ZIP_WITH_METADATA)
-            if (zipCheckbox.isChecked) options.add(EmailOptions.ZIP)
+            if (pdfFullCheckbox!!.isChecked) options.add(EmailOptions.PDF_FULL)
+            if (pdfImagesCheckbox!!.isChecked) options.add(EmailOptions.PDF_IMAGES_ONLY)
+            if (csvCheckbox!!.isChecked) options.add(EmailOptions.CSV)
+            if (zipWithMetadataCheckbox!!.isChecked) options.add(EmailOptions.ZIP_WITH_METADATA)
+            if (zipCheckbox!!.isChecked) options.add(EmailOptions.ZIP)
 
             return@map options
         }
@@ -114,11 +114,11 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
             }
         }
 
-        pdfFullCheckbox.setOnCheckedChangeListener(onCheckedChangeListener)
-        pdfImagesCheckbox.setOnCheckedChangeListener(onCheckedChangeListener)
-        csvCheckbox.setOnCheckedChangeListener(onCheckedChangeListener)
-        zipCheckbox.setOnCheckedChangeListener(onCheckedChangeListener)
-        zipWithMetadataCheckbox.setOnCheckedChangeListener(onCheckedChangeListener)
+        pdfFullCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        pdfImagesCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        csvCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        zipCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        zipWithMetadataCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
 
         return root
     }
@@ -240,6 +240,12 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        pdfFullCheckbox = null
+        pdfImagesCheckbox = null
+        csvCheckbox = null
+        zipCheckbox = null
+        zipWithMetadataCheckbox = null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
