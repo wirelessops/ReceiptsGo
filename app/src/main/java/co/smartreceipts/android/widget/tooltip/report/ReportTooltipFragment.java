@@ -85,6 +85,12 @@ public class ReportTooltipFragment extends Fragment implements LegacyTooltipView
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        tooltip = null;
+    }
+
+    @Override
     public void present(ReportTooltipUiIndicator uiIndicator) {
         if (uiIndicator.getState() == SyncError) {
             presentError(uiIndicator.getErrorType().get());
