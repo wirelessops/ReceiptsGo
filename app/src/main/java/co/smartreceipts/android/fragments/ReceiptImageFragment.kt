@@ -232,6 +232,7 @@ class ReceiptImageFragment : WBFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_share, menu)
+        menu.findItem(R.id.menu_main_search).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
