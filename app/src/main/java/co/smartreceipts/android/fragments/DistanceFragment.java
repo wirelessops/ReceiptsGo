@@ -70,6 +70,8 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
 
     private ReportDistanceListBinding binding;
 
+    private String actionBarSubtitle = "";
+
     public static DistanceFragment newInstance() {
         return new DistanceFragment();
     }
@@ -96,16 +98,12 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         binding = ReportDistanceListBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Logger.debug(this, "onActivityCreated");
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
         binding.listDistances.setAdapter(distanceAdapter);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -119,7 +117,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        updateSubtitle();
+        setActionBarSubtitle(actionBarSubtitle);
     }
 
     @Override
@@ -153,7 +151,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         Date dateWithoutTime = sdf.parse(sdf.format(distance.getDate()));
                         return dateWithoutTime;
-                        })
+                    })
                     .sorted((o1, o2) -> o2.getKey().compareTo(o1.getKey()))
                     .flatMap(dateDistanceGroupedObservable ->
                             dateDistanceGroupedObservable
@@ -175,7 +173,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
 
                         distanceAdapter.setItems(resultList);
                         distanceAdapter.notifyDataSetChanged();
-                        
+
                         if (binding != null) {
                             binding.progress.setVisibility(View.GONE);
                             if (distances.isEmpty()) {
@@ -186,7 +184,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
                                 binding.listDistances.setVisibility(View.VISIBLE);
                             }
                         }
-                        updateSubtitle();
+                        updateSubtitle(distances);
                     });
         }
     }
@@ -243,28 +241,36 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
         showToastMessage(R.string.distance_delete_failed);
     }
 
-    private void updateSubtitle() {
+    private void updateSubtitle(@NonNull List<Distance> allDistances) {
+        Observable.fromIterable(allDistances)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(o -> o instanceof Distance)
+                .map(o -> (Distance) o)
+                .toList()
+                .map(distances -> {
+                    if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
+                        final Price price = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
+                        return getString(R.string.distance_total_item, price.getCurrencyFormattedPrice());
+                    } else {
+                        BigDecimal distanceTotal = BigDecimal.ZERO;
+                        for (final Distance distance : distances) {
+                            distanceTotal = distanceTotal.add(distance.getDistance());
+                        }
+                        return getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal, Distance.DISTANCE_PRECISION));
+                    }
+                })
+                .subscribe(subtitle -> {
+                            actionBarSubtitle = subtitle;
+                            setActionBarSubtitle(actionBarSubtitle);
+                        }
+                );
+    }
+
+    private void setActionBarSubtitle(@NonNull String text) {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null && getUserVisibleHint()) {
-            Observable.fromIterable(distanceAdapter.getItems())
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .filter(o -> o instanceof Distance)
-                    .map(o -> (Distance) o)
-                    .toList()
-                    .map(distances -> {
-                        if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
-                            final Price price = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
-                            return getString(R.string.distance_total_item, price.getCurrencyFormattedPrice());
-                        } else {
-                            BigDecimal distanceTotal = BigDecimal.ZERO;
-                            for (final Distance distance : distances) {
-                                distanceTotal = distanceTotal.add(distance.getDistance());
-                            }
-                            return getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal, Distance.DISTANCE_PRECISION));
-                        }
-                    })
-                    .subscribe(subtitle -> actionBar.setSubtitle(subtitle));
+            actionBar.setSubtitle(text);
         }
     }
 
@@ -276,6 +282,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
 
     @Override
     public void onDestroyView() {
+        binding.listDistances.setAdapter(null);
         super.onDestroyView();
         binding = null;
     }

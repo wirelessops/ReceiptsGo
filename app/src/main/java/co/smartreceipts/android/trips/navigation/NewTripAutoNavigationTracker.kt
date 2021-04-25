@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 @FragmentScope
 class NewTripAutoNavigationTracker @Inject constructor(
-    private val viewReceiptsInTripRouter: ViewReceiptsInTripRouter,
     tripTableController: TripTableController
 ) {
 
@@ -25,7 +24,7 @@ class NewTripAutoNavigationTracker @Inject constructor(
             .subscribe { createdTripSubject.onNext(Optional.of(it)) }
     }
 
-    fun subscribe() {
+    fun subscribe(viewReceiptsInTripRouter: ViewReceiptsInTripRouter) {
         compositeDisposable.add(createdTripSubject.filter { it.isPresent }
             .map { it.get() }
             .observeOn(AndroidSchedulers.mainThread())

@@ -71,7 +71,6 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     private Trip trip;
     private ActionBarTitleUpdatesListener actionBarTitleUpdatesListener;
 
-    private ViewPager viewPager;
     private ReportInfoViewPagerBinding binding;
 
     private ArrayList<ImageView> bottomNavigationIcons;
@@ -119,7 +118,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     }
 
     private Fragment getCurrentViewPagerFragment() {
-        return getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + viewPager.getCurrentItem());
+        return getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + binding.pager.getCurrentItem());
     }
 
     @Override
@@ -130,8 +129,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             new ChildFragmentNavigationHandler(this).addChild(ReportTooltipFragment.newInstance(), R.id.top_tooltip);
         }
 
-        viewPager = binding.pager;
-        viewPager.setOffscreenPageLimit(3); // Set this to 3, since we have 4 tabs
+        binding.pager.setOffscreenPageLimit(3); // Set this to 3, since we have 4 tabs
 
         bottomNavigationIcons = new ArrayList<>(fragmentPagerAdapter.getCount());
 
@@ -156,7 +154,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             bottomNavigationIcons.get(i).setOnClickListener(this);
         }
 
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        binding.pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -164,9 +162,9 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             }
         });
 
-        viewPager.setAdapter(fragmentPagerAdapter);
+        binding.pager.setAdapter(fragmentPagerAdapter);
         final int receiptsTabPosition = fragmentPagerAdapter.getReceiptsTabPosition();
-        viewPager.setCurrentItem(receiptsTabPosition);
+        binding.pager.setCurrentItem(receiptsTabPosition);
         setActiveBottomNavigationPosition(receiptsTabPosition);
     }
 
@@ -293,19 +291,19 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
 
     @Override
     public void navigateToGenerateTab() {
-        viewPager.setCurrentItem(fragmentPagerAdapter.getGenerateTabPosition(), true);
+        binding.pager.setCurrentItem(fragmentPagerAdapter.getGenerateTabPosition(), true);
     }
 
     private void navigateToReceiptsTab() {
-        viewPager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
+        binding.pager.setCurrentItem(fragmentPagerAdapter.getReceiptsTabPosition());
     }
 
     private void navigateToDistancesTab() {
-        viewPager.setCurrentItem(fragmentPagerAdapter.getDistancesTabPosition());
+        binding.pager.setCurrentItem(fragmentPagerAdapter.getDistancesTabPosition());
     }
 
     private void navigateToGraphsTab() {
-        viewPager.setCurrentItem(fragmentPagerAdapter.getGraphsTabPosition());
+        binding.pager.setCurrentItem(fragmentPagerAdapter.getGraphsTabPosition());
     }
 
     @Override
@@ -316,6 +314,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        bottomNavigationIcons = null;
         binding = null;
     }
 

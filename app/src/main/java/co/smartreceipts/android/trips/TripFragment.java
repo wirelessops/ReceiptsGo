@@ -153,13 +153,14 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
         Logger.debug(this, "onCreateView");
         binding = TripsFragmentLayoutBinding.inflate(inflater, container, false);
         binding.layoutTripCardList.tripActionNew.setOnClickListener(v -> tripMenu(null));
+        binding.layoutTripCardList.list.setAdapter(tripCardAdapter);
+
         return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.layoutTripCardList.list.setAdapter(tripCardAdapter); // Set this here to ensure this has been laid out already
 
         final Toolbar toolbar = (navigationHandler.isDualPane()) ? getActivity().findViewById(R.id.toolbar) : binding.toolbar.toolbar;
         if (toolbar != null) {
@@ -190,7 +191,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
             updateViewVisibilities(tripCardAdapter.getItems());
         }
 
-        newTripAutoNavigationTracker.subscribe();
+        newTripAutoNavigationTracker.subscribe(this);
     }
 
     @Override
@@ -215,6 +216,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
 
     @Override
     public void onDestroyView() {
+        binding.layoutTripCardList.list.setAdapter(null);
         super.onDestroyView();
         binding = null;
     }
