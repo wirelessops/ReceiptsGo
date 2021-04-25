@@ -88,9 +88,8 @@
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_COMMENT"
                 app:startIconDrawable="@drawable/ic_comment">
 
-
                 <AutoCompleteTextView
-                    android:id="@+id/dialog_tripmenu_comment"
+                    android:id="@+id/trip_comment"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
                     android:imeOptions="actionNext"
@@ -109,7 +108,7 @@
                 tools:visibility="visible">
 
                 <AutoCompleteTextView
-                    android:id="@+id/dialog_tripmenu_cost_center"
+                    android:id="@+id/cost_center"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
                     android:inputType="textCapSentences" />

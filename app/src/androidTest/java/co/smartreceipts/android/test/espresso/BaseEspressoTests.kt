@@ -56,8 +56,8 @@ class BaseEspressoTests {
         onView(withId(R.id.start_date)).check(matches(isDisplayed()))
         onView(withId(R.id.end_date)).check(matches(isDisplayed()))
         onView(withId(R.id.spinner)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_comment)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_cost_center)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.trip_comment)).check(matches(isDisplayed()))
+        onView(withId(R.id.cost_center)).check(matches(not(isDisplayed())))
     }
 
     @Test
