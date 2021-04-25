@@ -2,14 +2,14 @@ package co.smartreceipts.android.trips.navigation
 
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.core.di.scopes.FragmentScope
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-@FragmentScope
+@ApplicationScope
 class NewTripAutoNavigationTracker @Inject constructor(
     tripTableController: TripTableController
 ) {
@@ -34,7 +34,7 @@ class NewTripAutoNavigationTracker @Inject constructor(
             })
     }
 
-    fun unsubscribe() {
+    fun dispose() {
         compositeDisposable.clear()
     }
 }

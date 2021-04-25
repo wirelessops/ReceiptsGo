@@ -197,7 +197,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
     @Override
     public void onPause() {
         lastTripAutoNavigationController.unsubscribe();
-        newTripAutoNavigationTracker.unsubscribe();
+        newTripAutoNavigationTracker.dispose();
         super.onPause();
     }
 
@@ -205,13 +205,8 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
     public void onStop() {
         Logger.debug(this, "onStop");
         tooltipPresenter.unsubscribe();
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
         tripTableController.unsubscribe(this);
-        super.onDestroy();
+        super.onStop();
     }
 
     @Override
