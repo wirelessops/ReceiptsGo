@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import co.smartreceipts.android.tooltip.TooltipPresenter
 import co.smartreceipts.android.tooltip.TooltipView
@@ -32,6 +33,7 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         tooltipView = Tooltip(requireContext())
+        tooltipView.isVisible = false
         return tooltipView
     }
 
@@ -46,20 +48,22 @@ class ReceiptCreateEditFragmentTooltipFragment : Fragment(), TooltipView {
     }
 
     override fun getSupportedTooltips(): List<TooltipType> {
-        return listOf(TooltipType.FirstReceiptUseTaxesQuestion, TooltipType.FirstReceiptUsePaymentMethodsQuestion, TooltipType.OcrInformation,
-            TooltipType.ImageCropping, TooltipType.ConfigureSecondTaxHint)
+        return listOf(
+            TooltipType.FirstReceiptUseTaxesQuestion, TooltipType.FirstReceiptUsePaymentMethodsQuestion, TooltipType.OcrInformation,
+            TooltipType.ImageCropping, TooltipType.ConfigureSecondTaxHint
+        )
     }
 
     override fun display(tooltip: TooltipMetadata) {
         tooltipView.setTooltip(tooltip)
-        if (tooltipView.visibility != View.VISIBLE) {
-            tooltipView.visibility = View.VISIBLE
+        if (!tooltipView.isVisible) {
+            tooltipView.isVisible = true
         }
     }
 
     override fun hideTooltip() {
-        if (tooltipView.visibility != View.GONE) {
-            tooltipView.visibility = View.GONE
+        if (tooltipView.isVisible) {
+            tooltipView.isVisible = false
         }
     }
 
