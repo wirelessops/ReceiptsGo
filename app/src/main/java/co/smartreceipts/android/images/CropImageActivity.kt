@@ -17,7 +17,6 @@ import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.activity_crop_image.*
 import java.io.File
 import javax.inject.Inject
 
@@ -32,13 +31,13 @@ class CropImageActivity : AppCompatActivity(), CropView {
         get() = File(intent.getStringExtra(EXTRA_IMAGE_PATH))
 
     override val rotateRightClicks: Observable<Unit>
-        get() = button_rotate_right.clicks()
+        get() = binding.buttonRotateRight.clicks()
 
     override val rotateLeftClicks: Observable<Unit>
-        get() = button_rotate_left.clicks()
+        get() = binding.buttonRotateLeft.clicks()
 
     override val cropToggleClicks: Observable<Unit>
-        get() = button_crop.clicks()
+        get() = binding.buttonCrop.clicks()
 
     private val applyCropClicksSubject = PublishSubject.create<Bitmap>()
 
@@ -100,7 +99,7 @@ class CropImageActivity : AppCompatActivity(), CropView {
                 true
             }
             R.id.action_save -> {
-                applyCropClicksSubject.onNext(image_crop.crop())
+                applyCropClicksSubject.onNext(binding.imageCrop.crop())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -113,25 +112,25 @@ class CropImageActivity : AppCompatActivity(), CropView {
 
         when (indicator.state) {
             UiIndicator.State.Loading -> {
-                progress_crop.visibility = View.VISIBLE
+                binding.progressCrop.visibility = View.VISIBLE
                 enableControls(false)
             }
             UiIndicator.State.Success -> {
-                progress_crop.visibility = View.GONE
+                binding.progressCrop.visibility = View.GONE
                 enableControls(true)
 
                 showImage(indicator.data.get())
             }
             UiIndicator.State.Error -> {
-                progress_crop.visibility = View.GONE
+                binding.progressCrop.visibility = View.GONE
                 Toast.makeText(this, R.string.IMG_SAVE_ERROR, Toast.LENGTH_SHORT).show()
                 enableControls(true)
 
                 setResult(RESULT_CROP_ERROR)
             }
             else -> {
-                progress_crop.visibility = View.GONE
-                image_crop.visibility = View.GONE
+                binding.progressCrop.visibility = View.GONE
+                binding.imageCrop.visibility = View.GONE
                 enableControls(false)
             }
         }
@@ -151,25 +150,21 @@ class CropImageActivity : AppCompatActivity(), CropView {
 
         showImage(null)
 
-        if (autoCrop) {
-            button_crop.setImageResource(R.drawable.ic_crop_free_24dp)
-        } else {
-            button_crop.setImageResource(R.drawable.ic_crop_24dp)
-        }
+        binding.buttonCrop.setImageResource(if (autoCrop) R.drawable.ic_crop_free_24dp else R.drawable.ic_crop_24dp)
     }
 
     private fun showImage(bitmap: Bitmap?) {
-        StrictModeConfiguration.permitDiskReads { image_crop.setImageToCrop(bitmap?: image_crop.bitmap) }
+        StrictModeConfiguration.permitDiskReads { binding.imageCrop.setImageToCrop(bitmap?: binding.imageCrop.bitmap) }
 
         if (!autoCrop) {
-            image_crop.setFullImgCrop()
+            binding.imageCrop.setFullImgCrop()
         }
     }
 
     private fun enableControls(enable: Boolean) {
-        button_rotate_left.isEnabled = enable
-        button_rotate_right.isEnabled = enable
-        button_crop.isEnabled = enable
+        binding.buttonRotateLeft.isEnabled = enable
+        binding.buttonRotateRight.isEnabled = enable
+        binding.buttonCrop.isEnabled = enable
     }
 
 }

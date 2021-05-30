@@ -10,27 +10,22 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;
-import org.joda.money.CurrencyUnit;
 
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +44,6 @@ import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.databinding.UpdateTripBinding;
-import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.WBFragment;
@@ -66,12 +60,12 @@ import co.smartreceipts.android.trips.editor.currency.TripCurrencyCodeSupplier;
 import co.smartreceipts.android.trips.editor.date.TripDateView;
 import co.smartreceipts.android.trips.editor.date.TripDatesPresenter;
 import co.smartreceipts.android.utils.SoftKeyboardManager;
-import co.smartreceipts.android.widget.tooltip.Tooltip;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
+import kotlin.Unit;
 import wb.android.flex.Flex;
 
 public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
@@ -112,16 +106,6 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     private CurrencyListEditorPresenter currencyListEditorPresenter;
     private DefaultCurrencyListEditorView defaultCurrencyListEditorView;
 
-    private Toolbar toolbar;
-    private Tooltip tooltipView;
-    private AutoCompleteTextView nameBox;
-    private DateEditText startDateBox;
-    private DateEditText endDateBox;
-    private  Spinner currencySpinner;
-    private AutoCompleteTextView commentBox;
-    private AutoCompleteTextView costCenterBox;
-    private View costCenterBoxLayout;
-
     private UpdateTripBinding binding;
 
     // Misc Views
@@ -154,7 +138,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
         final TripCurrencyCodeSupplier currencyCodeSupplier = new TripCurrencyCodeSupplier(userPreferenceManager, getEditableItem());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(this, database, currencyCodeSupplier, savedInstanceState);
-        defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
+        defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> binding.currency.get());
         tripDatesPresenter = new TripDatesPresenter(this, userPreferenceManager, getEditableItem());
     }
 
@@ -172,17 +156,6 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = UpdateTripBinding.inflate(inflater, container, false);
-
-        toolbar = binding.toolbar.toolbar;
-        tooltipView = binding.tooltip;
-        nameBox = binding.dialogTripmenuName;
-        startDateBox = binding.dialogTripmenuStart;
-        endDateBox = binding.dialogTripmenuEnd;
-        currencySpinner = binding.dialogTripmenuCurrency;
-        commentBox = binding.dialogTripmenuComment;
-        costCenterBox = binding.dialogTripmenuCostCenter;
-        costCenterBoxLayout = binding.dialogTripmenuCostCenterLayout;
-
         return binding.getRoot();
     }
 
@@ -191,30 +164,30 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         super.onViewCreated(view, savedInstanceState);
 
         // Apply white-label settings via our 'Flex' mechanism to update defaults
-        flex.applyCustomSettings(nameBox);
-        flex.applyCustomSettings(startDateBox);
-        flex.applyCustomSettings(endDateBox);
-        flex.applyCustomSettings(currencySpinner);
-        flex.applyCustomSettings(commentBox);
-        flex.applyCustomSettings(costCenterBox);
+        flex.applyCustomSettings(binding.name);
+        flex.applyCustomSettings(binding.startDate);
+        flex.applyCustomSettings(binding.endDate);
+        flex.applyCustomSettings(binding.currency.get());
+        flex.applyCustomSettings(binding.tripComment);
+        flex.applyCustomSettings(binding.costCenter);
 
         // Toolbar stuff
         if (navigationHandler.isDualPane()) {
-            toolbar.setVisibility(View.GONE);
+            binding.toolbar.toolbar.setVisibility(View.GONE);
         } else {
-            setSupportActionBar(toolbar);
+            setSupportActionBar(binding.toolbar.toolbar);
         }
 
         // Show default dictionary with auto-complete
         TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
-        nameBox.setKeyListener(input);
+        binding.name.setKeyListener(input);
 
         // Configure default separators
-        startDateBox.setDateFormatter(dateFormatter);
-        endDateBox.setDateFormatter(dateFormatter);
+        binding.startDate.setDateFormatter(dateFormatter);
+        binding.endDate.setDateFormatter(dateFormatter);
 
         // Set Cost Center Visibility
-        costCenterBoxLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);
+        binding.dialogTripmenuCostCenterLayout.setVisibility(presenter.isIncludeCostCenter() ? View.VISIBLE : View.GONE);
 
         setKeyboardRelatedListeners();
     }
@@ -228,6 +201,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_save, menu);
+        menu.findItem(R.id.menu_main_search).setVisible(false);
     }
 
     @Override
@@ -315,36 +289,36 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
             startCalendar.set(Calendar.SECOND, 0);
             startCalendar.set(Calendar.MILLISECOND, 0);
 
-            startDateBox.setDate(new Date(startCalendar.getTimeInMillis()));
-            endDateBox.setDate(new Date(startCalendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration())));
+            binding.startDate.setDate(new Date(startCalendar.getTimeInMillis()));
+            binding.endDate.setDate(new Date(startCalendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(presenter.getDefaultTripDuration())));
         } else { // edit trip
-            nameBox.setText(getEditableItem().getName());
-            startDateBox.setDate(getEditableItem().getStartDate());
-            startDateBox.setTimeZone(getEditableItem().getStartTimeZone());
-            endDateBox.setDate(getEditableItem().getEndDate());
-            endDateBox.setTimeZone(getEditableItem().getEndTimeZone());
-            commentBox.setText(getEditableItem().getComment());
-            costCenterBox.setText(getEditableItem().getCostCenter());
+            binding.name.setText(getEditableItem().getName());
+            binding.startDate.setDate(getEditableItem().getStartDate());
+            binding.startDate.setTimeZone(getEditableItem().getStartTimeZone());
+            binding.endDate.setDate(getEditableItem().getEndDate());
+            binding.endDate.setTimeZone(getEditableItem().getEndTimeZone());
+            binding.tripComment.setText(getEditableItem().getComment());
+            binding.costCenter.setText(getEditableItem().getCostCenter());
         }
 
         // Focused View
         if (focusedView == null) {
-            focusedView = nameBox;
+            focusedView = binding.name;
         }
 
-        startDateBox.setFocusableInTouchMode(false);
-        endDateBox.setFocusableInTouchMode(false);
-        nameBox.setSelection(nameBox.getText().length()); // Put the cursor at the end
+        binding.startDate.setFocusableInTouchMode(false);
+        binding.endDate.setFocusableInTouchMode(false);
+        binding.name.setSelection(binding.name.getText().length()); // Put the cursor at the end
     }
 
     private void setKeyboardRelatedListeners() {
         // Set each focus listener, so we can track the focus view across resume -> pauses
-        nameBox.setOnFocusChangeListener(this);
-        startDateBox.setOnFocusChangeListener(this);
-        endDateBox.setOnFocusChangeListener(this);
-        currencySpinner.setOnFocusChangeListener(this);
-        commentBox.setOnFocusChangeListener(this);
-        costCenterBox.setOnFocusChangeListener(this);
+        binding.name.setOnFocusChangeListener(this);
+        binding.startDate.setOnFocusChangeListener(this);
+        binding.endDate.setOnFocusChangeListener(this);
+        binding.currency.get().setOnFocusChangeListener(this);
+        binding.tripComment.setOnFocusChangeListener(this);
+        binding.costCenter.setOnFocusChangeListener(this);
 
         // Set click listeners
         View.OnTouchListener hideSoftKeyboardOnTouchListener = (view, motionEvent) -> {
@@ -354,27 +328,27 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
             view.performClick();
             return false;
         };
-        startDateBox.setOnTouchListener(hideSoftKeyboardOnTouchListener);
-        endDateBox.setOnTouchListener(hideSoftKeyboardOnTouchListener);
-        currencySpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.startDate.setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.endDate.setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.currency.get().setOnTouchListener(hideSoftKeyboardOnTouchListener);
     }
 
     private void saveTripChanges() {
-        String name = nameBox.getText().toString().trim();
-        final String startDateText = startDateBox.getText().toString();
-        final String endDateText = endDateBox.getText().toString();
-        final String comment = commentBox.getText().toString();
-        final String costCenter = costCenterBox.getText().toString();
+        String name = binding.name.getText().toString().trim();
+        final String startDateText = binding.startDate.getText().toString();
+        final String endDateText = binding.endDate.getText().toString();
+        final String comment = binding.tripComment.getText().toString();
+        final String costCenter = binding.costCenter.getText().toString();
 
         final String currencyCode;
-        if (currencySpinner.getSelectedItem() != null) {
-            currencyCode = currencySpinner.getSelectedItem().toString();
+        if (binding.currency.get().getSelectedItem() != null) {
+            currencyCode = binding.currency.get().getSelectedItem().toString();
         } else {
             currencyCode = CurrencyUtils.INSTANCE.getDefaultCurrency().getCode();
         }
 
-        if (presenter.checkTrip(name, startDateText, startDateBox.getDate(), endDateText, endDateBox.getDate())) {
-            presenter.saveTrip(name, startDateBox.getDate(), startDateBox.getTimeZone(), endDateBox.getDate(), endDateBox.getTimeZone(), currencyCode, comment, costCenter);
+        if (presenter.checkTrip(name, startDateText, binding.startDate.getDate(), endDateText, binding.endDate.getDate())) {
+            presenter.saveTrip(name, binding.startDate.getDate(), binding.startDate.getTimeZone(), binding.endDate.getDate(), binding.endDate.getTimeZone(), currencyCode, comment, costCenter);
             navigationHandler.navigateBack();
         }
     }
@@ -421,8 +395,8 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     public Consumer<? super Integer> displayCurrencySelection() {
         // Note: we override the default behavior in the #link DefaultCurrencyListEditorView class for the exchange rate warning
         return (Consumer<Integer>) position -> {
-            currencySpinner.setSelection(position);
-            if (getEditableItem() != null && position >= 0 && !getEditableItem().getDefaultCurrencyCode().equals(currencySpinner.getItemAtPosition(position).toString())) {
+            binding.currency.get().setSelection(position);
+            if (getEditableItem() != null && position >= 0 && !getEditableItem().getDefaultCurrencyCode().equals(binding.currency.get().getItemAtPosition(position).toString())) {
                 Toast.makeText(getContext(), R.string.toast_warning_reset_exchange_rate, Toast.LENGTH_LONG).show();
             }
         };
@@ -438,15 +412,15 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public Consumer<Date> displayEndDate() {
         return date -> {
-            endDateBox.setDate(date);
-            endDateBox.setTimeZone(TimeZone.getDefault());
+            binding.endDate.setDate(date);
+            binding.endDate.setTimeZone(TimeZone.getDefault());
         };
     }
 
     @NonNull
     @Override
     public Observable<Date> getStartDateChanges() {
-        return RxDateEditText.INSTANCE.dateChanges(startDateBox);
+        return RxDateEditText.INSTANCE.dateChanges(binding.startDate);
     }
 
     private String getFlexString(int id) {
@@ -457,11 +431,11 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public Observable<CharSequence> getTextChangeStream(@NotNull AutoCompleteField field) {
         if (field == TripAutoCompleteField.Name) {
-            return RxTextView.textChanges(nameBox);
+            return RxTextView.textChanges(binding.name);
         } else if (field == TripAutoCompleteField.Comment) {
-            return RxTextView.textChanges(commentBox);
+            return RxTextView.textChanges(binding.tripComment);
         } else if (field == TripAutoCompleteField.CostCenter) {
-            return RxTextView.textChanges(costCenterBox);
+            return RxTextView.textChanges(binding.costCenter);
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }
@@ -475,19 +449,19 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
             }
             resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults, this);
             if (field == TripAutoCompleteField.Name) {
-                nameBox.setAdapter(resultsAdapter);
-                if (nameBox.hasFocus()) {
-                    nameBox.showDropDown();
+                binding.name.setAdapter(resultsAdapter);
+                if (binding.name.hasFocus()) {
+                    binding.name.showDropDown();
                 }
             } else if (field == TripAutoCompleteField.Comment) {
-                commentBox.setAdapter(resultsAdapter);
-                if (commentBox.hasFocus()) {
-                    commentBox.showDropDown();
+                binding.tripComment.setAdapter(resultsAdapter);
+                if (binding.tripComment.hasFocus()) {
+                    binding.tripComment.showDropDown();
                 }
             } else if (field == TripAutoCompleteField.CostCenter) {
-                costCenterBox.setAdapter(resultsAdapter);
-                if (costCenterBox.hasFocus()) {
-                    costCenterBox.showDropDown();
+                binding.costCenter.setAdapter(resultsAdapter);
+                if (binding.costCenter.hasFocus()) {
+                    binding.costCenter.showDropDown();
                 }
             } else {
                 throw new IllegalArgumentException("Unsupported field type: " + field);
@@ -497,7 +471,7 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
         }
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public Trip getEditableItem() {
         return getArguments() != null ? getArguments().getParcelable(Trip.PARCEL_KEY) : null;
@@ -511,64 +485,64 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
 
     @Override
     public void display(@NotNull TooltipMetadata tooltip) {
-        tooltipView.setTooltip(tooltip);
-        if (tooltipView.getVisibility() != View.VISIBLE) {
-            tooltipView.setVisibility(View.VISIBLE);
+        binding.tooltip.setTooltip(tooltip);
+        if (binding.tooltip.getVisibility() != View.VISIBLE) {
+            binding.tooltip.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void hideTooltip() {
-        if (tooltipView.getVisibility() != View.GONE) {
-            tooltipView.setVisibility(View.GONE);
+        if (binding.tooltip.getVisibility() != View.GONE) {
+            binding.tooltip.setVisibility(View.GONE);
         }
     }
 
     @NotNull
     @Override
-    public Observable<Object> getTooltipClickStream() {
-        return tooltipView.getTooltipClickStream();
+    public Observable<Unit> getTooltipClickStream() {
+        return binding.tooltip.getTooltipClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonNoClickStream() {
-        return tooltipView.getButtonNoClickStream();
+    public Observable<Unit> getButtonNoClickStream() {
+        return binding.tooltip.getButtonNoClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonYesClickStream() {
-        return tooltipView.getButtonYesClickStream();
+    public Observable<Unit> getButtonYesClickStream() {
+        return binding.tooltip.getButtonYesClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getButtonCancelClickStream() {
-        return tooltipView.getButtonCancelClickStream();
+    public Observable<Unit> getButtonCancelClickStream() {
+        return binding.tooltip.getButtonCancelClickStream();
     }
 
     @NotNull
     @Override
-    public Observable<Object> getCloseIconClickStream() {
-        return tooltipView.getCloseIconClickStream();
+    public Observable<Unit> getCloseIconClickStream() {
+        return binding.tooltip.getCloseIconClickStream();
     }
 
     @Override
     public void fillValueField(@NotNull AutoCompleteResult<Trip> autoCompleteResult) {
         shouldHideResults = true;
-        if (nameBox.isPopupShowing()) {
-            nameBox.setText(autoCompleteResult.getDisplayName());
-            nameBox.setSelection(nameBox.getText().length());
-            nameBox.dismissDropDown();
-        } else if (commentBox.isPopupShowing()) {
-            commentBox.setText(autoCompleteResult.getDisplayName());
-            commentBox.setSelection(commentBox.getText().length());
-            commentBox.dismissDropDown();
+        if (binding.name.isPopupShowing()) {
+            binding.name.setText(autoCompleteResult.getDisplayName());
+            binding.name.setSelection(binding.name.getText().length());
+            binding.name.dismissDropDown();
+        } else if (binding.tripComment.isPopupShowing()) {
+            binding.tripComment.setText(autoCompleteResult.getDisplayName());
+            binding.tripComment.setSelection(binding.tripComment.getText().length());
+            binding.tripComment.dismissDropDown();
         } else {
-            costCenterBox.setText(autoCompleteResult.getDisplayName());
-            costCenterBox.setSelection(costCenterBox.getText().length());
-            costCenterBox.dismissDropDown();
+            binding.costCenter.setText(autoCompleteResult.getDisplayName());
+            binding.costCenter.setSelection(binding.costCenter.getText().length());
+            binding.costCenter.dismissDropDown();
         }
         SoftKeyboardManager.hideKeyboard(focusedView);
     }
@@ -576,10 +550,10 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public void sendAutoCompleteHideEvent(@NotNull AutoCompleteResult<Trip> autoCompleteResult) {
         SoftKeyboardManager.hideKeyboard(focusedView);
-        if (nameBox.isPopupShowing()) {
+        if (binding.name.isPopupShowing()) {
             _hideAutoCompleteVisibilityClicks.onNext(
                     new AutoCompleteUpdateEvent(autoCompleteResult, TripAutoCompleteField.Name, resultsAdapter.getPosition(autoCompleteResult)));
-        } else if (commentBox.isPopupShowing()) {
+        } else if (binding.tripComment.isPopupShowing()) {
             _hideAutoCompleteVisibilityClicks.onNext(
                     new AutoCompleteUpdateEvent(autoCompleteResult, TripAutoCompleteField.Comment, resultsAdapter.getPosition(autoCompleteResult)));
         } else {
@@ -591,22 +565,24 @@ public class TripCreateEditFragment extends WBFragment implements Editor<Trip>,
     @Override
     public void removeValueFromAutoComplete(int position) {
         getActivity().runOnUiThread(() -> {
-            itemToRemoveOrReAdd = resultsAdapter.getItem(position);
-            resultsAdapter.remove(itemToRemoveOrReAdd);
-            resultsAdapter.notifyDataSetChanged();
-            View view = getActivity().findViewById(R.id.update_trip_layout);
-            snackbar = Snackbar.make(view, getString(
-                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.undo, v -> {
-                if (nameBox.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Name, position));
-                } else if (commentBox.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Comment, position));
-                } else {
-                    _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.CostCenter, position));
-                }
-            });
-            snackbar.show();
+            if (position >= 0 && position < resultsAdapter.getCount()) {
+                itemToRemoveOrReAdd = resultsAdapter.getItem(position);
+                resultsAdapter.remove(itemToRemoveOrReAdd);
+                resultsAdapter.notifyDataSetChanged();
+                View view = getActivity().findViewById(R.id.update_trip_layout);
+                snackbar = Snackbar.make(view, getString(
+                        R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.undo, v -> {
+                    if (binding.name.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Name, position));
+                    } else if (binding.tripComment.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.Comment, position));
+                    } else {
+                        _unHideAutoCompleteVisibilityClicks.onNext(new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, TripAutoCompleteField.CostCenter, position));
+                    }
+                });
+                snackbar.show();
+            }
         });
     }
 

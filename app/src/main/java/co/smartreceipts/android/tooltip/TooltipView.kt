@@ -1,7 +1,7 @@
 package co.smartreceipts.android.tooltip
 
-import co.smartreceipts.android.tooltip.model.TooltipType
 import co.smartreceipts.android.tooltip.model.TooltipMetadata
+import co.smartreceipts.android.tooltip.model.TooltipType
 import io.reactivex.Observable
 
 /**
@@ -25,27 +25,27 @@ interface TooltipView {
     fun hideTooltip()
 
     /**
-     * @return an [Observable] that will emit an object whenever the tooltip view is clicked
+     * @return an [Observable] that will emit Unit whenever the tooltip view is clicked
      */
-    fun getTooltipClickStream(): Observable<Any>
+    fun getTooltipClickStream(): Observable<Unit>
 
     /**
-     * @return an [Observable] that will emit an object whenever the no button is clicked
+     * @return an [Observable] that will emit Unit whenever the no button is clicked
      */
-    fun getButtonNoClickStream(): Observable<Any>
+    fun getButtonNoClickStream(): Observable<Unit>
 
     /**
-     * @return an [Observable] that will emit an object whenever the yes button is clicked
+     * @return an [Observable] that will emit Unit whenever the yes button is clicked
      */
-    fun getButtonYesClickStream(): Observable<Any>
+    fun getButtonYesClickStream(): Observable<Unit>
 
     /**
-     * @return an [Observable] that will emit an object whenever the cancel button is clicked
+     * @return an [Observable] that will emit Unit whenever the cancel button is clicked
      */
-    fun getButtonCancelClickStream(): Observable<Any>
+    fun getButtonCancelClickStream(): Observable<Unit>
 
     /**
-     * @return an [Observable] that will emit an object whenever the close icon is clicked
+     * @return an [Observable] that will emit Unit whenever the close icon is clicked
      */
-    fun getCloseIconClickStream(): Observable<Any>
+    fun getCloseIconClickStream(): Observable<Unit>
 }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_large" >
+    android:padding="@dimen/padding_large">
 
-    <Spinner android:id="@+id/move_copy_spinner"
+    <co.smartreceipts.android.widget.ui.OutlinedSpinner
+        android:id="@+id/move_copy_spinner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:captionBackgroundColor="@color/card_background"
+        app:captionText="@string/reports_title" />
 
-</LinearLayout>
+</FrameLayout>

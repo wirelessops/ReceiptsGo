@@ -24,15 +24,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_large">
+            android:paddingVertical="@dimen/padding_large">
 
             <TextView
                 android:id="@+id/login_text"
                 style="@style/Widget.SmartReceipts.TextView.Title"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
                 android:ellipsize="end"
                 android:lines="1"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_normal"
                 android:text="@string/logged_in_as"
                 app:layout_constraintBottom_toTopOf="@+id/login_field_email"
                 app:layout_constraintEnd_toStartOf="@id/logout_button"
@@ -42,34 +43,39 @@
 
             <TextView
                 android:id="@+id/login_field_email"
+                style="@style/Widget.SmartReceipts.TextView.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:hint="@string/login_field_email_hint"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_large"
+                android:textColor="@color/text_secondary_color"
                 app:layout_constraintEnd_toStartOf="@id/logout_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_text"
                 tools:text="sample@gmail.com" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/logout_button"
-                style="@style/Widget.SmartReceipts.Button"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="@string/logout_button_text"
-                app:layout_constraintBottom_toBottomOf="@id/login_field_email"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="@id/login_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/login_text" />
 
 
             <View
                 android:id="@+id/ocr_divider"
                 style="@style/Widget.View.Divider.Horizontal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/padding_large"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_large"
                 app:layout_constraintTop_toBottomOf="@id/login_field_email" />
 
             <TextView
@@ -77,7 +83,8 @@
                 style="@style/Widget.SmartReceipts.TextView.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_large"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_larger"
                 android:text="@string/ocr_configuration_welcome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,11 +92,13 @@
 
             <TextView
                 android:id="@+id/ocr_scans_remaining"
-                style="@style/Widget.SmartReceipts.TextView.Body2"
+                style="@style/Widget.SmartReceipts.TextView.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:paddingTop="@dimen/padding_normal"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_large"
+                android:textColor="@color/text_secondary_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ocr_label"
@@ -107,8 +116,8 @@
             <View
                 android:id="@+id/subscriptions_divider"
                 style="@style/Widget.View.Divider.Horizontal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/padding_large"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_large"
                 app:layout_constraintTop_toBottomOf="@id/ocr_scans_remaining" />
 
             <TextView
@@ -116,7 +125,8 @@
                 style="@style/Widget.SmartReceipts.TextView.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_large"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_larger"
                 android:text="@string/subscriptions_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +139,8 @@
                 android:paddingTop="@dimen/padding_normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/subscriptions_label" />
+                app:layout_constraintTop_toBottomOf="@id/subscriptions_label"
+                tools:listitem="@layout/item_subscription" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/organization_group"
@@ -142,8 +153,8 @@
             <View
                 android:id="@+id/organization_divider"
                 style="@style/Widget.View.Divider.Horizontal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/padding_large"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_large"
                 app:layout_constraintTop_toBottomOf="@id/subscriptions_list" />
 
             <TextView
@@ -151,8 +162,9 @@
                 style="@style/Widget.SmartReceipts.TextView.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/margin_normal"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_larger"
+                android:paddingBottom="@dimen/padding_normal"
                 android:text="@string/organization_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

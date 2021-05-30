@@ -2,11 +2,9 @@
 <resources>
 
     <!-- Custom Styles -->
-    <style name="Widget">
-    </style>
+    <style name="Widget"></style>
 
-    <style name="Widget.SmartReceipts">
-    </style>
+    <style name="Widget.SmartReceipts"></style>
 
     <style name="Widget.SmartReceipts.PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/purple_selector</item>
@@ -14,46 +12,69 @@
 
     <style name="Widget.View.Divider.Horizontal" parent="Widget">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
         <item name="android:background">?android:attr/listDivider</item>
-	</style>
+    </style>
 
     <style name="Widget.View.Divider.Vertical" parent="Widget">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">?android:attr/listDivider</item>
-	</style>
+    </style>
 
     <style name="Widget.SmartReceipts.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/smart_receipts_colorAccent</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">@dimen/text_input_outline_width</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="boxCornerRadiusTopStart">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/text_input_corner_radius</item>
+        <item name="startIconTint">@color/navigation_inactive</item>
+        <item name="boxStrokeErrorColor">@color/smart_receipts_colorError</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.OutlinedEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@null</item>
+        <item name="android:padding">@dimen/padding_large</item>
+        <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Subhead</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="Widget.SmartReceipts.RelativeLayout" parent="Widget">
         <item name="android:layout_width">match_parent</item>
-	    <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="Widget.SmartReceipts.RelativeLayout.SlidingPane" parent="Widget.SmartReceipts.RelativeLayout">
-	    <!-- This color is needed here to make the SlidingPane look nice when dragging out
-	    	 The cost of doing so is overdraw... Have to see if there's a better way        -->
-	    <item name="android:background">@color/list_background</item>
+        <!-- This color is needed here to make the SlidingPane look nice when dragging out
+             The cost of doing so is overdraw... Have to see if there's a better way        -->
+        <item name="android:background">@color/list_background</item>
     </style>
 
     <style name="Widget.SmartReceipts.RelativeLayout.Card" parent="Widget.SmartReceipts.RelativeLayout">
         <item name="android:layout_height">wrap_content</item>
-	    <item name="android:padding">@dimen/card_padding</item>
-	    <item name="android:background">@drawable/card_selector</item>
+        <item name="android:padding">@dimen/card_padding</item>
+        <item name="android:background">@drawable/card_selector</item>
     </style>
 
     <style name="Widget.SmartReceipts.ListView" parent="Widget">
         <item name="android:layout_height">match_parent</item>
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:padding">@dimen/card_divider_padding</item>
-		<item name="android:divider">@android:color/transparent</item>
- 		<item name="android:dividerHeight">@dimen/card_divider_padding</item>
- 		<item name="android:drawSelectorOnTop">false</item>
- 		<item name="android:clipToPadding">false</item>
-    	<item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">@dimen/list_divider_height</item>
+        <item name="android:drawSelectorOnTop">false</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
     <style name="Widget.SmartReceipts.ProgressBar" parent="Widget">
@@ -64,6 +85,11 @@
     <style name="Widget.SmartReceipts.ProgressBar.Loading" parent="Widget.SmartReceipts.ProgressBar">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="Widget.SmartReceipts.TextView" parent="Widget">
@@ -74,14 +100,32 @@
     <style name="Widget.SmartReceipts.TextView.NoData" parent="Widget.SmartReceipts.TextView">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:padding">@dimen/no_data_padding</item>
-        <item name="android:text">@string/trip_no_data</item>
-        <item name="android:textSize">@dimen/no_data_textSize</item>
-        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:padding">@dimen/padding_large</item>
+        <item name="android:textSize">@dimen/font_no_data</item>
+        <item name="android:textColor">@color/text_secondary_color</item>
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="Widget.SmartReceipts.ImageView.NoData" parent="Widget">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
+        <item name="layout_constraintDimensionRatio">1</item>
+        <item name="layout_constraintHeight_percent">0.2</item>
+        <item name="tint">@color/no_data_image_tint</item>
+    </style>
+
     <!-- Text Styles go below -->
+
+    <style name="Widget.SmartReceipts.TextView.Title">
+        <item name="android:textSize">@dimen/font_headline2</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 
     <style name="Widget.SmartReceipts.TextView.Caption" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textColor">?android:textColorHint</item>
@@ -89,20 +133,14 @@
         <item name="android:paddingRight">@dimen/margin_tiniest</item>
     </style>
 
-    <style name="Widget.SmartReceipts.TextView.Title">
-        <item name="android:textSize">20sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textColor">@color/text_primary_color</item>
-    </style>
-
     <style name="Widget.SmartReceipts.TextView.Subhead">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/font_subhead</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/text_primary_color</item>
     </style>
 
     <style name="Widget.SmartReceipts.TextView.Body2">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/font_headline2</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/text_primary_color</item>
     </style>
@@ -120,6 +158,67 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="Widget.SmartReceipts.TextView.FragmentTitle">
+        <item name="android:textSize">@dimen/font_headline</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/margin_normal</item>
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.TextView.GraphTitle">
+        <item name="android:textSize">@dimen/font_headline2</item>
+        <item name="android:paddingTop">@dimen/padding_normal</item>
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:paddingEnd">@dimen/padding_normal</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:background">@color/card_background</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.TextView.Outlined">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_outlined_rounded_rectangle</item>
+        <item name="android:backgroundTint">@color/text_secondary_pale</item>
+        <item name="android:textSize">@dimen/font_caption2</item>
+        <item name="android:textColor">@color/text_secondary_pale</item>
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:paddingEnd">@dimen/padding_normal</item>
+        <item name="android:paddingTop">@dimen/padding_small</item>
+        <item name="android:paddingBottom">@dimen/padding_small</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.GenerateCheckBox">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/padding_larger</item>
+        <item name="android:paddingBottom">@dimen/padding_larger</item>
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:layout_marginStart">@dimen/margin_normal</item>
+        <item name="android:layout_marginEnd">@dimen/margin_normal</item>
+        <item name="drawableTint">@color/navigation_inactive</item>
+        <item name="android:buttonTint">@color/smart_receipts_colorPrimary</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.GenerateCheckBoxContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:background">@color/card_background</item>
+    </style>
+
     <style name="Widget.SmartReceipts.Button" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:textAppearance">@style/Widget.SmartReceipts.TextView.Button</item>
         <item name="android:textStyle">bold</item>
@@ -127,9 +226,17 @@
     </style>
 
     <style name="Widget.SmartReceipts.TextView.Button.Secondary">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/accent_text_primary</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_caption</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:layout_margin">@dimen/margin_tiny</item>
+        <item name="android:backgroundTint">@color/tooltip_button</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/bg_rounded_rectangle</item>
+        <item name="android:foreground">@drawable/bg_rounded_rectangle_ripple</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Widget.SmartReceipts.Button.Secondary" parent="@style/Widget.AppCompat.Button.Colored">
@@ -151,24 +258,15 @@
     </style>
 
     <style name="Widget.SmartReceipts.FloatingActionButton">
-        <item name="fab_colorNormal">@color/smart_receipts_colorPrimaryDark</item>
-        <item name="fab_colorPressed">@color/smart_receipts_colorPrimaryDark_pressed</item>
-        <item name="fab_colorRipple">@color/smart_receipts_ripple_dark</item>
-        <item name="fab_size">normal</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/margin_large</item>
+        <item name="android:backgroundTint">@color/smart_receipts_colorPrimaryDark</item>
+        <item name="android:padding">@dimen/padding_large</item>
+        <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_marginRight">@dimen/fab_margins</item>
-        <item name="android:layout_marginBottom">@dimen/fab_margins</item>
-        <item name="android:layout_marginLeft">@dimen/fab_margins</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.FloatingActionButton.Menu">
-        <item name="menu_colorNormal">@color/smart_receipts_colorPrimaryDark</item>
-        <item name="menu_colorPressed">@color/smart_receipts_colorPrimaryDark_pressed</item>
-        <item name="menu_colorRipple">@color/smart_receipts_ripple_dark</item>
-        <item name="menu_animationDelayPerItem">50</item>
+        <item name="borderWidth">0dp</item>
+        <item name="tint">@android:color/white</item>
     </style>
 
     <style name="Widget.SmartReceipts.GuideImage">
@@ -186,6 +284,39 @@
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_marginBottom">7dp</item>
         <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.BottomNavigationIcon">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:padding">@dimen/padding_normal</item>
+        <item name="tint">@color/navigation_inactive</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.BottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/shape_rounded_dialog</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.TextView.BottomSheetItem">
+        <item name="android:layout_height">@dimen/bottom_sheet_item_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="drawableTint">@color/text_secondary_color</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/padding_large</item>
+        <item name="android:paddingEnd">@dimen/padding_large</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:textSize">@dimen/font_subhead</item>
+        <item name="android:drawablePadding">@dimen/padding_large</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+    
+    <style name="Widget.SmartReceipts.SearchView" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlActivated">?attr/colorOnPrimary</item> <!-- sets the cursor color-->
+    </style>
+
+    <style name="Widget.SmartReceipts.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="actionTextColorAlpha">0.5</item>
     </style>
 
 </resources>

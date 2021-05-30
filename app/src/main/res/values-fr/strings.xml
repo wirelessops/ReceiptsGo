@@ -211,7 +211,6 @@
     <string name="toast_attachment_error">Impossible de joindre ce fichier.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s à %2$s</string>
     <string name="trip_no_data">Il semblerait que vous n’ayez aucun rapport défini pour le moment. Cliquez sur le bouton + (plus) pour commencer.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -240,6 +239,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Veuillez vérifier au moins un rapport</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Il n’y a aucun reçu dans ce rapport</string>
     <string name="generate_report_tooltip">Cliquez pour configurer la mise en page du rapport</string>
+    <string name="generate_report_subtitle">Choisissez ce que vous voulez générer</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Nom</string>
@@ -385,11 +385,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Modifier le rapport</item>
-        <item>Supprimer le rapport</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Modifier le rapport</string>
+    <string name="dialog_trip_delete">Supprimer le rapport</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Colonne vierge</string>

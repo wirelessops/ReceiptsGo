@@ -7,15 +7,23 @@ import org.joda.money.CurrencyUnit;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import co.smartreceipts.android.date.DisplayableDate;
+import co.smartreceipts.android.identity.apis.organizations.AppSettings;
+import co.smartreceipts.android.identity.apis.organizations.Configurations;
+import co.smartreceipts.android.identity.apis.organizations.Error;
+import co.smartreceipts.android.identity.apis.organizations.Organization;
 import co.smartreceipts.android.model.AutoCompleteMetadata;
 import co.smartreceipts.android.model.Category;
+import co.smartreceipts.android.model.Column;
 import co.smartreceipts.android.model.Keyed;
 import co.smartreceipts.android.model.PaymentMethod;
 import co.smartreceipts.android.model.Price;
+import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.model.factory.CategoryBuilderFactory;
 import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory;
@@ -86,5 +94,13 @@ public class DefaultObjects {
     @NonNull
     public static AutoCompleteMetadata newAutoCompleteMetadata() {
         return new AutoCompleteMetadata(false, false, false, false);
+    }
+
+    @NonNull
+    public static Organization newOrganization() {
+        final AppSettings appSettings = new AppSettings(new Configurations(true), new HashMap<>(), new ArrayList<Category>(),
+                new ArrayList<PaymentMethod>(), new ArrayList<Column<Receipt>>(), new ArrayList<Column<Receipt>>());
+
+        return new Organization("id", "Organization Name", new Date(2020, 5, 18), appSettings, new ArrayList<>(), new Error());
     }
 }

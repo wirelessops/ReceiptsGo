@@ -1,38 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <color name="background">#F3F2F8</color>
+    <color name="violet">#45289F</color>
+    <color name="violet_dark">#301B92</color>
+    <color name="card_background">@android:color/white</color>
+    <color name="navigation_inactive">#B5B3B8</color>
+    <color name="no_data_image_tint">#D9D7E0</color>
+    <color name="receipt_image_tint">#E1E0E2</color>
+    
+    <color name="warning_color">#F93E2B</color>
+    <color name="org_synced_color">#689752</color>
+    <color name="org_synced_bg">#D7F8D6</color>
+    <color name="org_unsynced_color">#978152</color>
+    <color name="org_unsynced_bg">#F8F3D6</color>
+
+    <color name="text_secondary_pale">#A7A3AB</color>
+
+    <color name="tooltip_bg">#5E5D63</color>
+    <color name="tooltip_button">#78777C</color>
+    <color name="tooltip_icon">#AEAEB1</color>
 
     <!-- Palette for Core App (Material Palette) -->
-    <color name="smart_receipts_colorPrimary">#4527a0</color>
-    <color name="smart_receipts_colorPrimaryDark">#311b92</color>
+    <color name="smart_receipts_colorPrimary">@color/violet</color>
+    <color name="smart_receipts_colorPrimaryDark">@color/violet_dark</color>
     <color name="smart_receipts_colorPrimaryDark_disabled">#8A311b92</color>
     <color name="smart_receipts_colorPrimaryDark_pressed">#200a81</color>
-    <color name="smart_receipts_colorAccent">#42a5f5</color>
+    <color name="smart_receipts_colorAccent">@color/smart_receipts_colorPrimary</color>
     <color name="smart_receipts_ripple_light">#44FFFFFF</color>
     <color name="smart_receipts_ripple_dark">#44000000</color>
     <color name="smart_receipts_colorSuccess">#2e7d32</color>
     <color name="smart_receipts_colorError">#c62828</color>
-    <color name="text_primary_color">#DFFFFFFF</color>
-    <color name="text_secondary_color">#8AFFFFFF</color>
+    <color name="text_primary_color">@android:color/black</color>
+    <color name="text_secondary_color">#716C76</color>
     <color name="accent_text_primary_color">@color/text_primary_color</color>
     <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="fab_transparency_mask">#40FFFFFF</color>
-    <color name="window_background_color">#0B0114</color>
+    <color name="window_background_color">@color/background</color>
     <color name="transparent_overlay">#66000000</color>
 
     <!-- Palette for lists and cards -->
-    <color name="card_background">#292929</color>
     <color name="list_background">@color/window_background_color</color>
     <color name="selected_card_background">#424242</color>
     <color name="card_image_background">#303030</color>
     <color name="card_image_tint">#8A8A8A</color>
 
     <!--Palette for graphs-->
-    <color name="graph_1">#3b9ec2</color>
-    <color name="graph_2">#31a1a1</color>
-    <color name="graph_3">#3b78c2</color>
-    <color name="graph_4">#223ac9</color>
-    <color name="graph_5">#663bc2</color>
-    <color name="graph_6">#903bc2</color>
-    <color name="graph_7">#604c86</color>
+    <color name="graph_1">#F93E2B</color>
+    <color name="graph_2">#673EEA</color>
+    <color name="graph_3">#FED130</color>
+    <color name="graph_4">#5BC0EB</color>
+    <color name="graph_5">#A889E0</color>
+    <color name="graph_6">#E76787</color>
+    <color name="graph_7">#0C60CD</color>
 
 </resources>

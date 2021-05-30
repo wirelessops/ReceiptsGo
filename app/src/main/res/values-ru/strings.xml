@@ -39,7 +39,7 @@
     <string name="next_id">Следующий ID: %d</string>
     <string name="no">Нет</string>
     <string name="pdf">PDF</string>
-    <string name="rename">Rename</string>
+    <string name="rename">Переименовать</string>
     <string name="report">Отчет</string>
     <string name="report_attached">1 Отчет приложен</string>
     <string name="reports_attached">%s отчетов приложено</string>
@@ -213,7 +213,6 @@
     <string name="toast_attachment_error">Не удалось прикрепить этот файл.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s до %2$s</string>
     <string name="trip_no_data">Судя по всему, в настоящее время у вас нет отчетов. Нажмите на кнопку + (плюс), чтобы начать.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -242,6 +241,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Пожалуйста, выберите по крайней мере один отчет</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Этот отчет не содержит чеков</string>
     <string name="generate_report_tooltip">Нажмите, чтобы настроить внешний вид отчета</string>
+    <string name="generate_report_subtitle">Выберите, что сгенерировать</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Имя</string>
@@ -387,11 +387,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Редактировать отчет</item>
-        <item>Удалить отчет</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Редактировать отчет</string>
+    <string name="dialog_trip_delete">Удалить отчет</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Пустая колонка</string>

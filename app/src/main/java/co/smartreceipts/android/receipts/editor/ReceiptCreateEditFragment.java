@@ -11,23 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.hadisatrio.optional.Optional;
 import com.jakewharton.rxbinding2.widget.RxDateEditText;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -63,7 +56,6 @@ import co.smartreceipts.android.autocomplete.receipt.ReceiptAutoCompleteField;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.DefaultCurrencyListEditorView;
 import co.smartreceipts.android.databinding.UpdateReceiptBinding;
-import co.smartreceipts.android.date.DateEditText;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.editor.Editor;
 import co.smartreceipts.android.fragments.ChildFragmentNavigationHandler;
@@ -189,29 +181,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Named(RxSchedulers.MAIN)
     Scheduler mainScheduler;
 
-    private Toolbar toolbar;
-    private AutoCompleteTextView nameBox;
-    private EditText priceBox;
-    private AutoCompleteTextView taxBox1;
-    private AutoCompleteTextView taxBox2;
-    private Spinner currencySpinner;
-    private NetworkRequestAwareEditText exchangeRateBox;
-    private EditText exchangedPriceInBaseCurrencyBox;
-    private TextView receiptInputExchangeRateBaseCurrencyTextView;
-    private DateEditText dateBox;
-    private Spinner categoriesSpinner;
-    private AutoCompleteTextView commentBox;
-    private Spinner paymentMethodsSpinner;
-    private CheckBox reimbursableCheckbox;
-    private CheckBox fullPageCheckbox;
-    private Button decimalSeparatorButton;
-    private TextInputLayout taxInputWrapper1;
-    private TextInputLayout taxInputWrapper2;
-
-    private List<View> paymentMethodsViewsList;
-    private List<View> exchangeRateViewsList;
-    private List<View> taxViewsList;
-
     // Flex fields (ie for white-label projects)
     EditText extraEditText1;
     EditText extraEditText2;
@@ -254,7 +223,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -280,7 +249,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
         setHasOptionsMenu(true);
 
-        final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> currencySpinner);
+        final DefaultCurrencyListEditorView defaultCurrencyListEditorView = new DefaultCurrencyListEditorView(requireContext(), () -> binding.receiptCurrency.get());
         final ReceiptCurrencyCodeSupplier currencyCodeSupplier = new ReceiptCurrencyCodeSupplier(getParentTrip(), receiptInputCache, getEditableItem());
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
         receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getEditableItem(), savedInstanceState, ioScheduler, mainScheduler);
@@ -301,39 +270,6 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = UpdateReceiptBinding.inflate(inflater, container, false);
 
-        toolbar = binding.toolbar.toolbar;
-        nameBox = binding.DIALOGRECEIPTMENUNAME;
-        priceBox = binding.DIALOGRECEIPTMENUPRICE;
-        taxBox1 = binding.DIALOGRECEIPTMENUTAX1;
-        taxBox2 = binding.DIALOGRECEIPTMENUTAX2;
-        currencySpinner = binding.DIALOGRECEIPTMENUCURRENCY;
-        exchangeRateBox = binding.receiptInputExchangeRate;
-        exchangedPriceInBaseCurrencyBox = binding.receiptInputExchangedResult;
-        receiptInputExchangeRateBaseCurrencyTextView = binding.receiptInputExchangeRateBaseCurrency;
-        dateBox = binding.DIALOGRECEIPTMENUDATE;
-        categoriesSpinner = binding.DIALOGRECEIPTMENUCATEGORY;
-        commentBox = binding.DIALOGRECEIPTMENUCOMMENT;
-        paymentMethodsSpinner = binding.receiptInputPaymentMethod;
-        reimbursableCheckbox = binding.DIALOGRECEIPTMENUEXPENSABLE;
-        fullPageCheckbox = binding.DIALOGRECEIPTMENUFULLPAGE;
-        decimalSeparatorButton = binding.decimalSeparatorButton;
-        taxInputWrapper1 = binding.receiptInputTax1Wrapper;
-        taxInputWrapper2 = binding.receiptInputTax2Wrapper;
-
-        paymentMethodsViewsList = new ArrayList<>();
-        paymentMethodsViewsList.add(binding.receiptInputGuideImagePaymentMethod);
-        paymentMethodsViewsList.add(paymentMethodsSpinner);
-
-        exchangeRateViewsList = new ArrayList<>();
-        exchangeRateViewsList.add(binding.receiptInputGuideImageExchangeRate);
-        exchangeRateViewsList.add(exchangeRateBox);
-        exchangeRateViewsList.add(exchangedPriceInBaseCurrencyBox);
-        exchangeRateViewsList.add(receiptInputExchangeRateBaseCurrencyTextView);
-
-        taxViewsList = new ArrayList<>();
-        taxViewsList.add(taxInputWrapper1);
-        taxViewsList.add(binding.receiptInputGuideImageTax);
-
         return binding.getRoot();
     }
 
@@ -349,66 +285,66 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         }
 
         // Apply white-label settings via our 'Flex' mechanism to update defaults
-        flex.applyCustomSettings(nameBox);
-        flex.applyCustomSettings(priceBox);
-        flex.applyCustomSettings(taxBox1);
-        flex.applyCustomSettings(taxBox2);
-        flex.applyCustomSettings(currencySpinner);
-        flex.applyCustomSettings(exchangeRateBox);
-        flex.applyCustomSettings(dateBox);
-        flex.applyCustomSettings(categoriesSpinner);
-        flex.applyCustomSettings(commentBox);
-        flex.applyCustomSettings(reimbursableCheckbox);
-        flex.applyCustomSettings(fullPageCheckbox);
+        flex.applyCustomSettings(binding.receiptName);
+        flex.applyCustomSettings(binding.receiptPrice);
+        flex.applyCustomSettings(binding.receiptTax1);
+        flex.applyCustomSettings(binding.receiptTax2);
+        flex.applyCustomSettings(binding.receiptCurrency.get());
+        flex.applyCustomSettings(binding.receiptExchangeRate);
+        flex.applyCustomSettings(binding.receiptDate);
+        flex.applyCustomSettings(binding.receiptCategory.get());
+        flex.applyCustomSettings(binding.receiptComment);
+        flex.applyCustomSettings(binding.receiptExpensable);
+        flex.applyCustomSettings(binding.receiptFullpage);
 
         // Apply white-label settings via our 'Flex' mechanism to add custom fields
-        final LinearLayout extras = (LinearLayout) flex.getSubView(getActivity(), view, R.id.DIALOG_RECEIPTMENU_EXTRAS);
+        final LinearLayout extras = (LinearLayout) flex.getSubView(getActivity(), view, R.id.receipt_extras);
         this.extraEditText1 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_1));
         this.extraEditText2 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_2));
         this.extraEditText3 = extras.findViewWithTag(getFlexString(R.string.RECEIPTMENU_TAG_EXTRA_EDITTEXT_3));
 
         // Toolbar stuff
         if (navigationHandler.isDualPane()) {
-            toolbar.setVisibility(View.GONE);
+            binding.toolbar.toolbar.setVisibility(View.GONE);
         } else {
-            setSupportActionBar(toolbar);
+            setSupportActionBar(binding.toolbar.toolbar);
         }
 
         // Set each focus listener, so we can track the focus view across resume -> pauses
-        this.nameBox.setOnFocusChangeListener(this);
-        this.priceBox.setOnFocusChangeListener(this);
-        this.taxBox1.setOnFocusChangeListener(this);
-        this.taxBox2.setOnFocusChangeListener(this);
-        this.currencySpinner.setOnFocusChangeListener(this);
-        this.dateBox.setOnFocusChangeListener(this);
-        this.commentBox.setOnFocusChangeListener(this);
-        this.paymentMethodsSpinner.setOnFocusChangeListener(this);
-        this.exchangeRateBox.setOnFocusChangeListener(this);
-        this.exchangedPriceInBaseCurrencyBox.setOnFocusChangeListener(this);
+        binding.receiptName.setOnFocusChangeListener(this);
+        binding.receiptPrice.setOnFocusChangeListener(this);
+        binding.receiptTax1.setOnFocusChangeListener(this);
+        binding.receiptTax2.setOnFocusChangeListener(this);
+        binding.receiptCurrency.get().setOnFocusChangeListener(this);
+        binding.receiptDate.setOnFocusChangeListener(this);
+        binding.receiptComment.setOnFocusChangeListener(this);
+        binding.receiptPaymentMethod.get().setOnFocusChangeListener(this);
+        binding.receiptExchangeRate.setOnFocusChangeListener(this);
+        binding.receiptExchangedResult.setOnFocusChangeListener(this);
 
         // Configure our custom view properties
-        exchangeRateBox.setFailedHint(R.string.DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED);
+        binding.receiptExchangeRate.setFailedHint(R.string.DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED);
 
         // And ensure that we do not show the keyboard when clicking these views
         final View.OnTouchListener hideSoftKeyboardOnTouchListener = new SoftKeyboardManager.HideSoftKeyboardOnTouchListener();
-        dateBox.setOnTouchListener(hideSoftKeyboardOnTouchListener);
-        categoriesSpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
-        currencySpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
-        paymentMethodsSpinner.setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.receiptDate.setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.receiptCategory.get().setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.receiptCurrency.get().setOnTouchListener(hideSoftKeyboardOnTouchListener);
+        binding.receiptPaymentMethod.get().setOnTouchListener(hideSoftKeyboardOnTouchListener);
 
         // Set-up tax adapter
         if (presenter.isIncludeTaxField()) {
-            taxBox1.setAdapter(new TaxAutoCompleteAdapter(getActivity(),
-                    priceBox,
-                    taxBox1,
+            binding.receiptTax1.setAdapter(new TaxAutoCompleteAdapter(getActivity(),
+                    binding.receiptPrice,
+                    binding.receiptTax1,
                     presenter.isUsePreTaxPrice(),
                     presenter.getDefaultTaxPercentage(),
                     isNewReceipt()));
 
             if (presenter.isIncludeTax2Field()) {
-                taxBox2.setAdapter(new TaxAutoCompleteAdapter(getActivity(),
-                        priceBox,
-                        taxBox2,
+                binding.receiptTax2.setAdapter(new TaxAutoCompleteAdapter(getActivity(),
+                        binding.receiptPrice,
+                        binding.receiptTax2,
                         presenter.isUsePreTaxPrice(),
                         presenter.getDefaultTax2Percentage(),
                         isNewReceipt()));
@@ -417,13 +353,13 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
         // Set custom tax names if tax2 is enabled
         if (userPreferenceManager.get(UserPreference.Receipts.IncludeTaxField) && userPreferenceManager.get(UserPreference.Receipts.IncludeTax2Field)) {
-            taxInputWrapper1.setHint(userPreferenceManager.get(UserPreference.Receipts.Tax1Name));
-            taxInputWrapper2.setHint(userPreferenceManager.get(UserPreference.Receipts.Tax2Name));
+            binding.receiptTax1Wrapper.setHint(userPreferenceManager.get(UserPreference.Receipts.Tax1Name));
+            binding.receiptTax2Wrapper.setHint(userPreferenceManager.get(UserPreference.Receipts.Tax2Name));
         }
 
         // Outline date defaults
-        dateBox.setFocusableInTouchMode(false);
-        dateBox.setDateFormatter(dateFormatter);
+        binding.receiptDate.setFocusableInTouchMode(false);
+        binding.receiptDate.setDateFormatter(dateFormatter);
     }
 
     @Override
@@ -436,62 +372,61 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
                 final Time now = new Time();
                 now.setToNow();
-                if (receiptInputCache.getCachedDate() == null) {
-                    if (presenter.isReceiptDateDefaultsToReportStartDate()) {
-                        dateBox.setDate(getParentTrip().getStartDate());
-                    } else {
-                        dateBox.setDate(new Date(now.toMillis(false)));
-                    }
-                } else {
-                    dateBox.setDate(receiptInputCache.getCachedDate());
-                }
 
-                reimbursableCheckbox.setChecked(presenter.isReceiptsDefaultAsReimbursable());
+                final Date date;
+                if (receiptInputCache.getCachedDate() == null) {
+                    date = presenter.isReceiptDateDefaultsToReportStartDate() ? getParentTrip().getStartDate() : new Date(now.toMillis(false));
+                } else {
+                    date = receiptInputCache.getCachedDate();
+                }
+                binding.receiptDate.setDate(date);
+
+                binding.receiptExpensable.setChecked(presenter.isReceiptsDefaultAsReimbursable());
 
                 if (presenter.isMatchReceiptNameToCategory()) {
                     if (focusedView == null) {
-                        focusedView = priceBox;
+                        focusedView = binding.receiptPrice;
                     }
                 }
 
-                fullPageCheckbox.setChecked(presenter.isDefaultToFullPage());
+                binding.receiptFullpage.setChecked(presenter.isDefaultToFullPage());
 
                 if (ocrResponse != null) {
                     final OcrResponseParser ocrResponseParser = new OcrResponseParser(ocrResponse);
                     if (ocrResponseParser.getMerchant() != null) {
-                        nameBox.setText(ocrResponseParser.getMerchant());
+                        binding.receiptName.setText(ocrResponseParser.getMerchant());
                     }
 
                     if (presenter.isIncludeTaxField() && ocrResponseParser.getTaxAmount() != null) {
-                        taxBox1.setText(ocrResponseParser.getTaxAmount());
+                        binding.receiptTax1.setText(ocrResponseParser.getTaxAmount());
                         if (ocrResponseParser.getTotalAmount() != null) {
                             if (presenter.isUsePreTaxPrice()) {
                                 // If we're in pre-tax mode, let's calculate the price as (total - tax = pre-tax-price)
                                 final BigDecimal preTaxPrice = ModelUtils.tryParse(ocrResponseParser.getTotalAmount()).subtract(ModelUtils.tryParse(ocrResponseParser.getTaxAmount()));
-                                priceBox.setText(ModelUtils.getDecimalFormattedValue(preTaxPrice));
+                                binding.receiptPrice.setText(ModelUtils.getDecimalFormattedValue(preTaxPrice));
                             } else {
-                                priceBox.setText(ocrResponseParser.getTotalAmount());
+                                binding.receiptPrice.setText(ocrResponseParser.getTotalAmount());
                             }
                         }
                     } else if (ocrResponseParser.getTotalAmount() != null) {
-                        priceBox.setText(ocrResponseParser.getTotalAmount());
+                        binding.receiptPrice.setText(ocrResponseParser.getTotalAmount());
                     }
 
                     if (ocrResponseParser.getDate() != null) {
-                        dateBox.setDate(ocrResponseParser.getDate());
+                        binding.receiptDate.setDate(ocrResponseParser.getDate());
                     }
                 }
 
             } else { // edit receipt
                 final Receipt receipt = getEditableItem();
 
-                nameBox.setText(receipt.getName());
-                dateBox.setDate(receipt.getDate());
-                dateBox.setTimeZone(receipt.getTimeZone());
-                commentBox.setText(receipt.getComment());
+                binding.receiptName.setText(receipt.getName());
+                binding.receiptDate.setDate(receipt.getDate());
+                binding.receiptDate.setTimeZone(receipt.getTimeZone());
+                binding.receiptComment.setText(receipt.getComment());
 
-                reimbursableCheckbox.setChecked(receipt.isReimbursable());
-                fullPageCheckbox.setChecked(receipt.isFullPage());
+                binding.receiptExpensable.setChecked(receipt.isReimbursable());
+                binding.receiptFullpage.setChecked(receipt.isFullPage());
 
                 if (extraEditText1 != null && receipt.hasExtraEditText1()) {
                     extraEditText1.setText(receipt.getExtraEditText1());
@@ -506,7 +441,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
 
             // Focused View
             if (focusedView == null) {
-                focusedView = nameBox;
+                focusedView = binding.receiptName;
             }
 
         }
@@ -518,7 +453,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                 if (isAdded()) {
                     categoriesList = list;
                     categoriesAdapter.update(list);
-                    categoriesSpinner.setAdapter(categoriesAdapter);
+                    binding.receiptCategory.get().setAdapter(categoriesAdapter);
 
                     if (getEditableItem() == null) { // new receipt
                         if (presenter.isPredictCategories()) { // Predict Breakfast, Lunch, Dinner by the hour
@@ -537,7 +472,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                                     for (int i = 0; i < categoriesAdapter.getCount(); i++) {
                                         final Category category = categoriesAdapter.getItem(i);
                                         if (category != null && nameToIndex.equals(category.getName())) {
-                                            categoriesSpinner.setSelection(i);
+                                            binding.receiptCategory.get().setSelection(i);
                                             break; // Exit loop now
                                         }
                                     }
@@ -545,7 +480,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                             } else {
                                 int idx = categoriesAdapter.getPosition(receiptInputCache.getCachedCategory());
                                 if (idx > 0) {
-                                    categoriesSpinner.setSelection(idx);
+                                    binding.receiptCategory.get().setSelection(idx);
                                 }
                             }
                         }
@@ -555,14 +490,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                         for (int i = 0; i < categoriesAdapter.getCount(); i++) {
                             final Category category = categoriesAdapter.getItem(i);
                             if (category != null && category.getId() == receiptCategory.getId()) {
-                                categoriesSpinner.setSelection(i);
+                                binding.receiptCategory.get().setSelection(i);
                                 break;
                             }
                         }
                     }
 
                     if (presenter.isMatchReceiptCommentToCategory() || presenter.isMatchReceiptNameToCategory()) {
-                        categoriesSpinner.setOnItemSelectedListener(new SpinnerSelectionListener());
+                        binding.receiptCategory.get().setOnItemSelectedListener(new SpinnerSelectionListener());
                     }
                 }
             }
@@ -607,6 +542,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_save, menu);
+        menu.findItem(R.id.menu_main_search).setVisible(false);
     }
 
     @Override
@@ -687,35 +623,35 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     }
 
     private void saveReceipt() {
-        if (presenter.checkReceipt(dateBox.getDate())) {
-            final String name = TextUtils.isEmpty(nameBox.getText().toString()) ? "" : nameBox.getText().toString();
-            final Category category = categoriesAdapter.getItem(categoriesSpinner.getSelectedItemPosition());
-            final String currency = currencySpinner.getSelectedItem().toString();
-            final String price = priceBox.getText().toString();
-            final String tax = taxBox1.getText().toString();
-            final String tax2 = taxBox2.getText().toString();
-            final String exchangeRate = exchangeRateBox.getText() != null ? exchangeRateBox.getText().toString() : "";
-            final String comment = commentBox.getText().toString();
-            final PaymentMethod paymentMethod = (PaymentMethod) (presenter.isUsePaymentMethods() ? paymentMethodsSpinner.getSelectedItem() : null);
+        if (presenter.checkReceipt(binding.receiptDate.getDate())) {
+            final String name = TextUtils.isEmpty(binding.receiptName.getText().toString()) ? "" : binding.receiptName.getText().toString();
+            final Category category = categoriesAdapter.getItem(binding.receiptCategory.get().getSelectedItemPosition());
+            final String currency = binding.receiptCurrency.get().getSelectedItem().toString();
+            final String price = binding.receiptPrice.getText().toString();
+            final String tax = binding.receiptTax1.getText().toString();
+            final String tax2 = binding.receiptTax2.getText().toString();
+            final String exchangeRate = binding.receiptExchangeRate.getText() != null ? binding.receiptExchangeRate.getText().toString() : "";
+            final String comment = binding.receiptComment.getText().toString();
+            final PaymentMethod paymentMethod = (PaymentMethod) (presenter.isUsePaymentMethods() ? binding.receiptPaymentMethod.get().getSelectedItem() : null);
             final String extraText1 = (extraEditText1 == null) ? null : extraEditText1.getText().toString();
             final String extraText2 = (extraEditText2 == null) ? null : extraEditText2.getText().toString();
             final String extraText3 = (extraEditText3 == null) ? null : extraEditText3.getText().toString();
-            final TimeZone timeZone = dateBox.getTimeZone();
+            final TimeZone timeZone = binding.receiptDate.getTimeZone();
             final Date receiptDate;
 
             // updating date just if it was really changed (to prevent reordering)
-            if (getEditableItem() != null && getEditableItem().getDate().equals(dateBox.getDate())) {
+            if (getEditableItem() != null && getEditableItem().getDate().equals(binding.receiptDate.getDate())) {
                 receiptDate = getEditableItem().getDate();
             } else {
-                receiptDate = dateBox.getDate();
+                receiptDate = binding.receiptDate.getDate();
             }
 
-            receiptInputCache.setCachedDate((Date) dateBox.getDate().clone());
+            receiptInputCache.setCachedDate((Date) binding.receiptDate.getDate().clone());
             receiptInputCache.setCachedCategory(category);
             receiptInputCache.setCachedCurrency(currency);
 
             presenter.saveReceipt(receiptDate, timeZone, price, tax, tax2, exchangeRate, comment,
-                    paymentMethod, reimbursableCheckbox.isChecked(), fullPageCheckbox.isChecked(), name, category, currency,
+                    paymentMethod, binding.receiptExpensable.isChecked(), binding.receiptFullpage.isChecked(), name, category, currency,
                     extraText1, extraText2, extraText3);
 
             analytics.record(isNewReceipt() ? Events.Receipts.PersistNewReceipt : Events.Receipts.PersistUpdateReceipt);
@@ -738,63 +674,59 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Consumer<? super Price> displayReceiptPrice() {
-        return RxTextViewExtensions.price(priceBox);
+        return RxTextViewExtensions.price(binding.receiptPrice);
     }
 
     @NonNull
     @UiThread
     @Override
     public Consumer<? super Price> displayReceiptTax() {
-        return RxTextViewExtensions.price(taxBox1);
+        return RxTextViewExtensions.price(binding.receiptTax1);
     }
 
     @NonNull
     @UiThread
     @Override
     public Consumer<? super Price> displayReceiptTax2() {
-        return RxTextViewExtensions.price(taxBox2);
+        return RxTextViewExtensions.price(binding.receiptTax2);
     }
 
     @NonNull
     @UiThread
     @Override
     public Consumer<? super Boolean> toggleReceiptTaxFieldVisibility() {
-        return (Consumer<Boolean>) isVisible -> {
-            for (View v : taxViewsList) {
-                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            }
-        };
+        return (Consumer<Boolean>) isVisible -> binding.receiptTax1Wrapper.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @NonNull
     @UiThread
     @Override
     public Consumer<? super Boolean> toggleReceiptTax2FieldVisibility() {
-        return RxView.visibility(taxInputWrapper2);
+        return RxView.visibility(binding.receiptTax2Wrapper);
     }
 
     @NonNull
     @UiThread
     @Override
     public Observable<CharSequence> getReceiptPriceChanges() {
-        return RxTextView.textChanges(priceBox);
+        return RxTextView.textChanges(binding.receiptPrice);
     }
 
     @NonNull
     @UiThread
     @Override
     public Observable<CharSequence> getReceiptTaxChanges() {
-        return Observable.merge(RxTextView.textChanges(taxBox1), RxTextView.textChanges(taxBox2));
+        return Observable.merge(RxTextView.textChanges(binding.receiptTax1), RxTextView.textChanges(binding.receiptTax2));
     }
 
     @NonNull
     @UiThread
     @Override
     public Observable<Date> getReceiptDateChanges() {
-        return RxDateEditText.INSTANCE.dateChanges(dateBox)
+        return RxDateEditText.INSTANCE.dateChanges(binding.receiptDate)
                 .doOnNext(ignored -> {
-                    if (exchangedPriceInBaseCurrencyBox.isFocused()) {
-                        exchangedPriceInBaseCurrencyBox.clearFocus();
+                    if (binding.receiptExchangedResult.isFocused()) {
+                        binding.receiptExchangedResult.clearFocus();
                     }
                 });
     }
@@ -804,9 +736,11 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Consumer<? super Boolean> toggleExchangeRateFieldVisibility() {
         return (Consumer<Boolean>) isVisible -> {
-            for (View v : exchangeRateViewsList) {
-                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            }
+            final int visibility = isVisible ? View.VISIBLE : View.GONE;
+
+            binding.receiptExchangeRateWrapper.setVisibility(visibility);
+            binding.receiptExchangedWrapper.setVisibility(visibility);
+            binding.receiptExchangeBaseCurrency.setVisibility(visibility);
         };
     }
 
@@ -816,26 +750,26 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     public Consumer<? super UiIndicator<ExchangeRate>> displayExchangeRate() {
         return (Consumer<UiIndicator<ExchangeRate>>) exchangeRateUiIndicator -> {
             if (exchangeRateUiIndicator.getState() == UiIndicator.State.Loading) {
-                exchangeRateBox.setText("");
-                exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Loading);
+                binding.receiptExchangeRate.setText("");
+                binding.receiptExchangeRate.setCurrentState(NetworkRequestAwareEditText.State.Loading);
             } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Error) {
-                exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Failure);
+                binding.receiptExchangeRate.setCurrentState(NetworkRequestAwareEditText.State.Failure);
             } else if (exchangeRateUiIndicator.getState() == UiIndicator.State.Success) {
                 if (exchangeRateUiIndicator.getData().isPresent()) {
-                    if (TextUtils.isEmpty(exchangeRateBox.getText()) || exchangedPriceInBaseCurrencyBox.isFocused()) {
+                    if (TextUtils.isEmpty(binding.receiptExchangeRate.getText()) || binding.receiptExchangedResult.isFocused()) {
                         final BigDecimal exchangeRate = exchangeRateUiIndicator.getData().get().getExchangeRate(getParentTrip().getTripCurrency());
                         final String exchangeRateString = exchangeRate != null ? exchangeRate.setScale(ExchangeRate.PRECISION, RoundingMode.HALF_UP).toPlainString() : "";
-                        exchangeRateBox.setText(exchangeRateString);
+                        binding.receiptExchangeRate.setText(exchangeRateString);
                     } else {
                         Logger.warn(ReceiptCreateEditFragment.this, "Ignoring remote exchange rate result now that one is already set");
                     }
-                    exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Success);
+                    binding.receiptExchangeRate.setCurrentState(NetworkRequestAwareEditText.State.Success);
                 } else {
                     // If the data is empty, reset to use the ready state to allow for user interaction
-                    exchangeRateBox.setText("");
+                    binding.receiptExchangeRate.setText("");
                 }
             } else {
-                exchangeRateBox.setCurrentState(NetworkRequestAwareEditText.State.Ready);
+                binding.receiptExchangeRate.setCurrentState(NetworkRequestAwareEditText.State.Ready);
             }
         };
     }
@@ -845,7 +779,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public Consumer<? super CurrencyUnit> displayBaseCurrency() {
         return (Consumer<CurrencyUnit>) priceCurrency -> {
-            receiptInputExchangeRateBaseCurrencyTextView.setText(priceCurrency.getCode());
+            binding.receiptExchangeBaseCurrency.setText(priceCurrency.getCode());
         };
     }
 
@@ -853,56 +787,56 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Consumer<? super Optional<Price>> displayExchangedPriceInBaseCurrency() {
-        return RxTextViewExtensions.priceOptional(exchangedPriceInBaseCurrencyBox);
+        return RxTextViewExtensions.priceOptional(binding.receiptExchangedResult);
     }
 
     @NonNull
     @Override
     public String getCurrencySelectionText() {
-        return currencySpinner.getSelectedItem() == null ? getParentTrip().getDefaultCurrencyCode() : currencySpinner.getSelectedItem().toString();
+        return binding.receiptCurrency.get().getSelectedItem() == null ? getParentTrip().getDefaultCurrencyCode() : binding.receiptCurrency.get().getSelectedItem().toString();
     }
 
     @NonNull
     @UiThread
     @Override
     public Observable<CharSequence> getExchangeRateChanges() {
-        return RxTextView.textChanges(exchangeRateBox);
+        return RxTextView.textChanges(binding.receiptExchangeRate);
     }
 
     @NonNull
     @UiThread
     @Override
     public Observable<CharSequence> getExchangedPriceInBaseCurrencyChanges() {
-        return RxTextView.textChanges(exchangedPriceInBaseCurrencyBox);
+        return RxTextView.textChanges(binding.receiptExchangedResult);
     }
 
     @NonNull
     @Override
     public Observable<Boolean> getExchangedPriceInBaseCurrencyFocusChanges() {
-        return RxView.focusChanges(exchangedPriceInBaseCurrencyBox);
+        return RxView.focusChanges(binding.receiptExchangedResult);
     }
 
     @NonNull
     @UiThread
     @Override
     public Observable<Object> getUserInitiatedExchangeRateRetries() {
-        return exchangeRateBox.getUserRetries()
+        return binding.receiptExchangeRate.getUserRetries()
                 .doOnNext(ignored -> {
-                    if (exchangedPriceInBaseCurrencyBox.isFocused()) {
-                        exchangedPriceInBaseCurrencyBox.clearFocus();
+                    if (binding.receiptExchangedResult.isFocused()) {
+                        binding.receiptExchangedResult.clearFocus();
                     }
                 });
     }
 
     @Override
     public void showSamsungDecimalInputView(@NotNull String separator) {
-        decimalSeparatorButton.setText(separator);
-        decimalSeparatorButton.setVisibility(View.VISIBLE);
+        binding.decimalSeparatorButton.setText(separator);
+        binding.decimalSeparatorButton.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideSamsungDecimalInputView() {
-        decimalSeparatorButton.setVisibility(View.GONE);
+        binding.decimalSeparatorButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -916,16 +850,16 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @NotNull
     @Override
     public Observable<Unit> getClickStream() {
-        return RxView.clicks(decimalSeparatorButton);
+        return RxView.clicks(binding.decimalSeparatorButton);
     }
 
     @NotNull
     @Override
     public Observable<CharSequence> getTextChangeStream(@NotNull AutoCompleteField field) {
         if (field == ReceiptAutoCompleteField.Name) {
-            return RxTextView.textChanges(nameBox);
+            return RxTextView.textChanges(binding.receiptName);
         } else if (field == ReceiptAutoCompleteField.Comment) {
-            return RxTextView.textChanges(commentBox);
+            return RxTextView.textChanges(binding.receiptComment);
         } else {
             throw new IllegalArgumentException("Unsupported field type: " + field);
         }
@@ -939,14 +873,14 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             }
             resultsAdapter = new AutoCompleteArrayAdapter<>(requireContext(), autoCompleteResults, this);
             if (field == ReceiptAutoCompleteField.Name) {
-                nameBox.setAdapter(resultsAdapter);
-                if (nameBox.hasFocus()) {
-                    nameBox.showDropDown();
+                binding.receiptName.setAdapter(resultsAdapter);
+                if (binding.receiptName.hasFocus()) {
+                    binding.receiptName.showDropDown();
                 }
             } else if (field == ReceiptAutoCompleteField.Comment) {
-                commentBox.setAdapter(resultsAdapter);
-                if (commentBox.hasFocus()) {
-                    commentBox.showDropDown();
+                binding.receiptComment.setAdapter(resultsAdapter);
+                if (binding.receiptComment.hasFocus()) {
+                    binding.receiptComment.showDropDown();
                 }
             } else {
                 throw new IllegalArgumentException("Unsupported field type: " + field);
@@ -973,24 +907,20 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @NonNull
     @Override
     public Consumer<? super Boolean> togglePaymentMethodFieldVisibility() {
-        return isVisible -> {
-            for (View v : paymentMethodsViewsList) {
-                v.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            }
-        };
+        return isVisible -> binding.receiptPaymentMethod.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void displayPaymentMethods(List<PaymentMethod> list) {
         if (isAdded()) {
             paymentMethodsAdapter.update(list);
-            paymentMethodsSpinner.setAdapter(paymentMethodsAdapter);
-            paymentMethodsSpinner.setOnItemSelectedListener(
+            binding.receiptPaymentMethod.get().setAdapter(paymentMethodsAdapter);
+            binding.receiptPaymentMethod.get().setOnItemSelectedListener(
                     new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                             final PaymentMethod paymentMethod = paymentMethodsAdapter.getItem(i);
-                            reimbursableCheckbox.setChecked(paymentMethod.isReimbursable());
+                            binding.receiptExpensable.setChecked(paymentMethod.isReimbursable());
                         }
 
                         @Override
@@ -1004,7 +934,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                 for (int i = 0; i < paymentMethodsAdapter.getCount(); i++) {
                     final PaymentMethod paymentMethod = paymentMethodsAdapter.getItem(i);
                     if (paymentMethod != null && paymentMethod.getId() == receiptPaymentMethod.getId()) {
-                        paymentMethodsSpinner.setSelection(i);
+                        binding.receiptPaymentMethod.get().setSelection(i);
                         break;
                     }
                 }
@@ -1016,27 +946,27 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     public void fillValueField(@NotNull AutoCompleteResult<Receipt> autoCompleteResult) {
         final Receipt firstReceipt = autoCompleteResult.getFirstItem();
         shouldHideResults = true;
-        if (nameBox.isPopupShowing()) {
+        if (binding.receiptName.isPopupShowing()) {
             // Whenever we select an old item, attempt to map our price and category to the same
             // Only update the price if: no text is set AND the next item price == the first
-            if (priceBox.getText().length() == 0) {
+            if (binding.receiptPrice.getText().length() == 0) {
                 final Receipt secondReceipt = autoCompleteResult.getSecondItem();
                 if (secondReceipt != null && firstReceipt.getPrice().getDecimalFormattedPrice().equals(secondReceipt.getPrice().getDecimalFormattedPrice())) {
-                    priceBox.setText(firstReceipt.getPrice().getDecimalFormattedPrice());
+                    binding.receiptPrice.setText(firstReceipt.getPrice().getDecimalFormattedPrice());
                 }
             }
 
             final int categoryIndex = categoriesList.indexOf(firstReceipt.getCategory());
             if (categoryIndex > 0) {
-                categoriesSpinner.setSelection(categoryIndex);
+                binding.receiptCategory.get().setSelection(categoryIndex);
             }
-            nameBox.setText(autoCompleteResult.getDisplayName());
-            nameBox.setSelection(nameBox.getText().length());
-            nameBox.dismissDropDown();
+            binding.receiptName.setText(autoCompleteResult.getDisplayName());
+            binding.receiptName.setSelection(binding.receiptName.getText().length());
+            binding.receiptName.dismissDropDown();
         } else {
-            commentBox.setText(autoCompleteResult.getDisplayName());
-            commentBox.setSelection(commentBox.getText().length());
-            commentBox.dismissDropDown();
+            binding.receiptComment.setText(autoCompleteResult.getDisplayName());
+            binding.receiptComment.setSelection(binding.receiptComment.getText().length());
+            binding.receiptComment.dismissDropDown();
         }
         SoftKeyboardManager.hideKeyboard(focusedView);
     }
@@ -1044,7 +974,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public void sendAutoCompleteHideEvent(@NotNull AutoCompleteResult<Receipt> autoCompleteResult) {
         SoftKeyboardManager.hideKeyboard(focusedView);
-        if (nameBox.isPopupShowing()) {
+        if (binding.receiptName.isPopupShowing()) {
             _hideAutoCompleteVisibilityClicks.onNext(
                     new AutoCompleteUpdateEvent(autoCompleteResult, ReceiptAutoCompleteField.Name, resultsAdapter.getPosition(autoCompleteResult)));
         } else {
@@ -1056,22 +986,24 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @Override
     public void removeValueFromAutoComplete(int position) {
         getActivity().runOnUiThread(() -> {
-            itemToRemoveOrReAdd = resultsAdapter.getItem(position);
-            resultsAdapter.remove(itemToRemoveOrReAdd);
-            resultsAdapter.notifyDataSetChanged();
-            View view = getActivity().findViewById(R.id.update_receipt_layout);
-            snackbar = Snackbar.make(view, getString(
-                    R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.undo, v -> {
-                if (nameBox.hasFocus()) {
-                    _unHideAutoCompleteVisibilityClicks.onNext(
-                            new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Name, position));
-                } else {
-                    _unHideAutoCompleteVisibilityClicks.onNext(
-                            new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Comment, position));
-                }
-            });
-            snackbar.show();
+            if (position >= 0 && position < resultsAdapter.getCount()) {
+                itemToRemoveOrReAdd = resultsAdapter.getItem(position);
+                resultsAdapter.remove(itemToRemoveOrReAdd);
+                resultsAdapter.notifyDataSetChanged();
+                View view = getActivity().findViewById(R.id.update_receipt_layout);
+                snackbar = Snackbar.make(view, getString(
+                        R.string.item_removed_from_auto_complete, itemToRemoveOrReAdd.getDisplayName()), Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.undo, v -> {
+                    if (binding.receiptName.hasFocus()) {
+                        _unHideAutoCompleteVisibilityClicks.onNext(
+                                new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Name, position));
+                    } else {
+                        _unHideAutoCompleteVisibilityClicks.onNext(
+                                new AutoCompleteUpdateEvent(itemToRemoveOrReAdd, ReceiptAutoCompleteField.Comment, position));
+                    }
+                });
+                snackbar.show();
+            }
         });
     }
 
@@ -1110,10 +1042,10 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                 final Category category = categoriesAdapter.getItem(position);
                 if (category != null) {
                     if (presenter.isMatchReceiptNameToCategory()) {
-                        nameBox.setText(category.getName());
+                        binding.receiptName.setText(category.getName());
                     }
                     if (presenter.isMatchReceiptCommentToCategory()) {
-                        commentBox.setText(category.getName());
+                        binding.receiptComment.setText(category.getName());
                     }
                 }
             }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/selectableItemBackground"
+    android:paddingTop="@dimen/padding_large"
+    android:paddingBottom="@dimen/padding_large">
+
+    <TextView
+        android:id="@+id/purchase_price"
+        style="@style/Widget.SmartReceipts.TextView.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingStart="@dimen/padding_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        tools:text="10.00 USD" />
+
+    <TextView
+        android:id="@+id/purchase_name"
+        style="@style/Widget.SmartReceipts.TextView.Body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/purchase_price"
+        tools:text="10 OCR Scans (Smart Receipts)" />
+
+    <TextView
+        android:id="@+id/purchase_description"
+        style="@style/Widget.SmartReceipts.TextView.Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/purchase_name"
+        app:layout_constraintTop_toBottomOf="@id/purchase_name"
+        app:layout_constraintStart_toStartOf="@id/purchase_name"
+        app:layout_constraintEnd_toStartOf="@id/purchase_price"
+        tools:text="Purchases 10 Automatic Scans of Receipts (OCR) " />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

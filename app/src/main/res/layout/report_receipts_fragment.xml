@@ -1,60 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/receipts_container"
     style="@style/Widget.SmartReceipts.RelativeLayout.SlidingPane">
+
+    <TextView
+        android:id="@+id/receipts_title"
+        style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
+        android:text="@string/report_info_receipts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_next_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:fontFamily="sans-serif"
+        android:gravity="end"
+        android:textSize="@dimen/font_subhead"
+        app:layout_constraintBottom_toBottomOf="@id/receipts_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/receipts_title"
+        app:layout_constraintTop_toTopOf="@id/receipts_title"
+        tools:text="Next ID: 1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:scrollbars="vertical"
         android:visibility="invisible"
-        android:layout_marginBottom="@dimen/margin_tiny"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/receipts_title"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_receipt_card" />
 
     <ProgressBar
         android:id="@+id/progress"
-        style="@style/Widget.SmartReceipts.ProgressBar.Loading" />
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/no_data_image"
+        style="@style/Widget.SmartReceipts.ImageView.NoData"
+        app:layout_constraintBottom_toTopOf="@id/no_data_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_receipt" />
 
     <TextView
-        android:id="@+id/no_data"
+        android:id="@+id/no_data_text"
         style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/receipt_no_data"
-        android:visibility="invisible" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/fab_active_mask"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/fab_transparency_mask"
-        android:visibility="gone" />
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/no_data"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:constraint_referenced_ids="no_data_text, no_data_image"
+        tools:visibility="visible" />
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fab_menu"
-        style="@style/Widget.SmartReceipts.FloatingActionButton.Menu"
-        fab:menu_icon="@drawable/fab_add">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/receipt_action_import"
-            style="@style/Widget.SmartReceipts.FloatingActionButton"
-            android:src="@drawable/ic_image_white_24dp"
-            fab:fab_label="@string/receipt_action_import"
-            android:tint="@color/text_primary_color"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/receipt_action_text"
-            style="@style/Widget.SmartReceipts.FloatingActionButton"
-            android:src="@drawable/ic_receipt_white_24dp"
-            fab:fab_label="@string/receipt_action_text"
-            android:tint="@color/text_primary_color"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/receipt_action_camera"
-            style="@style/Widget.SmartReceipts.FloatingActionButton"
-            android:src="@drawable/ic_photo_camera_white_24dp"
-            fab:fab_label="@string/receipt_action_camera"
-            android:tint="@color/text_primary_color"/>
-
-    </com.github.clans.fab.FloatingActionMenu>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

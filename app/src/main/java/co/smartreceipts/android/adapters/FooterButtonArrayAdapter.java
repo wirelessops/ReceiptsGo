@@ -1,16 +1,17 @@
 package co.smartreceipts.android.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class FooterButtonArrayAdapter<T> extends ArrayAdapter<T> {
         if (isFooter(position)) {
             final Button button = new Button(getContext());
             button.setText(buttonTextResId);
-            button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.card_background));
+            button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
             TextViewCompat.setTextAppearance(button, R.style.Widget_SmartReceipts_TextView_Button_Tertiary);
 
             button.setOnClickListener(listener);

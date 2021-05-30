@@ -212,7 +212,7 @@
     <string name="toast_attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s to %2$s</string>
+    <string name="trip_adapter_list_item_to">%1$s ➝ %2$s</string>
     <string name="trip_no_data">You don\'t seem to have any reports defined at the moment. Try clicking the "+" (plus) button to get started.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -247,7 +247,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Please Check At Least One Report</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">There are No Receipts in this Report</string>
     <string name="generate_report_tooltip">Tap to configure the report layouts</string>
-
+    <string name="generate_report_subtitle">Choose what to generate</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 
@@ -396,11 +396,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Edit Report</item>
-        <item>Delete Report</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Edit Report</string>
+    <string name="dialog_trip_delete">Delete Report</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Blank Column</string>

@@ -36,7 +36,7 @@
     <string name="item_name">שם</string>
     <string name="move">הזז</string>
     <string name="move_copy_item">\?%s הזז/העתק את</string>
-    <string name="next_id">%s :המזהה הבא</string>
+    <string name="next_id">%d :המזהה הבא</string>
     <string name="no">לא</string>
     <string name="pdf">PDF</string>
     <string name="rename">שנה שם</string>
@@ -212,7 +212,6 @@
     <string name="toast_attachment_error">Unable to attach this file.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%2$s %1$s אל</string>
 	<string name="trip_no_data">אין לך דוחות מוגדרים כרגע. נסה ללחוץ על + על מנת להתחיל.</string>
 	
 
@@ -249,7 +248,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">אנא סמן לפחות קבלה אחת</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">אין קבלות בדוח הזה</string>
     <string name="generate_report_tooltip">לחץ להגדרת תצוגת הדוח</string>
-
+    <string name="generate_report_subtitle">בחר מה ליצור</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 
@@ -413,11 +412,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>ערוך דוח</item>
-        <item>מחק דוח</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">ערוך דוח</string>
+    <string name="dialog_trip_delete">מחק דוח</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">עמודה ריקה</string>

@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("com.github.triplet.play") version "2.6.2"
+    id("com.github.triplet.play") version "3.2.0"
     id("org.jlleitschuh.gradle.ktlint")
 }
 
@@ -146,6 +146,7 @@ android {
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+        implementation "androidx.core:core-ktx:$KTX_VERSION"
         implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
         implementation "androidx.cardview:cardview:$CARDVIEW_VERSION"
         implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT_VERSION"
@@ -179,7 +180,6 @@ android {
         implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
 
         implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
-        implementation "com.github.clans:fab:$FAB_MENU_VERSION"
 
         implementation "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
         implementation "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"
@@ -194,7 +194,7 @@ android {
             transitive = true
         }
 
-        implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:$ADAPTER_DELEGATES_VERSION"
+        implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$ADAPTER_DELEGATES_VERSION"
 
         implementation "com.github.pqpo:SmartCropper:$SMART_CROPPER_VERSION"
 
@@ -234,6 +234,9 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
@@ -289,10 +292,8 @@ task translateToIOS(description: "Twine-translate Android .xml locale files to i
 }
 
 play {
-    serviceAccountCredentials = file("GPLAY_KEY.json")
-    track = "beta"
-    userFraction = 100
-    releaseStatus = "completed"
+    serviceAccountCredentials.set(file("GPLAY_KEY.json"))
+    track.set("beta")
 }
 
 preBuild.dependsOn secretsExtraction

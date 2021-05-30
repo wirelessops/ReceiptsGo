@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +64,7 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
         if (viewType == TYPE_HEADER) {
             return new HeaderViewHolder(headerView);
         } else {
-            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.remote_backups_list_item, parent, false);
+            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_remote_backup, parent, false);
             return new ItemViewHolder(view);
         }
     }
@@ -84,7 +83,7 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
             itemHolder.backupProviderTextView.setText(R.string.auto_backup_source_google_drive);
             itemHolder.backupDateTextView.setText(ModelUtils.getFormattedDate(metadata.getLastModifiedDate(), TimeZone.getDefault(), context, preferences.get(UserPreference.General.DateSeparator)));
             final View.OnClickListener onClickListener = view -> {
-                final PopupMenu popupMenu = new PopupMenu(context, itemHolder.backupOverflowView);
+                final PopupMenu popupMenu = new PopupMenu(context, itemHolder.backupDeviceNameTextView);
                 popupMenu.getMenuInflater().inflate(R.menu.remote_backups_list_item_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (!networkManager.isNetworkAvailable() && networkManager.getSupportedNetworkType() == SupportedNetworkType.WifiOnly) {
@@ -114,7 +113,6 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
                 popupMenu.show();
             };
             itemHolder.parentView.setOnClickListener(onClickListener);
-            itemHolder.backupOverflowView.setOnClickListener(onClickListener);
         }
     }
 
@@ -148,7 +146,6 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
         final TextView backupDeviceNameTextView;
         final TextView backupProviderTextView;
         final TextView backupDateTextView;
-        final ImageView backupOverflowView;
 
         ItemViewHolder(@NonNull View view) {
             super(view);
@@ -156,7 +153,6 @@ public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.
             backupDeviceNameTextView = view.findViewById(R.id.remote_backup_device_name);
             backupProviderTextView = view.findViewById(R.id.remote_backup_provider);
             backupDateTextView = view.findViewById(R.id.remote_backup_date);
-            backupOverflowView = view.findViewById(R.id.remote_backup_metadata_overflow);
         }
     }
 }

@@ -8,13 +8,13 @@
     android:orientation="vertical">
 
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,11 +23,12 @@
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/Widget.SmartReceipts.SearchView"
             app:iconifiedByDefault="false"
             app:searchHintIcon="@null"
             app:searchIcon="@null" />
 
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/results_list"
@@ -63,13 +64,11 @@
 
     <ImageView
         android:id="@+id/search_hint_image"
-        android:layout_width="@dimen/fab_size_normal"
-        android:layout_height="@dimen/fab_size_normal"
-        android:src="@drawable/ic_search_24dp"
-        android:tint="@color/text_primary_color"
+        style="@style/Widget.SmartReceipts.ImageView.NoData"
         app:layout_constraintBottom_toTopOf="@id/search_hint_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_search_24dp" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/search_hint"

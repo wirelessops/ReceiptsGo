@@ -211,7 +211,6 @@
     <string name="toast_attachment_error">Diese Datei kann nicht angehängt werden.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s bis %2$s</string>
     <string name="trip_no_data">Sie scheinen zur Zeit keine definierten Berichte haben. Zum Beginnen tippen Sie auf die + (plus) Taste.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -239,7 +238,8 @@
     <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Quittungs-Dateien</string>
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Bitte wählen Sie mindestens einen Bericht</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Es gibt keine Belege in diesem Bericht</string>
-    <string name="generate_report_tooltip">Tippen Sie unten auf ein Berichtslayout.</string>
+    <string name="generate_report_tooltip">Tippen Sie unten auf ein Berichtslayout</string>
+    <string name="generate_report_subtitle">Wählen Sie aus, was generiert werden soll</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Name</string>
@@ -385,11 +385,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Bericht bearbeiten</item>
-        <item>Bericht löschen</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Bericht bearbeiten</string>
+    <string name="dialog_trip_delete">Bericht löschen</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">leere Spalte</string>

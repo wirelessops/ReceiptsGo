@@ -5,13 +5,15 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.view.ViewParent
+import android.widget.*
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.analytics.log.Logger
@@ -19,58 +21,56 @@ import co.smartreceipts.android.R
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.databinding.GenerateReportLayoutBinding
+import co.smartreceipts.android.fragments.FabClickListener
 import co.smartreceipts.android.fragments.ReportInfoFragment
 import co.smartreceipts.android.fragments.WBFragment
 import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.workers.EmailAssistant.EmailOptions
-import com.google.common.base.Preconditions
-import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject
 
-class GenerateReportFragment : GenerateReportView, WBFragment() {
+class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListener {
 
     @Inject
     lateinit var presenter: GenerateReportPresenter
-
 
     @Inject
     lateinit var flex: Flex
 
     @Inject
-    lateinit var analytics: Analytics // to presenter
+    lateinit var analytics: Analytics
 
     @Inject
     lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
 
 
-    private lateinit var pdfFullCheckbox: CheckBox
-    private lateinit var pdfImagesCheckbox: CheckBox
-    private lateinit var csvCheckbox: CheckBox
-    private lateinit var zipCheckbox: CheckBox
-    private lateinit var zipWithMetadataCheckbox: CheckBox
-    private lateinit var progress: ProgressBar
+    private var pdfFullCheckbox: CheckBox? = null
+    private var pdfImagesCheckbox: CheckBox? = null
+    private var csvCheckbox: CheckBox? = null
+    private var zipCheckbox: CheckBox? = null
+    private var zipWithMetadataCheckbox: CheckBox? = null
 
     private var _binding: GenerateReportLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private val fabClicks = PublishSubject.create<Unit>()
 
     override val generateReportClicks: Observable<EnumSet<EmailOptions>>
-        get() = binding.receiptActionSend.clicks()
-            .map {
-                val options = EnumSet.noneOf(EmailOptions::class.java)
+        get() = fabClicks.map {
+            val options = EnumSet.noneOf(EmailOptions::class.java)
 
-                if (pdfFullCheckbox.isChecked) options.add(EmailOptions.PDF_FULL)
-                if (pdfImagesCheckbox.isChecked) options.add(EmailOptions.PDF_IMAGES_ONLY)
-                if (csvCheckbox.isChecked) options.add(EmailOptions.CSV)
-                if (zipWithMetadataCheckbox.isChecked) options.add(EmailOptions.ZIP_WITH_METADATA)
-                if (zipCheckbox.isChecked) options.add(EmailOptions.ZIP)
+            if (pdfFullCheckbox!!.isChecked) options.add(EmailOptions.PDF_FULL)
+            if (pdfImagesCheckbox!!.isChecked) options.add(EmailOptions.PDF_IMAGES_ONLY)
+            if (csvCheckbox!!.isChecked) options.add(EmailOptions.CSV)
+            if (zipWithMetadataCheckbox!!.isChecked) options.add(EmailOptions.ZIP_WITH_METADATA)
+            if (zipCheckbox!!.isChecked) options.add(EmailOptions.ZIP)
 
-                return@map options
-            }
+            return@map options
+        }
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -87,12 +87,38 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
         csvCheckbox = flex.getSubView(activity, root, R.id.dialog_email_checkbox_csv) as CheckBox
         zipWithMetadataCheckbox = flex.getSubView(activity, root, R.id.dialog_email_checkbox_zip_with_metadata) as CheckBox
         zipCheckbox = binding.dialogEmailCheckboxZip
-        progress = binding.progress
 
         binding.generateReportTooltip.setOnClickListener {
             analytics.record(Events.Informational.ConfigureReport)
             navigationHandler.navigateToSettingsScrollToReportSection()
         }
+
+
+        val onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            val drawableEnd: Drawable? = buttonView.compoundDrawablesRelative[2]
+            if (drawableEnd != null) {
+                drawableEnd.mutate()
+                val drawableColor = ContextCompat.getColor(
+                    requireContext(),
+                    if (isChecked) R.color.smart_receipts_colorPrimary else R.color.navigation_inactive
+                )
+                DrawableCompat.setTint(drawableEnd, drawableColor)
+            }
+
+
+            val bgColor =
+                ContextCompat.getColor(requireContext(), if (isChecked) R.color.receipt_image_tint else R.color.card_background)
+            val parent: ViewParent = buttonView.parent
+            if (parent is FrameLayout) {
+                parent.setBackgroundColor(bgColor)
+            }
+        }
+
+        pdfFullCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        pdfImagesCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        csvCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        zipCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+        zipWithMetadataCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
 
         return root
     }
@@ -127,10 +153,13 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
 
         when (result) {
             is EmailResult.Success -> {
-                progress.visibility = View.GONE
+                binding.progress.visibility = View.GONE
 
                 try {
-                    startActivityForResult(Intent.createChooser(result.intent, requireContext().getString(R.string.send_email)), SHARE_REPORT_REQUEST_CODE)
+                    startActivityForResult(
+                        Intent.createChooser(result.intent, requireContext().getString(R.string.send_email)),
+                        SHARE_REPORT_REQUEST_CODE
+                    )
                 } catch (e: ActivityNotFoundException) {
                     val builder = AlertDialog.Builder(context)
                     builder.setTitle(R.string.error_no_send_intent_dialog_title)
@@ -146,14 +175,18 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
             }
 
             is EmailResult.Error -> {
-                progress.visibility = View.GONE
+                binding.progress.visibility = View.GONE
                 handleGenerationError(result.errorType)
             }
 
             EmailResult.InProgress -> {
-                progress.visibility = View.VISIBLE
+                binding.progress.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onFabClick() {
+        fabClicks.onNext(Unit)
     }
 
     private fun getParentTrip(): Trip {
@@ -195,7 +228,8 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
                     .show()
             }
 
-            GenerationErrors.ERROR_PDF_GENERATION -> Toast.makeText(context, R.string.report_pdf_generation_error, Toast.LENGTH_SHORT).show()
+            GenerationErrors.ERROR_PDF_GENERATION -> Toast.makeText(context, R.string.report_pdf_generation_error, Toast.LENGTH_SHORT)
+                .show()
 
             GenerationErrors.ERROR_MEMORY -> Toast.makeText(context, R.string.report_error_memory, Toast.LENGTH_LONG).show()
 
@@ -206,6 +240,12 @@ class GenerateReportFragment : GenerateReportView, WBFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        pdfFullCheckbox = null
+        pdfImagesCheckbox = null
+        csvCheckbox = null
+        zipCheckbox = null
+        zipWithMetadataCheckbox = null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

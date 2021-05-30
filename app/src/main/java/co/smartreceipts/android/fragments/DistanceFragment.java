@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +14,9 @@ import androidx.appcompat.app.ActionBar;
 import com.google.common.base.Preconditions;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.adapters.DistanceAdapter;
+import co.smartreceipts.android.adapters.DistanceListItem;
 import co.smartreceipts.android.databinding.ReportDistanceListBinding;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.model.Distance;
@@ -34,12 +36,18 @@ import co.smartreceipts.android.model.utils.ModelUtils;
 import co.smartreceipts.android.persistence.database.controllers.TripForeignKeyTableEventsListener;
 import co.smartreceipts.android.persistence.database.controllers.impl.DistanceTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
+import co.smartreceipts.android.search.delegates.DoubleHeaderItem;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import kotlin.Pair;
+import kotlin.Unit;
 
-public class DistanceFragment extends WBListFragment implements TripForeignKeyTableEventsListener<Distance> {
+public class DistanceFragment extends WBFragment implements TripForeignKeyTableEventsListener<Distance>, FabClickListener {
 
     @Inject
     UserPreferenceManager preferenceManager;
@@ -51,18 +59,18 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     BackupProvidersManager backupProvidersManager;
 
     @Inject
-    DateFormatter dateFormatter;
+    NavigationHandler navigationHandler;
 
     @Inject
-    NavigationHandler navigationHandler;
+    DateFormatter dateFormatter;
 
     private Trip trip;
     private DistanceAdapter distanceAdapter;
-    private View progressDialog;
-    private TextView noDataAlert;
     private Distance lastInsertedDistance;
 
     private ReportDistanceListBinding binding;
+
+    private String actionBarSubtitle = "";
 
     public static DistanceFragment newInstance() {
         return new DistanceFragment();
@@ -79,7 +87,10 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
-        distanceAdapter = new DistanceAdapter(requireContext(), preferenceManager, backupProvidersManager, dateFormatter);
+        distanceAdapter = new DistanceAdapter(distance -> {
+            navigationHandler.navigateToEditDistanceFragment(trip, distance);
+            return Unit.INSTANCE;
+        }, backupProvidersManager);
     }
 
 
@@ -87,21 +98,12 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.debug(this, "onCreateView");
         binding = ReportDistanceListBinding.inflate(inflater, container, false);
-        progressDialog = binding.progress;
-        noDataAlert = binding.noData;
-        noDataAlert.setText(R.string.distance_no_data);
-        binding.distanceActionNew.setOnClickListener(v ->
-                navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate()));
-        return binding.getRoot();
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Logger.debug(this, "onActivityCreated");
         trip = ((ReportInfoFragment) getParentFragment()).getTrip();
         Preconditions.checkNotNull(trip, "A valid trip is required");
-        setListAdapter(distanceAdapter);
+        binding.listDistances.setAdapter(distanceAdapter);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -115,7 +117,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        updateSubtitle();
+        setActionBarSubtitle(actionBarSubtitle);
     }
 
     @Override
@@ -132,24 +134,58 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
     }
 
     @Override
-    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
-        final Distance distance = distanceAdapter.getItem(position);
-        navigationHandler.navigateToEditDistanceFragment(trip, distance);
+    public void onFabClick() {
+        navigationHandler.navigateToCreateNewDistanceFragment(trip, lastInsertedDistance == null ? null : lastInsertedDistance.getDate());
     }
 
     @Override
     public void onGetSuccess(@NonNull List<Distance> distances, @NonNull Trip trip) {
         if (isAdded()) {
-            distanceAdapter.notifyDataSetChanged(distances);
-            progressDialog.setVisibility(View.GONE);
-            if (distances.isEmpty()) {
-                getListView().setVisibility(View.GONE);
-                noDataAlert.setVisibility(View.VISIBLE);
-            } else {
-                noDataAlert.setVisibility(View.GONE);
-                getListView().setVisibility(View.VISIBLE);
-            }
-            updateSubtitle();
+            final List<DistanceListItem> resultList = new ArrayList<>();
+
+            Observable.fromIterable(distances)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .sorted(Distance::compareTo)
+                    .groupBy(distance -> {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dateWithoutTime = sdf.parse(sdf.format(distance.getDate()));
+                        return dateWithoutTime;
+                    })
+                    .sorted((o1, o2) -> o2.getKey().compareTo(o1.getKey()))
+                    .flatMap(dateDistanceGroupedObservable ->
+                            dateDistanceGroupedObservable
+                                    .toList()
+                                    .map(distancesWithSameDate -> {
+                                        final String sumPrice = new PriceBuilderFactory().setPriceables(distancesWithSameDate, trip.getTripCurrency()).build().getCurrencyFormattedPrice();
+                                        final String date = dateFormatter.getFormattedDate(distancesWithSameDate.get(0).getDisplayableDate());
+                                        return new Pair<>(new DoubleHeaderItem(date, sumPrice), distancesWithSameDate);
+                                    })
+                                    .toObservable()
+                    )
+                    .toList()
+                    .subscribe(pairs -> {
+                        // add content
+                        for (Pair<DoubleHeaderItem, List<Distance>> pair : pairs) {
+                            resultList.add(pair.component1());
+                            resultList.addAll(pair.component2());
+                        }
+
+                        distanceAdapter.setItems(resultList);
+                        distanceAdapter.notifyDataSetChanged();
+
+                        if (binding != null) {
+                            binding.progress.setVisibility(View.GONE);
+                            if (distances.isEmpty()) {
+                                binding.listDistances.setVisibility(View.GONE);
+                                binding.noData.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.noData.setVisibility(View.GONE);
+                                binding.listDistances.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        updateSubtitle(distances);
+                    });
         }
     }
 
@@ -205,20 +241,36 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
         showToastMessage(R.string.distance_delete_failed);
     }
 
-    private void updateSubtitle() {
+    private void updateSubtitle(@NonNull List<Distance> allDistances) {
+        Observable.fromIterable(allDistances)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(o -> o instanceof Distance)
+                .map(o -> (Distance) o)
+                .toList()
+                .map(distances -> {
+                    if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
+                        final Price price = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
+                        return getString(R.string.distance_total_item, price.getCurrencyFormattedPrice());
+                    } else {
+                        BigDecimal distanceTotal = BigDecimal.ZERO;
+                        for (final Distance distance : distances) {
+                            distanceTotal = distanceTotal.add(distance.getDistance());
+                        }
+                        return getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal, Distance.DISTANCE_PRECISION));
+                    }
+                })
+                .subscribe(subtitle -> {
+                            actionBarSubtitle = subtitle;
+                            setActionBarSubtitle(actionBarSubtitle);
+                        }
+                );
+    }
+
+    private void setActionBarSubtitle(@NonNull String text) {
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null && getUserVisibleHint()) {
-            final List<Distance> distances = distanceAdapter.getData();
-            if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
-                final Price total = new PriceBuilderFactory().setPriceables(distances, this.trip.getTripCurrency()).build();
-                actionBar.setSubtitle(getString(R.string.distance_total_item, total.getCurrencyFormattedPrice()));
-            } else {
-                BigDecimal distanceTotal = BigDecimal.ZERO;
-                for (final Distance distance : distances) {
-                    distanceTotal = distanceTotal.add(distance.getDistance());
-                }
-                actionBar.setSubtitle(getString(R.string.distance_total_item, ModelUtils.getDecimalFormattedValue(distanceTotal, Distance.DISTANCE_PRECISION)));
-            }
+            actionBar.setSubtitle(text);
         }
     }
 
@@ -230,6 +282,7 @@ public class DistanceFragment extends WBListFragment implements TripForeignKeyTa
 
     @Override
     public void onDestroyView() {
+        binding.listDistances.setAdapter(null);
         super.onDestroyView();
         binding = null;
     }

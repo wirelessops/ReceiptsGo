@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
+import androidx.fragment.app.Fragment
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.analytics.log.Logger
@@ -20,7 +21,7 @@ import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterPresenter
 import co.smartreceipts.android.permissions.PermissionsDelegate
 import co.smartreceipts.android.permissions.exceptions.PermissionsNotGrantedException
 import co.smartreceipts.android.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.android.receipts.creator.ReceiptCreateActionPresenter
+import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager
 import co.smartreceipts.android.widget.model.UiIndicator
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import co.smartreceipts.core.di.scopes.FragmentScope
@@ -33,11 +34,11 @@ import javax.inject.Inject
 class ReceiptsListPresenter @Inject constructor(
     view: ReceiptsListView, interactor: ReceiptsListInteractor,
     private val ocrStatusAlerterPresenter: OcrStatusAlerterPresenter,
-    private val receiptCreateActionPresenter: ReceiptCreateActionPresenter,
     private val activityFileResultLocator: ActivityFileResultLocator,
     private val activityFileResultImporter: ActivityFileResultImporter,
     private val permissionsDelegate: PermissionsDelegate,
     private val tripTableController: TripTableController,
+    private val receiptAttachmentManager: ReceiptAttachmentManager,
     private val analytics: Analytics
 ) :
     BaseViperPresenter<ReceiptsListView, ReceiptsListInteractor>(view, interactor) {
@@ -51,26 +52,15 @@ class ReceiptsListPresenter @Inject constructor(
     override fun subscribe() {
 
         ocrStatusAlerterPresenter.subscribe()
-        receiptCreateActionPresenter.subscribe()
 
         tripTableController.subscribe(view.actionBarUpdatesListener)
 
         compositeDisposable.add(view.itemClicks
             .subscribe { receipt ->
-                when {
-                    !importIntentMode -> {
-                        analytics.record(Events.Receipts.ReceiptMenuEdit)
-                        view.navigateToEditReceipt(receipt)
-                    }
-                    else -> attachImportIntent(receipt)
-                }
-            }
-        )
-
-        compositeDisposable.add(view.itemMenuClicks
-            .subscribe { receipt ->
                 if (!importIntentMode) {
-                    view.showReceiptMenu(receipt)
+                    view.showReceiptEditOptionsDialog(receipt)
+                } else {
+                    attachImportIntent(receipt)
                 }
             }
         )
@@ -216,7 +206,6 @@ class ReceiptsListPresenter @Inject constructor(
         super.unsubscribe()
 
         ocrStatusAlerterPresenter.unsubscribe()
-        receiptCreateActionPresenter.unsubscribe()
 
         tripTableController.unsubscribe(view.actionBarUpdatesListener)
     }
@@ -266,6 +255,14 @@ class ReceiptsListPresenter @Inject constructor(
             .filter { result -> result.fileType == FileType.Image || result.fileType == FileType.Pdf }
             .subscribe { interactor.markIntentAsSuccessfullyProcessed(intent) }
         )
+    }
+
+    fun attachFile(fragment: Fragment): Boolean {
+        return receiptAttachmentManager.attachFile(fragment, true)
+    }
+
+    fun attachPicture(fragment: Fragment): Boolean {
+        return receiptAttachmentManager.attachPicture(fragment, true)
     }
 
     private fun attachImportIntent(receipt: Receipt) {

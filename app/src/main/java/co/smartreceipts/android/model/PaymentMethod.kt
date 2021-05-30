@@ -54,5 +54,7 @@ class PaymentMethod @JvmOverloads constructor (
 
     companion object {
         val NONE = PaymentMethodBuilderFactory().setMethod(Resources.getSystem().getString(android.R.string.untitled)).build()
+
+        @JvmField val PARCEL_KEY: String = PaymentMethod::class.java.name
     }
 }

@@ -209,7 +209,6 @@
     <string name="toast_attachment_error">Kan ikke legge ved denne filen.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s til %2$s</string>
     <string name="trip_no_data">Du har ingen rapporter definert for øyeblikket. Prøv å trykk på "+" (pluss) knappen for å komme i gang.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -244,7 +243,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Vennligst huk av for minst en rapport</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Det er ingen kvitteringer i denne rapporten</string>
     <string name="generate_report_tooltip">Trykk for å konfigurere rapport utseende</string>
-
+    <string name="generate_report_subtitle">Velg hva du vil generere</string>
 
     <!-- ================= DIALOG_SETTINGS =================== -->
 
@@ -386,11 +385,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Rediger rapport</item>
-        <item>Slett rapport</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Rediger rapport</string>
+    <string name="dialog_trip_delete">Slett rapport</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Tom kolonne</string>

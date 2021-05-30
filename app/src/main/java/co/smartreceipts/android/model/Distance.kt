@@ -1,6 +1,7 @@
 package co.smartreceipts.android.model
 
 import android.os.Parcelable
+import co.smartreceipts.android.adapters.DistanceListItem
 import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.core.sync.model.SyncState
@@ -48,7 +49,7 @@ class Distance(
      */
     val paymentMethod: PaymentMethod,
     val autoCompleteMetadata: AutoCompleteMetadata
-) : Keyed, Parcelable, Priceable, Comparable<Distance>, Syncable {
+) : Keyed, Parcelable, Priceable, Comparable<Distance>, Syncable, DistanceListItem {
 
     /**
      * The [Date] in which the [displayableDate] was set

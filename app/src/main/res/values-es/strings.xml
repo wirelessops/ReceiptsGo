@@ -211,7 +211,6 @@
     <string name="toast_attachment_error">No se puede adjuntar este archivo.</string>
 
     <!-- ================== Trip Adapter ===================== -->
-    <string name="trip_adapter_list_item_to">%1$s hasta %2$s</string>
     <string name="trip_no_data">No pareces tener informes definidos en el momento. Intenta hacer clic en el botón + (más) para comenzar.</string>
 
     <!-- ================= Receipt Adapter =================== -->
@@ -240,6 +239,7 @@
     <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Por favor selecciona al menos un informe</string>
     <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Este informe no tiene recibos</string>
     <string name="generate_report_tooltip">Toca para configurar los diseños del informe</string>
+    <string name="generate_report_subtitle">Elige que generar</string>
 
     <!-- ================= DIALOG_TRIPMENU =================== -->
     <string name="DIALOG_TRIPMENU_HINT_NAME">Nombre</string>
@@ -385,11 +385,9 @@
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
     <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
 
-    <!-- ============== Start String Arrays ================== -->
-    <string-array name="EDIT_TRIP_ITEMS">
-        <item>Editar informe</item>
-        <item>Eliminar informe</item>
-    </string-array>
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Editar informe</string>
+    <string name="dialog_trip_delete">Eliminar informe</string>
 
     <!-- ============== CSV/PDF Columns ================== -->
     <string name="column_item_blank">Columna en blanco</string>

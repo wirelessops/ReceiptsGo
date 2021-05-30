@@ -45,22 +45,20 @@ public abstract class ReceiptsFragment extends DraggableListFragment<Receipt, Re
                     disposable = persistenceManager.getDatabase().getNextReceiptAutoIncrementIdHelper()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(receiptId ->  {
-                                    if (isResumed()) {
-                                        final ActionBar bar = getSupportActionBar();
-                                        if (bar != null) {
-                                            bar.setSubtitle(getString(R.string.next_id, receiptId));
-                                        }
-                                    }
+                            .subscribe(receiptId -> {
+                                if (isResumed()) {
+                                    setNextId(receiptId);
+                                }
                             });
-                } else {
-                    actionBar.setSubtitle(getString(R.string.daily_total, trip.getDailySubTotal().getCurrencyFormattedPrice()));
                 }
+
+                actionBar.setSubtitle(getString(R.string.daily_total, trip.getDailySubTotal().getCurrencyFormattedPrice()));
             }
         }
     }
 
     protected abstract PersistenceManager getPersistenceManager();
 
+    protected abstract void setNextId(int nextId);
 
 }

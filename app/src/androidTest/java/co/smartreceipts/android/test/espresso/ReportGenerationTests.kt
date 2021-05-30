@@ -66,15 +66,15 @@ class ReportGenerationTests {
 
         // Verify that all the relevant views are displayed
         onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_name)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_start)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_end)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_currency)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_comment)).check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_tripmenu_cost_center)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.name)).check(matches(isDisplayed()))
+        onView(withId(R.id.start_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.end_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.spinner)).check(matches(isDisplayed()))
+        onView(withId(R.id.trip_comment)).check(matches(isDisplayed()))
+        onView(withId(R.id.cost_center)).check(matches(not(isDisplayed())))
 
         // Create a trip with the passed report name
-        onView(withId(R.id.dialog_tripmenu_name)).perform(replaceText(reportName), closeSoftKeyboard())
+        onView(withId(R.id.name)).perform(replaceText(reportName), closeSoftKeyboard())
 
         // Wait a second to ensure the keyboard closed
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -83,39 +83,39 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
+        onView(isRoot()).perform(waitForView(R.id.bottom_app_bar, 20000))
         onView(isRoot()).perform(waitForView(R.id.no_data, 20000))
 
         // Verify that we have an empty report
-        onView(withIndex(withId(R.id.no_data), 0)).check(matches(withText(R.string.receipt_no_data)))
+        onView(withIndex(withId(R.id.no_data_text), 0)).check(matches(withText(R.string.receipt_no_data)))
     }
 
     private fun createReceiptGoToGenerate() {
-        // Open the fab menu
-        onView(allOf(withParent(withId(R.id.fab_menu)), withClassName(endsWith("ImageView")), isDisplayed())).perform(click())
+        // Open receipt creation dialog
+        onView(withId(R.id.fab)).perform(click())
 
         // Click on "text only" button
-        onView(withId(R.id.receipt_action_text)).perform(click())
+        onView(withId(R.id.new_text)).perform(click())
 
         // Verify that all the relevant views are displayed
         onView(withId(R.id.action_save)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_DATE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_COMMENT)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_EXPENSABLE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_FULLPAGE)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CURRENCY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_CATEGORY)).check(matches(isDisplayed()))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_TAX1)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchange_rate)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.receipt_input_exchanged_result)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.receipt_name)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_price)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_comment)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_expensable)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_fullpage)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_currency)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_category)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_tax1)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.receipt_exchange_rate)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.receipt_exchanged_result)).check(matches(not(isDisplayed())))
         //todo following view doesn't apply to fire department variant, find a way to test variants
 //        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
 
         // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.DIALOG_RECEIPTMENU_NAME)).perform(replaceText("Test Receipt"))
-        onView(withId(R.id.DIALOG_RECEIPTMENU_PRICE)).perform(replaceText("12.34"), closeSoftKeyboard())
+        onView(withId(R.id.receipt_name)).perform(replaceText("Test Receipt"))
+        onView(withId(R.id.receipt_price)).perform(replaceText("12.34"), closeSoftKeyboard())
 
         // Wait a second to ensure the keyboard closed
         Thread.sleep(TimeUnit.SECONDS.toMillis(1))
@@ -124,14 +124,14 @@ class ReportGenerationTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.fab_menu, 20000))
-        onView(isRoot()).perform(waitForView(R.id.title, 20000))
+        onView(isRoot()).perform(waitForView(R.id.bottom_app_bar, 20000))
+        onView(isRoot()).perform(waitForView(R.id.receipts_container, 20000))
 
         // Verify that we have a list item with Test Receipt
-        onView(withId(R.id.title)).check(matches(withText("Test Receipt")))
+        onView(allOf(isDescendantOfA(withId(R.id.receipts_container)), withId(R.id.text_name))).check(matches(withText("Test Receipt")))
 
         // Go to generate screen
-        onView(withText(R.string.report_info_generate)).perform(click())
+        onView(withContentDescription(R.string.report_info_generate)).perform(click())
 
         // Wait to ensure everything loads
         onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
@@ -150,7 +150,7 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_pdf_full)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         // Wait until everything loads
         Thread.sleep(TimeUnit.SECONDS.toMillis(5))
@@ -182,7 +182,7 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_pdf_images)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         // Wait until everything loads
         Thread.sleep(TimeUnit.SECONDS.toMillis(5))
@@ -214,7 +214,7 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_csv)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         // Wait until everything loads
         Thread.sleep(TimeUnit.SECONDS.toMillis(5))
@@ -244,7 +244,7 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             // Verify the toast was displayed
@@ -279,7 +279,7 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             // Verify the toast was displayed
@@ -322,7 +322,7 @@ class ReportGenerationTests {
 //        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         // Verify the intent chooser with all files was displayed
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
@@ -361,7 +361,7 @@ class ReportGenerationTests {
         createReport("Empty Report No Receipts Error")
 
         // Go to generate screen
-        onView(withText(R.string.report_info_generate)).perform(click())
+        onView(withContentDescription(R.string.report_info_generate)).perform(click())
 
         // Wait to ensure everything loads
         onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
@@ -374,7 +374,7 @@ class ReportGenerationTests {
         onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         // Verify the toast was displayed
         onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_RECEIPTS)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))
@@ -386,13 +386,13 @@ class ReportGenerationTests {
         createReport("Empty Report None Selected Error")
 
         // Go to generate screen
-        onView(withText(R.string.report_info_generate)).perform(click())
+        onView(withContentDescription(R.string.report_info_generate)).perform(click())
 
         // Wait to ensure everything loads
         onView(isRoot()).perform(waitForView(R.id.dialog_email_checkbox_pdf_full, 20000))
 
         // Tap on the generate button
-        onView(withId(R.id.receipt_action_send)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         // Verify the toast was displayed
         onView(withText(R.string.DIALOG_EMAIL_TOAST_NO_SELECTION)).inRoot(withDecorView(not(activity.window.decorView))).check(matches(isDisplayed()))

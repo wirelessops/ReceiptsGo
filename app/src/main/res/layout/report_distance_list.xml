@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/Widget.SmartReceipts.RelativeLayout" >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SmartReceipts.RelativeLayout">
 
-    <ListView style="@style/Widget.SmartReceipts.ListView"
-        android:id="@android:id/list"
-        android:visibility="gone" />
-    <ProgressBar style="@style/Widget.SmartReceipts.ProgressBar.Loading"
-        android:id="@+id/progress" />
-    <TextView style="@style/Widget.SmartReceipts.TextView.NoData"
+    <TextView
+        android:id="@+id/distances_title"
+        style="@style/Widget.SmartReceipts.TextView.FragmentTitle"
+        android:text="@string/report_info_distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_distances"
+        style="@style/Widget.SmartReceipts.ListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/distances_title"
+        tools:listitem="@layout/item_default_content" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/no_data_image"
+        style="@style/Widget.SmartReceipts.ImageView.NoData"
+        app:layout_constraintBottom_toTopOf="@id/no_data_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_distances" />
+
+    <TextView
+        android:id="@+id/no_data_text"
+        style="@style/Widget.SmartReceipts.TextView.NoData"
+        android:text="@string/distance_no_data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
         android:id="@+id/no_data"
-        android:visibility="gone" />
-    <com.github.clans.fab.FloatingActionButton style="@style/Widget.SmartReceipts.FloatingActionButton"
-        android:id="@+id/distance_action_new"
-        android:src="@drawable/fab_add" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:constraint_referenced_ids="no_data_text, no_data_image"
+        tools:visibility="visible" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

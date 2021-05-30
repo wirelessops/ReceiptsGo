@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.SmartReceipts.RelativeLayout" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SmartReceipts.RelativeLayout">
 
-    <ListView
-        style="@style/Widget.SmartReceipts.ListView"
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@android:id/list"
-        android:visibility="invisible" />
+        style="@style/Widget.SmartReceipts.ListView"
+        android:visibility="invisible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ProgressBar
-        style="@style/Widget.SmartReceipts.ProgressBar.Loading"
-        android:id="@+id/progress" />
+        android:id="@+id/progress"
+        style="@style/Widget.SmartReceipts.ProgressBar.Loading" />
 
     <TextView
-        style="@style/Widget.SmartReceipts.TextView.NoData"
         android:id="@+id/no_data"
+        style="@style/Widget.SmartReceipts.TextView.NoData"
         android:text="@string/trip_no_data"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
-    <com.github.clans.fab.FloatingActionButton
-        style="@style/Widget.SmartReceipts.FloatingActionButton"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/trip_action_new"
-        android:src="@drawable/fab_add"
-        android:layout_alignParentBottom="true" />
+        style="@style/Widget.SmartReceipts.FloatingActionButton"
+        android:src="@drawable/ic_add_24dp" />
 
 </RelativeLayout>
