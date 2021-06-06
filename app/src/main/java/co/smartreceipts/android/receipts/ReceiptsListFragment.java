@@ -61,6 +61,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.widget.model.UiIndicator;
+import co.smartreceipts.android.widget.ui.BottomSpacingItemDecoration;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import wb.android.flex.Flex;
@@ -202,6 +203,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
             recyclerView.addItemDecoration(headerItemDecoration);
         }
 
+        recyclerView.addItemDecoration(new BottomSpacingItemDecoration());
     }
 
     @Override
