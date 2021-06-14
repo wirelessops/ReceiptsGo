@@ -18,14 +18,14 @@
         android:layout_marginBottom="@dimen/margin_tiny"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textColor="@color/text_primary_color"
         android:textSize="@dimen/font_subhead"
         app:layout_constraintBottom_toTopOf="@id/text_details"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="My First Trip" />
+        tools:text="My First Trip with very long long long long name" />
 
     <TextView
         android:id="@+id/text_price"
@@ -69,7 +69,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.67" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <ImageView
         android:id="@+id/image_sync_state"
