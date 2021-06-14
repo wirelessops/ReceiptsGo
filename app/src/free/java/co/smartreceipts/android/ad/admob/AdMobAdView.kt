@@ -98,6 +98,7 @@ class AdMobAdView @Inject constructor() : BannerAdView {
                     .addTestDevice("E03AEBCB2894909B8E4EC87C0368C242")
                     .addTestDevice("B48FF89819FAB2B50FE3E5240FCD9741")
                     .addTestDevice("F868E3E348ACF850C6454323A90E2F09")
+                    .addTestDevice("E5709A4C156B990EFD896EC4719AA8F0")
             if (allowAdPersonalization) {
                 val extras = Bundle()
                 extras.putString("npa", "1")

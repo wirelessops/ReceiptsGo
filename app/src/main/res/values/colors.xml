@@ -33,6 +33,7 @@
     <color name="smart_receipts_colorError">#c62828</color>
     <color name="text_primary_color">@android:color/black</color>
     <color name="text_secondary_color">#716C76</color>
+    <color name="text_on_primary_color">@android:color/white</color>
     <color name="accent_text_primary_color">@color/text_primary_color</color>
     <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="fab_transparency_mask">#40FFFFFF</color>
