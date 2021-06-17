@@ -951,8 +951,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             // Only update the price if: no text is set AND the next item price == the first
             if (binding.receiptPrice.getText().length() == 0) {
                 final Receipt secondReceipt = autoCompleteResult.getSecondItem();
-                if (secondReceipt != null && firstReceipt.getPrice().getDecimalFormattedPrice().equals(secondReceipt.getPrice().getDecimalFormattedPrice())) {
-                    binding.receiptPrice.setText(firstReceipt.getPrice().getDecimalFormattedPrice());
+                if (secondReceipt != null && firstReceipt.getPrice().equals(secondReceipt.getPrice())) {
+                    binding.receiptPrice.setText(firstReceipt.getPrice().getPrice().toPlainString());
                 }
             }
 
