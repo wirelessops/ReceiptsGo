@@ -403,7 +403,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
                             if (presenter.isUsePreTaxPrice()) {
                                 // If we're in pre-tax mode, let's calculate the price as (total - tax = pre-tax-price)
                                 final BigDecimal preTaxPrice = ModelUtils.tryParse(ocrResponseParser.getTotalAmount()).subtract(ModelUtils.tryParse(ocrResponseParser.getTaxAmount()));
-                                binding.receiptPrice.setText(ModelUtils.getDecimalFormattedValue(preTaxPrice));
+                                binding.receiptPrice.setText(preTaxPrice.toPlainString());
                             } else {
                                 binding.receiptPrice.setText(ocrResponseParser.getTotalAmount());
                             }

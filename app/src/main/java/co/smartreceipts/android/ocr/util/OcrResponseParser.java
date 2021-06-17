@@ -10,9 +10,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import co.smartreceipts.android.model.utils.ModelUtils;
-import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 
 /**
  * A simple utility class, which will allow us to handle all the {@code null} risks that we need to deal
@@ -51,7 +50,7 @@ public class OcrResponseParser {
     @Nullable
     public String getTotalAmount() {
         if (ocrResponse != null && ocrResponse.getTotalAmount() != null && ocrResponse.getTotalAmount().getData() != null) {
-            return ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(ocrResponse.getTotalAmount().getData()));
+            return BigDecimal.valueOf(ocrResponse.getTotalAmount().getData()).toPlainString();
         } else {
             return null;
         }
@@ -63,7 +62,7 @@ public class OcrResponseParser {
     @Nullable
     public String getTaxAmount() {
         if (ocrResponse != null && ocrResponse.getTaxAmount() != null && ocrResponse.getTaxAmount().getData() != null) {
-            return ModelUtils.getDecimalFormattedValue(BigDecimal.valueOf(ocrResponse.getTaxAmount().getData()));
+            return BigDecimal.valueOf(ocrResponse.getTaxAmount().getData()).toPlainString();
         } else {
             return null;
         }
