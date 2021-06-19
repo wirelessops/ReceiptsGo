@@ -23,6 +23,7 @@ import co.smartreceipts.android.sync.widget.backups.ImportLocalBackupDialogFragm
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -54,7 +55,7 @@ public class IntentImportInformationPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(intentImportProvider.getIntentMaybe()).thenReturn(Maybe.just(intent));
-        presenter = new IntentImportInformationPresenter(view, interactor, intentImportProvider, navigationHandler);
+        presenter = new IntentImportInformationPresenter(view, interactor, intentImportProvider, navigationHandler, Schedulers.trampoline());
     }
 
     @After

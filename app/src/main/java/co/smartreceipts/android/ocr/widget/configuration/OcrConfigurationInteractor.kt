@@ -14,23 +14,26 @@ import co.smartreceipts.android.purchases.model.PurchaseFamily
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
+import co.smartreceipts.android.utils.rx.RxSchedulers
 import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.core.identity.IdentityManager
 import co.smartreceipts.core.identity.store.EmailAddress
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import java.math.BigDecimal
 import javax.inject.Inject
+import javax.inject.Named
 
 @FragmentScope
-class OcrConfigurationInteractor @Inject
-constructor(
+class OcrConfigurationInteractor @Inject constructor(
     private val identityManager: IdentityManager,
     private val ocrPurchaseTracker: OcrPurchaseTracker,
     private val purchaseManager: PurchaseManager,
     private val userPreferenceManager: UserPreferenceManager,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    @Named(RxSchedulers.MAIN)
+    private val observeOnScheduler: Scheduler
 ) {
 
     val email: EmailAddress?
@@ -42,20 +45,22 @@ constructor(
 
     fun getRemainingScansStream(): Observable<Int> {
         return ocrPurchaseTracker.remainingScansStream
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(observeOnScheduler)
     }
 
     fun getAvailableOcrPurchases(): Single<List<AvailablePurchase>> {
         return purchaseManager.allAvailablePurchases
             .flatMapIterable { availablePurchases -> availablePurchases }
             .filter { availablePurchase ->
-                availablePurchase.getInAppPurchase() != null && availablePurchase.getInAppPurchase()!!.type == ConsumablePurchase::class.java
-                        && availablePurchase.getInAppPurchase()!!.purchaseFamilies.contains(PurchaseFamily.Ocr)
+                val inAppPurchase = availablePurchase.getInAppPurchase()
+                inAppPurchase != null && inAppPurchase!!.type == ConsumablePurchase::class.java
+                        && inAppPurchase!!.purchaseFamilies.contains(PurchaseFamily.Ocr)
             }
             .toSortedList { purchase1, purchase2 ->
-                BigDecimal.valueOf(purchase1.priceAmountMicros).compareTo(BigDecimal.valueOf(purchase2.priceAmountMicros))
+                BigDecimal.valueOf(purchase1.priceAmountMicros)
+                    .compareTo(BigDecimal.valueOf(purchase2.priceAmountMicros))
             }
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(observeOnScheduler)
     }
 
     fun getOcrIsEnabled(): Observable<Boolean> = userPreferenceManager.getObservable(UserPreference.Misc.OcrIsEnabled)

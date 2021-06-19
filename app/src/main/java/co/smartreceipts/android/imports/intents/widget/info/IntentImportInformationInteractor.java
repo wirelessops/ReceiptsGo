@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -21,6 +22,7 @@ import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @ActivityScope
@@ -32,14 +34,24 @@ public class IntentImportInformationInteractor {
     private final IntentImportProcessor intentImportProcessor;
     private final PermissionStatusChecker permissionStatusChecker;
     private final PermissionRequester permissionRequester;
+    private final Scheduler subscribeOnScheduler;
 
     @Inject
     public IntentImportInformationInteractor(@NonNull IntentImportProcessor intentImportProcessor,
                                              @NonNull PermissionStatusChecker permissionStatusChecker,
                                              @NonNull ActivityPermissionsRequester<SmartReceiptsActivity> permissionRequester) {
+        this(intentImportProcessor, permissionStatusChecker, permissionRequester, AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    IntentImportInformationInteractor(@NonNull IntentImportProcessor intentImportProcessor,
+                                      @NonNull PermissionStatusChecker permissionStatusChecker,
+                                      @NonNull ActivityPermissionsRequester<SmartReceiptsActivity> permissionRequester,
+                                      @NonNull Scheduler subscribeOnScheduler) {
         this.intentImportProcessor = Preconditions.checkNotNull(intentImportProcessor);
         this.permissionStatusChecker = Preconditions.checkNotNull(permissionStatusChecker);
         this.permissionRequester = Preconditions.checkNotNull(permissionRequester);
+        this.subscribeOnScheduler = subscribeOnScheduler;
     }
 
     @NonNull
@@ -54,7 +66,7 @@ public class IntentImportInformationInteractor {
                         } else {
                             final IntentImportResult intentImportResultReference = intentImportResult;
                             return permissionStatusChecker.isPermissionGranted(READ_PERMISSION)
-                                    .subscribeOn(AndroidSchedulers.mainThread())
+                                    .subscribeOn(subscribeOnScheduler)
                                     .flatMapMaybe(isGranted -> {
                                         if (isGranted) {
                                             return Maybe.just(intentImportResult);

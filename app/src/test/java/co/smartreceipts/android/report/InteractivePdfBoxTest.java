@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -207,22 +208,32 @@ public class InteractivePdfBoxTest {
         verifyImageCount(pdDocument, count);
     }
 
+    @LooperMode(LooperMode.Mode.LEGACY)
     @Test
     public void createReportWithOtherNonWesternCharacters() throws Exception {
 
         // Configure test data
         final int count = 1;
+
         final DistanceBuilderFactory distanceFactory = new DistanceBuilderFactory(count);
         distanceFactory.setTrip(mTrip);
-        final File imgFile = testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG);
-        final ReceiptBuilderFactory factory = ReceiptUtils.newDefaultReceiptBuilderFactory(context);
-        factory.setFile(imgFile);
-        factory.setIsFullPage(true);
-        factory.setName("Name with Non-Western Characters: \uCD9C \uFFE5 \u7172");
-        when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString)).thenReturn("Footer with Various Currencies: $£€ \u20A3\u20A4\u20A6\u20A7\u20A8\u20A9\u20AA\u20AB\u20AC\u20B1\u20B9\u20BA\u20BC\u20BD)");
+
+        final ReceiptBuilderFactory receiptFactory = ReceiptUtils.newDefaultReceiptBuilderFactory(context);
+        receiptFactory.setFile(testResourceReader.openFile(TestResourceReader.LONG_RECEIPT_JPG));
+        receiptFactory.setIsFullPage(true);
+        receiptFactory.setName("Name with Non-Western Characters: \uCD9C \uFFE5 \u7172");
+
+        when(userPreferenceManager.get(UserPreference.PlusSubscription.PdfFooterString))
+                .thenReturn("Footer with Various Currencies: $£€ \u20A3\u20A4\u20A6\u20A7\u20A8\u20A9\u20AA\u20AB\u20AC\u20B1\u20B9\u20BA\u20BC\u20BD)");
 
         // Write the file
-        writeFullReport(TripUtils.newDefaultTripBuilderFactory().setDirectory(new File("Name with Non-Western Characters: \uCD9C \uFFE5 \u7172")).build(), Collections.singletonList(factory.build()), Collections.singletonList(distanceFactory.build()));
+        Trip trip = TripUtils.newDefaultTripBuilderFactory()
+                .setDirectory(new File("Name with Non-Western Characters: \uCD9C \uFFE5 \u7172"))
+                .build();
+        List<Receipt> receipts = Collections.singletonList(receiptFactory.build());
+        List<Distance> distances = Collections.singletonList(distanceFactory.build());
+
+        writeFullReport(trip, receipts, distances);
 
         // Verify the results
         final int expectedNonWesternCharactersConvertedToImageCount = 3;

@@ -22,6 +22,7 @@ import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 import static co.smartreceipts.android.R.string.graphs_label_non_reimbursable;
 import static org.junit.Assert.assertEquals;
@@ -58,7 +59,7 @@ public class GraphsInteractorTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        interactor = new GraphsInteractor(context, groupingController);
+        interactor = new GraphsInteractor(context, groupingController, Schedulers.trampoline());
 
         when(context.getString(R.string.graphs_label_others)).thenReturn("Others");
         when(context.getString(R.string.graphs_label_reimbursable)).thenReturn("Reimbursable");
