@@ -12,6 +12,7 @@ import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
@@ -75,7 +76,7 @@ class TooltipPresenterTest {
         whenever(view.getButtonYesClickStream()).thenReturn(buttonYesClickStream)
         whenever(view.getButtonCancelClickStream()).thenReturn(buttonCancelClickStream)
         whenever(view.getCloseIconClickStream()).thenReturn(closeIconClickStream)
-        tooltipPresenter = TooltipPresenter(view, tooltipControllerProvider, analytics)
+        tooltipPresenter = TooltipPresenter(view, tooltipControllerProvider, analytics, Schedulers.trampoline())
     }
 
     @Test

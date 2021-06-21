@@ -2,6 +2,7 @@ package co.smartreceipts.android.identity.widget.login;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -18,6 +19,7 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.ReplaySubject;
 import retrofit2.HttpException;
@@ -32,11 +34,18 @@ public class LoginInteractor {
     private final IdentityManagerImpl identityManager;
     private UserCredentialsPayload userCredentialsPayload;
     private ReplaySubject<UiIndicator<String>> uiIndicatorReplaySubject;
+    private Scheduler observeOnScheduler;
 
     @Inject
     public LoginInteractor(@NonNull Context context, @NonNull IdentityManagerImpl identityManager) {
+        this(context, identityManager, AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    LoginInteractor(@NonNull Context context, @NonNull IdentityManagerImpl identityManager, @NonNull Scheduler observeOnScheduler) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.identityManager = Preconditions.checkNotNull(identityManager);
+        this.observeOnScheduler = observeOnScheduler;
     }
 
     /**
@@ -58,7 +67,7 @@ public class LoginInteractor {
                     .map(loginResponse -> UiIndicator.success(getSuccessMessage(userCredentialsPayload)))
                     .onErrorReturn(throwable -> UiIndicator.error(getErrorMessage(userCredentialsPayload, throwable)))
                     .startWith(UiIndicator.loading())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(observeOnScheduler)
                     .subscribe(uiIndicatorReplaySubject);
         }
         return uiIndicatorReplaySubject;

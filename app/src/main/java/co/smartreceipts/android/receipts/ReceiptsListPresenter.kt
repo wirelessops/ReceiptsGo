@@ -25,13 +25,14 @@ import co.smartreceipts.android.receipts.attacher.ReceiptAttachmentManager
 import co.smartreceipts.android.widget.model.UiIndicator
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import co.smartreceipts.core.di.scopes.FragmentScope
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 import javax.inject.Inject
 
 @FragmentScope
-class ReceiptsListPresenter @Inject constructor(
+class ReceiptsListPresenter(
     view: ReceiptsListView, interactor: ReceiptsListInteractor,
     private val ocrStatusAlerterPresenter: OcrStatusAlerterPresenter,
     private val activityFileResultLocator: ActivityFileResultLocator,
@@ -39,9 +40,32 @@ class ReceiptsListPresenter @Inject constructor(
     private val permissionsDelegate: PermissionsDelegate,
     private val tripTableController: TripTableController,
     private val receiptAttachmentManager: ReceiptAttachmentManager,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    private val observeOnScheduler: Scheduler
 ) :
     BaseViperPresenter<ReceiptsListView, ReceiptsListInteractor>(view, interactor) {
+
+    @Inject
+    constructor(
+        view: ReceiptsListView, interactor: ReceiptsListInteractor,
+        ocrStatusAlerterPresenter: OcrStatusAlerterPresenter,
+        activityFileResultLocator: ActivityFileResultLocator,
+        activityFileResultImporter: ActivityFileResultImporter,
+        permissionsDelegate: PermissionsDelegate,
+        tripTableController: TripTableController,
+        receiptAttachmentManager: ReceiptAttachmentManager,
+        analytics: Analytics
+    ) : this(
+        view, interactor,
+        ocrStatusAlerterPresenter,
+        activityFileResultLocator,
+        activityFileResultImporter,
+        permissionsDelegate,
+        tripTableController,
+        receiptAttachmentManager,
+        analytics,
+        AndroidSchedulers.mainThread()
+    )
 
     companion object {
         const val READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
@@ -110,7 +134,7 @@ class ReceiptsListPresenter @Inject constructor(
                         .onErrorReturn { ActivityFileResultLocatorResponse.locatorError(it) }
                 }
             }
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(observeOnScheduler)
             .subscribe { locatorResponse ->
                 permissionsDelegate.markRequestConsumed(READ_PERMISSION)
                 if (!locatorResponse.throwable.isPresent) {

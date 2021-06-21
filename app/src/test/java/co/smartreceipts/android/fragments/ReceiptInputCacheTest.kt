@@ -10,9 +10,11 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
+import org.robolectric.annotation.LooperMode
 import java.sql.Date
 
 @RunWith(RobolectricTestRunner::class)
+@LooperMode(LooperMode.Mode.LEGACY)
 class ReceiptInputCacheTest {
 
     private lateinit var activityController: ActivityController<FragmentActivity>

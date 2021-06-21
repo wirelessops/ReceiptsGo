@@ -13,13 +13,14 @@ import org.robolectric.RobolectricTestRunner;
 
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.identity.IdentityManagerImpl;
+import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.core.identity.apis.login.LoginResponse;
 import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserLogin;
 import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserSignUp;
 import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
-import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
@@ -52,7 +53,7 @@ public class LoginInteractorTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        interactor = new LoginInteractor(context, identityManager);
+        interactor = new LoginInteractor(context, identityManager, Schedulers.trampoline());
     }
 
     @Test
