@@ -3,6 +3,7 @@ package co.smartreceipts.android.ocr.util;
 import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.model.Price;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 
 /**
@@ -50,7 +52,8 @@ public class OcrResponseParser {
     @Nullable
     public String getTotalAmount() {
         if (ocrResponse != null && ocrResponse.getTotalAmount() != null && ocrResponse.getTotalAmount().getData() != null) {
-            return BigDecimal.valueOf(ocrResponse.getTotalAmount().getData()).toPlainString();
+            return BigDecimal.valueOf(ocrResponse.getTotalAmount().getData()).
+                    setScale(Price.TOTAL_DECIMAL_PRECISION, RoundingMode.HALF_EVEN).toPlainString();
         } else {
             return null;
         }
