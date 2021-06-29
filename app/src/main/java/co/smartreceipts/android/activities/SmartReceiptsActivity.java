@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +44,9 @@ import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.search.SearchActivity;
 import co.smartreceipts.android.search.SearchResultKeeper;
 import co.smartreceipts.android.search.Searchable;
+import co.smartreceipts.android.settings.ThemeProvider;
+import co.smartreceipts.android.settings.UserPreferenceManager;
+import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.analytics.log.Logger;
@@ -94,6 +98,12 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
     @Inject
     IntentImportInformationPresenter intentImportInformationPresenter;
 
+    @Inject
+    UserPreferenceManager userPreferenceManager;
+
+    @Inject
+    ThemeProvider themeProvider;
+
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
 
@@ -106,6 +116,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
         super.onCreate(savedInstanceState);
         Logger.debug(this, "onCreate");
+
+        int theme = themeProvider.getTheme(userPreferenceManager.get(UserPreference.General.Theme));
+        AppCompatDelegate.setDefaultNightMode(theme);
 
         purchaseManager.addEventListener(this);
 
