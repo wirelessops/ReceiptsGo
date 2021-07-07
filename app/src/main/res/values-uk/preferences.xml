@@ -19,6 +19,10 @@
 
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">Тема інтерфейсу</string>
+    <string name="pref_general_theme_default_entry">Системна</string>
+    <string name="pref_general_theme_light_entry">Світла</string>
+    <string name="pref_general_theme_dark_entry">Темна</string>
 
     <string name="pref_general_trip_duration_title">Тривалість поїздки за замовчуванням</string>
 
