@@ -10,11 +10,14 @@
         <item name="colorPrimary">@color/smart_receipts_colorPrimary</item>
         <item name="colorPrimaryDark">@color/smart_receipts_colorPrimaryDark</item>
         <item name="colorAccent">@color/smart_receipts_colorAccent</item>
-        <item name="alertDialogStyle">@style/Theme.SmartReceipts.Dialog</item>
-        <item name="alertDialogTheme">@style/Theme.SmartReceipts.Dialog</item>
+        <item name="colorOnPrimary">@color/smart_receipts_colorOnPrimary</item>
+        <item name="android:alertDialogTheme">@style/Theme.SmartReceipts.Dialog</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
-        <item name="bottomSheetDialogTheme">@style/Theme.SmartReceipts.AppBottomSheetDialogTheme</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.SmartReceipts.AppBottomSheetDialogTheme
+        </item>
         <item name="snackbarStyle">@style/Widget.SmartReceipts.Snackbar</item>
+        <item name="android:textColorPrimary">@color/text_primary_color</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color</item>
     </style>
 
     <style name="Theme.SmartReceipts.OSS" parent="Theme.SmartReceipts">
@@ -31,14 +34,17 @@
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
     </style>
 
-    <style name="Theme.SmartReceipts.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert.Bridge">
+    <style name="Theme.SmartReceipts.Dialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert.Bridge">
         <item name="colorPrimary">@color/smart_receipts_colorPrimary</item>
         <item name="colorPrimaryDark">@color/smart_receipts_colorPrimaryDark</item>
         <item name="colorAccent">@color/smart_receipts_colorAccent</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
+        <item name="android:background">@color/dialog_background</item>
+        <item name="android:textColorPrimary">@color/text_primary_color</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color</item>
     </style>
 
-    <style name="Theme.SmartReceipts.AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="Theme.SmartReceipts.AppBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.SmartReceipts.BottomSheetModalStyle</item>
     </style>
 

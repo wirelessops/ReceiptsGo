@@ -176,6 +176,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         dataSet.setColor(ContextCompat.getColor(getContext(),R.color.graph_2));
         dataSet.setCircleColors(new int[]{R.color.graph_3}, getContext());
         dataSet.setValueTextSize(VALUE_TEXT_SIZE);
+        dataSet.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary_color));
         dataSet.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> (value > 0) ? String.valueOf((int) value) : "");
         dataSet.setMode(LineDataSet.Mode.LINEAR);
         dataSet.setLineWidth(3f);
@@ -252,6 +253,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
 
             BarDataSet verticalSet = new BarDataSet(Collections.singletonList(new BarEntry(i, graphEntry.getY())), graphEntry.getLabel());
             verticalSet.setValueTextSize(VALUE_TEXT_SIZE);
+            verticalSet.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary_color));
             verticalSet.setColor(ContextCompat.getColor(getContext(), GRAPHS_PALETTE[i]));
             verticalSet.setValueFormatter(valueFormatter);
 
@@ -264,22 +266,31 @@ public class GraphsFragment extends WBFragment implements GraphsView {
     }
 
     private void initDatesLineChart() {
+        int labelColor = ContextCompat.getColor(requireContext(), R.color.text_primary_color);
+
         binding.datesLineChart.setDrawGridBackground(false);
         binding.datesLineChart.getLegend().setEnabled(false);
 
         XAxis xAxis = binding.datesLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new DayAxisValueFormatter());
+        xAxis.setTextColor(labelColor);
+
+        binding.datesLineChart.getAxisLeft().setTextColor(labelColor);
+        binding.datesLineChart.getAxisRight().setTextColor(labelColor);
 
         binding.datesLineChart.setClickable(false);
         binding.datesLineChart.setExtraOffsets(EXTRA_OFFSET_NORMAL, EXTRA_OFFSET_NORMAL, EXTRA_OFFSET_NORMAL, EXTRA_OFFSET_NORMAL);
     }
 
     private void initCategoriesPieChart() {
+        int labelColor = ContextCompat.getColor(requireContext(), R.color.text_primary_color);
+
         binding.categoriesPieChart.setEntryLabelTextSize(VALUE_TEXT_SIZE);
-        binding.categoriesPieChart.setEntryLabelColor(ContextCompat.getColor(getContext(), R.color.text_primary_color));
+        binding.categoriesPieChart.setEntryLabelColor(labelColor);
 
         binding.categoriesPieChart.setCenterText(getTrip().getName());
+        binding.categoriesPieChart.setCenterTextColor(labelColor);
         binding.categoriesPieChart.setHoleColor(Color.TRANSPARENT);
         binding.categoriesPieChart.setHoleRadius(35f);
         binding.categoriesPieChart.setTransparentCircleRadius(40f);
@@ -327,6 +338,7 @@ public class GraphsFragment extends WBFragment implements GraphsView {
         Legend legend = chart.getLegend();
         legend.setWordWrapEnabled(true);
         legend.setTextSize(LEGEND_TEXT_SIZE);
+        legend.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary_color));
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setForm(Legend.LegendForm.CIRCLE);

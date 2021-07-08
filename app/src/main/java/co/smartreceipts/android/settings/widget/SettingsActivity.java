@@ -129,6 +129,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
 
+        int theme = themeProvider.getTheme(userPreferenceManager.get(UserPreference.General.Theme));
+        AppCompatDelegate.setDefaultNightMode(theme);
+
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         isUsingHeaders = getResources().getBoolean(R.bool.isTablet);

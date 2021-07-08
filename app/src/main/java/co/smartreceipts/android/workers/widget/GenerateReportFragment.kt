@@ -100,14 +100,14 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
                 drawableEnd.mutate()
                 val drawableColor = ContextCompat.getColor(
                     requireContext(),
-                    if (isChecked) R.color.smart_receipts_colorPrimary else R.color.navigation_inactive
+                    if (isChecked) R.color.navigation_active else R.color.navigation_inactive
                 )
                 DrawableCompat.setTint(drawableEnd, drawableColor)
             }
 
 
             val bgColor =
-                ContextCompat.getColor(requireContext(), if (isChecked) R.color.receipt_image_tint else R.color.card_background)
+                ContextCompat.getColor(requireContext(), if (isChecked) R.color.selected_card_background else R.color.card_background)
             val parent: ViewParent = buttonView.parent
             if (parent is FrameLayout) {
                 parent.setBackgroundColor(bgColor)
