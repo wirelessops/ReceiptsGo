@@ -53,8 +53,8 @@ class OcrConfigurationInteractor @Inject constructor(
             .flatMapIterable { availablePurchases -> availablePurchases }
             .filter { availablePurchase ->
                 val inAppPurchase = availablePurchase.getInAppPurchase()
-                inAppPurchase != null && inAppPurchase!!.type == ConsumablePurchase::class.java
-                        && inAppPurchase!!.purchaseFamilies.contains(PurchaseFamily.Ocr)
+                inAppPurchase != null && inAppPurchase.type == ConsumablePurchase::class.java
+                        && inAppPurchase.purchaseFamilies.contains(PurchaseFamily.Ocr)
             }
             .toSortedList { purchase1, purchase2 ->
                 BigDecimal.valueOf(purchase1.priceAmountMicros)
