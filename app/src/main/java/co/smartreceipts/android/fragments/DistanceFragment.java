@@ -244,11 +244,11 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
     }
 
     private void updateSubtitle(@NonNull List<Distance> allDistances) {
+
         Observable.fromIterable(allDistances)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(o -> o instanceof Distance)
-                .map(o -> (Distance) o)
                 .toList()
                 .map(distances -> {
                     if (preferenceManager.get(UserPreference.Distance.ShowDistanceAsPriceInSubtotal)) {
@@ -265,7 +265,7 @@ public class DistanceFragment extends WBFragment implements TripForeignKeyTableE
                 .subscribe(subtitle -> {
                             actionBarSubtitle = subtitle;
                             setActionBarSubtitle(actionBarSubtitle);
-                        }
+                        }, throwable -> Logger.error(this, throwable.getMessage())
                 );
     }
 
