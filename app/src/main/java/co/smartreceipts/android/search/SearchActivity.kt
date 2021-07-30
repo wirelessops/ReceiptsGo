@@ -62,6 +62,11 @@ class SearchActivity : AppCompatActivity(), SearchView {
             backupProvidersManager.syncProvider
         )
 
+        // despite the fact that getItemId is not implemented, this code fixes
+        // weird crash with IllegalArgumentException "Scrapped or attached views may not be recycled"
+        // for RecyclerView in Android 10 and 11
+        adapter.setHasStableIds(true)
+
         binding.resultsList.layoutManager = LinearLayoutManager(this)
         binding.resultsList.adapter = adapter
     }
