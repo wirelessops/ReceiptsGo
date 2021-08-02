@@ -14,13 +14,15 @@ import co.smartreceipts.android.model.Trip
 import co.smartreceipts.android.ocr.apis.model.OcrResponse
 import co.smartreceipts.android.ocr.widget.configuration.OcrConfigurationFragment
 import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment
-import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.*
+import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_FILE
+import co.smartreceipts.android.receipts.editor.ReceiptCreateEditFragment.ARG_OCR
 import co.smartreceipts.android.sync.widget.backups.BackupsFragment
 import co.smartreceipts.android.trips.TripFragment
 import co.smartreceipts.android.trips.editor.TripCreateEditFragment
 import java.io.File
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class FragmentProvider @Inject constructor() {
 
@@ -93,15 +95,15 @@ class FragmentProvider @Inject constructor() {
         return attachArguments(ReceiptImageFragment.newInstance(), args)
     }
 
-    fun newCreateDistanceFragment(trip: Trip, suggestedDate: Date?) : DistanceCreateEditFragment {
+    fun newCreateDistanceFragment(trip: Trip, suggestedDate: Date?): DistanceCreateEditFragment {
         val args = Bundle()
         args.putParcelable(Trip.PARCEL_KEY, trip)
-        suggestedDate?.let { args.putLong(ARG_SUGGESTED_DATE, it.time + 1)}
+        suggestedDate?.let { args.putLong(ARG_SUGGESTED_DATE, it.time + 1) }
 
         return attachArguments(DistanceCreateEditFragment.newInstance(), args)
     }
 
-    fun newEditDistanceFragment(trip: Trip, distance: Distance) : DistanceCreateEditFragment {
+    fun newEditDistanceFragment(trip: Trip, distance: Distance): DistanceCreateEditFragment {
         val args = Bundle()
         args.putParcelable(Trip.PARCEL_KEY, trip)
         args.putParcelable(Distance.PARCEL_KEY, distance)
@@ -150,9 +152,9 @@ class FragmentProvider @Inject constructor() {
      *
      * @return the new instance of this fragment
      */
-    fun newCreateTripFragment(existingTrips: ArrayList<Trip>): TripCreateEditFragment {
+    fun newCreateTripFragment(existingTrips: List<Trip>): TripCreateEditFragment {
         val args = Bundle()
-        args.putParcelableArrayList(TripCreateEditFragment.ARG_EXISTING_TRIPS, existingTrips)
+        args.putParcelableArrayList(TripCreateEditFragment.ARG_EXISTING_TRIPS, ArrayList(existingTrips))
         return attachArguments(TripCreateEditFragment.newInstance(), args)
     }
 
