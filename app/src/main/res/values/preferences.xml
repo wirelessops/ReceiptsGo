@@ -27,6 +27,26 @@
     <string name="pref_privacy_header_key" translatable="false">pref_privacy_category_key</string>
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_key" translatable="false">appTheme</string>
+    <string name="pref_general_theme_title">Interface theme</string>
+    <string name="pref_general_theme_default_entryValue" translatable="false">default</string>
+    <string name="pref_general_theme_light_entryValue" translatable="false">light</string>
+    <string name="pref_general_theme_dark_entryValue" translatable="false">dark</string>
+    <string-array name="pref_general_theme_entryValues">
+        <item>@string/pref_general_theme_default_entryValue</item>
+        <item>@string/pref_general_theme_light_entryValue</item>
+        <item>@string/pref_general_theme_dark_entryValue</item>
+    </string-array>
+    <string name="pref_general_theme_default_entry">System default</string>
+    <string name="pref_general_theme_light_entry">Light</string>
+    <string name="pref_general_theme_dark_entry">Dark</string>
+    <string-array name="pref_general_theme_entries">
+        <item>@string/pref_general_theme_default_entry</item>
+        <item>@string/pref_general_theme_light_entry</item>
+        <item>@string/pref_general_theme_dark_entry</item>
+    </string-array>
+
+
     <string name="pref_general_trip_duration_key" translatable="false">TripDuration</string>
     <string name="pref_general_trip_duration_title">Default Trip Length</string>
     <string name="pref_general_default_currency_key" translatable="false">isocurr</string>

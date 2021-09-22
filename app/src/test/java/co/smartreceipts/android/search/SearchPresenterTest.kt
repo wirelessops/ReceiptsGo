@@ -26,7 +26,7 @@ class SearchPresenterTest {
     fun setUp() {
         whenever(view.inputChanges).thenReturn(inputSubject)
 
-        presenter = SearchPresenter(view, interactor, Schedulers.trampoline())
+        presenter = SearchPresenter(view, interactor, Schedulers.trampoline(), Schedulers.trampoline())
     }
 
     @Test

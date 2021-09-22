@@ -23,6 +23,8 @@ class TripAdapter(
     }
 
     init {
+        items = mutableListOf()
+
         delegatesManager.addDelegate(
             tripAdapterDelegate(
                 tripClickListener,
@@ -34,7 +36,7 @@ class TripAdapter(
         )
     }
 
-    override fun getItems() : ArrayList<Trip> {
-        return ArrayList(items.filterIsInstance<Trip>())
+    override fun getItems() : List<Trip> {
+        return items.filterIsInstance<Trip>()
     }
 }

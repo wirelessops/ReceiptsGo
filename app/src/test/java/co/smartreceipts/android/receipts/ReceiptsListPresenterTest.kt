@@ -21,6 +21,7 @@ import co.smartreceipts.android.widget.model.UiIndicator
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
@@ -28,8 +29,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.inOrder
 import org.robolectric.RobolectricTestRunner
 import java.io.File
-
-
 
 @RunWith(RobolectricTestRunner::class)
 class ReceiptsListPresenterTest {
@@ -80,21 +79,45 @@ class ReceiptsListPresenterTest {
 
         whenever(interactor.isCropScreenEnabled()).thenReturn(false)
         whenever(interactor.lastOcrResponseStream).thenReturn(ocrResultStream)
-        whenever(interactor.scanReceiptImage(any())).then { ocrResultStream.onNext(Pair(file, ocrResponse)) }
+        whenever(interactor.scanReceiptImage(any())).then {
+            ocrResultStream.onNext(
+                Pair(
+                    file,
+                    ocrResponse
+                )
+            )
+        }
         whenever(interactor.getLastImportIntentResult()).thenReturn(Observable.never())
 
-        whenever(permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)).thenReturn(Completable.complete())
+        whenever(permissionsDelegate.checkPermissionAndMaybeAsk(READ_PERMISSION)).thenReturn(
+            Completable.complete()
+        )
 
         whenever(locator.uriStream).thenReturn(locatorResultStream)
-        whenever(locator.onActivityResult(any(), any(), any(), any())).doAnswer { locatorResultStream.onNext(locatorResponse) }
+        whenever(
+            locator.onActivityResult(
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        ).doAnswer { locatorResultStream.onNext(locatorResponse) }
 
         whenever(importer.resultStream).thenReturn(importerResultStream)
-        whenever(importer.importFile(any(), any(), any(), any())).doAnswer { importerResultStream.onNext(importerResponse) }
+        whenever(
+            importer.importFile(
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        ).doAnswer { importerResultStream.onNext(importerResponse) }
 
 
         presenter = ReceiptsListPresenter(
             view, interactor, ocrStatusAlerterPresenter, locator,
-            importer, permissionsDelegate, tripTableController, receiptAttachmentManager, analytics
+            importer, permissionsDelegate, tripTableController, receiptAttachmentManager, analytics,
+            Schedulers.trampoline()
         )
     }
 
@@ -120,8 +143,10 @@ class ReceiptsListPresenterTest {
         val inOrder = inOrder(locator, permissionsDelegate, importer, interactor, view)
 
         inOrder.verify(locator).onActivityResult(requestCode, resultCode, intent, uri)
-        inOrder.verify(permissionsDelegate).checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
-        inOrder.verify(permissionsDelegate).markRequestConsumed(Manifest.permission.READ_EXTERNAL_STORAGE)
+        inOrder.verify(permissionsDelegate)
+            .checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
+        inOrder.verify(permissionsDelegate)
+            .markRequestConsumed(Manifest.permission.READ_EXTERNAL_STORAGE)
 
         inOrder.verify(view).present(UiIndicator.loading())
         inOrder.verify(importer).importFile(requestCode, Activity.RESULT_OK, uri, trip)
@@ -146,8 +171,10 @@ class ReceiptsListPresenterTest {
         val inOrder = inOrder(locator, permissionsDelegate, importer, interactor, view)
 
         inOrder.verify(locator).onActivityResult(requestCode, resultCode, intent, uri)
-        inOrder.verify(permissionsDelegate).checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
-        inOrder.verify(permissionsDelegate).markRequestConsumed(Manifest.permission.READ_EXTERNAL_STORAGE)
+        inOrder.verify(permissionsDelegate)
+            .checkPermissionAndMaybeAsk(Manifest.permission.READ_EXTERNAL_STORAGE)
+        inOrder.verify(permissionsDelegate)
+            .markRequestConsumed(Manifest.permission.READ_EXTERNAL_STORAGE)
 
         inOrder.verify(view).present(UiIndicator.loading())
         inOrder.verify(importer).importFile(requestCode, Activity.RESULT_OK, uri, trip)
@@ -182,7 +209,12 @@ class ReceiptsListPresenterTest {
 
         presenter.subscribe()
         importerResultStream.onNext(importerResponse)
-        presenter.handleActivityResult(requestCodeCrop, CropImageActivity.RESULT_CROP_ERROR, intent, uri)
+        presenter.handleActivityResult(
+            requestCodeCrop,
+            CropImageActivity.RESULT_CROP_ERROR,
+            intent,
+            uri
+        )
 
         verify(interactor, never()).scanReceiptImage(any())
         verify(locator, atLeastOnce()).markThatResultsWereConsumed()

@@ -7,11 +7,11 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SearchPresenter(view: SearchView, interactor: SearchInteractor, private val debounceScheduler: Scheduler) :
+class SearchPresenter(view: SearchView, interactor: SearchInteractor, private val debounceScheduler: Scheduler, private val observeOnScheduler: Scheduler) :
     BaseViperPresenter<SearchView, SearchInteractor>(view, interactor) {
 
     @Inject
-    constructor(view: SearchView, interactor: SearchInteractor) : this(view, interactor, Schedulers.computation())
+    constructor(view: SearchView, interactor: SearchInteractor) : this(view, interactor, Schedulers.computation(), AndroidSchedulers.mainThread())
 
     override fun subscribe() {
 
@@ -20,7 +20,7 @@ class SearchPresenter(view: SearchView, interactor: SearchInteractor, private va
                 .filter { it.isNotBlank() }
                 .debounce(250, TimeUnit.MILLISECONDS, debounceScheduler)
                 .map { it.trim() }
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(observeOnScheduler)
                 .flatMapSingle { input: CharSequence -> interactor.getSearchResults(input.toString()) }
                 .subscribe { searchResults -> view.presentSearchResults(searchResults) }
         )

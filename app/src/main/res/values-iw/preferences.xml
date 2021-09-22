@@ -15,6 +15,11 @@
     <string name="pref_privacy_header">פרטיות</string>
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">נושא ממשק</string>
+    <string name="pref_general_theme_default_entry">ברירת מחדל של המערכת</string>
+    <string name="pref_general_theme_light_entry">אוֹר</string>
+    <string name="pref_general_theme_dark_entry">אפל</string>
+
     <string name="pref_general_trip_duration_title">אורך נסיעה ממוצע</string>
     <string name="pref_general_default_currency_title">מטבע ברירת מחדל</string>
     <string name="pref_general_default_date_separator_title">מפריד תאריך ברירת מחדל</string>

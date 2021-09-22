@@ -12,6 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/margin_normal"
         android:background="@drawable/shape_chip"
+        android:backgroundTint="@color/card_background"
         android:paddingStart="@dimen/padding_normal"
         android:paddingTop="@dimen/padding_small"
         android:paddingEnd="@dimen/padding_normal"

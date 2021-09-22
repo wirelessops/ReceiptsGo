@@ -130,7 +130,7 @@ public class TripFragment extends WBFragment implements TableEventsListener<Trip
 
         if (savedInstanceState != null) {
             selectedTrip = savedInstanceState.getParcelable(OUT_SELECTED_TRIP);
-            if (navigationHandler.isDualPane()) {
+            if (navigationHandler.isDualPane() && selectedTrip != null) {
                 tripCardAdapter.setSelectedItemId(selectedTrip.getId());
             }
         }

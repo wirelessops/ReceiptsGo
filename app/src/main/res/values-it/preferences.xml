@@ -15,6 +15,11 @@
     <string name="pref_privacy_header">Privacy</string>
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">Tema dell\'interfaccia</string>
+    <string name="pref_general_theme_default_entry">Default del sistema</string>
+    <string name="pref_general_theme_light_entry">Leggero</string>
+    <string name="pref_general_theme_dark_entry">Buio</string>
+
     <string name="pref_general_trip_duration_title">Durata predefinita trasferta</string>
     <string name="pref_general_default_currency_title">Valuta predefinita</string>
     <string name="pref_general_default_date_separator_title">Separatore predefinito delle date</string>

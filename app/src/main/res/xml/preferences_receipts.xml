@@ -52,7 +52,7 @@
             android:summary="@string/pref_receipt_full_page_summary"
             android:title="@string/pref_receipt_full_page_title" />
         <co.smartreceipts.android.settings.widget.MinimumPriceEditTextPreference
-            android:inputType="number"
+            android:inputType="number|numberDecimal|numberSigned"
             android:key="@string/pref_receipt_minimum_receipts_price_key"
             android:title="@string/pref_receipt_minimum_receipts_price_title" />
         <CheckBoxPreference

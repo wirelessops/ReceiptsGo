@@ -12,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.android.widget.model.UiIndicator;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 import static org.mockito.Mockito.times;
@@ -36,7 +37,7 @@ public class OcrStatusAlerterPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(ocrManager.getOcrProcessingStatus()).thenReturn(ocrProcessingStatusEvents);
-        presenter = new OcrStatusAlerterPresenter(view, ApplicationProvider.getApplicationContext(), ocrManager);
+        presenter = new OcrStatusAlerterPresenter(view, ApplicationProvider.getApplicationContext(), ocrManager, Schedulers.trampoline());
         presenter.subscribe();
         verify(view).displayOcrStatus(UiIndicator.idle()); // We always start with idle
     }

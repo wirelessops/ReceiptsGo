@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:backgroundTint="@color/card_background"
                 android:background="@drawable/bg_rounded_rectangle"
+                android:backgroundTint="@color/card_background"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:padding="@dimen/padding_large"
@@ -52,8 +52,8 @@
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/dialog_email_checkbox_pdf_full"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    app:drawableEndCompat="@drawable/ic_pdf"
-                    android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_FULL" />
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_FULL"
+                    app:drawableEndCompat="@drawable/ic_pdf" />
             </FrameLayout>
 
             <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
@@ -61,8 +61,8 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_pdf_images"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    app:drawableEndCompat="@drawable/ic_pdf"
-                    android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_IMAGES" />
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_PDF_IMAGES"
+                    app:drawableEndCompat="@drawable/ic_pdf" />
             </FrameLayout>
 
             <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
@@ -70,8 +70,8 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_csv"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    app:drawableEndCompat="@drawable/ic_csv"
-                    android:text="@string/DIALOG_EMAIL_CHECKBOX_CSV" />
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_CSV"
+                    app:drawableEndCompat="@drawable/ic_csv" />
             </FrameLayout>
 
             <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
@@ -79,8 +79,8 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_zip"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    app:drawableEndCompat="@drawable/ic_zip"
-                    android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP" />
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP"
+                    app:drawableEndCompat="@drawable/ic_zip" />
             </FrameLayout>
 
             <FrameLayout style="@style/Widget.SmartReceipts.GenerateCheckBoxContainer">
@@ -88,9 +88,13 @@
                 <CheckBox
                     android:id="@+id/dialog_email_checkbox_zip_with_metadata"
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
-                    app:drawableEndCompat="@drawable/ic_zip"
-                    android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA" />
+                    android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA"
+                    app:drawableEndCompat="@drawable/ic_zip" />
             </FrameLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_list_offset" />
 
         </LinearLayout>
 

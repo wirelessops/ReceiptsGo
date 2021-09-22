@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -19,6 +20,7 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.viper.BaseViperPresenter;
 import co.smartreceipts.core.di.scopes.ActivityScope;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -32,21 +34,31 @@ public class IntentImportInformationPresenter extends BaseViperPresenter<IntentI
 
     private final IntentImportProvider intentImportProvider;
     private final NavigationHandler<SmartReceiptsActivity> navigationHandler;
+    private final Scheduler observeOnScheduler;
 
     @Inject
     public IntentImportInformationPresenter(@NonNull IntentImportInformationView view, @NonNull IntentImportInformationInteractor interactor,
                                             @NonNull IntentImportProvider intentImportProvider,
                                             @NonNull NavigationHandler<SmartReceiptsActivity> navigationHandler) {
+        this(view, interactor, intentImportProvider, navigationHandler, AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    IntentImportInformationPresenter(@NonNull IntentImportInformationView view, @NonNull IntentImportInformationInteractor interactor,
+                                     @NonNull IntentImportProvider intentImportProvider,
+                                     @NonNull NavigationHandler<SmartReceiptsActivity> navigationHandler,
+                                     @NonNull Scheduler observeOnScheduler) {
         super(view, interactor);
         this.intentImportProvider = Preconditions.checkNotNull(intentImportProvider);
         this.navigationHandler = Preconditions.checkNotNull(navigationHandler);
+        this.observeOnScheduler = observeOnScheduler;
     }
 
     @Override
     public void subscribe() {
         compositeDisposable.add(intentImportProvider.getIntentMaybe()
                 .flatMapObservable(interactor::process)
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(observeOnScheduler)
                 .filter(uiIndicator -> uiIndicator.getState() == UiIndicator.State.Success)
                 .subscribe(uiIndicator -> {
                             final IntentImportResult result = uiIndicator.getData().get();

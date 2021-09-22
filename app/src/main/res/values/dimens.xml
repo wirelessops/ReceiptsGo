@@ -6,6 +6,7 @@
 
     <!-- List -->
     <dimen name="list_divider_height">1dp</dimen>
+    <dimen name="bottom_list_offset">60dp</dimen>
 
     <!-- Cards -->
     <dimen name="card_price_size">24sp</dimen>

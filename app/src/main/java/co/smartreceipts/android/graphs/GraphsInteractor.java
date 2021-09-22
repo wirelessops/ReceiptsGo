@@ -2,6 +2,8 @@ package co.smartreceipts.android.graphs;
 
 import android.content.Context;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
@@ -11,11 +13,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.smartreceipts.android.R;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.graphs.entry.LabeledGraphEntry;
 import co.smartreceipts.android.model.Trip;
 import co.smartreceipts.android.persistence.database.controllers.grouping.GroupingController;
+import co.smartreceipts.core.di.scopes.ApplicationScope;
 import io.reactivex.Maybe;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -26,11 +29,18 @@ public class GraphsInteractor {
 
     private final GroupingController groupingController;
     private final Context context;
+    private final Scheduler observeOnScheduler;
 
     @Inject
     public GraphsInteractor(Context context, GroupingController groupingController) {
+        this(context, groupingController, AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    GraphsInteractor(Context context, GroupingController groupingController, Scheduler observeOnScheduler) {
         this.context = context;
         this.groupingController = groupingController;
+        this.observeOnScheduler = observeOnScheduler;
     }
 
     public Maybe<GraphUiIndicator> getSummationByCategories(Trip trip) {
@@ -38,14 +48,14 @@ public class GraphsInteractor {
                 .filter(graphEntries -> !graphEntries.isEmpty())
                 .flatMapSingleElement(Single::just)
                 .map(GraphUiIndicator::summationByCategory)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(observeOnScheduler);
     }
 
     public Maybe<GraphUiIndicator> getSummationByReimbursement(Trip trip) {
         return groupingController.getSummationByReimbursementAsGraphEntries(trip)
                 .filter(graphEntries -> graphEntries.size() == 2) // no need to show this chart if user have all receipts (non)reimbursable
                 .map(GraphUiIndicator::summationByReimbursement)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(observeOnScheduler);
     }
 
     public Maybe<GraphUiIndicator> getSummationByPaymentMethod(Trip trip) {
@@ -72,7 +82,7 @@ public class GraphsInteractor {
                     }
                 })
                 .map(GraphUiIndicator::summationByPaymentMethod)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(observeOnScheduler);
     }
 
     public Maybe<GraphUiIndicator> getSummationByDate(Trip trip) {
@@ -100,7 +110,7 @@ public class GraphsInteractor {
                     return result;
                 })
                 .map(GraphUiIndicator::summationByDate)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(observeOnScheduler);
     }
 
 }

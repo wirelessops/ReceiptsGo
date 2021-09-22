@@ -17,6 +17,7 @@ import co.smartreceipts.analytics.log.Logger;
 public final class UserPreference<T> {
 
     public static final class General {
+        public static final UserPreference<String> Theme = new UserPreference<>(String.class, R.string.pref_general_theme_key, R.string.pref_general_theme_defaultValue);
         public static final UserPreference<Integer> DefaultReportDuration = new UserPreference<>(Integer.class, R.string.pref_general_trip_duration_key, R.integer.pref_general_trip_duration_defaultValue);
         public static final UserPreference<String> DefaultCurrency = new UserPreference<>(String.class, R.string.pref_general_default_currency_key, R.string.pref_general_default_currency_defaultValue);
         public static final UserPreference<String> DateSeparator = new UserPreference<>(String.class, R.string.pref_general_default_date_separator_key, R.string.pref_general_default_date_separator_defaultValue);

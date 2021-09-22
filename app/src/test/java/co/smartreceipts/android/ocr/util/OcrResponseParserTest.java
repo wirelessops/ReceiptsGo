@@ -1,12 +1,10 @@
-package co.smartreceipts.android.ocr.util;
+ package co.smartreceipts.android.ocr.util;
 
 import androidx.annotation.NonNull;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -18,9 +16,11 @@ import co.smartreceipts.android.ocr.apis.model.OcrResponseField;
 import co.smartreceipts.android.utils.TestLocaleToggler;
 import co.smartreceipts.android.utils.TestTimezoneToggler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricTestRunner.class)
 public class OcrResponseParserTest {
 
     @Before
