@@ -3,6 +3,12 @@
     <PreferenceCategory
         android:key="@string/pref_general_header_key"
         android:title="@string/pref_general_header">
+        <wb.android.preferences.SummaryListPreference
+            android:defaultValue="@string/pref_general_theme_defaultValue"
+            android:key="@string/pref_general_theme_key"
+            android:entries="@array/pref_general_theme_entries"
+            android:entryValues="@array/pref_general_theme_entryValues"
+            android:title="@string/pref_general_theme_title" />
         <co.smartreceipts.android.settings.widget.DefaultDurationEditTextPreference
             android:defaultValue="@integer/pref_general_trip_duration_defaultValue"
             android:inputType="number"

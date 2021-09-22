@@ -1,6 +1,7 @@
 package co.smartreceipts.android.widget.tooltip.report;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.common.base.Preconditions;
@@ -23,6 +24,7 @@ import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoToolt
 import co.smartreceipts.android.widget.tooltip.report.intent.ImportInfoTooltipManager;
 import co.smartreceipts.core.di.scopes.ActivityScope;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -38,6 +40,7 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
     private final GenerateInfoTooltipManager generateInfoTooltipManager;
     private final BackupReminderTooltipManager backupReminderTooltipManager;
     private final ImportInfoTooltipManager importInfoTooltipManager;
+    private final Scheduler observeOnScheduler;
 
     @Inject
     public ReportTooltipInteractor(T activity, NavigationHandler navigationHandler,
@@ -45,6 +48,16 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
                                    Analytics analytics, GenerateInfoTooltipManager infoTooltipManager,
                                    BackupReminderTooltipManager backupReminderTooltipManager,
                                    ImportInfoTooltipManager importInfoTooltipManager) {
+        this(activity, navigationHandler, backupProvidersManager, analytics, infoTooltipManager, backupReminderTooltipManager, importInfoTooltipManager, AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    ReportTooltipInteractor(T activity, NavigationHandler navigationHandler,
+                            BackupProvidersManager backupProvidersManager,
+                            Analytics analytics, GenerateInfoTooltipManager infoTooltipManager,
+                            BackupReminderTooltipManager backupReminderTooltipManager,
+                            ImportInfoTooltipManager importInfoTooltipManager,
+                            Scheduler observeOnScheduler) {
         this.fragmentActivity = activity;
         this.navigationHandler = navigationHandler;
         this.backupProvidersManager = backupProvidersManager;
@@ -52,6 +65,7 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
         this.generateInfoTooltipManager = infoTooltipManager;
         this.backupReminderTooltipManager = backupReminderTooltipManager;
         this.importInfoTooltipManager = importInfoTooltipManager;
+        this.observeOnScheduler = observeOnScheduler;
     }
 
     // Tooltips (sorted by priority):
@@ -72,7 +86,7 @@ public class ReportTooltipInteractor<T extends FragmentActivity> {
                         .startWith(ReportTooltipUiIndicator.none()),
                 getInfoStream(),
                 (errorUiIndicator, infoUiIndicator) -> errorUiIndicator.getState() != None ? errorUiIndicator : infoUiIndicator)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(observeOnScheduler);
     }
 
     private Observable<SyncErrorType> getErrorStream() {

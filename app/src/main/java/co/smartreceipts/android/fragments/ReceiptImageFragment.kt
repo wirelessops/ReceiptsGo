@@ -102,13 +102,13 @@ class ReceiptImageFragment : WBFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ReceiptImageFragmentBinding.inflate(inflater, container, false)
 
-        binding.buttonEditPhoto.setOnClickListener { view ->
+        binding.buttonEditPhoto.setOnClickListener {
             analytics.record(Events.Receipts.ReceiptImageViewEditPhoto)
             imageCroppingPreferenceStorage.setCroppingScreenWasShown(true)
             navigationHandler.navigateToCropActivity(this, receipt!!.file!!, RequestCodes.EDIT_IMAGE_CROP)
         }
 
-        binding.buttonRetakePhoto.setOnClickListener { view ->
+        binding.buttonRetakePhoto.setOnClickListener {
             analytics.record(Events.Receipts.ReceiptImageViewRetakePhoto)
             imageUri = CameraInteractionController(this@ReceiptImageFragment).retakePhoto(receipt!!)
         }

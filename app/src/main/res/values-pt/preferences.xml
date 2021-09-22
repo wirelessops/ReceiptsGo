@@ -18,6 +18,10 @@
 
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">Tema de interface</string>
+    <string name="pref_general_theme_default_entry">Sistema padrão</string>
+    <string name="pref_general_theme_light_entry">Luz</string>
+    <string name="pref_general_theme_dark_entry">Escuro</string>
 
     <string name="pref_general_trip_duration_title">Duração padrão da viagem</string>
 

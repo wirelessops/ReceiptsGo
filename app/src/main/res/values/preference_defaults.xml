@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ============= Preference General ================= -->
+    <string name="pref_general_theme_defaultValue">@string/pref_general_theme_default_entryValue</string>
     <integer name="pref_general_trip_duration_defaultValue">3</integer>
     <string name="pref_general_default_currency_defaultValue" />
     <string name="pref_general_default_date_separator_defaultValue" />

@@ -7,7 +7,6 @@ import android.net.Uri;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -24,6 +23,7 @@ import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class IntentImportInformationInteractorTest {
 
-    @InjectMocks
     IntentImportInformationInteractor interactor;
 
     @Mock
@@ -49,7 +48,7 @@ public class IntentImportInformationInteractorTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        interactor = new IntentImportInformationInteractor(intentImportProcessor, permissionStatusChecker, permissionRequester);
+        interactor = new IntentImportInformationInteractor(intentImportProcessor, permissionStatusChecker, permissionRequester, Schedulers.trampoline());
     }
 
     @Test

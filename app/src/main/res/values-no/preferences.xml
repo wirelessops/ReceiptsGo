@@ -16,6 +16,11 @@
     <string name="pref_privacy_header">Personvern</string>
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">Grensesnitt tema</string>
+    <string name="pref_general_theme_default_entry">System standard</string>
+    <string name="pref_general_theme_light_entry">Lys</string>
+    <string name="pref_general_theme_dark_entry">Mørk</string>
+
     <string name="pref_general_trip_duration_title">Standard avstand</string>
     <string name="pref_general_default_currency_title">Standard valuta</string>
     <string name="pref_general_default_date_separator_title">Standard dato skilletegn</string>

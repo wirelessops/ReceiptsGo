@@ -2,9 +2,9 @@
 <resources>
 
     <!-- Custom Styles -->
-    <style name="Widget"></style>
+    <style name="Widget" />
 
-    <style name="Widget.SmartReceipts"></style>
+    <style name="Widget.SmartReceipts" />
 
     <style name="Widget.SmartReceipts.PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/purple_selector</item>
@@ -57,12 +57,6 @@
         <!-- This color is needed here to make the SlidingPane look nice when dragging out
              The cost of doing so is overdraw... Have to see if there's a better way        -->
         <item name="android:background">@color/list_background</item>
-    </style>
-
-    <style name="Widget.SmartReceipts.RelativeLayout.Card" parent="Widget.SmartReceipts.RelativeLayout">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">@dimen/card_padding</item>
-        <item name="android:background">@drawable/card_selector</item>
     </style>
 
     <style name="Widget.SmartReceipts.ListView" parent="Widget">
@@ -229,7 +223,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_caption</item>
-        <item name="android:textColor">@color/background</item>
+        <item name="android:textColor">@color/tooltip_text</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:layout_margin">@dimen/margin_tiny</item>
         <item name="android:backgroundTint">@color/tooltip_button</item>
@@ -269,15 +263,6 @@
         <item name="tint">@android:color/white</item>
     </style>
 
-    <style name="Widget.SmartReceipts.GuideImage">
-        <item name="android:layout_width">@dimen/guide_image_size</item>
-        <item name="android:layout_height">@dimen/guide_image_size</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:tint">@color/card_image_tint</item>
-        <item name="android:layout_marginRight">@dimen/guide_image_margin</item>
-    </style>
-
     <style name="Widget.SmartReceipts.Spinner">
         <item name="android:background">@drawable/spinner_selector</item>
         <item name="android:layout_marginLeft">5dp</item>
@@ -296,12 +281,13 @@
 
     <style name="Widget.SmartReceipts.BottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/shape_rounded_dialog</item>
+        <item name="android:backgroundTint">@color/bottom_sheet_dialog_bg</item>
     </style>
 
     <style name="Widget.SmartReceipts.TextView.BottomSheetItem">
         <item name="android:layout_height">@dimen/bottom_sheet_item_height</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="drawableTint">@color/text_secondary_color</item>
+        <item name="drawableTint">@color/bottom_sheet_dialog_icon</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingStart">@dimen/padding_large</item>
         <item name="android:paddingEnd">@dimen/padding_large</item>

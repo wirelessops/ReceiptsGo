@@ -18,6 +18,10 @@
 
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">Interface-Theme</string>
+    <string name="pref_general_theme_default_entry">Systemfehler</string>
+    <string name="pref_general_theme_light_entry">Licht</string>
+    <string name="pref_general_theme_dark_entry">Dunkel</string>
 
     <string name="pref_general_trip_duration_title">Standarddauer</string>
 

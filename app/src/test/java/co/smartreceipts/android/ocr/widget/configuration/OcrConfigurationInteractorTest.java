@@ -1,12 +1,6 @@
 package co.smartreceipts.android.ocr.widget.configuration;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,40 +20,38 @@ import co.smartreceipts.core.identity.IdentityManager;
 import co.smartreceipts.core.identity.store.EmailAddress;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
 public class OcrConfigurationInteractorTest {
 
-    @InjectMocks
-    OcrConfigurationInteractor interactor;
+    private final IdentityManager identityManager = mock(IdentityManager.class);
 
-    @Mock
-    IdentityManager identityManager;
+    private final OcrPurchaseTracker ocrPurchaseTracker = mock(OcrPurchaseTracker.class);
 
-    @Mock
-    OcrPurchaseTracker ocrPurchaseTracker;
+    private final PurchaseManager purchaseManager = mock(PurchaseManager.class);
 
-    @Mock
-    PurchaseManager purchaseManager;
+    private final UserPreferenceManager userPreferenceManager = mock(UserPreferenceManager.class);
 
-    @Mock
-    UserPreferenceManager userPreferenceManager;
+    private final Analytics analytics = mock(Analytics.class);
 
-    @Mock
-    Analytics analytics;
+    private final AvailablePurchase availablePurchase = mock(AvailablePurchase.class);
 
-    @Mock
-    AvailablePurchase availablePurchase, availablePurchase2;
+    private final AvailablePurchase availablePurchase2 = mock(AvailablePurchase.class);
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+    private final OcrConfigurationInteractor interactor = new OcrConfigurationInteractor(
+            identityManager,
+            ocrPurchaseTracker,
+            purchaseManager,
+            userPreferenceManager,
+            analytics,
+            Schedulers.trampoline()
+    );
 
     @Test
     public void getEmail() {

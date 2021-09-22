@@ -3,6 +3,7 @@ package co.smartreceipts.android.ocr.widget.alert;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.google.common.base.Preconditions;
 
@@ -14,6 +15,7 @@ import co.smartreceipts.android.ocr.OcrManager;
 import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import co.smartreceipts.android.widget.mvp.BasePresenter;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @FragmentScope
@@ -21,12 +23,19 @@ public class OcrStatusAlerterPresenter extends BasePresenter<OcrStatusAlerterVie
 
     private final Context context;
     private final OcrManager ocrManager;
+    private final Scheduler observeOnScheduler;
 
     @Inject
     public OcrStatusAlerterPresenter(@NonNull OcrStatusAlerterView view, @NonNull Context context, @NonNull OcrManager ocrManager) {
+        this(view, context, ocrManager, AndroidSchedulers.mainThread());
+    }
+
+    @VisibleForTesting
+    OcrStatusAlerterPresenter(@NonNull OcrStatusAlerterView view, @NonNull Context context, @NonNull OcrManager ocrManager, @NonNull Scheduler observeOnScheduler) {
         super(view);
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.ocrManager = Preconditions.checkNotNull(ocrManager);
+        this.observeOnScheduler = observeOnScheduler;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class OcrStatusAlerterPresenter extends BasePresenter<OcrStatusAlerterVie
                     }
                 })
                 .startWith(UiIndicator.idle())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(observeOnScheduler)
                 .subscribe(view::displayOcrStatus));
     }
 

@@ -22,6 +22,7 @@ import co.smartreceipts.android.widget.tooltip.report.intent.ImportInfoTooltipMa
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.when;
 
@@ -61,7 +62,8 @@ public class ReportTooltipInteractorTest {
         MockitoAnnotations.initMocks(this);
 
         interactor = new ReportTooltipInteractor(activity, navigationHandler, backupProvidersManager,
-                analytics, generateInfoTooltipManager, backupReminderTooltipManager, importInfoTooltipManager);
+                analytics, generateInfoTooltipManager, backupReminderTooltipManager,
+                importInfoTooltipManager, Schedulers.trampoline());
 
         when(backupProvidersManager.getSyncProvider()).thenReturn(SyncProvider.GoogleDrive);
 

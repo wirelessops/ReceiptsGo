@@ -18,6 +18,10 @@
 
 
     <!-- ============== Preference General ================= -->
+    <string name="pref_general_theme_title">Tema de interfaz</string>
+    <string name="pref_general_theme_default_entry">Sistema por defecto</string>
+    <string name="pref_general_theme_light_entry">Ligero</string>
+    <string name="pref_general_theme_dark_entry">Oscuro</string>
 
     <string name="pref_general_trip_duration_title">Distancia de viaje predeterminada</string>
 

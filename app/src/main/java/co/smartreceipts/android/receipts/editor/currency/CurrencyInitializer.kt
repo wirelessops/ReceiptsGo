@@ -18,7 +18,7 @@ class CurrencyInitializer @Inject constructor() {
             try {
                 if (it.currencyCode.length == 3) {
                     Logger.debug(this, "Checking ${it.currencyCode}")
-                    val currency = CurrencyUnit.of(it.currencyCode)
+                    CurrencyUnit.of(it.currencyCode)
                 } else {
                     Logger.debug(this, "Currency code must have 3 symbols. Skipping ${it.currencyCode}")
                 }

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.core.app.TaskStackBuilder;
@@ -52,6 +53,7 @@ import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.plus.SmartReceiptsTitle;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.utils.IntentUtils;
@@ -102,6 +104,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     @Inject
     LicensesNavigator licensesNavigator;
 
+    @Inject
+    ThemeProvider themeProvider;
+
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
     private boolean isUsingHeaders;
@@ -123,6 +128,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
+
+        int theme = themeProvider.getTheme(userPreferenceManager.get(UserPreference.General.Theme));
+        AppCompatDelegate.setDefaultNightMode(theme);
 
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
@@ -276,6 +284,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     }
 
     public void configurePreferencesGeneral(UniversalPreferences universal) {
+        // Configure the theme options
+        final ListPreference themePreference = (ListPreference) universal.findPreference(R.string.pref_general_theme_key);
+        themePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof String) {
+                int theme = themeProvider.getTheme((String) newValue);
+                AppCompatDelegate.setDefaultNightMode(theme);
+            }
+            return true;
+        });
+
         // Get the date separator list
         final String defaultSeparator = userPreferenceManager.get(UserPreference.General.DateSeparator);
         final CharSequence[] dateSeparators = getDateSeparatorOptions(userPreferenceManager);

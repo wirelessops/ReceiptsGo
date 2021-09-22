@@ -319,7 +319,7 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
     }
 
     private void setActiveBottomNavigationPosition(int position) {
-        final int colorActive = requireContext().getResources().getColor(R.color.smart_receipts_colorPrimaryDark);
+        final int colorActive = requireContext().getResources().getColor(R.color.navigation_active);
         final int colorInactive = requireContext().getResources().getColor(R.color.navigation_inactive);
 
         for (int i = 0; i < bottomNavigationIcons.size(); i++) {
