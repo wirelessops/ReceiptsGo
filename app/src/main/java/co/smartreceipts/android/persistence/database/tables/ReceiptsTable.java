@@ -162,9 +162,7 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
 
         if (oldVersion <= 6) { // Fix the database to replace absolute paths with relative ones
 
-            Cursor receiptsCursor = null;
-            try {
-                receiptsCursor = db.query(ReceiptsTable.TABLE_NAME, new String[]{ReceiptsTable.COLUMN_ID, ReceiptsTable.COLUMN_PARENT, ReceiptsTable.COLUMN_PATH}, null, null, null, null, null);
+            try (Cursor receiptsCursor = db.query(ReceiptsTable.TABLE_NAME, new String[]{ReceiptsTable.COLUMN_ID, ReceiptsTable.COLUMN_PARENT, ReceiptsTable.COLUMN_PATH}, null, null, null, null, null)) {
                 if (receiptsCursor != null && receiptsCursor.moveToFirst()) {
                     final int idIdx = receiptsCursor.getColumnIndex(ReceiptsTable.COLUMN_ID);
                     final int parentIdx = receiptsCursor.getColumnIndex(ReceiptsTable.COLUMN_PARENT);
@@ -191,10 +189,6 @@ public class ReceiptsTable extends TripForeignKeyAbstractSqlTable<Receipt> {
                         }
                     }
                     while (receiptsCursor.moveToNext());
-                }
-            } finally {
-                if (receiptsCursor != null) {
-                    receiptsCursor.close();
                 }
             }
         }

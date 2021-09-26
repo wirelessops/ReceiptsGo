@@ -114,7 +114,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
     private Uri imageUri;
 
-    private ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
+    private final ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
 
     private boolean showDateHeaders;
     private ReceiptsHeaderItemDecoration headerItemDecoration;

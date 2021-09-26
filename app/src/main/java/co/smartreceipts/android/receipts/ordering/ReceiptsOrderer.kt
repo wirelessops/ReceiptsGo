@@ -20,6 +20,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.sql.Date
 import javax.inject.Inject
+import kotlin.math.min
 
 /**
  * Manages the ordering of receipts, helping us to ensure that they always maintain a consistent ordering.
@@ -55,7 +56,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
          * since the unix epoch multiplied by [DAYS_TO_ORDER_FACTOR]
          */
         fun getDefaultCustomOrderId(date: Date) : Long {
-            return DateUtils.getDays(date) * ReceiptsOrderer.DAYS_TO_ORDER_FACTOR
+            return DateUtils.getDays(date) * DAYS_TO_ORDER_FACTOR
         }
 
         /**
@@ -98,7 +99,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                         return@flatMapObservable Observable.empty<List<Trip>>()
                     } else {
                         return@flatMapObservable tripTableController.get().toObservable()
-                                .doOnNext { _ ->
+                                .doOnNext {
                                     Logger.info(this, "Migrating all receipts to use the correct custom_order_id. Version {}", previousMigration)
                                 }
                                 .flatMap {
@@ -107,8 +108,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                                 .flatMap { trip ->
                                     return@flatMap receiptTableController.get(trip)
                                             .flatMapObservable { receipts ->
-                                                val orderingType = getOrderingType(receipts)
-                                                when (orderingType) {
+                                                when (getOrderingType(receipts)) {
                                                     None, Legacy -> reorderReceiptsByDate(receipts)
                                                     else -> fixPartialCustomIdOrdering(receipts)
                                                 }
@@ -378,7 +378,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
      */
     private fun getDatabaseOperationMetadata(list: List<Pair<Receipt, Receipt?>>, item: Any) : DatabaseOperationMetadata {
         // Find the index as either the next or "last" item
-        val nextItemIndex = Math.min(list.indexOf(item) + 1, list.size - 1)
+        val nextItemIndex = min(list.indexOf(item) + 1, list.size - 1)
         when {
             list.last() == item -> {
                 // As the last item to update in this list, we'll update all listeners when it's done (ie non-Silent operation)
@@ -414,17 +414,21 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
     private fun getOrderingType(receipts: List<Receipt>): OrderingType {
         var isPartiallyOrdered = false
         receipts.forEach {receipt ->
-            if (receipt.customOrderId == 0L) {
-                return OrderingType.None
-            } else if (receipt.customOrderId / DAYS_TO_ORDER_FACTOR > 20000) {
-                return OrderingType.Legacy
-            } else if (receipt.customOrderId.rem(DAYS_TO_ORDER_FACTOR) == PARTIAL_ORDERING_REMAINDER) {
-                // Note: We don't exist early on this condition. None/Legacy take precedence
-                isPartiallyOrdered = true
+            when {
+                receipt.customOrderId == 0L -> {
+                    return None
+                }
+                receipt.customOrderId / DAYS_TO_ORDER_FACTOR > 20000 -> {
+                    return Legacy
+                }
+                receipt.customOrderId.rem(DAYS_TO_ORDER_FACTOR) == PARTIAL_ORDERING_REMAINDER -> {
+                    // Note: We don't exist early on this condition. None/Legacy take precedence
+                    isPartiallyOrdered = true
+                }
             }
         }
         return if (isPartiallyOrdered) {
-            OrderingType.PartiallyOrdered
+            PartiallyOrdered
         } else {
             Ordered
         }

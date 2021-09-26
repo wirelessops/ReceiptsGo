@@ -79,9 +79,7 @@ public class TripsTable extends AbstractSqlTable<Trip> {
         super.onUpgrade(db, oldVersion, newVersion, customizer);
 
         if (oldVersion <= 6) { // Fix the database to replace absolute paths with relative ones
-            Cursor tripsCursor = null;
-            try {
-                tripsCursor = db.query(TripsTable.TABLE_NAME, new String[]{TripsTable.COLUMN_NAME}, null, null, null, null, null);
+            try (Cursor tripsCursor = db.query(TripsTable.TABLE_NAME, new String[]{TripsTable.COLUMN_NAME}, null, null, null, null, null)) {
                 if (tripsCursor != null && tripsCursor.moveToFirst()) {
                     final int nameIndex = tripsCursor.getColumnIndex(TripsTable.COLUMN_NAME);
                     do {
@@ -100,10 +98,6 @@ public class TripsTable extends AbstractSqlTable<Trip> {
                         }
                     }
                     while (tripsCursor.moveToNext());
-                }
-            } finally {
-                if (tripsCursor != null) {
-                    tripsCursor.close();
                 }
             }
         }

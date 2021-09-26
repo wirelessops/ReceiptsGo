@@ -540,7 +540,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_save, menu);
         menu.findItem(R.id.menu_main_search).setVisible(false);
     }
@@ -778,9 +778,8 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
     @UiThread
     @Override
     public Consumer<? super CurrencyUnit> displayBaseCurrency() {
-        return (Consumer<CurrencyUnit>) priceCurrency -> {
-            binding.receiptExchangeBaseCurrency.setText(priceCurrency.getCode());
-        };
+        return (Consumer<CurrencyUnit>) priceCurrency ->
+                binding.receiptExchangeBaseCurrency.setText(priceCurrency.getCode());
     }
 
     @NonNull
