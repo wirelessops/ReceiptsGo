@@ -144,7 +144,7 @@ public class ReceiptsAdapter extends DraggableCardsAdapter<Receipt> implements R
 
     @Override
     public boolean onCheckCanStartDrag(AbstractDraggableItemViewHolder holder, int position, int x, int y) {
-        return getItemViewType(position) == ReceiptsListItem.TYPE_RECEIPT && items.size() > 1;
+        return false;
     }
 
     @Override
