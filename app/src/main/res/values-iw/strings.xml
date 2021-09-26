@@ -444,6 +444,8 @@
 
     <string name="receipt_dialog_action_delete">מחק קבלה</string>
     <string name="receipt_dialog_action_move_copy">העבר/העתק</string>
+    <string name="receipt_dialog_action_swap_up">החלף למעלה</string>
+    <string name="receipt_dialog_action_swap_down">החלף למטה</string>
     <string name="receipt_dialog_action_remove_attachment">מחק קובץ מצורף</string>
 
     <string name="dialog_attachment_text">לחץ על קבלה קיימת כדי להוסיף אליה את %s </string>

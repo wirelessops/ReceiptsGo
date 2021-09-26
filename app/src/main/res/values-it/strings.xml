@@ -445,6 +445,8 @@
 
     <string name="receipt_dialog_action_delete">Elimina Ricevuta</string>
     <string name="receipt_dialog_action_move_copy">Sposta/Copia</string>
+    <string name="receipt_dialog_action_swap_up">Scambia su</string>
+    <string name="receipt_dialog_action_swap_down">Scambia giù</string>
     <string name="receipt_dialog_action_remove_attachment">Elimina allegato</string>
 
     <string name="dialog_attachment_text">Toccare su una ricevuta per aggiungere questo %s ad essa</string>

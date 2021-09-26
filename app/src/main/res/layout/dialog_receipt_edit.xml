@@ -25,6 +25,18 @@
         app:drawableStartCompat="@drawable/ic_move" />
 
     <TextView
+        android:id="@+id/receipt_swap_up"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:text="@string/receipt_dialog_action_swap_up"
+        app:drawableStartCompat="@drawable/ic_swap_vert_24dp" />
+
+    <TextView
+        android:id="@+id/receipt_swap_down"
+        style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
+        android:text="@string/receipt_dialog_action_swap_down"
+        app:drawableStartCompat="@drawable/ic_swap_vert_24dp" />
+
+    <TextView
         android:id="@+id/receipt_delete_attachment"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem"
         android:text="@string/receipt_dialog_action_remove_attachment"

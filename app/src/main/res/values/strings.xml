@@ -446,6 +446,8 @@
 
     <string name="receipt_dialog_action_delete">Delete Receipt</string>
     <string name="receipt_dialog_action_move_copy">Move/Copy</string>
+    <string name="receipt_dialog_action_swap_up">Swap Up</string>
+    <string name="receipt_dialog_action_swap_down">Swap Down</string>
     <string name="receipt_dialog_action_remove_attachment">Remove Attachment</string>
 
     <string name="dialog_attachment_text">Tap on an existing receipt to add this %s to it</string>

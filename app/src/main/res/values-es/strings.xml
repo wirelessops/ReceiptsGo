@@ -434,6 +434,8 @@
 
     <string name="receipt_dialog_action_delete">Eliminar recibo</string>
     <string name="receipt_dialog_action_move_copy">Mover/copiar</string>
+    <string name="receipt_dialog_action_swap_up">Intercambiar</string>
+    <string name="receipt_dialog_action_swap_down">Cambiar hacia abajo</string>
     <string name="receipt_dialog_action_remove_attachment">Eliminar archivo adjunto</string>
 
     <string name="dialog_attachment_text">Toca un recibo existente para añadirle este %s</string>

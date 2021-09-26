@@ -8,7 +8,7 @@ import androidx.core.os.bundleOf
 import co.smartreceipts.android.databinding.DialogReceiptEditBinding
 import co.smartreceipts.android.widget.dialog.BaseBottomSheetDialog
 
-enum class ReceiptEditOption { EDIT, COPY_MOVE, DELETE_ATTACHMENT, DELETE }
+enum class ReceiptEditOption { EDIT, COPY_MOVE, SWAP_UP, SWAP_DOWN, DELETE_ATTACHMENT, DELETE }
 
 class ReceiptEditOptionsDialog : BaseBottomSheetDialog() {
 
@@ -48,6 +48,8 @@ class ReceiptEditOptionsDialog : BaseBottomSheetDialog() {
 
         binding.receiptEdit.setOnClickListener { setResult(ReceiptEditOption.EDIT) }
         binding.receiptMoveCopy.setOnClickListener { setResult(ReceiptEditOption.COPY_MOVE) }
+        binding.receiptSwapUp.setOnClickListener { setResult(ReceiptEditOption.SWAP_UP) }
+        binding.receiptSwapDown.setOnClickListener { setResult(ReceiptEditOption.SWAP_DOWN) }
         binding.receiptDelete.setOnClickListener { setResult(ReceiptEditOption.DELETE) }
 
         if (!hasAttachment) {
