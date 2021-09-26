@@ -28,7 +28,7 @@ import kotlin.math.min
  * mechanism.
  *
  * This effectively works by using the (number of days * 1000) as the base index for a given receipt. Whenever
- * a receipt position is changed to that of a new receipt group, we grab it's assumed day count from the custom
+ * a receipt position is changed to that of a new receipt group, we grab its assumed day count from the custom
  * order id (ie "fake days") to ensure that we can track all receipts within this group.
  *
  * More detailed [Receipt.customOrderId] formation [scheme](https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
@@ -74,7 +74,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
             var customOrderId = getDefaultCustomOrderId(receipt.date)
             val numberOfDaysForReceipt = DateUtils.getDays(receipt.date)
             existingReceipts.forEach {
-                // Ignore situations in which the receipt we're check is in this list
+                // Ignore situations in which the receipt we're checking is in this list
                 if (receipt != it) {
                     // Here we attempt to find all receipts in the current custom order id "date", so we can place this one at the end
                     // Since all custom order ids are based off the closest date (plus an offset number), we can calculate the days from this
@@ -165,7 +165,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
                     var fromPositionCount = 0
                     for (i in mutableReceiptsList.indices.reversed()) {
                         val receipt = mutableReceiptsList[i]
-                        // Whenever the receipt matches the "fake days" of the "to" position, update it's custom_order_id
+                        // Whenever the receipt matches the "fake days" of the "to" position, update its custom_order_id
                         if (receipt.customOrderId / DAYS_TO_ORDER_FACTOR == toPositionFakeDays) {
                             val updated = ReceiptBuilderFactory(receipt).setCustomOrderId(toPositionFakeDays * DAYS_TO_ORDER_FACTOR + toPositionCount).build()
                             toPositionCount++
@@ -285,7 +285,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
     }
 
     /**
-     * Attempts to fix a potential bug that is the result of the [PartiallyOrdered] state that receipts can existing
+     * Attempts to fix a potential bug that is the result of the [PartiallyOrdered] state that receipts can exist
      * within due to a bug with how receipts could be inserted. We correct this by finding receipts that are not
      * ordered (i.e. the custom order id ends with '999') and using information about the last local modification time
      * to properly order these items. This operates as follows:
@@ -293,8 +293,8 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
      * 1. We pass through all receipts and group them based off of the custom order id "interval"
      *    (i.e. customer order id / [DAYS_TO_ORDER_FACTOR])
      * 2. For that group on the same day, identify if any end with '999'
-     * 3. If multiple end in '999', use the last local modification time to properly re-order these, so that the ones
-     *    that the ones that were modified more recently have a larger custom order id
+     * 3. If multiple end in '999', use the last local modification time to properly re-order these,
+     *    so that the ones that were modified more recently have a larger custom order id
      *
      * Once we've identified all the incorrect ones, we will update each of these
      *
@@ -405,7 +405,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
      * Determines which [OrderingType] the receipts follow for a given set of receipts in a single trip.
      * We assume that if a single receipt uses the [OrderingType.None] approach, they all use this.
      * Similarly, we assume that if a single receipt uses the [OrderingType.Legacy] approach, they all use
-     * this. In the former case, we assume the custom order id is 0 and we assume it's large date number in
+     * this. In the former case, we assume the custom order id is 0 and we assume its large date number is
      * the latter
      *
      * @param receipts the [List] of [Receipt] items in a given trip to check
@@ -450,7 +450,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         None,
 
         /**
-         * The legacy approach is what occurred when we set the custom order id to the receipts date, allowing each to operate independently
+         * The legacy approach is what occurred when we set the custom order id to the receipt's date, allowing each to operate independently
          */
         Legacy,
 
@@ -464,7 +464,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         /**
          * The current approach uses a mix of the receipt date and count of receipts within that day (https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
          *
-         * Practically speaking, we multiple the number of days since the Unix epoch multiplied by 1000 and add the current position within that day
+         * Practically speaking, we take the number of days since the Unix epoch multiplied by 1000 and add the current position within that day
          */
         Ordered
     }
