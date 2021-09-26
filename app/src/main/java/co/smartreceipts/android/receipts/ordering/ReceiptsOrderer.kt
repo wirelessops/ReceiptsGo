@@ -94,8 +94,8 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         orderingMigrationStore.getMigrationVersion()
                 .subscribeOn(backgroundScheduler)
                 .flatMapObservable { previousMigration ->
-                    if (previousMigration == ReceiptsOrderingMigrationStore.MigrationVersion.V2) {
-                        Logger.info(this, "Ordering migration to v2 previously occurred. Ignoring...")
+                    if (previousMigration == ReceiptsOrderingMigrationStore.MigrationVersion.V3) {
+                        Logger.info(this, "Ordering migration to v3 previously occurred. Ignoring...")
                         return@flatMapObservable Observable.empty<List<Trip>>()
                     } else {
                         return@flatMapObservable tripTableController.get().toObservable()
@@ -462,7 +462,7 @@ class ReceiptsOrderer constructor(private val tripTableController: TripTableCont
         PartiallyOrdered,
 
         /**
-         * The current approach uses a mix of the receipt date and count of receipts within that day (https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
+         * This approach uses a mix of the receipt date and count of receipts within that day (https://s3.amazonaws.com/smartreceipts/Diagrams/SmartReceiptsCustomSortingOrderDesign.png)
          *
          * Practically speaking, we take the number of days since the Unix epoch multiplied by 1000 and add the current position within that day
          */
