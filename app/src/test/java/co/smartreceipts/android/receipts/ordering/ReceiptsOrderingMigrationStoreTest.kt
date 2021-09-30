@@ -45,10 +45,10 @@ class ReceiptsOrderingMigrationStoreTest {
                 .assertNoErrors()
                 .assertComplete()
 
-        // Confirm that we use 'V2' post migration
+        // Confirm that we use 'V3' post migration
         migrationStore.setOrderingMigrationHasOccurred(true)
         migrationStore.getMigrationVersion().test()
-                .assertValue(ReceiptsOrderingMigrationStore.MigrationVersion.V2)
+                .assertValue(ReceiptsOrderingMigrationStore.MigrationVersion.V3)
                 .assertNoErrors()
                 .assertComplete()
     }
@@ -62,10 +62,17 @@ class ReceiptsOrderingMigrationStoreTest {
                 .assertNoErrors()
                 .assertComplete()
 
-        // Confirm that we use 'V2' post migration
+        // Manually mark the v2 version
+        preferences.edit().putBoolean("receipt_ordering_migration_has_occurred_v2_b", true).apply()
+        migrationStore.getMigrationVersion().test()
+            .assertValue(ReceiptsOrderingMigrationStore.MigrationVersion.V2)
+            .assertNoErrors()
+            .assertComplete()
+
+        // Confirm that we use 'V3' post migration
         migrationStore.setOrderingMigrationHasOccurred(true)
         migrationStore.getMigrationVersion().test()
-                .assertValue(ReceiptsOrderingMigrationStore.MigrationVersion.V2)
+                .assertValue(ReceiptsOrderingMigrationStore.MigrationVersion.V3)
                 .assertNoErrors()
                 .assertComplete()
     }
