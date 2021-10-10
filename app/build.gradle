@@ -155,6 +155,7 @@ android {
         implementation "androidx.multidex:multidex:$MULTIDEX_VERSION"
         implementation "androidx.recyclerview:recyclerview:$RECYCLERVIEW_VERSION"
         implementation "com.google.android.material:material:$MATERIAL_DESIGN_VERSION"
+        implementation "com.android.billingclient:billing:$BILLING_VERSION"
 
         implementation("com.google.apis:google-api-services-drive:$GOOGLE_DRIVE_API_VERSION") {
             exclude group: 'org.apache.httpcomponents'
