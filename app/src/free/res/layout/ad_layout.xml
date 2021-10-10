@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ads_layout"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ads_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="center|bottom">
 
     <!-- Ads are added programmatically here -->
-    <Button style="@style/Widget.SmartReceipts.Button"
+    <Button
         android:id="@+id/adView_upsell"
+        style="@style/Widget.SmartReceipts.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/remove_ad_hint_height"
+        android:layout_gravity="center|bottom"
         android:text="@string/missing_ad_suggest_removal_upsell"
         android:textColor="@color/text_on_primary_color"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>
