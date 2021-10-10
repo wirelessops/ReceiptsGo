@@ -331,6 +331,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
     }
 
     @Override
+    public void onPurchasePending() {
+        runOnUiThread(() -> Toast.makeText(this, R.string.purchase_pending, Toast.LENGTH_LONG).show());
+    }
+
+    @Override
     public AndroidInjector<Object> androidInjector() {
         return fragmentInjector;
     }

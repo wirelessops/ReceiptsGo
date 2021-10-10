@@ -127,6 +127,11 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
 
     }
 
+    @Override
+    public void onPurchasePending() {
+        /*no-op*/
+    }
+
     /**
      * @return the remaining Ocr scan count that is allowed for this user. Please note that is
      * this not the authority for this (ie it's not the server), this may not be fully accurate, so we

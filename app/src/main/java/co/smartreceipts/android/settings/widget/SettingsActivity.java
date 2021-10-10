@@ -541,6 +541,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         runOnUiThread(() -> Toast.makeText(SettingsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show());
     }
 
+    @Override
+    public void onPurchasePending() {
+        runOnUiThread(() -> Toast.makeText(this, R.string.purchase_pending, Toast.LENGTH_LONG).show());
+    }
+
     private String getAppVersion() {
         try {
             return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

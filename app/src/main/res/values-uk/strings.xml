@@ -496,6 +496,7 @@
     <string name="purchase_succeeded">Покупка вдало завершена</string>
     <string name="purchase_unavailable">Не вдалося отримати інформацію про покупку</string>
     <string name="purchase_failed">Не вдалося завершити покупку</string>
+    <string name="purchase_pending">Покупка знаходиться у стані очікування</string>
 
     <!-- ================== App Rating ==================== -->
     <string name="rating_tooltip_text">Подобаються Смарт Чеки?</string>
