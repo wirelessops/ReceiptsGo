@@ -1,5 +1,5 @@
-package co.smartreceipts.android.purchases.model;
+package co.smartreceipts.android.purchases.model
 
-public enum PurchaseFamily {
+enum class PurchaseFamily {
     SmartReceiptsPlus, Ocr
 }

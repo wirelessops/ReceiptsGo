@@ -1,30 +1,23 @@
-package co.smartreceipts.android.purchases.model;
+package co.smartreceipts.android.purchases.model
 
-import androidx.annotation.NonNull;
-
-public interface ManagedProduct {
+interface ManagedProduct {
+    /**
+     * @return the [InAppPurchase] enum that keys this managed product type
+     */
+    val inAppPurchase: InAppPurchase
 
     /**
-     * @return the {@link InAppPurchase} enum that keys this managed product type
+     * @return the [String] purchase token provided by Google for this product
      */
-    @NonNull
-    InAppPurchase getInAppPurchase();
+    val purchaseToken: String
 
     /**
-     * @return the {@link String} purchase token provided by Google for this product
+     * @return the purchase data json [String] provided by Google for this purchase
      */
-    @NonNull
-    String getPurchaseToken();
+    val purchaseData: String
 
     /**
-     * @return the purchase data json {@link String} provided by Google for this purchase
+     * @return the [String] data signature provided by Google for this product
      */
-    @NonNull
-    String getPurchaseData();
-
-    /**
-     * @return the {@link String} data signature provided by Google for this product
-     */
-    @NonNull
-    String getInAppDataSignature();
+    val inAppDataSignature: String
 }
