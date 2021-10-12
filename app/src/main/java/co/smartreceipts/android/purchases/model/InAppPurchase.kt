@@ -25,10 +25,8 @@ enum class InAppPurchase(
 ) {
     // Note: Smart Receipts Plus users also get some free OCR scans
     SmartReceiptsPlus(
-        Subscription::class.java,
-        "plus_sku_4",
-        HashSet(listOf("pro_sku_3", "plus_sku_5")),
-        HashSet(listOf(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr))
+        Subscription::class.java, "plus_sku_4", hashSetOf("pro_sku_3", "plus_sku_5"),
+        hashSetOf(PurchaseFamily.SmartReceiptsPlus, PurchaseFamily.Ocr)
     ),
     OcrScans10(ConsumablePurchase::class.java, "ocr_purchase_10", PurchaseFamily.Ocr),
     OcrScans50(ConsumablePurchase::class.java, "ocr_purchase_1", PurchaseFamily.Ocr),
@@ -66,10 +64,9 @@ enum class InAppPurchase(
      * @return the [String] of the Google product type (ie "inapp" or "subs")
      */
     val productType: String
-        get() = if (ConsumablePurchase::class.java == type) {
-            BillingClient.SkuType.INAPP
-        } else {
-            BillingClient.SkuType.SUBS
+        get() = when (type) {
+            ConsumablePurchase::class.java -> BillingClient.SkuType.INAPP
+            else -> BillingClient.SkuType.SUBS
         }
 
     companion object {
