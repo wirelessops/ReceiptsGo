@@ -77,14 +77,8 @@ class BillingClientManager @Inject constructor(
 
     fun removePurchaseEventListener(listener: PurchaseEventsListener) = listeners.remove(listener)
 
-
-    fun consumePurchase(purchaseToken: String, consumeResponseListener: ConsumeResponseListener) {
-        val consumeParams = ConsumeParams
-            .newBuilder()
-            .setPurchaseToken(purchaseToken)
-            .build()
-
-        billingClient.consumeAsync(consumeParams, consumeResponseListener)
+    fun consumePurchase(purchase: ConsumablePurchase) : Completable {
+        return billingClient.consumePurchase(purchase.purchaseToken)
     }
 
     fun querySkuDetails(purchase: InAppPurchase): Single<SkuDetails> {

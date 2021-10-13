@@ -1,10 +1,8 @@
 package co.smartreceipts.android.purchases
 
 import co.smartreceipts.analytics.log.Logger
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.SkuDetails
-import com.android.billingclient.api.SkuDetailsParams
+import com.android.billingclient.api.*
+import io.reactivex.Completable
 import io.reactivex.Single
 
 fun BillingClient.queryPurchasesAsSingle(
@@ -57,6 +55,22 @@ fun BillingClient.querySkuDetailsAsSingle(
                         BillingClientException(responseCode, billingResult.debugMessage)
                     )
                 }
+            }
+        }
+    }
+}
+
+fun BillingClient.consumePurchase(purchaseToken: String): Completable {
+    val consumeParams = ConsumeParams
+        .newBuilder()
+        .setPurchaseToken(purchaseToken)
+        .build()
+
+    return Completable.create { emitter ->
+        consumeAsync(consumeParams) { billingResult, token ->
+            when (val responseCode = billingResult.responseCode) {
+                BillingClient.BillingResponseCode.OK -> emitter.onComplete()
+                else -> emitter.onError(BillingClientException(responseCode, billingResult.debugMessage))
             }
         }
     }

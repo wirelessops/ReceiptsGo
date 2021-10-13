@@ -139,7 +139,8 @@ public class PurchaseManager {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.ShowPurchaseIntent).addDataPoint(new DataPoint("sku", skuDetails.getSku())).addDataPoint(new DataPoint("source", purchaseSource)));
 
         billingClientManager.initiatePurchase(skuDetails, activityReference.get().get())
-                .subscribe(() -> { }, throwable -> {
+                .subscribe(() -> {
+                }, throwable -> {
                 });
     }
 
@@ -149,7 +150,9 @@ public class PurchaseManager {
 
         billingClientManager.querySkuDetails(inAppPurchase)
                 .flatMapCompletable(skuDetails -> billingClientManager.initiatePurchase(skuDetails, activityReference.get().get()))
-                .subscribe(() -> {}, throwable -> {});
+                .subscribe(() -> {
+                }, throwable -> {
+                });
     }
 
 
@@ -162,19 +165,13 @@ public class PurchaseManager {
     @NonNull
     public Completable consumePurchase(@NonNull final ConsumablePurchase consumablePurchase) {
         Logger.info(PurchaseManager.this, "Consuming the purchase of {}", consumablePurchase.getInAppPurchase());
+        String sku = consumablePurchase.getInAppPurchase().getSku();
 
-        return Completable.create(emitter ->
-                billingClientManager.consumePurchase(consumablePurchase.getPurchaseToken(), (billingResult, token) -> {
-                    int responseCode = billingResult.getResponseCode();
-                    if (responseCode == BILLING_RESPONSE_CODE_OK) {
-                        Logger.info(PurchaseManager.this, "Successfully consumed the purchase of {}", consumablePurchase.getInAppPurchase());
-                        emitter.onComplete();
-                    } else {
-                        Logger.warn(PurchaseManager.this, "Received an unexpected response code, {}, for the consumption of this product.", responseCode);
-                        emitter.onError(new Exception("Received an unexpected response code for the consumption of this product."));
-                    }
-                })
-        );
+        return billingClientManager.consumePurchase(consumablePurchase)
+                .doOnError(throwable ->
+                        Logger.warn(this,
+                                "Received an unexpected response code for the consumption of this product {}", sku, throwable))
+                .doOnComplete(() -> Logger.info(PurchaseManager.this, "Successfully consumed the purchase of {}", sku));
     }
 
 }
