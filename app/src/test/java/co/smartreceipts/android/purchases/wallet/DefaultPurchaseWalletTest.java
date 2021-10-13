@@ -1,5 +1,12 @@
 package co.smartreceipts.android.purchases.wallet;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -22,13 +29,6 @@ import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.model.Subscription;
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription;
 import dagger.Lazy;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class DefaultPurchaseWalletTest {
