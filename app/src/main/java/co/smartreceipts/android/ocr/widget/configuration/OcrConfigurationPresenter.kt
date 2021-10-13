@@ -1,9 +1,9 @@
 package co.smartreceipts.android.ocr.widget.configuration
 
-import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
+import co.smartreceipts.core.di.scopes.FragmentScope
 import javax.inject.Inject
 
 @FragmentScope
@@ -49,11 +49,11 @@ constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) 
         // Track user purchase clicks
         compositeDisposable.add(view.availablePurchaseClicks
             .doOnNext { Logger.info(this, "User clicked to buy purchase: {}.", it) }
-            .subscribe { availablePurchase ->
+            .subscribe { skuDetails ->
                 if (interactor.isUserLoggedIn) {
-                    interactor.startOcrPurchase(availablePurchase.getInAppPurchase())
+                    interactor.startOcrPurchase(skuDetails)
                 } else {
-                    view.delayPurchaseAndPresentNeedToLogin(availablePurchase.getInAppPurchase()!!.sku)
+                    view.delayPurchaseAndPresentNeedToLogin(skuDetails.sku)
                 }
             })
 

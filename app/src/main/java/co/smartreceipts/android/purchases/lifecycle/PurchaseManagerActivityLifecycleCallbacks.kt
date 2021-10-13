@@ -1,54 +1,26 @@
-package co.smartreceipts.android.purchases.lifecycle;
+package co.smartreceipts.android.purchases.lifecycle
 
-import android.app.Activity;
-import android.app.Application;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
+import android.app.Activity
+import android.app.Application.ActivityLifecycleCallbacks
+import android.os.Bundle
+import co.smartreceipts.android.purchases.PurchaseManager
 
-import com.google.common.base.Preconditions;
+class PurchaseManagerActivityLifecycleCallbacks(private val purchaseManager: PurchaseManager) :
+    ActivityLifecycleCallbacks {
 
-import co.smartreceipts.android.purchases.PurchaseManager;
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {}
 
-public class PurchaseManagerActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
+    override fun onActivityStarted(activity: Activity) {}
 
-    private final PurchaseManager purchaseManager;
-
-    public PurchaseManagerActivityLifecycleCallbacks(@NonNull PurchaseManager purchaseManager) {
-        this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
+    override fun onActivityResumed(activity: Activity) {
+        purchaseManager.onActivityResumed(activity)
     }
 
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    override fun onActivityPaused(activity: Activity) {}
 
-    }
+    override fun onActivityStopped(activity: Activity) {}
 
-    @Override
-    public void onActivityStarted(Activity activity) {
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-        this.purchaseManager.onActivityResumed(activity);
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-        this.purchaseManager.onActivityPaused();
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-
-    }
+    override fun onActivityDestroyed(activity: Activity) {}
 }

@@ -199,7 +199,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     protected void onStart() {
         super.onStart();
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
+        compositeDisposable.add(purchaseManager.getAllAvailablePurchases()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(inAppPurchases -> {
                     availablePurchases = inAppPurchases;
@@ -248,13 +248,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             return true;
         } else {
             return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!purchaseManager.onActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

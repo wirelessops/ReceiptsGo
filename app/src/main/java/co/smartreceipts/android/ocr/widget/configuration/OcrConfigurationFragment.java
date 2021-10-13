@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.android.billingclient.api.SkuDetails;
 import com.jakewharton.rxbinding3.widget.RxCompoundButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,6 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.databinding.OcrConfigurationFragmentBinding;
-import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.core.identity.store.EmailAddress;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
@@ -185,7 +185,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     }
 
     @Override
-    public void present(@NonNull List<AvailablePurchase> availablePurchases) {
+    public void present(@NonNull List<SkuDetails> availablePurchases) {
         ocrPurchasesListAdapter.setAvailablePurchases(availablePurchases);
     }
 
@@ -210,7 +210,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @NonNull
     @Override
-    public Observable<AvailablePurchase> getAvailablePurchaseClicks() {
+    public Observable<SkuDetails> getAvailablePurchaseClicks() {
         return ocrPurchasesListAdapter.getAvailablePurchaseClicks();
     }
 

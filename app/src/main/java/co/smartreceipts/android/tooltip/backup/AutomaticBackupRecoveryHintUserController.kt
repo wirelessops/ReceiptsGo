@@ -47,7 +47,6 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
                 .map {
                     return@map purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
                 }
-                .firstOrError()
 
         // Combine if an interaction has occurred (don't show) and if the user has plus (only show if they do)
         return Single.zip(userOwnsSmartReceiptsPlusSingle, store.hasUserInteractionOccurred(), BiFunction<Boolean, Boolean, Boolean> { userOwnsPlus, userInteractionHasOccurred ->

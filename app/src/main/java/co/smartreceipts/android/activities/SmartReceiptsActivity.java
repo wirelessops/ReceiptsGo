@@ -159,7 +159,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
         adPresenter.onResume();
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
+        compositeDisposable.add(purchaseManager.getAllAvailablePurchases()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(inAppPurchases -> {
                     availablePurchases = inAppPurchases;
@@ -183,10 +183,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                         break;
                 }
             }
-        } else if (!purchaseManager.onActivityResult(requestCode, resultCode, data)) {
-            if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
-                super.onActivityResult(requestCode, resultCode, data);
-            }
+        } else if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
