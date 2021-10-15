@@ -8,7 +8,7 @@ import co.smartreceipts.android.purchases.PurchaseManager
 class PurchaseManagerActivityLifecycleCallbacks(private val purchaseManager: PurchaseManager) :
     ActivityLifecycleCallbacks {
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {}
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 
     override fun onActivityStarted(activity: Activity) {}
 

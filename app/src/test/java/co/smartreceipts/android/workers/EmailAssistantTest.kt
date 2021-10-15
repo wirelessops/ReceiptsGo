@@ -254,13 +254,13 @@ class EmailAssistantTest {
 
         val intent = (result as EmailResult.Success).intent
 
-        val ccExtra = intent.getStringArrayExtra(Intent.EXTRA_CC)
+        val ccExtra = intent.getStringArrayExtra(Intent.EXTRA_CC)!!
         assert(ccExtra.size == 1 && ccExtra[0] == cc)
 
-        val bccExtra = intent.getStringArrayExtra(Intent.EXTRA_BCC)
+        val bccExtra = intent.getStringArrayExtra(Intent.EXTRA_BCC)!!
         assert(bccExtra.size == 1 && bccExtra[0] == bcc)
 
-        val toExtra = intent.getStringArrayExtra(Intent.EXTRA_EMAIL)
+        val toExtra = intent.getStringArrayExtra(Intent.EXTRA_EMAIL)!!
         assert(toExtra.size == 1 && toExtra[0] == to)
 
         val subjectExtra = intent.getStringExtra(Intent.EXTRA_SUBJECT)
