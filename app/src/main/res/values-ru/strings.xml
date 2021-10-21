@@ -436,8 +436,8 @@
 
     <string name="receipt_dialog_action_delete">Удалить чек</string>
     <string name="receipt_dialog_action_move_copy">Переместить/Копировать</string>
-    <string name="receipt_dialog_action_swap_up">Поменять местами вверх</string>
-    <string name="receipt_dialog_action_swap_down">Своп вниз</string>
+    <string name="receipt_dialog_action_swap_up">Поменять местами с верхним</string>
+    <string name="receipt_dialog_action_swap_down">Поменять местами с нижним</string>
     <string name="receipt_dialog_action_remove_attachment">Удалить вложение</string>
 
     <string name="dialog_attachment_text">Нажмите на существующий чек, чтобы добавить этот %s к нему</string>
