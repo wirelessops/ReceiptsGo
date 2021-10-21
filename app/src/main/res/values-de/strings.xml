@@ -434,6 +434,8 @@
 
     <string name="receipt_dialog_action_delete">Beleg löschen</string>
     <string name="receipt_dialog_action_move_copy">Verschieben / Kopieren</string>
+    <string name="receipt_dialog_action_swap_up">Tauschen</string>
+    <string name="receipt_dialog_action_swap_down">Nach unten tauschen</string>
     <string name="receipt_dialog_action_remove_attachment">Anhang entfernen</string>
 
     <string name="dialog_attachment_text">Tippen Sie auf einen bestehenden Beleg um ihn hinzufügen %s</string>

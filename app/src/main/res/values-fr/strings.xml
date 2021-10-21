@@ -434,6 +434,8 @@
 
     <string name="receipt_dialog_action_delete">Supprimer le reçu</string>
     <string name="receipt_dialog_action_move_copy">Déplacer/Copier</string>
+    <string name="receipt_dialog_action_swap_up">Échanger</string>
+    <string name="receipt_dialog_action_swap_down">Basculer vers le bas</string>
     <string name="receipt_dialog_action_remove_attachment">Supprimer la pièce jointe</string>
 
     <string name="dialog_attachment_text">Appuyez sur un reçu existant pour y ajouter cette %s</string>

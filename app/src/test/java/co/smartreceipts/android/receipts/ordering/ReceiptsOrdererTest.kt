@@ -15,7 +15,7 @@ import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +24,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.sql.Date
-import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class ReceiptsOrdererTest {
@@ -152,15 +151,20 @@ class ReceiptsOrdererTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         whenever(orderingMigrationStore.getMigrationVersion()).thenReturn(Single.just(ReceiptsOrderingMigrationStore.MigrationVersion.NotMigrated))
-        whenever(tripTableController.get()).thenReturn(Single.just(Arrays.asList(unorderedTrip, legacyOrderedTrip, partiallyOrderedTrip, orderedTrip, otherPartiallyOrderedTrip, otherOrderedTrip)))
-        whenever(receiptTableController.get(unorderedTrip)).thenReturn(Single.just(Arrays.asList(NO_ORDERING_RECEIPT_1, NO_ORDERING_RECEIPT_2, NO_ORDERING_RECEIPT_3, NO_ORDERING_RECEIPT_4)))
-        whenever(receiptTableController.get(legacyOrderedTrip)).thenReturn(Single.just(Arrays.asList(ReceiptsOrdererTest.LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_1, LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_2, LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_3, LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_4)))
-        whenever(receiptTableController.get(partiallyOrderedTrip)).thenReturn(Single.just(Arrays.asList(PARTIALLY_ORDERED_RECEIPT_1, PARTIALLY_ORDERED_RECEIPT_2, PARTIALLY_ORDERED_RECEIPT_3, PARTIALLY_ORDERED_RECEIPT_4)))
-        whenever(receiptTableController.get(orderedTrip)).thenReturn(Single.just(Arrays.asList(ORDERED_RECEIPT_1, ORDERED_RECEIPT_2, ORDERED_RECEIPT_3, ORDERED_RECEIPT_4)))
+        whenever(tripTableController.get()).thenReturn(Single.just(listOf(unorderedTrip, legacyOrderedTrip, partiallyOrderedTrip, orderedTrip, otherPartiallyOrderedTrip, otherOrderedTrip)))
+        whenever(receiptTableController.get(unorderedTrip)).thenReturn(Single.just(listOf(NO_ORDERING_RECEIPT_1, NO_ORDERING_RECEIPT_2, NO_ORDERING_RECEIPT_3, NO_ORDERING_RECEIPT_4)))
+        whenever(receiptTableController.get(legacyOrderedTrip)).thenReturn(Single.just(
+            listOf(
+                LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_1, LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_2, LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_3, LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_4)
+        ))
+        whenever(receiptTableController.get(partiallyOrderedTrip)).thenReturn(Single.just(listOf(PARTIALLY_ORDERED_RECEIPT_1, PARTIALLY_ORDERED_RECEIPT_2, PARTIALLY_ORDERED_RECEIPT_3, PARTIALLY_ORDERED_RECEIPT_4)))
+        whenever(receiptTableController.get(orderedTrip)).thenReturn(Single.just(listOf(ORDERED_RECEIPT_1, ORDERED_RECEIPT_2, ORDERED_RECEIPT_3, ORDERED_RECEIPT_4)))
 
         // Second test data set
-        whenever(receiptTableController.get(otherPartiallyOrderedTrip)).thenReturn(Single.just(Arrays.asList(OTHER_PARTIALLY_ORDERED_RECEIPT_1, OTHER_PARTIALLY_ORDERED_RECEIPT_2, OTHER_PARTIALLY_ORDERED_RECEIPT_3, OTHER_PARTIALLY_ORDERED_RECEIPT_4)))
-        whenever(receiptTableController.get(otherOrderedTrip)).thenReturn(Single.just(Arrays.asList(OTHER_ORDERED_RECEIPT_1, OTHER_ORDERED_RECEIPT_2, OTHER_ORDERED_RECEIPT_3, OTHER_ORDERED_RECEIPT_4)))
+        whenever(receiptTableController.get(otherPartiallyOrderedTrip)).thenReturn(Single.just(
+            listOf(OTHER_PARTIALLY_ORDERED_RECEIPT_1, OTHER_PARTIALLY_ORDERED_RECEIPT_2, OTHER_PARTIALLY_ORDERED_RECEIPT_3, OTHER_PARTIALLY_ORDERED_RECEIPT_4)
+        ))
+        whenever(receiptTableController.get(otherOrderedTrip)).thenReturn(Single.just(listOf(OTHER_ORDERED_RECEIPT_1, OTHER_ORDERED_RECEIPT_2, OTHER_ORDERED_RECEIPT_3, OTHER_ORDERED_RECEIPT_4)))
 
         // Note: Stub return here to keep the flow working
         whenever(receiptTableController.update(any(), any(), any())).thenReturn(Observable.just(Optional.of(receipt)))
@@ -177,8 +181,8 @@ class ReceiptsOrdererTest {
     }
 
     @Test
-    fun initializeWhenWeHavePreviouslyMigratedToV2() {
-        whenever(orderingMigrationStore.getMigrationVersion()).thenReturn(Single.just(ReceiptsOrderingMigrationStore.MigrationVersion.V2))
+    fun initializeWhenWeHavePreviouslyMigratedToV3() {
+        whenever(orderingMigrationStore.getMigrationVersion()).thenReturn(Single.just(ReceiptsOrderingMigrationStore.MigrationVersion.V3))
 
         receiptsOrderer.initialize()
 
@@ -251,9 +255,43 @@ class ReceiptsOrdererTest {
     }
 
     @Test
+    fun initializeWhenWeHavePreviouslyMigratedToV2() {
+        whenever(orderingMigrationStore.getMigrationVersion()).thenReturn(Single.just(ReceiptsOrderingMigrationStore.MigrationVersion.V2))
+        receiptsOrderer.initialize()
+        verify(receiptTableController).update(eq(NO_ORDERING_RECEIPT_4), eq(ORDERED_RECEIPT_4), any())
+        verify(receiptTableController).update(eq(NO_ORDERING_RECEIPT_3), eq(ORDERED_RECEIPT_3), any())
+        verify(receiptTableController).update(eq(NO_ORDERING_RECEIPT_2), eq(ORDERED_RECEIPT_2), any())
+        verify(receiptTableController).update(eq(NO_ORDERING_RECEIPT_1), eq(ORDERED_RECEIPT_1), any())
+        verify(receiptTableController).update(eq(LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_4), eq(ORDERED_RECEIPT_4), any())
+        verify(receiptTableController).update(eq(LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_3), eq(ORDERED_RECEIPT_3), any())
+        verify(receiptTableController).update(eq(LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_2), eq(ORDERED_RECEIPT_2), any())
+        verify(receiptTableController).update(eq(LEGACY_ORDERING_BY_UNIX_DATE_RECEIPT_1), eq(ORDERED_RECEIPT_1), any())
+        verify(receiptTableController, never()).update(eq(PARTIALLY_ORDERED_RECEIPT_1), any(), any())
+        verify(receiptTableController).update(eq(PARTIALLY_ORDERED_RECEIPT_2), eq(ORDERED_RECEIPT_2), any())
+        verify(receiptTableController).update(eq(PARTIALLY_ORDERED_RECEIPT_3), eq(ORDERED_RECEIPT_3), any())
+        verify(receiptTableController, never()).update(eq(PARTIALLY_ORDERED_RECEIPT_4), any(), any())
+        verify(receiptTableController, never()).update(eq(ORDERED_RECEIPT_4), any(), any())
+        verify(receiptTableController, never()).update(eq(ORDERED_RECEIPT_3), any(), any())
+        verify(receiptTableController, never()).update(eq(ORDERED_RECEIPT_2), any(), any())
+        verify(receiptTableController, never()).update(eq(ORDERED_RECEIPT_1), any(), any())
+        verify(receiptTableController, never()).update(eq(OTHER_PARTIALLY_ORDERED_RECEIPT_1), any(), any())
+        verify(receiptTableController).update(eq(OTHER_PARTIALLY_ORDERED_RECEIPT_2), eq(OTHER_ORDERED_RECEIPT_2), any())
+        verify(receiptTableController).update(eq(OTHER_PARTIALLY_ORDERED_RECEIPT_3), eq(OTHER_ORDERED_RECEIPT_3), any())
+        verify(receiptTableController, never()).update(eq(OTHER_PARTIALLY_ORDERED_RECEIPT_4), any(), any())
+        verify(receiptTableController, never()).update(eq(OTHER_ORDERED_RECEIPT_1), any(), any())
+        verify(receiptTableController, never()).update(eq(OTHER_ORDERED_RECEIPT_2), any(), any())
+        verify(receiptTableController, never()).update(eq(OTHER_ORDERED_RECEIPT_3), any(), any())
+        verify(receiptTableController, never()).update(eq(OTHER_ORDERED_RECEIPT_4), any(), any())
+        verify(orderingMigrationStore).setOrderingMigrationHasOccurred(true)
+        verify(orderingPreferencesManager).saveReceiptsTableOrdering()
+    }
+
+    @Test
     fun initializeWhenWeHavePreviouslyMigratedToV1AndPartiallyOrderedReturnsAreRetrievedInADifferentOrder() {
-        whenever(receiptTableController.get(partiallyOrderedTrip)).thenReturn(Single.just(Arrays.asList(PARTIALLY_ORDERED_RECEIPT_1, PARTIALLY_ORDERED_RECEIPT_3, PARTIALLY_ORDERED_RECEIPT_2, PARTIALLY_ORDERED_RECEIPT_4)))
-        whenever(receiptTableController.get(otherPartiallyOrderedTrip)).thenReturn(Single.just(Arrays.asList(OTHER_PARTIALLY_ORDERED_RECEIPT_1, OTHER_PARTIALLY_ORDERED_RECEIPT_3, OTHER_PARTIALLY_ORDERED_RECEIPT_2, OTHER_PARTIALLY_ORDERED_RECEIPT_4)))
+        whenever(receiptTableController.get(partiallyOrderedTrip)).thenReturn(Single.just(listOf(PARTIALLY_ORDERED_RECEIPT_1, PARTIALLY_ORDERED_RECEIPT_3, PARTIALLY_ORDERED_RECEIPT_2, PARTIALLY_ORDERED_RECEIPT_4)))
+        whenever(receiptTableController.get(otherPartiallyOrderedTrip)).thenReturn(Single.just(
+            listOf(OTHER_PARTIALLY_ORDERED_RECEIPT_1, OTHER_PARTIALLY_ORDERED_RECEIPT_3, OTHER_PARTIALLY_ORDERED_RECEIPT_2, OTHER_PARTIALLY_ORDERED_RECEIPT_4)
+        ))
         whenever(orderingMigrationStore.getMigrationVersion()).thenReturn(Single.just(ReceiptsOrderingMigrationStore.MigrationVersion.V1))
         receiptsOrderer.initialize()
         verify(receiptTableController).update(eq(NO_ORDERING_RECEIPT_4), eq(ORDERED_RECEIPT_4), any())

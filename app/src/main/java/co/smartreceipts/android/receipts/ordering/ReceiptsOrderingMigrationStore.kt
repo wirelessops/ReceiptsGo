@@ -18,9 +18,11 @@ class ReceiptsOrderingMigrationStore @Inject constructor(private val preferences
      */
     fun getMigrationVersion(): Single<MigrationVersion> {
         return Single.fromCallable {
+                    val v3MigrationHasOccurred = preferences.get().getBoolean(V3_ORDERING_KEY, false)
                     val v2MigrationHasOccurred = preferences.get().getBoolean(V2_ORDERING_KEY, false)
                     val v1MigrationHasOccurred = preferences.get().getBoolean(V1_ORDERING_KEY, false)
                     return@fromCallable when {
+                        v3MigrationHasOccurred -> MigrationVersion.V3
                         v2MigrationHasOccurred -> MigrationVersion.V2
                         v1MigrationHasOccurred -> MigrationVersion.V1
                         else -> MigrationVersion.NotMigrated
@@ -36,10 +38,11 @@ class ReceiptsOrderingMigrationStore @Inject constructor(private val preferences
     fun setOrderingMigrationHasOccurred(hasOccurred: Boolean) {
         preferences.get().edit().putBoolean(V1_ORDERING_KEY, hasOccurred).apply()
         preferences.get().edit().putBoolean(V2_ORDERING_KEY, hasOccurred).apply()
+        preferences.get().edit().putBoolean(V3_ORDERING_KEY, hasOccurred).apply()
     }
 
     /**
-     * Note we have two defined migrations.
+     * Note we have four defined migrations.
      */
     enum class MigrationVersion {
         /**
@@ -57,11 +60,18 @@ class ReceiptsOrderingMigrationStore @Inject constructor(private val preferences
          * The second version of the migration. This takes from [ReceiptsOrderer.OrderingType.PartiallyOrdered]
          * to [ReceiptsOrderer.OrderingType.Ordered]
          */
-        V2
+        V2,
+
+        /**
+         * The third version of the migration. This keeps receipts in the [ReceiptsOrderer.OrderingType.Ordered]
+         * format and removes the ability to drag receipts in the list
+         */
+        V3
     }
 
     companion object {
         private const val V1_ORDERING_KEY = "receipt_ordering_migration_has_occurred"
         private const val V2_ORDERING_KEY = "receipt_ordering_migration_has_occurred_v2_b" // _b for test build users
+        private const val V3_ORDERING_KEY = "receipt_ordering_migration_has_occurred_v3_b" // _b for test build users
     }
 }

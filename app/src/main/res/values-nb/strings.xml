@@ -435,6 +435,8 @@
 
     <string name="receipt_dialog_action_delete">Slett kvittering</string>
     <string name="receipt_dialog_action_move_copy">Flytt/Kopier</string>
+    <string name="receipt_dialog_action_swap_up">Bytt opp</string>
+    <string name="receipt_dialog_action_swap_down">Bytt ned</string>
     <string name="receipt_dialog_action_remove_attachment">Fjern vedlegg</string>
 
     <string name="dialog_attachment_text">Trykk på en eksisterende kvittering for å legge til %s til den</string>

@@ -20,6 +20,7 @@ import com.tapadoo.alerter.Alerter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,6 +38,7 @@ import co.smartreceipts.android.fragments.ReportInfoFragment;
 import co.smartreceipts.android.imports.CameraInteractionController;
 import co.smartreceipts.android.model.Receipt;
 import co.smartreceipts.android.model.Trip;
+import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.ocr.apis.model.OcrResponse;
 import co.smartreceipts.android.ocr.widget.alert.OcrStatusAlerterView;
 import co.smartreceipts.android.persistence.PersistenceManager;
@@ -114,12 +116,17 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
     private Uri imageUri;
 
-    private ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
+    private final ActionBarSubtitleUpdatesListener actionBarSubtitleUpdatesListener = new ActionBarSubtitleUpdatesListener();
 
     private boolean showDateHeaders;
     private ReceiptsHeaderItemDecoration headerItemDecoration;
 
     private Receipt highlightedReceipt = null;
+    private Receipt newSwappedReceipt = null;
+
+    private List<Receipt> receipts;
+    private int swapPosition, swappedReceiptsUpdatedCount;
+    private long tempCustomOrderId;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -165,6 +172,24 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
                     } else if (editOption.equals(ReceiptEditOption.COPY_MOVE.name())) {
                         analytics.record(Events.Receipts.ReceiptMenuMoveCopy);
                         navigationHandler.showDialog(ReceiptMoveCopyDialogFragment.newInstance(highlightedReceipt));
+                    } else if (editOption.equals(ReceiptEditOption.SWAP_UP.name())) {
+                        if (receipts.indexOf(highlightedReceipt) != 0) {
+                            swapPosition = receipts.indexOf(highlightedReceipt) - 1;
+                            tempCustomOrderId = highlightedReceipt.getCustomOrderId();
+                            Receipt newHighlightedReceipt = new ReceiptBuilderFactory(highlightedReceipt).setCustomOrderId(receipts.get(swapPosition).getCustomOrderId()).build();
+                            newSwappedReceipt = new ReceiptBuilderFactory(receipts.get(swapPosition)).setCustomOrderId(tempCustomOrderId).build();
+                            receiptTableController.update(highlightedReceipt, newHighlightedReceipt, new DatabaseOperationMetadata());
+                            receiptTableController.update(receipts.get(swapPosition), newSwappedReceipt, new DatabaseOperationMetadata());
+                        }
+                    } else if (editOption.equals(ReceiptEditOption.SWAP_DOWN.name())) {
+                        if (receipts.indexOf(highlightedReceipt) != receipts.size()-1) {
+                            swapPosition = receipts.indexOf(highlightedReceipt) + 1;
+                            tempCustomOrderId = highlightedReceipt.getCustomOrderId();
+                            Receipt newHighlightedReceipt = new ReceiptBuilderFactory(highlightedReceipt).setCustomOrderId(receipts.get(swapPosition).getCustomOrderId()).build();
+                            newSwappedReceipt = new ReceiptBuilderFactory(receipts.get(swapPosition)).setCustomOrderId(tempCustomOrderId).build();
+                            receiptTableController.update(highlightedReceipt, newHighlightedReceipt, new DatabaseOperationMetadata());
+                            receiptTableController.update(receipts.get(swapPosition), newSwappedReceipt, new DatabaseOperationMetadata());
+                        }
                     } else if (editOption.equals(ReceiptEditOption.DELETE_ATTACHMENT.name())) {
                         analytics.record(Events.Receipts.ReceiptMenuRemoveAttachment);
                         navigationHandler.showDialog(ReceiptRemoveAttachmentDialogFragment.newInstance(highlightedReceipt));
@@ -403,6 +428,8 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
         if (isAdded()) {
             super.onGetSuccess(receipts);
 
+            this.receipts = receipts;
+
             binding.progress.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             if (receipts.isEmpty()) {
@@ -461,7 +488,7 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
     @Override
     public void onUpdateSuccess(@NonNull Receipt oldReceipt, @NonNull Receipt newReceipt, @NonNull DatabaseOperationMetadata databaseOperationMetadata) {
         if (isAdded()) {
-            if (databaseOperationMetadata.getOperationFamilyType() != OperationFamilyType.Sync) {
+            if (databaseOperationMetadata.getOperationFamilyType() != OperationFamilyType.Sync && newSwappedReceipt == null) {
                 if (newReceipt.getFile() != null && newReceipt.getFileLastModifiedTime() != oldReceipt.getFileLastModifiedTime()) {
                     final int stringId;
                     if (oldReceipt.getFile() != null) {
@@ -482,6 +509,21 @@ public class ReceiptsListFragment extends ReceiptsFragment implements ReceiptsLi
 
                     if (getActivity() != null && getActivity().getIntent() != null) {
                         presenter.markIntentAsProcessed(getActivity().getIntent());
+                    }
+                }
+            } else if (databaseOperationMetadata.getOperationFamilyType() != OperationFamilyType.Sync && newSwappedReceipt != null) {
+                if (newReceipt.getCustomOrderId() != 0 && newReceipt.getCustomOrderId() != oldReceipt.getCustomOrderId()) {
+                    swappedReceiptsUpdatedCount++;
+                    if (swappedReceiptsUpdatedCount == 2) {
+                        if (swapPosition > receipts.indexOf(highlightedReceipt)) {
+                            analytics.record(Events.Receipts.ReceiptMenuSwapDown);
+                        } else {
+                            analytics.record(Events.Receipts.ReceiptMenuSwapUp);
+                        }
+                        Collections.swap(receipts, receipts.indexOf(highlightedReceipt), swapPosition);
+                        adapter.update(receipts);
+                        swappedReceiptsUpdatedCount = 0;
+                        newSwappedReceipt = null;
                     }
                 }
             }
