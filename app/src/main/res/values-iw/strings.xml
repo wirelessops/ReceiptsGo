@@ -509,6 +509,7 @@
     <string name="purchase_succeeded">הרכישה בוצעה בהצלחה</string>
     <string name="purchase_unavailable">משיכת מידע לגבי הרכישה נכשלה</string>
     <string name="purchase_failed">השלמת הרכישה נכשלה</string>
+    <string name="purchase_pending">הרכישה נמצאת במצב ממתין</string>
 
     <!-- ================== App Rating ==================== -->
     <string name="rating_tooltip_text">אוהב את Smart Receipts?</string>

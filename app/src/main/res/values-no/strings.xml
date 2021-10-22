@@ -500,6 +500,7 @@
     <string name="purchase_succeeded">Kjøp vellykket</string>
     <string name="purchase_unavailable">Kan ikke hente kjøpsinformasjon</string>
     <string name="purchase_failed">Kunne ikke fullføre kjøpet</string>
+    <string name="purchase_pending">Kjøpet er i ventende tilstand</string>
 
     <!-- ================== App Rating ==================== -->
     <string name="rating_tooltip_text">Liker du Smart Receipts?</string>

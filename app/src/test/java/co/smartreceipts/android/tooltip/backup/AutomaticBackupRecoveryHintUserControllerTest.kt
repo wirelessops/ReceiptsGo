@@ -16,7 +16,6 @@ import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -58,7 +57,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(purchaseManager.allOwnedPurchases).thenReturn(Observable.just(emptySet()))
+        whenever(purchaseManager.allOwnedPurchases).thenReturn(Single.just(emptySet()))
         automaticBackupRecoveryHintUserController = AutomaticBackupRecoveryHintUserController(ApplicationProvider.getApplicationContext(), tooltipView, router, store, purchaseWallet, purchaseManager, analytics, scheduler)
     }
 
@@ -78,7 +77,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     fun doNotDisplayTooltipWhenThePurchaseManagerThrowsAnError() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
         whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true)
-        whenever(purchaseManager.allOwnedPurchases).thenReturn(Observable.error(Exception("test")))
+        whenever(purchaseManager.allOwnedPurchases).thenReturn(Single.error(Exception("test")))
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
                 .test()
                 .await()

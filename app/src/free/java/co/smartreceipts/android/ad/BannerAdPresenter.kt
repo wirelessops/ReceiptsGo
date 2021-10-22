@@ -47,6 +47,7 @@ class BannerAdPresenter @Inject constructor(
                 override fun onAdLoadSuccess() {
                     UiThread.run {
                         adView?.makeVisible()
+                        upsellAdView?.hide()
                     }
                     analytics.record(DefaultDataPointEvent(Events.Ads.AdShown).addDataPoint(DataPoint("ad", adView?.javaClass!!.simpleName)))
                 }
@@ -55,6 +56,7 @@ class BannerAdPresenter @Inject constructor(
                     // If we fail to load, hide it and show the upsell
                     UiThread.run {
                         upsellAdView?.makeVisible()
+                        adView?.hide()
                     }
                     Logger.error(this, "Failed to load the desired ad")
                     analytics.record(DefaultDataPointEvent(Events.Purchases.AdUpsellShownOnFailure).addDataPoint(DataPoint("ad", adView?.javaClass!!.simpleName)))

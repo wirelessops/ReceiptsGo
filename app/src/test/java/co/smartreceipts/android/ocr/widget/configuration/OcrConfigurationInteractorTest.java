@@ -1,5 +1,12 @@
 package co.smartreceipts.android.ocr.widget.configuration;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.android.billingclient.api.SkuDetails;
+
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -11,7 +18,6 @@ import java.util.Set;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker;
 import co.smartreceipts.android.purchases.PurchaseManager;
-import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.settings.UserPreferenceManager;
@@ -22,11 +28,6 @@ import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class OcrConfigurationInteractorTest {
 
@@ -40,9 +41,9 @@ public class OcrConfigurationInteractorTest {
 
     private final Analytics analytics = mock(Analytics.class);
 
-    private final AvailablePurchase availablePurchase = mock(AvailablePurchase.class);
+    private final SkuDetails availablePurchaseSkuDetails = mock(SkuDetails.class);
 
-    private final AvailablePurchase availablePurchase2 = mock(AvailablePurchase.class);
+    private final SkuDetails availablePurchaseSkuDetails2 = mock(SkuDetails.class);
 
     private final OcrConfigurationInteractor interactor = new OcrConfigurationInteractor(
             identityManager,
@@ -75,63 +76,63 @@ public class OcrConfigurationInteractorTest {
 
     @Test
     public void getAvailableOcrPurchasesOrdersByPrice() {
-        when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
-        when(availablePurchase2.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans10);
-        when(availablePurchase.getPriceAmountMicros()).thenReturn(500000L);
-        when(availablePurchase2.getPriceAmountMicros()).thenReturn(100000L);
+        when(availablePurchaseSkuDetails.getSku()).thenReturn(InAppPurchase.OcrScans50.getSku());
+        when(availablePurchaseSkuDetails2.getSku()).thenReturn(InAppPurchase.OcrScans10.getSku());
+        when(availablePurchaseSkuDetails.getPriceAmountMicros()).thenReturn(500000L);
+        when(availablePurchaseSkuDetails2.getPriceAmountMicros()).thenReturn(100000L);
 
-        final Set<AvailablePurchase> purchaseSet = new HashSet<>(Arrays.asList(availablePurchase, availablePurchase2));
-        when(purchaseManager.getAllAvailablePurchases()).thenReturn(Observable.just(purchaseSet));
+        final Set<SkuDetails> purchaseSet = new HashSet<>(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2));
+        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Observable.just(purchaseSet));
 
-        TestObserver<List<AvailablePurchase>> testObserver = interactor.getAvailableOcrPurchases().test();
+        TestObserver<List<SkuDetails>> testObserver = interactor.getAvailableOcrPurchases().test();
 
         testObserver.awaitTerminalEvent();
-        testObserver.assertValue(Arrays.asList(availablePurchase2, availablePurchase));
+        testObserver.assertValue(Arrays.asList(availablePurchaseSkuDetails2, availablePurchaseSkuDetails));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
 
     @Test
     public void getAvailableOcrPurchasesIgnoresSubscriptions() {
-        when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
-        when(availablePurchase2.getInAppPurchase()).thenReturn(InAppPurchase.SmartReceiptsPlus);
-        when(availablePurchase.getPriceAmountMicros()).thenReturn(500000L);
-        when(availablePurchase2.getPriceAmountMicros()).thenReturn(100000L);
+        when(availablePurchaseSkuDetails.getSku()).thenReturn(InAppPurchase.OcrScans50.getSku());
+        when(availablePurchaseSkuDetails2.getSku()).thenReturn(InAppPurchase.SmartReceiptsPlus.getSku());
+        when(availablePurchaseSkuDetails.getPriceAmountMicros()).thenReturn(500000L);
+        when(availablePurchaseSkuDetails2.getPriceAmountMicros()).thenReturn(100000L);
 
-        final Set<AvailablePurchase> purchaseSet = new HashSet<>(Arrays.asList(availablePurchase, availablePurchase2));
-        when(purchaseManager.getAllAvailablePurchases()).thenReturn(Observable.just(purchaseSet));
+        final Set<SkuDetails> purchaseSet = new HashSet<>(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2));
+        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Observable.just(purchaseSet));
 
-        TestObserver<List<AvailablePurchase>> testObserver = interactor.getAvailableOcrPurchases().test();
+        TestObserver<List<SkuDetails>> testObserver = interactor.getAvailableOcrPurchases().test();
 
         testObserver.awaitTerminalEvent();
-        testObserver.assertValue(Collections.singletonList(availablePurchase));
+        testObserver.assertValue(Collections.singletonList(availablePurchaseSkuDetails));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
 
     @Test
     public void getAvailableOcrPurchasesIgnoresNonOcrOnes() {
-        when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
-        when(availablePurchase2.getInAppPurchase()).thenReturn(InAppPurchase.TestConsumablePurchase);
-        when(availablePurchase.getPriceAmountMicros()).thenReturn(500000L);
-        when(availablePurchase2.getPriceAmountMicros()).thenReturn(100000L);
+        when(availablePurchaseSkuDetails.getSku()).thenReturn(InAppPurchase.OcrScans50.getSku());
+        when(availablePurchaseSkuDetails2.getSku()).thenReturn(InAppPurchase.TestConsumablePurchase.getSku());
+        when(availablePurchaseSkuDetails.getPriceAmountMicros()).thenReturn(500000L);
+        when(availablePurchaseSkuDetails2.getPriceAmountMicros()).thenReturn(100000L);
 
-        final Set<AvailablePurchase> purchaseSet = new HashSet<>(Arrays.asList(availablePurchase, availablePurchase2));
-        when(purchaseManager.getAllAvailablePurchases()).thenReturn(Observable.just(purchaseSet));
+        final Set<SkuDetails> purchaseSet = new HashSet<>(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2));
+        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Observable.just(purchaseSet));
 
-        TestObserver<List<AvailablePurchase>> testObserver = interactor.getAvailableOcrPurchases().test();
+        TestObserver<List<SkuDetails>> testObserver = interactor.getAvailableOcrPurchases().test();
 
         testObserver.awaitTerminalEvent();
-        testObserver.assertValue(Collections.singletonList(availablePurchase));
+        testObserver.assertValue(Collections.singletonList(availablePurchaseSkuDetails));
         testObserver.assertComplete();
         testObserver.assertNoErrors();
     }
 
     @Test
     public void startOcrPurchase() {
-        when(availablePurchase.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
-        interactor.startOcrPurchase(availablePurchase.getInAppPurchase());
-        verify(purchaseManager).initiatePurchase(InAppPurchase.OcrScans50, PurchaseSource.Ocr);
+        when(availablePurchaseSkuDetails.getSku()).thenReturn(InAppPurchase.OcrScans50.getSku());
+        interactor.startOcrPurchase(availablePurchaseSkuDetails);
+        verify(purchaseManager).initiatePurchase(availablePurchaseSkuDetails, PurchaseSource.Ocr);
     }
 
     @Test

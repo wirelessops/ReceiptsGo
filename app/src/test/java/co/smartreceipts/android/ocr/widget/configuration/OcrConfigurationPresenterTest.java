@@ -1,5 +1,11 @@
 package co.smartreceipts.android.ocr.widget.configuration;
 
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.android.billingclient.api.SkuDetails;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -8,16 +14,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 
-import co.smartreceipts.android.purchases.model.AvailablePurchase;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.core.identity.store.EmailAddress;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class OcrConfigurationPresenterTest {
 
@@ -45,23 +46,23 @@ public class OcrConfigurationPresenterTest {
     Consumer<Boolean> allowUsToSaveImagesRemotelyConsumer;
 
     @Mock
-    AvailablePurchase availablePurchase;
+    SkuDetails availablePurchaseSkuDetails;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        when(availablePurchase.getInAppPurchase()).thenReturn(PURCHASE);
+        when(availablePurchaseSkuDetails.getSku()).thenReturn(PURCHASE.getSku());
         when(interactor.getEmail()).thenReturn(emailAddress);
         when(interactor.getOcrIsEnabled()).thenReturn(Observable.just(OCR_IS_ENABLED));
         when(interactor.getAllowUsToSaveImagesRemotely()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
         when(interactor.getRemainingScansStream()).thenReturn(Observable.just(REMAINING_SCANS));
-        when(interactor.getAvailableOcrPurchases()).thenReturn(Single.just(Collections.singletonList(availablePurchase)));
+        when(interactor.getAvailableOcrPurchases()).thenReturn(Single.just(Collections.singletonList(availablePurchaseSkuDetails)));
         when(interactor.isUserLoggedIn()).thenReturn(true);
 
         when(view.getOcrIsEnabledCheckboxStream()).thenReturn(Observable.just(OCR_IS_ENABLED));
         when(view.getAllowUsToSaveImagesRemotelyCheckboxStream()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
-        when(view.getAvailablePurchaseClicks()).thenReturn(Observable.just(availablePurchase));
+        when(view.getAvailablePurchaseClicks()).thenReturn(Observable.just(availablePurchaseSkuDetails));
         when(view.getDelayedPurchaseIdStream()).thenReturn(Observable.empty());
         doReturn(ocrIsEnabledConsumer).when(view).getOcrIsEnabledConsumer();
         doReturn(allowUsToSaveImagesRemotelyConsumer).when(view).getAllowUsToSaveImagesRemotelyConsumer();
@@ -90,10 +91,10 @@ public class OcrConfigurationPresenterTest {
         verify(view).present(REMAINING_SCANS);
 
         // Presents Available purchases
-        verify(view).present(Collections.singletonList(availablePurchase));
+        verify(view).present(Collections.singletonList(availablePurchaseSkuDetails));
 
         // Interacts with purchase clicks
-        verify(interactor).startOcrPurchase(availablePurchase.getInAppPurchase());
+        verify(interactor).startOcrPurchase(availablePurchaseSkuDetails);
     }
 
 }

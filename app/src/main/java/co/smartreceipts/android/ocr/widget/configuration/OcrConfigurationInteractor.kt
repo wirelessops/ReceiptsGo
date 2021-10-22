@@ -7,7 +7,6 @@ import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.purchases.PurchaseManager
-import co.smartreceipts.android.purchases.model.AvailablePurchase
 import co.smartreceipts.android.purchases.model.ConsumablePurchase
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.model.PurchaseFamily
@@ -18,6 +17,7 @@ import co.smartreceipts.android.utils.rx.RxSchedulers
 import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.core.identity.IdentityManager
 import co.smartreceipts.core.identity.store.EmailAddress
+import com.android.billingclient.api.SkuDetails
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -48,11 +48,11 @@ class OcrConfigurationInteractor @Inject constructor(
             .observeOn(observeOnScheduler)
     }
 
-    fun getAvailableOcrPurchases(): Single<List<AvailablePurchase>> {
-        return purchaseManager.allAvailablePurchases
-            .flatMapIterable { availablePurchases -> availablePurchases }
-            .filter { availablePurchase ->
-                val inAppPurchase = availablePurchase.getInAppPurchase()
+    fun getAvailableOcrPurchases(): Single<List<SkuDetails>> {
+        return purchaseManager.allAvailablePurchaseSkus
+            .flatMapIterable { it }
+            .filter { skuDetails ->
+                val inAppPurchase = InAppPurchase.from(skuDetails.sku)
                 inAppPurchase != null && inAppPurchase.type == ConsumablePurchase::class.java
                         && inAppPurchase.purchaseFamilies.contains(PurchaseFamily.Ocr)
             }
@@ -82,6 +82,11 @@ class OcrConfigurationInteractor @Inject constructor(
         } else {
             Logger.error(this, "Unexpected state in which the in app purchase is null")
         }
+    }
+
+    fun startOcrPurchase(skuDetails: SkuDetails) {
+        analytics.record(DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(DataPoint("sku", skuDetails)))
+        purchaseManager.initiatePurchase(skuDetails, PurchaseSource.Ocr)
     }
 
     fun setOcrIsEnabled(ocrIsEnabled: Boolean) {

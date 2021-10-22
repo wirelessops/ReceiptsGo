@@ -159,7 +159,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
         adPresenter.onResume();
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
+        compositeDisposable.add(purchaseManager.getAllAvailablePurchases()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(inAppPurchases -> {
                     availablePurchases = inAppPurchases;
@@ -183,10 +183,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                         break;
                 }
             }
-        } else if (!purchaseManager.onActivityResult(requestCode, resultCode, data)) {
-            if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
-                super.onActivityResult(requestCode, resultCode, data);
-            }
+        } else if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -328,6 +326,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
     public void onPurchaseFailed(@NonNull final PurchaseSource purchaseSource) {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseFailed).addDataPoint(new DataPoint("source", purchaseSource)));
         runOnUiThread(() -> Toast.makeText(SmartReceiptsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show());
+    }
+
+    @Override
+    public void onPurchasePending() {
+        runOnUiThread(() -> Toast.makeText(this, R.string.purchase_pending, Toast.LENGTH_LONG).show());
     }
 
     @Override

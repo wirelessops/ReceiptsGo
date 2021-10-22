@@ -494,6 +494,7 @@
     <string name="purchase_succeeded">La compra se completó correctamente</string>
     <string name="purchase_unavailable">No se pudo recuperar la información de la compra</string>
     <string name="purchase_failed">No se pudo completar la compra</string>
+    <string name="purchase_pending">La compra está en estado pendiente</string>
 
     <!-- ================== App Rating ==================== -->
     <string name="rating_tooltip_text">¿Te gusta Smart Receipts?</string>

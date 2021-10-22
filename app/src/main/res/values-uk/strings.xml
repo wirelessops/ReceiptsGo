@@ -436,8 +436,8 @@
 
     <string name="receipt_dialog_action_delete">Видалити чек</string>
     <string name="receipt_dialog_action_move_copy">Перемістити/Копіювати</string>
-    <string name="receipt_dialog_action_swap_up">Поміняти місцями</string>
-    <string name="receipt_dialog_action_swap_down">Поміняти місцями вниз</string>
+    <string name="receipt_dialog_action_swap_up">Поміняти місцями з верхнім</string>
+    <string name="receipt_dialog_action_swap_down">Поміняти місцями з нижнім</string>
     <string name="receipt_dialog_action_remove_attachment">Видалити вкладення</string>
 
     <string name="dialog_attachment_text">Натисніть на існуючий чек, щоб додати цей %s до нього</string>
@@ -496,6 +496,7 @@
     <string name="purchase_succeeded">Покупка вдало завершена</string>
     <string name="purchase_unavailable">Не вдалося отримати інформацію про покупку</string>
     <string name="purchase_failed">Не вдалося завершити покупку</string>
+    <string name="purchase_pending">Покупка знаходиться у стані очікування</string>
 
     <!-- ================== App Rating ==================== -->
     <string name="rating_tooltip_text">Подобаються Смарт Чеки?</string>

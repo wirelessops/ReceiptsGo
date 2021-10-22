@@ -199,7 +199,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     protected void onStart() {
         super.onStart();
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(purchaseManager.getAllAvailablePurchaseSkus()
+        compositeDisposable.add(purchaseManager.getAllAvailablePurchases()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(inAppPurchases -> {
                     availablePurchases = inAppPurchases;
@@ -248,13 +248,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             return true;
         } else {
             return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!purchaseManager.onActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -539,6 +532,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     public void onPurchaseFailed(@NonNull PurchaseSource purchaseSource) {
         analytics.record(new DefaultDataPointEvent(Events.Purchases.PurchaseFailed).addDataPoint(new DataPoint("source", purchaseSource)));
         runOnUiThread(() -> Toast.makeText(SettingsActivity.this, R.string.purchase_failed, Toast.LENGTH_LONG).show());
+    }
+
+    @Override
+    public void onPurchasePending() {
+        runOnUiThread(() -> Toast.makeText(this, R.string.purchase_pending, Toast.LENGTH_LONG).show());
     }
 
     private String getAppVersion() {

@@ -1,5 +1,16 @@
 package co.smartreceipts.android.ocr.purchases;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +20,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
 
 import co.smartreceipts.android.apis.SmartReceiptsApiErrorResponse;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
@@ -29,22 +39,12 @@ import co.smartreceipts.core.identity.apis.me.MeResponse;
 import co.smartreceipts.core.identity.apis.me.User;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class OcrPurchaseTrackerTest {
@@ -124,7 +124,7 @@ public class OcrPurchaseTrackerTest {
     @Test
     public void initializeThrowsException() {
         // Configure
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.<Set<ManagedProduct>>error(new Exception("test")));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.error(new Exception("test")));
 
         // Test
         ocrPurchaseTracker.initialize();
@@ -139,7 +139,7 @@ public class OcrPurchaseTrackerTest {
     @Test
     public void initializeWithoutPurchases() {
         // Configure
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.emptySet()));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.emptySet()));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
 
         // Test
@@ -156,7 +156,7 @@ public class OcrPurchaseTrackerTest {
     public void initializeWithAnAlreadyConsumedPurchase() {
         // Configure
         when(defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)).thenReturn(true);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
 
         // Test
@@ -172,7 +172,7 @@ public class OcrPurchaseTrackerTest {
     @Test
     public void initializeUploadFails() {
         // Configure
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(new Exception("test")));
 
         // Test
@@ -190,7 +190,7 @@ public class OcrPurchaseTrackerTest {
         // Configure
         final SmartReceiptsApiErrorResponse errorResponse = null;
         final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
 
         // Test
@@ -208,7 +208,7 @@ public class OcrPurchaseTrackerTest {
         // Configure
         final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(null);
         final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
 
         // Test
@@ -226,7 +226,7 @@ public class OcrPurchaseTrackerTest {
         // Configure
         final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(Arrays.asList("error1", "error2", "error3"));
         final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
 
         // Test
@@ -244,7 +244,7 @@ public class OcrPurchaseTrackerTest {
         // Configure
         final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(Arrays.asList("error1", "Purchase has already been taken", "error3"));
         final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(400, retrofitResponseBody), new Exception("test"), errorResponse);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
 
         // Test
@@ -262,7 +262,7 @@ public class OcrPurchaseTrackerTest {
         // Configure
         final SmartReceiptsApiErrorResponse errorResponse = new SmartReceiptsApiErrorResponse(Arrays.asList("error1", "Purchase has already been taken", "error3"));
         final SmartReceiptsApiException smartReceiptsApiException = new SmartReceiptsApiException(Response.error(422, retrofitResponseBody), new Exception("test"), errorResponse);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.error(smartReceiptsApiException));
 
         // Test
@@ -277,7 +277,7 @@ public class OcrPurchaseTrackerTest {
     @Test
     public void initializeSucceeds() {
         // Configure
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -293,7 +293,7 @@ public class OcrPurchaseTrackerTest {
     public void initializeFailsToFetchMe() {
         // Configure
         when(identityManager.getMe()).thenReturn(Observable.error(new Exception("test")));
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -309,7 +309,7 @@ public class OcrPurchaseTrackerTest {
     public void initializeReturnsInvalidMeResponse() {
         // Configure
         when(meResponse.getUser()).thenReturn(null);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test
@@ -327,7 +327,7 @@ public class OcrPurchaseTrackerTest {
         final PublishSubject<Boolean> loggedInStream = PublishSubject.create();
         loggedInStream.onNext(false);
         when(identityManager.isLoggedInStream()).thenReturn(loggedInStream);
-        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Observable.just(Collections.singleton(managedProduct)));
+        when(purchaseManager.getAllOwnedPurchases()).thenReturn(Single.just(Collections.singleton(managedProduct)));
         when(mobileAppPurchasesService.addPurchase(any(PurchaseRequest.class))).thenReturn(Observable.just(purchaseResponse));
 
         // Test

@@ -87,7 +87,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
                     // Attempt to update our latest scan count
                     return fetchAndPersistAvailableRecognitions();
                 })
-                .flatMap(integer -> purchaseManager.getAllOwnedPurchases())
+                .flatMapSingle(integer -> purchaseManager.getAllOwnedPurchases())
                 .flatMap(managedProducts -> {
                      for (final ManagedProduct managedProduct : managedProducts) {
                         if (managedProduct.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
@@ -125,6 +125,11 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
     @Override
     public void onPurchaseFailed(@NonNull PurchaseSource purchaseSource) {
 
+    }
+
+    @Override
+    public void onPurchasePending() {
+        /*no-op*/
     }
 
     /**
@@ -202,7 +207,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
         return this.identityManager.getMe()
                 .subscribeOn(subscribeOnScheduler)
                 .flatMap(meResponse -> {
-                    if (meResponse != null && meResponse.getUser() != null) {
+                    if (meResponse.getUser() != null) {
                         return Observable.just(meResponse.getUser().getRecognitionsAvailable());
                     } else {
                         return Observable.error(new ApiValidationException("Failed to get a user response back"));
