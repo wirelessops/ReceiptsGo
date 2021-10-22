@@ -46,7 +46,6 @@ class BillingClientManager @Inject constructor(
 
         override fun onBillingSetupFinished(result: BillingResult) {
             val connected = result.responseCode == BillingClient.BillingResponseCode.OK
-
             Logger.debug(this, "onBillingSetupFinished, code ${result.responseCode}")
 
             isConnectedSubject.onNext(connected)
@@ -77,7 +76,7 @@ class BillingClientManager @Inject constructor(
 
     fun removePurchaseEventListener(listener: PurchaseEventsListener) = listeners.remove(listener)
 
-    fun consumePurchase(purchase: ConsumablePurchase) : Completable {
+    fun consumePurchase(purchase: ConsumablePurchase): Completable {
         return billingClient.consumePurchase(purchase.purchaseToken)
     }
 
@@ -109,10 +108,9 @@ class BillingClientManager @Inject constructor(
             val debugMessage = billingResult.debugMessage
             Logger.debug(this, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
 
-            if (responseCode == BillingClient.BillingResponseCode.OK) {
-                emitter.onComplete()
-            } else {
-                emitter.onError(BillingClientException(responseCode, debugMessage))
+            when (responseCode) {
+                BillingClient.BillingResponseCode.OK -> emitter.onComplete()
+                else -> emitter.onError(BillingClientException(responseCode, debugMessage))
             }
         }
     }
@@ -164,8 +162,7 @@ class BillingClientManager @Inject constructor(
                         it.purchaseToken,
                         it.signature
                     )
-                }
-                    .toSet()
+                }.toSet()
             }
             .doOnError { t -> Logger.error(this, t) }
             .ensureConnection()
@@ -183,9 +180,7 @@ class BillingClientManager @Inject constructor(
                         it.purchaseToken,
                         it.signature
                     )
-
                 }.toSet()
-
             }
             .doOnError { t -> Logger.error(this, t) }
             .ensureConnection()
