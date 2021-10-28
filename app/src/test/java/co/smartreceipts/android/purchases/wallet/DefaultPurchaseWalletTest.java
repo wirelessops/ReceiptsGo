@@ -174,7 +174,7 @@ public class DefaultPurchaseWalletTest {
         assertEquals(partialManagedProduct.getInAppPurchase(), InAppPurchase.SmartReceiptsPlus);
         assertEquals(partialManagedProduct.getInAppDataSignature(), "");
         assertEquals(partialManagedProduct.getPurchaseToken(), "");
-        assertEquals(partialManagedProduct.getPurchaseData(), "");
+        assertEquals(partialManagedProduct.getPurchaseDataJson(), "");
         assertEquals(newWallet.getActiveLocalInAppPurchases(), Collections.singleton(partialManagedProduct));
 
         // Update from Google InAppBilling

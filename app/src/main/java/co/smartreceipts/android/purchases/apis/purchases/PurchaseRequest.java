@@ -16,7 +16,7 @@ public class PurchaseRequest {
     public PurchaseRequest(@NonNull ManagedProduct managedProduct, @NonNull String goal) {
         this.signature = Preconditions.checkNotNull(managedProduct.getInAppDataSignature());
         this.goal = Preconditions.checkNotNull(goal);
-        this.receipt = Preconditions.checkNotNull(managedProduct.getPurchaseData());
+        this.receipt = Preconditions.checkNotNull(managedProduct.getPurchaseDataJson());
         this.pay_service = "Google Play";
     }
 

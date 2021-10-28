@@ -9,7 +9,7 @@ interface ManagedProduct {
     /**
      * @return the purchase data json [String] provided by Google for this purchase
      */
-    val purchaseData: String
+    val purchaseDataJson: String
 
     /**
      * @return the [String] purchase token provided by Google for this product
