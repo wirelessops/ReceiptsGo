@@ -149,7 +149,7 @@ public class DefaultPurchaseWallet implements PurchaseWallet {
             for (final InAppPurchase inAppPurchase : ownedInAppPurchases) {
                 final ManagedProduct managedProduct = locallyOwnedInAppPurchasesMap.get(inAppPurchase);
                 skusSet.add(inAppPurchase.getSku());
-                editor.putString(getKeyForPurchaseData(inAppPurchase), managedProduct.getPurchaseData());
+                editor.putString(getKeyForPurchaseData(inAppPurchase), managedProduct.getPurchaseDataJson());
                 editor.putString(getKeyForInAppDataSignature(inAppPurchase), managedProduct.getInAppDataSignature());
             }
 

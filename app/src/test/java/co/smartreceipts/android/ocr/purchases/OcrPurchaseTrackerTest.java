@@ -95,7 +95,7 @@ public class OcrPurchaseTrackerTest {
         MockitoAnnotations.initMocks(this);
         when(managedProduct.getInAppPurchase()).thenReturn(InAppPurchase.OcrScans50);
         when(managedProduct.getInAppDataSignature()).thenReturn("");
-        when(managedProduct.getPurchaseData()).thenReturn("");
+        when(managedProduct.getPurchaseDataJson()).thenReturn("");
         when(defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)).thenReturn(false);
         when(purchaseWallet.getLocalInAppManagedProduct(InAppPurchase.OcrScans50)).thenReturn(managedProduct);
         when(webServiceManager.getService(MobileAppPurchasesService.class)).thenReturn(mobileAppPurchasesService);
