@@ -244,6 +244,14 @@ ktlint {
     android.set(true)
 }
 
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+}
+
 task secretsExtraction(description: "Allows us to extract our secrets if we have a local decrpytion key") {
 
     doLast {
