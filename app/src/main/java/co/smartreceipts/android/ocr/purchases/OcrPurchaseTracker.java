@@ -182,6 +182,8 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
                             .andThen(Observable.just(new Object()));
                 })
                 .onErrorResumeNext(throwable -> {
+                    Logger.debug(this, "Got error while tried to upload purchase " + managedProduct.getInAppPurchase().getSku()
+                            + ": " + throwable.getLocalizedMessage());
                     if (throwable instanceof SmartReceiptsApiException) {
                         final SmartReceiptsApiException smartReceiptsApiException = (SmartReceiptsApiException) throwable;
                         final List<String> errors;
