@@ -1,6 +1,8 @@
 package co.smartreceipts.android.settings.widget.editors.columns;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
 import javax.inject.Inject;
@@ -33,7 +35,7 @@ public class PDFColumnsListFragment extends ColumnsListFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
