@@ -14,8 +14,6 @@ import org.joda.money.CurrencyUnit;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.UUID;
 
 import co.smartreceipts.android.model.Category;
