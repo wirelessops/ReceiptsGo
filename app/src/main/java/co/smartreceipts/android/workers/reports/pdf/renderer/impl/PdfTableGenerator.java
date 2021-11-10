@@ -25,7 +25,6 @@ import co.smartreceipts.android.workers.reports.pdf.renderer.grid.GridRowRendere
 import co.smartreceipts.android.workers.reports.pdf.renderer.text.TextRenderer;
 import co.smartreceipts.android.workers.reports.pdf.utils.HeavyHandedReplaceIllegalCharacters;
 
-
 public class PdfTableGenerator<DataType> implements TableGenerator<List<GridRowRenderer>, DataType> {
 
     private static final Padding DEFAULT_PADDING = new Padding(4f);
