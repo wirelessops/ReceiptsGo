@@ -316,7 +316,7 @@ public class StorageManager {
 		try {
 			os = new ByteArrayOutputStream();
 			byte[] buffer = new byte[2048];
-			int n = 0;
+			int n;
 			while (-1 != (n = is.read(buffer))) {
 				os.write(buffer, 0, n);
 			}
