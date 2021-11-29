@@ -248,7 +248,7 @@ class ReportGenerationTests {
         createReceiptGoToGenerate()
 
         // Check the box for Zip - Receipts Files
-        onView(withId(R.id.dialog_email_checkbox_zip)).perform(click())
+        onView(withId(R.id.dialog_email_checkbox_zip)).perform(scrollTo(), click())
 
         // Tap on the generate button
         onView(withId(R.id.fab)).perform(click())
@@ -283,7 +283,7 @@ class ReportGenerationTests {
         createReceiptGoToGenerate()
 
         // Check the box for Zip - Receipt Files with Metadata
-        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(click())
+        onView(withId(R.id.dialog_email_checkbox_zip_with_metadata)).perform(scrollTo(), click())
 
         // Tap on the generate button
         onView(withId(R.id.fab)).perform(click())
