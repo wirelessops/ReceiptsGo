@@ -351,9 +351,12 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
             }
         }
 
-        // Set custom tax names if tax2 is enabled
-        if (userPreferenceManager.get(UserPreference.Receipts.IncludeTaxField) && userPreferenceManager.get(UserPreference.Receipts.IncludeTax2Field)) {
+        // Set custom tax names
+        if (userPreferenceManager.get(UserPreference.Receipts.IncludeTaxField)) {
             binding.receiptTax1Wrapper.setHint(userPreferenceManager.get(UserPreference.Receipts.Tax1Name));
+        }
+
+        if (userPreferenceManager.get(UserPreference.Receipts.IncludeTax2Field)) {
             binding.receiptTax2Wrapper.setHint(userPreferenceManager.get(UserPreference.Receipts.Tax2Name));
         }
 

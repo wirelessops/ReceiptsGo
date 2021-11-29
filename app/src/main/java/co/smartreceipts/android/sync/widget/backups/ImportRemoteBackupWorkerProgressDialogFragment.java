@@ -29,7 +29,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class ImportRemoteBackupWorkerProgressDialogFragment extends DialogFragment {
 
     private static final String ARG_BACKUP_METADATA = "arg_backup_metadata";
@@ -62,7 +61,7 @@ public class ImportRemoteBackupWorkerProgressDialogFragment extends DialogFragme
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }

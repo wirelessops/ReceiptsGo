@@ -39,10 +39,10 @@ class ReportResourcesManager @Inject constructor(private var context: Context,
         // Note: this hack is needed to override tax1 and tax2 column names to names that user set
         return when (resId) {
             R.string.pref_receipt_tax1_name_defaultValue -> {
-                preferenceManager.get(UserPreference.Receipts.Tax1Name)
+                preferenceManager[UserPreference.Receipts.Tax1Name]
             }
             R.string.pref_receipt_tax2_name_defaultValue -> {
-                preferenceManager.get(UserPreference.Receipts.Tax2Name)
+                preferenceManager[UserPreference.Receipts.Tax2Name]
             }
             else -> {
                 flex.getString(getLocalizedContext(), resId)
