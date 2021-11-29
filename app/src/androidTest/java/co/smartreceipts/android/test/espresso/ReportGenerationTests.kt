@@ -5,6 +5,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -64,6 +65,9 @@ class ReportGenerationTests {
         // Click on the "new report" button
         onView(withId(R.id.trip_action_new)).perform(click())
 
+        // Close the keyboard
+        Espresso.closeSoftKeyboard()
+
         // Verify that all the relevant views are displayed
         onView(withId(R.id.action_save)).check(matches(isDisplayed()))
         onView(withId(R.id.name)).check(matches(isDisplayed()))
@@ -96,6 +100,9 @@ class ReportGenerationTests {
 
         // Click on "text only" button
         onView(withId(R.id.new_text)).perform(click())
+
+        // Close the keyboard
+        Espresso.closeSoftKeyboard()
 
         // Verify that all the relevant views are displayed
         onView(withId(R.id.action_save)).check(matches(isDisplayed()))

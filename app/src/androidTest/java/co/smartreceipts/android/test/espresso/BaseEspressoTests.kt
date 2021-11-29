@@ -50,6 +50,9 @@ class BaseEspressoTests {
         // Click on the "new report" button
         onView(withId(R.id.trip_action_new)).perform(click())
 
+        // Close the keyboard
+        Espresso.closeSoftKeyboard()
+
         // Verify that all the relevant views are displayed
         onView(withId(R.id.action_save)).check(matches(isDisplayed()))
         onView(withId(R.id.name)).check(matches(isDisplayed()))
@@ -137,6 +140,9 @@ class BaseEspressoTests {
 
         // Click on "text only" button on the bottomSheetDialog
         onView(withId(R.id.new_text)).perform(click())
+
+        // Close the keyboard
+        Espresso.closeSoftKeyboard()
 
         // Verify that all the relevant views are displayed
         onView(withId(R.id.action_save)).check(matches(isDisplayed()))

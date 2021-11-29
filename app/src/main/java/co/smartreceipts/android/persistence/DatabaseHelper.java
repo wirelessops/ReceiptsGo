@@ -302,6 +302,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Single<List<String>> search(@NonNull String input, @Nonnull String tableName, @Nonnull String resultColumn,
                                        @Nullable String orderByColumn, @Nonnull String... searchColumns) {
+        String fixedInput = input.replace("'", "");
+
         return Single.fromCallable(() -> {
                     final List<String> results = new ArrayList<>();
 
@@ -321,12 +323,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                 if (searchColumns[i].equals(ReceiptsTable.COLUMN_COMMENT)) {
                                     builder.append(searchColumns[i])
                                             .append(" like '%")
-                                            .append(input)
+                                            .append(fixedInput)
                                             .append("%' ");
                                 } else {
                                     builder.append(searchColumns[i])
                                             .append(" like '")
-                                            .append(input)
+                                            .append(fixedInput)
                                             .append("%' ");
                                 }
                             }
