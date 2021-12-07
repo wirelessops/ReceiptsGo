@@ -13,6 +13,7 @@
     <string name="menu_main_export">Резервна копія</string>
     <string name="menu_main_usage_guide">Керівництво з використання</string>
     <string name="menu_main_my_account">Мій аккаунт</string>
+    <string name="menu_main_subscriptions">Підписки</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">Додати</string>

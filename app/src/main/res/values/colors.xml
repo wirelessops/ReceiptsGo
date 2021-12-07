@@ -11,7 +11,7 @@
     <color name="navigation_inactive">#B5B3B8</color>
     <color name="no_data_image_tint">#D9D7E0</color>
     <color name="receipt_image_tint">#E1E0E2</color>
-    
+
     <color name="warning_color">#F93E2B</color>
     <color name="org_synced_color">#689752</color>
     <color name="org_synced_bg">#D7F8D6</color>
@@ -46,6 +46,9 @@
     <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="window_background_color">@color/background</color>
     <color name="transparent_overlay">#66000000</color>
+    <color name="transparent_white">#99FFFFFF</color>
+    <color name="subscription_current_plan_bg">#F4F4F4</color>
+
 
     <!-- Palette for lists and cards -->
     <color name="list_background">@color/window_background_color</color>
