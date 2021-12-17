@@ -267,6 +267,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                 navigationHandler.navigateToSearchActivity();
                 analytics.record(Events.Navigation.Search);
                 return true;
+            case R.id.menu_main_subscriptions:
+                navigationHandler.navigateToSubscriptionsActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

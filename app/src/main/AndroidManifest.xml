@@ -156,6 +156,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustNothing"/>
 
+        <activity android:name=".subscriptions.SubscriptionsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
         <!-- FirebaseMessagingService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
         <service
             android:name="co.smartreceipts.push.services.MyFirebaseMessagingService"

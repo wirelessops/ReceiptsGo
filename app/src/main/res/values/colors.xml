@@ -46,7 +46,8 @@
     <color name="accent_text_secondary_color">@color/text_secondary_color</color>
     <color name="window_background_color">@color/background</color>
     <color name="transparent_overlay">#66000000</color>
-    <color name="transparent_white">#99FFFFFF</color>
+    <color name="transparent_white_60">#99FFFFFF</color>
+    <color name="transparent_white_12">#1FFFFFFF</color>
     <color name="subscription_current_plan_bg">#F4F4F4</color>
 
 

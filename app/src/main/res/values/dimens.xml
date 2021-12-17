@@ -59,6 +59,7 @@
     <dimen name="default_tooltip_vertical_padding">16dp</dimen>
 
     <!--Fonts-->
+    <dimen name="font_extra_headline">40sp</dimen>
     <dimen name="font_headline">28sp</dimen>
     <dimen name="font_headline2">17sp</dimen>
     <dimen name="font_subhead">15sp</dimen>

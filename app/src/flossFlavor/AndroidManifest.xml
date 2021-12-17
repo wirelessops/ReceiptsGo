@@ -23,6 +23,9 @@
             android:theme="@style/Theme.SmartReceipts.OSS"
             tools:node="remove" />
 
+        <activity
+            android:name="co.smartreceipts.android.subscriptions.SubscriptionsActivity"
+            tools:node="remove" />
 
     </application>
 

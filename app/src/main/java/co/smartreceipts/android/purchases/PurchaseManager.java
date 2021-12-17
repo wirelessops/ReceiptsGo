@@ -38,9 +38,6 @@ import io.reactivex.schedulers.Schedulers;
 @ApplicationScope
 public class PurchaseManager {
 
-
-    private static final int BILLING_RESPONSE_CODE_OK = 0;
-
     private final Analytics analytics;
     private final Scheduler subscribeOnScheduler;
     private final AtomicReference<WeakReference<Activity>> activityReference = new AtomicReference<>(new WeakReference<>(null));
