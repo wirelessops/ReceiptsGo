@@ -40,8 +40,6 @@ class SubscriptionsInteractor(
         purchaseManager.removeEventListener(listener)
     }
 
-    // TODO: 15.12.2021 test behaviour when got 1 or 0 subs
-
     fun getPlansWithOwnership(): Single<Map<SkuDetails, Boolean>> {
         return Single.zip(
             getAvailablePlansInfo(),
@@ -66,8 +64,12 @@ class SubscriptionsInteractor(
             .observeOn(observeOnScheduler)
     }
 
-    fun tryInitStandardPlan() {
+    fun purchaseStandardPlan() {
         purchaseManager.initiatePurchase(InAppPurchase.StandardSubscriptionPlan, PurchaseSource.SubscriptionsScreen)
+    }
+
+    fun purchasePremiumPlan() {
+        purchaseManager.initiatePurchase(InAppPurchase.PremiumSubscriptionPlan, PurchaseSource.SubscriptionsScreen)
     }
 
     private fun getOwnedPlans(): Single<List<InAppPurchase>> {

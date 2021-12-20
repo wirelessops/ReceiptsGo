@@ -9,6 +9,7 @@ import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManage
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.core.di.scopes.ApplicationScope
 import com.android.billingclient.api.*
+import com.google.common.base.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -97,22 +98,54 @@ class BillingClientManager @Inject constructor(
     fun initiatePurchase(skuDetails: SkuDetails, activity: Activity): Completable {
         Logger.debug(this, "Initiating purchase ${skuDetails.sku}")
 
-        return Completable.create { emitter ->
-            val purchaseParams = BillingFlowParams.newBuilder()
-                .setSkuDetails(skuDetails)
-                .build()
+        return Single.just(skuDetails)
+            .flatMap<Optional<ManagedProduct>> { desiredSkuDetails ->
+                val desiredPurchase = InAppPurchase.from(desiredSkuDetails.sku)!!
 
-            val billingResult = billingClient.launchBillingFlow(activity, purchaseParams)
-
-            val responseCode = billingResult.responseCode
-            val debugMessage = billingResult.debugMessage
-            Logger.debug(this, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
-
-            when (responseCode) {
-                BillingClient.BillingResponseCode.OK -> emitter.onComplete()
-                else -> emitter.onError(BillingClientException(responseCode, debugMessage))
+                if (desiredPurchase.purchaseFamilies.contains(PurchaseFamily.SubscriptionPlans)) {
+                    // if this is a subscription plan - we need to check if we need to handle subscription upgrade/downgrade
+                    return@flatMap queryOwnedSubscriptions()
+                        .map { ownedPlan ->
+                            val previousPlan = ownedPlan.firstOrNull { managedProduct ->
+                                managedProduct.inAppPurchase.purchaseFamilies.contains(
+                                    PurchaseFamily.SubscriptionPlans
+                                )
+                            }
+                            Logger.debug(
+                                this,
+                                "Found owned plan: ${previousPlan?.inAppPurchase?.sku}"
+                            )
+                            return@map Optional.fromNullable(previousPlan)
+                        }
+                } else {
+                    // no need to handle subscription upgrade/downgrade
+                    return@flatMap Single.just(Optional.absent())
+                }
             }
-        }
+            .flatMapCompletable { previousPlan ->
+                val purchaseParamsBuilder = BillingFlowParams.newBuilder()
+
+                if (previousPlan.isPresent) {
+                    purchaseParamsBuilder.setSubscriptionUpdateParams(
+                        BillingFlowParams.SubscriptionUpdateParams.newBuilder()
+                            .setOldSkuPurchaseToken(previousPlan.get().purchaseToken)
+                            .build()
+                    )
+                }
+
+                val purchaseParams = purchaseParamsBuilder.setSkuDetails(skuDetails).build()
+
+                val billingResult = billingClient.launchBillingFlow(activity, purchaseParams)
+
+                val responseCode = billingResult.responseCode
+                val debugMessage = billingResult.debugMessage
+                Logger.debug(this, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
+
+                when (responseCode) {
+                    BillingClient.BillingResponseCode.OK -> Completable.complete()
+                    else -> Completable.error(BillingClientException(responseCode, debugMessage))
+                }
+            }
     }
 
     fun queryAllAvailablePurchases(): Single<Set<SkuDetails>> {
@@ -272,7 +305,6 @@ class BillingClientManager @Inject constructor(
                             )
                         }
                     }
-
                 }
             }
             else -> {

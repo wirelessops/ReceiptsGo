@@ -17,10 +17,12 @@ import javax.inject.Inject
 
 class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
+    // TODO: 20.12.2021 add translations
+    // TODO: 20.12.2021 we need user to be logged in to purchase new plan. ?
+    // TODO: 20.12.2021 ignore clicks on owned plan
+
     @Inject
     lateinit var presenter: SubscriptionsPresenter
-
-    // TODO: 17.12.2021 need to work on album orientation. Disable it or add scrollview?
 
     override val standardSubscriptionClicks: Observable<Unit> get() = binding.cardStandard.clicks()
     override val premiumSubscriptionClicks: Observable<Unit> get() = binding.cardPremium.clicks()

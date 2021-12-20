@@ -18,7 +18,7 @@ class SubscriptionsPresenter @Inject constructor(
 
         interactor.addSubscriptionListener(this)
 
-        // TODO: 07.12.2021 add analytics to cancel action
+        // TODO: 07.12.2021 add analytics
 
         compositeDisposable.add(
             view.cancelSubscriptionInfoClicks
@@ -27,7 +27,12 @@ class SubscriptionsPresenter @Inject constructor(
 
         compositeDisposable.add(
             view.standardSubscriptionClicks
-                .subscribe { view.presentSuccessSubscription() }
+                .subscribe { interactor.purchaseStandardPlan() }
+        )
+
+        compositeDisposable.add(
+            view.premiumSubscriptionClicks
+                .subscribe { interactor.purchasePremiumPlan() }
         )
 
         compositeDisposable.add(

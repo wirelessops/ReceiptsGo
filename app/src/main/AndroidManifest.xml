@@ -157,7 +157,7 @@
             android:windowSoftInputMode="adjustNothing"/>
 
         <activity android:name=".subscriptions.SubscriptionsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:screenOrientation="portrait"/>
 
         <!-- FirebaseMessagingService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
         <service
