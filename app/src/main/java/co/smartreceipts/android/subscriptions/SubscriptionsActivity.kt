@@ -19,13 +19,14 @@ class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
     // TODO: 20.12.2021 add translations
     // TODO: 20.12.2021 we need user to be logged in to purchase new plan. ?
-    // TODO: 20.12.2021 ignore clicks on owned plan
 
     @Inject
     lateinit var presenter: SubscriptionsPresenter
 
-    override val standardSubscriptionClicks: Observable<Unit> get() = binding.cardStandard.clicks()
-    override val premiumSubscriptionClicks: Observable<Unit> get() = binding.cardPremium.clicks()
+    override val standardSubscriptionClicks: Observable<Unit>
+        get() = binding.cardStandard.clicks().filter { !binding.yourPlanStandard.isVisible }
+    override val premiumSubscriptionClicks: Observable<Unit>
+        get() = binding.cardPremium.clicks().filter { !binding.yourPlanPremium.isVisible }
     override val cancelSubscriptionInfoClicks: Observable<Unit> get() = binding.cancelSubscriptionInfo.clicks()
 
     private var _binding: ActivitySubscriptionsBinding? = null
