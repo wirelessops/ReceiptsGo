@@ -17,8 +17,12 @@ import javax.inject.Inject
 
 class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
+    // TODO: 21.12.2021 how to handle users with bought ocr scans?
+    // TODO: 21.12.2021 implement A/B
+    // TODO: 21.12.2021 implement feature on/off
     // TODO: 20.12.2021 add translations
     // TODO: 20.12.2021 we need user to be logged in to purchase new plan. ?
+    // TODO: 21.12.2021 the behaviour of SR Plus app?
 
     @Inject
     lateinit var presenter: SubscriptionsPresenter
@@ -31,7 +35,7 @@ class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
     private var _binding: ActivitySubscriptionsBinding? = null
     private val binding get() = _binding!!
-
+m
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
 
