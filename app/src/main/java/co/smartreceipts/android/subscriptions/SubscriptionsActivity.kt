@@ -35,7 +35,7 @@ class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
     private var _binding: ActivitySubscriptionsBinding? = null
     private val binding get() = _binding!!
-m
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
 
