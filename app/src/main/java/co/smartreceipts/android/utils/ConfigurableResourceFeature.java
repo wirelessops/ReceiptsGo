@@ -41,7 +41,12 @@ public enum ConfigurableResourceFeature implements Feature {
     /**
      * Allows us to manage syncing of organization settings across users
      */
-    OrganizationSyncing(R.bool.config_is_organization_syncing_enabled);
+    OrganizationSyncing(R.bool.config_is_organization_syncing_enabled),
+
+    /**
+     * Tracks if the new subscriptions model is enabled
+     */
+    SubscriptionModel(R.bool.config_is_new_subscription_model_enabled);
 
     private final int booleanResID;
 
