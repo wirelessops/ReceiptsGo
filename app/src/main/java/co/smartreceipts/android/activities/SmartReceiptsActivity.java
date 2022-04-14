@@ -19,16 +19,17 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.R;
-import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.DataPoint;
 import co.smartreceipts.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.R;
+import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.android.ad.InterstitialAdPresenter;
 import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
+import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -47,9 +48,9 @@ import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.subscriptions.SubscriptionsActivity;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
-import co.smartreceipts.analytics.log.Logger;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -109,6 +110,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     @Nullable
     private Searchable searchResult = null;
+
+    private boolean loginRequested = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +186,14 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                         break;
                 }
             }
+        } else if (requestCode == RequestCodes.SUBSCRIPTIONS_REQUEST) {
+            switch (resultCode) {
+                case SubscriptionsActivity.RESULT_NEED_LOGIN:
+                    loginRequested = true;
+                    break;
+                case SubscriptionsActivity.RESULT_OK:
+                    break;
+            }
         } else if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -203,6 +214,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
             } else {
                 throw new IllegalStateException("Unexpected search result type: " + searchResult.getClass());
             }
+        }
+
+        if (loginRequested) {
+            loginRequested = false;
+            navigationHandler.navigateToLoginScreen();
         }
     }
 

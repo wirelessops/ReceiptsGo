@@ -18,11 +18,31 @@ import javax.inject.Inject
 class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
     // TODO: 21.12.2021 how to handle users with bought ocr scans?
+
     // TODO: 21.12.2021 implement A/B
-    // TODO: 21.12.2021 implement feature on/off
     // TODO: 20.12.2021 add translations
-    // TODO: 20.12.2021 we need user to be logged in to purchase new plan. ?
+
+
     // TODO: 21.12.2021 the behaviour of SR Plus app?
+
+    // standard = free OCR
+    // premium = free OCR + backups + no ads
+
+    // TODO: 11.01.2022 we need to keep ocr feature off tumbler somehow ?
+
+    // TODO: 11.01.2022 SR Plus also provides exchange rate service, what about plans?
+    // TODO: 11.01.2022 same for custom settings like pdf customization
+
+    // TODO: 12.01.2022 hide OCR menu for Plans
+
+    // TODO: 12.01.2022 when downgrading Premium -> Standard need to disable previously set Google Dive backups!
+
+    // TODO: subs was bought 14.04 - renewed several times, canceled - need to check how the server behaves - when it removes subs?
+
+    companion object {
+        const val RESULT_NEED_LOGIN = 45321
+        const val RESULT_OK = 45322
+    }
 
     @Inject
     lateinit var presenter: SubscriptionsPresenter
@@ -149,5 +169,15 @@ class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
     override fun presentFailedSubscription() {
         Toast.makeText(this, R.string.purchase_failed, Toast.LENGTH_LONG).show()
+    }
+
+    override fun navigateToLogin() {
+        setResult(RESULT_NEED_LOGIN)
+        finish()
+    }
+
+    override fun navigateBack() {
+        setResult(RESULT_OK)
+        finish()
     }
 }

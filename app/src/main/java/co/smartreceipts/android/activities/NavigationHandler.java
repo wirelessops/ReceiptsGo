@@ -314,7 +314,7 @@ public class NavigationHandler<T extends FragmentActivity> {
         final FragmentActivity activity = fragmentActivityWeakReference.get();
         if (activity != null) {
             final Intent intent = new Intent(activity, SubscriptionsActivity.class);
-            activity.startActivity(intent);
+            activity.startActivityForResult(intent, RequestCodes.SUBSCRIPTIONS_REQUEST);
         }
     }
 

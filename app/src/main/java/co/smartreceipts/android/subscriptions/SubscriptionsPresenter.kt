@@ -1,16 +1,19 @@
 package co.smartreceipts.android.subscriptions
 
+import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.purchases.PurchaseEventsListener
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import co.smartreceipts.core.di.scopes.ActivityScope
+import co.smartreceipts.core.identity.IdentityManager
 import javax.inject.Inject
 
 @ActivityScope
 class SubscriptionsPresenter @Inject constructor(
     view: SubscriptionsView,
-    interactor: SubscriptionsInteractor
+    interactor: SubscriptionsInteractor,
+    private val identityManager: IdentityManager
 ) : BaseViperPresenter<SubscriptionsView, SubscriptionsInteractor>(view, interactor),
     PurchaseEventsListener {
 
@@ -27,12 +30,22 @@ class SubscriptionsPresenter @Inject constructor(
 
         compositeDisposable.add(
             view.standardSubscriptionClicks
-                .subscribe { interactor.purchaseStandardPlan() }
+                .subscribe {
+                    when {
+                        identityManager.isLoggedIn -> interactor.purchaseStandardPlan()
+                        else -> view.navigateToLogin()
+                    }
+                }
         )
 
         compositeDisposable.add(
             view.premiumSubscriptionClicks
-                .subscribe { interactor.purchasePremiumPlan() }
+                .subscribe {
+                    when {
+                        identityManager.isLoggedIn -> interactor.purchasePremiumPlan()
+                        else -> view.navigateToLogin()
+                    }
+                }
         )
 
         compositeDisposable.add(
@@ -47,7 +60,7 @@ class SubscriptionsPresenter @Inject constructor(
                             view.presentPremiumPlan(if (isOwned) null else plan.key.price)
                         }
                     }
-                }, { t -> })
+                }, { t -> Logger.error(this, t)})
         )
     }
 

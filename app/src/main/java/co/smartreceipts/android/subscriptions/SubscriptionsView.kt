@@ -22,4 +22,8 @@ interface SubscriptionsView {
     fun presentSuccessSubscription()
 
     fun presentFailedSubscription()
+
+    fun navigateToLogin()
+
+    fun navigateBack()
 }
