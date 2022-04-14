@@ -51,15 +51,20 @@ class SubscriptionsPresenter @Inject constructor(
         compositeDisposable.add(
             interactor.getPlansWithOwnership()
                 .subscribe({ plans ->
+                    var userOwnsPlan: Boolean = false
                     for (plan in plans) {
                         if (plan.key.sku == InAppPurchase.StandardSubscriptionPlan.sku) {
                             val isOwned = plan.value
                             view.presentStandardPlan(if (isOwned) null else plan.key.price)
+                            userOwnsPlan = userOwnsPlan || isOwned
                         } else if (plan.key.sku == InAppPurchase.PremiumSubscriptionPlan.sku) {
                             val isOwned = plan.value
                             view.presentPremiumPlan(if (isOwned) null else plan.key.price)
+                            userOwnsPlan = userOwnsPlan || isOwned
                         }
                     }
+
+                    view.presentCancelInfo(userOwnsPlan)
                 }, { t -> Logger.error(this, t)})
         )
     }
