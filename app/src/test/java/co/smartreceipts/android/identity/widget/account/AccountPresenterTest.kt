@@ -2,10 +2,10 @@ package co.smartreceipts.android.identity.widget.account
 
 import co.smartreceipts.android.identity.apis.organizations.Organization
 import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
-import co.smartreceipts.core.identity.store.EmailAddress
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscription
 import co.smartreceipts.android.widget.model.UiIndicator
+import co.smartreceipts.core.identity.store.EmailAddress
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -40,7 +40,7 @@ class AccountPresenterTest {
         whenever(interactor.getEmail()).thenReturn(EmailAddress(EMAIL))
         whenever(interactor.getOrganizations()).thenReturn(Single.just(Collections.emptyList()))
         whenever(interactor.getOcrRemainingScansStream()).thenReturn(Observable.just(5))
-        whenever(interactor.getSubscriptionsStream()).thenReturn(Observable.empty())
+        whenever(interactor.getSubscriptions()).thenReturn(Single.just(Collections.emptyList()))
 
         whenever(organizationModel.organization).thenReturn(organization)
 
@@ -92,7 +92,7 @@ class AccountPresenterTest {
     fun presentSubscriptions() {
 
         val subscriptions = listOf(RemoteSubscription(45, InAppPurchase.SmartReceiptsPlus, Date()))
-        whenever(interactor.getSubscriptionsStream()).thenReturn(Observable.just(subscriptions))
+        whenever(interactor.getSubscriptions()).thenReturn(Single.just(subscriptions))
 
         presenter.subscribe()
 
