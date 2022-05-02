@@ -38,7 +38,7 @@ class PurchaseManagerTest {
     @Before
     fun setUp() {
 
-        whenever(billiClientManager.queryAllOwnedPurchases()).thenReturn(Single.just(setOf(ownedProduct)))
+        whenever(billiClientManager.queryAllOwnedPurchasesAndSync()).thenReturn(Single.just(setOf(ownedProduct)))
         whenever(billiClientManager.queryAllAvailablePurchases()).thenReturn(Single.just(setOf(skuOcr10, skuOcr50)))
         whenever(billiClientManager.querySkuDetails(InAppPurchase.OcrScans10)).thenReturn(Single.just(skuOcr10))
         whenever(billiClientManager.querySkuDetails(InAppPurchase.OcrScans50)).thenReturn(Single.just(skuOcr50))
@@ -58,29 +58,29 @@ class PurchaseManagerTest {
     fun initializationTest() {
         purchaseManager.initialize(application)
 
-        verify(billiClientManager, only()).queryAllOwnedPurchases()
+        verify(billiClientManager, only()).queryAllOwnedPurchasesAndSync()
     }
 
     @Test
     fun getAllOwnedPurchasesTest() {
 
-        purchaseManager.allOwnedPurchases.test()
+        purchaseManager.allOwnedPurchasesAndSync.test()
             .assertComplete()
             .assertNoErrors()
             .assertResult(setOf(ownedProduct))
 
-        verify(billiClientManager, only()).queryAllOwnedPurchases()
+        verify(billiClientManager, only()).queryAllOwnedPurchasesAndSync()
     }
 
     @Test
     fun getAllOwnedPurchasesErrorTest() {
-        whenever(billiClientManager.queryAllOwnedPurchases()).thenReturn(Single.error(Exception("error")))
+        whenever(billiClientManager.queryAllOwnedPurchasesAndSync()).thenReturn(Single.error(Exception("error")))
 
-        purchaseManager.allOwnedPurchases.test()
+        purchaseManager.allOwnedPurchasesAndSync.test()
             .assertNotComplete()
             .assertError(Exception::class.java)
 
-        verify(billiClientManager, only()).queryAllOwnedPurchases()
+        verify(billiClientManager, only()).queryAllOwnedPurchasesAndSync()
     }
 
     @Test

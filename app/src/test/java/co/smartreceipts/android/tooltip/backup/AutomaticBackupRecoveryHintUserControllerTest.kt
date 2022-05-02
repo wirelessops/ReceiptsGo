@@ -57,7 +57,7 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(purchaseManager.allOwnedPurchases).thenReturn(Single.just(emptySet()))
+        whenever(purchaseManager.allOwnedPurchasesAndSync).thenReturn(Single.just(emptySet()))
         automaticBackupRecoveryHintUserController = AutomaticBackupRecoveryHintUserController(ApplicationProvider.getApplicationContext(), tooltipView, router, store, purchaseWallet, purchaseManager, analytics, scheduler)
     }
 

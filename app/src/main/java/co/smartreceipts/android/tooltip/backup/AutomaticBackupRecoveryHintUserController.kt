@@ -43,7 +43,7 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
     @UiThread
     override fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>> {
         // Note: We fetch allOwnedPurchases first to ensure that the purchaseWallet is properly initialized
-        val userOwnsSmartReceiptsPlusSingle = purchaseManager.allOwnedPurchases
+        val userOwnsSmartReceiptsPlusSingle = purchaseManager.allOwnedPurchasesAndSync
                 .map {
                     return@map purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
                 }

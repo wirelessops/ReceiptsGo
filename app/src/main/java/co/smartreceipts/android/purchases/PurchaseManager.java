@@ -29,7 +29,6 @@ import co.smartreceipts.android.purchases.model.ManagedProduct;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -87,7 +86,7 @@ public class PurchaseManager {
         application.registerActivityLifecycleCallbacks(new PurchaseManagerActivityLifecycleCallbacks(this));
 
         // Initialize our purchase set to update our wallet
-        getAllOwnedPurchases()
+        getAllOwnedPurchasesAndSync()
                 .subscribeOn(subscribeOnScheduler)
                 .subscribe(managedProducts -> Logger.debug(PurchaseManager.this, "Successfully initialized all user owned purchases {}.", managedProducts),
                         throwable -> Logger.error(PurchaseManager.this, "Failed to initialize all user owned purchases.", throwable));
@@ -106,20 +105,20 @@ public class PurchaseManager {
         }
     }
 
-    public Single<Set<ManagedProduct>> getAllOwnedPurchases() {
-        return billingClientManager.queryAllOwnedPurchases()
-                .doOnSuccess(managedProducts -> Logger.debug(this, "Found owned purchases: " + managedProducts))
+    public Single<Set<ManagedProduct>> getAllOwnedPurchasesAndSync() {
+        return billingClientManager.queryAllOwnedPurchasesAndSync()
+                .doOnSuccess(managedProducts -> Logger.debug(this, "Found owned purchases: "
+                        + managedProducts + " , synced with local purchase wallet"))
                 .subscribeOn(subscribeOnScheduler);
     }
 
-    public Observable<Set<SkuDetails>> getAllAvailablePurchaseSkus() {
+    public Single<Set<SkuDetails>> getAllAvailablePurchaseSkus() {
         return billingClientManager.queryAllAvailablePurchases()
-                .toObservable()
                 .subscribeOn(subscribeOnScheduler);
     }
 
     @NonNull
-    public Observable<Set<InAppPurchase>> getAllAvailablePurchases() {
+    public Single<Set<InAppPurchase>> getAllAvailablePurchases() {
         return getAllAvailablePurchaseSkus()
                 .map(availablePurchases -> {
                     final Set<InAppPurchase> inAppPurchases = new HashSet<>();

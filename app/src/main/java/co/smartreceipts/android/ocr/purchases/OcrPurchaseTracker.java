@@ -87,9 +87,9 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
                     // Attempt to update our latest scan count
                     return fetchAndPersistAvailableRecognitions();
                 })
-                .flatMapSingle(integer -> purchaseManager.getAllOwnedPurchases())
+                .flatMapSingle(integer -> purchaseManager.getAllOwnedPurchasesAndSync())
                 .flatMap(managedProducts -> {
-                     for (final ManagedProduct managedProduct : managedProducts) {
+                    for (final ManagedProduct managedProduct : managedProducts) {
                         if (managedProduct.getInAppPurchase().getPurchaseFamilies().contains(PurchaseFamily.Ocr)) {
                             Logger.debug(OcrPurchaseTracker.this, "Found available OCR purchase: {}", managedProduct.getInAppPurchase());
                             if (!defaultInAppPurchaseConsumer.isConsumed(managedProduct, PurchaseFamily.Ocr)) {

@@ -71,6 +71,9 @@ class BillingClientManager @Inject constructor(
                     listeners.forEach { it.onPurchaseSuccess(inAppPurchase, PurchaseSource.Remote) }
                 }
             }) { Logger.error(this, "Failed to fetch our remote subscriptions") }
+        
+        queryAllOwnedPurchasesAndSync()
+            .subscribe({ purchases -> Logger.debug(this, "owned purchases: ${purchases.toString()}")}, { t -> Logger.error(this, t) })
     }
 
     fun addPurchaseEventListener(listener: PurchaseEventsListener) = listeners.add(listener)
@@ -156,12 +159,14 @@ class BillingClientManager @Inject constructor(
         )
     }
 
-    fun queryAllOwnedPurchases(): Single<Set<ManagedProduct>> {
+    fun queryAllOwnedPurchasesAndSync(): Single<Set<ManagedProduct>> {
+        Logger.debug(this, "queryAllOwnedPurchasesAndSync")
         return Single.zip(queryOwnedInAppPurchases(), queryOwnedSubscriptions(),
             BiFunction<Set<ManagedProduct>, Set<ManagedProduct>, Set<ManagedProduct>> { consumablePurchases, subscriptions ->
                 consumablePurchases + subscriptions
             })
             .map { purchasedProducts ->
+                Logger.debug(this, purchasedProducts.toString())
                 purchaseWallet.updateLocalInAppPurchasesInWallet(purchasedProducts)
                 purchaseWallet.activeLocalInAppPurchases
             }
