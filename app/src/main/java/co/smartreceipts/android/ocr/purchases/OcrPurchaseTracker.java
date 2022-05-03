@@ -158,6 +158,10 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
      * may still get a remote error after a scan
      */
     public boolean hasAvailableScans() {
+        if (purchaseWallet.hasActivePurchase(InAppPurchase.StandardSubscriptionPlan)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)) {
+            return true;
+        }
         return localOcrScansTracker.getRemainingScans() > 0;
     }
 

@@ -497,11 +497,17 @@ public class OcrPurchaseTrackerTest {
 
     @Test
     public void hasAvailableScans() {
+        when(purchaseWallet.hasActivePurchase(InAppPurchase.StandardSubscriptionPlan)).thenReturn(false);
+        when(purchaseWallet.hasActivePurchase(InAppPurchase.StandardSubscriptionPlan)).thenReturn(false);
+
         when(localOcrScansTracker.getRemainingScans()).thenReturn(50);
         assertTrue(ocrPurchaseTracker.hasAvailableScans());
 
         when(localOcrScansTracker.getRemainingScans()).thenReturn(0);
         assertFalse(ocrPurchaseTracker.hasAvailableScans());
+
+        when(purchaseWallet.hasActivePurchase(InAppPurchase.StandardSubscriptionPlan)).thenReturn(true);
+        assertTrue(ocrPurchaseTracker.hasAvailableScans());
     }
 
     @Test
