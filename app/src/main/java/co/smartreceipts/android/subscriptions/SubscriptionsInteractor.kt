@@ -74,7 +74,7 @@ class SubscriptionsInteractor(
 
     private fun getOwnedPlans(): Single<List<InAppPurchase>> {
 
-        return purchaseManager.allOwnedPurchases
+        return purchaseManager.allOwnedPurchasesAndSync
             .map { set ->
                 set.filter { managedProduct ->
                     val inAppPurchase = managedProduct.inAppPurchase
@@ -89,7 +89,6 @@ class SubscriptionsInteractor(
     private fun getAvailablePlansInfo(): Single<List<SkuDetails>> {
 
         return purchaseManager.allAvailablePurchaseSkus
-            .firstOrError()
             .map { set ->
                 set.filter { skuDetails ->
                     val inAppPurchase = InAppPurchase.from(skuDetails.sku)

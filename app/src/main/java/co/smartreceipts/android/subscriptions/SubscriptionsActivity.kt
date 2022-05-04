@@ -35,7 +35,6 @@ class SubscriptionsActivity : AppCompatActivity(), SubscriptionsView {
 
     // TODO: 12.01.2022 hide OCR menu for Plans
 
-    // TODO: 12.01.2022 when downgrading Premium -> Standard need to disable previously set Google Dive backups!
 
     // TODO: subs was bought 14.04 - renewed several times, canceled - need to check how the server behaves - when it removes subs?
 

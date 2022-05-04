@@ -45,7 +45,8 @@ class AutomaticBackupRecoveryHintUserController @Inject constructor(private val 
         // Note: We fetch allOwnedPurchases first to ensure that the purchaseWallet is properly initialized
         val userOwnsSmartReceiptsPlusSingle = purchaseManager.allOwnedPurchasesAndSync
                 .map {
-                    return@map purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                    return@map purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) ||
+                            purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)
                 }
 
         // Combine if an interaction has occurred (don't show) and if the user has plus (only show if they do)

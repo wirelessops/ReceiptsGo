@@ -230,7 +230,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
 
         // If the pro sub is either unavailable or we already have it, don't show the purchase menu option
-        if (!proSubscriptionIsAvailable || haveProSubscription) {
+        if (!proSubscriptionIsAvailable || haveProSubscription
+                || configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
             menu.removeItem(R.id.menu_main_pro_subscription);
         }
 
@@ -247,6 +248,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         // Check "My Account" availability before enabling this menu item
         if (!configurationManager.isEnabled(ConfigurableResourceFeature.MyAccount)) {
             menu.removeItem(R.id.menu_main_my_account);
+        }
+
+        // Check "Subscriptions" availability before enabling this menu item
+        if (!configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
+            menu.removeItem(R.id.menu_main_subscriptions);
         }
 
         return super.onCreateOptionsMenu(menu);
