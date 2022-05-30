@@ -1,68 +1,65 @@
-package co.smartreceipts.android.purchases.consumption;
+package co.smartreceipts.android.purchases.consumption
 
-import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
-
-import com.google.common.base.Preconditions;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.inject.Inject;
-
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.android.purchases.model.InAppPurchase;
-import co.smartreceipts.android.purchases.model.PurchaseFamily;
-import co.smartreceipts.android.purchases.model.Subscription;
-import dagger.Lazy;
-import io.reactivex.Completable;
+import android.content.SharedPreferences
+import co.smartreceipts.android.purchases.model.InAppPurchase.Companion.from
+import co.smartreceipts.android.purchases.model.PurchaseFamily
+import co.smartreceipts.android.purchases.model.Subscription
+import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.google.common.base.Preconditions
+import dagger.Lazy
+import io.reactivex.Completable
+import java.util.*
+import javax.inject.Inject
 
 @ApplicationScope
-public class SubscriptionInAppPurchaseConsumer implements InAppPurchaseConsumer<Subscription> {
+class SubscriptionInAppPurchaseConsumer @Inject constructor(preferences: Lazy<SharedPreferences>) :
+    InAppPurchaseConsumer<Subscription?> {
 
-    private static final String KEY_CONSUMED_SUBSCRIPTION_SET = "key_consumed_subscription_set";
-    private static final String FORMAT_KEY_PURCHASE_FAMILY = "key_%s_purchase_family";
+    private val sharedPreferences: Lazy<SharedPreferences>
 
-    private final Lazy<SharedPreferences> sharedPreferences;
-
-    @Inject
-    public SubscriptionInAppPurchaseConsumer(@NonNull Lazy<SharedPreferences> preferences) {
-        this.sharedPreferences = Preconditions.checkNotNull(preferences);
+    companion object {
+        private const val KEY_CONSUMED_SUBSCRIPTION_SET = "key_consumed_subscription_set"
+        private const val FORMAT_KEY_PURCHASE_FAMILY = "key_%s_purchase_family"
     }
 
-    @Override
-    public boolean isConsumed(@NonNull Subscription managedProduct, @NonNull PurchaseFamily purchaseFamily) {
-        final Set<String> consumedSubscriptionSkuSet = sharedPreferences.get().getStringSet(KEY_CONSUMED_SUBSCRIPTION_SET, Collections.emptySet());
-        for (final String sku : consumedSubscriptionSkuSet) {
-            if (managedProduct.getInAppPurchase().equals(InAppPurchase.from(sku))) {
-                final String family = sharedPreferences.get().getString(getPurchaseFamilyKey(sku), "");
-                if (purchaseFamily.name().equals(family)) {
-                    return true;
+    init {
+        sharedPreferences = Preconditions.checkNotNull(preferences)
+    }
+
+    override fun isConsumed(managedProduct: Subscription, purchaseFamily: PurchaseFamily): Boolean {
+        val consumedSubscriptionSkuSet = sharedPreferences.get().getStringSet(
+            KEY_CONSUMED_SUBSCRIPTION_SET, emptySet()
+        )
+        for (sku in consumedSubscriptionSkuSet!!) {
+            if (managedProduct.inAppPurchase == from(sku)) {
+                val family = sharedPreferences.get().getString(getPurchaseFamilyKey(sku), "")
+                if (purchaseFamily.name == family) {
+                    return true
                 }
             }
         }
-        return false;
+        return false
     }
 
-    @Override
-    public Completable consumePurchase(@NonNull Subscription managedProduct, @NonNull PurchaseFamily purchaseFamily) {
-        return Completable.fromAction(() -> {
-            final Set<String> consumedSubscriptionSkuSet = new HashSet<>(sharedPreferences.get().getStringSet(KEY_CONSUMED_SUBSCRIPTION_SET, Collections.emptySet()));
-            final String sku = managedProduct.getInAppPurchase().getSku();
+    override fun consumePurchase(managedProduct: Subscription, purchaseFamily: PurchaseFamily)
+            : Completable {
+        return Completable.fromAction {
+            val consumedSubscriptionSkuSet: MutableSet<String> =
+                HashSet(
+                    sharedPreferences.get().getStringSet(KEY_CONSUMED_SUBSCRIPTION_SET, emptySet())
+                )
+            val sku = managedProduct.inAppPurchase.sku
             if (!consumedSubscriptionSkuSet.contains(sku)) {
-                consumedSubscriptionSkuSet.add(sku);
-                final SharedPreferences.Editor editor = sharedPreferences.get().edit();
-                editor.putStringSet(KEY_CONSUMED_SUBSCRIPTION_SET, consumedSubscriptionSkuSet);
-                editor.putString(getPurchaseFamilyKey(sku), purchaseFamily.name());
-                editor.apply();
+                consumedSubscriptionSkuSet.add(sku)
+                val editor = sharedPreferences.get().edit()
+                editor.putStringSet(KEY_CONSUMED_SUBSCRIPTION_SET, consumedSubscriptionSkuSet)
+                editor.putString(getPurchaseFamilyKey(sku), purchaseFamily.name)
+                editor.apply()
             }
-        });
+        }
     }
 
-    @NonNull
-    private String getPurchaseFamilyKey(@NonNull String sku) {
-        return String.format(Locale.US, FORMAT_KEY_PURCHASE_FAMILY, sku);
+    private fun getPurchaseFamilyKey(sku: String): String {
+        return String.format(Locale.US, FORMAT_KEY_PURCHASE_FAMILY, sku)
     }
 }
