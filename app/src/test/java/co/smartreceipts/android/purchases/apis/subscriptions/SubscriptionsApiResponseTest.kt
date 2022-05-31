@@ -64,7 +64,7 @@ class SubscriptionsApiResponseTest {
 
         val subscription = subscriptions[0]
         assertNotNull(subscription)
-        assertEquals(30, subscription.id)
+        assertEquals(30L, subscription.id)
         assertEquals("Stripe", subscription.subscription_provider)
         assertEquals("Smart Receipts Plus", subscription.product_name)
 

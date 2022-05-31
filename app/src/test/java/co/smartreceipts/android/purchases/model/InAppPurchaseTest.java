@@ -1,5 +1,7 @@
 package co.smartreceipts.android.purchases.model;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -8,8 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class InAppPurchaseTest {
@@ -56,7 +56,7 @@ public class InAppPurchaseTest {
 
     @Test
     public void getSubscriptionSkus() {
-        final List<String> purchases = Collections.singletonList("plus_sku_4");
+        final List<String> purchases = Arrays.asList("plus_sku_4", "and_autorec_1month", "and_autorec_pro_1month");
         assertEquals(InAppPurchase.getSubscriptionSkus(), purchases);
     }
 

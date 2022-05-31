@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.SmartReceiptsApiException;
 import co.smartreceipts.android.apis.WebServiceManager;
@@ -29,7 +30,6 @@ import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.core.identity.IdentityManager;
-import co.smartreceipts.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
@@ -179,7 +179,7 @@ public class OcrPurchaseTracker implements PurchaseEventsListener {
         }
 
         Logger.info(this, "Uploading consumable purchase: {}", managedProduct.getInAppPurchase());
-        return webServiceManager.getService(MobileAppPurchasesService.class).addPurchase(new PurchaseRequest(managedProduct, GOAL))
+        return webServiceManager.getService(MobileAppPurchasesService.class).addPurchase(new PurchaseRequest(managedProduct))
                 .flatMap(purchaseResponse -> {
                     Logger.debug(OcrPurchaseTracker.this, "Received purchase response of {}", purchaseResponse);
                     return defaultInAppPurchaseConsumer.consumePurchase(managedProduct, PurchaseFamily.Ocr)
