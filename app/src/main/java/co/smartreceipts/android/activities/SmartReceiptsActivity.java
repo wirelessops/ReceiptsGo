@@ -253,6 +253,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         // Check "Subscriptions" availability before enabling this menu item
         if (!configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
             menu.removeItem(R.id.menu_main_subscriptions);
+        } else { // hide "OCR Scans" menu if Subscriptions are available
+            menu.removeItem(R.id.menu_main_ocr_configuration);
         }
 
         return super.onCreateOptionsMenu(menu);
