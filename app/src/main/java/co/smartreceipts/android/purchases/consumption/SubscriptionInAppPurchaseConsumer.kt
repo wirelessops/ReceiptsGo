@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @ApplicationScope
 class SubscriptionInAppPurchaseConsumer @Inject constructor(preferences: Lazy<SharedPreferences>) :
-    InAppPurchaseConsumer<Subscription?> {
+    InAppPurchaseConsumer<Subscription> {
 
     private val sharedPreferences: Lazy<SharedPreferences>
 
