@@ -21,8 +21,6 @@ class SubscriptionsPresenter @Inject constructor(
 
         interactor.addSubscriptionListener(this)
 
-        // TODO: 07.12.2021 add analytics
-
         compositeDisposable.add(
             view.cancelSubscriptionInfoClicks
                 .subscribe { view.redirectToPlayStoreSubscriptions() }
@@ -32,7 +30,10 @@ class SubscriptionsPresenter @Inject constructor(
             view.standardSubscriptionClicks
                 .subscribe {
                     when {
-                        identityManager.isLoggedIn -> interactor.purchaseStandardPlan()
+                        identityManager.isLoggedIn -> {
+                            view.presentLoading()
+                            interactor.purchaseStandardPlan()
+                        }
                         else -> view.navigateToLogin()
                     }
                 }
@@ -42,7 +43,10 @@ class SubscriptionsPresenter @Inject constructor(
             view.premiumSubscriptionClicks
                 .subscribe {
                     when {
-                        identityManager.isLoggedIn -> interactor.purchasePremiumPlan()
+                        identityManager.isLoggedIn -> {
+                            view.presentLoading()
+                            interactor.purchasePremiumPlan()
+                        }
                         else -> view.navigateToLogin()
                     }
                 }
@@ -51,7 +55,7 @@ class SubscriptionsPresenter @Inject constructor(
         compositeDisposable.add(
             interactor.getPlansWithOwnership()
                 .subscribe({ plans ->
-                    var userOwnsPlan: Boolean = false
+                    var userOwnsPlan = false
                     for (plan in plans) {
                         if (plan.key.sku == InAppPurchase.StandardSubscriptionPlan.sku) {
                             val isOwned = plan.value

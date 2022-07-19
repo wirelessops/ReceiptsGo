@@ -52,7 +52,7 @@ public class SummaryEditTextPreference extends EditTextPreference implements Pre
 		return getText();
 	}
 
-    public void setAppearsEnabled(boolean appearsEnabled) { // TODO: 14.01.2022 doesn't work?
+    public void setAppearsEnabled(boolean appearsEnabled) {
         mAppearsEnabled = appearsEnabled;
     }
 

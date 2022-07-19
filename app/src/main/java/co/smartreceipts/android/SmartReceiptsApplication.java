@@ -31,6 +31,7 @@ import co.smartreceipts.android.receipts.editor.currency.CurrencyInitializer;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.subscriptions.SubscriptionsPurchaseTracker;
 import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
@@ -116,6 +117,9 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
 
     @Inject
     DateFormatter dateFormatter;
+
+    @Inject
+    SubscriptionsPurchaseTracker subscriptionsPurchaseTracker;
 
     private AppComponent appComponent;
 
@@ -206,6 +210,10 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         extraInitializer.init();
         currencyInitializer.init();
+
+        subscriptionsPurchaseTracker.initialize()
+                .subscribe(() -> Logger.info(this, "Successfully initialized"),
+                        throwable -> Logger.error(this, "Failed to initialize", throwable));
 
         PDFBoxResourceLoader.init(getApplicationContext());
 

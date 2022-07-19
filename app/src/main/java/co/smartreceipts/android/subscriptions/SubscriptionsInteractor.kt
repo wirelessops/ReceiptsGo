@@ -1,6 +1,5 @@
 package co.smartreceipts.android.subscriptions
 
-import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.android.purchases.PurchaseEventsListener
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.InAppPurchase
@@ -19,15 +18,13 @@ import javax.inject.Inject
 @ApplicationScope
 class SubscriptionsInteractor(
     private val purchaseManager: PurchaseManager,
-    private val analytics: Analytics,
     private val subscribeOnScheduler: Scheduler = Schedulers.io(),
     private val observeOnScheduler: Scheduler = AndroidSchedulers.mainThread()
 ) {
 
     @Inject
-    constructor(purchaseManager: PurchaseManager, analytics: Analytics) : this(
+    constructor(purchaseManager: PurchaseManager) : this(
         purchaseManager,
-        analytics,
         Schedulers.io(),
         AndroidSchedulers.mainThread()
     )

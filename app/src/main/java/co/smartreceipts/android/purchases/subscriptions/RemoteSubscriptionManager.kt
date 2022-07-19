@@ -58,7 +58,7 @@ class RemoteSubscriptionManager constructor(private val purchaseWallet: Purchase
     }
 
     /**
-     * Fetches all new remote subscriptions that are associated with this account.
+     * Fetches all remote subscriptions that are associated with this account and are not present in the local wallet.
      *
      * @return an [Observable], which will emit a [Set] of [RemoteSubscription] instances that are new
      * to this account.
@@ -105,6 +105,4 @@ class RemoteSubscriptionManager constructor(private val purchaseWallet: Purchase
                 }
                 .onErrorReturn { Collections.emptySet() }
     }
-
-
 }

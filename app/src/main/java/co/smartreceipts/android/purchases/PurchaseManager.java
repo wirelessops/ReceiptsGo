@@ -7,11 +7,13 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.google.common.base.Preconditions;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -149,6 +151,17 @@ public class PurchaseManager {
                 .subscribe(() -> {
                 }, throwable -> {
                 });
+    }
+
+    public Single<List<Purchase>> queryUnacknowledgedSubscriptions() {
+        return billingClientManager.queryUnacknowledgedSubscriptions()
+                .subscribeOn(subscribeOnScheduler);
+    }
+
+    public Completable acknowledgePurchase(Purchase purchase) {
+        return billingClientManager.acknowledgePurchase(purchase)
+                .subscribeOn(subscribeOnScheduler);
+
     }
 
 

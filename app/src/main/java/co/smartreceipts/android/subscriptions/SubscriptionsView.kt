@@ -23,6 +23,8 @@ interface SubscriptionsView {
 
     fun presentFailedSubscription()
 
+    fun presentLoading()
+
     fun navigateToLogin()
 
     fun navigateBack()
