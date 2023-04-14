@@ -15,6 +15,7 @@ import org.junit.Ignore
 
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -57,8 +58,13 @@ class AppVersionManagerTest {
         whenever(userPreferenceManager.getObservable(UserPreference.Internal.ApplicationVersionCode)).thenReturn(Observable.just(OLD_VERSION))
         whenever(context.packageManager).thenReturn(packageManager)
         whenever(context.packageName).thenReturn(ApplicationProvider.getApplicationContext<Context>().packageName)
-        whenever(packageManager.getPackageInfo(anyString(), any())).thenReturn(packageInfo)
-        whenever(appVersionUpgradesList.getUpgradeListeners()).thenReturn(Arrays.asList(versionUpgradedListener1, versionUpgradedListener2))
+        whenever(packageManager.getPackageInfo(anyString(), anyInt())).thenReturn(packageInfo)
+        whenever(appVersionUpgradesList.getUpgradeListeners()).thenReturn(
+            Arrays.asList(
+                versionUpgradedListener1,
+                versionUpgradedListener2
+            )
+        )
         appVersionManager = AppVersionManager(context, userPreferenceManager, appVersionUpgradesList, Schedulers.trampoline())
     }
 
@@ -111,7 +117,12 @@ class AppVersionManagerTest {
     @Test
     fun onLaunchWithNewVersionThatThrowsException() {
         val newVersion = OLD_VERSION
-        whenever(packageManager.getPackageInfo(anyString(), any())).thenThrow(PackageManager.NameNotFoundException("test"))
+        whenever(
+            packageManager.getPackageInfo(
+                anyString(),
+                anyInt()
+            )
+        ).thenThrow(PackageManager.NameNotFoundException("test"))
 
         appVersionManager.onLaunch()
         verifyZeroInteractions(versionUpgradedListener1, versionUpgradedListener2)
