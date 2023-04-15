@@ -229,8 +229,8 @@ android {
     // Note: This version is controlled in the base build file
     apply plugin: "com.google.gms.google-services"
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
