@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.crash.CrashReporter;
 import co.smartreceipts.analytics.log.Logger;
-import co.smartreceipts.android.ad.MobileAdsInitializer;
+import co.smartreceipts.android.ad.MobileAds;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
@@ -114,7 +114,7 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
     PicassoInitializer picassoInitializer;
 
     @Inject
-    MobileAdsInitializer mobileAdsInitializer;
+    MobileAds mobileAds;
 
     @Inject
     AppVersionManager appVersionManager;
@@ -211,7 +211,7 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
         crashReporter.initialize(userPreferenceManager.get(UserPreference.Privacy.EnableCrashTracking));
         receiptsOrderer.initialize();
         picassoInitializer.initialize();
-        mobileAdsInitializer.initialize();
+        mobileAds.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         extraInitializer.init();
         currencyInitializer.init();

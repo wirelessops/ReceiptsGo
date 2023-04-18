@@ -2,17 +2,17 @@ package co.smartreceipts.android.ad
 
 import android.content.Context
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import javax.inject.Inject
+import com.google.android.gms.ads.MobileAds as GoogleMobileAds
 
 
-class MobileAdsInitializer @Inject constructor(private val context: Context) {
+class MobileAdsImpl @Inject constructor(private val context: Context) : MobileAds {
 
-    fun initialize() {
-        MobileAds.initialize(context)
+    override fun initialize() {
+        GoogleMobileAds.initialize(context)
 
-        MobileAds.setRequestConfiguration(
+        GoogleMobileAds.setRequestConfiguration(
             RequestConfiguration.Builder()
                 .setTestDeviceIds(
                     listOf(
