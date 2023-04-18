@@ -7,6 +7,8 @@ import io.reactivex.functions.Consumer
 
 interface OcrConfigurationView {
 
+    val logoutButtonClicks: Observable<Unit>
+
     /**
      *
      * [Observable] that will emit a delayed purchase id if it was saved before
@@ -48,9 +50,9 @@ interface OcrConfigurationView {
     fun present(emailAddress: EmailAddress?)
 
     /**
-     * Presents the current user's remaining scans
+     * Presents the current user's remaining scans if logged in
      */
-    fun present(remainingScans: Int)
+    fun present(remainingScans: Int, isUserLoggedIn: Boolean)
 
     /**
      * Presents the list of available purchases for this user
@@ -61,4 +63,9 @@ interface OcrConfigurationView {
      * Saves purchase and navigates user to login screen
      */
     fun delayPurchaseAndPresentNeedToLogin(delayedPurchaseId: String)
+
+    /**
+     * navigates user to login screen
+     */
+    fun navigateToLoginScreen()
 }

@@ -34,9 +34,15 @@ constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) 
             .subscribe { interactor.setAllowUsToSaveImagesRemotely(it) }
         )
 
-        // Show remaining scans
+        // Show remaining scans if logged in
         compositeDisposable.add(interactor.getRemainingScansStream()
-            .subscribe { view.present(it) }
+            .subscribe { view.present(it, interactor.isUserLoggedIn) }
+        )
+
+        compositeDisposable.add(
+            view.logoutButtonClicks
+                .doOnNext { interactor.logOut() }
+                .subscribe { view.navigateToLoginScreen() }
         )
 
         // Show available purchases list

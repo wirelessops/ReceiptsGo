@@ -19,17 +19,16 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import co.smartreceipts.android.R;
+import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.DataPoint;
 import co.smartreceipts.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.analytics.log.Logger;
-import co.smartreceipts.android.R;
-import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.android.ad.InterstitialAdPresenter;
 import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
 import co.smartreceipts.android.imports.RequestCodes;
+import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -48,9 +47,10 @@ import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.subscriptions.SubscriptionsActivity;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
+import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.core.identity.IdentityManager;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -104,6 +104,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     @Inject
     ThemeProvider themeProvider;
+
+    @Inject
+    IdentityManager identityManager;
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
@@ -276,8 +279,13 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                 analytics.record(Events.Navigation.SmartReceiptsPlusOverflow);
                 return true;
             case R.id.menu_main_ocr_configuration:
-                navigationHandler.navigateToOcrConfigurationFragment();
-                analytics.record(Events.Navigation.OcrConfiguration);
+                if(identityManager.isLoggedIn()) {
+                    navigationHandler.navigateToOcrConfigurationFragment();
+                    analytics.record(Events.Navigation.OcrConfiguration);
+                }
+                else {
+                    navigationHandler.navigateToLoginScreen(true);
+                }
                 return true;
             case R.id.menu_main_usage_guide:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
