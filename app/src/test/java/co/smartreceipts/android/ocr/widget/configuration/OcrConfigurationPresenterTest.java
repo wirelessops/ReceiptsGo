@@ -60,6 +60,7 @@ public class OcrConfigurationPresenterTest {
         when(interactor.getAvailableOcrPurchases()).thenReturn(Single.just(Collections.singletonList(availablePurchaseSkuDetails)));
         when(interactor.isUserLoggedIn()).thenReturn(true);
 
+        when(view.getLogoutButtonClicks()).thenReturn(Observable.empty());
         when(view.getOcrIsEnabledCheckboxStream()).thenReturn(Observable.just(OCR_IS_ENABLED));
         when(view.getAllowUsToSaveImagesRemotelyCheckboxStream()).thenReturn(Observable.just(SAVE_IMAGES_REMOTELY));
         when(view.getAvailablePurchaseClicks()).thenReturn(Observable.just(availablePurchaseSkuDetails));
