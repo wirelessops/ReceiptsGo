@@ -289,7 +289,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                 }
                 return true;
             case R.id.menu_main_usage_guide:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/guide")));
                 analytics.record(Events.Navigation.UsageGuideOverflow);
                 return true;
             case R.id.menu_main_my_account:

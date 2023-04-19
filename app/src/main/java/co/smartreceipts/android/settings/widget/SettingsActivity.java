@@ -506,7 +506,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             tryToMakePurchaseIfNeed();
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/privacy")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/privacy")));
             return true;
         } else if (key.equals(getString(R.string.pref_about_oss_key))) {
             final Intent licensesActivityIntent = licensesNavigator.getLicensesActivityIntent(this, R.string.pref_about_oss_title);

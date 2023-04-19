@@ -1,5 +1,10 @@
 package co.smartreceipts.aws.s3;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectResult;
@@ -19,11 +24,6 @@ import java.io.File;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(RobolectricTestRunner.class)
 public class S3ManagerTest {
 
@@ -31,7 +31,7 @@ public class S3ManagerTest {
     private static final String RANDOM_KEY = "key";
     private static final String FILE_NAME = "img.jpg";
     private static final String FULL_KEY_PATH = PATH + RANDOM_KEY + FILE_NAME;
-    private static final String URL = "https://www.smartreceipts.co/download";
+    private static final String URL = "https://smartreceipts.co/download";
 
     // Class under test
     S3Manager s3Manager;
