@@ -185,7 +185,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             if (isUserLoggedIn) {
-                actionBar.setTitle(getContext().getString(R.string.configuration_scans_remaining, remainingScans));
+                actionBar.setTitle(getContext().getString(R.string.ocr_configuration_scans_remaining, remainingScans));
                 binding.logoutButton.setVisibility(View.VISIBLE);
             }
         }
@@ -201,7 +201,6 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         this.delayedPurchaseId = delayedPurchaseId;
         router.navigateToLoginScreen();
     }
-
 
     @NonNull
     @Override
