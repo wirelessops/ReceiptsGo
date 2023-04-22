@@ -1,6 +1,7 @@
 package co.smartreceipts.android.receipts.editor.exchange;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
@@ -17,6 +18,8 @@ import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.apis.ApiValidationException;
 import co.smartreceipts.android.apis.ExchangeRateService;
 import co.smartreceipts.android.apis.SmartReceiptsApisRxJavaCallAdapterFactory;
+import co.smartreceipts.android.config.ConfigurationManager;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.core.di.scopes.ApplicationScope;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.purchases.PurchaseManager;
@@ -41,13 +44,15 @@ public class ExchangeRateServiceManager {
     private final PurchaseWallet purchaseWallet;
     private final Analytics analytics;
     private final ExchangeRateService exchangeRateService;
+    private final ConfigurationManager configurationManager;
 
     @Inject
     public ExchangeRateServiceManager(@NonNull Context context,
                                       @NonNull PurchaseManager purchaseManager,
                                       @NonNull PurchaseWallet purchaseWallet,
-                                      @NonNull Analytics analytics) {
-        this(context, purchaseManager, purchaseWallet, analytics, new Retrofit.Builder()
+                                      @NonNull Analytics analytics,
+                                      @NonNull ConfigurationManager configurationManager) {
+        this(context, purchaseManager, purchaseWallet, analytics, configurationManager, new Retrofit.Builder()
                 .baseUrl("https://openexchangerates.org")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd").create()))
                 .addCallAdapterFactory(SmartReceiptsApisRxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
@@ -59,12 +64,14 @@ public class ExchangeRateServiceManager {
                                       @NonNull PurchaseManager purchaseManager,
                                       @NonNull PurchaseWallet purchaseWallet,
                                       @NonNull Analytics analytics,
+                                      @NonNull ConfigurationManager configurationManager,
                                       @NonNull ExchangeRateService exchangeRateService) {
         this.context = Preconditions.checkNotNull(context.getApplicationContext());
         this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
         this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
         this.exchangeRateService = Preconditions.checkNotNull(exchangeRateService);
         this.analytics = Preconditions.checkNotNull(analytics);
+        this.configurationManager = Preconditions.checkNotNull(configurationManager);
     }
 
     /**
@@ -72,16 +79,17 @@ public class ExchangeRateServiceManager {
      * EUR/USD, EUR would refer to the base currency code (ie receipt one), and USD would refer to the quote currency
      * code (ie trip one)
      *
-     * @param date the desired {@link Date} to get the currency for. If this date is in the future, it will fetch
-     *             for the current one
-     * @param baseCurrencyCode the base currency code
+     * @param date              the desired {@link Date} to get the currency for. If this date is in the future, it will fetch
+     *                          for the current one
+     * @param baseCurrencyCode  the base currency code
      * @param quoteCurrencyCode the quote currency code
      * @return an {@link Observable} that will emit a {@link UiIndicator}, which may contain a {@link ExchangeRate}
      * set of data that supports the base -> quote conversion
      */
     @NonNull
     public Observable<UiIndicator<ExchangeRate>> getExchangeRate(@NonNull Date date, @NonNull String baseCurrencyCode, @NonNull String quoteCurrencyCode) {
-        return Observable.just(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus))
+        return Observable.just(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan))
                 .filter(hasPlusSubscription -> hasPlusSubscription)
                 .map(ignored -> {
                     final Date today = new Date(Calendar.getInstance().getTimeInMillis());
@@ -93,32 +101,32 @@ public class ExchangeRateServiceManager {
                 })
                 .flatMap(dateAsTodayOrEarlier ->
                         exchangeRateService.getExchangeRate(dateAsTodayOrEarlier, context.getString(R.string.exchange_rate_key), baseCurrencyCode)
-                        .doOnSubscribe(ignored -> {
-                            Logger.info(ExchangeRateServiceManager.this, "Fetching the exchange rate for {} on {}", baseCurrencyCode, dateAsTodayOrEarlier);
-                            analytics.record(Events.Receipts.RequestExchangeRate);
-                        })
-                        .flatMap(exchangeRate -> {
-                            if (exchangeRate.supportsExchangeRateFor(quoteCurrencyCode)) {
-                                return Observable.just(exchangeRate);
-                            } else {
-                                return Observable.error(new ApiValidationException("The API response failed to include our quote currency: " + quoteCurrencyCode));
-                            }
-                        })
-                        .doOnError(throwable -> {
-                            Logger.error(ExchangeRateServiceManager.this, "Failed to fetch the exchange for " + baseCurrencyCode, throwable);
-                            if (throwable instanceof ApiValidationException) {
-                                analytics.record(Events.Receipts.RequestExchangeRateFailedMissingQuoteCurrency);
-                            } else {
-                                analytics.record(Events.Receipts.RequestExchangeRateFailed);
-                            }
-                        })
-                        .doOnNext(exchangeRate -> {
-                            Logger.info(ExchangeRateServiceManager.this, "Successfully fetched the exchange rate for {} on {}", baseCurrencyCode, dateAsTodayOrEarlier);
-                            analytics.record(Events.Receipts.RequestExchangeRateSuccess);
-                        })
-                        .map(UiIndicator::success)
-                        .onErrorReturn(ignore -> UiIndicator.error())
-                        .startWith(UiIndicator.loading())
+                                .doOnSubscribe(ignored -> {
+                                    Logger.info(ExchangeRateServiceManager.this, "Fetching the exchange rate for {} on {}", baseCurrencyCode, dateAsTodayOrEarlier);
+                                    analytics.record(Events.Receipts.RequestExchangeRate);
+                                })
+                                .flatMap(exchangeRate -> {
+                                    if (exchangeRate.supportsExchangeRateFor(quoteCurrencyCode)) {
+                                        return Observable.just(exchangeRate);
+                                    } else {
+                                        return Observable.error(new ApiValidationException("The API response failed to include our quote currency: " + quoteCurrencyCode));
+                                    }
+                                })
+                                .doOnError(throwable -> {
+                                    Logger.error(ExchangeRateServiceManager.this, "Failed to fetch the exchange for " + baseCurrencyCode, throwable);
+                                    if (throwable instanceof ApiValidationException) {
+                                        analytics.record(Events.Receipts.RequestExchangeRateFailedMissingQuoteCurrency);
+                                    } else {
+                                        analytics.record(Events.Receipts.RequestExchangeRateFailed);
+                                    }
+                                })
+                                .doOnNext(exchangeRate -> {
+                                    Logger.info(ExchangeRateServiceManager.this, "Successfully fetched the exchange rate for {} on {}", baseCurrencyCode, dateAsTodayOrEarlier);
+                                    analytics.record(Events.Receipts.RequestExchangeRateSuccess);
+                                })
+                                .map(UiIndicator::success)
+                                .onErrorReturn(ignore -> UiIndicator.error())
+                                .startWith(UiIndicator.loading())
                 );
     }
 
@@ -129,20 +137,23 @@ public class ExchangeRateServiceManager {
      * {@link #getExchangeRate(Date, String, String)}.
      * </p>
      *
-     * @param date the desired {@link Date} to get the currency for. If this date is in the future, it will fetch
-     *             for the current one
-     * @param baseCurrencyCode the base currency code
+     * @param date              the desired {@link Date} to get the currency for. If this date is in the future, it will fetch
+     *                          for the current one
+     * @param baseCurrencyCode  the base currency code
      * @param quoteCurrencyCode the quote currency code
      * @return an {@link Observable} that will emit a {@link UiIndicator}, which may contain a {@link ExchangeRate}
      * set of data that supports the base -> quote conversion
      */
     @NonNull
     public Observable<UiIndicator<ExchangeRate>> getExchangeRateOrInitiatePurchase(@NonNull Date date, @NonNull String baseCurrencyCode, @NonNull String quoteCurrencyCode) {
-        return Observable.just(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus))
+        return Observable.just(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan))
                 .doOnNext(hasPlusSubscription -> {
                     if (!hasPlusSubscription) {
                         Logger.info(this, "Attempting to retry without valid subscription. Directing user to purchase intent");
-                        purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.ExchangeRate);
+                        InAppPurchase subscription = configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) ?
+                                InAppPurchase.PremiumSubscriptionPlan : InAppPurchase.SmartReceiptsPlus;
+                        purchaseManager.initiatePurchase(subscription, PurchaseSource.ExchangeRate);
                     }
                 })
                 .flatMap(hasPlusSubscription -> getExchangeRate(date, baseCurrencyCode, quoteCurrencyCode));

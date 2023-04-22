@@ -17,10 +17,6 @@ import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.factory.ReceiptBuilderFactory;
 import co.smartreceipts.android.persistence.database.controllers.impl.ReceiptTableController;
 import co.smartreceipts.android.persistence.database.operations.DatabaseOperationMetadata;
-import co.smartreceipts.android.purchases.PurchaseManager;
-import co.smartreceipts.android.purchases.model.InAppPurchase;
-import co.smartreceipts.android.purchases.source.PurchaseSource;
-import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import dagger.internal.Preconditions;
@@ -31,21 +27,15 @@ public class ReceiptCreateEditFragmentPresenter {
 
     private final ReceiptCreateEditFragment fragment;
     private final UserPreferenceManager preferenceManager;
-    private final PurchaseManager purchaseManager;
-    private final PurchaseWallet purchaseWallet;
     private final ReceiptTableController receiptTableController;
     private final CompositeDisposable compositeDisposable;
     private int positionToRemoveOrAdd;
 
     ReceiptCreateEditFragmentPresenter(@NonNull ReceiptCreateEditFragment fragment,
                                        @NonNull UserPreferenceManager preferenceManager,
-                                       @NonNull PurchaseManager purchaseManager,
-                                       @NonNull PurchaseWallet purchaseWallet,
                                        @NonNull ReceiptTableController receiptTableController) {
         this.fragment = Preconditions.checkNotNull(fragment);
         this.preferenceManager = Preconditions.checkNotNull(preferenceManager);
-        this.purchaseManager = Preconditions.checkNotNull(purchaseManager);
-        this.purchaseWallet = Preconditions.checkNotNull(purchaseWallet);
         this.receiptTableController = Preconditions.checkNotNull(receiptTableController);
         this.compositeDisposable = new CompositeDisposable();
     }
@@ -157,22 +147,6 @@ public class ReceiptCreateEditFragmentPresenter {
 
     boolean isUsePaymentMethods() {
         return preferenceManager.get(UserPreference.Receipts.UsePaymentMethods);
-    }
-
-    boolean isShowReceiptId() {
-        return preferenceManager.get(UserPreference.Receipts.ShowReceiptID);
-    }
-
-    boolean isEnableAutoCompleteSuggestions() {
-        return preferenceManager.get(UserPreference.Receipts.EnableAutoCompleteSuggestions);
-    }
-
-    void initiatePurchase() {
-        purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.ExchangeRate);
-    }
-
-    boolean hasActivePlusPurchase() {
-        return purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
     }
 
     boolean checkReceipt(Date date) {

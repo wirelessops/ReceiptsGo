@@ -6,6 +6,8 @@ import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.AnalyticsProvider;
 import co.smartreceipts.android.ExtraInitializer;
 import co.smartreceipts.android.ExtraInitializerFlossImpl;
+import co.smartreceipts.android.ad.MobileAds;
+import co.smartreceipts.android.ad.NoMobileAds;
 import co.smartreceipts.android.analytics.AnalyticsManager;
 import co.smartreceipts.android.ocr.NoOpOcrManager;
 import co.smartreceipts.android.ocr.OcrManager;
@@ -64,4 +66,7 @@ public abstract class FlavorModule {
     @ApplicationScope
     public abstract GoogleDriveTableManager provideGoogleDriveTableManager(NoOpGoogleDriveTableManager driveTableManager);
 
+    @Binds
+    @ApplicationScope
+    public abstract MobileAds provideMobileAds(NoMobileAds mobileAds);
 }

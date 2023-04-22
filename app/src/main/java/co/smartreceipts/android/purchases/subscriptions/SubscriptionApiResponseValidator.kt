@@ -1,8 +1,10 @@
 package co.smartreceipts.android.purchases.subscriptions
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.android.purchases.apis.subscriptions.SubscriptionsApiResponse
 import co.smartreceipts.android.purchases.model.InAppPurchase
+import co.smartreceipts.android.purchases.model.PurchaseFamily
+import co.smartreceipts.core.di.scopes.ApplicationScope
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -23,29 +25,33 @@ class SubscriptionApiResponseValidator @Inject constructor() {
      * @param subscriptionsApiResponse the [SubscriptionsApiResponse] from our API
      * @return a [List] of [RemoteSubscription]
      */
-    fun getActiveSubscriptions(subscriptionsApiResponse: SubscriptionsApiResponse) : Set<RemoteSubscription> {
+    fun getActiveSubscriptions(subscriptionsApiResponse: SubscriptionsApiResponse): Set<RemoteSubscription> {
         val remoteSubscriptions = mutableSetOf<RemoteSubscription>()
+
         subscriptionsApiResponse.subscriptions?.let { subscriptions ->
+            val currentDate = Date()
+            // to ensure that we have single active plan subscription
+            var latestPlanSubs: RemoteSubscription? = null
+
+            // Note: Our current API returns subscriptions that are active or was active last 3 days
             subscriptions.forEach {
-                val purchaseFamily = getPurchaseFamily(it.product_name)
-                if (purchaseFamily != null && it.id != null && it.expires_at_iso8601 != null) {
-                    // Note: Our current API spec assumes that only active subscriptions are returned
-                    remoteSubscriptions.add(RemoteSubscription(it.id, purchaseFamily, it.expires_at_iso8601))
+                val purchase = InAppPurchase.from(it.product_name)
+
+                if (purchase != null && it.id != null && it.expires_at_iso8601 != null && it.expires_at_iso8601 > currentDate) {
+                    if (!purchase.purchaseFamilies.contains(PurchaseFamily.SubscriptionPlans)) {
+                        remoteSubscriptions.add(
+                            RemoteSubscription(it.id, purchase, it.expires_at_iso8601)
+                        )
+                    } else {
+                        if (latestPlanSubs == null || it.expires_at_iso8601 > latestPlanSubs!!.expirationDate) {
+                            latestPlanSubs = RemoteSubscription(it.id, purchase, it.expires_at_iso8601)
+                        }
+                    }
                 }
             }
+
+            latestPlanSubs?.let { remoteSubscriptions.add(it) }
         }
         return remoteSubscriptions
-    }
-
-    private fun getPurchaseFamily(productName: String?) : InAppPurchase? {
-        return if (SMART_RECEIPTS_PLUS.equals(productName, true)) {
-            InAppPurchase.SmartReceiptsPlus
-        } else {
-            null
-        }
-    }
-
-    companion object {
-        private const val SMART_RECEIPTS_PLUS = "Smart Receipts Plus"
     }
 }

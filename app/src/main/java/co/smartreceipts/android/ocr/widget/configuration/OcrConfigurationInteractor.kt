@@ -50,15 +50,16 @@ class OcrConfigurationInteractor @Inject constructor(
 
     fun getAvailableOcrPurchases(): Single<List<SkuDetails>> {
         return purchaseManager.allAvailablePurchaseSkus
-            .flatMapIterable { it }
-            .filter { skuDetails ->
-                val inAppPurchase = InAppPurchase.from(skuDetails.sku)
-                inAppPurchase != null && inAppPurchase.type == ConsumablePurchase::class.java
-                        && inAppPurchase.purchaseFamilies.contains(PurchaseFamily.Ocr)
-            }
-            .toSortedList { purchase1, purchase2 ->
-                BigDecimal.valueOf(purchase1.priceAmountMicros)
-                    .compareTo(BigDecimal.valueOf(purchase2.priceAmountMicros))
+            .map { set ->
+                set.filter { skuDetails ->
+                    val inAppPurchase = InAppPurchase.from(skuDetails.sku)
+                    inAppPurchase != null && inAppPurchase.type == ConsumablePurchase::class.java
+                            && inAppPurchase.purchaseFamilies.contains(PurchaseFamily.Ocr)
+                }
+                    .sortedWith(Comparator { purchase1, purchase2 ->
+                        BigDecimal.valueOf(purchase1.priceAmountMicros)
+                            .compareTo(BigDecimal.valueOf(purchase2.priceAmountMicros))
+                    })
             }
             .observeOn(observeOnScheduler)
     }

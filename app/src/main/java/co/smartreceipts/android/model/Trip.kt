@@ -7,7 +7,7 @@ import co.smartreceipts.android.search.Searchable
 import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.core.sync.model.Syncable
 import co.smartreceipts.core.sync.model.impl.DefaultSyncState
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.joda.money.CurrencyUnit
 import java.io.File
 import java.sql.Date

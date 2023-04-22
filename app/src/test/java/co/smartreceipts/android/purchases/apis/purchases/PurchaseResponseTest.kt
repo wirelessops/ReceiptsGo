@@ -21,28 +21,19 @@ class PurchaseResponseTest {
                 "{\n" +
                 "}"
 
-        private const val OLD_PURCHASE_RESPONSE_JSON = "{\n" +
-                "   \"mobile_app_purchase\":{\n" +
-                "      \"id\":\"1234\",\n" +
-                "      \"user_id\":\"5678\",\n" +
-                "      \"pay_service\":\"Google Play\",\n" +
-                "      \"purchase_id\":\"GPA.12345\",\n" +
-                "      \"purchase_time\":1538076456,\n" +
-                "      \"status\":\"Purchased\",\n" +
-                "      \"created_at\":1538076460\n" +
-                "   }\n" +
-                "}"
-
-        private const val NEW_PURCHASE_RESPONSE_JSON = "{\n" +
-                "   \"mobile_app_purchase\":{\n" +
-                "      \"id\":\"1234\",\n" +
-                "      \"user_id\":\"5678\",\n" +
-                "      \"pay_service\":\"Google Play\",\n" +
-                "      \"purchase_id\":\"GPA.12345\",\n" +
-                "      \"purchase_time_iso8601\":\"2018-09-27T19:54:38.000Z\",\n" +
-                "      \"status\":\"Purchased\",\n" +
-                "      \"created_at_iso8601\":\"2018-09-27T19:54:42.000Z\"\n" +
-                "   }\n" +
+        private const val RESPONSE_JSON ="{\n" +
+                "  \"purchase\": {\n" +
+                "    \"id\": \"1234\",\n" +
+                "    \"user_id\": \"6780527139\",\n" +
+                "    \"pay_service\": \"Google Play\",\n" +
+                "    \"purchase_id\": \"12999763169054705758.1371079406387615&rojeslcdyyiapnqcynkjyyjh\",\n" +
+                "    \"product_id\": \"ocr_purchase_10\",\n" +
+                "    \"package_name\": \"wb.receiptspro\",\n" +
+                "    \"purchase_time\": \"2012-08-22T23:41:40.000Z\",\n" +
+                "    \"created_at\": \"2022-02-05T08:11:39.114Z\",\n" +
+                "    \"updated_at\": \"2022-02-05T08:11:39.114Z\"\n" +
+                "  },\n" +
+                "  \"status\": \"valid\"\n" +
                 "}"
     }
 
@@ -59,28 +50,25 @@ class PurchaseResponseTest {
 
     @Test
     fun deserializeEmptyResponse() {
-        val response = gson.fromJson<PurchaseResponse>(PurchaseResponseTest.JSON_EMPTY, PurchaseResponse::class.java)
+        val response = gson.fromJson<PurchaseResponse>(
+            JSON_EMPTY,
+            PurchaseResponse::class.java
+        )
         assertNotNull(response)
-        assertNull(response.mobile_app_purchase)
+        assertNull(response.purchase)
     }
 
     @Test
-    fun deserializeOldResponseFormat() {
-        val response = gson.fromJson<PurchaseResponse>(PurchaseResponseTest.OLD_PURCHASE_RESPONSE_JSON, PurchaseResponse::class.java)
+    fun deserializeResponseFormat() {
+        val response = gson.fromJson<PurchaseResponse>(
+            RESPONSE_JSON,
+            PurchaseResponse::class.java
+        )
         assertNotNull(response)
-        assertNotNull(response.mobile_app_purchase)
+        assertNotNull(response.purchase)
 
-        val purchase = response.mobile_app_purchase!!
+        val purchase = response.purchase!!
         assertEquals("1234", purchase.id)
-    }
-
-    @Test
-    fun deserializeNewResponseFormat() {
-        val response = gson.fromJson<PurchaseResponse>(PurchaseResponseTest.NEW_PURCHASE_RESPONSE_JSON, PurchaseResponse::class.java)
-        assertNotNull(response)
-        assertNotNull(response.mobile_app_purchase)
-
-        val purchase = response.mobile_app_purchase!!
-        assertEquals("1234", purchase.id)
+        assertEquals("valid", response.status)
     }
 }

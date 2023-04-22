@@ -1,7 +1,8 @@
 package co.smartreceipts.android.workers.reports.pdf.pdfbox;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -91,6 +92,9 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         final DefaultPdfBoxPageDecorations pageDecorations = new DefaultPdfBoxPageDecorations(pdfBoxContext, trip, receipts, distances);
         final ReceiptsTotals totals = new ReceiptsTotals(trip, receipts, distances, preferenceManager);
 
+        boolean hasPlusSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
+
         // switch to landscape mode
         if (preferenceManager.get(UserPreference.ReportOutput.PrintReceiptsTableInLandscape)) {
             pdfBoxContext.setPageSize(new PDRectangle(pdfBoxContext.getPageSize().getHeight(),
@@ -108,9 +112,8 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
         gridRenderer.addRows(writeHeader(trip, doc, totals));
 
         if (!receipts.isEmpty() &&
-                (!purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) ||
-                        (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) &&
-                                !preferenceManager.get(UserPreference.PlusSubscription.OmitDefaultTableInReports)))) {
+                (!hasPlusSubscription ||
+                        (hasPlusSubscription && !preferenceManager.get(UserPreference.PlusSubscription.OmitDefaultTableInReports)))) {
             gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
             gridRenderer.addRows(writeReceiptsTable(receipts, doc));
         }
@@ -120,15 +123,13 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
             gridRenderer.addRows(writeDistancesTable(distances, doc));
         }
 
-        if (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) &&
-                preferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)
+        if (hasPlusSubscription && preferenceManager.get(UserPreference.PlusSubscription.CategoricalSummationInReports)
                 && !categories.isEmpty()) {
             gridRenderer.addRow(new GridRowRenderer(new EmptyRenderer(0, EMPTY_ROW_HEIGHT_NORMAL)));
             gridRenderer.addRows(writeCategoriesTable(categories, doc));
         }
 
-        if (purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus) &&
-                preferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)
+        if (hasPlusSubscription && preferenceManager.get(UserPreference.PlusSubscription.SeparateByCategoryInReports)
                 && !groupingResults.isEmpty()) {
 
             for (CategoryGroupingResult groupingResult : groupingResults) {
@@ -294,7 +295,7 @@ public class PdfBoxReceiptsTablePdfSection extends PdfBoxSection {
     private List<GridRowRenderer> writeDistancesTable(@NonNull List<Distance> distances, @NonNull PDDocument pdDocument) throws IOException {
 
         final PdfTableGenerator<Distance> pdfTableGenerator = new PdfTableGenerator<>(pdfBoxContext,
-                reportResourcesManager, distanceColumns, pdDocument, null,true, true);
+                reportResourcesManager, distanceColumns, pdDocument, null, true, true);
         return pdfTableGenerator.generate(distances);
     }
 

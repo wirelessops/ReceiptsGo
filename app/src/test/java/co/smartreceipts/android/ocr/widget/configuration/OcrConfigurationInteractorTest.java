@@ -25,6 +25,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.core.identity.IdentityManager;
 import co.smartreceipts.core.identity.store.EmailAddress;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
@@ -82,7 +83,7 @@ public class OcrConfigurationInteractorTest {
         when(availablePurchaseSkuDetails2.getPriceAmountMicros()).thenReturn(100000L);
 
         final Set<SkuDetails> purchaseSet = new HashSet<>(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2));
-        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Observable.just(purchaseSet));
+        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Single.just(purchaseSet));
 
         TestObserver<List<SkuDetails>> testObserver = interactor.getAvailableOcrPurchases().test();
 
@@ -100,7 +101,7 @@ public class OcrConfigurationInteractorTest {
         when(availablePurchaseSkuDetails2.getPriceAmountMicros()).thenReturn(100000L);
 
         final Set<SkuDetails> purchaseSet = new HashSet<>(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2));
-        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Observable.just(purchaseSet));
+        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Single.just(purchaseSet));
 
         TestObserver<List<SkuDetails>> testObserver = interactor.getAvailableOcrPurchases().test();
 
@@ -118,7 +119,7 @@ public class OcrConfigurationInteractorTest {
         when(availablePurchaseSkuDetails2.getPriceAmountMicros()).thenReturn(100000L);
 
         final Set<SkuDetails> purchaseSet = new HashSet<>(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2));
-        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Observable.just(purchaseSet));
+        when(purchaseManager.getAllAvailablePurchaseSkus()).thenReturn(Single.just(purchaseSet));
 
         TestObserver<List<SkuDetails>> testObserver = interactor.getAvailableOcrPurchases().test();
 

@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.core.os.ConfigurationCompat
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.android.settings.UserPreferenceManager
-import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
+import co.smartreceipts.android.settings.UserPreferenceManager
+import co.smartreceipts.android.settings.catalog.UserPreference
+import co.smartreceipts.core.di.scopes.ApplicationScope
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject
@@ -23,8 +23,12 @@ class ReportResourcesManager @Inject constructor(private var context: Context,
 
         val desiredLocale = Locale(preferenceManager[UserPreference.ReportOutput.PreferredReportLanguage])
 
-        if (currentLocalizedContextLocale.language != desiredLocale.language) {
-            Logger.info(this, "Altering the user preferred report language to: {}", desiredLocale.language)
+        if (currentLocalizedContextLocale?.language != desiredLocale.language) {
+            Logger.info(
+                this,
+                "Altering the user preferred report language to: {}",
+                desiredLocale.language
+            )
             val conf = Configuration(context.resources.configuration)
             conf.setLocale(desiredLocale)
             context = context.createConfigurationContext(conf)

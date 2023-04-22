@@ -19,16 +19,17 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.android.R;
-import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.DataPoint;
 import co.smartreceipts.analytics.events.DefaultDataPointEvent;
 import co.smartreceipts.analytics.events.Events;
+import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.R;
+import co.smartreceipts.android.ad.AdPresenter;
 import co.smartreceipts.android.ad.InterstitialAdPresenter;
 import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.fragments.PermissionAlertDialogFragment;
+import co.smartreceipts.android.imports.RequestCodes;
 import co.smartreceipts.android.imports.intents.model.FileType;
 import co.smartreceipts.android.imports.intents.widget.IntentImportProvider;
 import co.smartreceipts.android.imports.intents.widget.info.IntentImportInformationPresenter;
@@ -47,9 +48,9 @@ import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.subscriptions.SubscriptionsActivity;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
-import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.core.identity.IdentityManager;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
@@ -113,6 +114,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
     @Nullable
     private Searchable searchResult = null;
+
+    private boolean loginRequested = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +190,14 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                         break;
                 }
             }
+        } else if (requestCode == RequestCodes.SUBSCRIPTIONS_REQUEST) {
+            switch (resultCode) {
+                case SubscriptionsActivity.RESULT_NEED_LOGIN:
+                    loginRequested = true;
+                    break;
+                case SubscriptionsActivity.RESULT_OK:
+                    break;
+            }
         } else if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -208,6 +219,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                 throw new IllegalStateException("Unexpected search result type: " + searchResult.getClass());
             }
         }
+
+        if (loginRequested) {
+            loginRequested = false;
+            navigationHandler.navigateToLoginScreen();
+        }
     }
 
     @Override
@@ -218,7 +234,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
 
         // If the pro sub is either unavailable or we already have it, don't show the purchase menu option
-        if (!proSubscriptionIsAvailable || haveProSubscription) {
+        if (!proSubscriptionIsAvailable || haveProSubscription
+                || configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
             menu.removeItem(R.id.menu_main_pro_subscription);
         }
 
@@ -235,6 +252,13 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
         // Check "My Account" availability before enabling this menu item
         if (!configurationManager.isEnabled(ConfigurableResourceFeature.MyAccount)) {
             menu.removeItem(R.id.menu_main_my_account);
+        }
+
+        // Check "Subscriptions" availability before enabling this menu item
+        if (!configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
+            menu.removeItem(R.id.menu_main_subscriptions);
+        } else { // hide "OCR Scans" menu if Subscriptions are available
+            menu.removeItem(R.id.menu_main_ocr_configuration);
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -265,7 +289,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                 }
                 return true;
             case R.id.menu_main_usage_guide:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/guide")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/guide")));
                 analytics.record(Events.Navigation.UsageGuideOverflow);
                 return true;
             case R.id.menu_main_my_account:
@@ -275,6 +299,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
             case R.id.menu_main_search:
                 navigationHandler.navigateToSearchActivity();
                 analytics.record(Events.Navigation.Search);
+                return true;
+            case R.id.menu_main_subscriptions:
+                navigationHandler.navigateToSubscriptionsActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

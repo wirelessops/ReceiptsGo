@@ -89,7 +89,7 @@ class MultiplePriceImplTest {
         assertEquals("$3.00", sameCurrencyPrice.currencyFormattedPrice)
         assertEquals("$-1.00", sameCurrencyWithNegativePrice.currencyFormattedPrice)
         assertEquals("$5.00", differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice)
-        assertEquals("JPY1; $3.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
+        assertEquals("¥1; $3.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
     }
 
     @Test
@@ -132,7 +132,7 @@ class MultiplePriceImplTest {
         assertEquals("$3.00", sameCurrencyPrice.currencyFormattedPrice)
         assertEquals("$-1.00", sameCurrencyWithNegativePrice.currencyFormattedPrice)
         assertEquals("$5.00", differentCurrenciesWithExchangeRatePrice.currencyFormattedPrice)
-        assertEquals("JPY1; $3.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
+        assertEquals("¥1; $3.00", differentCurrenciesNoExchangeRatePrice.currencyFormattedPrice)
     }
 
     @Test
@@ -218,7 +218,7 @@ class MultiplePriceImplTest {
         val multiplePriceFrance = MultiplePriceImpl(USD_CURRENCY, listOf(usd1, usd2))
         assertEquals("1 002,50", multiplePriceFrance.decimalFormattedPrice)
         assertEquals("USD 1 002,50", multiplePriceFrance.currencyCodeFormattedPrice)
-        assertEquals("USD1 002,50", multiplePriceFrance.currencyFormattedPrice)
+        assertEquals("\$US1 002,50", multiplePriceFrance.currencyFormattedPrice)
     }
 
 }

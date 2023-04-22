@@ -9,11 +9,13 @@ import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
 import co.smartreceipts.android.ad.upsell.UpsellAdView
+import co.smartreceipts.android.config.ConfigurationManager
 import co.smartreceipts.android.purchases.PurchaseManager
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
+import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import co.smartreceipts.android.utils.UiThread
 import co.smartreceipts.core.di.scopes.ActivityScope
 import javax.inject.Inject
@@ -24,7 +26,8 @@ class BannerAdPresenter @Inject constructor(
     private val purchaseManager: PurchaseManager,
     private val userPreferenceManager: UserPreferenceManager,
     private val bannerAdViewFactory: BannerAdViewFactory,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    private val configurationManager: ConfigurationManager
 ) : AdPresenter {
 
     private var adView: BannerAdView? = null
@@ -72,7 +75,11 @@ class BannerAdPresenter @Inject constructor(
 
             upsellAdView?.setOnClickListener(View.OnClickListener {
                 analytics.record(Events.Purchases.AdUpsellTapped)
-                this.purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.AdBanner)
+                val proPurchase = when {
+                    configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) -> InAppPurchase.PremiumSubscriptionPlan
+                    else -> InAppPurchase.SmartReceiptsPlus
+                }
+                this.purchaseManager.initiatePurchase(proPurchase, PurchaseSource.AdBanner)
             })
         }
     }

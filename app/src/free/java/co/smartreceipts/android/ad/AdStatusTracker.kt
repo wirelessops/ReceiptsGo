@@ -28,6 +28,7 @@ class AdStatusTracker @Inject constructor(private val context: Context,
      */
     fun shouldShowAds() : Boolean {
         val hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)
         val areAdsEnabledLocally = context.getSharedPreferences(AD_PREFERENCES, 0).getBoolean(SHOW_AD, true)
         return areAdsEnabledLocally && !hasProSubscription
     }

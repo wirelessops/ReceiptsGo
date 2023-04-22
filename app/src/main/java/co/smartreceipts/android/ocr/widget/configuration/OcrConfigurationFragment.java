@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Inject
     NavigationHandler navigationHandler;
 
+    private Button logoutButton;
     private CheckBox ocrIsEnabledCheckbox;
     private CheckBox allowUsToSaveImagesRemotelyCheckbox;
 
@@ -100,10 +102,10 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = OcrConfigurationFragmentBinding.inflate(inflater, container, false);
-        logoutButtonClicks = RxView.clicks(binding.logoutButton).map(__ -> Unit.INSTANCE);
         this.ocrPurchasesListAdapter = new OcrPurchasesListAdapter();
         binding.purchasesList.setAdapter(this.ocrPurchasesListAdapter);
 
+        logoutButton = binding.logoutButton;
         ocrIsEnabledCheckbox = binding.ocrIsEnabled;
         allowUsToSaveImagesRemotelyCheckbox = binding.ocrSaveScansToImproveResults;
 
@@ -182,9 +184,8 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     public void present(int remainingScans, boolean isUserLoggedIn) {
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            if (isUserLoggedIn)
-            {
-                actionBar.setTitle(getContext().getString(R.string.configuration_scans_remaining, remainingScans));
+            if (isUserLoggedIn) {
+                actionBar.setTitle(getContext().getString(R.string.ocr_configuration_scans_remaining, remainingScans));
                 binding.logoutButton.setVisibility(View.VISIBLE);
             }
         }
@@ -200,7 +201,6 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         this.delayedPurchaseId = delayedPurchaseId;
         router.navigateToLoginScreen();
     }
-
 
     @NonNull
     @Override
@@ -238,15 +238,15 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         return delayedPurchaseIdSubject;
     }
 
+    @NonNull
+    @Override
+    public Observable<Unit> getLogoutButtonClicks() {
+        return RxView.clicks(logoutButton);
+    }
+
     @Override
     public void navigateToLoginScreen() {
         getParentFragmentManager().popBackStack();
         router.navigateToLoginScreen();
-    }
-
-    private Observable<Unit> logoutButtonClicks;
-    @Override
-    public Observable<Unit> getLogoutButtonClicks() {
-        return logoutButtonClicks;
     }
 }

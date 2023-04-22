@@ -92,7 +92,7 @@ class ModelUtilsTest {
 
         assertNotEquals(us, fr)
         assertEquals("$1,000,555.57", us)
-        assertEquals("USD1 000 555,57", fr)
+        assertEquals("\$US1 000 555,57", fr)
     }
 
 }

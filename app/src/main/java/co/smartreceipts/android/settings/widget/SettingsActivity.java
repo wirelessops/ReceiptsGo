@@ -42,6 +42,7 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.AppCompatPreferenceActivity;
 import co.smartreceipts.android.activities.SmartReceiptsActivity;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorPresenter;
 import co.smartreceipts.android.currency.widget.CurrencyListEditorView;
 import co.smartreceipts.android.date.DateFormatter;
@@ -56,6 +57,7 @@ import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.workers.EmailAssistant;
 import co.smartreceipts.oss_licenses.LicensesNavigator;
@@ -106,6 +108,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
 
     @Inject
     ThemeProvider themeProvider;
+
+    @Inject
+    ConfigurationManager configurationManager;
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
@@ -411,7 +416,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     }
 
     public void configurePlusPreferences(UniversalPreferences universal) {
-        final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
+        final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
+
         final SummaryEditTextPreference pdfFooterPreference = (SummaryEditTextPreference) universal.findPreference(R.string.pref_pro_pdf_footer_key);
         pdfFooterPreference.setAppearsEnabled(hasProSubscription);
         pdfFooterPreference.setOnPreferenceClickListener(this);
@@ -446,7 +453,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         // Set up Privacy Policy
         universal.findPreference(R.string.pref_about_privacy_policy_key).setOnPreferenceClickListener(this);
 
-        final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
+        final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
         if (hasProSubscription) {
             final PreferenceCategory privacyCategory = (PreferenceCategory) universal.findPreference(R.string.pref_privacy_header_key);
             final Preference enableAdPersonalizationPreference = universal.findPreference(R.string.pref_privacy_enable_ad_personalization_key);
@@ -498,7 +506,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             tryToMakePurchaseIfNeed();
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smartreceipts.co/privacy")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/privacy")));
             return true;
         } else if (key.equals(getString(R.string.pref_about_oss_key))) {
             final Intent licensesActivityIntent = licensesNavigator.getLicensesActivityIntent(this, R.string.pref_about_oss_title);
@@ -551,10 +559,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         final File[] filesDirs = getExternalFilesDirs(null);
         final int directoryCount = filesDirs != null ? filesDirs.length : 0;
         final boolean hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
+        final boolean hasStandardSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.StandardSubscriptionPlan);
+        final boolean hasPremiumSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
         return "Debug-information: \n" +
                 "Smart Receipts Version: " + getAppVersion() + "\n" +
                 "Package: " + getPackageName() + "\n" +
                 "Plus: " + hasProSubscription + "\n" +
+                "StandardPlan: " + hasStandardSubscription + "\n" +
+                "PremiumPlan: " + hasPremiumSubscription + "\n" +
                 "Brand: " + Build.BRAND + "\n" +
                 "OS API Level: " + Build.VERSION.SDK_INT + "\n" +
                 "Device: " + Build.DEVICE + "\n" +
@@ -567,13 +579,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
 
     private void tryToMakePurchaseIfNeed() {
         // Let's check if we should prompt the user to upgrade for this preference
-        final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
-        final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
+        final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
 
         // If we don't already have the pro subscription and it's available, let's buy it
         if (!haveProSubscription) {
-            if (proSubscriptionIsAvailable) {
-                purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.PdfFooterSetting);
+            InAppPurchase proPurchase = configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) ?
+                    InAppPurchase.PremiumSubscriptionPlan : InAppPurchase.SmartReceiptsPlus;
+
+            if (availablePurchases != null && availablePurchases.contains(proPurchase)) {
+                purchaseManager.initiatePurchase(proPurchase, PurchaseSource.PdfFooterSetting);
             } else {
                 Toast.makeText(SettingsActivity.this, R.string.purchase_unavailable, Toast.LENGTH_SHORT).show();
             }

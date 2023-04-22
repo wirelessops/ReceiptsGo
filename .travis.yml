@@ -1,40 +1,22 @@
-dist: trusty
+os: linux
 language: android
-jdk: oraclejdk8
-sudo: required # See https://github.com/travis-ci/travis-ci/issues/5582
+jdk: openjdk11
 
-before_cache:
-  # Do not cache a few Gradle files/directories (see https://docs.travis-ci.com/user/languages/java/#Caching)
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
-  directories:
-    # Gradle dependencies
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-
-    # Android build cache (see http://tools.android.com/tech-docs/build-cache)
-    - $HOME/.android/build-cache
+branches:
+  only:
+    - master
 
 android:
   components:
-  - tools
-  - tools
-  - platform-tools
-  - build-tools-29.0.3
-  - android-29
-
-  # Additional components
-  - addon-google_apis-google-29
-  - extra-google-google_play_services
-  - extra-android-support
-  - extra-google-m2repository
-  - extra-android-m2repository
-  licenses:
-  - 'android-sdk-preview-license-52d11cd2'
-  - 'android-sdk-license-.+'
-  - 'google-gdk-license-.+'
+    - tools
+    - platform-tools
+    - tools
+    - extra-android-m2repository
+env:
+  global:
+    - TARGET_VERSION=33
+    - ANDROID_BUILD_TOOLS_VERSION=33.0.2
+    - ANDROID_HOME=~/android-sdk
 
 notifications:
   email:
@@ -44,28 +26,14 @@ notifications:
     on_failure: always # default: always
 
 before_install:
-#- sudo add-apt-repository -y ppa:cpick/hub # adding ubuntu repo for downloading hub
-- sudo apt-get -y update # get latest versions of dependencies before installing hub
-- HUB_DIST=linux-amd64 HUB_VERSION=`curl -w "%{url_effective}\n" -I -L -s -S github.com/github/hub/releases/latest -o /dev/null | awk -F'releases/tag/v' '{ print $2 }'`; curl "https://github.com/github/hub/releases/download/v$HUB_VERSION/hub-$HUB_DIST-$HUB_VERSION.tgz" -L | tar xvz && sudo ./hub-$HUB_DIST-$HUB_VERSION/install && rm -r ./hub-$HUB_DIST-$HUB_VERSION # install hub
-#- sudo apt-get -y install hub # install hub
-- gem install twine # install hub
-- mkdir "$ANDROID_HOME/licenses" || true
-- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-- yes | sdkmanager "platforms;android-29"
-- chmod +x gradlew
+  - touch $HOME/.android/repositories.cfg
+  - wget "https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip" -O commandlinetools.zip
+  - unzip commandlinetools.zip -d $ANDROID_HOME/
+  - yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager "platforms;android-${TARGET_VERSION}" --sdk_root=$ANDROID_HOME
+  - yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}" --sdk_root=$ANDROID_HOME
 
+before_script:
+  - chmod +x gradlew
 script:
-- "travis_wait 20 sleep 1800 &"
-- "./gradlew clean test"
-
-after_failure:
-- echo "Build FAILED"
-
-# tests
-- cat app/build/reports/tests/testFreeDebugUnitTest/index.html
-- cat app/build/reports/tests/testPlusFlavorDebugUnitTest/index.html
-
-# app
-- cat app/build/reports/lint-results.xml
-- cat app/build/reports/lint-results.html
+  - "travis_wait 20 sleep 1800 &"
+  - "./gradlew clean test"

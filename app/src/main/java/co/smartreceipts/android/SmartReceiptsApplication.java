@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.crash.CrashReporter;
 import co.smartreceipts.analytics.log.Logger;
+import co.smartreceipts.android.ad.MobileAds;
 import co.smartreceipts.android.date.DateFormatter;
 import co.smartreceipts.android.di.AppComponent;
 import co.smartreceipts.android.di.BaseAppModule;
@@ -31,6 +32,7 @@ import co.smartreceipts.android.receipts.editor.currency.CurrencyInitializer;
 import co.smartreceipts.android.receipts.ordering.ReceiptsOrderer;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.subscriptions.SubscriptionsPurchaseTracker;
 import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
@@ -112,10 +114,16 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
     PicassoInitializer picassoInitializer;
 
     @Inject
+    MobileAds mobileAds;
+
+    @Inject
     AppVersionManager appVersionManager;
 
     @Inject
     DateFormatter dateFormatter;
+
+    @Inject
+    SubscriptionsPurchaseTracker subscriptionsPurchaseTracker;
 
     private AppComponent appComponent;
 
@@ -203,9 +211,14 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
         crashReporter.initialize(userPreferenceManager.get(UserPreference.Privacy.EnableCrashTracking));
         receiptsOrderer.initialize();
         picassoInitializer.initialize();
+        mobileAds.initialize();
         markedForDeletionCleaner.safelyDeleteAllOutstandingItems();
         extraInitializer.init();
         currencyInitializer.init();
+
+        subscriptionsPurchaseTracker.initialize()
+                .subscribe(() -> Logger.info(this, "Successfully initialized"),
+                        throwable -> Logger.error(this, "Failed to initialize", throwable));
 
         PDFBoxResourceLoader.init(getApplicationContext());
 

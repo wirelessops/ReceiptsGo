@@ -11,7 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewParent
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import co.smartreceipts.analytics.Analytics
@@ -250,7 +253,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            SHARE_REPORT_REQUEST_CODE -> presenter.showInterstitialAd()
+            SHARE_REPORT_REQUEST_CODE -> presenter.showInterstitialAd(requireActivity())
         }
     }
 

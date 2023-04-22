@@ -19,6 +19,8 @@ import co.smartreceipts.android.settings.widget.editors.categories.CategoryEdito
 import co.smartreceipts.android.settings.widget.editors.columns.CSVColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.columns.PDFColumnsListFragment;
 import co.smartreceipts.android.settings.widget.editors.payment.PaymentMethodsListFragment;
+import co.smartreceipts.android.subscriptions.SubscriptionsActivity;
+import co.smartreceipts.android.subscriptions.di.SubscriptionsModule;
 import co.smartreceipts.android.sync.widget.backups.DeleteRemoteBackupProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.DownloadRemoteBackupImagesProgressDialogFragment;
 import co.smartreceipts.android.sync.widget.backups.ExportBackupWorkerProgressDialogFragment;
@@ -53,6 +55,10 @@ public abstract class GlobalBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = SearchModule.class)
     public abstract SearchActivity searchActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = SubscriptionsModule.class)
+    public abstract SubscriptionsActivity subscriptionsActivity();
 
     @FragmentScope
     @ContributesAndroidInjector

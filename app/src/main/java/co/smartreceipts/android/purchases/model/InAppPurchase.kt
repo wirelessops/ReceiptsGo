@@ -31,6 +31,9 @@ enum class InAppPurchase(
     OcrScans10(ConsumablePurchase::class.java, "ocr_purchase_10", PurchaseFamily.Ocr),
     OcrScans50(ConsumablePurchase::class.java, "ocr_purchase_1", PurchaseFamily.Ocr),
 
+    StandardSubscriptionPlan(Subscription::class.java, "and_autorec_1month", PurchaseFamily.SubscriptionPlans),
+    PremiumSubscriptionPlan(Subscription::class.java, "and_autorec_pro_1month", PurchaseFamily.SubscriptionPlans),
+
     /**
      * A test only [ConsumablePurchase] for testing without a particular [PurchaseFamily]
      */

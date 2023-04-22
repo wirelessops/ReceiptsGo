@@ -69,7 +69,7 @@ class SinglePriceImplTest {
     fun getCurrencyFormattedPrice() {
         assertEquals("$1.25", price1.currencyFormattedPrice)
         assertEquals("BHD1.251", price2.currencyFormattedPrice)
-        assertEquals("JPY1", price3.currencyFormattedPrice)
+        assertEquals("¥1", price3.currencyFormattedPrice)
         assertEquals("$-1.25", priceNegative.currencyFormattedPrice)
     }
 
@@ -118,7 +118,7 @@ class SinglePriceImplTest {
         assertEquals("$1.25", price1.toString())
         assertEquals("$-1.25", priceNegative.toString())
         assertEquals("BHD1.251", price2.toString())
-        assertEquals("JPY1", price3.toString())
+        assertEquals("¥1", price3.toString())
     }
 
     @Test

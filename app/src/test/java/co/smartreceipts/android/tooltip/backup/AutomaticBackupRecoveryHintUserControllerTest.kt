@@ -29,7 +29,11 @@ import org.robolectric.RobolectricTestRunner
 class AutomaticBackupRecoveryHintUserControllerTest {
 
     companion object {
-        private val TOOLTIP_METADATA = TooltipMetadata(TooltipType.AutomaticBackupRecoveryHint, ApplicationProvider.getApplicationContext<Context>().getString(R.string.tooltip_automatic_backups_recovery_hint))
+        private val TOOLTIP_METADATA = TooltipMetadata(
+            TooltipType.AutomaticBackupRecoveryHint,
+            ApplicationProvider.getApplicationContext<Context>()
+                .getString(R.string.tooltip_automatic_backups_recovery_hint)
+        )
     }
 
     private lateinit var automaticBackupRecoveryHintUserController: AutomaticBackupRecoveryHintUserController
@@ -57,79 +61,109 @@ class AutomaticBackupRecoveryHintUserControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(purchaseManager.allOwnedPurchases).thenReturn(Single.just(emptySet()))
-        automaticBackupRecoveryHintUserController = AutomaticBackupRecoveryHintUserController(ApplicationProvider.getApplicationContext(), tooltipView, router, store, purchaseWallet, purchaseManager, analytics, scheduler)
+
+        whenever(purchaseManager.allOwnedPurchasesAndSync).thenReturn(Single.just(emptySet()))
+        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)).thenReturn(false)
+        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(false)
+
+        automaticBackupRecoveryHintUserController = AutomaticBackupRecoveryHintUserController(
+            ApplicationProvider.getApplicationContext(),
+            tooltipView,
+            router,
+            store,
+            purchaseWallet,
+            purchaseManager,
+            analytics,
+            scheduler
+        )
     }
 
     @Test
     fun displayTooltipWithNoInteractionsAndPlusSubscription() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
         whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true)
+
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
-                .test()
-                .await()
-                .assertValue(Optional.of(TOOLTIP_METADATA))
-                .assertComplete()
-                .assertNoErrors()
+            .test()
+            .await()
+            .assertValue(Optional.of(TOOLTIP_METADATA))
+            .assertComplete()
+            .assertNoErrors()
+    }
+
+    @Test
+    fun displayTooltipWithNoInteractionsAndPremiumPlanSubscription() {
+        whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
+        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)).thenReturn(true)
+
+        automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
+            .test()
+            .await()
+            .assertValue(Optional.of(TOOLTIP_METADATA))
+            .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
     fun doNotDisplayTooltipWhenThePurchaseManagerThrowsAnError() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
         whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true)
-        whenever(purchaseManager.allOwnedPurchases).thenReturn(Single.error(Exception("test")))
+        whenever(purchaseManager.allOwnedPurchasesAndSync).thenReturn(Single.error(Exception("test")))
+
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
-                .test()
-                .await()
-                .assertValue(Optional.absent())
-                .assertComplete()
-                .assertNoErrors()
+            .test()
+            .await()
+            .assertValue(Optional.absent())
+            .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
     fun doNotDisplayTooltipWithNoInteractionsAndNoPlusSubscription() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(false))
-        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(false)
+
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
-                .test()
-                .await()
-                .assertValue(Optional.absent())
-                .assertComplete()
-                .assertNoErrors()
+            .test()
+            .await()
+            .assertValue(Optional.absent())
+            .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
     fun doNotDisplayTooltipWithInteractionsAndNoPlusSubscription() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(true))
-        whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(false)
+
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
-                .test()
-                .await()
-                .assertValue(Optional.absent())
-                .assertComplete()
-                .assertNoErrors()
+            .test()
+            .await()
+            .assertValue(Optional.absent())
+            .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
     fun doNotDisplayTooltipWithInteractionsAndPlusSubscription() {
         whenever(store.hasUserInteractionOccurred()).thenReturn(Single.just(true))
         whenever(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(true)
+
         automaticBackupRecoveryHintUserController.shouldDisplayTooltip()
-                .test()
-                .await()
-                .assertValue(Optional.absent())
-                .assertComplete()
-                .assertNoErrors()
+            .test()
+            .await()
+            .assertValue(Optional.absent())
+            .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
     fun handleTooltipInteraction() {
         val interaction = TooltipInteraction.TooltipClick
+
         automaticBackupRecoveryHintUserController.handleTooltipInteraction(interaction)
-                .test()
-                .await()
-                .assertComplete()
-                .assertNoErrors()
+            .test()
+            .await()
+            .assertComplete()
+            .assertNoErrors()
 
         verify(store).setUserHasInteractedWithAutomaticBackupRecoveryHint(true)
         verify(analytics).record(Events.Informational.ClickedAutomaticBackupRecoveryHintTip)
@@ -137,14 +171,18 @@ class AutomaticBackupRecoveryHintUserControllerTest {
 
     @Test
     fun consumeTooltipClickInteraction() {
-        automaticBackupRecoveryHintUserController.consumeTooltipInteraction().accept(TooltipInteraction.TooltipClick)
+        automaticBackupRecoveryHintUserController.consumeTooltipInteraction()
+            .accept(TooltipInteraction.TooltipClick)
+
         verify(tooltipView).hideTooltip()
         verify(router).navigateToAutomaticBackupConfiguration()
     }
 
     @Test
     fun consumeTooltipCloseInteraction() {
-        automaticBackupRecoveryHintUserController.consumeTooltipInteraction().accept(TooltipInteraction.CloseCancelButtonClick)
+        automaticBackupRecoveryHintUserController.consumeTooltipInteraction()
+            .accept(TooltipInteraction.CloseCancelButtonClick)
+
         verify(tooltipView).hideTooltip()
         verifyZeroInteractions(router)
     }

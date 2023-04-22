@@ -64,9 +64,8 @@ class AccountInteractor constructor(
             .observeOn(observeOnScheduler)
     }
 
-    fun getSubscriptionsStream(): Observable<List<RemoteSubscription>> {
-        return remoteSubscriptionManager.getNewRemoteSubscriptions()
-            .filter { it.isNotEmpty() }
+    fun getSubscriptions(): Single<List<RemoteSubscription>> {
+        return remoteSubscriptionManager.getRemoteSubscriptions()
             .map { it.toList() }
             .subscribeOn(subscribeOnScheduler)
             .observeOn(observeOnScheduler)
