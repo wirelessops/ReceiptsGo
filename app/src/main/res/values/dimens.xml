@@ -17,6 +17,7 @@
     <dimen name="card_padding">2dp</dimen>
     <dimen name="card_thumbnail_margins">4dp</dimen>
     <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="big_card_corner_radius">24dp</dimen>
     <dimen name="card_image_padding">8dp</dimen>
 
     <!-- Action Bar -->
@@ -58,6 +59,7 @@
     <dimen name="default_tooltip_vertical_padding">16dp</dimen>
 
     <!--Fonts-->
+    <dimen name="font_extra_headline">40sp</dimen>
     <dimen name="font_headline">28sp</dimen>
     <dimen name="font_headline2">17sp</dimen>
     <dimen name="font_subhead">15sp</dimen>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/violet">
+
+    <TextView
+        android:id="@+id/text_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:paddingTop="@dimen/padding_larger"
+        android:text="Success!"
+        android:textColor="@color/design_default_color_on_primary"
+        android:textSize="@dimen/font_extra_headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image" />
+
+    <TextView
+        android:id="@+id/text_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:paddingBottom="@dimen/padding_larger"
+        android:gravity="center_horizontal"
+        app:layout_constraintWidth_percent="0.63"
+        android:text="The plan was successfully purchased"
+        android:textColor="@color/transparent_white_60"
+        android:textSize="@dimen/font_no_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_success" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_normal"
+        android:backgroundTint="@color/smart_receipts_colorOnPrimary"
+        android:insetLeft="40dp"
+        android:insetTop="0dp"
+        android:insetRight="40dp"
+        android:insetBottom="0dp"
+        android:paddingVertical="@dimen/padding_large"
+        android:text="Continue"
+        android:textColor="@color/text_primary_color"
+        app:cornerRadius="@dimen/card_corner_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_details" />
+
+    <FrameLayout
+        android:id="@+id/button_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/shape_circle"
+        android:backgroundTint="@color/transparent_white_12"
+        android:padding="@dimen/padding_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_round_close_24"
+            app:tint="@color/transparent_white_60" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:paddingVertical="@dimen/padding_large"
+        android:src="@drawable/ic_success_composition"
+        app:layout_constraintTop_toBottomOf="@id/button_close" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

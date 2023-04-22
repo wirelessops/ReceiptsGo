@@ -1,5 +1,6 @@
 package co.smartreceipts.android.workers.widget
 
+import android.app.Activity
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.ad.InterstitialAdPresenter
@@ -22,6 +23,7 @@ class GenerateReportPresenterTest {
     // Class under test
     private lateinit var presenter: GenerateReportPresenter
 
+    private val activity = mock<Activity>()
     private val view = mock<GenerateReportView>()
     private val interactor = mock<GenerateReportInteractor>()
 
@@ -79,8 +81,8 @@ class GenerateReportPresenterTest {
 
     @Test
     fun showAdsTest() {
-        presenter.showInterstitialAd()
+        presenter.showInterstitialAd(activity)
 
-        verify(interstitialAdPresenter).showAd()
+        verify(interstitialAdPresenter).showAd(activity)
     }
 }

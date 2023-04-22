@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <co.smartreceipts.android.widget.ui.MarqueeToolbar
         android:id="@+id/toolbar"
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,9 +25,9 @@
             android:layout_gravity="end"
             android:visibility="visible"
             android:padding="@dimen/padding_large"
-            android:text="@string/logout_button_text"/>
+            android:text="@string/logout_button_text" />
 
-    </com.google.android.material.appbar.MaterialToolbar>
+    </co.smartreceipts.android.widget.ui.MarqueeToolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

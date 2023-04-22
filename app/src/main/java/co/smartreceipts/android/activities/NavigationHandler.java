@@ -1,5 +1,7 @@
 package co.smartreceipts.android.activities;
 
+import static android.preference.PreferenceActivity.EXTRA_SHOW_FRAGMENT;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
@@ -41,10 +43,9 @@ import co.smartreceipts.android.settings.widget.PreferenceHeaderReceiptsFragment
 import co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFragment;
 import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.settings.widget.SettingsViewerActivity;
+import co.smartreceipts.android.subscriptions.SubscriptionsActivity;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.core.di.scopes.ActivityScope;
-
-import static android.preference.PreferenceActivity.EXTRA_SHOW_FRAGMENT;
 
 @ActivityScope
 public class NavigationHandler<T extends FragmentActivity> {
@@ -314,6 +315,14 @@ public class NavigationHandler<T extends FragmentActivity> {
         if (activity != null) {
             final Intent intent = new Intent(activity, SearchActivity.class);
             activity.startActivityForResult(intent, RequestCodes.SEARCH_REQUEST);
+        }
+    }
+
+    public void navigateToSubscriptionsActivity() {
+        final FragmentActivity activity = fragmentActivityWeakReference.get();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, SubscriptionsActivity.class);
+            activity.startActivityForResult(intent, RequestCodes.SUBSCRIPTIONS_REQUEST);
         }
     }
 

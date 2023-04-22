@@ -24,7 +24,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.util.*
-import kotlin.NoSuchElementException
 
 @RunWith(RobolectricTestRunner::class)
 class AccountInteractorTest {
@@ -156,13 +155,13 @@ class AccountInteractorTest {
 
     @Test
     fun getSubscriptionsEmptyTest() {
-        whenever(remoteSubscriptionManager.getNewRemoteSubscriptions()).thenReturn(Observable.just(Collections.emptySet()))
+        whenever(remoteSubscriptionManager.getRemoteSubscriptions()).thenReturn(Single.just(Collections.emptySet()))
 
-        val testObserver = interactor.getSubscriptionsStream().test()
+        val testObserver = interactor.getSubscriptions().test()
         testObserver.awaitTerminalEvent()
         testObserver.assertComplete()
             .assertNoErrors()
-            .assertNoValues()
+            .assertValue(emptyList())
     }
 
     @Test
@@ -173,9 +172,9 @@ class AccountInteractorTest {
             RemoteSubscription(6, InAppPurchase.OcrScans10, Date())
         )
 
-        whenever(remoteSubscriptionManager.getNewRemoteSubscriptions()).thenReturn(Observable.just(list.toSet()))
+        whenever(remoteSubscriptionManager.getRemoteSubscriptions()).thenReturn(Single.just(list.toSet()))
 
-        val testObserver = interactor.getSubscriptionsStream().test()
+        val testObserver = interactor.getSubscriptions().test()
         testObserver.awaitTerminalEvent()
 
         testObserver.assertComplete()

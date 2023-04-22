@@ -1,5 +1,6 @@
 package co.smartreceipts.android.workers.widget
 
+import android.app.Activity
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.ad.InterstitialAdPresenter
@@ -42,14 +43,16 @@ class GenerateReportPresenter @Inject constructor(
                     recordOptionsAnalyticsEvents(it)
                 }
                 .flatMap { options -> interactor.generateReport(trip!!, options).toObservable() }
-                .subscribe({ view.present(it) }, { view.present(EmailResult.Error(GenerationErrors.ERROR_UNDETERMINED)) })
+                .subscribe(
+                    { view.present(it) },
+                    { view.present(EmailResult.Error(GenerationErrors.ERROR_UNDETERMINED)) })
         )
     }
 
     fun isLandscapeReportEnabled(): Boolean = interactor.isLandscapeReportEnabled()
 
-    fun showInterstitialAd() {
-        interstitialAdPresenter.showAd()
+    fun showInterstitialAd(activity: Activity) {
+        interstitialAdPresenter.showAd(activity)
     }
 
 

@@ -29,6 +29,7 @@ import co.smartreceipts.analytics.log.Logger;
 import co.smartreceipts.android.BuildConfig;
 import co.smartreceipts.android.R;
 import co.smartreceipts.android.activities.NavigationHandler;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.databinding.BackupsFragmentBinding;
 import co.smartreceipts.android.databinding.SimpleRecyclerViewBinding;
 import co.smartreceipts.android.fragments.SelectAutomaticBackupProviderDialogFragment;
@@ -44,6 +45,7 @@ import co.smartreceipts.android.sync.BackupProviderChangeListener;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.sync.network.NetworkManager;
 import co.smartreceipts.android.sync.network.SupportedNetworkType;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
@@ -66,6 +68,8 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
     NavigationHandler navigationHandler;
     @Inject
     IntentImportInformationPresenter intentImportInformationPresenter;
+    @Inject
+    ConfigurationManager configurationManager;
 
     private RemoteBackupsDataCache remoteBackupsDataCache;
     private CompositeDisposable compositeDisposable;
@@ -137,8 +141,13 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
         });
         backupConfigButton.setOnClickListener(view -> {
             if (backupProvidersManager.getSyncProvider() == SyncProvider.None
-                    && !purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)) {
-                purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.AutomaticBackups);
+                    && !purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                    && !purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)) {
+
+                InAppPurchase proPurchase = configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) ?
+                        InAppPurchase.PremiumSubscriptionPlan : InAppPurchase.SmartReceiptsPlus;
+
+                purchaseManager.initiatePurchase(proPurchase, PurchaseSource.AutomaticBackups);
             } else {
                 navigationHandler.showDialog(new SelectAutomaticBackupProviderDialogFragment());
             }

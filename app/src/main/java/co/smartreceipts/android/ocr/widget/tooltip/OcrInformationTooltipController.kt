@@ -29,27 +29,29 @@ import javax.inject.Named
  * recover a previous automatic backup
  */
 @FragmentScope
-class OcrInformationTooltipController @Inject constructor(private val context: Context,
-                                                          private val tooltipView: TooltipView,
-                                                          private val router: OcrInformationTooltipRouter,
-                                                          private val interactor: OcrInformationalTooltipInteractor,
-                                                          private val ocrPurchaseTracker: OcrPurchaseTracker,
-                                                          private val analytics: Analytics,
-                                                          private val identityManager: IdentityManager,
-                                                          @Named(RxSchedulers.IO) private val scheduler: Scheduler) : TooltipController {
+class OcrInformationTooltipController @Inject constructor(
+    private val context: Context,
+    private val tooltipView: TooltipView,
+    private val router: OcrInformationTooltipRouter,
+    private val interactor: OcrInformationalTooltipInteractor,
+    private val ocrPurchaseTracker: OcrPurchaseTracker,
+    private val analytics: Analytics,
+    private val identityManager: IdentityManager,
+    @Named(RxSchedulers.IO) private val scheduler: Scheduler
+) : TooltipController {
 
     @UiThread
     override fun shouldDisplayTooltip(): Single<Optional<TooltipMetadata>> {
         return interactor.showOcrTooltip
-                .map { Optional.of(it) }
-                .first(Optional.absent<OcrTooltipMessageType>())
-                .map {
-                    if (it.isPresent) {
-                        return@map Optional.of(newTooltipMetadata(it.get()))
-                    } else {
-                        return@map Optional.absent<TooltipMetadata>()
-                    }
-                }.subscribeOn(scheduler)
+            .map { Optional.of(it) }
+            .first(Optional.absent<OcrTooltipMessageType>())
+            .map {
+                if (it.isPresent) {
+                    return@map Optional.of(newTooltipMetadata(it.get()))
+                } else {
+                    return@map Optional.absent<TooltipMetadata>()
+                }
+            }.subscribeOn(scheduler)
     }
 
     @AnyThread
@@ -61,7 +63,11 @@ class OcrInformationTooltipController @Inject constructor(private val context: C
             } else if (interaction == TooltipInteraction.TooltipClick) {
                 analytics.record(Events.Ocr.OcrInfoTooltipOpen)
             }
-            Logger.info(this@OcrInformationTooltipController, "User interacted the ocr information tooltip: {}", interaction)
+            Logger.info(
+                this@OcrInformationTooltipController,
+                "User interacted the ocr information tooltip: {}",
+                interaction
+            )
         }.subscribeOn(scheduler)
     }
 
@@ -70,19 +76,30 @@ class OcrInformationTooltipController @Inject constructor(private val context: C
         return Consumer {
             tooltipView.hideTooltip()
             if (it == TooltipInteraction.TooltipClick) {
-                if(identityManager.isLoggedIn)
-                router.navigateToOcrConfigurationScreen()
-                else router.navigationHandler.navigateToLoginScreen(true)
+                if (identityManager.isLoggedIn)
+                    router.navigateToOcrConfigurationScreen()
+                else
+                    router.navigationHandler.navigateToLoginScreen(true)
             }
         }
     }
 
-    private fun newTooltipMetadata(ocrTooltipMessageType: OcrTooltipMessageType) : TooltipMetadata {
+    private fun newTooltipMetadata(ocrTooltipMessageType: OcrTooltipMessageType): TooltipMetadata {
         return when (ocrTooltipMessageType) {
-            OcrTooltipMessageType.NotConfigured -> TooltipMetadata(TooltipType.OcrInformation, context.getString(R.string.ocr_informational_tooltip_configure_text))
+            OcrTooltipMessageType.NotConfigured -> TooltipMetadata(
+                TooltipType.OcrInformation,
+                context.getString(R.string.ocr_informational_tooltip_configure_text)
+            )
             OcrTooltipMessageType.LimitedScansRemaining, OcrTooltipMessageType.NoScansRemaining -> {
                 val remainingScans = ocrPurchaseTracker.remainingScans
-                TooltipMetadata(TooltipType.OcrInformation, context.resources.getQuantityString(R.plurals.ocr_informational_tooltip_limited_scans_text, remainingScans, remainingScans))
+                TooltipMetadata(
+                    TooltipType.OcrInformation,
+                    context.resources.getQuantityString(
+                        R.plurals.ocr_informational_tooltip_limited_scans_text,
+                        remainingScans,
+                        remainingScans
+                    )
+                )
             }
         }
     }

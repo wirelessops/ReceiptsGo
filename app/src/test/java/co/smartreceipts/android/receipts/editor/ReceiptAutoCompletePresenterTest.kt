@@ -26,14 +26,12 @@ class ReceiptAutoCompletePresenterTest {
     // Class under test
     private lateinit var presenter: ReceiptCreateEditFragmentPresenter
 
-    private lateinit var receipt:Receipt
-    private lateinit var autoCompleteUpdateEventName:AutoCompleteUpdateEvent<Receipt>
+    private lateinit var receipt: Receipt
+    private lateinit var autoCompleteUpdateEventName: AutoCompleteUpdateEvent<Receipt>
     private lateinit var autoCompleteResult: AutoCompleteResult<Receipt>
 
     private val userPreferenceManager = mock<UserPreferenceManager>()
     private val receiptTableController = mock<ReceiptTableController>()
-    private val purchaseManager = mock<PurchaseManager>()
-    private val purchaseWallet = mock<PurchaseWallet>()
 
     private val view = mock<ReceiptCreateEditFragment>()
     private val newReceipt = mock<Receipt>()
@@ -42,9 +40,11 @@ class ReceiptAutoCompletePresenterTest {
     fun setUp() {
         receipt = ReceiptBuilderFactory().setTrip(DefaultObjects.newDefaultTrip()).build()
         autoCompleteResult = AutoCompleteResult(receipt.name, receipt)
-        autoCompleteUpdateEventName = AutoCompleteUpdateEvent(autoCompleteResult, ReceiptAutoCompleteField.Name, 0)
+        autoCompleteUpdateEventName =
+            AutoCompleteUpdateEvent(autoCompleteResult, ReceiptAutoCompleteField.Name, 0)
 
-        presenter = ReceiptCreateEditFragmentPresenter(view, userPreferenceManager, purchaseManager, purchaseWallet, receiptTableController)
+        presenter =
+            ReceiptCreateEditFragmentPresenter(view, userPreferenceManager, receiptTableController)
 
         whenever(view.hideAutoCompleteVisibilityClick).thenReturn(Observable.never())
         whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(Observable.never())
@@ -52,10 +52,18 @@ class ReceiptAutoCompletePresenterTest {
 
     @Test
     fun hideAutoCompleteValueSucceeds() {
-        whenever(view.hideAutoCompleteVisibilityClick).thenReturn(Observable.just(autoCompleteUpdateEventName))
-        whenever(presenter.updateReceipt(receipt, ReceiptBuilderFactory(receipt)
-                .setNameHiddenFromAutoComplete(true)
-                .build())).thenReturn(Observable.just(Optional.of(newReceipt)))
+        whenever(view.hideAutoCompleteVisibilityClick).thenReturn(
+            Observable.just(
+                autoCompleteUpdateEventName
+            )
+        )
+        whenever(
+            presenter.updateReceipt(
+                receipt, ReceiptBuilderFactory(receipt)
+                    .setNameHiddenFromAutoComplete(true)
+                    .build()
+            )
+        ).thenReturn(Observable.just(Optional.of(newReceipt)))
 
         presenter.subscribe()
 
@@ -64,10 +72,18 @@ class ReceiptAutoCompletePresenterTest {
 
     @Test
     fun unHideAutoCompleteValueSucceeds() {
-        whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(Observable.just(autoCompleteUpdateEventName))
-        whenever(presenter.updateReceipt(receipt, ReceiptBuilderFactory(receipt)
-                .setNameHiddenFromAutoComplete(false)
-                .build())).thenReturn(Observable.just(Optional.of(newReceipt)))
+        whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(
+            Observable.just(
+                autoCompleteUpdateEventName
+            )
+        )
+        whenever(
+            presenter.updateReceipt(
+                receipt, ReceiptBuilderFactory(receipt)
+                    .setNameHiddenFromAutoComplete(false)
+                    .build()
+            )
+        ).thenReturn(Observable.just(Optional.of(newReceipt)))
 
         presenter.subscribe()
 
@@ -76,10 +92,18 @@ class ReceiptAutoCompletePresenterTest {
 
     @Test
     fun unHideAutoCompleteValueErrors() {
-        whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(Observable.just(autoCompleteUpdateEventName))
-        whenever(presenter.updateReceipt(receipt, ReceiptBuilderFactory(receipt)
-                .setNameHiddenFromAutoComplete(false)
-                .build())).thenReturn(Observable.just(Optional.absent()))
+        whenever(view.unHideAutoCompleteVisibilityClick).thenReturn(
+            Observable.just(
+                autoCompleteUpdateEventName
+            )
+        )
+        whenever(
+            presenter.updateReceipt(
+                receipt, ReceiptBuilderFactory(receipt)
+                    .setNameHiddenFromAutoComplete(false)
+                    .build()
+            )
+        ).thenReturn(Observable.just(Optional.absent()))
 
         presenter.subscribe()
 

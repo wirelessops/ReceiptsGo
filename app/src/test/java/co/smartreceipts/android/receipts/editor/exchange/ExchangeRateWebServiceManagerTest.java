@@ -1,5 +1,11 @@
 package co.smartreceipts.android.receipts.editor.exchange;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import android.content.Context;
 
 import org.junit.After;
@@ -17,22 +23,18 @@ import java.util.TimeZone;
 import co.smartreceipts.analytics.Analytics;
 import co.smartreceipts.analytics.events.Events;
 import co.smartreceipts.android.apis.ExchangeRateService;
+import co.smartreceipts.android.config.ConfigurationManager;
 import co.smartreceipts.android.model.factory.ExchangeRateBuilderFactory;
 import co.smartreceipts.android.model.gson.ExchangeRate;
 import co.smartreceipts.android.purchases.PurchaseManager;
 import co.smartreceipts.android.purchases.model.InAppPurchase;
 import co.smartreceipts.android.purchases.source.PurchaseSource;
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.TestLocaleToggler;
 import co.smartreceipts.android.utils.TestTimezoneToggler;
 import co.smartreceipts.android.widget.model.UiIndicator;
 import io.reactivex.Observable;
-
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(RobolectricTestRunner.class)
@@ -61,6 +63,9 @@ public class ExchangeRateWebServiceManagerTest {
     @Mock
     ExchangeRateService exchangeRateService;
 
+    @Mock
+    ConfigurationManager configurationManager;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -69,7 +74,7 @@ public class ExchangeRateWebServiceManagerTest {
 
         when(context.getApplicationContext()).thenReturn(context);
         when(context.getString(anyInt())).thenReturn(APP_ID);
-        exchangeRateServiceManager = new ExchangeRateServiceManager(context, purchaseManager, purchaseWallet, analytics, exchangeRateService);
+        exchangeRateServiceManager = new ExchangeRateServiceManager(context, purchaseManager, purchaseWallet, analytics, configurationManager, exchangeRateService);
     }
 
     @After
@@ -86,6 +91,20 @@ public class ExchangeRateWebServiceManagerTest {
                 .assertNoValues()
                 .assertNoErrors();
         verify(purchaseManager).initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.ExchangeRate);
+        verify(exchangeRateService, never()).getExchangeRate(DATE, BASE_CURRENCY, QUOTE_CURRENCY);
+        verifyZeroInteractions(analytics);
+    }
+
+    @Test
+    public void getExchangeRateInitiatesPurchaseWithoutNewSubscriptionPlan() {
+        when(configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)).thenReturn(true);
+        when(purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)).thenReturn(false);
+        when(purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)).thenReturn(false);
+        exchangeRateServiceManager.getExchangeRateOrInitiatePurchase(DATE, BASE_CURRENCY, QUOTE_CURRENCY)
+                .test()
+                .assertNoValues()
+                .assertNoErrors();
+        verify(purchaseManager).initiatePurchase(InAppPurchase.PremiumSubscriptionPlan, PurchaseSource.ExchangeRate);
         verify(exchangeRateService, never()).getExchangeRate(DATE, BASE_CURRENCY, QUOTE_CURRENCY);
         verifyZeroInteractions(analytics);
     }

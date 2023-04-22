@@ -60,6 +60,7 @@ class OcrInformationTooltipControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        whenever(identityManager.isLoggedIn).thenReturn(true)
         ocrInformationTooltipController = OcrInformationTooltipController(context, tooltipView, router, interactor, ocrPurchaseTracker, analytics, identityManager, scheduler)
     }
 

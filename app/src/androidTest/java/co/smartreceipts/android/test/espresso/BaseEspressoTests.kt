@@ -59,7 +59,7 @@ class BaseEspressoTests {
         onView(withId(R.id.start_date)).check(matches(isDisplayed()))
         onView(withId(R.id.end_date)).check(matches(isDisplayed()))
         onView(withId(R.id.spinner)).check(matches(isDisplayed()))
-        onView(withId(R.id.trip_comment)).check(matches(isDisplayed()))
+        onView(withId(R.id.trip_comment)).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withId(R.id.cost_center)).check(matches(not(isDisplayed())))
     }
 
@@ -129,7 +129,7 @@ class BaseEspressoTests {
         onView(withId(R.id.action_save)).perform(click())
 
         // Wait until everything loads
-        onView(isRoot()).perform(waitForView(R.id.bottom_app_bar, 20000))
+//        onView(isRoot()).perform(waitForView(R.id.bottom_app_bar, 20000))
         onView(isRoot()).perform(waitForView(R.id.no_data_text, 20000))
 
         // Verify that we have an empty report
@@ -149,11 +149,11 @@ class BaseEspressoTests {
         onView(withId(R.id.receipt_name)).check(matches(isDisplayed()))
         onView(withId(R.id.receipt_price)).check(matches(isDisplayed()))
         onView(withId(R.id.receipt_date)).check(matches(isDisplayed()))
-        onView(withId(R.id.receipt_comment)).check(matches(isDisplayed()))
-        onView(withId(R.id.receipt_expensable)).check(matches(isDisplayed()))
-        onView(withId(R.id.receipt_fullpage)).check(matches(isDisplayed()))
-        onView(withId(R.id.receipt_currency)).check(matches(isDisplayed()))
-        onView(withId(R.id.receipt_category)).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_comment)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_expensable)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_fullpage)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_currency)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withId(R.id.receipt_category)).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withId(R.id.receipt_tax1)).check(matches(not(isDisplayed())))
         onView(withId(R.id.receipt_exchange_rate)).check(matches(not(isDisplayed())))
         onView(withId(R.id.receipt_exchanged_result)).check(matches(not(isDisplayed())))
@@ -161,7 +161,7 @@ class BaseEspressoTests {
 //        onView(withId(R.id.receipt_input_payment_method)).check(matches(not(isDisplayed())))
 
         // Create a receipt, entitled "Test" priced at $12.34
-        onView(withId(R.id.receipt_name)).perform(replaceText("Test Receipt"))
+        onView(withId(R.id.receipt_name)).perform(scrollTo(), replaceText("Test Receipt"))
         onView(withId(R.id.receipt_price)).perform(replaceText("12.34"), closeSoftKeyboard())
 
         // Wait a second to ensure the keyboard closed

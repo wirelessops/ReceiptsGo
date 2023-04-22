@@ -2,7 +2,7 @@ package co.smartreceipts.android.purchases.apis.subscriptions
 
 import java.util.*
 
-data class Subscription(val id: Int?,
+data class Subscription(val id: Long?,
                         val subscription_provider: String?,
                         val product_name: String?,
                         val purchased_at: Date?,

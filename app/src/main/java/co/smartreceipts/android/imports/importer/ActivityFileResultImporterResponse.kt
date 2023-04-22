@@ -2,7 +2,7 @@ package co.smartreceipts.android.imports.importer
 
 import android.os.Parcelable
 import com.hadisatrio.optional.Optional
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.io.File
 
 @Parcelize

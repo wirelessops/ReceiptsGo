@@ -6,7 +6,7 @@ import co.smartreceipts.android.model.factory.PaymentMethodBuilderFactory
 import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.core.sync.model.Syncable
 import co.smartreceipts.core.sync.model.impl.DefaultSyncState
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 /**

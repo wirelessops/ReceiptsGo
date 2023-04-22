@@ -254,7 +254,7 @@ public class ReceiptCreateEditFragment extends WBFragment implements Editor<Rece
         currencyListEditorPresenter = new CurrencyListEditorPresenter(defaultCurrencyListEditorView, database, currencyCodeSupplier, savedInstanceState);
         receiptPricingPresenter = new ReceiptPricingPresenter(this, userPreferenceManager, getEditableItem(), savedInstanceState, ioScheduler, mainScheduler);
         currencyExchangeRateEditorPresenter = new CurrencyExchangeRateEditorPresenter(this, this, defaultCurrencyListEditorView, this, exchangeRateServiceManager, database, getParentTrip(), getEditableItem(), savedInstanceState);
-        presenter = new ReceiptCreateEditFragmentPresenter(this, userPreferenceManager, purchaseManager, purchaseWallet, receiptTableController);
+        presenter = new ReceiptCreateEditFragmentPresenter(this, userPreferenceManager, receiptTableController);
     }
 
     Trip getParentTrip() {

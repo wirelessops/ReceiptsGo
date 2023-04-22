@@ -6,7 +6,7 @@ import co.smartreceipts.android.date.DisplayableDate
 import co.smartreceipts.android.model.utils.ModelUtils
 import co.smartreceipts.core.sync.model.SyncState
 import co.smartreceipts.core.sync.model.Syncable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 import java.sql.Date
 import java.util.*

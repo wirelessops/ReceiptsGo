@@ -14,6 +14,7 @@
     <string name="menu_main_export">Backup</string>
     <string name="menu_main_usage_guide">Usage Guide</string>
     <string name="menu_main_my_account">My Account</string>
+    <string name="menu_main_subscriptions">Subscriptions</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">Add</string>
@@ -109,7 +110,6 @@
     <string name="ocr_status_message_performing_scan">Scanning for Receipt Metadata&#8230;</string>
     <string name="ocr_status_message_fetching_results">Fetching Results&#8230;</string>
     <string name="ocr_configuration_scans_remaining">OCR Scans Remaining: %d</string>
-    <string name="configuration_scans_remaining">Scans Remaining: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Automatic Scans (OCR):</string>
     <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
@@ -553,6 +553,19 @@
     <string name="organization_update_success">Organization updated successfully</string>
     <string name="organization_update_error">Something went wrong while updating organization</string>
     <string name="organization_update">Update organization settings</string>
+
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Choose Plan</string>
+    <string name="subscriptions_detail1">Automatically scan your receipts</string>
+    <string name="subscriptions_detail2">Safely backup your data</string>
+    <string name="subscriptions_detail3">Full report customization</string>
+    <string name="subscriptions_standard_name">Standard</string>
+    <string name="subscriptions_standard_description">Main functions</string>
+    <string name="subscriptions_premium_name">Premium</string>
+    <string name="subscriptions_premium_description">Disable all ads</string>
+    <string name="subscriptions_per_month">per month</string>
+    <string name="subscriptions_cancel_info">You can cancel your plan at any time <u>in the settings</u></string>
+    <string name="subscriptions_your_plan">Your Plan</string>
 
     <!-- ================== Leak Canary ==================== -->
     <string name="leak_canary_test_class_name">co.smartreceipts.android</string>

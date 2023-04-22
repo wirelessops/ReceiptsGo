@@ -1,10 +1,10 @@
 package co.smartreceipts.android.identity.widget.account
 
-import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.android.identity.apis.organizations.OrganizationModel
 import co.smartreceipts.android.widget.model.UiIndicator
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
+import co.smartreceipts.core.di.scopes.FragmentScope
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -71,10 +71,13 @@ class AccountPresenter @Inject constructor(view: AccountView, interactor: Accoun
         )
 
         compositeDisposable.add(
-            interactor.getSubscriptionsStream()
-                .subscribe(view::presentSubscriptions)
+            interactor.getSubscriptions()
+                .subscribe { list ->
+                    when {
+                        list.isNotEmpty() -> view.presentSubscriptions(list)
+                    }
+                }
         )
-
     }
 
 

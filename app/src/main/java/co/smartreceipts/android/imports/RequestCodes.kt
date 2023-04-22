@@ -18,6 +18,8 @@ object RequestCodes {
 
     const val SEARCH_REQUEST = 16
 
+    const val SUBSCRIPTIONS_REQUEST = 17
+
 
     @JvmField
     val PHOTO_REQUESTS = listOf(

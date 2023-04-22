@@ -7,8 +7,10 @@ import co.smartreceipts.android.purchases.model.*
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
+import co.smartreceipts.android.subscriptions.SubscriptionUploader
 import co.smartreceipts.core.di.scopes.ApplicationScope
 import com.android.billingclient.api.*
+import com.google.common.base.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -24,7 +26,8 @@ import javax.inject.Inject
 class BillingClientManager @Inject constructor(
     context: Context,
     remoteSubscriptionManager: RemoteSubscriptionManager,
-    private val purchaseWallet: PurchaseWallet
+    private val purchaseWallet: PurchaseWallet,
+    private val subscriptionUploader: SubscriptionUploader
 ) {
 
     private companion object {
@@ -70,6 +73,10 @@ class BillingClientManager @Inject constructor(
                     listeners.forEach { it.onPurchaseSuccess(inAppPurchase, PurchaseSource.Remote) }
                 }
             }) { Logger.error(this, "Failed to fetch our remote subscriptions") }
+
+        queryAllOwnedPurchasesAndSync()
+            .subscribe({ purchases -> Logger.debug(this, "owned purchases: $purchases") },
+                { t -> Logger.error(this, t) })
     }
 
     fun addPurchaseEventListener(listener: PurchaseEventsListener) = listeners.add(listener)
@@ -97,22 +104,51 @@ class BillingClientManager @Inject constructor(
     fun initiatePurchase(skuDetails: SkuDetails, activity: Activity): Completable {
         Logger.debug(this, "Initiating purchase ${skuDetails.sku}")
 
-        return Completable.create { emitter ->
-            val purchaseParams = BillingFlowParams.newBuilder()
-                .setSkuDetails(skuDetails)
-                .build()
+        return Single.just(skuDetails)
+            .flatMap<Optional<ManagedProduct>> { desiredSkuDetails ->
+                val desiredPurchase = InAppPurchase.from(desiredSkuDetails.sku)!!
 
-            val billingResult = billingClient.launchBillingFlow(activity, purchaseParams)
-
-            val responseCode = billingResult.responseCode
-            val debugMessage = billingResult.debugMessage
-            Logger.debug(this, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
-
-            when (responseCode) {
-                BillingClient.BillingResponseCode.OK -> emitter.onComplete()
-                else -> emitter.onError(BillingClientException(responseCode, debugMessage))
+                if (desiredPurchase.purchaseFamilies.contains(PurchaseFamily.SubscriptionPlans)) {
+                    // if this is a subscription plan - we need to check if we need to handle subscription upgrade/downgrade
+                    return@flatMap queryOwnedSubscriptions()
+                        .map { ownedPlan ->
+                            val previousPlan = ownedPlan.firstOrNull { managedProduct ->
+                                managedProduct.inAppPurchase.purchaseFamilies.contains(
+                                    PurchaseFamily.SubscriptionPlans
+                                )
+                            }
+                            Logger.debug(this, "Found owned plan: ${previousPlan?.inAppPurchase?.sku}")
+                            return@map Optional.fromNullable(previousPlan)
+                        }
+                } else {
+                    // no need to handle subscription upgrade/downgrade
+                    return@flatMap Single.just(Optional.absent())
+                }
             }
-        }
+            .flatMapCompletable { previousPlan ->
+                val purchaseParamsBuilder = BillingFlowParams.newBuilder()
+
+                if (previousPlan.isPresent) {
+                    purchaseParamsBuilder.setSubscriptionUpdateParams(
+                        BillingFlowParams.SubscriptionUpdateParams.newBuilder()
+                            .setOldSkuPurchaseToken(previousPlan.get().purchaseToken)
+                            .build()
+                    )
+                }
+
+                val purchaseParams = purchaseParamsBuilder.setSkuDetails(skuDetails).build()
+
+                val billingResult = billingClient.launchBillingFlow(activity, purchaseParams)
+
+                val responseCode = billingResult.responseCode
+                val debugMessage = billingResult.debugMessage
+                Logger.debug(this, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
+
+                when (responseCode) {
+                    BillingClient.BillingResponseCode.OK -> Completable.complete()
+                    else -> Completable.error(BillingClientException(responseCode, debugMessage))
+                }
+            }
     }
 
     fun queryAllAvailablePurchases(): Single<Set<SkuDetails>> {
@@ -123,17 +159,41 @@ class BillingClientManager @Inject constructor(
         )
     }
 
-    fun queryAllOwnedPurchases(): Single<Set<ManagedProduct>> {
+    fun queryAllOwnedPurchasesAndSync(): Single<Set<ManagedProduct>> {
+        Logger.debug(this, "queryAllOwnedPurchasesAndSync")
         return Single.zip(queryOwnedInAppPurchases(), queryOwnedSubscriptions(),
             BiFunction<Set<ManagedProduct>, Set<ManagedProduct>, Set<ManagedProduct>> { consumablePurchases, subscriptions ->
                 consumablePurchases + subscriptions
             })
             .map { purchasedProducts ->
+                Logger.debug(this, purchasedProducts.toString())
                 purchaseWallet.updateLocalInAppPurchasesInWallet(purchasedProducts)
                 purchaseWallet.activeLocalInAppPurchases
             }
     }
 
+
+    fun acknowledgePurchase(purchase: Purchase): Completable {
+        Logger.debug(this, "acknowledgePurchase")
+
+        if (purchase.isAcknowledged) {
+            Logger.info(this, "Trying to acknowledge acknowledged purchase")
+            return Completable.complete()
+        }
+
+        val acknowledgeParams = AcknowledgePurchaseParams.newBuilder()
+            .setPurchaseToken(purchase.purchaseToken)
+            .build()
+
+        return Completable.fromCallable {
+            billingClient.acknowledgePurchase(acknowledgeParams) { billingResult: BillingResult ->
+                Logger.info(this, "Acknowledge result: ${billingResult.responseCode}")
+                if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
+                    throw Exception("Failed to acknowledge billingResult: $billingResult")
+                }
+            }
+        }
+    }
 
     private fun querySubscriptionsSkuDetails(): Single<Set<SkuDetails>> {
         return billingClient.querySkuDetailsAsSingle(BillingClient.SkuType.SUBS, LIST_OF_SUBS_SKUS)
@@ -154,6 +214,7 @@ class BillingClientManager @Inject constructor(
         Logger.debug(this, "queryPurchases: SUBS")
 
         return billingClient.queryPurchasesAsSingle(BillingClient.SkuType.SUBS)
+            .map { list -> list.filter { it.isAcknowledged } }
             .map<Set<ManagedProduct>> { purchases ->
                 purchases.map {
                     Subscription(
@@ -164,6 +225,13 @@ class BillingClientManager @Inject constructor(
                     )
                 }.toSet()
             }
+            .doOnError { t -> Logger.error(this, t) }
+            .ensureConnection()
+    }
+
+    fun queryUnacknowledgedSubscriptions(): Single<List<Purchase>> {
+        return billingClient.queryPurchasesAsSingle(BillingClient.SkuType.SUBS)
+            .map { list -> list.filter { !it.isAcknowledged }}
             .doOnError { t -> Logger.error(this, t) }
             .ensureConnection()
     }
@@ -231,65 +299,64 @@ class BillingClientManager @Inject constructor(
         val debugMessage = billingResult.debugMessage
         Logger.debug(this, "onPurchasesUpdated: $responseCode $debugMessage")
 
-        when (responseCode) {
-            BillingClient.BillingResponseCode.OK -> {
-                Logger.debug(this, "handlePurchases: ${purchases?.size} purchase(s)")
+        if (responseCode != BillingClient.BillingResponseCode.OK) {
+            Logger.warn(this, "Unexpected BillingResponseCode: $responseCode")
+            listeners.forEach { it.onPurchaseFailed(source) }
+            return
+        }
 
-                purchases?.forEach { purchase ->
-                    Logger.debug(this, "handlePurchase $purchase")
+        Logger.debug(this, "handlePurchases: ${purchases?.size} purchase(s)")
 
-                    if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
-                        Logger.warn(this, "Got purchase in PENDING state, skus: ${purchase.skus}")
-                        listeners.forEach { it.onPurchasePending() }
-                        return
-                    }
+        purchases?.forEach { purchase ->
+            Logger.debug(this, "handlePurchase $purchase")
 
-                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
+                Logger.warn(this, "Got purchase in PENDING state, skus: ${purchase.skus}")
+                listeners.forEach { it.onPurchasePending() }
+                return
+            }
 
-                        val sku = purchase.skus[0]
-                        val inAppPurchase = InAppPurchase.from(sku)
+            if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
 
-                        if (inAppPurchase != null) {
-                            purchaseWallet.addLocalInAppPurchaseToWallet(
-                                ManagedProductFactory(
-                                    inAppPurchase,
-                                    purchase.originalJson,
-                                    purchase.signature
-                                ).get()
-                            )
+                val sku = purchase.skus[0]
+                val inAppPurchase = InAppPurchase.from(sku)
+
+                if (inAppPurchase == null) {
+                    listeners.forEach { it.onPurchaseFailed(source) }
+                    Logger.warn(
+                        this, "Retrieved an unknown sku following a successful purchase: $sku"
+                    )
+                    return
+                }
+
+                val managedProduct =
+                    ManagedProductFactory(
+                        inAppPurchase, purchase.originalJson, purchase.signature
+                    ).get()
+
+                // subscriptions must be sent to the server before acknowledge
+                if (inAppPurchase.productType == BillingClient.SkuType.SUBS) {
+                    subscriptionUploader.uploadSubscription(managedProduct)
+                        .retry(3)
+                        .andThen(acknowledgePurchase(purchase))
+                        .subscribe({
+                            purchaseWallet.addLocalInAppPurchaseToWallet(managedProduct)
                             listeners.forEach { it.onPurchaseSuccess(inAppPurchase, source) }
-
-                            // Note: INAPP purchases will be consumed immediately, so no need to acknowledge them
-                            if (inAppPurchase.productType == BillingClient.SkuType.SUBS && !purchase.isAcknowledged) {
-                                acknowledgePurchase(purchase)
-                            }
-
-                        } else {
-                            listeners.forEach { it.onPurchaseFailed(source) }
-                            Logger.warn(
-                                this,
-                                "Retrieved an unknown sku following a successful purchase: $sku"
-                            )
-                        }
-                    }
-
+                        },
+                            { t ->
+                                Logger.error(
+                                    this, "Failed to upload subscription and acknowledge it.", t
+                                )
+                                listeners.forEach { it.onPurchaseFailed(source) }
+                            })
+                } else {
+                    // consumable inApp
+                    // Note: INAPP purchases will be consumed immediately, so no need to acknowledge them
+                    purchaseWallet.addLocalInAppPurchaseToWallet(managedProduct)
+                    listeners.forEach { it.onPurchaseSuccess(inAppPurchase, source) }
                 }
             }
-            else -> {
-                Logger.warn(this, "Unexpected BillingResponseCode: $responseCode")
-                listeners.forEach { it.onPurchaseFailed(source) }
-            }
         }
+
     }
-
-    private fun acknowledgePurchase(purchase: Purchase) {
-        val acknowledgeParams = AcknowledgePurchaseParams.newBuilder()
-            .setPurchaseToken(purchase.purchaseToken)
-            .build()
-
-        billingClient.acknowledgePurchase(acknowledgeParams) { billingResult: BillingResult ->
-            Logger.info(this, "Acknowledge result: ${billingResult.responseCode}")
-        }
-    }
-
 }

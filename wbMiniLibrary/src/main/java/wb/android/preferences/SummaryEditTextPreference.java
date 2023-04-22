@@ -3,10 +3,11 @@ package wb.android.preferences;
 import android.content.Context;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 public class SummaryEditTextPreference extends EditTextPreference implements Preference.OnPreferenceChangeListener {
 
