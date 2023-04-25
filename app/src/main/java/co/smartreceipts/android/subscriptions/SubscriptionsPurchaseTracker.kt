@@ -13,6 +13,7 @@ import co.smartreceipts.android.sync.BackupProvidersManager
 import co.smartreceipts.core.di.scopes.ApplicationScope
 import co.smartreceipts.core.identity.IdentityManager
 import co.smartreceipts.core.sync.provider.SyncProvider
+import dagger.Lazy
 import io.reactivex.Completable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
@@ -23,15 +24,18 @@ class SubscriptionsPurchaseTracker constructor(
     private val purchaseWallet: PurchaseWallet,
     private val purchaseManager: PurchaseManager,
     private val identityManager: IdentityManager,
-    private val backupProvidersManager: BackupProvidersManager,
+    private val backupProvidersManager: Lazy<BackupProvidersManager>,
     private val subscriptionUploader: SubscriptionUploader,
     private val subscribeOnScheduler: Scheduler = Schedulers.io()
 ) : PurchaseEventsListener {
 
     @Inject
     constructor(
-        purchaseWallet: PurchaseWallet, purchaseManager: PurchaseManager, identityManager: IdentityManager,
-        backupProvidersManager: BackupProvidersManager, subscriptionUploader: SubscriptionUploader
+        purchaseWallet: PurchaseWallet,
+        purchaseManager: PurchaseManager,
+        identityManager: IdentityManager,
+        backupProvidersManager: Lazy<BackupProvidersManager>,
+        subscriptionUploader: SubscriptionUploader
     ) : this(
         purchaseWallet,
         purchaseManager,
@@ -98,9 +102,10 @@ class SubscriptionsPurchaseTracker constructor(
             .doOnSuccess {
                 // handle backup provider reset for the case of downgrading Premium Plan -> Standard Plan
                 if (managedProduct.inAppPurchase == InAppPurchase.StandardSubscriptionPlan
-                    && backupProvidersManager.syncProvider == SyncProvider.GoogleDrive
+                    && backupProvidersManager.get().syncProvider == SyncProvider.GoogleDrive
                 ) {
-                    backupProvidersManager.setAndInitializeSyncProvider(SyncProvider.None, null)
+                    backupProvidersManager.get()
+                        .setAndInitializeSyncProvider(SyncProvider.None, null)
                 }
             }
             .subscribe()
