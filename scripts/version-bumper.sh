@@ -15,7 +15,7 @@ versionCode=`grep "versionCode" ../app/build.gradle | tr -dc '0-9'`
 echo "Old version code: $versionCode"
 
 # Bump!
-bumpedVersionCode=$((3000 + $BUILD_NUMBER))
+bumpedVersionCode=$((4000 + $SR_BUILD_NUMBER))
 echo "New version code: $bumpedVersionCode"
 
 # Replace versionCode in ../app/build.gradle
