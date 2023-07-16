@@ -214,7 +214,7 @@ android {
         androidTestImplementation "androidx.test.ext:junit:$JUNIT_EXT_VERSION"
         androidTestImplementation "androidx.test:runner:$ANDROID_TEST_RUNNER_VERSION"
         androidTestImplementation "androidx.test:rules:$ANDROID_TEST_RUNNER_VERSION"
-        androidTestUtil "androidx.test:orchestrator:$ANDROID_TEST_RUNNER_VERSION"
+        androidTestUtil "androidx.test:orchestrator:$ANDROID_TEST_ORCHESTRATOR_VERSION"
 
         // Leak Canary
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
