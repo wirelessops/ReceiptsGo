@@ -68,8 +68,8 @@ enum class InAppPurchase(
      */
     val productType: String
         get() = when (type) {
-            ConsumablePurchase::class.java -> BillingClient.SkuType.INAPP
-            else -> BillingClient.SkuType.SUBS
+            ConsumablePurchase::class.java -> BillingClient.ProductType.INAPP
+            else -> BillingClient.ProductType.SUBS
         }
 
     companion object {

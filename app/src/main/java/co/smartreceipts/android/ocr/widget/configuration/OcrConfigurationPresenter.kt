@@ -59,7 +59,7 @@ constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) 
                 if (interactor.isUserLoggedIn) {
                     interactor.startOcrPurchase(skuDetails)
                 } else {
-                    view.delayPurchaseAndPresentNeedToLogin(skuDetails.sku)
+                    view.delayPurchaseAndPresentNeedToLogin(skuDetails.productId)
                 }
             })
 

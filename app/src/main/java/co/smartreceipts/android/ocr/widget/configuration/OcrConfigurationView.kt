@@ -1,7 +1,7 @@
 package co.smartreceipts.android.ocr.widget.configuration
 
 import co.smartreceipts.core.identity.store.EmailAddress
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 
@@ -31,7 +31,7 @@ interface OcrConfigurationView {
      * [Observable] that emit an available purchase whenever a user chooses to
      * initiate a purchase
      */
-    val availablePurchaseClicks: Observable<SkuDetails>
+    val availablePurchaseClicks: Observable<ProductDetails>
 
     /**
      * [Consumer] for interacting with the user's choice for enabling OCR or not
@@ -57,7 +57,7 @@ interface OcrConfigurationView {
     /**
      * Presents the list of available purchases for this user
      */
-    fun present(availablePurchases: List<@JvmSuppressWildcards SkuDetails>)
+    fun present(availablePurchases: List<@JvmSuppressWildcards ProductDetails>)
 
     /**
      * Saves purchase and navigates user to login screen

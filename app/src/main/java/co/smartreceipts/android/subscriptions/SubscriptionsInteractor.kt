@@ -7,7 +7,7 @@ import co.smartreceipts.android.purchases.model.PurchaseFamily
 import co.smartreceipts.android.purchases.model.Subscription
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.core.di.scopes.ApplicationScope
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,15 +37,15 @@ class SubscriptionsInteractor(
         purchaseManager.removeEventListener(listener)
     }
 
-    fun getPlansWithOwnership(): Single<Map<SkuDetails, Boolean>> {
+    fun getPlansWithOwnership(): Single<Map<ProductDetails, Boolean>> {
         return Single.zip(
             getAvailablePlansInfo(),
             getOwnedPlans(),
-            BiFunction<List<SkuDetails>, List<InAppPurchase>, Map<SkuDetails, Boolean>> { plansInfo: List<SkuDetails>, ownedPlans: List<InAppPurchase> ->
-                val result = HashMap<SkuDetails, Boolean>()
+            BiFunction<List<ProductDetails>, List<InAppPurchase>, Map<ProductDetails, Boolean>> { plansInfo: List<ProductDetails>, ownedPlans: List<InAppPurchase> ->
+                val result = HashMap<ProductDetails, Boolean>()
                 for (plan in plansInfo) {
                     for (ownedPlan in ownedPlans) {
-                        if (ownedPlan.sku == plan.sku) {
+                        if (ownedPlan.sku == plan.productId) {
                             result[plan] = true
                         }
                     }
@@ -83,12 +83,12 @@ class SubscriptionsInteractor(
             .map { managedProducts -> managedProducts.map { managedProduct -> managedProduct.inAppPurchase } }
     }
 
-    private fun getAvailablePlansInfo(): Single<List<SkuDetails>> {
+    private fun getAvailablePlansInfo(): Single<List<ProductDetails>> {
 
         return purchaseManager.allAvailablePurchaseSkus
             .map { set ->
                 set.filter { skuDetails ->
-                    val inAppPurchase = InAppPurchase.from(skuDetails.sku)
+                    val inAppPurchase = InAppPurchase.from(skuDetails.productId)
                     inAppPurchase != null && inAppPurchase.type == Subscription::class.java
                             && inAppPurchase.purchaseFamilies.contains(PurchaseFamily.SubscriptionPlans)
                 }

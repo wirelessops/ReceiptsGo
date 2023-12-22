@@ -7,8 +7,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.SkuDetails;
 import com.google.common.base.Preconditions;
 
 import java.lang.ref.WeakReference;
@@ -114,7 +114,7 @@ public class PurchaseManager {
                 .subscribeOn(subscribeOnScheduler);
     }
 
-    public Single<Set<SkuDetails>> getAllAvailablePurchaseSkus() {
+    public Single<Set<ProductDetails>> getAllAvailablePurchaseSkus() {
         return billingClientManager.queryAllAvailablePurchases()
                 .subscribeOn(subscribeOnScheduler);
     }
@@ -124,17 +124,17 @@ public class PurchaseManager {
         return getAllAvailablePurchaseSkus()
                 .map(availablePurchases -> {
                     final Set<InAppPurchase> inAppPurchases = new HashSet<>();
-                    for (SkuDetails purchase : availablePurchases) {
-                        inAppPurchases.add(InAppPurchase.from(purchase.getSku()));
+                    for (ProductDetails purchase : availablePurchases) {
+                        inAppPurchases.add(InAppPurchase.from(purchase.getProductId()));
                     }
                     return inAppPurchases;
                 });
     }
 
 
-    public void initiatePurchase(@NonNull final SkuDetails skuDetails, @NonNull final PurchaseSource purchaseSource) {
+    public void initiatePurchase(@NonNull final ProductDetails skuDetails, @NonNull final PurchaseSource purchaseSource) {
         Logger.info(PurchaseManager.this, "Initiating purchase of {} from {}.", skuDetails, purchaseSource);
-        analytics.record(new DefaultDataPointEvent(Events.Purchases.ShowPurchaseIntent).addDataPoint(new DataPoint("sku", skuDetails.getSku())).addDataPoint(new DataPoint("source", purchaseSource)));
+        analytics.record(new DefaultDataPointEvent(Events.Purchases.ShowPurchaseIntent).addDataPoint(new DataPoint("sku", skuDetails.getProductId())).addDataPoint(new DataPoint("source", purchaseSource)));
 
         billingClientManager.initiatePurchase(skuDetails, activityReference.get().get())
                 .subscribe(() -> {

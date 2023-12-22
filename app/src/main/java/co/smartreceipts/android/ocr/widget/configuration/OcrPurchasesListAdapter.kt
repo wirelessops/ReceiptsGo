@@ -4,17 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.smartreceipts.android.databinding.ItemOcrPurchaseBinding
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
 class OcrPurchasesListAdapter : RecyclerView.Adapter<OcrPurchasesListAdapter.PurchaseViewHolder>() {
 
-    private val availablePurchaseClickSubject = PublishSubject.create<SkuDetails>()
-    private var availablePurchases = emptyList<SkuDetails>()
+    private val availablePurchaseClickSubject = PublishSubject.create<ProductDetails>()
+    private var availablePurchases = emptyList<ProductDetails>()
 
-    val availablePurchaseClicks: Observable<SkuDetails>
+    val availablePurchaseClicks: Observable<ProductDetails>
         get() = availablePurchaseClickSubject
 
 
@@ -27,7 +27,7 @@ class OcrPurchasesListAdapter : RecyclerView.Adapter<OcrPurchasesListAdapter.Pur
         holder.binding.apply {
             purchaseName.text = availablePurchase.title
             purchaseDescription.text = availablePurchase.description
-            purchasePrice.text = availablePurchase.price
+            purchasePrice.text = availablePurchase.oneTimePurchaseOfferDetails?.formattedPrice ?: ""
         }
 
         holder.itemView.setOnClickListener { availablePurchaseClickSubject.onNext(availablePurchase) }
@@ -35,7 +35,7 @@ class OcrPurchasesListAdapter : RecyclerView.Adapter<OcrPurchasesListAdapter.Pur
 
     override fun getItemCount(): Int = availablePurchases.size
 
-    fun setAvailablePurchases(availablePurchases: List<SkuDetails>) {
+    fun setAvailablePurchases(availablePurchases: List<ProductDetails>) {
         this.availablePurchases = availablePurchases
         notifyDataSetChanged()
     }

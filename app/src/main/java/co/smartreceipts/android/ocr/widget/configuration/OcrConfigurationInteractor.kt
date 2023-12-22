@@ -17,7 +17,7 @@ import co.smartreceipts.android.utils.rx.RxSchedulers
 import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.core.identity.IdentityManager
 import co.smartreceipts.core.identity.store.EmailAddress
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -48,17 +48,21 @@ class OcrConfigurationInteractor @Inject constructor(
             .observeOn(observeOnScheduler)
     }
 
-    fun getAvailableOcrPurchases(): Single<List<SkuDetails>> {
+    fun getAvailableOcrPurchases(): Single<List<ProductDetails>> {
         return purchaseManager.allAvailablePurchaseSkus
             .map { set ->
                 set.filter { skuDetails ->
-                    val inAppPurchase = InAppPurchase.from(skuDetails.sku)
+                    val inAppPurchase = InAppPurchase.from(skuDetails.productId)
                     inAppPurchase != null && inAppPurchase.type == ConsumablePurchase::class.java
                             && inAppPurchase.purchaseFamilies.contains(PurchaseFamily.Ocr)
                 }
                     .sortedWith(Comparator { purchase1, purchase2 ->
-                        BigDecimal.valueOf(purchase1.priceAmountMicros)
-                            .compareTo(BigDecimal.valueOf(purchase2.priceAmountMicros))
+                        BigDecimal.valueOf(purchase1.oneTimePurchaseOfferDetails?.priceAmountMicros ?: 0)
+                            .compareTo(
+                                BigDecimal.valueOf(
+                                    purchase2.oneTimePurchaseOfferDetails?.priceAmountMicros ?: 0
+                                )
+                            )
                     })
             }
             .observeOn(observeOnScheduler)
@@ -85,8 +89,15 @@ class OcrConfigurationInteractor @Inject constructor(
         }
     }
 
-    fun startOcrPurchase(skuDetails: SkuDetails) {
-        analytics.record(DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(DataPoint("sku", skuDetails)))
+    fun startOcrPurchase(skuDetails: ProductDetails) {
+        analytics.record(
+            DefaultDataPointEvent(Events.Ocr.OcrPurchaseClicked).addDataPoint(
+                DataPoint(
+                    "sku",
+                    skuDetails
+                )
+            )
+        )
         purchaseManager.initiatePurchase(skuDetails, PurchaseSource.Ocr)
     }
 

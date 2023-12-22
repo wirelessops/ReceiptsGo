@@ -2,16 +2,19 @@ package co.smartreceipts.android.purchases
 
 import co.smartreceipts.analytics.log.Logger
 import com.android.billingclient.api.*
+import com.android.billingclient.api.QueryProductDetailsParams.Product
 import io.reactivex.Completable
 import io.reactivex.Single
 
 fun BillingClient.queryPurchasesAsSingle(
-    @BillingClient.SkuType
+    @BillingClient.ProductType
     skuType: String
 ): Single<List<Purchase>> {
 
     return Single.create { emitter ->
-        queryPurchasesAsync(skuType) { billingResult, purchases ->
+        queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder().setProductType(skuType).build()
+        ) { billingResult, purchases ->
             when (val responseCode = billingResult.responseCode) {
                 BillingClient.BillingResponseCode.OK -> emitter.onSuccess(purchases)
                 else -> emitter.onError(
@@ -23,18 +26,19 @@ fun BillingClient.queryPurchasesAsSingle(
 }
 
 fun BillingClient.querySkuDetailsAsSingle(
-    @BillingClient.SkuType
+    @BillingClient.ProductType
     skuType: String,
     skus: List<String>
-): Single<Set<SkuDetails>> {
+): Single<Set<ProductDetails>> {
 
-    return Single.create<Set<SkuDetails>> { emitter ->
-        val params = SkuDetailsParams.newBuilder()
-            .setType(skuType)
-            .setSkusList(skus)
+    return Single.create { emitter ->
+        val params = QueryProductDetailsParams.newBuilder()
+            .setProductList(skus.map { skuId ->
+                Product.newBuilder().setProductType(skuType).setProductId(skuId).build()
+            })
             .build()
 
-        querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+        queryProductDetailsAsync(params) { billingResult, skuDetailsList ->
             val responseCode = billingResult.responseCode
             val debugMessage = billingResult.debugMessage
 
@@ -45,7 +49,7 @@ fun BillingClient.querySkuDetailsAsSingle(
                         "onSkuDetailsResponse: $responseCode $debugMessage"
                     )
 
-                    val set = skuDetailsList?.toSet().orEmpty()
+                    val set = skuDetailsList.toSet()
                     emitter.onSuccess(set)
                 }
 

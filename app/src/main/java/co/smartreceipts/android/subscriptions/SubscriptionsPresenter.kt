@@ -34,6 +34,7 @@ class SubscriptionsPresenter @Inject constructor(
                             view.presentLoading()
                             interactor.purchaseStandardPlan()
                         }
+
                         else -> view.navigateToLogin()
                     }
                 }
@@ -47,6 +48,7 @@ class SubscriptionsPresenter @Inject constructor(
                             view.presentLoading()
                             interactor.purchasePremiumPlan()
                         }
+
                         else -> view.navigateToLogin()
                     }
                 }
@@ -57,19 +59,19 @@ class SubscriptionsPresenter @Inject constructor(
                 .subscribe({ plans ->
                     var userOwnsPlan = false
                     for (plan in plans) {
-                        if (plan.key.sku == InAppPurchase.StandardSubscriptionPlan.sku) {
+                        if (plan.key.productId == InAppPurchase.StandardSubscriptionPlan.sku) {
                             val isOwned = plan.value
-                            view.presentStandardPlan(if (isOwned) null else plan.key.price)
+                            view.presentStandardPlan(if (isOwned) null else plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice)
                             userOwnsPlan = userOwnsPlan || isOwned
-                        } else if (plan.key.sku == InAppPurchase.PremiumSubscriptionPlan.sku) {
+                        } else if (plan.key.productId == InAppPurchase.PremiumSubscriptionPlan.sku) {
                             val isOwned = plan.value
-                            view.presentPremiumPlan(if (isOwned) null else plan.key.price)
+                            view.presentPremiumPlan(if (isOwned) null else plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice)
                             userOwnsPlan = userOwnsPlan || isOwned
                         }
                     }
 
                     view.presentCancelInfo(userOwnsPlan)
-                }, { t -> Logger.error(this, t)})
+                }, { t -> Logger.error(this, t) })
         )
     }
 

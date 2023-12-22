@@ -3,18 +3,28 @@ package co.smartreceipts.android.purchases
 import android.app.Activity
 import android.content.Context
 import co.smartreceipts.analytics.log.Logger
-import co.smartreceipts.android.purchases.model.*
+import co.smartreceipts.android.purchases.model.ConsumablePurchase
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import co.smartreceipts.android.purchases.model.ManagedProduct
+import co.smartreceipts.android.purchases.model.ManagedProductFactory
+import co.smartreceipts.android.purchases.model.PurchaseFamily
+import co.smartreceipts.android.purchases.model.Subscription
 import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.purchases.subscriptions.RemoteSubscriptionManager
 import co.smartreceipts.android.purchases.wallet.PurchaseWallet
 import co.smartreceipts.android.subscriptions.SubscriptionUploader
 import co.smartreceipts.core.di.scopes.ApplicationScope
-import com.android.billingclient.api.*
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
 import com.google.common.base.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.CopyOnWriteArrayList
@@ -40,7 +50,7 @@ class BillingClientManager @Inject constructor(
         .enablePendingPurchases()
         .build()
 
-    private val isConnectedSubject = BehaviorSubject.createDefault<Boolean>(false)
+    private val isConnectedSubject = BehaviorSubject.createDefault(false)
 
     private val billingClientStateListener = object : BillingClientStateListener {
         override fun onBillingServiceDisconnected() {
@@ -87,12 +97,12 @@ class BillingClientManager @Inject constructor(
         return billingClient.consumePurchase(purchase.purchaseToken)
     }
 
-    fun querySkuDetails(purchase: InAppPurchase): Single<SkuDetails> {
+    fun querySkuDetails(purchase: InAppPurchase): Single<ProductDetails> {
         val skuList = mutableListOf(purchase.sku)
 
         val skuType: String = when (purchase.type) {
-            ConsumablePurchase::class.java -> BillingClient.SkuType.INAPP
-            Subscription::class.java -> BillingClient.SkuType.SUBS
+            ConsumablePurchase::class.java -> BillingClient.ProductType.INAPP
+            Subscription::class.java -> BillingClient.ProductType.SUBS
             else -> throw IllegalStateException("Purchase type is unknown")
         }
 
@@ -101,12 +111,12 @@ class BillingClientManager @Inject constructor(
             .ensureConnection()
     }
 
-    fun initiatePurchase(skuDetails: SkuDetails, activity: Activity): Completable {
-        Logger.debug(this, "Initiating purchase ${skuDetails.sku}")
+    fun initiatePurchase(skuDetails: ProductDetails, activity: Activity): Completable {
+        Logger.debug(this, "Initiating purchase ${skuDetails.productId}")
 
         return Single.just(skuDetails)
             .flatMap<Optional<ManagedProduct>> { desiredSkuDetails ->
-                val desiredPurchase = InAppPurchase.from(desiredSkuDetails.sku)!!
+                val desiredPurchase = InAppPurchase.from(desiredSkuDetails.productId)!!
 
                 if (desiredPurchase.purchaseFamilies.contains(PurchaseFamily.SubscriptionPlans)) {
                     // if this is a subscription plan - we need to check if we need to handle subscription upgrade/downgrade
@@ -131,12 +141,19 @@ class BillingClientManager @Inject constructor(
                 if (previousPlan.isPresent) {
                     purchaseParamsBuilder.setSubscriptionUpdateParams(
                         BillingFlowParams.SubscriptionUpdateParams.newBuilder()
-                            .setOldSkuPurchaseToken(previousPlan.get().purchaseToken)
+                            .setOldPurchaseToken(previousPlan.get().purchaseToken)
                             .build()
                     )
                 }
 
-                val purchaseParams = purchaseParamsBuilder.setSkuDetails(skuDetails).build()
+                val purchaseParams = purchaseParamsBuilder.setProductDetailsParamsList(
+                    listOf(
+                        BillingFlowParams.ProductDetailsParams.newBuilder()
+                            .setProductDetails(skuDetails)
+                            .setOfferToken(skuDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: "")
+                            .build()
+                    )
+                ).build()
 
                 val billingResult = billingClient.launchBillingFlow(activity, purchaseParams)
 
@@ -151,20 +168,20 @@ class BillingClientManager @Inject constructor(
             }
     }
 
-    fun queryAllAvailablePurchases(): Single<Set<SkuDetails>> {
+    fun queryAllAvailablePurchases(): Single<Set<ProductDetails>> {
         return Single.zip(
             querySubscriptionsSkuDetails(),
-            queryInAppSkuDetails(),
-            BiFunction { subscriptionSkus, inAppSkus -> subscriptionSkus + inAppSkus }
-        )
+            queryInAppSkuDetails()
+        ) { subscriptionSkus, inAppSkus -> subscriptionSkus + inAppSkus }
     }
 
     fun queryAllOwnedPurchasesAndSync(): Single<Set<ManagedProduct>> {
         Logger.debug(this, "queryAllOwnedPurchasesAndSync")
-        return Single.zip(queryOwnedInAppPurchases(), queryOwnedSubscriptions(),
-            BiFunction<Set<ManagedProduct>, Set<ManagedProduct>, Set<ManagedProduct>> { consumablePurchases, subscriptions ->
-                consumablePurchases + subscriptions
-            })
+        return Single.zip(
+            queryOwnedInAppPurchases(), queryOwnedSubscriptions()
+        ) { consumablePurchases, subscriptions ->
+            consumablePurchases + subscriptions
+        }
             .map { purchasedProducts ->
                 Logger.debug(this, purchasedProducts.toString())
                 purchaseWallet.updateLocalInAppPurchasesInWallet(purchasedProducts)
@@ -195,15 +212,15 @@ class BillingClientManager @Inject constructor(
         }
     }
 
-    private fun querySubscriptionsSkuDetails(): Single<Set<SkuDetails>> {
-        return billingClient.querySkuDetailsAsSingle(BillingClient.SkuType.SUBS, LIST_OF_SUBS_SKUS)
+    private fun querySubscriptionsSkuDetails(): Single<Set<ProductDetails>> {
+        return billingClient.querySkuDetailsAsSingle(BillingClient.ProductType.SUBS, LIST_OF_SUBS_SKUS)
             .doOnSuccess { Logger.info(this, "Available subscriptions: $it") }
             .ensureConnection()
     }
 
-    private fun queryInAppSkuDetails(): Single<Set<SkuDetails>> {
+    private fun queryInAppSkuDetails(): Single<Set<ProductDetails>> {
         return billingClient.querySkuDetailsAsSingle(
-            BillingClient.SkuType.INAPP,
+            BillingClient.ProductType.INAPP,
             LIST_OF_IN_APP_SKUS
         )
             .doOnSuccess { Logger.info(this, "Available inapp: ${it.size}") }
@@ -213,12 +230,12 @@ class BillingClientManager @Inject constructor(
     private fun queryOwnedSubscriptions(): Single<Set<ManagedProduct>> {
         Logger.debug(this, "queryPurchases: SUBS")
 
-        return billingClient.queryPurchasesAsSingle(BillingClient.SkuType.SUBS)
+        return billingClient.queryPurchasesAsSingle(BillingClient.ProductType.SUBS)
             .map { list -> list.filter { it.isAcknowledged } }
             .map<Set<ManagedProduct>> { purchases ->
                 purchases.map {
                     Subscription(
-                        InAppPurchase.from(it.skus.first())!!,
+                        InAppPurchase.from(it.products.first())!!,
                         it.originalJson,
                         it.purchaseToken,
                         it.signature
@@ -230,8 +247,8 @@ class BillingClientManager @Inject constructor(
     }
 
     fun queryUnacknowledgedSubscriptions(): Single<List<Purchase>> {
-        return billingClient.queryPurchasesAsSingle(BillingClient.SkuType.SUBS)
-            .map { list -> list.filter { !it.isAcknowledged }}
+        return billingClient.queryPurchasesAsSingle(BillingClient.ProductType.SUBS)
+            .map { list -> list.filter { !it.isAcknowledged } }
             .doOnError { t -> Logger.error(this, t) }
             .ensureConnection()
     }
@@ -239,11 +256,11 @@ class BillingClientManager @Inject constructor(
     private fun queryOwnedInAppPurchases(): Single<Set<ManagedProduct>> {
         Logger.debug(this, "queryPurchases: INAPP")
 
-        return billingClient.queryPurchasesAsSingle(BillingClient.SkuType.INAPP)
+        return billingClient.queryPurchasesAsSingle(BillingClient.ProductType.INAPP)
             .map<Set<ManagedProduct>> { purchases ->
                 purchases.map {
                     ConsumablePurchase(
-                        InAppPurchase.from(it.skus.first())!!,
+                        InAppPurchase.from(it.products.first())!!,
                         it.originalJson,
                         it.purchaseToken,
                         it.signature
@@ -311,14 +328,14 @@ class BillingClientManager @Inject constructor(
             Logger.debug(this, "handlePurchase $purchase")
 
             if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
-                Logger.warn(this, "Got purchase in PENDING state, skus: ${purchase.skus}")
+                Logger.warn(this, "Got purchase in PENDING state, skus: ${purchase.products}")
                 listeners.forEach { it.onPurchasePending() }
                 return
             }
 
             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
 
-                val sku = purchase.skus[0]
+                val sku = purchase.products[0]
                 val inAppPurchase = InAppPurchase.from(sku)
 
                 if (inAppPurchase == null) {
@@ -335,7 +352,7 @@ class BillingClientManager @Inject constructor(
                     ).get()
 
                 // subscriptions must be sent to the server before acknowledge
-                if (inAppPurchase.productType == BillingClient.SkuType.SUBS) {
+                if (inAppPurchase.productType == BillingClient.ProductType.SUBS) {
                     subscriptionUploader.uploadSubscription(managedProduct)
                         .retry(3)
                         .andThen(acknowledgePurchase(purchase))

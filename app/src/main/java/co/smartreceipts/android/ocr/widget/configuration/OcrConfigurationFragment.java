@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.ProductDetails;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.jakewharton.rxbinding3.widget.RxCompoundButton;
 
@@ -192,7 +192,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     }
 
     @Override
-    public void present(@NonNull List<SkuDetails> availablePurchases) {
+    public void present(@NonNull List<ProductDetails> availablePurchases) {
         ocrPurchasesListAdapter.setAvailablePurchases(availablePurchases);
     }
 
@@ -216,7 +216,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @NonNull
     @Override
-    public Observable<SkuDetails> getAvailablePurchaseClicks() {
+    public Observable<ProductDetails> getAvailablePurchaseClicks() {
         return ocrPurchasesListAdapter.getAvailablePurchaseClicks();
     }
 
