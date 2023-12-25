@@ -113,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_normal"
                 android:layout_marginBottom="@dimen/margin_normal"
+                android:paddingHorizontal="@dimen/padding_normal"
                 android:text="@string/ocr_configuration_subscriptions"
                 android:textColor="@color/text_on_primary_color" />
 

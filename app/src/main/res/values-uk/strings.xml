@@ -119,6 +119,7 @@
     <string name="ocr_save_scans_to_improve_results">Дозвольте нам зберігати зображення, щоб підвищити точність?</string>
     <string name="ocr_configuration_available_purchases">Доступні покупки - Натисніть, щоб купити:</string>
     <string name="ocr_configuration_information_line3">Щоб спробувати OCR, всі нові користувачі отримають 2 безкоштовних сканування! Будь ласка, пам\'ятайте, що OCR є додатковою функцією, і її можна будь-коли вимкнути.</string>
+    <string name="ocr_configuration_subscriptions">Виберіть підписку, щоб спробувати більше</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_null">&lt;Категорія&gt;</string>

@@ -118,6 +118,7 @@
     <string name="ocr_save_scans_to_improve_results">Autorizzi il salvataggio delle immagini per aumentare l\'accuratezza?</string>
     <string name="ocr_configuration_available_purchases">Acquisti disponibili - Tocca per acquistare:</string>
     <string name="ocr_configuration_information_line3">Per provare la funzione OCR, tutti i nuovi utenti hanno un bonus di 2 scansioni gratuit! Ti preghiamo di ricordare che la funzione OCR è opzionale e può essere disabilitata in qualsiasi momento.</string>
+    <string name="ocr_configuration_subscriptions">Seleziona un abbonamento per provare di più</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_null">&lt;Categoria&gt;</string>

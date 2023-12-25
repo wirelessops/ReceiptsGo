@@ -115,6 +115,7 @@
     <string name="ocr_save_scans_to_improve_results">Tillatt oss å lagre bilder for å forbedre nøyaktighet?</string>
     <string name="ocr_configuration_available_purchases">Tilgjengelige kjøp - Trykk her for kjøp:</string>
     <string name="ocr_configuration_information_line3">For å prøve OCR, alle nye brukere får 2 gratise skanninger! Vennligst husk at OCR er en valgfri funksjon og kan deaktiveres når som helst.</string>
+    <string name="ocr_configuration_subscriptions">Vel abonnement for å prøve meir</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_null">&lt;Kategori&gt;</string>

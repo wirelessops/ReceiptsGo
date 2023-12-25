@@ -117,6 +117,7 @@
     <string name="ocr_save_scans_to_improve_results">Deseja permitir que o app armazene imagens para aumentar a precisão?</string>
     <string name="ocr_configuration_available_purchases">Compras disponíveis - Toque para comprar:</string>
     <string name="ocr_configuration_information_line3">Para tentar o OCR, todos os novos usuários recebem 2 varreduras gratuitas! Lembre-se de que o OCR é um recurso opcional e pode ser desativado a qualquer momento.</string>
+    <string name="ocr_configuration_subscriptions">Escolha uma assinatura para experimentar mais</string>
 
     <!-- ================ Categories ================== -->
     <string name="category_null">&lt;Categoria&gt;</string>
