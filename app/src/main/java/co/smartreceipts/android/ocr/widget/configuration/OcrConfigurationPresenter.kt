@@ -45,6 +45,11 @@ constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) 
                 .subscribe { view.navigateToLoginScreen() }
         )
 
+        compositeDisposable.add(
+            view.subscriptionClicks
+                .subscribe { view.navigateToSubscriptionsScreen() }
+        )
+
         // Show available purchases list
         compositeDisposable.add(interactor.getAvailableOcrPurchases()
             .doOnSuccess { Logger.info(this, "Presenting list of purchases: {}.", it) }

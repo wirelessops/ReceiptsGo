@@ -19,13 +19,13 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logout_button"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:visibility="visible"
             android:padding="@dimen/padding_large"
-            android:text="@string/logout_button_text" />
+            android:text="@string/logout_button_text"
+            android:textColor="#ffffff"
+            android:visibility="visible" />
 
     </co.smartreceipts.android.widget.ui.MarqueeToolbar>
 
@@ -94,15 +94,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_normal"
-                android:text="@string/ocr_configuration_available_purchases" />
+                android:text="@string/ocr_configuration_available_purchases"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/purchases_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_ocr_purchase" />
+
+            <Button
+                android:id="@+id/subscriptions_button"
+                style="@style/Widget.SmartReceipts.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:text="@string/ocr_configuration_subscriptions"
+                android:textColor="@color/text_on_primary_color" />
 
         </LinearLayout>
 

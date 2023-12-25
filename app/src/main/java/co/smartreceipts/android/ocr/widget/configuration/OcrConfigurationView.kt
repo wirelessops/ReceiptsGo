@@ -34,6 +34,12 @@ interface OcrConfigurationView {
     val availablePurchaseClicks: Observable<ProductDetails>
 
     /**
+     * [Observable] that emit an available purchase whenever a user clicks on
+     * subscriptions
+     */
+    val subscriptionClicks: Observable<Unit>
+
+    /**
      * [Consumer] for interacting with the user's choice for enabling OCR or not
      */
     val ocrIsEnabledConsumer: Consumer<in Boolean>
@@ -68,4 +74,9 @@ interface OcrConfigurationView {
      * navigates user to login screen
      */
     fun navigateToLoginScreen()
+
+    /**
+     * navigates user to subscriptinos screen
+     */
+    fun navigateToSubscriptionsScreen()
 }

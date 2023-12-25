@@ -15,4 +15,8 @@ class OcrConfigurationRouter @Inject constructor(private val navigationHandler: 
     fun navigateToLoginScreen() {
         navigationHandler.navigateToLoginScreen()
     }
+
+    fun navigateToSubscriptionsScreen() {
+        navigationHandler.navigateToSubscriptionsActivity()
+    }
 }

@@ -61,6 +61,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     private Button logoutButton;
     private CheckBox ocrIsEnabledCheckbox;
     private CheckBox allowUsToSaveImagesRemotelyCheckbox;
+    private Button subscriptionButton;
 
     private OcrPurchasesListAdapter ocrPurchasesListAdapter;
     private OcrConfigurationFragmentBinding binding;
@@ -108,6 +109,7 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
         logoutButton = binding.logoutButton;
         ocrIsEnabledCheckbox = binding.ocrIsEnabled;
         allowUsToSaveImagesRemotelyCheckbox = binding.ocrSaveScansToImproveResults;
+        subscriptionButton = binding.subscriptionsButton;
 
         return binding.getRoot();
     }
@@ -222,6 +224,12 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
 
     @NonNull
     @Override
+    public Observable<Unit> getSubscriptionClicks() {
+        return RxView.clicks(subscriptionButton);
+    }
+
+    @NonNull
+    @Override
     public Consumer<? super Boolean> getOcrIsEnabledConsumer() {
         return isChecked -> ocrIsEnabledCheckbox.setChecked(isChecked);
     }
@@ -248,5 +256,10 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     public void navigateToLoginScreen() {
         getParentFragmentManager().popBackStack();
         router.navigateToLoginScreen();
+    }
+
+    @Override
+    public void navigateToSubscriptionsScreen() {
+        router.navigateToSubscriptionsScreen();
     }
 }
