@@ -1,38 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/menu_main_subscriptions"
-        android:title="@string/menu_main_subscriptions"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_main_settings"
-        android:title="@string/menu_main_settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_main_ocr_configuration"
-        android:title="@string/menu_main_ocr_configuration"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_main_export"
-        android:title="@string/menu_main_export"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_main_pro_subscription"
-        android:title="@string/pro_subscription"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_main_usage_guide"
-        android:title="@string/menu_main_usage_guide"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_main_my_account"
-        android:title="@string/menu_main_my_account"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_main_search"
         android:icon="@drawable/ic_search_24dp"
         android:title="@android:string/search_go"
         app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/menu_main_more"
+        android:icon="@drawable/ic_menu_24dp"
+        app:iconTint="@android:color/white"
+        android:title="@string/menu_main_more"
+        android:menuCategory="system"
+        app:showAsAction="always" />
 </menu>

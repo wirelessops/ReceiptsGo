@@ -140,6 +140,8 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
 
         backupProvidersManager.initialize(this);
         intentImportInformationPresenter.subscribe();
+
+        setMainMenuListener();
     }
 
     @Override
@@ -229,80 +231,44 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
-        final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
-
-        // If the pro sub is either unavailable or we already have it, don't show the purchase menu option
-        if (!proSubscriptionIsAvailable || haveProSubscription
-                || configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
-            menu.removeItem(R.id.menu_main_pro_subscription);
-        }
-
-        // If we disabled settings in our config, let's remove it
-        if (!configurationManager.isEnabled(ConfigurableResourceFeature.SettingsMenu)) {
-            menu.removeItem(R.id.menu_main_settings);
-        }
-
-        // Check OCR availability before enabling this menu item
-        if (!configurationManager.isEnabled(ConfigurableResourceFeature.Ocr)) {
-            menu.removeItem(R.id.menu_main_ocr_configuration);
-        }
-
-        // Check "My Account" availability before enabling this menu item
-        if (!configurationManager.isEnabled(ConfigurableResourceFeature.MyAccount)) {
-            menu.removeItem(R.id.menu_main_my_account);
-        }
-
-        // Check "Subscriptions" availability before enabling this menu item
-        if (!configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
-            menu.removeItem(R.id.menu_main_subscriptions);
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_main_settings:
-                navigationHandler.navigateToSettings();
-                analytics.record(Events.Navigation.SettingsOverflow);
-                return true;
-            case R.id.menu_main_export:
-                navigationHandler.navigateToBackupMenu();
-                analytics.record(Events.Navigation.BackupOverflow);
-                return true;
-            case R.id.menu_main_pro_subscription:
-                purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.OverflowMenu);
-                analytics.record(Events.Navigation.SmartReceiptsPlusOverflow);
-                return true;
-            case R.id.menu_main_ocr_configuration:
-                if(identityManager.isLoggedIn()) {
-                    navigationHandler.navigateToOcrConfigurationFragment();
-                    analytics.record(Events.Navigation.OcrConfiguration);
-                }
-                else {
-                    navigationHandler.navigateToLoginScreen(true);
-                }
-                return true;
-            case R.id.menu_main_usage_guide:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/guide")));
-                analytics.record(Events.Navigation.UsageGuideOverflow);
-                return true;
-            case R.id.menu_main_my_account:
-                navigationHandler.navigateToAccountScreen();
-                analytics.record(Events.Navigation.MyAccountOverflow);
-                return true;
-            case R.id.menu_main_search:
-                navigationHandler.navigateToSearchActivity();
-                analytics.record(Events.Navigation.Search);
-                return true;
-            case R.id.menu_main_subscriptions:
-                navigationHandler.navigateToSubscriptionsActivity();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_main_more) {
+            final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus);
+            final boolean proSubscriptionIsAvailable = availablePurchases != null && availablePurchases.contains(InAppPurchase.SmartReceiptsPlus);
+
+            // If the pro sub is either unavailable or we already have it, don't show the purchase menu option
+            final boolean hideProSubscription = !proSubscriptionIsAvailable || haveProSubscription
+                    || configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel);
+
+            // If we disabled settings in our config, let's remove it
+            final boolean hideSettings = !configurationManager.isEnabled(ConfigurableResourceFeature.SettingsMenu);
+
+            // Check OCR availability before enabling this menu item
+            final boolean hideOcr = !configurationManager.isEnabled(ConfigurableResourceFeature.Ocr);
+
+            // Check "My Account" availability before enabling this menu item
+            final boolean hideMyAccount = !configurationManager.isEnabled(ConfigurableResourceFeature.MyAccount);
+
+            // Check "Subscriptions" availability before enabling this menu item
+            final boolean hideSubscriptions = !configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel);
+
+            MainMenuDialog dialog = MainMenuDialog.newInstance(
+                    new MainMenuDialogConfig(
+                            hideProSubscription, hideSettings, hideOcr, hideMyAccount, hideSubscriptions
+                    )
+            );
+            dialog.show(getSupportFragmentManager(), MainMenuDialog.TAG);
+            return true;
+        } else if (item.getItemId() == R.id.menu_main_search) {
+            navigationHandler.navigateToSearchActivity();
+            analytics.record(Events.Navigation.Search);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -403,5 +369,36 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
     @Override
     public void markSearchResultAsProcessed() {
         searchResult = null;
+    }
+
+    void setMainMenuListener() {
+        getSupportFragmentManager().setFragmentResultListener(MainMenuDialog.REQUEST_KEY, this,
+                (requestKey, result) -> {
+                    String creationOption = result.getString(MainMenuDialog.RESULT_KEY);
+                    if (creationOption == null) return;
+
+                    if (creationOption.equals(MainMenuOption.SUBSCRIPTIONS.name())) {
+                        navigationHandler.navigateToSubscriptionsActivity();
+                    } else if (creationOption.equals(MainMenuOption.SETTINGS.name())) {
+                        navigationHandler.navigateToSettings();
+                        analytics.record(Events.Navigation.SettingsOverflow);
+                    } else if (creationOption.equals(MainMenuOption.OCR_CONFIGURATION.name())) {
+                        if (identityManager.isLoggedIn()) {
+                            navigationHandler.navigateToOcrConfigurationFragment();
+                            analytics.record(Events.Navigation.OcrConfiguration);
+                        } else {
+                            navigationHandler.navigateToLoginScreen(true);
+                        }
+                    } else if (creationOption.equals(MainMenuOption.BACKUP.name())) {
+                        navigationHandler.navigateToBackupMenu();
+                        analytics.record(Events.Navigation.BackupOverflow);
+                    } else if (creationOption.equals(MainMenuOption.USAGE_GUIDE.name())) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/guide")));
+                        analytics.record(Events.Navigation.UsageGuideOverflow);
+                    } else if (creationOption.equals(MainMenuOption.MY_ACCOUNT.name())) {
+                        navigationHandler.navigateToAccountScreen();
+                        analytics.record(Events.Navigation.MyAccountOverflow);
+                    }
+                });
     }
 }

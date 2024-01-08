@@ -296,7 +296,30 @@
         <item name="android:drawablePadding">@dimen/padding_large</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
-    
+
+    <style name="Widget.SmartReceipts.TextView.BottomSheetItem.MainMenu">
+        <item name="android:layout_height">@dimen/bottom_sheet_item_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/margin_normal</item>
+        <item name="android:layout_marginEnd">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="drawableTint">@color/bottom_sheet_dialog_icon</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">@dimen/padding_large</item>
+        <item name="android:textColor">@color/text_primary_color</item>
+        <item name="android:textSize">@dimen/font_subhead</item>
+        <item name="android:drawablePadding">@dimen/padding_large</item>
+        <item name="android:backgroundTint">@color/background</item>
+        <item name="android:background">@drawable/bg_rounded_rectangle</item>
+        <item name="android:foreground">@drawable/bg_rounded_rectangle_ripple</item>
+    </style>
+
+    <style name="Widget.SmartReceipts.TextView.BottomSheetItem.MainMenu.Highlighted" parent="Widget.SmartReceipts.TextView.BottomSheetItem.MainMenu">
+        <item name="android:backgroundTint">#5037AD</item>
+        <item name="drawableTint">@color/text_on_primary_color</item>
+        <item name="android:textColor">@color/text_on_primary_color</item>
+    </style>
+
     <style name="Widget.SmartReceipts.SearchView" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlActivated">?attr/colorOnPrimary</item> <!-- sets the cursor color-->
     </style>

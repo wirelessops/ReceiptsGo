@@ -15,6 +15,7 @@
     <string name="menu_main_usage_guide">Aiuto</string>
     <string name="menu_main_my_account">Il mio acccount</string>
     <string name="menu_main_subscriptions">Abbonamenti</string>
+    <string name="menu_main_more">Altre opzioni</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">Aggiungi</string>

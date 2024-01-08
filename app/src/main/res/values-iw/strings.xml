@@ -13,6 +13,7 @@
     <string name="menu_main_ocr_configuration">(OCR) סריקות אוטומטיות</string>
     <string name="menu_main_export">גיבוי</string>
     <string name="menu_main_subscriptions">מנויים</string>
+    <string name="menu_main_more">אפשרויות נוספות</string>
 
     <!-- ================ General Strings ================== -->
     <string name="add">הוסף</string>
