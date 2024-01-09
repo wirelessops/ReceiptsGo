@@ -28,12 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_tiny"
-        android:drawableStart="@drawable/ic_done_24dp"
         android:drawablePadding="@dimen/padding_normal"
         android:text="@string/subscriptions_detail1"
         android:textColor="@color/smart_receipts_colorOnPrimary"
         android:textSize="@dimen/font_no_data"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:drawableStartCompat="@drawable/ic_done_24dp" />
 
     <TextView
         android:id="@+id/detail_2"
@@ -41,12 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_tiny"
-        android:drawableStart="@drawable/ic_done_24dp"
         android:drawablePadding="@dimen/padding_normal"
         android:text="@string/subscriptions_detail2"
         android:textColor="@color/smart_receipts_colorOnPrimary"
         android:textSize="@dimen/font_no_data"
-        app:layout_constraintTop_toBottomOf="@id/detail_1" />
+        app:layout_constraintTop_toBottomOf="@id/detail_1"
+        app:drawableStartCompat="@drawable/ic_done_24dp" />
 
     <TextView
         android:id="@+id/detail_3"
@@ -54,15 +54,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_tiny"
-        android:drawableStart="@drawable/ic_done_24dp"
         android:drawablePadding="@dimen/padding_normal"
         android:text="@string/subscriptions_detail3"
         android:textColor="@color/smart_receipts_colorOnPrimary"
         android:textSize="@dimen/font_no_data"
-        app:layout_constraintTop_toBottomOf="@id/detail_2" />
+        app:layout_constraintTop_toBottomOf="@id/detail_2"
+        app:drawableStartCompat="@drawable/ic_done_24dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/card_standard"
+        android:id="@+id/card_premium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_normal"
@@ -71,111 +71,35 @@
         app:layout_constraintTop_toBottomOf="@id/detail_3">
 
         <TextView
-            android:id="@+id/label_standard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_large"
-            android:fontFamily="sans-serif-black"
-            android:text="@string/subscriptions_standard_name"
-            android:textColor="@color/violet"
-            android:textSize="@dimen/font_headline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/padding_larger"
-            android:text="@string/subscriptions_standard_description"
-            android:textColor="@color/violet_dark"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/label_standard"
-            app:layout_constraintTop_toBottomOf="@id/label_standard" />
-
-        <LinearLayout
-            android:id="@+id/price_standard_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_large"
-            android:background="@drawable/bg_rounded_rectangle"
-            android:backgroundTint="@color/violet"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@id/label_standard"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/price_standard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_tiny"
-                android:fontFamily="sans-serif-black"
-                android:textColor="@color/smart_receipts_colorOnPrimary"
-                android:textSize="22sp"
-                tools:text="$2.99" />
-
-            <TextView
-                android:id="@+id/per_month_standard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-8dp"
-                android:layout_marginBottom="@dimen/margin_tiny"
-                android:gravity="center_horizontal"
-                android:text="@string/subscriptions_per_month"
-                android:textColor="@color/transparent_white_60"
-                android:textSize="@dimen/font_caption" />
-
-            <TextView
-                android:id="@+id/your_plan_standard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:padding="@dimen/padding_large"
-                android:text="@string/subscriptions_your_plan"
-                android:textColor="@color/violet"
-                android:textSize="22sp"
-                android:visibility="gone" />
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/card_premium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:layout_marginBottom="@dimen/margin_large"
-        android:background="@drawable/bg_big_rounded_rectangle"
-        app:layout_constraintTop_toBottomOf="@id/card_standard">
-
-        <TextView
             android:id="@+id/label_premium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
-            android:drawableEnd="@drawable/ic_crown"
             android:drawablePadding="8dp"
             android:fontFamily="sans-serif-black"
             android:text="@string/subscriptions_premium_name"
             android:textColor="@color/violet"
             android:textSize="@dimen/font_headline"
+            app:drawableEndCompat="@drawable/ic_crown"
+            app:layout_constraintBottom_toTopOf="@id/premium_detail"
+            app:layout_constraintEnd_toStartOf="@id/price_premium_container"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/premium_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
+            android:layout_marginBottom="@dimen/margin_large"
             android:text="@string/subscriptions_premium_description"
             android:textColor="@color/violet_dark"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/premium_detail_plus"
             app:layout_constraintTop_toBottomOf="@id/label_premium" />
 
@@ -188,7 +112,8 @@
             app:layout_constraintStart_toStartOf="@id/label_premium"
             app:layout_constraintTop_toTopOf="@id/premium_detail"
             app:srcCompat="@drawable/ic_add_24dp"
-            app:tint="@color/violet_dark" />
+            app:tint="@color/violet_dark"
+            android:importantForAccessibility="no" />
 
         <LinearLayout
             android:id="@+id/price_premium_container"
@@ -198,6 +123,7 @@
             android:background="@drawable/bg_rounded_rectangle"
             android:backgroundTint="@color/violet"
             android:orientation="vertical"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -211,6 +137,7 @@
                 android:layout_marginHorizontal="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_tiny"
                 android:fontFamily="sans-serif-black"
+                android:gravity="center"
                 android:textColor="@color/smart_receipts_colorOnPrimary"
                 android:textSize="22sp"
                 tools:text="$3.99" />
@@ -238,6 +165,100 @@
                 android:visibility="gone" />
 
         </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_standard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:background="@drawable/bg_big_rounded_rectangle"
+        app:layout_constraintTop_toBottomOf="@id/card_premium">
+
+        <TextView
+            android:id="@+id/label_standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/subscriptions_standard_name"
+            android:textColor="@color/violet"
+            android:textSize="@dimen/font_headline"
+            app:layout_constraintBottom_toTopOf="@id/standard_detail"
+            app:layout_constraintEnd_toStartOf="@id/price_standard_container"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/standard_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:text="@string/subscriptions_standard_description"
+            android:textColor="@color/violet_dark"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/label_standard"
+            app:layout_constraintTop_toBottomOf="@id/label_standard" />
+
+        <LinearLayout
+            android:id="@+id/price_standard_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_large"
+            android:background="@drawable/bg_rounded_rectangle"
+            android:backgroundTint="@color/violet"
+            android:orientation="vertical"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@id/label_standard"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/price_standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:textColor="@color/smart_receipts_colorOnPrimary"
+                android:textSize="22sp"
+                tools:text="$2.99" />
+
+            <TextView
+                android:id="@+id/per_month_standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:gravity="center_horizontal"
+                android:text="@string/subscriptions_per_month"
+                android:textColor="@color/transparent_white_60"
+                android:textSize="@dimen/font_caption" />
+
+            <TextView
+                android:id="@+id/your_plan_standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:padding="@dimen/padding_large"
+                android:text="@string/subscriptions_your_plan"
+                android:textColor="@color/violet"
+                android:textSize="22sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -256,8 +277,8 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:indeterminateTint="@android:color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -268,6 +289,5 @@
         android:id="@+id/success"
         layout="@layout/subscriptions_success"
         android:visibility="gone" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
