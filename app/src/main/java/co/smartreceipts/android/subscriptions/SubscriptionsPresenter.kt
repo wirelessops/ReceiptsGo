@@ -61,11 +61,17 @@ class SubscriptionsPresenter @Inject constructor(
                     for (plan in plans) {
                         if (plan.key.productId == InAppPurchase.StandardSubscriptionPlan.sku) {
                             val isOwned = plan.value
-                            view.presentStandardPlan(if (isOwned) null else plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice)
+                            view.presentStandardPlan(
+                                if (isOwned) null else
+                                    plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice?.formatPrice()
+                            )
                             userOwnsPlan = userOwnsPlan || isOwned
                         } else if (plan.key.productId == InAppPurchase.PremiumSubscriptionPlan.sku) {
                             val isOwned = plan.value
-                            view.presentPremiumPlan(if (isOwned) null else plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice)
+                            view.presentPremiumPlan(
+                                if (isOwned) null else
+                                    plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice?.formatPrice()
+                            )
                             userOwnsPlan = userOwnsPlan || isOwned
                         }
                     }
@@ -90,5 +96,9 @@ class SubscriptionsPresenter @Inject constructor(
 
     override fun onPurchasePending() {
         /* no-op */
+    }
+
+    private fun String.formatPrice(): String {
+        return this.replace(".00", "").replace(",00", "")
     }
 }
