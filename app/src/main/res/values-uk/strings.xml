@@ -541,5 +541,18 @@
     <string name="organization_update_error">Щось пішло не так при оновленні організації</string>
     <string name="organization_update">Оновити налаштування організації</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Виберіть план</string>
+    <string name="subscriptions_detail1">Автоматичне сканування ваших чеків</string>
+    <string name="subscriptions_detail2">Безпечне резервне копіювання ваших даних</string>
+    <string name="subscriptions_detail3">Повна настройка звітів</string>
+    <string name="subscriptions_standard_name">Стандарт</string>
+    <string name="subscriptions_standard_description">Основні функції</string>
+    <string name="subscriptions_premium_name">Преміум</string>
+    <string name="subscriptions_premium_description">Вимкнути всі рекламні оголошення</string>
+    <string name="subscriptions_per_month">на місяць</string>
+    <string name="subscriptions_cancel_info">Ви можете скасувати свій план в будь-який момент <u>в налаштуваннях</u></string>
+    <string name="subscriptions_your_plan">Ваш план</string>
+
 </resources>
 

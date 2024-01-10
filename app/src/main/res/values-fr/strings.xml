@@ -539,4 +539,17 @@
     <string name="organization_update_error">Une erreur s\'est produite lors de la mise à jour de l\'organisation</string>
     <string name="organization_update">Mettre à jour les paramètres de l\'organisation</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Choisir un plan</string>
+    <string name="subscriptions_detail1">Numérisez automatiquement vos reçus</string>
+    <string name="subscriptions_detail2">Sauvegardez vos données en toute sécurité</string>
+    <string name="subscriptions_detail3">Personnalisation complète des rapports</string>
+    <string name="subscriptions_standard_name">Standard</string>
+    <string name="subscriptions_standard_description">Fonctions principales</string>
+    <string name="subscriptions_premium_name">Premium</string>
+    <string name="subscriptions_premium_description">Désactiver toutes les publicités</string>
+    <string name="subscriptions_per_month">par mois</string>
+    <string name="subscriptions_cancel_info">Vous pouvez annuler votre plan à tout moment <u>dans les paramètres</u></string>
+    <string name="subscriptions_your_plan">Votre Plan</string>
+
 </resources>

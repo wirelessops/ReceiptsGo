@@ -545,4 +545,17 @@
     <string name="organization_update_error">Oppdatering av organisasjon feilet</string>
     <string name="organization_update">Oppdater ogranisasjonsinnstillinger</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Velg plan</string>
+    <string name="subscriptions_detail1">Skann kvitteringene dine automatisk</string>
+    <string name="subscriptions_detail2">Sikkerhetskopier dataene dine trygt</string>
+    <string name="subscriptions_detail3">Full rapporttilpasning</string>
+    <string name="subscriptions_standard_name">Standard</string>
+    <string name="subscriptions_standard_description">Hovedfunksjoner</string>
+    <string name="subscriptions_premium_name">Premium</string>
+    <string name="subscriptions_premium_description">Deaktiver alle annonser</string>
+    <string name="subscriptions_per_month">per måned</string>
+    <string name="subscriptions_cancel_info">Du kan avslutte abonnementet når som helst <u>i innstillingene</u></string>
+    <string name="subscriptions_your_plan">Din plan</string>
+
 </resources>

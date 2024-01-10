@@ -555,4 +555,17 @@
     <string name="organization_update_error">Qualcosa non ha funzionato nell\'aggiornamento della organizzazione</string>
     <string name="organization_update">Aggiorna impostazioni dell\'organizzazione</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Scegli Piano</string>
+    <string name="subscriptions_detail1">Scansiona automaticamente i tuoi scontrini</string>
+    <string name="subscriptions_detail2">Effettua il backup sicuro dei tuoi dati</string>
+    <string name="subscriptions_detail3">Personalizzazione completa dei report</string>
+    <string name="subscriptions_standard_name">Standard</string>
+    <string name="subscriptions_standard_description">Funzioni principali</string>
+    <string name="subscriptions_premium_name">Premium</string>
+    <string name="subscriptions_premium_description">Disattiva tutti gli annunci</string>
+    <string name="subscriptions_per_month">al mese</string>
+    <string name="subscriptions_cancel_info">Puoi annullare il tuo piano in qualsiasi momento <u>nelle impostazioni</u></string>
+    <string name="subscriptions_your_plan">Il Tuo Piano</string>
+
 </resources>

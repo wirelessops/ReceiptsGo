@@ -539,4 +539,17 @@
     <string name="organization_update_error">Beim Aktualisieren der Organisation ist ein Fehler aufgetreten</string>
     <string name="organization_update">Aktualisieren Sie die Organisationseinstellungen</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Plan auswählen</string>
+    <string name="subscriptions_detail1">Ihre Quittungen automatisch scannen</string>
+    <string name="subscriptions_detail2">Sichern Sie Ihre Daten sicher</string>
+    <string name="subscriptions_detail3">Vollständige Berichtsanpassung</string>
+    <string name="subscriptions_standard_name">Standard</string>
+    <string name="subscriptions_standard_description">Hauptfunktionen</string>
+    <string name="subscriptions_premium_name">Premium</string>
+    <string name="subscriptions_premium_description">Alle Werbeanzeigen deaktivieren</string>
+    <string name="subscriptions_per_month">pro Monat</string>
+    <string name="subscriptions_cancel_info">Sie können Ihren Plan jederzeit <u>in den Einstellungen</u> kündigen</string>
+    <string name="subscriptions_your_plan">Ihr Plan</string>
+
 </resources>

@@ -539,4 +539,17 @@
     <string name="organization_update_error">Algo salió mal al actualizar la organización</string>
     <string name="organization_update">Actualizar la configuración de la organización</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Seleccionar Plan</string>
+    <string name="subscriptions_detail1">Escanee automáticamente sus recibos</string>
+    <string name="subscriptions_detail2">Haga una copia de seguridad segura de sus datos</string>
+    <string name="subscriptions_detail3">Personalización completa de informes</string>
+    <string name="subscriptions_standard_name">Estándar</string>
+    <string name="subscriptions_standard_description">Funciones principales</string>
+    <string name="subscriptions_premium_name">Premium</string>
+    <string name="subscriptions_premium_description">Desactivar todos los anuncios</string>
+    <string name="subscriptions_per_month">al mes</string>
+    <string name="subscriptions_cancel_info">Puede cancelar su plan en cualquier momento <u>en la configuración</u></string>
+    <string name="subscriptions_your_plan">Su Plan</string>
+
 </resources>

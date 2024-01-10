@@ -554,4 +554,17 @@
     <string name="organization_update_error">משהו השתבש במהלך עדכון הארגון</string>
     <string name="organization_update">עדכן הגדרות ארגון</string>
 
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">בחר תוכנית</string>
+    <string name="subscriptions_detail1">סרוק אוטומטית את הקבלות שלך</string>
+    <string name="subscriptions_detail2">גבה בצורה בטוחה את הנתונים שלך</string>
+    <string name="subscriptions_detail3">התאמה אישית מלאה של הדוחות</string>
+    <string name="subscriptions_standard_name">סטנדרט</string>
+    <string name="subscriptions_standard_description">פונקציות עיקריות</string>
+    <string name="subscriptions_premium_name">פרימיום</string>
+    <string name="subscriptions_premium_description">השבת את כל המודעות</string>
+    <string name="subscriptions_per_month">לחודש</string>
+    <string name="subscriptions_cancel_info">ניתן לבטל את התוכנית שלך בכל עת <u>בהגדרות</u></string>
+    <string name="subscriptions_your_plan">התוכנית שלך</string>
+
 </resources>
