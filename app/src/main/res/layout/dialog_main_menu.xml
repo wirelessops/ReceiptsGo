@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding_large">
 
     <TextView
         android:id="@+id/menu_main_dialog_subscriptions"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem.MainMenu.Highlighted"
-        android:layout_marginTop="@dimen/margin_normal"
         android:text="@string/menu_main_subscriptions"
         app:drawableEndCompat="@drawable/ic_subscription" />
 
