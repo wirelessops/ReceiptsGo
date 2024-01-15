@@ -7,6 +7,7 @@ import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
+import co.smartreceipts.android.activities.LoginSourceDestination
 import co.smartreceipts.android.ocr.purchases.OcrPurchaseTracker
 import co.smartreceipts.android.tooltip.TooltipController
 import co.smartreceipts.android.tooltip.TooltipView
@@ -79,7 +80,7 @@ class OcrInformationTooltipController @Inject constructor(
                 if (identityManager.isLoggedIn)
                     router.navigateToOcrConfigurationScreen()
                 else
-                    router.navigationHandler.navigateToLoginScreen(true)
+                    router.navigationHandler.navigateToLoginScreen(LoginSourceDestination.OCR)
             }
         }
     }

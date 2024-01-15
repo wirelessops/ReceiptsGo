@@ -5,6 +5,7 @@ import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.core.di.scopes.FragmentScope
 import co.smartreceipts.core.identity.IdentityManager
 import co.smartreceipts.analytics.log.Logger
+import co.smartreceipts.android.activities.LoginSourceDestination
 import javax.inject.Inject
 
 @FragmentScope
@@ -44,8 +45,10 @@ class AccountRouter @Inject constructor(
     }
 
     fun navigateToOcrFragment() {
-        if(identityManager.isLoggedIn)
-        navigationHandler.navigateToOcrConfigurationFragment()
-        else navigationHandler.navigateToLoginScreen(true)
+        if (identityManager.isLoggedIn) {
+            navigationHandler.navigateToOcrConfigurationFragment()
+        } else {
+            navigationHandler.navigateToLoginScreen(LoginSourceDestination.OCR)
+        }
     }
 }

@@ -378,7 +378,11 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                     if (creationOption == null) return;
 
                     if (creationOption.equals(MainMenuOption.SUBSCRIPTIONS.name())) {
-                        navigationHandler.navigateToSubscriptionsActivity();
+                        if (identityManager.isLoggedIn()) {
+                            navigationHandler.navigateToSubscriptionsActivity();
+                        } else {
+                            navigationHandler.navigateToLoginScreen(LoginSourceDestination.SUBSCRIPTIONS);
+                        }
                     } else if (creationOption.equals(MainMenuOption.SETTINGS.name())) {
                         navigationHandler.navigateToSettings();
                         analytics.record(Events.Navigation.SettingsOverflow);
@@ -387,7 +391,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                             navigationHandler.navigateToOcrConfigurationFragment();
                             analytics.record(Events.Navigation.OcrConfiguration);
                         } else {
-                            navigationHandler.navigateToLoginScreen(true);
+                            navigationHandler.navigateToLoginScreen(LoginSourceDestination.OCR);
                         }
                     } else if (creationOption.equals(MainMenuOption.BACKUP.name())) {
                         navigationHandler.navigateToBackupMenu();
