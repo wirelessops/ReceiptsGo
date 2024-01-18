@@ -14,6 +14,8 @@ constructor(view: OcrConfigurationView, interactor: OcrConfigurationInteractor) 
     override fun subscribe() {
         view.present(interactor.email)
 
+        view.toggleSubscriptions(interactor.isSubscriptionsEnabled)
+
         // Set the current checkbox values
         compositeDisposable.add(
             interactor.getOcrIsEnabled()

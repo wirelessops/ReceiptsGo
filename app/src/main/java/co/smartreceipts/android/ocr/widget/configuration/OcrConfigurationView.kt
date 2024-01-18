@@ -76,7 +76,12 @@ interface OcrConfigurationView {
     fun navigateToLoginScreen()
 
     /**
-     * navigates user to subscriptinos screen
+     * navigates user to subscriptions screen
      */
     fun navigateToSubscriptionsScreen()
+
+    /**
+     * Toggles the subscriptions option
+     */
+    fun toggleSubscriptions(isSubscriptionsEnabled: Boolean)
 }

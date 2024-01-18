@@ -262,4 +262,9 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     public void navigateToSubscriptionsScreen() {
         router.navigateToSubscriptionsScreen();
     }
+
+    @Override
+    public void toggleSubscriptions(boolean isSubscriptionsEnabled) {
+        binding.subscriptionsButton.setVisibility(isSubscriptionsEnabled ? View.VISIBLE : View.GONE);
+    }
 }
