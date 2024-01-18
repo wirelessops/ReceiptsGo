@@ -57,9 +57,9 @@ import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
-import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.workers.EmailAssistant;
+import co.smartreceipts.core.identity.IdentityManager;
 import co.smartreceipts.oss_licenses.LicensesNavigator;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
@@ -78,6 +78,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         CurrencyListEditorView {
 
     public static final String EXTRA_GO_TO_CATEGORY = "GO_TO_CATEGORY";
+
+    public static final int RESULT_OPEN_SUBSCRIPTIONS = 45329;
 
     @Inject
     SmartReceiptsTitle smartReceiptsTitle;
@@ -111,6 +113,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
 
     @Inject
     ConfigurationManager configurationManager;
+
+    @Inject
+    IdentityManager identityManager;
 
     private volatile Set<InAppPurchase> availablePurchases;
     private CompositeDisposable compositeDisposable;
@@ -503,7 +508,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
                 key.equals(getString(R.string.pref_pro_separate_by_category_key)) ||
                 key.equals(getString(R.string.pref_pro_categorical_summation_key)) ||
                 key.equals(getString(R.string.pref_pro_omit_default_table_key))) {
-            tryToMakePurchaseIfNeed();
+            openSubscriptions();
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/privacy")));
@@ -515,7 +520,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             }
             return true;
         } else if (key.equals(getString(R.string.pref_receipt_include_tax_field_key))) {
-           updateAllTaxesSettings(receiptPreferences == null ? this : receiptPreferences);
+            updateAllTaxesSettings(receiptPreferences == null ? this : receiptPreferences);
             return true;
         } else if (key.equals(getString(R.string.pref_receipt_include_tax2_field_key))) {
             updateTax2SettingsAppearance(receiptPreferences == null ? this : receiptPreferences);
@@ -577,28 +582,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
                 "Two-Paned: " + isUsingHeaders;
     }
 
-    private void tryToMakePurchaseIfNeed() {
+    private void openSubscriptions() {
         // Let's check if we should prompt the user to upgrade for this preference
         final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
                 || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
 
         // If we don't already have the pro subscription and it's available, let's buy it
         if (!haveProSubscription) {
-            InAppPurchase proPurchase = configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) ?
-                    InAppPurchase.PremiumSubscriptionPlan : InAppPurchase.SmartReceiptsPlus;
-
-            if (availablePurchases != null && availablePurchases.contains(proPurchase)) {
-                purchaseManager.initiatePurchase(proPurchase, PurchaseSource.PdfFooterSetting);
-            } else {
-                Toast.makeText(SettingsActivity.this, R.string.purchase_unavailable, Toast.LENGTH_SHORT).show();
-            }
+            setResult(RESULT_OPEN_SUBSCRIPTIONS);
+            finish();
         }
     }
 
     private void updateTax1SettingsAppearance(UniversalPreferences universal) {
         final boolean isTaxIncluded = userPreferenceManager.get(UserPreference.Receipts.IncludeTaxField);
 
-        ((SummaryEditTextPreference)universal.findPreference(R.string.pref_receipt_tax1_name_key)).setAppearsEnabled(isTaxIncluded);
+        ((SummaryEditTextPreference) universal.findPreference(R.string.pref_receipt_tax1_name_key)).setAppearsEnabled(isTaxIncluded);
         ((FloatSummaryEditTextPreference) universal.findPreference(R.string.pref_receipt_tax_percent_key)).setAppearsEnabled(isTaxIncluded);
 
         final DeactivatableCheckBoxPreference includeTax2Preference = (DeactivatableCheckBoxPreference) universal.findPreference(R.string.pref_receipt_include_tax2_field_key);
@@ -613,7 +612,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
     private void updateTax2SettingsAppearance(UniversalPreferences universal) {
         final boolean isTax2Included = userPreferenceManager.get(UserPreference.Receipts.IncludeTax2Field);
 
-        ((SummaryEditTextPreference)universal.findPreference(R.string.pref_receipt_tax2_name_key)).setAppearsEnabled(isTax2Included);
+        ((SummaryEditTextPreference) universal.findPreference(R.string.pref_receipt_tax2_name_key)).setAppearsEnabled(isTax2Included);
         ((FloatSummaryEditTextPreference) universal.findPreference(R.string.pref_receipt_tax2_percent_key)).setAppearsEnabled(isTax2Included);
     }
 

@@ -218,7 +218,7 @@ class NavigationHandler<T : FragmentActivity> @Inject constructor(
         val activity = fragmentActivityWeakReference.get()
         if (activity != null) {
             val intent = Intent(activity, SettingsActivity::class.java)
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, RequestCodes.SETTINGS_REQUEST)
         }
     }
 
@@ -234,7 +234,7 @@ class NavigationHandler<T : FragmentActivity> @Inject constructor(
             } else {
                 intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, R.string.pref_output_header_key)
             }
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, RequestCodes.SETTINGS_REQUEST)
         }
     }
 
@@ -259,7 +259,7 @@ class NavigationHandler<T : FragmentActivity> @Inject constructor(
             } else {
                 intent.putExtra(SettingsActivity.EXTRA_GO_TO_CATEGORY, headerKey)
             }
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, RequestCodes.SETTINGS_REQUEST)
         }
     }
 

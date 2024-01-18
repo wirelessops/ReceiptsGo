@@ -48,6 +48,7 @@ import co.smartreceipts.android.search.Searchable;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.settings.widget.SettingsActivity;
 import co.smartreceipts.android.subscriptions.SubscriptionsActivity;
 import co.smartreceipts.android.sync.BackupProvidersManager;
 import co.smartreceipts.android.utils.ConfigurableResourceFeature;
@@ -199,6 +200,10 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                     break;
                 case SubscriptionsActivity.RESULT_OK:
                     break;
+            }
+        } else if (requestCode == RequestCodes.SETTINGS_REQUEST) {
+            if (resultCode == SettingsActivity.RESULT_OPEN_SUBSCRIPTIONS) {
+                navigateToSubscriptions();
             }
         } else if (!backupProvidersManager.onActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
@@ -378,11 +383,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                     if (creationOption == null) return;
 
                     if (creationOption.equals(MainMenuOption.SUBSCRIPTIONS.name())) {
-                        if (identityManager.isLoggedIn()) {
-                            navigationHandler.navigateToSubscriptionsActivity();
-                        } else {
-                            navigationHandler.navigateToLoginScreen(LoginSourceDestination.SUBSCRIPTIONS);
-                        }
+                        navigateToSubscriptions();
                     } else if (creationOption.equals(MainMenuOption.SETTINGS.name())) {
                         navigationHandler.navigateToSettings();
                         analytics.record(Events.Navigation.SettingsOverflow);
@@ -404,5 +405,13 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                         analytics.record(Events.Navigation.MyAccountOverflow);
                     }
                 });
+    }
+
+    private void navigateToSubscriptions() {
+        if (identityManager.isLoggedIn()) {
+            navigationHandler.navigateToSubscriptionsActivity();
+        } else {
+            navigationHandler.navigateToLoginScreen(LoginSourceDestination.SUBSCRIPTIONS);
+        }
     }
 }
