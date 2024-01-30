@@ -8,26 +8,25 @@ import co.smartreceipts.analytics.events.DefaultDataPointEvent
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.R
+import co.smartreceipts.android.activities.LoginSourceDestination
+import co.smartreceipts.android.activities.NavigationHandler
+import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.ad.upsell.UpsellAdView
-import co.smartreceipts.android.config.ConfigurationManager
-import co.smartreceipts.android.purchases.PurchaseManager
-import co.smartreceipts.android.purchases.model.InAppPurchase
-import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
-import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import co.smartreceipts.android.utils.UiThread
 import co.smartreceipts.core.di.scopes.ActivityScope
+import co.smartreceipts.core.identity.IdentityManager
 import javax.inject.Inject
 
 @ActivityScope
 class BannerAdPresenter @Inject constructor(
     private val adStatusTracker: AdStatusTracker,
-    private val purchaseManager: PurchaseManager,
     private val userPreferenceManager: UserPreferenceManager,
     private val bannerAdViewFactory: BannerAdViewFactory,
     private val analytics: Analytics,
-    private val configurationManager: ConfigurationManager
+    private val identityManager: IdentityManager,
+    private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
 ) : AdPresenter {
 
     private var adView: BannerAdView? = null
@@ -52,7 +51,14 @@ class BannerAdPresenter @Inject constructor(
                         adView?.makeVisible()
                         upsellAdView?.hide()
                     }
-                    analytics.record(DefaultDataPointEvent(Events.Ads.AdShown).addDataPoint(DataPoint("ad", adView?.javaClass!!.simpleName)))
+                    analytics.record(
+                        DefaultDataPointEvent(Events.Ads.AdShown).addDataPoint(
+                            DataPoint(
+                                "ad",
+                                adView?.javaClass!!.simpleName
+                            )
+                        )
+                    )
                 }
 
                 override fun onAdLoadFailure() {
@@ -62,7 +68,11 @@ class BannerAdPresenter @Inject constructor(
                         adView?.hide()
                     }
                     Logger.error(this, "Failed to load the desired ad")
-                    analytics.record(DefaultDataPointEvent(Events.Purchases.AdUpsellShownOnFailure).addDataPoint(DataPoint("ad", adView?.javaClass!!.simpleName)))
+                    analytics.record(
+                        DefaultDataPointEvent(Events.Purchases.AdUpsellShownOnFailure).addDataPoint(
+                            DataPoint("ad", adView?.javaClass!!.simpleName)
+                        )
+                    )
                 }
             })
 
@@ -75,11 +85,12 @@ class BannerAdPresenter @Inject constructor(
 
             upsellAdView?.setOnClickListener(View.OnClickListener {
                 analytics.record(Events.Purchases.AdUpsellTapped)
-                val proPurchase = when {
-                    configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) -> InAppPurchase.PremiumSubscriptionPlan
-                    else -> InAppPurchase.SmartReceiptsPlus
+
+                if (identityManager.isLoggedIn) {
+                    navigationHandler.navigateToSubscriptionsActivity()
+                } else {
+                    navigationHandler.navigateToLoginScreen(LoginSourceDestination.SUBSCRIPTIONS)
                 }
-                this.purchaseManager.initiatePurchase(proPurchase, PurchaseSource.AdBanner)
             })
         }
     }
