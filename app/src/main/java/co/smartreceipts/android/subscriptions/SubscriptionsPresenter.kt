@@ -4,6 +4,7 @@ import co.smartreceipts.analytics.log.Logger
 import co.smartreceipts.android.purchases.PurchaseEventsListener
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.android.purchases.source.PurchaseSource
+import co.smartreceipts.android.purchases.subscriptionFormattedPrice
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import co.smartreceipts.core.di.scopes.ActivityScope
 import co.smartreceipts.core.identity.IdentityManager
@@ -61,17 +62,11 @@ class SubscriptionsPresenter @Inject constructor(
                     for (plan in plans) {
                         if (plan.key.productId == InAppPurchase.StandardSubscriptionPlan.sku) {
                             val isOwned = plan.value
-                            view.presentStandardPlan(
-                                if (isOwned) null else
-                                    plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice?.formatPrice()
-                            )
+                            view.presentStandardPlan(if (isOwned) null else plan.key.subscriptionFormattedPrice?.formatPrice())
                             userOwnsPlan = userOwnsPlan || isOwned
                         } else if (plan.key.productId == InAppPurchase.PremiumSubscriptionPlan.sku) {
                             val isOwned = plan.value
-                            view.presentPremiumPlan(
-                                if (isOwned) null else
-                                    plan.key.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice?.formatPrice()
-                            )
+                            view.presentPremiumPlan(if (isOwned) null else plan.key.subscriptionFormattedPrice?.formatPrice())
                             userOwnsPlan = userOwnsPlan || isOwned
                         }
                     }

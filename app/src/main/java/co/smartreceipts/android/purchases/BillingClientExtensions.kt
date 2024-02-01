@@ -79,3 +79,8 @@ fun BillingClient.consumePurchase(purchaseToken: String): Completable {
         }
     }
 }
+
+val ProductDetails.subscriptionFormattedPrice: String?
+    get() {
+        return this.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice
+    }
