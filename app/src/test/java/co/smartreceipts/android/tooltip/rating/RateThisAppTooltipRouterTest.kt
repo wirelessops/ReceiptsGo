@@ -4,12 +4,11 @@ import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.rating.FeedbackDialogFragment
 import co.smartreceipts.android.rating.RatingDialogFragment
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
-import com.nhaarman.mockitokotlin2.*
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 
@@ -30,13 +29,13 @@ class RateThisAppTooltipRouterTest {
     @Test
     fun navigateToFeedbackOptions() {
         router.navigateToFeedbackOptions()
-        verify(navigationHandler).showDialog(any(FeedbackDialogFragment::class.java))
+        verify(navigationHandler).showDialog(any<FeedbackDialogFragment>())
     }
 
     @Test
     fun navigateToRatingOptions() {
         router.navigateToRatingOptions()
-        verify(navigationHandler).showDialog(any(RatingDialogFragment::class.java))
+        verify(navigationHandler).showDialog(any<RatingDialogFragment>())
     }
 
 }

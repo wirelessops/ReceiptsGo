@@ -3,6 +3,8 @@ package co.smartreceipts.android.subscriptions
 import co.smartreceipts.android.purchases.model.InAppPurchase
 import co.smartreceipts.core.identity.IdentityManager
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.ProductDetails.PricingPhase
+import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
@@ -25,7 +27,14 @@ class SubscriptionsPresenterTest {
     private val identityManager = mock<IdentityManager>()
 
     private val standardSkuDetails = mock<ProductDetails>()
+    private val standardSkuSubscriptionOfferDetails = mock<SubscriptionOfferDetails>()
+    private val standardSkuPricingPhases = mock<ProductDetails.PricingPhases>()
+    private val standardSkuPricingPhase = mock<PricingPhase>()
+
     private val premiumSkuDetails = mock<ProductDetails>()
+    private val premiumSkuSubscriptionOfferDetails = mock<SubscriptionOfferDetails>()
+    private val premiumSkuPricingPhases = mock<ProductDetails.PricingPhases>()
+    private val premiumSkuPricingPhase = mock<PricingPhase>()
 
     companion object {
         const val STANDARD_PRICE = "50"
@@ -44,11 +53,17 @@ class SubscriptionsPresenterTest {
             Single.just(mapOf(Pair(standardSkuDetails, true), Pair(premiumSkuDetails, false)))
         )
 
-        whenever(standardSkuDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice).thenReturn(STANDARD_PRICE)
-        whenever(standardSkuDetails.name).thenReturn(InAppPurchase.StandardSubscriptionPlan.sku)
-        whenever(premiumSkuDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice).thenReturn(PREMIUM_PRICE)
-        whenever(premiumSkuDetails.name).thenReturn(InAppPurchase.PremiumSubscriptionPlan.sku)
+        whenever(standardSkuPricingPhase.formattedPrice).thenReturn(STANDARD_PRICE)
+        whenever(standardSkuPricingPhases.pricingPhaseList).thenReturn(listOf(standardSkuPricingPhase))
+        whenever(standardSkuSubscriptionOfferDetails.pricingPhases).thenReturn(standardSkuPricingPhases)
+        whenever(standardSkuDetails.subscriptionOfferDetails).thenReturn(listOf(standardSkuSubscriptionOfferDetails))
+        whenever(standardSkuDetails.productId).thenReturn(InAppPurchase.StandardSubscriptionPlan.sku)
 
+        whenever(premiumSkuPricingPhase.formattedPrice).thenReturn(PREMIUM_PRICE)
+        whenever(premiumSkuPricingPhases.pricingPhaseList).thenReturn(listOf(premiumSkuPricingPhase))
+        whenever(premiumSkuSubscriptionOfferDetails.pricingPhases).thenReturn(premiumSkuPricingPhases)
+        whenever(premiumSkuDetails.subscriptionOfferDetails).thenReturn(listOf(premiumSkuSubscriptionOfferDetails))
+        whenever(premiumSkuDetails.productId).thenReturn(InAppPurchase.PremiumSubscriptionPlan.sku)
 
         presenter = SubscriptionsPresenter(view, interactor, identityManager)
     }

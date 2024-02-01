@@ -44,10 +44,8 @@ class PurchaseManagerTest {
         whenever(billiClientManager.querySkuDetails(InAppPurchase.OcrScans50)).thenReturn(Single.just(skuOcr50))
         whenever(billiClientManager.initiatePurchase(any(), any())).thenReturn(Completable.complete())
 
-
-        whenever(skuOcr10.name).thenReturn(InAppPurchase.OcrScans10.sku)
-        whenever(skuOcr50.name).thenReturn(InAppPurchase.OcrScans50.sku)
-
+        whenever(skuOcr10.productId).thenReturn(InAppPurchase.OcrScans10.sku)
+        whenever(skuOcr50.productId).thenReturn(InAppPurchase.OcrScans50.sku)
 
         purchaseManager = PurchaseManager(billiClientManager, analytics, Schedulers.trampoline())
 

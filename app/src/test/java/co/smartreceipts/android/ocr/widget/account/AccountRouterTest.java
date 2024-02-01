@@ -1,5 +1,11 @@
 package co.smartreceipts.android.ocr.widget.account;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,12 +17,6 @@ import org.robolectric.RobolectricTestRunner;
 import co.smartreceipts.android.activities.NavigationHandler;
 import co.smartreceipts.android.identity.widget.account.AccountRouter;
 import co.smartreceipts.core.identity.IdentityManager;
-
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccountRouterTest {
@@ -39,7 +39,7 @@ public class AccountRouterTest {
     public void navigateToProperLocationWhenNotLoggedInForNewSession() {
         when(identityManager.isLoggedIn()).thenReturn(false);
         assertTrue(router.navigateToProperLocation(false));
-        verify(navigationHandler).navigateToLoginScreen();
+        verify(navigationHandler).navigateToLoginScreen(null);
     }
 
     @Test
@@ -53,14 +53,14 @@ public class AccountRouterTest {
     public void navigateToProperLocationWhenLoggedInForNewSession() {
         when(identityManager.isLoggedIn()).thenReturn(true);
         assertFalse(router.navigateToProperLocation(false));
-        verifyZeroInteractions(navigationHandler);
+        verifyNoInteractions(navigationHandler);
     }
 
     @Test
     public void navigateToProperLocationWhenLoggedInForExistingSession() {
         when(identityManager.isLoggedIn()).thenReturn(true);
         assertFalse(router.navigateToProperLocation(true));
-        verifyZeroInteractions(navigationHandler);
+        verifyNoInteractions(navigationHandler);
     }
 
     @Test

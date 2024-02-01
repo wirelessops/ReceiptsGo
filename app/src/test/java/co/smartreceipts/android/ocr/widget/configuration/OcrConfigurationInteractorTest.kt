@@ -11,6 +11,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference
 import co.smartreceipts.core.identity.IdentityManager
 import co.smartreceipts.core.identity.store.EmailAddress
 import com.android.billingclient.api.ProductDetails
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -21,7 +22,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
-import java.util.Arrays
 
 @RunWith(RobolectricTestRunner::class)
 class OcrConfigurationInteractorTest {
@@ -32,7 +32,11 @@ class OcrConfigurationInteractorTest {
     private val configurationManager = Mockito.mock(ConfigurationManager::class.java)
     private val analytics = Mockito.mock(Analytics::class.java)
     private val availablePurchaseSkuDetails = Mockito.mock(ProductDetails::class.java)
+    private val availablePurchaseSkuDetailsOneTimePurchaseOfferDetails =
+        mock<ProductDetails.OneTimePurchaseOfferDetails>()
     private val availablePurchaseSkuDetails2 = Mockito.mock(ProductDetails::class.java)
+    private val availablePurchaseSkuDetails2OneTimePurchaseOfferDetails =
+        mock<ProductDetails.OneTimePurchaseOfferDetails>()
     private val interactor = OcrConfigurationInteractor(
         identityManager,
         ocrPurchaseTracker,
@@ -63,33 +67,19 @@ class OcrConfigurationInteractorTest {
 
     @Test
     fun getAvailableOcrPurchasesOrdersByPrice() {
-        whenever(availablePurchaseSkuDetails.name).thenReturn(InAppPurchase.OcrScans50.sku)
-        whenever(availablePurchaseSkuDetails2.name).thenReturn(InAppPurchase.OcrScans10.sku)
-        whenever(availablePurchaseSkuDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.priceAmountMicros)
-            .thenReturn(500000L)
-        whenever(availablePurchaseSkuDetails2.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.priceAmountMicros)
-            .thenReturn(100000L)
-        val purchaseSet: Set<ProductDetails> =
-            HashSet(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2))
-        whenever(purchaseManager.allAvailablePurchaseSkus).thenReturn(Single.just(purchaseSet))
+        setupPurchases(InAppPurchase.OcrScans50.sku, InAppPurchase.OcrScans10.sku)
+
         val testObserver = interactor.getAvailableOcrPurchases().test()
         testObserver.awaitTerminalEvent()
-        testObserver.assertValue(Arrays.asList(availablePurchaseSkuDetails2, availablePurchaseSkuDetails))
+        testObserver.assertValue(listOf(availablePurchaseSkuDetails2, availablePurchaseSkuDetails))
         testObserver.assertComplete()
         testObserver.assertNoErrors()
     }
 
     @Test
     fun getAvailableOcrPurchasesIgnoresSubscriptions() {
-        whenever(availablePurchaseSkuDetails.name).thenReturn(InAppPurchase.OcrScans50.sku)
-        whenever(availablePurchaseSkuDetails2.name).thenReturn(InAppPurchase.SmartReceiptsPlus.sku)
-        whenever(availablePurchaseSkuDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.priceAmountMicros)
-            .thenReturn(500000L)
-        whenever(availablePurchaseSkuDetails2.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.priceAmountMicros)
-            .thenReturn(100000L)
-        val purchaseSet: Set<ProductDetails> =
-            HashSet(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2))
-        whenever(purchaseManager.allAvailablePurchaseSkus).thenReturn(Single.just(purchaseSet))
+        setupPurchases(InAppPurchase.OcrScans50.sku, InAppPurchase.SmartReceiptsPlus.sku)
+
         val testObserver = interactor.getAvailableOcrPurchases().test()
         testObserver.awaitTerminalEvent()
         testObserver.assertValue(listOf(availablePurchaseSkuDetails))
@@ -99,15 +89,8 @@ class OcrConfigurationInteractorTest {
 
     @Test
     fun getAvailableOcrPurchasesIgnoresNonOcrOnes() {
-        whenever(availablePurchaseSkuDetails.name).thenReturn(InAppPurchase.OcrScans50.sku)
-        whenever(availablePurchaseSkuDetails2.name).thenReturn(InAppPurchase.TestConsumablePurchase.sku)
-        whenever(availablePurchaseSkuDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.priceAmountMicros)
-            .thenReturn(500000L)
-        whenever(availablePurchaseSkuDetails2.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.priceAmountMicros)
-            .thenReturn(100000L)
-        val purchaseSet: Set<ProductDetails> =
-            HashSet(Arrays.asList(availablePurchaseSkuDetails, availablePurchaseSkuDetails2))
-        whenever(purchaseManager.allAvailablePurchaseSkus).thenReturn(Single.just(purchaseSet))
+        setupPurchases(InAppPurchase.OcrScans50.sku, InAppPurchase.TestConsumablePurchase.sku)
+
         val testObserver = interactor.getAvailableOcrPurchases().test()
         testObserver.awaitTerminalEvent()
         testObserver.assertValue(listOf(availablePurchaseSkuDetails))
@@ -117,7 +100,7 @@ class OcrConfigurationInteractorTest {
 
     @Test
     fun startOcrPurchase() {
-        whenever(availablePurchaseSkuDetails.name).thenReturn(InAppPurchase.OcrScans50.sku)
+        whenever(availablePurchaseSkuDetails.productId).thenReturn(InAppPurchase.OcrScans50.sku)
         interactor.startOcrPurchase(availablePurchaseSkuDetails)
         Mockito.verify(purchaseManager).initiatePurchase(availablePurchaseSkuDetails, PurchaseSource.Ocr)
     }
@@ -143,9 +126,9 @@ class OcrConfigurationInteractorTest {
     @Test
     fun setOcrIsEnabled() {
         interactor.setOcrIsEnabled(false)
-        Mockito.verify(userPreferenceManager).set(UserPreference.Misc.OcrIsEnabled, false)
+        Mockito.verify(userPreferenceManager)[UserPreference.Misc.OcrIsEnabled] = false
         interactor.setOcrIsEnabled(true)
-        Mockito.verify(userPreferenceManager).set(UserPreference.Misc.OcrIsEnabled, true)
+        Mockito.verify(userPreferenceManager)[UserPreference.Misc.OcrIsEnabled] = true
     }
 
     @Test
@@ -169,8 +152,26 @@ class OcrConfigurationInteractorTest {
     @Test
     fun setAllowUsToSaveImagesRemotely() {
         interactor.setAllowUsToSaveImagesRemotely(false)
-        Mockito.verify(userPreferenceManager).set(UserPreference.Misc.OcrIncognitoMode, true)
+        Mockito.verify(userPreferenceManager)[UserPreference.Misc.OcrIncognitoMode] = true
         interactor.setAllowUsToSaveImagesRemotely(true)
-        Mockito.verify(userPreferenceManager).set(UserPreference.Misc.OcrIncognitoMode, false)
+        Mockito.verify(userPreferenceManager)[UserPreference.Misc.OcrIncognitoMode] = false
+    }
+
+    private fun setupPurchases(purchase1Sku: String, purchase2Sku: String) {
+        whenever(availablePurchaseSkuDetails.productId).thenReturn(purchase1Sku)
+        whenever(availablePurchaseSkuDetailsOneTimePurchaseOfferDetails.priceAmountMicros).thenReturn(500000L)
+        whenever(availablePurchaseSkuDetails.oneTimePurchaseOfferDetails).thenReturn(
+            availablePurchaseSkuDetailsOneTimePurchaseOfferDetails
+        )
+
+        whenever(availablePurchaseSkuDetails2.productId).thenReturn(purchase2Sku)
+        whenever(availablePurchaseSkuDetails2OneTimePurchaseOfferDetails.priceAmountMicros).thenReturn(100000L)
+        whenever(availablePurchaseSkuDetails2.oneTimePurchaseOfferDetails).thenReturn(
+            availablePurchaseSkuDetails2OneTimePurchaseOfferDetails
+        )
+
+        val purchaseSet: Set<ProductDetails> =
+            HashSet(listOf(availablePurchaseSkuDetails, availablePurchaseSkuDetails2))
+        whenever(purchaseManager.allAvailablePurchaseSkus).thenReturn(Single.just(purchaseSet))
     }
 }

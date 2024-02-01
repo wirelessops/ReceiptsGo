@@ -35,9 +35,9 @@ class SubscriptionsInteractorTest {
 
     @Before
     fun setUp() {
-        whenever(ocrPurchaseSkuDetails.name).thenReturn("ocr_purchase_10")
-        whenever(standardPlanSkuDetails.name).thenReturn("and_autorec_1month")
-        whenever(premiumPlanSkuDetails.name).thenReturn("and_autorec_pro_1month")
+        whenever(ocrPurchaseSkuDetails.productId).thenReturn("ocr_purchase_10")
+        whenever(standardPlanSkuDetails.productId).thenReturn("and_autorec_1month")
+        whenever(premiumPlanSkuDetails.productId).thenReturn("and_autorec_pro_1month")
 
         whenever(standardPlanManagedProduct.inAppPurchase).thenReturn(InAppPurchase.StandardSubscriptionPlan)
 
