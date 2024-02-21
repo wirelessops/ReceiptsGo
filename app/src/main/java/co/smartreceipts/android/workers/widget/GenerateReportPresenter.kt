@@ -5,6 +5,7 @@ import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.ad.InterstitialAdPresenter
 import co.smartreceipts.android.model.Trip
+import co.smartreceipts.android.utils.InAppReviewManager
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import co.smartreceipts.android.workers.EmailAssistant.EmailOptions
@@ -17,7 +18,8 @@ class GenerateReportPresenter @Inject constructor(
     view: GenerateReportView, interactor: GenerateReportInteractor,
     private val analytics: Analytics,
     private val generateInfoTooltipManager: GenerateInfoTooltipManager,
-    private val interstitialAdPresenter: InterstitialAdPresenter
+    private val interstitialAdPresenter: InterstitialAdPresenter,
+    private val inAppReviewManager: InAppReviewManager,
 ) :
     BaseViperPresenter<GenerateReportView, GenerateReportInteractor>(view, interactor) {
 
@@ -51,10 +53,13 @@ class GenerateReportPresenter @Inject constructor(
 
     fun isLandscapeReportEnabled(): Boolean = interactor.isLandscapeReportEnabled()
 
-    fun showInterstitialAd(activity: Activity) {
-        interstitialAdPresenter.showAd(activity)
+    fun onReportShared(activity: Activity) {
+        if (inAppReviewManager.isReviewAvailable) {
+            inAppReviewManager.showReview(activity)
+        } else {
+            interstitialAdPresenter.showAd(activity)
+        }
     }
-
 
     private fun recordOptionsAnalyticsEvents(options: EnumSet<EmailOptions>) {
 

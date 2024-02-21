@@ -34,6 +34,7 @@ import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.subscriptions.SubscriptionsPurchaseTracker;
 import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
+import co.smartreceipts.android.utils.InAppReviewManager;
 import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
@@ -124,6 +125,9 @@ public class SmartReceiptsApplication extends Application implements HasAndroidI
 
     @Inject
     SubscriptionsPurchaseTracker subscriptionsPurchaseTracker;
+
+    @Inject
+    InAppReviewManager inAppReviewManager;
 
     private AppComponent appComponent;
 

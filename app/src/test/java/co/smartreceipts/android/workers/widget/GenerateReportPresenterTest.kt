@@ -5,6 +5,7 @@ import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.ad.InterstitialAdPresenter
 import co.smartreceipts.android.model.Trip
+import co.smartreceipts.android.utils.InAppReviewManager
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import co.smartreceipts.android.workers.EmailAssistant
 import com.nhaarman.mockitokotlin2.mock
@@ -16,7 +17,7 @@ import io.reactivex.Single
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.util.*
+import java.util.EnumSet
 
 class GenerateReportPresenterTest {
 
@@ -30,6 +31,7 @@ class GenerateReportPresenterTest {
     private val analytics = mock<Analytics>()
     private val generateInfoTooltipManager = mock<GenerateInfoTooltipManager>()
     private val interstitialAdPresenter = mock<InterstitialAdPresenter>()
+    private val inAppReviewManager = mock<InAppReviewManager>()
     private val trip = mock<Trip>()
 
     @Before
@@ -37,7 +39,7 @@ class GenerateReportPresenterTest {
         whenever(view.generateReportClicks).thenReturn(Observable.never())
         whenever(interactor.isLandscapeReportEnabled()).thenReturn(false)
 
-        presenter = GenerateReportPresenter(view, interactor, analytics, generateInfoTooltipManager, interstitialAdPresenter)
+        presenter = GenerateReportPresenter(view, interactor, analytics, generateInfoTooltipManager, interstitialAdPresenter, inAppReviewManager)
     }
 
     @Test(expected = IllegalStateException::class)
@@ -81,8 +83,20 @@ class GenerateReportPresenterTest {
 
     @Test
     fun showAdsTest() {
-        presenter.showInterstitialAd(activity)
+        whenever(inAppReviewManager.isReviewAvailable).thenReturn(false)
+
+        presenter.onReportShared(activity)
 
         verify(interstitialAdPresenter).showAd(activity)
+    }
+
+    @Test
+    fun showInAppReviewTest() {
+        whenever(inAppReviewManager.isReviewAvailable).thenReturn(true)
+
+        presenter.onReportShared(activity)
+
+        verify(inAppReviewManager).showReview(activity)
+        verifyZeroInteractions(interstitialAdPresenter)
     }
 }

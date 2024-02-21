@@ -197,6 +197,8 @@ android {
 
         implementation "org.joda:joda-money:$JODA_MONEY_VERSION"
 
+        implementation "com.google.android.play:review-ktx:$PLAY_IN_APP_REVIEW_VERSION"
+
         // Dagger
         kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
         kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"

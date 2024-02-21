@@ -50,7 +50,6 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     @Inject
     lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
 
-
     private var pdfFullCheckbox: CheckBox? = null
     private var pdfImagesCheckbox: CheckBox? = null
     private var csvCheckbox: CheckBox? = null
@@ -253,7 +252,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            SHARE_REPORT_REQUEST_CODE -> presenter.showInterstitialAd(requireActivity())
+            SHARE_REPORT_REQUEST_CODE -> presenter.onReportShared(requireActivity())
         }
     }
 
