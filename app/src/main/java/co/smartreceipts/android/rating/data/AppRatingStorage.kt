@@ -1,16 +1,16 @@
-package co.smartreceipts.android.rating.data;
+package co.smartreceipts.android.rating.data
 
-import io.reactivex.Single;
+import io.reactivex.Single
 
-public interface AppRatingStorage {
+interface AppRatingStorage {
 
-    Single<AppRatingModel> readAppRatingData();
+    fun readAppRatingData(): Single<AppRatingModel?>
 
-    void incrementLaunchCount();
+    fun incrementLaunchCount()
 
-    void setDontShowRatingPromptMore();
+    fun setDontShowRatingPromptMore()
 
-    void prorogueRatingPrompt(int prorogueLaunches);
+    fun prorogueRatingPrompt(prorogueLaunches: Int)
 
-    void crashOccurred();
+    fun crashOccurred()
 }
