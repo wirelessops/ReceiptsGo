@@ -35,6 +35,7 @@ import co.smartreceipts.android.settings.catalog.UserPreference;
 import co.smartreceipts.android.subscriptions.SubscriptionsPurchaseTracker;
 import co.smartreceipts.android.sync.cleanup.MarkedForDeletionCleaner;
 import co.smartreceipts.android.rating.InAppReviewManager;
+import co.smartreceipts.android.utils.StrictModeConfiguration;
 import co.smartreceipts.android.utils.WBUncaughtExceptionHandler;
 import co.smartreceipts.android.utils.cache.SmartReceiptsTemporaryFileCache;
 import co.smartreceipts.android.utils.rx.DefaultRxErrorHandler;
