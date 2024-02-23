@@ -4,7 +4,7 @@ import io.reactivex.Single
 
 interface AppRatingStorage {
 
-    fun readAppRatingData(): Single<AppRatingModel?>
+    fun readAppRatingData(): Single<AppRatingModel>
 
     fun incrementLaunchCount()
 
@@ -13,4 +13,6 @@ interface AppRatingStorage {
     fun prorogueRatingPrompt(prorogueLaunches: Int)
 
     fun crashOccurred()
+
+    fun setInAppReviewShown()
 }

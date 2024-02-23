@@ -1,5 +1,6 @@
 package co.smartreceipts.android.workers.widget
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -60,6 +61,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     private val binding get() = _binding!!
 
     private val fabClicks = PublishSubject.create<Unit>()
+    private val reportShares = PublishSubject.create<Unit>()
 
     override val generateReportClicks: Observable<EnumSet<EmailOptions>>
         get() = fabClicks.map {
@@ -73,6 +75,12 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
 
             return@map options
         }
+
+    override val reportSharedEvents: Observable<Unit>
+        get() = reportShares
+
+    override val getActivity: Activity
+        get() = requireActivity()
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -252,7 +260,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            SHARE_REPORT_REQUEST_CODE -> presenter.onReportShared(requireActivity())
+            SHARE_REPORT_REQUEST_CODE -> reportShares.onNext(Unit)
         }
     }
 

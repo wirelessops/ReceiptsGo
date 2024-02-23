@@ -5,5 +5,6 @@ class AppRatingModel(
     val isCrashOccurred: Boolean,
     val launchCount: Int,
     val additionalLaunchThreshold: Int,
-    val installTime: Long
+    val installTime: Long,
+    val inAppReviewShown : Boolean,
 )

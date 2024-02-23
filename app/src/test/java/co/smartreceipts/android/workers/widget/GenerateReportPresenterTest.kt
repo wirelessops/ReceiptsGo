@@ -5,7 +5,7 @@ import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.ad.InterstitialAdPresenter
 import co.smartreceipts.android.model.Trip
-import co.smartreceipts.android.utils.InAppReviewManager
+import co.smartreceipts.android.rating.InAppReviewManager
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import co.smartreceipts.android.workers.EmailAssistant
 import com.nhaarman.mockitokotlin2.mock
@@ -39,7 +39,14 @@ class GenerateReportPresenterTest {
         whenever(view.generateReportClicks).thenReturn(Observable.never())
         whenever(interactor.isLandscapeReportEnabled()).thenReturn(false)
 
-        presenter = GenerateReportPresenter(view, interactor, analytics, generateInfoTooltipManager, interstitialAdPresenter, inAppReviewManager)
+        presenter = GenerateReportPresenter(
+            view,
+            interactor,
+            analytics,
+            generateInfoTooltipManager,
+            interstitialAdPresenter,
+            inAppReviewManager
+        )
     }
 
     @Test(expected = IllegalStateException::class)
@@ -64,6 +71,7 @@ class GenerateReportPresenterTest {
 
         whenever(view.generateReportClicks).thenReturn(Observable.just(options))
         whenever(interactor.generateReport(trip, options)).thenReturn(Single.just(success))
+        whenever(view.reportSharedEvents).thenReturn(Observable.just(Unit))
 
         presenter.subscribe(trip)
 
@@ -83,18 +91,22 @@ class GenerateReportPresenterTest {
 
     @Test
     fun showAdsTest() {
-        whenever(inAppReviewManager.isReviewAvailable).thenReturn(false)
+        whenever(view.reportSharedEvents).thenReturn(Observable.just(Unit))
+        whenever(inAppReviewManager.canShowReview()).thenReturn(Single.just(false))
+        whenever(view.getActivity).thenReturn(activity)
 
-        presenter.onReportShared(activity)
+        presenter.subscribe(trip)
 
         verify(interstitialAdPresenter).showAd(activity)
     }
 
     @Test
     fun showInAppReviewTest() {
-        whenever(inAppReviewManager.isReviewAvailable).thenReturn(true)
+        whenever(view.reportSharedEvents).thenReturn(Observable.just(Unit))
+        whenever(inAppReviewManager.canShowReview()).thenReturn(Single.just(true))
+        whenever(view.getActivity).thenReturn(activity)
 
-        presenter.onReportShared(activity)
+        presenter.subscribe(trip)
 
         verify(inAppReviewManager).showReview(activity)
         verifyZeroInteractions(interstitialAdPresenter)

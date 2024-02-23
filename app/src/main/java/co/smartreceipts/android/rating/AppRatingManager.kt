@@ -18,7 +18,7 @@ class AppRatingManager @Inject internal constructor(private val appRatingStorage
     fun checkIfNeedToAskRating(): Single<Boolean> {
         return appRatingStorage.readAppRatingData()
             .map { appRatingModel: AppRatingModel ->
-                if (appRatingModel.canShow && !appRatingModel.isCrashOccurred) {
+                if (appRatingModel.canShow && !appRatingModel.isCrashOccurred && !appRatingModel.inAppReviewShown) {
                     // Check if we've reached a rating event
                     val daysToMillis = TimeUnit.DAYS.toMillis(1)
                     if (appRatingModel.launchCount >= LAUNCHES_UNTIL_PROMPT + appRatingModel.additionalLaunchThreshold &&

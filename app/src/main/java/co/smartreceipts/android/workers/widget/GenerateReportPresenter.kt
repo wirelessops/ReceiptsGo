@@ -1,16 +1,15 @@
 package co.smartreceipts.android.workers.widget
 
-import android.app.Activity
 import co.smartreceipts.analytics.Analytics
 import co.smartreceipts.analytics.events.Events
 import co.smartreceipts.android.ad.InterstitialAdPresenter
 import co.smartreceipts.android.model.Trip
-import co.smartreceipts.android.utils.InAppReviewManager
+import co.smartreceipts.android.rating.InAppReviewManager
 import co.smartreceipts.android.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import co.smartreceipts.android.widget.viper.BaseViperPresenter
 import co.smartreceipts.android.workers.EmailAssistant.EmailOptions
 import co.smartreceipts.core.di.scopes.FragmentScope
-import java.util.*
+import java.util.EnumSet
 import javax.inject.Inject
 
 @FragmentScope
@@ -49,17 +48,22 @@ class GenerateReportPresenter @Inject constructor(
                     { view.present(it) },
                     { view.present(EmailResult.Error(GenerationErrors.ERROR_UNDETERMINED)) })
         )
+
+        compositeDisposable.add(
+            view.reportSharedEvents
+                .flatMap { inAppReviewManager.canShowReview().toObservable() }
+                .doOnNext { canShowReview->
+                    if (canShowReview) {
+                        inAppReviewManager.showReview(view.getActivity)
+                    } else {
+                        interstitialAdPresenter.showAd(view.getActivity)
+                    }
+                }
+                .subscribe()
+        )
     }
 
     fun isLandscapeReportEnabled(): Boolean = interactor.isLandscapeReportEnabled()
-
-    fun onReportShared(activity: Activity) {
-        if (inAppReviewManager.isReviewAvailable) {
-            inAppReviewManager.showReview(activity)
-        } else {
-            interstitialAdPresenter.showAd(activity)
-        }
-    }
 
     private fun recordOptionsAnalyticsEvents(options: EnumSet<EmailOptions>) {
 
