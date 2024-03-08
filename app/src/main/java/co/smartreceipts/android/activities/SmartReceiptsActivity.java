@@ -403,6 +403,9 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                     } else if (creationOption.equals(MainMenuOption.MY_ACCOUNT.name())) {
                         navigationHandler.navigateToAccountScreen();
                         analytics.record(Events.Navigation.MyAccountOverflow);
+                    } else if (creationOption.equals(MainMenuOption.PRO_SUBSCRIPTION.name())) {
+                        purchaseManager.initiatePurchase(InAppPurchase.SmartReceiptsPlus, PurchaseSource.OverflowMenu);
+                        analytics.record(Events.Navigation.SmartReceiptsPlusOverflow);
                     }
                 });
     }
