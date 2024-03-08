@@ -57,6 +57,7 @@ import co.smartreceipts.android.purchases.wallet.PurchaseWallet;
 import co.smartreceipts.android.settings.ThemeProvider;
 import co.smartreceipts.android.settings.UserPreferenceManager;
 import co.smartreceipts.android.settings.catalog.UserPreference;
+import co.smartreceipts.android.utils.ConfigurableResourceFeature;
 import co.smartreceipts.android.utils.IntentUtils;
 import co.smartreceipts.android.workers.EmailAssistant;
 import co.smartreceipts.core.identity.IdentityManager;
@@ -508,7 +509,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
                 key.equals(getString(R.string.pref_pro_separate_by_category_key)) ||
                 key.equals(getString(R.string.pref_pro_categorical_summation_key)) ||
                 key.equals(getString(R.string.pref_pro_omit_default_table_key))) {
-            openSubscriptions();
+
+            if (configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
+                openSubscriptions();
+            } else {
+                tryToMakePurchaseIfNeed();
+            }
             return true;
         } else if (key.equals(getString(R.string.pref_about_privacy_policy_key))) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/privacy")));
@@ -591,6 +597,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
         if (!haveProSubscription) {
             setResult(RESULT_OPEN_SUBSCRIPTIONS);
             finish();
+        }
+    }
+
+    private void tryToMakePurchaseIfNeed() {
+        // Let's check if we should prompt the user to upgrade for this preference
+        final boolean haveProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan);
+
+        // If we don't already have the pro subscription and it's available, let's buy it
+        if (!haveProSubscription) {
+            InAppPurchase proPurchase = configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) ?
+                    InAppPurchase.PremiumSubscriptionPlan : InAppPurchase.SmartReceiptsPlus;
+
+            if (availablePurchases != null && availablePurchases.contains(proPurchase)) {
+                purchaseManager.initiatePurchase(proPurchase, PurchaseSource.PdfFooterSetting);
+            } else {
+                Toast.makeText(SettingsActivity.this, R.string.purchase_unavailable, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
