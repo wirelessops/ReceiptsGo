@@ -266,5 +266,8 @@ public class OcrConfigurationFragment extends Fragment implements OcrConfigurati
     @Override
     public void toggleSubscriptions(boolean isSubscriptionsEnabled) {
         binding.subscriptionsButton.setVisibility(isSubscriptionsEnabled ? View.VISIBLE : View.GONE);
+
+        binding.purchasesListTitle.setVisibility(isSubscriptionsEnabled ? View.GONE : View.VISIBLE);
+        binding.purchasesList.setVisibility(isSubscriptionsEnabled ? View.GONE : View.VISIBLE);
     }
 }

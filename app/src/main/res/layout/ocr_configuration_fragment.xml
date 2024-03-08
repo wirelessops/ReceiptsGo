@@ -90,6 +90,7 @@
                 android:layout_margin="@dimen/margin_normal" />
 
             <TextView
+                android:id="@+id/purchases_list_title"
                 style="@style/Widget.SmartReceipts.TextView.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
