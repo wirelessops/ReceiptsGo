@@ -12,8 +12,13 @@ import co.smartreceipts.android.activities.LoginSourceDestination
 import co.smartreceipts.android.activities.NavigationHandler
 import co.smartreceipts.android.activities.SmartReceiptsActivity
 import co.smartreceipts.android.ad.upsell.UpsellAdView
+import co.smartreceipts.android.config.ConfigurationManager
+import co.smartreceipts.android.purchases.PurchaseManager
+import co.smartreceipts.android.purchases.model.InAppPurchase
+import co.smartreceipts.android.purchases.source.PurchaseSource
 import co.smartreceipts.android.settings.UserPreferenceManager
 import co.smartreceipts.android.settings.catalog.UserPreference
+import co.smartreceipts.android.utils.ConfigurableResourceFeature
 import co.smartreceipts.android.utils.UiThread
 import co.smartreceipts.core.di.scopes.ActivityScope
 import co.smartreceipts.core.identity.IdentityManager
@@ -27,6 +32,8 @@ class BannerAdPresenter @Inject constructor(
     private val analytics: Analytics,
     private val identityManager: IdentityManager,
     private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
+    private val configurationManager: ConfigurationManager,
+    private val purchaseManager: PurchaseManager,
 ) : AdPresenter {
 
     private var adView: BannerAdView? = null
@@ -83,15 +90,23 @@ class BannerAdPresenter @Inject constructor(
                 Logger.error(this, "Swallowing ad load exception... ", e)
             }
 
-            upsellAdView?.setOnClickListener(View.OnClickListener {
+            upsellAdView?.setOnClickListener {
                 analytics.record(Events.Purchases.AdUpsellTapped)
 
-                if (identityManager.isLoggedIn) {
-                    navigationHandler.navigateToSubscriptionsActivity()
+                if (configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel)) {
+                    if (identityManager.isLoggedIn) {
+                        navigationHandler.navigateToSubscriptionsActivity()
+                    } else {
+                        navigationHandler.navigateToLoginScreen(LoginSourceDestination.SUBSCRIPTIONS)
+                    }
                 } else {
-                    navigationHandler.navigateToLoginScreen(LoginSourceDestination.SUBSCRIPTIONS)
+                    val proPurchase = when {
+                        configurationManager.isEnabled(ConfigurableResourceFeature.SubscriptionModel) -> InAppPurchase.PremiumSubscriptionPlan
+                        else -> InAppPurchase.SmartReceiptsPlus
+                    }
+                    this.purchaseManager.initiatePurchase(proPurchase, PurchaseSource.AdBanner)
                 }
-            })
+            }
         }
     }
 
