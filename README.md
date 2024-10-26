@@ -8,8 +8,6 @@ Turn your phone into a receipt scanner and expense report generator with Receipt
 
 ## Table of Contents
 
-- [Receipts Go]
-  - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Install](#install)
   - [Contribute](#contribute)
