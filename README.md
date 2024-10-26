@@ -1,52 +1,24 @@
-# Smart Receipts
+# Receipts Go
 
-> Save time tracking expenses and get back to what matters
+> Save receipts, track expenses, and generate reports quickly and easily - all on your Android device. Receipts Go is an Open Source project.
 
-![SmartReceipts](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+![ReceiptsGo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
-[![Build Status](https://travis-ci.com/wbaumann/SmartReceiptsLibrary.svg?branch=master)](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
-
-<a href='https://play.google.com/store/apps/details?id=wb.receipts&utm_source=com.github.wbaumann.SmartReceiptsLibrary&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="162" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
-
-Turn your phone into a receipt scanner and expense report generator with [Smart Receipts](https://www.smartreceipts.co/)! With Smart Receipts, you can track your receipts and easily generate beautiful PDF and CSV reports.
-
-Download Smart Receipts on Google Play:
-
-- [Smart Receipts](https://play.google.com/store/apps/details?id=wb.receipts&referrer=utm_source%3Dcom.github.wbaumann.SmartReceiptsLibrary). The free version of the app, but it also supports an in-app purchase subscription.
-- [Smart Receipts Plus](https://play.google.com/store/apps/details?id=wb.receiptspro&referrer=utm_source%3Dcom.github.wbaumann.SmartReceiptsLibrary). A 'paid' app from back before Google supported in-app purchases.
-
-The free and plus versions versions are identical, except the plus version offers the following enhancements:
-
-- The paid version has no ads
-- The paid version supports automatic backups to Google Drive
-- The paid version automatically processes exchange rate conversions
-- The paid version allows you to automatically break down prices by category/payment method in your reports
-- The paid version allows you to edit/customize the pdf report footer (by default, it is "Report Generated with Smart Receipts")
+Turn your phone into a receipt scanner and expense report generator with Receipts Go! Track your receipts and easily generate beautiful PDF and CSV reports for yourself or your clients.
 
 ## Table of Contents
 
-- [Smart Receipts](#smart-receipts)
+- [Receipts Go]
   - [Table of Contents](#table-of-contents)
-  - [Guide](#guide)
   - [Features](#features)
   - [Install](#install)
-  - [Donate](#donate)
   - [Contribute](#contribute)
-  - [Continuous Integration](#continuous-integration)
   - [License](#license)
   - [Attribution](#attribution)
 
-## Guide
-
-Curious about how Smart Receipts works? Check out our usage guide:
-
-- [https://www.smartreceipts.co/guide](https://www.smartreceipts.co/guide)
-
-Or watch out [YouTube video series](https://www.youtube.com/watch?v=bd9RcOq0nAE&list=PLXMTwjaz9mUJMQN2Y3IXNc_vxjWCKIc66).
-
 ## Features
 
-- [X] Create expense report "folders" to categorize your receipts
+- [X] Create expense report "folders" to categorise your receipts
 - [X] Take receipt photos with your camera's phone
 - [X] Import existing pictures on your device
 - [X] Import PDF receipts 
@@ -54,14 +26,11 @@ Or watch out [YouTube video series](https://www.youtube.com/watch?v=bd9RcOq0nAE&
 - [X] Tag receipt names, categories, payment method, comments, and other metadata
 - [X] Create/edit/delete all receipt categories
 - [X] Track distance traveled for mileage reimbursement
-- [X] Automatic exchange rate processing
 - [X] Smart prediction based on past receipts
 - [X] Generate PDF, CSV, & ZIP reports
 - [X] Fully customizable report output
-- [X] Automatic backup support via Google Drive
-- [X] OCR support for receipt scans
 - [X] Graphical breakdowns of spending per category
-- [ ] Cross-organization setting standardization
+
 
 ## Install 
 
@@ -85,24 +54,10 @@ When running a build locally, we run the following operations via our gradle scr
 
 The last command in this script uses a "SmartReceipts/support@smartreceipts.co" GPG key to extract the encrypted secrets from this file. Feel free to replace this key with your own local variant for testing/build purposes.
 
-## Donate
-
-If you like our project, please consider donating:
-
-- **BTC:** [3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK](https://www.blockchain.com/btc/address/3MGikseSB69cGjUkJs4Cqg93s5s8tv38tK)
-- **ETH:** [0xd5F9Da6a4F9c93B12588D89c7F702a0f7d92303D](https://etherscan.io/address/0xd5F9Da6a4F9c93B12588D89c7F702a0f7d92303D)
 
 ## Contribute
 
-Contributions are always welcome! Please [open an issue](https://github.com/wbaumann/SmartReceiptsLibrary/issues/new) to report a bug or file a feature request to get started.
-
-## Continuous Integration
-
-We currently use Travis-CI for our continuous integration in order perform tests against new commits, allowing us to avoid potential regressions. You can monitor the current build status here:
-
-- [https://travis-ci.com/wbaumann/SmartReceiptsLibrary](https://travis-ci.com/wbaumann/SmartReceiptsLibrary)
-
-All repository secrets have been replaced with placeholder files, so Travis should be able to build properly for all requests.
+Contributions are always welcome! Please [open an issue](https://github.com/wirelessops/ReceiptsGo/issues/new) to report a bug or file a feature request to get started.
 
 ## Legacy Branch Access
 
