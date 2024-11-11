@@ -2,7 +2,7 @@
 
 > Save receipts, track expenses, and generate reports quickly and easily - all on your Android device. Receipts Go is an Open Source project.
 
-![ReceiptsGo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+![ReceiptsGo](https://github.com/wirelessops/ReceiptsGo/blob/1f3d2aac10d5e595d393e7ccaf0ab7f342deab5d/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
 
 Turn your phone into a receipt scanner and expense report generator with Receipts Go! Track your receipts and easily generate beautiful PDF and CSV reports for yourself or your clients.
 
@@ -32,7 +32,7 @@ Turn your phone into a receipt scanner and expense report generator with Receipt
 
 ## Install 
 
-Smart Receipts is broken into a few core modules:
+Receipts Go is broken into a few core modules:
 
 - **app**. All common application code for both the `free` and `plusFlavor` flavors of the application are defined here. In practice, all development work should occur in this module
 - **wBMiniLibrary**. A few legacy items that haven't been moved into the Library module, but it's otherwise unused.
@@ -50,7 +50,7 @@ When running a build locally, we run the following operations via our gradle scr
 - `git update-index --assume-unchanged app/src/main/res/values/secrets.xml`
 - `gpg -d secrets.tar.gpg | tar xv`
 
-The last command in this script uses a "SmartReceipts/support@smartreceipts.co" GPG key to extract the encrypted secrets from this file. Feel free to replace this key with your own local variant for testing/build purposes.
+The last command in this script uses a GPG key to extract the encrypted secrets from this file. Feel free to replace this key with your own local variant for testing/build purposes.
 
 
 ## Contribute
