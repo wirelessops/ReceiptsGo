@@ -3,7 +3,7 @@ package com.wops.receiptsgo.di;
 import android.app.Application;
 import android.content.Context;
 
-import com.wops.receiptsgo.SmartReceiptsApplication;
+import com.wops.receiptsgo.ReceiptsGoApplication;
 import com.wops.receiptsgo.autocomplete.di.AutoCompleteModule;
 import com.wops.core.di.scopes.ApplicationScope;
 import dagger.Module;
@@ -21,9 +21,9 @@ import dagger.Provides;
         ConfigurationModule.class})
 public class BaseAppModule {
 
-    private final SmartReceiptsApplication application;
+    private final ReceiptsGoApplication application;
 
-    public BaseAppModule(SmartReceiptsApplication application) {
+    public BaseAppModule(ReceiptsGoApplication application) {
         this.application = application;
     }
 

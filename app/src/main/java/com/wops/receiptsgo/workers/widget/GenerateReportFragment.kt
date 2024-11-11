@@ -23,7 +23,7 @@ import com.wops.analytics.events.Events
 import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.databinding.GenerateReportLayoutBinding
 import com.wops.receiptsgo.fragments.FabClickListener
 import com.wops.receiptsgo.fragments.ReportInfoFragment
@@ -49,7 +49,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     lateinit var analytics: Analytics
 
     @Inject
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     private var pdfFullCheckbox: CheckBox? = null
     private var pdfImagesCheckbox: CheckBox? = null

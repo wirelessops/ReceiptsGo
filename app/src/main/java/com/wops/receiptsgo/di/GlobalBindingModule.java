@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.di;
 
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.fragments.ReceiptMoveCopyDialogFragment;
 import com.wops.receiptsgo.fragments.SelectAutomaticBackupProviderDialogFragment;
 import com.wops.receiptsgo.images.CropImageActivity;
@@ -42,7 +42,7 @@ public abstract class GlobalBindingModule {
             IntentImportInformationModule.class,
             SmartReceiptsActivityAdModule.class
     })
-    public abstract SmartReceiptsActivity smartReceiptsActivity();
+    public abstract ReceiptsGoActivity smartReceiptsActivity();
 
     @ActivityScope
     @ContributesAndroidInjector

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
 
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.permissions.exceptions.PermissionsNotGrantedException;
 import com.wops.core.di.scopes.ActivityScope;
 import io.reactivex.Completable;
@@ -15,7 +15,7 @@ public class PermissionsDelegate {
     @Inject
     PermissionStatusChecker permissionStatusChecker;
     @Inject
-    ActivityPermissionsRequester<SmartReceiptsActivity> permissionRequester;
+    ActivityPermissionsRequester<ReceiptsGoActivity> permissionRequester;
 
     @Inject
     public PermissionsDelegate() {

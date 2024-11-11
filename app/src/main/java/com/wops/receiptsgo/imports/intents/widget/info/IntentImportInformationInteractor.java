@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.imports.intents.IntentImportProcessor;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
 import com.wops.receiptsgo.permissions.ActivityPermissionsRequester;
@@ -39,14 +39,14 @@ public class IntentImportInformationInteractor {
     @Inject
     public IntentImportInformationInteractor(@NonNull IntentImportProcessor intentImportProcessor,
                                              @NonNull PermissionStatusChecker permissionStatusChecker,
-                                             @NonNull ActivityPermissionsRequester<SmartReceiptsActivity> permissionRequester) {
+                                             @NonNull ActivityPermissionsRequester<ReceiptsGoActivity> permissionRequester) {
         this(intentImportProcessor, permissionStatusChecker, permissionRequester, AndroidSchedulers.mainThread());
     }
 
     @VisibleForTesting
     IntentImportInformationInteractor(@NonNull IntentImportProcessor intentImportProcessor,
                                       @NonNull PermissionStatusChecker permissionStatusChecker,
-                                      @NonNull ActivityPermissionsRequester<SmartReceiptsActivity> permissionRequester,
+                                      @NonNull ActivityPermissionsRequester<ReceiptsGoActivity> permissionRequester,
                                       @NonNull Scheduler subscribeOnScheduler) {
         this.intentImportProcessor = Preconditions.checkNotNull(intentImportProcessor);
         this.permissionStatusChecker = Preconditions.checkNotNull(permissionStatusChecker);

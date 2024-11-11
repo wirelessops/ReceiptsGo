@@ -27,7 +27,7 @@
                us issues anyway. As a result, I'm disabling this entirely
     -->
     <application
-        android:name=".SmartReceiptsApplication"
+        android:name=".ReceiptsGoApplication"
         android:allowBackup="false"
         android:appCategory="productivity"
         android:hardwareAccelerated="true"
@@ -48,7 +48,7 @@
             android:required="false" />
 
         <activity
-            android:name=".activities.SmartReceiptsActivity"
+            android:name=".activities.ReceiptsGoActivity"
             android:label="@string/sr_app_name"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize"

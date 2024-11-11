@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.wops.receiptsgo.SmartReceiptsApplication
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.ReceiptsGoApplication
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.date.DateFormatter
 import com.wops.receiptsgo.model.*
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions
@@ -107,7 +107,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(SmartReceiptsActivity::class.java)
+    val activityTestRule = ActivityTestRule(ReceiptsGoActivity::class.java)
 
     private lateinit var databaseHelper: DatabaseHelper
 
@@ -118,7 +118,7 @@ abstract class UpgradeFromKnownDatabaseValidator {
     @Before
     @CallSuper
     fun setUp() {
-        val application = activityTestRule.activity.application as SmartReceiptsApplication
+        val application = activityTestRule.activity.application as ReceiptsGoApplication
         databaseHelper = application.databaseHelper
         dateFormatter = application.dateFormatter
 

@@ -10,8 +10,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.wops.receiptsgo.R
-import com.wops.receiptsgo.SmartReceiptsApplication
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.ReceiptsGoApplication
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.persistence.DatabaseHelper
 import com.wops.receiptsgo.test.utils.CustomActions.Companion.waitForView
 import com.wops.receiptsgo.test.utils.CustomActions.Companion.withIndex
@@ -30,10 +30,10 @@ class BaseEspressoTests {
 
     @Rule
     @JvmField
-    val activityScenarioRule = ActivityScenarioRule(SmartReceiptsActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(ReceiptsGoActivity::class.java)
 
-    private lateinit var activity: SmartReceiptsActivity
-    private lateinit var application: SmartReceiptsApplication
+    private lateinit var activity: ReceiptsGoActivity
+    private lateinit var application: ReceiptsGoApplication
     private lateinit var databaseHelper: DatabaseHelper
 
     @Before
@@ -41,7 +41,7 @@ class BaseEspressoTests {
         Intents.init()
         activityScenarioRule.scenario.onActivity { activity ->
             this.activity = activity
-            application = activity.application as SmartReceiptsApplication
+            application = activity.application as ReceiptsGoApplication
             databaseHelper = application.databaseHelper
         }
     }

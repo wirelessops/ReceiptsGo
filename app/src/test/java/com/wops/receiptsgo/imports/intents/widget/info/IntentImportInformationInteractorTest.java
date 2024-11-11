@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.imports.intents.IntentImportProcessor;
 import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
@@ -41,7 +41,7 @@ public class IntentImportInformationInteractorTest {
     PermissionStatusChecker permissionStatusChecker;
 
     @Mock
-    ActivityPermissionsRequester<SmartReceiptsActivity> permissionRequester;
+    ActivityPermissionsRequester<ReceiptsGoActivity> permissionRequester;
 
     Intent intent = new Intent(Intent.ACTION_SEND);
 

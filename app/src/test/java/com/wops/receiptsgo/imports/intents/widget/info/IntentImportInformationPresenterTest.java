@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import com.wops.receiptsgo.activities.NavigationHandler;
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
 import com.wops.receiptsgo.imports.intents.widget.IntentImportProvider;
@@ -46,7 +46,7 @@ public class IntentImportInformationPresenterTest {
     IntentImportProvider intentImportProvider;
 
     @Mock
-    NavigationHandler<SmartReceiptsActivity> navigationHandler;
+    NavigationHandler<ReceiptsGoActivity> navigationHandler;
 
     @Mock
     Intent intent;

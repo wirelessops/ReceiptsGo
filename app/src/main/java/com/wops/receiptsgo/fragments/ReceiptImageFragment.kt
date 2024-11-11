@@ -13,7 +13,7 @@ import com.wops.analytics.events.Events
 import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.databinding.ReceiptImageFragmentBinding
 import com.wops.receiptsgo.images.CropImageActivity
 import com.wops.receiptsgo.imports.CameraInteractionController
@@ -59,7 +59,7 @@ class ReceiptImageFragment : WBFragment() {
     lateinit var receiptTableController: ReceiptTableController
 
     @Inject
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     @Inject
     lateinit var activityFileResultLocator: ActivityFileResultLocator

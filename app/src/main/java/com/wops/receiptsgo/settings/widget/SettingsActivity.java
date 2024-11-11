@@ -41,7 +41,7 @@ import com.wops.analytics.log.LogConstants;
 import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.activities.AppCompatPreferenceActivity;
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.config.ConfigurationManager;
 import com.wops.receiptsgo.currency.widget.CurrencyListEditorPresenter;
 import com.wops.receiptsgo.currency.widget.CurrencyListEditorView;
@@ -250,7 +250,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements
             return super.onOptionsItemSelected(item);
         }
         if (item.getItemId() == android.R.id.home) {
-            final Intent upIntent = new Intent(this, SmartReceiptsActivity.class);
+            final Intent upIntent = new Intent(this, ReceiptsGoActivity.class);
             if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                 TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
             } else {

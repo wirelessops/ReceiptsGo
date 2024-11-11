@@ -3,7 +3,7 @@ package com.wops.receiptsgo.di;
 import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.activities.FragmentProvider;
 import com.wops.receiptsgo.activities.NavigationHandler;
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.widget.tooltip.report.ReportTooltipInteractor;
 import com.wops.receiptsgo.widget.tooltip.report.backup.BackupReminderTooltipManager;
@@ -18,13 +18,13 @@ public class SmartReceiptsActivityModule {
 
     @ActivityScope
     @Provides
-    NavigationHandler provideNavigationHandler(SmartReceiptsActivity activity, FragmentProvider fragmentProvider) {
+    NavigationHandler provideNavigationHandler(ReceiptsGoActivity activity, FragmentProvider fragmentProvider) {
         return new NavigationHandler<>(activity, fragmentProvider);
     }
 
     @ActivityScope
     @Provides
-    ReportTooltipInteractor provideReportTooltipInteractor(SmartReceiptsActivity activity,
+    ReportTooltipInteractor provideReportTooltipInteractor(ReceiptsGoActivity activity,
                                                            NavigationHandler navigationHandler,
                                                            BackupProvidersManager backupProvidersManager,
                                                            Analytics analytics,

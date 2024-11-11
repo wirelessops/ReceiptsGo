@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.tooltip.backup
 
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.core.di.scopes.FragmentScope
 import javax.inject.Inject
 
@@ -11,7 +11,7 @@ import javax.inject.Inject
  * intention of allowing the user to access their previous backups
  */
 @FragmentScope
-class AutomaticBackupRecoveryHintRouter @Inject constructor(val navigationHandler: NavigationHandler<SmartReceiptsActivity>) {
+class AutomaticBackupRecoveryHintRouter @Inject constructor(val navigationHandler: NavigationHandler<ReceiptsGoActivity>) {
 
     /**
      * Routes to the automatic backups page with the intention of allowing the user to potentially

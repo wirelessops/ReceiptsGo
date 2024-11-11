@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.activities.NavigationHandler;
-import com.wops.receiptsgo.activities.SmartReceiptsActivity;
+import com.wops.receiptsgo.activities.ReceiptsGoActivity;
 import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
 import com.wops.receiptsgo.imports.intents.widget.IntentImportProvider;
@@ -33,20 +33,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class IntentImportInformationPresenter extends BaseViperPresenter<IntentImportInformationView, IntentImportInformationInteractor> {
 
     private final IntentImportProvider intentImportProvider;
-    private final NavigationHandler<SmartReceiptsActivity> navigationHandler;
+    private final NavigationHandler<ReceiptsGoActivity> navigationHandler;
     private final Scheduler observeOnScheduler;
 
     @Inject
     public IntentImportInformationPresenter(@NonNull IntentImportInformationView view, @NonNull IntentImportInformationInteractor interactor,
                                             @NonNull IntentImportProvider intentImportProvider,
-                                            @NonNull NavigationHandler<SmartReceiptsActivity> navigationHandler) {
+                                            @NonNull NavigationHandler<ReceiptsGoActivity> navigationHandler) {
         this(view, interactor, intentImportProvider, navigationHandler, AndroidSchedulers.mainThread());
     }
 
     @VisibleForTesting
     IntentImportInformationPresenter(@NonNull IntentImportInformationView view, @NonNull IntentImportInformationInteractor interactor,
                                      @NonNull IntentImportProvider intentImportProvider,
-                                     @NonNull NavigationHandler<SmartReceiptsActivity> navigationHandler,
+                                     @NonNull NavigationHandler<ReceiptsGoActivity> navigationHandler,
                                      @NonNull Scheduler observeOnScheduler) {
         super(view, interactor);
         this.intentImportProvider = Preconditions.checkNotNull(intentImportProvider);

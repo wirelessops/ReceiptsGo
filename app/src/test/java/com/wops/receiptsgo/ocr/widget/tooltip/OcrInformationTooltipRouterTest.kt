@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.ocr.widget.tooltip
 
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Test
@@ -17,7 +17,7 @@ class OcrInformationTooltipRouterTest {
     lateinit var router: OcrInformationTooltipRouter
 
     @Mock
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     @Before
     fun setUp() {

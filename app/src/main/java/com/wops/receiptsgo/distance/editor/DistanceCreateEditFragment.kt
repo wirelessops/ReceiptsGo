@@ -11,7 +11,7 @@ import com.wops.analytics.Analytics
 import com.wops.analytics.events.Events
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.adapters.FooterButtonArrayAdapter
 import com.wops.receiptsgo.autocomplete.AutoCompleteArrayAdapter
 import com.wops.receiptsgo.autocomplete.AutoCompleteField
@@ -61,7 +61,7 @@ class DistanceCreateEditFragment : WBFragment(), DistanceCreateEditView, View.On
     lateinit var dateFormatter: DateFormatter
 
     @Inject
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     @Inject
     lateinit var paymentMethodsPresenter: PaymentMethodsPresenter

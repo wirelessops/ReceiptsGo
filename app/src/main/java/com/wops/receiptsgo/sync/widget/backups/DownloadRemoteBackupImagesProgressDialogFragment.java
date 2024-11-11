@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import com.wops.analytics.Analytics;
 import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.R;
-import com.wops.receiptsgo.SmartReceiptsApplication;
+import com.wops.receiptsgo.ReceiptsGoApplication;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.core.sync.model.RemoteBackupMetadata;
@@ -97,7 +97,7 @@ public class DownloadRemoteBackupImagesProgressDialogFragment extends DialogFrag
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final SmartReceiptsApplication smartReceiptsApplication = ((SmartReceiptsApplication)getActivity().getApplication());
+        final ReceiptsGoApplication receiptsGoApplication = ((ReceiptsGoApplication)getActivity().getApplication());
         remoteBackupsDataCache = new RemoteBackupsDataCache(getFragmentManager(), getContext(),
                 backupProvidersManager, networkManager,
                 database);

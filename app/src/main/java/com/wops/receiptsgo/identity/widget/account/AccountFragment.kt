@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.databinding.AccountInfoFragmentBinding
 import com.wops.receiptsgo.date.DateFormatter
 import com.wops.receiptsgo.identity.apis.organizations.OrganizationModel
@@ -37,7 +37,7 @@ class AccountFragment : Fragment(), AccountView {
     lateinit var dateFormatter: DateFormatter
 
     @Inject
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     private var wasPreviouslySentToLogin: Boolean = false
 

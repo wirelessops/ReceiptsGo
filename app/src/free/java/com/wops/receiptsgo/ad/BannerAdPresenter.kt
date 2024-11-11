@@ -10,7 +10,7 @@ import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.LoginSourceDestination
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.ad.upsell.UpsellAdView
 import com.wops.receiptsgo.config.ConfigurationManager
 import com.wops.receiptsgo.purchases.PurchaseManager
@@ -31,7 +31,7 @@ class BannerAdPresenter @Inject constructor(
     private val bannerAdViewFactory: BannerAdViewFactory,
     private val analytics: Analytics,
     private val identityManager: IdentityManager,
-    private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
+    private val navigationHandler: NavigationHandler<ReceiptsGoActivity>,
     private val configurationManager: ConfigurationManager,
     private val purchaseManager: PurchaseManager,
 ) : AdPresenter {

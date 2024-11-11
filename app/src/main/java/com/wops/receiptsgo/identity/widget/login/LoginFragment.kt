@@ -13,7 +13,7 @@ import com.wops.analytics.log.Logger.debug
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.LoginSourceDestination
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.databinding.LoginFragmentBinding
 import com.wops.receiptsgo.fragments.WBFragment
 import com.wops.receiptsgo.identity.widget.login.model.UiInputValidationIndicator
@@ -36,7 +36,7 @@ class LoginFragment : WBFragment(), LoginView {
     lateinit var router: LoginRouter
 
     @Inject
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     private var _binding: LoginFragmentBinding? = null
     private val binding get() = _binding!!

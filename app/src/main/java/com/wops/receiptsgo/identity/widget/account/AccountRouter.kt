@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.identity.widget.account
 
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.core.di.scopes.FragmentScope
 import com.wops.core.identity.IdentityManager
 import com.wops.analytics.log.Logger
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @FragmentScope
 class AccountRouter @Inject constructor(
-    private val navigationHandler: NavigationHandler<SmartReceiptsActivity>,
+    private val navigationHandler: NavigationHandler<ReceiptsGoActivity>,
     private val identityManager: IdentityManager
 ) {
 

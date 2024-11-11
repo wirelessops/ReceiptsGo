@@ -3,8 +3,8 @@ package com.wops.receiptsgo.test.espresso
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.wops.receiptsgo.SmartReceiptsApplication
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.ReceiptsGoApplication
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import com.wops.receiptsgo.persistence.DatabaseHelper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -20,7 +20,7 @@ class FirstLaunchDatabaseTest {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(SmartReceiptsActivity::class.java)
+    val activityTestRule = ActivityTestRule(ReceiptsGoActivity::class.java)
 
     private lateinit var databaseHelper: DatabaseHelper
 
@@ -28,7 +28,7 @@ class FirstLaunchDatabaseTest {
 
     @Before
     fun setUp() {
-        val application = activityTestRule.activity.application as SmartReceiptsApplication
+        val application = activityTestRule.activity.application as ReceiptsGoApplication
         databaseHelper = application.databaseHelper
     }
 

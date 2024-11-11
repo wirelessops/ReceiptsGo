@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.tooltip.privacy
 
 import com.wops.receiptsgo.activities.NavigationHandler
-import com.wops.receiptsgo.activities.SmartReceiptsActivity
+import com.wops.receiptsgo.activities.ReceiptsGoActivity
 import org.junit.Before
 import org.junit.Test
 
@@ -17,7 +17,7 @@ class PrivacyPolicyRouterTest {
     lateinit var router: PrivacyPolicyRouter
 
     @Mock
-    lateinit var navigationHandler: NavigationHandler<SmartReceiptsActivity>
+    lateinit var navigationHandler: NavigationHandler<ReceiptsGoActivity>
 
     @Before
     fun setUp() {

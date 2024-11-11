@@ -8,12 +8,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.wops.receiptsgo.SmartReceiptsApplication;
+import com.wops.receiptsgo.ReceiptsGoApplication;
+
 import wb.android.flex.Flex;
 
 public class WBFragment extends Fragment {
 
-	private SmartReceiptsApplication mApplication;
+	private ReceiptsGoApplication mApplication;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,12 @@ public class WBFragment extends Fragment {
         }
 	}
 
-	public SmartReceiptsApplication getSmartReceiptsApplication() {
+	public ReceiptsGoApplication getSmartReceiptsApplication() {
 		if (mApplication == null) {
 			if (getActivity() != null) {
 				final Application application = getActivity().getApplication();
-				if (application instanceof SmartReceiptsApplication) {
-					mApplication = (SmartReceiptsApplication) application;
+				if (application instanceof ReceiptsGoApplication) {
+					mApplication = (ReceiptsGoApplication) application;
 				}
 				else {
 					throw new RuntimeException("The Application must be an instance a SmartReceiptsApplication");
