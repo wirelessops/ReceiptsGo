@@ -13,6 +13,7 @@ apply plugin: 'kotlin-parcelize'
 
 
 android {
+ 	namespace 'com.wops.receiptsgo'
 
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
@@ -82,13 +83,13 @@ android {
 
     productFlavors {
         free {
-            applicationId "wb.receipts"
+            applicationId "com.wops.receiptsgo"
             dimension "versionType"
             proguardFile 'flavor-not-floss-rules.pro'
             missingDimensionStrategy 'isFloss', 'notFloss'
         }
         plusFlavor {
-            applicationId "wb.receiptspro"
+            applicationId "com.wops.receiptsgopro"
             dimension "versionType"
             proguardFile 'flavor-not-floss-rules.pro'
             missingDimensionStrategy 'isFloss', 'notFloss'
@@ -100,7 +101,7 @@ android {
             missingDimensionStrategy 'isFloss', 'notFloss'
         }
         flossFlavor {
-            applicationId "wb.receipts.floss"
+            applicationId "com.wops.receiptsgo.floss"
             dimension"versionType"
             missingDimensionStrategy 'isFloss', 'floss'
         }

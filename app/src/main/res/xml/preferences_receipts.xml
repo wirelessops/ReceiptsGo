@@ -51,7 +51,7 @@
             android:key="@string/pref_receipt_full_page_key"
             android:summary="@string/pref_receipt_full_page_summary"
             android:title="@string/pref_receipt_full_page_title" />
-        <co.smartreceipts.android.settings.widget.MinimumPriceEditTextPreference
+        <com.wops.receiptsgo.settings.widget.MinimumPriceEditTextPreference
             android:inputType="number|numberDecimal|numberSigned"
             android:key="@string/pref_receipt_minimum_receipts_price_key"
             android:title="@string/pref_receipt_minimum_receipts_price_title" />
@@ -60,7 +60,7 @@
             android:key="@string/pref_receipt_include_tax_field_key"
             android:summary="@string/pref_receipt_include_tax_field_summary"
             android:title="@string/pref_receipt_include_tax_field_title" />
-        <co.smartreceipts.android.settings.widget.DefaultTaxPercentagePreference
+        <com.wops.receiptsgo.settings.widget.DefaultTaxPercentagePreference
             android:inputType="number|numberDecimal"
             android:key="@string/pref_receipt_tax_percent_key"
             android:title="@string/pref_receipt_tax_percent_title" />
@@ -75,7 +75,7 @@
             android:key="@string/pref_receipt_include_tax2_field_key"
             android:summary="@string/pref_receipt_include_tax2_field_summary"
             android:title="@string/pref_receipt_include_tax2_field_title" />
-        <co.smartreceipts.android.settings.widget.DefaultTaxPercentagePreference
+        <com.wops.receiptsgo.settings.widget.DefaultTaxPercentagePreference
             android:inputType="number|numberDecimal"
             android:key="@string/pref_receipt_tax2_percent_key"
             android:title="@string/pref_receipt_tax2_percent_title" />

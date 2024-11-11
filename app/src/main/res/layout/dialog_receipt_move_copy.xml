@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/padding_large">
 
-    <co.smartreceipts.android.widget.ui.OutlinedSpinner
+    <com.wops.receiptsgo.widget.ui.OutlinedSpinner
         android:id="@+id/move_copy_spinner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

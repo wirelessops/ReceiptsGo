@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <co.smartreceipts.android.widget.tooltip.Tooltip
+    <com.wops.receiptsgo.widget.tooltip.Tooltip
         android:id="@+id/tooltip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:hint="@string/DIALOG_TRIPMENU_HINT_START"
                 app:startIconDrawable="@drawable/ic_date_24dp">
 
-                <co.smartreceipts.android.date.DateEditText
+                <com.wops.receiptsgo.date.DateEditText
                     android:id="@+id/start_date"
                     style="@style/Widget.SmartReceipts.OutlinedEditText" />
 
@@ -65,13 +65,13 @@
                 android:hint="@string/DIALOG_TRIPMENU_HINT_END"
                 app:startIconDrawable="@drawable/ic_date_24dp">
 
-                <co.smartreceipts.android.date.DateEditText
+                <com.wops.receiptsgo.date.DateEditText
                     android:id="@+id/end_date"
                     style="@style/Widget.SmartReceipts.OutlinedEditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <co.smartreceipts.android.widget.ui.OutlinedSpinner
+            <com.wops.receiptsgo.widget.ui.OutlinedSpinner
                 android:id="@+id/currency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

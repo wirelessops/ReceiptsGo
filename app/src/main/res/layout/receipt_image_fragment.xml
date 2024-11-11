@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <co.smartreceipts.android.widget.ui.PinchToZoomImageView
+    <com.wops.receiptsgo.widget.ui.PinchToZoomImageView
         android:id="@+id/receipt_image_imageview"
         android:layout_width="0dp"
         android:layout_height="0dp"

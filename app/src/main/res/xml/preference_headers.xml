@@ -2,47 +2,47 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderProFragment"
+        android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderProFragment"
         android:title="@string/pref_pro_header">
     </header>
 	<header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderGeneralFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderGeneralFragment"
 	    android:title="@string/pref_general_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderReceiptsFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderReceiptsFragment"
 	    android:title="@string/pref_receipt_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderReportOutputFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderReportOutputFragment"
 	    android:title="@string/pref_output_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderEmailFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderEmailFragment"
 	    android:title="@string/pref_email_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderCameraFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderCameraFragment"
 	    android:title="@string/pref_camera_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderLayoutFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderLayoutFragment"
 	    android:title="@string/pref_layout_header">
     </header>
     <header
-        android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderDistanceFragment"
+        android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderDistanceFragment"
         android:title="@string/pref_distance_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderHelpFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderHelpFragment"
 	    android:title="@string/pref_help_header">
     </header>
     <header
-        android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderAboutFragment"
+        android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderAboutFragment"
         android:title="@string/pref_privacy_header">
     </header>
     <header
-	    android:fragment="co.smartreceipts.android.settings.widget.PreferenceHeaderAboutFragment"
+	    android:fragment="com.wops.receiptsgo.settings.widget.PreferenceHeaderAboutFragment"
 	    android:title="@string/pref_about_header">
     </header>
     

@@ -9,7 +9,7 @@
             android:entries="@array/pref_general_theme_entries"
             android:entryValues="@array/pref_general_theme_entryValues"
             android:title="@string/pref_general_theme_title" />
-        <co.smartreceipts.android.settings.widget.DefaultDurationEditTextPreference
+        <com.wops.receiptsgo.settings.widget.DefaultDurationEditTextPreference
             android:defaultValue="@integer/pref_general_trip_duration_defaultValue"
             android:inputType="number"
             android:key="@string/pref_general_trip_duration_key"

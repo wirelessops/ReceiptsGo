@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <co.smartreceipts.android.widget.ui.MarqueeToolbar
+    <com.wops.receiptsgo.widget.ui.MarqueeToolbar
         android:id="@+id/toolbar"
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:textColor="#ffffff"
             android:visibility="visible" />
 
-    </co.smartreceipts.android.widget.ui.MarqueeToolbar>
+    </com.wops.receiptsgo.widget.ui.MarqueeToolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
