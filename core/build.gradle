@@ -22,16 +22,20 @@ android {
         targetCompatibility JavaVersion.VERSION_11
         sourceCompatibility JavaVersion.VERSION_11
     }
-
+    kotlin {
+        jvmToolchain(11)
+    }
 
     /**
      * Note: core module doesn't have flavor-dependent code but it needs flavors because of transitive analytics module
      */
     flavorDimensions "isFloss"
-
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
     }
+
 
     productFlavors {
         floss {
@@ -42,6 +46,7 @@ android {
             dimension "isFloss"
         }
     }
+    namespace 'com.wops.core'
 
 }
 

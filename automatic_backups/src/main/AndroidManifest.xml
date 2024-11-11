@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wops.automatic_backups" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" />

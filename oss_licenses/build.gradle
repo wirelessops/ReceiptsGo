@@ -22,12 +22,17 @@ android {
         targetCompatibility JavaVersion.VERSION_11
         sourceCompatibility JavaVersion.VERSION_11
     }
+    kotlin {
+        jvmToolchain(11)
+    }
 
     flavorDimensions "isFloss"
-
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
     }
+
 
     productFlavors {
         floss {
@@ -38,6 +43,7 @@ android {
             dimension "isFloss"
         }
     }
+    namespace 'com.wops.oss_licenses'
 
 }
 
