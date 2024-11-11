@@ -65,27 +65,7 @@
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "https://www.smartreceipts.co/download” -->
-                <data
-                    android:host="www.smartreceipts.co"
-                    android:pathPrefix="/download"
-                    android:scheme="https" />
-                <!-- Accepts URIs that begin with "https://smartreceipts.co/download” -->
-                <data
-                    android:host="smartreceipts.co"
-                    android:pathPrefix="/download"
-                    android:scheme="https" />
-                <!-- Accepts URIs that begin with "https://www.smartreceipts.co/launch” -->
-                <data
-                    android:host="www.smartreceipts.co"
-                    android:pathPrefix="/launch"
-                    android:scheme="https" />
-                <!-- Accepts URIs that begin with "https://smartreceipts.co/launch” -->
-                <data
-                    android:host="smartreceipts.co"
-                    android:pathPrefix="/launch"
-                    android:scheme="https" />
+
             </intent-filter>
 
             <!-- Filter to handle action send activities -->
