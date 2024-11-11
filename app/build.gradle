@@ -20,7 +20,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1016
+        versionCode 1017
         versionName "1.1.2"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -175,7 +175,7 @@ android {
         implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
         implementation "com.squareup.moshi:moshi:$MOSHI_VERSION"
         implementation "com.squareup.moshi:moshi-adapters:$MOSHI_VERSION"
-        kapt "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
+        ksp "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
         implementation "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
 
         //Rx2
