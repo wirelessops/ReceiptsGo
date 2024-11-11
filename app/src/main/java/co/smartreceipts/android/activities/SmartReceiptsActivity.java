@@ -398,7 +398,7 @@ public class SmartReceiptsActivity extends AppCompatActivity implements HasAndro
                         navigationHandler.navigateToBackupMenu();
                         analytics.record(Events.Navigation.BackupOverflow);
                     } else if (creationOption.equals(MainMenuOption.USAGE_GUIDE.name())) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://smartreceipts.co/guide")));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wirelessops/ReceiptsGo/wiki")));
                         analytics.record(Events.Navigation.UsageGuideOverflow);
                     } else if (creationOption.equals(MainMenuOption.MY_ACCOUNT.name())) {
                         navigationHandler.navigateToAccountScreen();
