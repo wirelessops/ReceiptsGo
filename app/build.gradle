@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1000
-        versionName "1.0"
+        versionCode 1001
+        versionName "1.0.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -49,8 +49,8 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-DEBUG'
+            //applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
         }
         release {
             signingConfig signingConfigs.release
