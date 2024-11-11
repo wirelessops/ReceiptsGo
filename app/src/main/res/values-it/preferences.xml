@@ -166,6 +166,7 @@
     <string name="pref_about_version_title">Versione</string>
     <string name="pref_about_about_title">Crediti</string>
     <string name="pref_about_terms_title">Termini di uso</string>
+    <string name="pref_about_terms_dialogMessage" translatable="false">Questo programma è software libero: È consentito redistribuirlo e/o modificarlo nei termini della licenza GNU Affero General Public License come pubblicata dalla Free Software Foundation, sia nella versione 3 o (a vostra discrezione), qualsiasi altra successiva versione.\n\nQuesto programma è distribuito nella speranza che possa essere utile, ma SENZA ALCUNA GARANZIA; Software anche privo della implicita garanzia di COMMERCIABILITÀ o IDONEITÀ PER UNO SCOPO SPECIFICO.  Consultare la GNU Affero General Public License per maggiori dettagli.\n\nVisualizzare una copia della GNU Affero General Public License su http://www.gnu.org/licenses/.</string>
     <string name="pref_about_oss_title">Software open source</string>
 
     <!-- ============== Preference Privacy ================= -->
