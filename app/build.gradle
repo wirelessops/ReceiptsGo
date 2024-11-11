@@ -18,8 +18,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3000
-        versionName "4.27.0.3000"
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -34,12 +34,7 @@ android {
             storeFile file("../keystore/debug.keystore")
         }
         release {
-            // You need to specify either an absolute path or include the
-            // keystore file in the same directory as the build.gradle file.
-            storeFile file("../upload_key.jks")
-            storePassword System.getenv("KEY_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
+            
         }
     }
 
@@ -49,14 +44,15 @@ android {
 
     buildTypes {
         debug {
+            signingConfig signingConfigs.debug
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -77,9 +73,6 @@ android {
     }
 
 
-    dexOptions {
-        javaMaxHeapSize "3072M"
-    }
 
     flavorDimensions "versionType"
 
@@ -176,9 +169,9 @@ android {
         implementation "commons-io:commons-io:$IO_UTILS_VERSION"
         implementation "com.hadisatrio:Optional:$OPTIONAL_VERSION"
 
-        implementation "com.tapadoo.android:alerter:$ALERTER_VERSION"
+        implementation "com.github.tapadoo:alerter:$ALERTER_VERSION"
 
-        implementation "com.tom_roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
+        implementation "com.tom-roush:pdfbox-android:$PDFBOX_ANDROID_VERSION"
         implementation "com.github.barteksc:pdfium-android:$PDFIUM_VERSION"
 
         implementation "com.github.tony19:logback-android:$LOGBACK_VERSION"
