@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.utils.Feature;
 
 /**

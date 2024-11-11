@@ -13,8 +13,8 @@ import androidx.fragment.app.DialogFragment;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.R;
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.Events;
 import com.wops.receiptsgo.purchases.plus.SmartReceiptsTitle;
 import com.wops.receiptsgo.workers.EmailAssistant;
 import dagger.android.support.AndroidSupportInjection;

@@ -10,8 +10,8 @@ import com.wops.receiptsgo.model.comparators.ColumnNameComparator
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
 import com.wops.receiptsgo.model.impl.columns.categories.CategoryColumnDefinitions.ActualDefinition.*
 import com.wops.receiptsgo.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
-import co.smartreceipts.core.sync.model.SyncState
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.SyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager
 import java.util.*
 

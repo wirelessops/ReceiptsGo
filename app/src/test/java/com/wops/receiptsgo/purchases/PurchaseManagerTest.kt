@@ -3,7 +3,7 @@ package com.wops.receiptsgo.purchases
 import android.app.Activity
 import android.app.Application
 import androidx.test.core.app.ApplicationProvider
-import co.smartreceipts.analytics.Analytics
+import com.wops.analytics.Analytics
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.model.ManagedProduct
 import com.wops.receiptsgo.purchases.source.PurchaseSource

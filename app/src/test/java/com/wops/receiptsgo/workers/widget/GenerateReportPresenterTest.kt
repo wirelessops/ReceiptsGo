@@ -1,8 +1,8 @@
 package com.wops.receiptsgo.workers.widget
 
 import android.app.Activity
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.ad.InterstitialAdPresenter
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.rating.InAppReviewManager

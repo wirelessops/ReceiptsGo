@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.identity.apis.me;
 
-import co.smartreceipts.core.identity.apis.push.UpdatePushTokensRequest;
-import co.smartreceipts.core.identity.apis.me.MeResponse;
+import com.wops.core.identity.apis.push.UpdatePushTokensRequest;
+import com.wops.core.identity.apis.me.MeResponse;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

@@ -7,13 +7,13 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.Events;
+import com.wops.core.di.scopes.FragmentScope;
 import com.wops.receiptsgo.sync.BackupProviderChangeListener;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.provider.SyncProvider;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.sync.provider.SyncProvider;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.widget.tooltip.LegacyTooltipView;
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter;
 import io.reactivex.Scheduler;

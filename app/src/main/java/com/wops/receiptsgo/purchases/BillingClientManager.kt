@@ -2,7 +2,7 @@ package com.wops.receiptsgo.purchases
 
 import android.app.Activity
 import android.content.Context
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.purchases.model.ConsumablePurchase
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.model.ManagedProduct
@@ -13,7 +13,7 @@ import com.wops.receiptsgo.purchases.source.PurchaseSource
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscriptionManager
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet
 import com.wops.receiptsgo.subscriptions.SubscriptionUploader
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener

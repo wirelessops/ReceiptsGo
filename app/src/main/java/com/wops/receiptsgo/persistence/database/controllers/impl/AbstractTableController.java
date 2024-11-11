@@ -12,8 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.model.Keyed;
 import com.wops.receiptsgo.persistence.database.controllers.TableController;
 import com.wops.receiptsgo.persistence.database.controllers.TableEventsListener;
@@ -25,9 +25,9 @@ import com.wops.receiptsgo.persistence.database.controllers.results.InsertResult
 import com.wops.receiptsgo.persistence.database.controllers.results.UpdateResult;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.tables.Table;
-import co.smartreceipts.core.sync.model.Syncable;
+import com.wops.core.sync.model.Syncable;
 import com.wops.receiptsgo.utils.PreFixedThreadFactory;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

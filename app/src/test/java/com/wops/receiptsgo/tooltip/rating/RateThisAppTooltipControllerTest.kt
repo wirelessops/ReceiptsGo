@@ -2,8 +2,8 @@ package com.wops.receiptsgo.tooltip.rating
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.rating.AppRatingManager
 import com.wops.receiptsgo.tooltip.TooltipView

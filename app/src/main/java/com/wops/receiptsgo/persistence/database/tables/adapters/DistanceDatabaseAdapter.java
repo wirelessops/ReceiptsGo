@@ -23,7 +23,7 @@ import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.DistanceTable;
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable;
 import com.wops.receiptsgo.persistence.database.tables.Table;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link DistanceTable}

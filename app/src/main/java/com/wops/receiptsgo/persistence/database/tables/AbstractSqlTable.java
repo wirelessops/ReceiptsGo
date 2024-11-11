@@ -22,9 +22,9 @@ import com.wops.receiptsgo.persistence.database.tables.adapters.DatabaseAdapter;
 import com.wops.receiptsgo.persistence.database.tables.adapters.SyncStateAdapter;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderBy;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByDatabaseDefault;
-import co.smartreceipts.core.sync.model.Syncable;
-import co.smartreceipts.core.sync.provider.SyncProvider;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.sync.model.Syncable;
+import com.wops.core.sync.provider.SyncProvider;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Single;
 
 /**

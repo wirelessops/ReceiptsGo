@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.wops.receiptsgo.purchases.model.InAppPurchase.Companion.from
 import com.wops.receiptsgo.purchases.model.PurchaseFamily
 import com.wops.receiptsgo.purchases.model.Subscription
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.google.common.base.Preconditions
 import dagger.Lazy
 import io.reactivex.Completable

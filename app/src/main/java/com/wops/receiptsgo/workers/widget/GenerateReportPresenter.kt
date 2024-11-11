@@ -1,14 +1,14 @@
 package com.wops.receiptsgo.workers.widget
 
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.ad.InterstitialAdPresenter
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.rating.InAppReviewManager
 import com.wops.receiptsgo.widget.tooltip.report.generate.GenerateInfoTooltipManager
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
 import com.wops.receiptsgo.workers.EmailAssistant.EmailOptions
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import java.util.EnumSet
 import javax.inject.Inject
 

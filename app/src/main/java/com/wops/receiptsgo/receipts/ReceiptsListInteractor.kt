@@ -14,7 +14,7 @@ import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMeta
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
 import com.wops.receiptsgo.tooltip.image.data.ImageCroppingPreferenceStorage
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable

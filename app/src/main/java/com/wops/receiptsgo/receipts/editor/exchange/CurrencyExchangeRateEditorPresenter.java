@@ -14,7 +14,7 @@ import org.joda.money.CurrencyUnit;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.currency.widget.CurrencyListEditorView;
 import com.wops.receiptsgo.model.Price;
 import com.wops.receiptsgo.model.Receipt;

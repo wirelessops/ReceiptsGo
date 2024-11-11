@@ -22,7 +22,7 @@ import com.squareup.picasso.Transformation;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.activities.NavigationHandler;
 import com.wops.receiptsgo.date.DateFormatter;
@@ -34,7 +34,7 @@ import com.wops.receiptsgo.settings.catalog.UserPreference;
 import com.wops.receiptsgo.settings.widget.editors.adapters.DraggableCardsAdapter;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.sync.widget.backups.AutomaticBackupsInfoDialogFragment;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.PublishSubject;

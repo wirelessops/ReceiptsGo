@@ -6,7 +6,7 @@ import com.wops.receiptsgo.model.factory.PaymentMethodBuilderFactory
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptCategoryCodeColumn
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptCategoryNameColumn
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock

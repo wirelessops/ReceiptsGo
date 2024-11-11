@@ -1,13 +1,13 @@
 package com.wops.receiptsgo.distance.editor
 
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.model.Distance
 import com.wops.receiptsgo.persistence.database.controllers.impl.DistanceTableController
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
 import io.reactivex.Scheduler

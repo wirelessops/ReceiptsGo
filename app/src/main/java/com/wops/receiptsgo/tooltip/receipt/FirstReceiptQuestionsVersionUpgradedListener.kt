@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.tooltip.receipt
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.analytics.log.Logger
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.versioning.VersionUpgradedListener
 import javax.inject.Inject
 

@@ -26,7 +26,7 @@ import com.wops.receiptsgo.settings.catalog.UserPreference;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.sync.network.NetworkManager;
 import com.wops.receiptsgo.sync.network.SupportedNetworkType;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.RemoteBackupMetadata;
 
 public class RemoteBackupsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

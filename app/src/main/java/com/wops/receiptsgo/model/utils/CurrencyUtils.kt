@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.model.utils
 
 import androidx.annotation.NonNull
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.model.Price
 import org.joda.money.CurrencyUnit
 import java.util.*

@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.versioning
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.tooltip.backup.AutomaticBackupRecoveryHintVersionUpgradedListener
 import com.wops.receiptsgo.tooltip.receipt.FirstReceiptQuestionsVersionUpgradedListener
 import javax.inject.Inject

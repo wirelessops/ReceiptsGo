@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.model.impl.columns.categories
 
 import com.wops.receiptsgo.model.Keyed
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever

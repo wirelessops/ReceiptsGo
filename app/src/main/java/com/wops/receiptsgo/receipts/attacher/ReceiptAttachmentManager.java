@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.Events;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.imports.CameraInteractionController;
 import com.wops.receiptsgo.imports.RequestCodes;
 

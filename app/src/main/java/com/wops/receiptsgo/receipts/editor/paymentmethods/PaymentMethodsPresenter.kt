@@ -6,7 +6,7 @@ import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
 import com.wops.receiptsgo.utils.rx.RxSchedulers
 import com.wops.receiptsgo.widget.mvp.BasePresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import io.reactivex.Scheduler
 import javax.inject.Inject
 import javax.inject.Named

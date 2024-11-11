@@ -10,12 +10,12 @@ import org.robolectric.RobolectricTestRunner;
 import java.sql.Date;
 import java.util.Collections;
 
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
-import co.smartreceipts.core.sync.model.impl.IdentifierMap;
-import co.smartreceipts.core.sync.model.impl.MarkedForDeletionMap;
-import co.smartreceipts.core.sync.model.impl.SyncStatusMap;
-import co.smartreceipts.core.sync.provider.SyncProvider;
-import co.smartreceipts.core.sync.model.impl.Identifier;
+import com.wops.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.impl.IdentifierMap;
+import com.wops.core.sync.model.impl.MarkedForDeletionMap;
+import com.wops.core.sync.model.impl.SyncStatusMap;
+import com.wops.core.sync.provider.SyncProvider;
+import com.wops.core.sync.model.impl.Identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

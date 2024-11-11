@@ -8,7 +8,7 @@ import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers

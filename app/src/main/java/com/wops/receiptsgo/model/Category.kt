@@ -1,9 +1,9 @@
 package com.wops.receiptsgo.model
 
 import android.os.Parcelable
-import co.smartreceipts.core.sync.model.SyncState
-import co.smartreceipts.core.sync.model.Syncable
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.SyncState
+import com.wops.core.sync.model.Syncable
+import com.wops.core.sync.model.impl.DefaultSyncState
 import kotlinx.parcelize.Parcelize
 import java.util.*
 

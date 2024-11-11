@@ -1,8 +1,8 @@
 package com.wops.receiptsgo.analytics
 
 import androidx.annotation.VisibleForTesting
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Event
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Event
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
 import com.google.common.base.Preconditions

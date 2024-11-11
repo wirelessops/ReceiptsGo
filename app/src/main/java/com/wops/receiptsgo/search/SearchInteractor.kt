@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.search
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.persistence.DatabaseHelper

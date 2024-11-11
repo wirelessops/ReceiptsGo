@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.model.Price;
 import com.wops.receiptsgo.ocr.apis.model.OcrResponse;
 

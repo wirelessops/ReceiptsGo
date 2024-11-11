@@ -8,10 +8,10 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.R;
-import co.smartreceipts.core.di.scopes.FragmentScope;
-import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserLogin;
-import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserSignUp;
-import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
+import com.wops.core.di.scopes.FragmentScope;
+import com.wops.core.identity.apis.login.SmartReceiptsUserLogin;
+import com.wops.core.identity.apis.login.SmartReceiptsUserSignUp;
+import com.wops.core.identity.apis.login.UserCredentialsPayload;
 import com.wops.receiptsgo.identity.widget.login.model.UiInputValidationIndicator;
 import com.wops.receiptsgo.widget.model.UiIndicator;
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter;

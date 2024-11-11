@@ -5,7 +5,7 @@ import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
 import com.wops.receiptsgo.workers.EmailAssistant
 import com.wops.receiptsgo.workers.EmailAssistant.EmailOptions
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

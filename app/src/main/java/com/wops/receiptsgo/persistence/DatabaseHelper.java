@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.Nonnull;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.database.DatabaseContext;
 import com.wops.receiptsgo.date.DateUtils;
 import com.wops.receiptsgo.model.Distance;
@@ -41,8 +41,8 @@ import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferen
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;
 import com.wops.receiptsgo.utils.sorting.AlphabeticalCaseInsensitiveCharSequenceComparator;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.persistence.DatabaseConstants;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.core.persistence.DatabaseConstants;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import wb.android.storage.StorageManager;

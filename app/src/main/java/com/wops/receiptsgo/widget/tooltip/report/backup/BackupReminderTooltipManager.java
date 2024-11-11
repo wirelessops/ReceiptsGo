@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import com.wops.receiptsgo.widget.tooltip.TooltipManager;
 import com.wops.receiptsgo.widget.tooltip.report.backup.data.BackupReminderTooltipStorage;
 import io.reactivex.Maybe;

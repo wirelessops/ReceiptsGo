@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.apis.ApiValidationException;
 import com.wops.receiptsgo.apis.SmartReceiptsApiException;
 import com.wops.receiptsgo.apis.WebServiceManager;
@@ -28,8 +28,8 @@ import com.wops.receiptsgo.purchases.model.ManagedProduct;
 import com.wops.receiptsgo.purchases.model.PurchaseFamily;
 import com.wops.receiptsgo.purchases.source.PurchaseSource;
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.identity.IdentityManager;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.core.identity.IdentityManager;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;

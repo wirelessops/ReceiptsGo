@@ -12,13 +12,13 @@ import javax.inject.Inject;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.AbstractSqlTable;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
-import co.smartreceipts.core.sync.model.impl.Identifier;
-import co.smartreceipts.core.sync.model.impl.IdentifierMap;
-import co.smartreceipts.core.sync.model.impl.MarkedForDeletionMap;
-import co.smartreceipts.core.sync.model.impl.SyncStatusMap;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.impl.Identifier;
+import com.wops.core.sync.model.impl.IdentifierMap;
+import com.wops.core.sync.model.impl.MarkedForDeletionMap;
+import com.wops.core.sync.model.impl.SyncStatusMap;
+import com.wops.core.sync.provider.SyncProvider;
 
 public class SyncStateAdapter {
 

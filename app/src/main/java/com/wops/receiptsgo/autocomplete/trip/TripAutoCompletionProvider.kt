@@ -2,7 +2,7 @@ package com.wops.receiptsgo.autocomplete.trip
 
 import com.wops.receiptsgo.autocomplete.AutoCompleteField
 import com.wops.receiptsgo.autocomplete.AutoCompletionProvider
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.persistence.database.controllers.TableController
 import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableController

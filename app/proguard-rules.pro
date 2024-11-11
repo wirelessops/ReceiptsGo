@@ -24,8 +24,8 @@
 
 
 # Keep all of our classes as they are
--keep class co.smartreceipts.** { *; }
--dontwarn co.smartreceipts.**
+-keep class com.wops.** { *; }
+-dontwarn com.wops.**
 -keep class wb.android.** { *; }
 -dontwarn wb.android.**
 -keep class wb.receipts.** { *; }

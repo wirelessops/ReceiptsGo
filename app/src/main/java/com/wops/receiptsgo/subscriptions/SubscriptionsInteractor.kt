@@ -6,7 +6,7 @@ import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.model.PurchaseFamily
 import com.wops.receiptsgo.purchases.model.Subscription
 import com.wops.receiptsgo.purchases.source.PurchaseSource
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.android.billingclient.api.ProductDetails
 import io.reactivex.Scheduler
 import io.reactivex.Single

@@ -5,7 +5,7 @@ import com.wops.receiptsgo.date.DisplayableDate
 import com.wops.receiptsgo.model.*
 import com.wops.receiptsgo.model.factory.ReceiptBuilderFactory
 import com.wops.receiptsgo.persistence.DatabaseHelper
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import com.wops.receiptsgo.utils.TestLocaleToggler
 import com.wops.receiptsgo.utils.testParcel
 import org.hamcrest.CoreMatchers.equalTo

@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.Paint.Align
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.date.DateFormatter
 import com.wops.receiptsgo.filters.LegacyReceiptFilter
@@ -28,7 +28,7 @@ import com.wops.receiptsgo.workers.reports.csv.CsvTableGenerator
 import com.wops.receiptsgo.workers.reports.pdf.PdfBoxFullPdfReport
 import com.wops.receiptsgo.workers.reports.pdf.PdfBoxImagesOnlyReport
 import com.wops.receiptsgo.workers.reports.pdf.misc.TooManyColumnsException
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import wb.android.storage.StorageManager
 import java.io.File
 import java.io.IOException

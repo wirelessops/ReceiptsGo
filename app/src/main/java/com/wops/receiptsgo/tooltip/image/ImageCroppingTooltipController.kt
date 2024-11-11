@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
 import com.wops.receiptsgo.R
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
 import com.wops.receiptsgo.tooltip.TooltipController
@@ -13,7 +13,7 @@ import com.wops.receiptsgo.tooltip.image.data.ImageCroppingPreferenceStorage
 import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.tooltip.model.TooltipType
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable

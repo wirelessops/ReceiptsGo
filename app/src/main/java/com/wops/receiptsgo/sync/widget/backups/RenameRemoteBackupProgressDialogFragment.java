@@ -13,15 +13,15 @@ import androidx.fragment.app.Fragment;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.sync.network.NetworkManager;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

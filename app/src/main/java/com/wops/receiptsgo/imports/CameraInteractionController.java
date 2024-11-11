@@ -17,7 +17,7 @@ import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.utils.IntentUtils;
 import com.wops.receiptsgo.utils.StrictModeConfiguration;
 import com.wops.receiptsgo.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 public class CameraInteractionController {
 

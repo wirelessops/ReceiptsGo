@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.ocr.widget.configuration
 
-import co.smartreceipts.core.identity.store.EmailAddress
+import com.wops.core.identity.store.EmailAddress
 import com.android.billingclient.api.ProductDetails
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer

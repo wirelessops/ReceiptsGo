@@ -28,7 +28,7 @@ import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMeta
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable;
 import com.wops.receiptsgo.persistence.database.tables.Table;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 import wb.android.storage.StorageManager;
 
 /**

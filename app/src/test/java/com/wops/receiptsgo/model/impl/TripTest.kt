@@ -8,7 +8,7 @@ import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.model.factory.PriceBuilderFactory
 import com.wops.receiptsgo.utils.TestLocaleToggler
 import com.wops.receiptsgo.utils.testParcel
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.IsNot.not
 import org.joda.money.CurrencyUnit

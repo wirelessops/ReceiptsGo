@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:924232089923:android:2245bc8bf701d5ecb9aff6",
+        "mobilesdk_app_id": "1:924232089923:android:3e546749b22feafeb9aff6",
         "android_client_info": {
-          "package_name": "com.receiptsgo"
+          "package_name": "com.wops.receiptsgo"
         }
       },
       "oauth_client": [],

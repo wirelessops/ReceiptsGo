@@ -18,7 +18,7 @@ import com.wops.receiptsgo.identity.widget.account.organizations.OrganizationsLi
 import com.wops.receiptsgo.identity.widget.account.subscriptions.SubscriptionsListAdapter
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription
 import com.wops.receiptsgo.widget.model.UiIndicator
-import co.smartreceipts.core.identity.store.EmailAddress
+import com.wops.core.identity.store.EmailAddress
 import com.jakewharton.rxbinding3.view.clicks
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable

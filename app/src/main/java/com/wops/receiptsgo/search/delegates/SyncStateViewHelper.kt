@@ -5,8 +5,8 @@ import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.sync.BackupProvidersManager
-import co.smartreceipts.core.sync.model.Syncable
-import co.smartreceipts.core.sync.provider.SyncProvider
+import com.wops.core.sync.model.Syncable
+import com.wops.core.sync.provider.SyncProvider
 import com.squareup.picasso.Picasso
 
 object SyncStateViewHelper {

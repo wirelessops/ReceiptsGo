@@ -3,7 +3,7 @@ package com.wops.receiptsgo.identity.widget.account
 import com.wops.receiptsgo.identity.apis.organizations.OrganizationModel
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription
 import com.wops.receiptsgo.widget.model.UiIndicator
-import co.smartreceipts.core.identity.store.EmailAddress
+import com.wops.core.identity.store.EmailAddress
 import io.reactivex.Observable
 
 interface AccountView {

@@ -6,7 +6,7 @@ import com.wops.receiptsgo.model.Distance
 import com.wops.receiptsgo.model.utils.ModelUtils
 import com.wops.receiptsgo.widget.model.UiIndicator
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import java.math.BigDecimal
 import javax.inject.Inject
 

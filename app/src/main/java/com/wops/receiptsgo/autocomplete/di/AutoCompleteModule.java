@@ -7,7 +7,7 @@ import com.wops.receiptsgo.autocomplete.receipt.ReceiptAutoCompleteResultsChecke
 import com.wops.receiptsgo.autocomplete.receipt.ReceiptAutoCompletionProvider;
 import com.wops.receiptsgo.autocomplete.trip.TripAutoCompleteResultsChecker;
 import com.wops.receiptsgo.autocomplete.trip.TripAutoCompletionProvider;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.model.Distance;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.model.Trip;

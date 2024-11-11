@@ -7,7 +7,7 @@ import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions
 import com.wops.receiptsgo.persistence.database.controllers.impl.ColumnTableController
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

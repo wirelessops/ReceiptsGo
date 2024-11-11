@@ -16,7 +16,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import com.wops.receiptsgo.activities.NavigationHandler;
 import com.wops.receiptsgo.identity.widget.account.AccountRouter;
-import co.smartreceipts.core.identity.IdentityManager;
+import com.wops.core.identity.IdentityManager;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccountRouterTest {

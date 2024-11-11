@@ -12,13 +12,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.sync.BackupProvider;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.errors.CriticalSyncError;
-import co.smartreceipts.core.sync.errors.SyncErrorType;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
-import co.smartreceipts.core.sync.model.impl.Identifier;
+import com.wops.core.sync.errors.CriticalSyncError;
+import com.wops.core.sync.errors.SyncErrorType;
+import com.wops.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.impl.Identifier;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

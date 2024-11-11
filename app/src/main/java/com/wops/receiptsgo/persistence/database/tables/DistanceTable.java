@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.model.Distance;
 import com.wops.receiptsgo.model.PaymentMethod;
 import com.wops.receiptsgo.model.Trip;

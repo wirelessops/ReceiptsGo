@@ -5,7 +5,7 @@
 
         <!-- FirebaseMessagingService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
         <service
-            android:name="co.smartreceipts.push.services.MyFirebaseMessagingService"
+            android:name="com.wops.push.services.MyFirebaseMessagingService"
             android:exported="true"
             tools:ignore="ExportedService"
             tools:node="remove">
@@ -24,7 +24,7 @@
             tools:node="remove" />
 
         <activity
-            android:name="co.smartreceipts.android.subscriptions.SubscriptionsActivity"
+            android:name="com.wops.receiptsgo.subscriptions.SubscriptionsActivity"
             tools:node="remove" />
 
     </application>

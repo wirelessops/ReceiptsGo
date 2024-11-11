@@ -15,7 +15,7 @@ import java.io.File;
 import java.sql.Date;
 import java.util.Collections;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.model.Category;
 import com.wops.receiptsgo.model.PaymentMethod;
 import com.wops.receiptsgo.model.Receipt;
@@ -30,12 +30,12 @@ import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByOrderingP
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
-import co.smartreceipts.core.sync.model.impl.IdentifierMap;
-import co.smartreceipts.core.sync.model.impl.MarkedForDeletionMap;
-import co.smartreceipts.core.sync.model.impl.SyncStatusMap;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.impl.IdentifierMap;
+import com.wops.core.sync.model.impl.MarkedForDeletionMap;
+import com.wops.core.sync.model.impl.SyncStatusMap;
+import com.wops.core.sync.provider.SyncProvider;
 import wb.android.storage.StorageManager;
 
 /**

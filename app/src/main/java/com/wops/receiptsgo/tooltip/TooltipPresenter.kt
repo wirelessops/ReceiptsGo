@@ -1,15 +1,15 @@
 package com.wops.receiptsgo.tooltip
 
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.DataPoint
-import co.smartreceipts.analytics.events.DefaultDataPointEvent
-import co.smartreceipts.analytics.events.Events
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.DataPoint
+import com.wops.analytics.events.DefaultDataPointEvent
+import com.wops.analytics.events.Events
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.widget.mvp.BasePresenter
 import com.wops.receiptsgo.widget.mvp.Presenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
 import io.reactivex.Scheduler

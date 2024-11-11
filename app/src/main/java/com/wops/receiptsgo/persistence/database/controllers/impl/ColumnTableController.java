@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.analytics.Analytics;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.model.Column;
 import com.wops.receiptsgo.model.ColumnDefinitions;
 import com.wops.receiptsgo.model.Receipt;

@@ -14,9 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import com.wops.receiptsgo.R;
-import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserLogin;
-import co.smartreceipts.core.identity.apis.login.SmartReceiptsUserSignUp;
-import co.smartreceipts.core.identity.apis.login.UserCredentialsPayload;
+import com.wops.core.identity.apis.login.SmartReceiptsUserLogin;
+import com.wops.core.identity.apis.login.SmartReceiptsUserSignUp;
+import com.wops.core.identity.apis.login.UserCredentialsPayload;
 import com.wops.receiptsgo.identity.widget.login.model.UiInputValidationIndicator;
 import com.wops.receiptsgo.widget.model.UiIndicator;
 import io.reactivex.Maybe;

@@ -3,7 +3,7 @@ package com.wops.receiptsgo.purchases.subscriptions
 import com.wops.receiptsgo.purchases.apis.subscriptions.SubscriptionsApiResponse
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.model.PurchaseFamily
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import java.util.*
 import javax.inject.Inject
 

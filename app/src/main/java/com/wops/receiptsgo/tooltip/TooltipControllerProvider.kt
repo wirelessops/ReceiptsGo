@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.tooltip
 
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.wops.receiptsgo.ocr.widget.tooltip.OcrInformationTooltipController
 import com.wops.receiptsgo.tooltip.backup.AutomaticBackupRecoveryHintUserController
 import com.wops.receiptsgo.tooltip.image.ImageCroppingTooltipController

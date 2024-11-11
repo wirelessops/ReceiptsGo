@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.apis.hosts.HostConfiguration;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import dagger.Lazy;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;

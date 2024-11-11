@@ -8,9 +8,9 @@ import com.wops.receiptsgo.identity.organization.OrganizationManager
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscriptionManager
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.identity.IdentityManager
-import co.smartreceipts.core.identity.store.EmailAddress
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.core.identity.IdentityManager
+import com.wops.core.identity.store.EmailAddress
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

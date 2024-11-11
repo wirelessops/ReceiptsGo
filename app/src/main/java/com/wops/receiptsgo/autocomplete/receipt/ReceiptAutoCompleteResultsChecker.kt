@@ -2,7 +2,7 @@ package com.wops.receiptsgo.autocomplete.receipt
 
 import com.wops.receiptsgo.autocomplete.AutoCompleteField
 import com.wops.receiptsgo.autocomplete.AutoCompleteResultsChecker
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Receipt
 import javax.inject.Inject
 

@@ -3,7 +3,7 @@ package com.wops.receiptsgo.workers
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.date.DateFormatter
 import com.wops.receiptsgo.model.Distance
@@ -16,7 +16,7 @@ import com.wops.receiptsgo.utils.IntentUtils
 import com.wops.receiptsgo.workers.reports.formatting.SmartReceiptsFormattableString
 import com.wops.receiptsgo.workers.widget.EmailResult
 import com.wops.receiptsgo.workers.widget.GenerationErrors
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction

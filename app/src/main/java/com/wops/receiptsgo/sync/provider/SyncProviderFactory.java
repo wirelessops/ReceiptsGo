@@ -8,7 +8,7 @@ import javax.inject.Provider;
 
 import com.wops.receiptsgo.sync.BackupProvider;
 import com.wops.receiptsgo.sync.noop.NoOpBackupProvider;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 
 public class SyncProviderFactory {
 

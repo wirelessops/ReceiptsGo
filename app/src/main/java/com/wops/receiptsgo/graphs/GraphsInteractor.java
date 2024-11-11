@@ -16,7 +16,7 @@ import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.graphs.entry.LabeledGraphEntry;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.persistence.database.controllers.grouping.GroupingController;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import io.reactivex.Maybe;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

@@ -34,7 +34,7 @@ import com.wops.receiptsgo.trips.editor.di.TripCreateEditFragmentModule;
 import com.wops.receiptsgo.widget.tooltip.report.ReportTooltipFragment;
 import com.wops.receiptsgo.workers.widget.GenerateReportFragment;
 import com.wops.receiptsgo.workers.widget.di.GenerateReportModule;
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.core.di.scopes.FragmentScope;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

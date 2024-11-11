@@ -2,9 +2,9 @@ package com.wops.receiptsgo.utils.rx;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
+import com.wops.analytics.log.Logger;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.functions.Consumer;

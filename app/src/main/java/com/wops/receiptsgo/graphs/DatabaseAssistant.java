@@ -2,7 +2,7 @@ package com.wops.receiptsgo.graphs;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import io.reactivex.Single;

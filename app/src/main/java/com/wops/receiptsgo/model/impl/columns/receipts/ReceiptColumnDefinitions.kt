@@ -10,8 +10,8 @@ import com.wops.receiptsgo.model.impl.columns.BlankColumn
 import com.wops.receiptsgo.model.impl.columns.SettingUserIdColumn
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions.ActualDefinition.*
 import com.wops.receiptsgo.settings.UserPreferenceManager
-import co.smartreceipts.core.sync.model.SyncState
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.SyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager
 import java.util.*
 import javax.inject.Inject

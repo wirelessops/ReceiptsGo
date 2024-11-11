@@ -18,12 +18,12 @@ import java.util.Map;
 
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.RemoteBackupMetadata;
 import com.wops.receiptsgo.sync.network.NetworkManager;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import com.wops.receiptsgo.utils.FileUtils;
 import com.wops.receiptsgo.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;

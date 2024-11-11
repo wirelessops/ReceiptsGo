@@ -18,7 +18,7 @@ import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.Table;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Completable;
 
 /**

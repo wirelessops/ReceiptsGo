@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import com.wops.receiptsgo.activities.NavigationHandler
 import com.wops.receiptsgo.activities.SmartReceiptsActivity
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 
 @FragmentScope
 class PrivacyPolicyRouter @Inject constructor(val navigationHandler: NavigationHandler<SmartReceiptsActivity>) {

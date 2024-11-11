@@ -13,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.crash.CrashReporter;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.crash.CrashReporter;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.ad.MobileAds;
 import com.wops.receiptsgo.date.DateFormatter;
 import com.wops.receiptsgo.di.AppComponent;
@@ -40,10 +40,10 @@ import com.wops.receiptsgo.utils.WBUncaughtExceptionHandler;
 import com.wops.receiptsgo.utils.cache.SmartReceiptsTemporaryFileCache;
 import com.wops.receiptsgo.utils.rx.DefaultRxErrorHandler;
 import com.wops.receiptsgo.versioning.AppVersionManager;
-import co.smartreceipts.aws.cognito.CognitoManager;
-import co.smartreceipts.core.identity.IdentityManager;
-import co.smartreceipts.push.PushManager;
-import co.smartreceipts.push.PushManagerProvider;
+import com.wops.aws.cognito.CognitoManager;
+import com.wops.core.identity.IdentityManager;
+import com.wops.push.PushManager;
+import com.wops.push.PushManagerProvider;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;

@@ -7,10 +7,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.analytics.Analytics;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.errors.SyncErrorType;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.errors.SyncErrorType;
+import com.wops.core.sync.provider.SyncProvider;
 import com.wops.receiptsgo.widget.tooltip.LegacyTooltipView;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

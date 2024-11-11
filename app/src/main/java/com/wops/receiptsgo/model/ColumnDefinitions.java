@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.UUID;
 
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 
 /**
  * Defines a simple contract for tracking the different column types that are available to users of the app

@@ -3,9 +3,9 @@ package com.wops.receiptsgo.ocr.widget.tooltip
 import android.content.Context
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.LoginSourceDestination
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker
@@ -15,8 +15,8 @@ import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.tooltip.model.TooltipType
 import com.wops.receiptsgo.utils.rx.RxSchedulers
-import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.core.identity.IdentityManager
+import com.wops.core.di.scopes.FragmentScope
+import com.wops.core.identity.IdentityManager
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Scheduler

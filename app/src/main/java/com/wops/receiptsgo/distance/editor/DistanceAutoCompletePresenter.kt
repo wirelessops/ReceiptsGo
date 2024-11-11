@@ -3,7 +3,7 @@ package com.wops.receiptsgo.distance.editor
 import com.wops.receiptsgo.autocomplete.distance.DistanceAutoCompleteField
 import com.wops.receiptsgo.model.factory.DistanceBuilderFactory
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import javax.inject.Inject
 
 @FragmentScope

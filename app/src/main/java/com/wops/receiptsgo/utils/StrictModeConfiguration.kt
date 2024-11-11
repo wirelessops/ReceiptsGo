@@ -3,7 +3,7 @@ package com.wops.receiptsgo.utils
 import android.os.Build
 import android.os.StrictMode
 import com.wops.receiptsgo.BuildConfig
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import java.util.concurrent.Executors
 import kotlin.math.min
 

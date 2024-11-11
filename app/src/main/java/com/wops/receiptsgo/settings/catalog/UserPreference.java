@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wops.receiptsgo.R;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 public final class UserPreference<T> {
 

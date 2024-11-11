@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import co.smartreceipts.analytics.log.Logger.debug
+import com.wops.analytics.log.Logger.debug
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.LoginSourceDestination
 import com.wops.receiptsgo.activities.NavigationHandler

@@ -18,7 +18,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.IOException;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.imagex.compat.PdfRendererCompat;
 import com.wops.receiptsgo.utils.ImageUtils;
 

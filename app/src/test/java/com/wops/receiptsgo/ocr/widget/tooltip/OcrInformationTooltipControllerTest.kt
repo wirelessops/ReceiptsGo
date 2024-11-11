@@ -2,15 +2,15 @@ package com.wops.receiptsgo.ocr.widget.tooltip
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker
 import com.wops.receiptsgo.tooltip.TooltipView
 import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.tooltip.model.TooltipType
-import co.smartreceipts.core.identity.IdentityManager
+import com.wops.core.identity.IdentityManager
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions

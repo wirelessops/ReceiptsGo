@@ -1,12 +1,12 @@
 package com.wops.receiptsgo.launch
 
 import android.annotation.SuppressLint
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.persistence.LastTripMonitor
 import com.wops.receiptsgo.persistence.database.controllers.impl.DistanceTableController
 import com.wops.receiptsgo.persistence.database.controllers.impl.ReceiptTableController
 import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

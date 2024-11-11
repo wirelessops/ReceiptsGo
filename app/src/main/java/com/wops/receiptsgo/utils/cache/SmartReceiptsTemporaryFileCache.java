@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.log.Logger;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.analytics.log.Logger;
+import com.wops.core.di.scopes.ApplicationScope;
 import wb.android.storage.StorageManager;
 
 /**

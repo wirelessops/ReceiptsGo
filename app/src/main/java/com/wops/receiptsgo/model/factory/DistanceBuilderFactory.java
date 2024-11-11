@@ -12,8 +12,6 @@ import org.joda.money.CurrencyUnit;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -25,8 +23,8 @@ import com.wops.receiptsgo.model.PaymentMethod;
 import com.wops.receiptsgo.model.Price;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.model.utils.CurrencyUtils;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link com.wops.receiptsgo.model.Distance} {@link BuilderFactory}

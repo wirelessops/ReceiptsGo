@@ -2,7 +2,7 @@ package com.wops.receiptsgo.rating
 
 import com.wops.receiptsgo.rating.data.AppRatingModel
 import com.wops.receiptsgo.rating.data.AppRatingStorage
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit

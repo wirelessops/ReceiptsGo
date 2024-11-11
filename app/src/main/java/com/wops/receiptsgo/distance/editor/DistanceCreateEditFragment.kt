@@ -7,8 +7,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.activities.NavigationHandler
 import com.wops.receiptsgo.activities.SmartReceiptsActivity

@@ -13,7 +13,7 @@ import com.wops.receiptsgo.model.factory.CategoryBuilderFactory;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.CategoriesTable;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 
 import static com.wops.receiptsgo.persistence.database.tables.AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID;
 

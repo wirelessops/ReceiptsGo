@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.model.Category;
 import com.wops.receiptsgo.persistence.database.defaults.TableDefaultsCustomizer;
 import com.wops.receiptsgo.persistence.database.tables.adapters.CategoryDatabaseAdapter;

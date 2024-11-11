@@ -7,8 +7,8 @@ import com.wops.receiptsgo.model.*
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
 import com.wops.receiptsgo.model.impl.columns.distance.DistanceColumnDefinitions.ActualDefinition.*
 import com.wops.receiptsgo.settings.UserPreferenceManager
-import co.smartreceipts.core.sync.model.SyncState
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.SyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager
 import java.util.*
 

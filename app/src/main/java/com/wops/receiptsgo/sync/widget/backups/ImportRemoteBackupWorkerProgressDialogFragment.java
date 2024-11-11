@@ -14,15 +14,15 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableController;
 import com.wops.receiptsgo.persistence.database.tables.Table;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.sync.errors.MissingFilesException;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.RemoteBackupMetadata;
 import com.wops.receiptsgo.sync.network.NetworkManager;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;

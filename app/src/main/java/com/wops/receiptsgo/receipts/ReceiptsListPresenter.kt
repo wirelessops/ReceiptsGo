@@ -6,9 +6,9 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.Fragment
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.images.CropImageActivity
 import com.wops.receiptsgo.imports.RequestCodes
@@ -24,7 +24,7 @@ import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableContro
 import com.wops.receiptsgo.receipts.attacher.ReceiptAttachmentManager
 import com.wops.receiptsgo.widget.model.UiIndicator
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

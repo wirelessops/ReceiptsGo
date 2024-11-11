@@ -19,11 +19,11 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.DataPoint;
-import co.smartreceipts.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.DataPoint;
+import com.wops.analytics.events.DefaultDataPointEvent;
+import com.wops.analytics.events.Events;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.ad.AdPresenter;
 import com.wops.receiptsgo.ad.InterstitialAdPresenter;
@@ -52,7 +52,7 @@ import com.wops.receiptsgo.settings.widget.SettingsActivity;
 import com.wops.receiptsgo.subscriptions.SubscriptionsActivity;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.utils.ConfigurableResourceFeature;
-import co.smartreceipts.core.identity.IdentityManager;
+import com.wops.core.identity.IdentityManager;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;

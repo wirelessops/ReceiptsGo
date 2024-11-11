@@ -17,7 +17,7 @@ import com.wops.receiptsgo.widget.tooltip.LegacyTooltipView;
 import com.wops.receiptsgo.widget.tooltip.Tooltip;
 import com.wops.receiptsgo.widget.tooltip.report.backup.BackupNavigator;
 import com.wops.receiptsgo.widget.tooltip.report.generate.GenerateNavigator;
-import co.smartreceipts.core.sync.errors.SyncErrorType;
+import com.wops.core.sync.errors.SyncErrorType;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;

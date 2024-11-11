@@ -1,13 +1,13 @@
 package com.wops.receiptsgo.subscriptions
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.purchases.PurchaseEventsListener
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.source.PurchaseSource
 import com.wops.receiptsgo.purchases.subscriptionFormattedPrice
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
-import co.smartreceipts.core.di.scopes.ActivityScope
-import co.smartreceipts.core.identity.IdentityManager
+import com.wops.core.di.scopes.ActivityScope
+import com.wops.core.identity.IdentityManager
 import javax.inject.Inject
 
 @ActivityScope

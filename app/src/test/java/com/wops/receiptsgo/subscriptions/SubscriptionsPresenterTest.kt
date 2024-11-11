@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.subscriptions
 
 import com.wops.receiptsgo.purchases.model.InAppPurchase
-import co.smartreceipts.core.identity.IdentityManager
+import com.wops.core.identity.IdentityManager
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.ProductDetails.PricingPhase
 import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails

@@ -1,10 +1,10 @@
-package co.smartreceipts.android.di;
+package com.wops.receiptsgo.di;
 
-import co.smartreceipts.android.ad.AdPresenter;
-import co.smartreceipts.android.ad.EmptyBannerAdPresenter;
-import co.smartreceipts.android.ad.EmptyInterstitialAdPresenter;
-import co.smartreceipts.android.ad.InterstitialAdPresenter;
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.receiptsgo.ad.AdPresenter;
+import com.wops.receiptsgo.ad.EmptyBannerAdPresenter;
+import com.wops.receiptsgo.ad.EmptyInterstitialAdPresenter;
+import com.wops.receiptsgo.ad.InterstitialAdPresenter;
+import com.wops.core.di.scopes.ActivityScope;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

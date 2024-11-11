@@ -13,7 +13,7 @@ import com.wops.receiptsgo.model.Distance;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.Renderer;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.impl.PdfGridGenerator;
 

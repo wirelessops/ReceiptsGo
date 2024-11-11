@@ -4,7 +4,7 @@ import com.wops.receiptsgo.model.Price
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.model.factory.PriceBuilderFactory
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.util.*
 
 class ReceiptTax1Column(id: Int, syncState: SyncState, customOrderId: Long, uuid: UUID) :

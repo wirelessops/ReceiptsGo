@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.persistence.database.tables.CSVTable;
 import com.wops.receiptsgo.persistence.database.tables.CategoriesTable;
 import com.wops.receiptsgo.persistence.database.tables.PDFTable;

@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.di;
 
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.rating.data.AppRatingPreferencesStorage;
 import com.wops.receiptsgo.rating.data.AppRatingStorage;
 import com.wops.receiptsgo.widget.tooltip.report.backup.data.BackupReminderPreferencesStorage;

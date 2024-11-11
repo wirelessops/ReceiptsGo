@@ -6,7 +6,7 @@ import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.model.factory.PriceBuilderFactory
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.util.*
 
 /**

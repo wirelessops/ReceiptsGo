@@ -7,11 +7,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import co.smartreceipts.analytics.Analytics;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.config.ConfigurationManager;
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker;
 import com.wops.receiptsgo.utils.ConfigurableResourceFeature;
-import co.smartreceipts.core.identity.IdentityManager;
+import com.wops.core.identity.IdentityManager;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;

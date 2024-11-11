@@ -1,8 +1,8 @@
 package com.wops.receiptsgo.di;
 
 import com.wops.receiptsgo.SmartReceiptsApplication;
-import co.smartreceipts.push.PushManager;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.push.PushManager;
+import com.wops.core.di.scopes.ApplicationScope;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 

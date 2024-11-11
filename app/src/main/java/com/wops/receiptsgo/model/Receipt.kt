@@ -4,8 +4,8 @@ import android.os.Parcelable
 import com.wops.receiptsgo.date.DisplayableDate
 import com.wops.receiptsgo.search.Searchable
 import com.wops.receiptsgo.utils.StrictModeConfiguration
-import co.smartreceipts.core.sync.model.SyncState
-import co.smartreceipts.core.sync.model.Syncable
+import com.wops.core.sync.model.SyncState
+import com.wops.core.sync.model.Syncable
 import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.sql.Date

@@ -1,9 +1,9 @@
 package com.wops.receiptsgo.ocr.widget.configuration
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import javax.inject.Inject
 
 @FragmentScope

@@ -16,10 +16,10 @@ import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
 import com.wops.receiptsgo.imports.intents.widget.IntentImportProvider;
 import com.wops.receiptsgo.sync.widget.backups.ImportLocalBackupDialogFragment;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.widget.model.UiIndicator;
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter;
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.ActivityScope;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

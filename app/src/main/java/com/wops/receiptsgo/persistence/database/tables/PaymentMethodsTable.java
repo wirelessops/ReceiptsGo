@@ -12,7 +12,7 @@ import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByColumn;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByDatabaseDefault;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByOrderingPreference;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 /**
  * Stores all database operations related to the {@link PaymentMethod} model object

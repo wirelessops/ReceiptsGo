@@ -1,11 +1,11 @@
 package com.wops.receiptsgo.trips.navigation
 
 import android.content.Context
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.wops.receiptsgo.persistence.LastTripMonitor
 import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableController
 import com.wops.receiptsgo.utils.ConfigurableStaticFeature
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

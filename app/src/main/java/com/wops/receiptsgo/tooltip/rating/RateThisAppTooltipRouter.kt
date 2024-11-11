@@ -2,7 +2,7 @@ package com.wops.receiptsgo.tooltip.rating
 
 import com.wops.receiptsgo.activities.NavigationHandler
 import com.wops.receiptsgo.activities.SmartReceiptsActivity
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.wops.receiptsgo.rating.FeedbackDialogFragment
 import com.wops.receiptsgo.rating.RatingDialogFragment
 import javax.inject.Inject

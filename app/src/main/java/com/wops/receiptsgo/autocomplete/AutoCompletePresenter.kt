@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.autocomplete
 
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.wops.receiptsgo.widget.mvp.BasePresenter
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

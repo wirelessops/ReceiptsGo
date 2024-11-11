@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.di
 
 import com.wops.receiptsgo.utils.rx.RxSchedulers
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler

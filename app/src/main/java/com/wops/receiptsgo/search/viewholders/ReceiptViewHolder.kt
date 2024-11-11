@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.databinding.ItemReceiptCardBinding
 import com.wops.receiptsgo.model.Receipt
-import co.smartreceipts.core.sync.provider.SyncProvider
+import com.wops.core.sync.provider.SyncProvider
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
 

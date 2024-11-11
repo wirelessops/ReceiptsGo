@@ -9,7 +9,7 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import java.io.File;
 import java.io.IOException;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.imagex.PdfPDImageXFactory;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.imagex.PdfPDImageXFactoryFactory;
 

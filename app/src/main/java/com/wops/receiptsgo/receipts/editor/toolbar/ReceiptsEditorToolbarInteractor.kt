@@ -2,12 +2,12 @@ package com.wops.receiptsgo.receipts.editor.toolbar
 
 import android.content.Context
 import com.wops.receiptsgo.R
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.persistence.DatabaseHelper
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.receipts.editor.toolbar
 
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.wops.receiptsgo.editor.Editor
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.widget.mvp.BasePresenter

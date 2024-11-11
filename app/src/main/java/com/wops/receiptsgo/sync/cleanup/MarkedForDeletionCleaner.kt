@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.sync.cleanup
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.persistence.PersistenceManager
 import com.wops.receiptsgo.persistence.database.controllers.impl.ReceiptTableController
@@ -8,8 +8,8 @@ import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMeta
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable
 import com.wops.receiptsgo.sync.provider.SyncProviderStore
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.sync.provider.SyncProvider
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.core.sync.provider.SyncProvider
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers

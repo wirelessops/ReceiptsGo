@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.core.di.scopes.FragmentScope;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;

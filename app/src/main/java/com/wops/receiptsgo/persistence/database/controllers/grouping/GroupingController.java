@@ -30,7 +30,7 @@ import com.wops.receiptsgo.persistence.database.controllers.grouping.results.Sum
 import com.wops.receiptsgo.persistence.database.controllers.grouping.results.SumReimbursementGroupingResult;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;

@@ -17,7 +17,7 @@ import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.databinding.SimpleRecyclerViewBinding;
 import com.wops.receiptsgo.model.Draggable;
 import com.wops.receiptsgo.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 /**
  * Base fragment witch supports Reordering mode and contains toolbar with Add and Reorder/Save options

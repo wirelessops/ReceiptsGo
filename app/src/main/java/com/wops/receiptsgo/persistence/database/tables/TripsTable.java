@@ -15,7 +15,7 @@ import com.wops.receiptsgo.persistence.database.tables.adapters.SyncStateAdapter
 import com.wops.receiptsgo.persistence.database.tables.adapters.TripDatabaseAdapter;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByColumn;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import wb.android.storage.StorageManager;
 
 public class TripsTable extends AbstractSqlTable<Trip> {

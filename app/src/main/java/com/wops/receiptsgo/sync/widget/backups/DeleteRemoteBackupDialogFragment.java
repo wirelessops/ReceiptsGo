@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.activities.NavigationHandler;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.RemoteBackupMetadata;
 import dagger.android.support.AndroidSupportInjection;
 
 public class DeleteRemoteBackupDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {

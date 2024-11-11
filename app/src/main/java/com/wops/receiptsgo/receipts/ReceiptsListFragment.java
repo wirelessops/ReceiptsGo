@@ -25,9 +25,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.Events;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.activities.NavigationHandler;
 import com.wops.receiptsgo.databinding.ReportReceiptsFragmentBinding;

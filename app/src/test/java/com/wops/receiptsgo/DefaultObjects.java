@@ -30,13 +30,13 @@ import com.wops.receiptsgo.model.factory.PaymentMethodBuilderFactory;
 import com.wops.receiptsgo.model.gson.ExchangeRate;
 import com.wops.receiptsgo.model.impl.SinglePriceImpl;
 import com.wops.receiptsgo.model.utils.CurrencyUtils;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
-import co.smartreceipts.core.sync.model.impl.Identifier;
-import co.smartreceipts.core.sync.model.impl.IdentifierMap;
-import co.smartreceipts.core.sync.model.impl.MarkedForDeletionMap;
-import co.smartreceipts.core.sync.model.impl.SyncStatusMap;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.impl.Identifier;
+import com.wops.core.sync.model.impl.IdentifierMap;
+import com.wops.core.sync.model.impl.MarkedForDeletionMap;
+import com.wops.core.sync.model.impl.SyncStatusMap;
+import com.wops.core.sync.provider.SyncProvider;
 
 public class DefaultObjects {
 

@@ -16,7 +16,7 @@ import com.wops.receiptsgo.model.PaymentMethod;
 import com.wops.receiptsgo.model.factory.PaymentMethodBuilderFactory;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

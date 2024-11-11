@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.model.impl.columns
 
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.util.*
 
 /**

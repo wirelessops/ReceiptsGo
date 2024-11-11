@@ -32,7 +32,7 @@ import com.wops.receiptsgo.persistence.database.defaults.TableDefaultsCustomizer
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager;
 
 import static com.wops.receiptsgo.persistence.database.tables.AbstractColumnTable.COLUMN_ID;

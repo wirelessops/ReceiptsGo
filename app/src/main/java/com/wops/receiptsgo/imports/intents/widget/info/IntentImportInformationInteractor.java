@@ -19,7 +19,7 @@ import com.wops.receiptsgo.permissions.PermissionRequester;
 import com.wops.receiptsgo.permissions.PermissionStatusChecker;
 import com.wops.receiptsgo.permissions.exceptions.PermissionsNotGrantedException;
 import com.wops.receiptsgo.widget.model.UiIndicator;
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.ActivityScope;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;

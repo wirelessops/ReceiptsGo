@@ -15,17 +15,17 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.sync.errors.CriticalSyncError;
-import co.smartreceipts.core.sync.errors.SyncErrorType;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
-import co.smartreceipts.core.sync.model.impl.Identifier;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.core.sync.errors.CriticalSyncError;
+import com.wops.core.sync.errors.SyncErrorType;
+import com.wops.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.impl.Identifier;
 import com.wops.receiptsgo.sync.network.NetworkManager;
 import com.wops.receiptsgo.sync.network.SupportedNetworkType;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import com.wops.receiptsgo.sync.provider.SyncProviderFactory;
 import com.wops.receiptsgo.sync.provider.SyncProviderStore;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.persistence.PersistenceManager;
@@ -22,7 +22,7 @@ import com.wops.receiptsgo.persistence.database.controllers.TableEventsListener;
 import com.wops.receiptsgo.persistence.database.controllers.alterations.ReceiptTableActionAlterations;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;

@@ -18,7 +18,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.File;
 
-import co.smartreceipts.analytics.Analytics;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
 import io.reactivex.observers.TestObserver;

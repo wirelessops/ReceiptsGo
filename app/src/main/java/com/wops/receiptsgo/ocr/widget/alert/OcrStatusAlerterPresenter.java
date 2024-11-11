@@ -10,9 +10,9 @@ import com.google.common.base.Preconditions;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.R;
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.core.di.scopes.FragmentScope;
 import com.wops.receiptsgo.ocr.OcrManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.widget.model.UiIndicator;
 import com.wops.receiptsgo.widget.mvp.BasePresenter;
 import io.reactivex.Scheduler;

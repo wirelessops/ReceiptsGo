@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.VisibleForTesting
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.analytics.log.Logger
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.analytics.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Maybe
 import io.reactivex.Observable

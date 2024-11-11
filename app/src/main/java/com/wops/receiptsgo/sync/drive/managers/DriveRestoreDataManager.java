@@ -16,18 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.persistence.database.restore.DatabaseRestorer;
 import com.wops.receiptsgo.persistence.database.tables.AbstractSqlTable;
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable;
 import com.wops.receiptsgo.persistence.database.tables.TripsTable;
 import com.wops.receiptsgo.sync.errors.MissingFilesException;
-import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
-import co.smartreceipts.automatic_backups.drive.managers.DriveDownloader;
-import co.smartreceipts.core.persistence.DatabaseConstants;
-import co.smartreceipts.core.sync.model.RemoteBackupMetadata;
-import co.smartreceipts.core.sync.model.impl.Identifier;
+import com.wops.automatic_backups.drive.managers.DriveDatabaseManager;
+import com.wops.automatic_backups.drive.managers.DriveDownloader;
+import com.wops.core.persistence.DatabaseConstants;
+import com.wops.core.sync.model.RemoteBackupMetadata;
+import com.wops.core.sync.model.impl.Identifier;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

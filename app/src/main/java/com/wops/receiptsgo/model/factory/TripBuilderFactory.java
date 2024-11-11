@@ -19,8 +19,8 @@ import com.wops.receiptsgo.model.AutoCompleteMetadata;
 import com.wops.receiptsgo.model.Keyed;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.model.utils.CurrencyUtils;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link com.wops.receiptsgo.model.Trip} {@link BuilderFactory}

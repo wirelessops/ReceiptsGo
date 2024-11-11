@@ -7,7 +7,7 @@ import com.hadisatrio.optional.Optional;
 import java.sql.Date;
 import java.util.TimeZone;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.autocomplete.receipt.ReceiptAutoCompleteField;
 import com.wops.receiptsgo.model.Category;
 import com.wops.receiptsgo.model.PaymentMethod;

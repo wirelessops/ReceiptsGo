@@ -3,7 +3,7 @@ package com.wops.receiptsgo.model.impl.columns.distance
 import com.wops.receiptsgo.model.Distance
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
 import com.wops.receiptsgo.model.utils.ModelUtils
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.math.BigDecimal
 
 class DistanceDistanceColumn(id: Int, syncState: SyncState) : AbstractColumnImpl<Distance>(

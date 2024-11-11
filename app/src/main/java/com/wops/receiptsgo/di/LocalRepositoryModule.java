@@ -3,7 +3,7 @@ package com.wops.receiptsgo.di;
 import android.content.Context;
 
 import com.wops.receiptsgo.database.DatabaseContext;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.model.ColumnDefinitions;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions;

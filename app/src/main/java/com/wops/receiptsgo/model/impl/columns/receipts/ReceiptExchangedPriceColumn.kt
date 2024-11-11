@@ -3,7 +3,7 @@ package com.wops.receiptsgo.model.impl.columns.receipts
 import android.content.Context
 import com.wops.receiptsgo.model.Price
 import com.wops.receiptsgo.model.Receipt
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.util.*
 
 /**

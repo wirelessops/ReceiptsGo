@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import co.smartreceipts.analytics.log.Logger.debug
-import co.smartreceipts.analytics.log.Logger.error
+import com.wops.analytics.log.Logger.debug
+import com.wops.analytics.log.Logger.error
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.fragments.ReportInfoFragment
 import com.wops.receiptsgo.images.CropImageActivity
@@ -32,7 +32,7 @@ import com.wops.receiptsgo.settings.widget.SettingsActivity
 import com.wops.receiptsgo.settings.widget.SettingsViewerActivity
 import com.wops.receiptsgo.subscriptions.SubscriptionsActivity
 import com.wops.receiptsgo.utils.IntentUtils
-import co.smartreceipts.core.di.scopes.ActivityScope
+import com.wops.core.di.scopes.ActivityScope
 import com.google.common.base.Preconditions
 import java.io.File
 import java.lang.ref.WeakReference

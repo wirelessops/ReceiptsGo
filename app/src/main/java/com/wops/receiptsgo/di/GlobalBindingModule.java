@@ -27,8 +27,8 @@ import com.wops.receiptsgo.sync.widget.backups.ExportBackupWorkerProgressDialogF
 import com.wops.receiptsgo.sync.widget.backups.ImportLocalBackupWorkerProgressDialogFragment;
 import com.wops.receiptsgo.sync.widget.backups.ImportRemoteBackupWorkerProgressDialogFragment;
 import com.wops.receiptsgo.sync.widget.backups.RenameRemoteBackupProgressDialogFragment;
-import co.smartreceipts.core.di.scopes.ActivityScope;
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.FragmentScope;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

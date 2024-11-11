@@ -13,7 +13,7 @@ import com.wops.receiptsgo.date.DateFormatter;
 import com.wops.receiptsgo.filters.Filter;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.workers.reports.TableGenerator;
 import com.wops.receiptsgo.workers.reports.pdf.colors.PdfColorStyle;
 import com.wops.receiptsgo.workers.reports.pdf.fonts.PdfFontSpec;

@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.BuildConfig;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.activities.NavigationHandler;
@@ -46,7 +46,7 @@ import com.wops.receiptsgo.sync.BackupProvidersManager;
 import com.wops.receiptsgo.sync.network.NetworkManager;
 import com.wops.receiptsgo.sync.network.SupportedNetworkType;
 import com.wops.receiptsgo.utils.ConfigurableResourceFeature;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 

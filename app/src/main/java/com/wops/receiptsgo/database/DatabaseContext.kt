@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.database.DatabaseErrorHandler
 import android.database.sqlite.SQLiteDatabase
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.persistence.DatabaseConstants
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.core.persistence.DatabaseConstants
 import wb.android.storage.StorageManager
 import java.io.File
 import javax.inject.Inject

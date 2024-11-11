@@ -2,7 +2,7 @@ package com.wops.receiptsgo.model.impl.columns.receipts
 
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import okhttp3.internal.and
 import java.io.File
 import java.io.FileInputStream

@@ -16,7 +16,7 @@ import com.wops.receiptsgo.persistence.database.controllers.TableController;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.settings.widget.editors.EditableItemListener;
 import com.wops.receiptsgo.settings.widget.editors.adapters.DraggableEditableCardsAdapter;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 public class PaymentMethodsAdapter extends DraggableEditableCardsAdapter<PaymentMethod> {
 

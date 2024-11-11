@@ -9,14 +9,14 @@ import java.io.File;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.database.DatabaseContext;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.persistence.database.defaults.TableDefaultsCustomizer;
 import com.wops.receiptsgo.persistence.database.tables.Table;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
 import wb.android.storage.StorageManager;

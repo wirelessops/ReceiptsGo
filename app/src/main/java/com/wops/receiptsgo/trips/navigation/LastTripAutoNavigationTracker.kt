@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.trips.navigation
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import javax.inject.Inject
 
 /**

@@ -1,14 +1,14 @@
-package co.smartreceipts.android.di;
+package com.wops.receiptsgo.di;
 
 import android.content.Context;
 
-import co.smartreceipts.android.config.ConfigurationManager;
-import co.smartreceipts.android.config.DefaultConfigurationManager;
-import co.smartreceipts.android.model.impl.columns.receipts.ReceiptColumnDefinitions;
-import co.smartreceipts.android.persistence.database.defaults.DefaultTableDefaultCustomizerImpl;
-import co.smartreceipts.android.persistence.database.defaults.TableDefaultsCustomizer;
-import co.smartreceipts.android.persistence.database.defaults.WhiteLabelFriendlyTableDefaultsCustomizer;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.receiptsgo.config.ConfigurationManager;
+import com.wops.receiptsgo.config.DefaultConfigurationManager;
+import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions;
+import com.wops.receiptsgo.persistence.database.defaults.DefaultTableDefaultCustomizerImpl;
+import com.wops.receiptsgo.persistence.database.defaults.TableDefaultsCustomizer;
+import com.wops.receiptsgo.persistence.database.defaults.WhiteLabelFriendlyTableDefaultsCustomizer;
+import com.wops.core.di.scopes.ApplicationScope;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

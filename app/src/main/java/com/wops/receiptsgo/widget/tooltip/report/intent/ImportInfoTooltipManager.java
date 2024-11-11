@@ -10,7 +10,7 @@ import com.wops.receiptsgo.imports.intents.IntentImportProcessor;
 import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.widget.IntentImportProvider;
 import com.wops.receiptsgo.widget.tooltip.TooltipManager;
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.ActivityScope;
 import io.reactivex.Observable;
 
 @ActivityScope

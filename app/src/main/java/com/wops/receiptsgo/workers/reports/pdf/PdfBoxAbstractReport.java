@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.date.DateFormatter;
 import com.wops.receiptsgo.model.Distance;
 import com.wops.receiptsgo.model.Receipt;

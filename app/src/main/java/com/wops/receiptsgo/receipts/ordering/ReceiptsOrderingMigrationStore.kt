@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.receipts.ordering
 
 import android.content.SharedPreferences
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import dagger.Lazy
 import io.reactivex.Single
 import javax.inject.Inject

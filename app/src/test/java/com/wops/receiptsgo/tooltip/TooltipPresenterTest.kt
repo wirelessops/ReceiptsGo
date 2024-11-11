@@ -2,7 +2,7 @@ package com.wops.receiptsgo.tooltip
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import co.smartreceipts.analytics.Analytics
+import com.wops.analytics.Analytics
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata

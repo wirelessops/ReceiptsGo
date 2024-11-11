@@ -2,7 +2,7 @@ package com.wops.receiptsgo.purchases.plus
 
 import android.content.Context
 import com.wops.receiptsgo.R
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet
 import wb.android.flex.Flex

@@ -20,8 +20,8 @@ import java.sql.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.Events;
 import com.wops.receiptsgo.apis.ExchangeRateService;
 import com.wops.receiptsgo.config.ConfigurationManager;
 import com.wops.receiptsgo.model.factory.ExchangeRateBuilderFactory;

@@ -1,11 +1,11 @@
 package com.wops.receiptsgo.purchases.subscriptions
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.apis.WebServiceManager
 import com.wops.receiptsgo.purchases.apis.subscriptions.SubscriptionsApiService
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.identity.IdentityManager
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.core.identity.IdentityManager
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single

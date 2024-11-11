@@ -2,9 +2,9 @@ package com.wops.receiptsgo.identity.widget.account
 
 import com.wops.receiptsgo.activities.NavigationHandler
 import com.wops.receiptsgo.activities.SmartReceiptsActivity
-import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.core.identity.IdentityManager
-import co.smartreceipts.analytics.log.Logger
+import com.wops.core.di.scopes.FragmentScope
+import com.wops.core.identity.IdentityManager
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.activities.LoginSourceDestination
 import javax.inject.Inject
 

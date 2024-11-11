@@ -3,7 +3,7 @@ package com.wops.receiptsgo.model.impl.columns
 import com.wops.receiptsgo.model.ActualColumnDefinition
 import com.wops.receiptsgo.model.Column
 import com.wops.receiptsgo.model.Keyed
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.util.*
 
 /**

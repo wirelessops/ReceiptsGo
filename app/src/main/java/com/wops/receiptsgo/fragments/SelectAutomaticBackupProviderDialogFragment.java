@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.databinding.DialogSelectAutomaticBackupProviderBinding;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import dagger.android.support.AndroidSupportInjection;
 
 public class SelectAutomaticBackupProviderDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {

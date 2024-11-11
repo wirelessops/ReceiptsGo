@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.widget.mvp.BasePresenter;
 
 /**

@@ -5,7 +5,7 @@ import com.wops.receiptsgo.purchases.apis.subscriptions.SubscriptionsApiResponse
 import com.wops.receiptsgo.purchases.apis.subscriptions.SubscriptionsApiService
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet
-import co.smartreceipts.core.identity.IdentityManager
+import com.wops.core.identity.IdentityManager
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever

@@ -1,13 +1,13 @@
 package com.wops.receiptsgo.sync.drive.rx
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.sync.drive.managers.DriveReceiptsManager
 import com.wops.receiptsgo.sync.drive.managers.DriveRestoreDataManager
 import com.wops.receiptsgo.sync.drive.managers.GoogleDriveTableManager
 import com.wops.receiptsgo.sync.network.NetworkManager
 import com.wops.receiptsgo.sync.network.NetworkStateChangeListener
-import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager
-import co.smartreceipts.automatic_backups.drive.rx.DriveStreamsManager
+import com.wops.automatic_backups.drive.managers.DriveDatabaseManager
+import com.wops.automatic_backups.drive.rx.DriveStreamsManager
 import io.reactivex.disposables.CompositeDisposable
 
 /**

@@ -12,10 +12,10 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.Events;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.Events;
 import com.wops.receiptsgo.autocomplete.trip.TripAutoCompleteField;
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.core.di.scopes.FragmentScope;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.model.factory.TripBuilderFactory;
 import com.wops.receiptsgo.persistence.DatabaseHelper;

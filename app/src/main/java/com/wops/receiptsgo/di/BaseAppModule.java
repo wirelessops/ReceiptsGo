@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.wops.receiptsgo.SmartReceiptsApplication;
 import com.wops.receiptsgo.autocomplete.di.AutoCompleteModule;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import dagger.Module;
 import dagger.Provides;
 

@@ -5,11 +5,11 @@ import android.content.Context
 import androidx.annotation.AnyThread
 import androidx.core.content.pm.PackageInfoCompat
 import android.util.Pair
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.utils.rx.RxSchedulers
 import io.reactivex.Observable
 import io.reactivex.Scheduler

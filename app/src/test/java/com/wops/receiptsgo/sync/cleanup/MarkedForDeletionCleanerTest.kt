@@ -5,7 +5,7 @@ import com.wops.receiptsgo.persistence.database.controllers.impl.ReceiptTableCon
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable
-import co.smartreceipts.core.sync.provider.SyncProvider
+import com.wops.core.sync.provider.SyncProvider
 import com.wops.receiptsgo.sync.provider.SyncProviderStore
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions

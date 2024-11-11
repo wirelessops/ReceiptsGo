@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 abstract class AbstractNetworkProvider implements NetworkProvider {
 

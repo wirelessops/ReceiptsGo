@@ -9,16 +9,16 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.DataPoint;
-import co.smartreceipts.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.analytics.events.Events;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.DataPoint;
+import com.wops.analytics.events.DefaultDataPointEvent;
+import com.wops.analytics.events.Events;
 import com.wops.receiptsgo.config.ConfigurationManager;
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker;
 import com.wops.receiptsgo.utils.ConfigurableResourceFeature;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.identity.IdentityManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.core.identity.IdentityManager;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;

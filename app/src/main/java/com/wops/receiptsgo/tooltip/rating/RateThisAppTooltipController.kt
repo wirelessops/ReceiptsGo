@@ -3,9 +3,9 @@ package com.wops.receiptsgo.tooltip.rating
 import android.content.Context
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.rating.AppRatingManager
 import com.wops.receiptsgo.tooltip.TooltipController
@@ -13,7 +13,7 @@ import com.wops.receiptsgo.tooltip.TooltipView
 import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.tooltip.model.TooltipType
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Single

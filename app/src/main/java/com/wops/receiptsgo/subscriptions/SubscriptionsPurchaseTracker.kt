@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.subscriptions
 
 import androidx.annotation.CheckResult
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.purchases.PurchaseEventsListener
 import com.wops.receiptsgo.purchases.PurchaseManager
 import com.wops.receiptsgo.purchases.model.InAppPurchase
@@ -10,9 +10,9 @@ import com.wops.receiptsgo.purchases.model.Subscription
 import com.wops.receiptsgo.purchases.source.PurchaseSource
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet
 import com.wops.receiptsgo.sync.BackupProvidersManager
-import co.smartreceipts.core.di.scopes.ApplicationScope
-import co.smartreceipts.core.identity.IdentityManager
-import co.smartreceipts.core.sync.provider.SyncProvider
+import com.wops.core.di.scopes.ApplicationScope
+import com.wops.core.identity.IdentityManager
+import com.wops.core.sync.provider.SyncProvider
 import dagger.Lazy
 import io.reactivex.Completable
 import io.reactivex.Scheduler

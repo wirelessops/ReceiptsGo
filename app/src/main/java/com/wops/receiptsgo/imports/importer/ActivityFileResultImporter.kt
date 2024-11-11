@@ -2,12 +2,12 @@ package com.wops.receiptsgo.imports.importer
 
 import android.net.Uri
 import androidx.annotation.VisibleForTesting
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.ErrorEvent
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.ErrorEvent
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.imports.FileImportProcessorFactory
 import com.wops.receiptsgo.model.Trip
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Observable
 import io.reactivex.Scheduler

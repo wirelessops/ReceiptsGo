@@ -24,8 +24,8 @@ import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMeta
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable;
 import com.wops.receiptsgo.receipts.ordering.ReceiptsOrderer;
 import com.wops.receiptsgo.utils.FileUtils;
-import co.smartreceipts.core.utils.UriUtils;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.utils.UriUtils;
+import com.wops.analytics.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;

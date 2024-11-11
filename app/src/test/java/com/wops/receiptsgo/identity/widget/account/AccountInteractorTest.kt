@@ -8,9 +8,9 @@ import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscriptionManager
-import co.smartreceipts.core.identity.IdentityManager
-import co.smartreceipts.core.identity.store.EmailAddress
-import co.smartreceipts.core.identity.store.UserId
+import com.wops.core.identity.IdentityManager
+import com.wops.core.identity.store.EmailAddress
+import com.wops.core.identity.store.UserId
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Completable

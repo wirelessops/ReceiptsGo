@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.subscriptions
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.apis.SmartReceiptsApiException
 import com.wops.receiptsgo.apis.WebServiceManager
 import com.wops.receiptsgo.purchases.apis.purchases.MobileAppPurchasesService
@@ -9,7 +9,7 @@ import com.wops.receiptsgo.purchases.apis.purchases.PurchaseResponse
 import com.wops.receiptsgo.purchases.model.ManagedProduct
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscriptionManager
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.android.billingclient.api.Purchase
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers

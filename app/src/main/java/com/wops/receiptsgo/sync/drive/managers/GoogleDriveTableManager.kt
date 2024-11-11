@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.sync.drive.managers
 
-import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager
+import com.wops.automatic_backups.drive.managers.DriveDatabaseManager
 
 interface GoogleDriveTableManager {
 

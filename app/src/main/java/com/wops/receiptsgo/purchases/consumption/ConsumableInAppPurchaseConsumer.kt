@@ -3,7 +3,7 @@ package com.wops.receiptsgo.purchases.consumption
 import com.wops.receiptsgo.purchases.PurchaseManager
 import com.wops.receiptsgo.purchases.model.ConsumablePurchase
 import com.wops.receiptsgo.purchases.model.PurchaseFamily
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import io.reactivex.Completable
 import javax.inject.Inject
 

@@ -6,8 +6,8 @@ import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.automatic_backups.drive.managers.DriveDatabaseManager;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.model.Category;
 import com.wops.receiptsgo.model.Column;
 import com.wops.receiptsgo.model.Distance;

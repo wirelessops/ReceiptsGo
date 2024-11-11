@@ -2,7 +2,7 @@ package com.wops.receiptsgo.tooltip.backup
 
 import com.wops.receiptsgo.activities.NavigationHandler
 import com.wops.receiptsgo.activities.SmartReceiptsActivity
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import javax.inject.Inject
 
 

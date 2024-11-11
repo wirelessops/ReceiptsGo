@@ -2,7 +2,7 @@ package com.wops.receiptsgo.receipts.ordering
 
 import android.annotation.SuppressLint
 import com.wops.receiptsgo.date.DateUtils
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Receipt
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.model.factory.ReceiptBuilderFactory
@@ -12,7 +12,7 @@ import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMeta
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager
 import com.wops.receiptsgo.receipts.ordering.ReceiptsOrderer.OrderingType.*
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler

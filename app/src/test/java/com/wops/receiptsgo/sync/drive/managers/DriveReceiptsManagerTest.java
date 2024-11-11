@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 
-import co.smartreceipts.analytics.Analytics;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.model.factory.ReceiptBuilderFactory;
@@ -25,13 +25,13 @@ import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMeta
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.ReceiptsTable;
 import com.wops.receiptsgo.persistence.database.tables.TripsTable;
-import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
-import co.smartreceipts.automatic_backups.drive.rx.DriveStreamMappings;
-import co.smartreceipts.automatic_backups.drive.rx.DriveStreamsManager;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.Identifier;
+import com.wops.automatic_backups.drive.managers.DriveDatabaseManager;
+import com.wops.automatic_backups.drive.rx.DriveStreamMappings;
+import com.wops.automatic_backups.drive.rx.DriveStreamsManager;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.Identifier;
 import com.wops.receiptsgo.sync.network.NetworkManager;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 

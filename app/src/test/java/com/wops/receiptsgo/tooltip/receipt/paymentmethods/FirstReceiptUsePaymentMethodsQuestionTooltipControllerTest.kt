@@ -2,8 +2,8 @@ package com.wops.receiptsgo.tooltip.receipt.paymentmethods
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.columns.ordering.CsvColumnsOrderer
 import com.wops.receiptsgo.columns.ordering.PdfColumnsOrderer

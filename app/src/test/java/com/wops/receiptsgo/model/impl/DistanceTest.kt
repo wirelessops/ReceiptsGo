@@ -6,12 +6,11 @@ import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.model.factory.DistanceBuilderFactory
 import com.wops.receiptsgo.utils.TestLocaleToggler
 import com.wops.receiptsgo.utils.testParcel
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.IsNot.not
 import org.joda.money.CurrencyUnit
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

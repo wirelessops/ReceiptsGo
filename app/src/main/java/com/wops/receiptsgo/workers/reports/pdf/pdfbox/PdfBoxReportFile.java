@@ -19,7 +19,7 @@ import com.wops.receiptsgo.persistence.database.controllers.grouping.results.Cat
 import com.wops.receiptsgo.persistence.database.controllers.grouping.results.SumCategoryGroupingResult;
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager;
 import com.wops.receiptsgo.workers.reports.pdf.PdfReportFile;
 import com.wops.receiptsgo.workers.reports.pdf.colors.PdfColorManager;

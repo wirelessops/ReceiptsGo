@@ -19,17 +19,17 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.DataPoint;
-import co.smartreceipts.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.DataPoint;
+import com.wops.analytics.events.DefaultDataPointEvent;
+import com.wops.analytics.events.Events;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.purchases.lifecycle.PurchaseManagerActivityLifecycleCallbacks;
 import com.wops.receiptsgo.purchases.model.ConsumablePurchase;
 import com.wops.receiptsgo.purchases.model.InAppPurchase;
 import com.wops.receiptsgo.purchases.model.ManagedProduct;
 import com.wops.receiptsgo.purchases.source.PurchaseSource;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

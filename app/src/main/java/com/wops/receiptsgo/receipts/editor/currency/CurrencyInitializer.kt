@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.receipts.editor.currency
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.model.utils.CurrencyUtils
 import org.joda.money.CurrencyUnit
 import org.joda.money.IllegalCurrencyException

@@ -9,7 +9,7 @@ import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableContro
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable

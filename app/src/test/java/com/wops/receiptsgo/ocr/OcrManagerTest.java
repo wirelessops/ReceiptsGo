@@ -13,8 +13,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.File;
 
-import co.smartreceipts.push.PushManagerImpl;
-import co.smartreceipts.analytics.Analytics;
+import com.wops.push.PushManagerImpl;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.apis.WebServiceManager;
 import com.wops.receiptsgo.config.ConfigurationManager;
 import com.wops.receiptsgo.ocr.apis.OcrService;
@@ -22,14 +22,14 @@ import com.wops.receiptsgo.ocr.apis.model.OcrResponse;
 import com.wops.receiptsgo.ocr.apis.model.RecognitionRequest;
 import com.wops.receiptsgo.ocr.apis.model.RecognitionResponse;
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker;
-import co.smartreceipts.push.ocr.OcrPushMessageReceiver;
-import co.smartreceipts.push.ocr.OcrPushMessageReceiverFactory;
+import com.wops.push.ocr.OcrPushMessageReceiver;
+import com.wops.push.ocr.OcrPushMessageReceiverFactory;
 import com.wops.receiptsgo.ocr.widget.tooltip.OcrInformationalTooltipInteractor;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;
 import com.wops.receiptsgo.utils.ConfigurableResourceFeature;
-import co.smartreceipts.aws.s3.S3Manager;
-import co.smartreceipts.core.identity.IdentityManager;
+import com.wops.aws.s3.S3Manager;
+import com.wops.core.identity.IdentityManager;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 

@@ -1,9 +1,9 @@
 package com.wops.receiptsgo.identity.organization
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable

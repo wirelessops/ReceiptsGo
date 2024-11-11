@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.columns.ordering
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions
 import com.wops.receiptsgo.persistence.database.controllers.impl.CSVTableController
 import com.wops.receiptsgo.utils.rx.RxSchedulers

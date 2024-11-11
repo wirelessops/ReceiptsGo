@@ -7,8 +7,8 @@ import androidx.annotation.VisibleForTesting
 import com.wops.receiptsgo.imports.exceptions.InvalidPdfException
 import com.wops.receiptsgo.imports.utils.PdfValidator
 import com.wops.receiptsgo.model.Trip
-import co.smartreceipts.core.utils.UriUtils
-import co.smartreceipts.analytics.log.Logger
+import com.wops.core.utils.UriUtils
+import com.wops.analytics.log.Logger
 import io.reactivex.Single
 import wb.android.storage.StorageManager
 import java.io.File

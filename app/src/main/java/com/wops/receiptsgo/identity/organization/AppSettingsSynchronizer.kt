@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.identity.organization
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.identity.apis.organizations.AppSettings
 import com.wops.receiptsgo.identity.apis.organizations.Configurations
 import com.wops.receiptsgo.model.*
@@ -10,7 +10,7 @@ import com.wops.receiptsgo.persistence.database.controllers.impl.CategoriesTable
 import com.wops.receiptsgo.persistence.database.controllers.impl.PDFTableController
 import com.wops.receiptsgo.persistence.database.controllers.impl.PaymentMethodsTableController
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function5

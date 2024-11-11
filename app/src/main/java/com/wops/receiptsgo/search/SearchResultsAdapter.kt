@@ -10,7 +10,7 @@ import com.wops.receiptsgo.search.viewholders.HeaderItem
 import com.wops.receiptsgo.search.viewholders.HeaderViewHolder
 import com.wops.receiptsgo.search.viewholders.ReceiptViewHolder
 import com.wops.receiptsgo.search.viewholders.TripViewHolder
-import co.smartreceipts.core.sync.provider.SyncProvider
+import com.wops.core.sync.provider.SyncProvider
 import com.squareup.picasso.Transformation
 
 class SearchResultsAdapter(

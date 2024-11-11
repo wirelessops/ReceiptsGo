@@ -2,7 +2,7 @@ package com.wops.receiptsgo.utils;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 
 /**
  * This enables us to handle uncaught exceptions in a customizable manner. This is needed to fix a bug with Google Play

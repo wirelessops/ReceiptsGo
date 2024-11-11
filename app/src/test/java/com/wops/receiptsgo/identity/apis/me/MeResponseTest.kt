@@ -4,7 +4,7 @@ import com.wops.receiptsgo.apis.gson.SmartReceiptsGsonBuilder
 import com.wops.receiptsgo.date.Iso8601DateFormat
 import com.wops.receiptsgo.model.ColumnDefinitions
 import com.wops.receiptsgo.model.Receipt
-import co.smartreceipts.core.identity.apis.me.MeResponse
+import com.wops.core.identity.apis.me.MeResponse
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before

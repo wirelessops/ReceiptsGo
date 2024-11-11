@@ -7,10 +7,10 @@ import java.sql.Date;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.sync.BackupProvidersManager;
-import co.smartreceipts.core.sync.provider.SyncProvider;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.sync.provider.SyncProvider;
+import com.wops.analytics.log.Logger;
 
 @ApplicationScope
 public class BackupReminderPreferencesStorage implements BackupReminderTooltipStorage {

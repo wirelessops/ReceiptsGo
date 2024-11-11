@@ -4,8 +4,8 @@ import android.os.Parcelable
 import com.wops.receiptsgo.adapters.DistanceListItem
 import com.wops.receiptsgo.date.DisplayableDate
 import com.wops.receiptsgo.model.utils.ModelUtils
-import co.smartreceipts.core.sync.model.SyncState
-import co.smartreceipts.core.sync.model.Syncable
+import com.wops.core.sync.model.SyncState
+import com.wops.core.sync.model.Syncable
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 import java.sql.Date

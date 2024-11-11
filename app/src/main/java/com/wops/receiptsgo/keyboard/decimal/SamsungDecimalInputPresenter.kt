@@ -2,15 +2,14 @@ package com.wops.receiptsgo.keyboard.decimal
 
 import android.content.Context
 import android.provider.Settings
-import co.smartreceipts.core.di.scopes.FragmentScope
-import co.smartreceipts.analytics.log.Logger
+import com.wops.core.di.scopes.FragmentScope
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.model.utils.ModelUtils
 import com.wops.receiptsgo.widget.mvp.BasePresenter
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.text.DecimalFormatSymbols
 import javax.inject.Inject
 
 

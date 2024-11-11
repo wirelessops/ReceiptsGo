@@ -13,7 +13,7 @@ import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.persistence.database.defaults.TableDefaultsCustomizer;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Single;
 import wb.android.storage.StorageManager;
 

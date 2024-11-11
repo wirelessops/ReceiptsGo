@@ -17,15 +17,15 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.DataPoint;
-import co.smartreceipts.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.analytics.events.Events;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.DataPoint;
+import com.wops.analytics.events.DefaultDataPointEvent;
+import com.wops.analytics.events.Events;
 import com.wops.receiptsgo.imports.intents.model.FileType;
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult;
-import co.smartreceipts.core.utils.UriUtils;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.utils.UriUtils;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

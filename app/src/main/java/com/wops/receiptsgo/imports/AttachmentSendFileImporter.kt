@@ -1,8 +1,8 @@
 package com.wops.receiptsgo.imports
 
 import android.content.Context
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.ErrorEvent
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.ErrorEvent
 import com.wops.receiptsgo.imports.intents.model.FileType
 import com.wops.receiptsgo.imports.intents.model.IntentImportResult
 import com.wops.receiptsgo.model.Receipt
@@ -11,7 +11,7 @@ import com.wops.receiptsgo.model.factory.ReceiptBuilderFactory
 import com.wops.receiptsgo.persistence.database.controllers.impl.ReceiptTableController
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata
 import com.wops.receiptsgo.settings.UserPreferenceManager
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import io.reactivex.Single
 import wb.android.storage.StorageManager
 import java.io.File

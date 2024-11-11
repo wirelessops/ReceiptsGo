@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.rating.data
 
 import android.content.SharedPreferences
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.google.common.base.Preconditions
 import dagger.Lazy
 import io.reactivex.Completable

@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.activities.NavigationHandler;
 import com.wops.receiptsgo.adapters.TripAdapter;

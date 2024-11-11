@@ -9,8 +9,8 @@ import java.util.UUID;
 import com.wops.receiptsgo.model.Column;
 import com.wops.receiptsgo.model.ColumnDefinitions;
 import com.wops.receiptsgo.model.Keyed;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link com.wops.receiptsgo.model.Column} {@link BuilderFactory}

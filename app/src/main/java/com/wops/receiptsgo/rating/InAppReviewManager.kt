@@ -2,9 +2,9 @@ package com.wops.receiptsgo.rating
 
 import android.app.Activity
 import android.content.Context
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.rating.data.AppRatingStorage
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManagerFactory
 import io.reactivex.Single

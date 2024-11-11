@@ -13,8 +13,8 @@ import androidx.fragment.app.DialogFragment;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.persistence.PersistenceManager;
 import com.wops.receiptsgo.sync.manual.ManualBackupTask;

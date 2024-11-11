@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.ocr.widget.configuration
 
-import co.smartreceipts.analytics.Analytics
+import com.wops.analytics.Analytics
 import com.wops.receiptsgo.config.ConfigurationManager
 import com.wops.receiptsgo.ocr.purchases.OcrPurchaseTracker
 import com.wops.receiptsgo.purchases.PurchaseManager
@@ -8,8 +8,8 @@ import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.source.PurchaseSource
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.core.identity.IdentityManager
-import co.smartreceipts.core.identity.store.EmailAddress
+import com.wops.core.identity.IdentityManager
+import com.wops.core.identity.store.EmailAddress
 import com.android.billingclient.api.ProductDetails
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever

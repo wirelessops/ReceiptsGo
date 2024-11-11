@@ -19,7 +19,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.IOException;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.utils.ImageUtils;
 
 /**

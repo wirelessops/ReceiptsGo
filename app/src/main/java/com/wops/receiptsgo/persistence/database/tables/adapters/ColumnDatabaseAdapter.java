@@ -15,7 +15,7 @@ import com.wops.receiptsgo.model.factory.ColumnBuilderFactory;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.AbstractColumnTable;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 
 /**
  * Implements the {@link DatabaseAdapter} contract for the {@link com.wops.receiptsgo.persistence.database.tables.AbstractColumnTable}

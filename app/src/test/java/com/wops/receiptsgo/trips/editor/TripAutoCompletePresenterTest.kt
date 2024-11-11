@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.trips.editor
 
-import co.smartreceipts.analytics.Analytics
+import com.wops.analytics.Analytics
 import com.wops.receiptsgo.autocomplete.AutoCompleteResult
 import com.wops.receiptsgo.autocomplete.trip.TripAutoCompleteField
 import com.wops.receiptsgo.model.AutoCompleteUpdateEvent

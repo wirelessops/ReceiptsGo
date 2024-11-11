@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import com.wops.receiptsgo.activities.SmartReceiptsActivity;
 import com.wops.receiptsgo.permissions.exceptions.PermissionsNotGrantedException;
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.ActivityScope;
 import io.reactivex.Completable;
 
 @ActivityScope

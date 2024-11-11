@@ -4,7 +4,7 @@ import com.wops.receiptsgo.apis.ApiValidationException
 import com.wops.receiptsgo.apis.WebServiceManager
 import com.wops.receiptsgo.config.ConfigurationManager
 import com.wops.receiptsgo.identity.apis.organizations.*
-import co.smartreceipts.core.identity.store.MutableIdentityStore
+import com.wops.core.identity.store.MutableIdentityStore
 import com.wops.receiptsgo.utils.ConfigurableResourceFeature
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq

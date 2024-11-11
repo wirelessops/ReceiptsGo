@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.settings.widget.editors.categories
 
 import android.os.Bundle
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.model.Category
 import com.wops.receiptsgo.model.factory.CategoryBuilderFactory
 import com.wops.receiptsgo.persistence.database.controllers.impl.CategoriesTableController

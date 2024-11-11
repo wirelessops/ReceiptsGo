@@ -13,7 +13,7 @@ import com.wops.receiptsgo.model.impl.columns.receipts.ReceiptColumnDefinitions
 import com.wops.receiptsgo.persistence.DatabaseHelper
 import com.wops.receiptsgo.test.utils.TestLocaleToggler
 import com.wops.receiptsgo.test.utils.TestResourceReader
-import co.smartreceipts.core.persistence.DatabaseConstants
+import com.wops.core.persistence.DatabaseConstants
 import com.google.common.base.Preconditions
 import org.apache.commons.io.IOUtils
 import org.hamcrest.Matchers.equalTo

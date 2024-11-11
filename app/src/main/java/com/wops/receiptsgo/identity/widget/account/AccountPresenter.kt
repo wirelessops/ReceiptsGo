@@ -1,10 +1,10 @@
 package com.wops.receiptsgo.identity.widget.account
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.identity.apis.organizations.OrganizationModel
 import com.wops.receiptsgo.widget.model.UiIndicator
 import com.wops.receiptsgo.widget.viper.BaseViperPresenter
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject

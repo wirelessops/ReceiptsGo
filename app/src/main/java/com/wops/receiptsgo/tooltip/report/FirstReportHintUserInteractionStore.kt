@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.tooltip.report
 
 import android.content.SharedPreferences
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.utils.rx.RxSchedulers
 import dagger.Lazy
 import io.reactivex.Scheduler

@@ -2,7 +2,7 @@ package com.wops.receiptsgo.model.impl
 
 import com.wops.receiptsgo.DefaultObjects
 import com.wops.receiptsgo.model.PaymentMethod
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import com.wops.receiptsgo.utils.testParcel
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotSame

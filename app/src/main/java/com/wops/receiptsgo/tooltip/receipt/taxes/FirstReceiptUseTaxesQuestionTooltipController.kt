@@ -3,9 +3,9 @@ package com.wops.receiptsgo.tooltip.receipt.taxes
 import android.content.Context
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.columns.ordering.CsvColumnsOrderer
 import com.wops.receiptsgo.columns.ordering.PdfColumnsOrderer
@@ -19,7 +19,7 @@ import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.tooltip.model.TooltipType
 import com.wops.receiptsgo.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
 import com.wops.receiptsgo.utils.rx.RxSchedulers
-import co.smartreceipts.core.di.scopes.FragmentScope
+import com.wops.core.di.scopes.FragmentScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.Completable
 import io.reactivex.Scheduler

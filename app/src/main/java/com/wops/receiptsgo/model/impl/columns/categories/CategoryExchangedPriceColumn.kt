@@ -4,7 +4,7 @@ import com.wops.receiptsgo.model.Price
 import com.wops.receiptsgo.model.factory.PriceBuilderFactory
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
 import com.wops.receiptsgo.persistence.database.controllers.grouping.results.SumCategoryGroupingResult
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 import java.util.*
 
 class CategoryExchangedPriceColumn(id: Int, syncState: SyncState) :

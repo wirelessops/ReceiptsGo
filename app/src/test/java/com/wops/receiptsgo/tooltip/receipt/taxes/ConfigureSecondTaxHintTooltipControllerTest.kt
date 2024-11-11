@@ -2,8 +2,8 @@ package com.wops.receiptsgo.tooltip.receipt.taxes
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import co.smartreceipts.analytics.Analytics
-import co.smartreceipts.analytics.events.Events
+import com.wops.analytics.Analytics
+import com.wops.analytics.events.Events
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
@@ -12,7 +12,6 @@ import com.wops.receiptsgo.tooltip.model.TooltipInteraction
 import com.wops.receiptsgo.tooltip.model.TooltipMetadata
 import com.wops.receiptsgo.tooltip.model.TooltipType
 import com.wops.receiptsgo.tooltip.receipt.FirstReceiptQuestionsUserInteractionStore
-import co.smartreceipts.core.identity.apis.me.User
 import com.hadisatrio.optional.Optional
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever

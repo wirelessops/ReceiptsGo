@@ -15,11 +15,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.persistence.PersistenceManager;
 import com.wops.receiptsgo.persistence.database.restore.DatabaseRestorer;
-import co.smartreceipts.analytics.log.Logger;
-import co.smartreceipts.core.persistence.DatabaseConstants;
+import com.wops.analytics.log.Logger;
+import com.wops.core.persistence.DatabaseConstants;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

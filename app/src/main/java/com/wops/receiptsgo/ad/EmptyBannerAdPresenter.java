@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.ActivityScope;
 
 
 @ActivityScope

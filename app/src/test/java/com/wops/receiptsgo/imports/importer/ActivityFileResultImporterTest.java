@@ -13,8 +13,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.File;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.imports.FileImportProcessor;
 import com.wops.receiptsgo.imports.FileImportProcessorFactory;
 import com.wops.receiptsgo.imports.RequestCodes;

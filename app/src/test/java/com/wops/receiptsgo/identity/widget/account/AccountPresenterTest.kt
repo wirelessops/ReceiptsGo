@@ -5,7 +5,7 @@ import com.wops.receiptsgo.identity.apis.organizations.OrganizationModel
 import com.wops.receiptsgo.purchases.model.InAppPurchase
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription
 import com.wops.receiptsgo.widget.model.UiIndicator
-import co.smartreceipts.core.identity.store.EmailAddress
+import com.wops.core.identity.store.EmailAddress
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import io.reactivex.Single

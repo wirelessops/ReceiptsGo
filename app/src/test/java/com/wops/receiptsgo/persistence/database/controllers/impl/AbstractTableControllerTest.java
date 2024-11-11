@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.wops.receiptsgo.KeyedObject;
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.persistence.database.controllers.TableEventsListener;
 import com.wops.receiptsgo.persistence.database.controllers.alterations.TableActionAlterations;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;

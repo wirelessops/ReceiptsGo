@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 
 import com.wops.receiptsgo.model.Keyed;
 import com.wops.receiptsgo.persistence.database.controllers.TripForeignKeyTableEventsListener;
-import co.smartreceipts.core.sync.model.Syncable;
+import com.wops.core.sync.model.Syncable;
 import io.reactivex.Scheduler;
 
 /**

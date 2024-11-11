@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.distance.editor
 
-import co.smartreceipts.analytics.Analytics
+import com.wops.analytics.Analytics
 import com.wops.receiptsgo.model.Distance
 import com.wops.receiptsgo.persistence.database.controllers.impl.DistanceTableController
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata

@@ -4,7 +4,7 @@ import com.wops.receiptsgo.purchases.model.ConsumablePurchase
 import com.wops.receiptsgo.purchases.model.ManagedProduct
 import com.wops.receiptsgo.purchases.model.PurchaseFamily
 import com.wops.receiptsgo.purchases.model.Subscription
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import io.reactivex.Completable
 import javax.inject.Inject
 

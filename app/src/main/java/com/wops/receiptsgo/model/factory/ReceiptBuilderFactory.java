@@ -24,8 +24,8 @@ import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.model.gson.ExchangeRate;
 import com.wops.receiptsgo.persistence.DatabaseHelper;
 import com.wops.receiptsgo.receipts.ordering.ReceiptsOrderer;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link com.wops.receiptsgo.model.Receipt} {@link BuilderFactory}

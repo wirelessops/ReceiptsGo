@@ -2,7 +2,7 @@ package com.wops.receiptsgo.utils.timer
 
 import android.os.SystemClock
 import com.wops.receiptsgo.BuildConfig
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 
 
 /**

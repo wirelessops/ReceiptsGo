@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 import javax.inject.Named;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
+import com.wops.core.di.scopes.ApplicationScope;
 import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
 import com.wops.receiptsgo.rating.data.AppRatingPreferencesStorage;
 import com.wops.receiptsgo.settings.UserPreferenceManager;

@@ -4,7 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import co.smartreceipts.analytics.Analytics
+import com.wops.analytics.Analytics
 import com.wops.receiptsgo.images.CropImageActivity
 import com.wops.receiptsgo.imports.RequestCodes
 import com.wops.receiptsgo.imports.importer.ActivityFileResultImporter

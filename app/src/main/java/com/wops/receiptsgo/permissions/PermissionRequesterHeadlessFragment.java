@@ -14,11 +14,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.DataPoint;
-import co.smartreceipts.analytics.events.DefaultDataPointEvent;
-import co.smartreceipts.analytics.events.Events;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.DataPoint;
+import com.wops.analytics.events.DefaultDataPointEvent;
+import com.wops.analytics.events.Events;
+import com.wops.analytics.log.Logger;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.Single;
 import io.reactivex.subjects.SingleSubject;

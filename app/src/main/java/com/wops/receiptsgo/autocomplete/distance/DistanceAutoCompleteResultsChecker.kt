@@ -2,7 +2,7 @@ package com.wops.receiptsgo.autocomplete.distance
 
 import com.wops.receiptsgo.autocomplete.AutoCompleteField
 import com.wops.receiptsgo.autocomplete.AutoCompleteResultsChecker
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Distance
 import javax.inject.Inject
 

@@ -21,7 +21,7 @@ import com.wops.receiptsgo.purchases.model.InAppPurchase;
 import com.wops.receiptsgo.purchases.model.ManagedProduct;
 import com.wops.receiptsgo.purchases.model.ManagedProductFactory;
 import com.wops.receiptsgo.purchases.subscriptions.RemoteSubscription;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import dagger.Lazy;
 
 public class DefaultPurchaseWallet implements PurchaseWallet {

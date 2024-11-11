@@ -23,7 +23,7 @@ import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
 import com.wops.receiptsgo.persistence.database.tables.AbstractColumnTable;
 import com.wops.receiptsgo.persistence.database.tables.AbstractSqlTable;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager;
 
 import static org.junit.Assert.assertEquals;

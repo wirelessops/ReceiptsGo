@@ -8,8 +8,8 @@ import java.util.UUID;
 
 import com.wops.receiptsgo.model.Keyed;
 import com.wops.receiptsgo.model.PaymentMethod;
-import co.smartreceipts.core.sync.model.SyncState;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.SyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 
 /**
  * A {@link com.wops.receiptsgo.model.Receipt} {@link BuilderFactory}

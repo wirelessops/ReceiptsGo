@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.analytics.log.Logger;
 import dagger.Lazy;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;

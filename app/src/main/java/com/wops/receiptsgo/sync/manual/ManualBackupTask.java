@@ -10,12 +10,12 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.date.DateUtils;
 import com.wops.receiptsgo.persistence.PersistenceManager;
 import com.wops.receiptsgo.utils.cache.SmartReceiptsTemporaryFileCache;
-import co.smartreceipts.core.di.scopes.ApplicationScope;
-import co.smartreceipts.core.persistence.DatabaseConstants;
+import com.wops.core.di.scopes.ApplicationScope;
+import com.wops.core.persistence.DatabaseConstants;
 import dagger.Lazy;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

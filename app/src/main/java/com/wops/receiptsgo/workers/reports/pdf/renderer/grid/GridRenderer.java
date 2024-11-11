@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.workers.reports.pdf.pdfbox.PdfBoxWriter;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.Renderer;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.constraints.HeightConstraint;

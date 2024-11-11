@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.core.os.ConfigurationCompat
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.settings.UserPreferenceManager
 import com.wops.receiptsgo.settings.catalog.UserPreference
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import wb.android.flex.Flex
 import java.util.*
 import javax.inject.Inject

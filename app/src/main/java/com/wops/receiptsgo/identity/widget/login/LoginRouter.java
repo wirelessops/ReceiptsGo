@@ -3,7 +3,7 @@ package com.wops.receiptsgo.identity.widget.login;
 import javax.inject.Inject;
 
 import com.wops.receiptsgo.activities.NavigationHandler;
-import co.smartreceipts.core.di.scopes.FragmentScope;
+import com.wops.core.di.scopes.FragmentScope;
 
 @FragmentScope
 public class LoginRouter {

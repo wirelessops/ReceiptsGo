@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import co.smartreceipts.analytics.Analytics;
-import co.smartreceipts.analytics.events.ErrorEvent;
+import com.wops.analytics.Analytics;
+import com.wops.analytics.events.ErrorEvent;
 import com.wops.receiptsgo.model.Keyed;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.persistence.database.controllers.TableController;
@@ -16,8 +16,8 @@ import com.wops.receiptsgo.persistence.database.controllers.TripForeignKeyTableE
 import com.wops.receiptsgo.persistence.database.controllers.alterations.TableActionAlterations;
 import com.wops.receiptsgo.persistence.database.controllers.results.ForeignKeyGetResult;
 import com.wops.receiptsgo.persistence.database.tables.TripForeignKeyAbstractSqlTable;
-import co.smartreceipts.core.sync.model.Syncable;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.core.sync.model.Syncable;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;

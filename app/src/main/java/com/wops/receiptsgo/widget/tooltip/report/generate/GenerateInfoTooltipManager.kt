@@ -4,10 +4,10 @@ import com.hadisatrio.optional.Optional
 
 import javax.inject.Inject
 
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.persistence.DatabaseHelper
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.utils.rx.RxSchedulers
 import com.wops.receiptsgo.widget.tooltip.TooltipManager
 import com.wops.receiptsgo.widget.tooltip.report.generate.data.GenerateInfoTooltipStorage

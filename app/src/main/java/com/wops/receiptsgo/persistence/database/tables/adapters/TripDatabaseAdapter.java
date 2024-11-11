@@ -16,7 +16,7 @@ import com.wops.receiptsgo.persistence.database.tables.CategoriesTable;
 import com.wops.receiptsgo.persistence.database.tables.TripsTable;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;
-import co.smartreceipts.core.sync.model.SyncState;
+import com.wops.core.sync.model.SyncState;
 import wb.android.storage.StorageManager;
 
 /**

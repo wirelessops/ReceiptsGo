@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.purchases
 
-import co.smartreceipts.analytics.log.Logger
+import com.wops.analytics.log.Logger
 import com.android.billingclient.api.*
 import com.android.billingclient.api.QueryProductDetailsParams.Product
 import io.reactivex.Completable

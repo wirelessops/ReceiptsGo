@@ -1,7 +1,7 @@
 package com.wops.receiptsgo.model
 
 import androidx.annotation.StringRes
-import co.smartreceipts.core.sync.model.Syncable
+import com.wops.core.sync.model.Syncable
 
 /**
  * Provides a contract for how each individual column in a report should operate

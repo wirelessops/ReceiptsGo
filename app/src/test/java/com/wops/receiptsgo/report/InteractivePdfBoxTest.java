@@ -69,7 +69,7 @@ import com.wops.receiptsgo.utils.shadows.ShadowFontFileFinder;
 import com.wops.receiptsgo.workers.reports.ReportResourcesManager;
 import com.wops.receiptsgo.workers.reports.pdf.pdfbox.PdfBoxReportFile;
 import com.wops.receiptsgo.workers.reports.pdf.renderer.text.FallbackTextRenderer;
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState;
+import com.wops.core.sync.model.impl.DefaultSyncState;
 import io.reactivex.schedulers.Schedulers;
 
 import static junit.framework.Assert.assertEquals;

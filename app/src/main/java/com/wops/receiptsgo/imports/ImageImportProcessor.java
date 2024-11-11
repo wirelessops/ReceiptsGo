@@ -25,7 +25,7 @@ import com.wops.receiptsgo.imports.exceptions.InvalidImageException;
 import com.wops.receiptsgo.model.Trip;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
 import com.wops.receiptsgo.settings.catalog.UserPreference;
-import co.smartreceipts.analytics.log.Logger;
+import com.wops.analytics.log.Logger;
 import io.reactivex.Single;
 import com.wops.receiptsgo.utils.ImageUtils;
 import wb.android.storage.StorageManager;

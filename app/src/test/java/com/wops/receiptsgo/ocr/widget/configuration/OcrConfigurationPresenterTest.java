@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 
 import com.wops.receiptsgo.purchases.model.InAppPurchase;
-import co.smartreceipts.core.identity.store.EmailAddress;
+import com.wops.core.identity.store.EmailAddress;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;

@@ -12,7 +12,7 @@ import com.wops.receiptsgo.persistence.database.controllers.impl.CSVTableControl
 import com.wops.receiptsgo.persistence.database.controllers.impl.CategoriesTableController
 import com.wops.receiptsgo.persistence.database.controllers.impl.PDFTableController
 import com.wops.receiptsgo.persistence.database.controllers.impl.PaymentMethodsTableController
-import co.smartreceipts.core.sync.model.impl.DefaultSyncState
+import com.wops.core.sync.model.impl.DefaultSyncState
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import org.junit.Before

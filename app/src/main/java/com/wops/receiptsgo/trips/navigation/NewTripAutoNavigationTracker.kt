@@ -2,7 +2,7 @@ package com.wops.receiptsgo.trips.navigation
 
 import com.wops.receiptsgo.model.Trip
 import com.wops.receiptsgo.persistence.database.controllers.impl.TripTableController
-import co.smartreceipts.core.di.scopes.ApplicationScope
+import com.wops.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

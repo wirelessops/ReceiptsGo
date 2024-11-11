@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.di;
 
-import co.smartreceipts.analytics.Analytics;
+import com.wops.analytics.Analytics;
 import com.wops.receiptsgo.activities.FragmentProvider;
 import com.wops.receiptsgo.activities.NavigationHandler;
 import com.wops.receiptsgo.activities.SmartReceiptsActivity;
@@ -9,7 +9,7 @@ import com.wops.receiptsgo.widget.tooltip.report.ReportTooltipInteractor;
 import com.wops.receiptsgo.widget.tooltip.report.backup.BackupReminderTooltipManager;
 import com.wops.receiptsgo.widget.tooltip.report.generate.GenerateInfoTooltipManager;
 import com.wops.receiptsgo.widget.tooltip.report.intent.ImportInfoTooltipManager;
-import co.smartreceipts.core.di.scopes.ActivityScope;
+import com.wops.core.di.scopes.ActivityScope;
 import dagger.Module;
 import dagger.Provides;
 

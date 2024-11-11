@@ -20,8 +20,8 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import co.smartreceipts.analytics.log.Logger;
-import co.smartreceipts.core.utils.UriUtils;
+import com.wops.analytics.log.Logger;
+import com.wops.core.utils.UriUtils;
 
 public class IntentUtils {
 

@@ -5,7 +5,7 @@ import android.content.Context
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.model.Distance
 import com.wops.receiptsgo.model.impl.columns.AbstractColumnImpl
-import co.smartreceipts.core.sync.model.SyncState
+import com.wops.core.sync.model.SyncState
 
 class DistanceLocationColumn(id: Int, syncState: SyncState, private val localizedContext: Context) :
     AbstractColumnImpl<Distance>(

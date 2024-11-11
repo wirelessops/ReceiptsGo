@@ -11,7 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import com.wops.receiptsgo.sync.network.NetworkManager;
 import com.wops.receiptsgo.sync.network.SupportedNetworkType;
-import co.smartreceipts.core.sync.provider.SyncProvider;
+import com.wops.core.sync.provider.SyncProvider;
 import com.wops.receiptsgo.sync.provider.SyncProviderFactory;
 import com.wops.receiptsgo.sync.provider.SyncProviderStore;
 

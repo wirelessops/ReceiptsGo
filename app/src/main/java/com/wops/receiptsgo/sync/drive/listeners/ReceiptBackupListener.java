@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 import com.wops.receiptsgo.model.Receipt;
 import com.wops.receiptsgo.persistence.database.operations.DatabaseOperationMetadata;
 import com.wops.receiptsgo.persistence.database.operations.OperationFamilyType;
-import co.smartreceipts.automatic_backups.drive.managers.DriveDatabaseManager;
+import com.wops.automatic_backups.drive.managers.DriveDatabaseManager;
 import com.wops.receiptsgo.sync.drive.managers.DriveReceiptsManager;
 
 public class ReceiptBackupListener extends DatabaseBackupListener<Receipt> {
