@@ -14,7 +14,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class SmartReceiptsActivityModule {
+public class ReceiptsGoActivityModule {
 
     @ActivityScope
     @Provides

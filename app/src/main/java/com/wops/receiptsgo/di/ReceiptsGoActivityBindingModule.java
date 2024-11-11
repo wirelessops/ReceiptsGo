@@ -39,7 +39,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-public abstract class SmartReceiptsActivityBindingModule {
+public abstract class ReceiptsGoActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector(modules = TripFragmentModule.class)

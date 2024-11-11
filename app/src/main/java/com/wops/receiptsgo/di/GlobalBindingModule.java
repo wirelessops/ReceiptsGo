@@ -37,10 +37,10 @@ public abstract class GlobalBindingModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = {
-            SmartReceiptsActivityModule.class,
-            SmartReceiptsActivityBindingModule.class,
+            ReceiptsGoActivityModule.class,
+            ReceiptsGoActivityBindingModule.class,
             IntentImportInformationModule.class,
-            SmartReceiptsActivityAdModule.class
+            ReceiptsGoActivityAdModule.class
     })
     public abstract ReceiptsGoActivity smartReceiptsActivity();
 

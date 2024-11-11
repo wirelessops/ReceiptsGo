@@ -9,7 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class SmartReceiptsActivityAdModule {
+public class ReceiptsGoActivityAdModule {
 
     @Provides
     @ActivityScope
