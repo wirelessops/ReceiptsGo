@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1001
-        versionName "1.0.0"
+        versionCode 1013
+        versionName "1.1.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -31,11 +31,26 @@ android {
 
 
     signingConfigs {
+
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.withReader('UTF-8') { reader ->
+                localProperties.load(reader)
+            }
+        }
+
         debug {
             storeFile file("../keystore/debug.keystore")
         }
         release {
             
+            storeFile file(localProperties.getProperty('storeFile'))
+            storePassword localProperties.getProperty('storePassword')
+            keyAlias localProperties.getProperty('keyAlias')
+            keyPassword localProperties.getProperty('keyPassword')
+
         }
     }
 
@@ -239,64 +254,3 @@ ktlint {
     android.set(true)
 }
 
-tasks.withType(Test) {
-    testLogging {
-        exceptionFormat "full"
-        events "skipped", "passed", "failed"
-        showStandardStreams true
-    }
-}
-
-task secretsExtraction(description: "Allows us to extract our secrets if we have a local decrpytion key") {
-
-    doLast {
-        println "Running our secrets extractor to attempt to replace our placeholder files"
-
-        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) { // windows
-
-            exec {
-                workingDir rootDir
-                commandLine 'cmd','/c','scripts\\secrets_extractor.bat'
-            }
-
-        } else { // mac
-
-            exec {
-                workingDir rootDir
-                executable "chmod"
-                args = ["+x", "${rootDir}/scripts/secrets_extractor.sh"]
-            }
-
-            exec {
-                workingDir rootDir
-                executable "${rootDir}/scripts/secrets_extractor.sh"
-                // Note: We currently do NOT validate that this succeeds when creating a release build.
-                // We should add this extra fail-safe to help verify that we do not release a fault build.
-            }
-            println ""
-            println ""
-        }
-    }
-}
-
-task translateToIOS(description: "Twine-translate Android .xml locale files to iOS, check for differences in iOS GitHub repo, create pull request for the iOS repo with the new translations if need be") {
-    doLast {
-        exec {
-            workingDir rootDir
-            executable "chmod"
-            args = ["+x", "${rootDir}/scripts/barebones-locale-tool.sh"]
-            // Note: Used for Travis execution.
-        }
-        exec {
-            workingDir rootDir
-            executable "${rootDir}/scripts/barebones-locale-tool.sh"
-        }
-    }
-}
-
-play {
-    serviceAccountCredentials.set(file("GPLAY_KEY.json"))
-    track.set("beta")
-}
-
-preBuild.dependsOn secretsExtraction
