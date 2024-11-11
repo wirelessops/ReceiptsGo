@@ -17,7 +17,7 @@
     <string name="pref_layout_header_key">pref_layout_category_key</string>
     <string name="pref_distance_header">Distance</string>
     <string name="pref_distance_header_key" translatable="false">pref_distance_category_key</string>
-    <string name="pref_pro_header">Receipts Go Plus</string>
+    <string name="pref_pro_header">Premium Features</string>
     <string name="pref_pro_header_key" translatable="false">pref_pro_category_key</string>
     <string name="pref_help_header">Support</string>
     <string name="pref_help_header_key" translatable="false">pref_help_category_key</string>
@@ -258,7 +258,7 @@
 
     <!-- ============== Preference Support ================= -->
     <string name="pref_help_send_love_key" translatable="false">SendLove</string>
-    <string name="pref_help_send_love_title">Send Love</string>
+    <string name="pref_help_send_love_title">Leave a Review</string>
     <string name="pref_help_send_feedback_key" translatable="false">SendFeedback</string>
     <string name="pref_help_send_feedback_title">Send Feedback</string>
     <string name="pref_help_support_email_key" translatable="false">SupportEmail</string>
