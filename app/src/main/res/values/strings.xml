@@ -574,6 +574,6 @@
     <string name="subscriptions_success_button">Continue</string>
 
     <!-- ================== Leak Canary ==================== -->
-    <string name="leak_canary_test_class_name">co.receiptsgo</string>
+    <string name="leak_canary_test_class_name">com.wops.receiptsgo</string>
 
 </resources>
