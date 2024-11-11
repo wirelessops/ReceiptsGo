@@ -7,7 +7,7 @@ public class BetaSmartReceiptsHostConfiguration implements HostConfiguration {
     @NonNull
     @Override
     public String getBaseUrl() {
-        return "https://staging.smartreceipts.co";
+        return "http://www.example.com";
     }
 
 }
