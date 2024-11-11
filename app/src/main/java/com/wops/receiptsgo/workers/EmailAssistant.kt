@@ -39,7 +39,7 @@ class EmailAssistant @Inject constructor(
     }
 
     companion object {
-        private const val DEVELOPER_EMAIL = "supp" + "or" + "t@" + "smart" + "receipts" + "." + "co"
+        private const val DEVELOPER_EMAIL = "de" + "v@" + "wire" + "lessops" + "." + "com"
 
         private fun getEmailDeveloperIntent(): Intent {
             val intent = Intent(Intent.ACTION_SENDTO)

@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toStartOf="@id/purchase_price"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="10 OCR Scans (Smart Receipts)" />
+        tools:text="10 OCR Scans (Receipts Go)" />
 
     <TextView
         android:id="@+id/purchase_description"

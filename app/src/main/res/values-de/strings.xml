@@ -2,7 +2,6 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="sr_app_name">Smart Receipts</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Einstellungen</string>
@@ -65,7 +64,6 @@
     <string name="undo">Rückgängig machen</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Smart-Plus-Receipts</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">Ihre Abonnements:</string>
@@ -112,7 +110,7 @@
     <string name="ocr_configuration_scans_remaining">Restliche OCR Scans: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Automatische Scans (OCR):</string>
-    <string name="ocr_configuration_information">Smart Receipts ist mit Taggun integriert um automatisches Scannen zu ermöglichen (z.B. OCR), die Beleg-Metadaten wie Preis, Steuern, Datum und Händlernamen aus Ihren Fotos extrahieren können.</string>
+    <string name="ocr_configuration_information">Receipts Go ist mit Taggun integriert um automatisches Scannen zu ermöglichen (z.B. OCR), die Beleg-Metadaten wie Preis, Steuern, Datum und Händlernamen aus Ihren Fotos extrahieren können.</string>
     <string name="ocr_configuration_information_line2">Wir verwenden eine Kombination von Google Vision and Machine Learning um schnell (oft in 5 Sekunden oder weniger) Ergebnisse zu liefern, die mit der Zeit immer genauer werden. Da diese Dienste eine Gegebühr pro Nutzung haben, werden wir jeden untenstehenden Belegscan  verrechnen.</string>
     <string name="ocr_is_enabled">Aktivieren der automatischen Scans (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Dürfen wir Bilder speichern, um die  Genauigkeit zu verbessern?</string>
@@ -343,7 +341,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Einloggen / Anmelden</string>
-    <string name="login_title">Anmelden mit Ihrem Smart Receipts Konto, um automatische Scans mit (OCR) zu starten</string>
+    <string name="login_title">Anmelden mit Ihrem Receipts Go Konto, um automatische Scans mit (OCR) zu starten</string>
     <string name="login_field_email_hint">E-Mail-Adresse</string>
     <string name="login_field_password_hint">Passwort</string>
     <string name="sign_up_button_text">Anmelden</string>
@@ -461,7 +459,7 @@
     <string name="dialog_sql_corrupt_title">Oh nein!</string>
     <string name="dialog_sql_corrupt_message">Ihre Datenbank wurde beschädigt. Dies geschieht häufig, wenn Sie eine App zum Beenden von Tasks haben, aber es kann durch einige andere Dinge verursacht werden. Keine Sorge, wir sollten in der Lage sein, die meisten Ihrer Daten wiederherzustellen.</string>
     <string name="dialog_sql_corrupt_positive">E-Mail an den Entwickler senden für Hilfe</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Datenbank beschädigt</string>
+    <string name="dialog_sql_corrupt_intent_subject">Receipts Go - Datenbank beschädigt</string>
     <string name="dialog_sql_corrupt_intent_text">Hilfe - meine Datenbank wurde beschädigt  Wie können Sie mir helfen, die Dinge wieder herzustellen?</string>
     <string name="dialog_sql_corrupt_chooser">E-Mail senden…</string>
 
@@ -500,7 +498,7 @@
     <string name="purchase_pending">Der Kauf befindet sich in einem schwebenden Zustand</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Mögen Sie Smart Receipts?</string>
+    <string name="rating_tooltip_text">Mögen Sie Receipts Go?</string>
     <string name="leave_feedback_text">Möchten Sie uns ein Feedback lassen?</string>
     <string name="apprating_dialog_title">Wie %s?</string>
     <string name="apprating_dialog_message">Würden Sie darüber einen Bericht senden? Für mich als unabhängigen Entwickler sind Ihre Bewertungen mein Schaufenster. Konstruktives Feedback ermutigt mich, neue Features hinzuzufügen. Vielen Dank!</string>

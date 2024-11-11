@@ -10,7 +10,7 @@
     <string name="pref_layout_header">Tilpasning av layout</string>
     <string name="pref_layout_header_key">pref_layout_category_key</string>
     <string name="pref_distance_header">Avstand</string>
-    <string name="pref_pro_header">Smart Receipts Plus</string>
+    <string name="pref_pro_header">Receipts Go Plus</string>
     <string name="pref_help_header">Support</string>
     <string name="pref_about_header">Om</string>
     <string name="pref_privacy_header">Personvern</string>

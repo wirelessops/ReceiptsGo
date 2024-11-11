@@ -17,7 +17,7 @@
     <string name="pref_layout_header_key">pref_layout_category_key</string>
     <string name="pref_distance_header">Distance</string>
     <string name="pref_distance_header_key" translatable="false">pref_distance_category_key</string>
-    <string name="pref_pro_header">Smart Receipts Plus</string>
+    <string name="pref_pro_header">Receipts Go Plus</string>
     <string name="pref_pro_header_key" translatable="false">pref_pro_category_key</string>
     <string name="pref_help_header">Support</string>
     <string name="pref_help_header_key" translatable="false">pref_help_category_key</string>
@@ -269,7 +269,7 @@
     <string name="pref_about_version_title">Version</string>
     <string name="pref_about_about_key" translatable="false">About</string>
     <string name="pref_about_about_title">About</string>
-    <string name="pref_about_about_dialogMessage" translatable="false">Smart Receipts was created and is maintained by Smart Receipts LLC. It is licensed under GNU Affero General Public License</string>
+    <string name="pref_about_about_dialogMessage" translatable="false">Receipts Go was created and is maintained by Receipts Go LLC. It is licensed under GNU Affero General Public License</string>
     <string name="pref_about_terms_key" translatable="false">TermsOfUse</string>
     <string name="pref_about_terms_title">Terms of Use</string>
     <string name="pref_about_terms_dialogMessage" translatable="false">This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.\n\nYou can view a copy of the GNU Affero General Public License at http://www.gnu.org/licenses/.</string>

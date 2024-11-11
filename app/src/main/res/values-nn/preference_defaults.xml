@@ -41,7 +41,7 @@
     <string name="pref_email_default_email_to_defaultValue" />
     <string name="pref_email_default_email_cc_defaultValue" />
     <string name="pref_email_default_email_bcc_defaultValue" />
-    <string name="EMAIL_DATA_SUBJECT">Smart Receipts - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
+    <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
 
     <!-- ============= Preference Camera ================= -->
     <bool name="pref_camera_bw_defaultValue">false</bool>
@@ -59,7 +59,7 @@
     <bool name="pref_distance_as_price_defaultValue">true</bool>
 
     <!-- ================= Preference Pro ================== -->
-    <string name="pref_pro_pdf_footer_defaultValue">Rapporten er generert i Smart Receipts for Android</string>
+    <string name="pref_pro_pdf_footer_defaultValue">Rapporten er generert i Receipts Go for Android</string>
     <bool name="pref_pro_separate_by_category_defaultValue">false</bool>
     <bool name="pref_pro_categorical_summation_defaultValue">false</bool>
     <bool name="pref_pro_omit_default_table_defaultValue">false</bool>

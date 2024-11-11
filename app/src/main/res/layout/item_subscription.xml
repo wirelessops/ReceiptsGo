@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:textColor="@color/text_secondary_color"
-        tools:text="Smart Receipts Plus" />
+        tools:text="Receipts Go Plus" />
 
     <TextView
         android:id="@+id/subscription_expiration"

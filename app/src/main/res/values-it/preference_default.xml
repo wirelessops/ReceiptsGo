@@ -11,7 +11,7 @@
 
     <!-- ============== Preference Email ================= -->
 
-    <string name="EMAIL_DATA_SUBJECT">Smart Receipts - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
+    <string name="EMAIL_DATA_SUBJECT">Receipts Go - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
 
     <!-- ============= Preference Camera ================= -->
 
@@ -20,7 +20,7 @@
     <!-- ============= Preference Distance ================= -->
 
     <!-- ================= Preference Pro ================== -->
-    <string name="pref_pro_pdf_footer_defaultValue">Report generato usando Smart Receipts per Android</string>
+    <string name="pref_pro_pdf_footer_defaultValue">Report generato usando Receipts Go per Android</string>
     
     <!-- ============== Preference Privacy ================= -->
 

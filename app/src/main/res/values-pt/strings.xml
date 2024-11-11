@@ -2,7 +2,6 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="sr_app_name">Smart Receipts</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Configurações</string>
@@ -65,7 +64,6 @@
     <string name="undo">Desfazer</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Smart Receipts Plus</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">Suas inscrições:</string>
@@ -112,7 +110,7 @@
     <string name="ocr_configuration_scans_remaining">Varreduras OCR restantes: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Varreduras automáticas (OCR):</string>
-    <string name="ocr_configuration_information">O Smart Receipts fez a integração com o Taggun para fornecer um serviço de varreduras automáticas (como OCR), que podem extrair metadados de recibos como preços, impostos, data e nome dos fornecedores, das suas fotos.</string>
+    <string name="ocr_configuration_information">O Receipts Go fez a integração com o Taggun para fornecer um serviço de varreduras automáticas (como OCR), que podem extrair metadados de recibos como preços, impostos, data e nome dos fornecedores, das suas fotos.</string>
     <string name="ocr_configuration_information_line2">Utilizamos uma combinação de Google Vision e Machine Learning para gerar resultados rapidamente (normalmente em 5 segundos ou menos), que ficarão cada vez mais precisos. Como esses serviços têm um preço por utilização, cobraremos por digitalização.</string>
     <string name="ocr_is_enabled">Deseja habilitar as Varreduras automáticas (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Deseja permitir que o app armazene imagens para aumentar a precisão?</string>
@@ -343,7 +341,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Conectar-se/Registrar-se</string>
-    <string name="login_title">Conecte-se com sua conta Smart Receipts para começar a utilizar as varreduras automáticas (OCR)</string>
+    <string name="login_title">Conecte-se com sua conta Receipts Go para começar a utilizar as varreduras automáticas (OCR)</string>
     <string name="login_field_email_hint">Endereço de e-mail</string>
     <string name="login_field_password_hint">Senha</string>
     <string name="sign_up_button_text">Registrar-se</string>
@@ -461,7 +459,7 @@
     <string name="dialog_sql_corrupt_title">Oh, não!</string>
     <string name="dialog_sql_corrupt_message">Seu banco de dados foi corrompido. Isso ocorre com frequência se você utilizar um app de eliminação, mas apode ter sido causado por outros motivos. Não se preocupe, provavelmente conseguiremos restaurar a maior parte dos dados.</string>
     <string name="dialog_sql_corrupt_positive">Enviar um e-mail para o desenvolvedor para obter ajdua</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - banco de dados corrompido</string>
+    <string name="dialog_sql_corrupt_intent_subject">Receipts Go - banco de dados corrompido</string>
     <string name="dialog_sql_corrupt_intent_text">Me ajude - meu banco de dados foi corrompido. Como você pode me ajudar a recuperar minhas informações?</string>
     <string name="dialog_sql_corrupt_chooser">Enviar e-mail…</string>
 
@@ -500,7 +498,7 @@
     <string name="purchase_pending">A compra está em um estado pendente</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Gostou do Smart Receipts?</string>
+    <string name="rating_tooltip_text">Gostou do Receipts Go?</string>
     <string name="leave_feedback_text">Gostaria de deixar seu feedback?</string>
     <string name="apprating_dialog_title">Gostou do %s?</string>
     <string name="apprating_dialog_message">Deixe um comentário sobre o app. Como desenvolvedor independente, seus comentários são nosso canal principal de divulgação, além de incentivarem a adição de novos recursos. Obrigado!</string>

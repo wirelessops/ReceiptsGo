@@ -2,7 +2,6 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="sr_app_name">Smart Receipts</string>
 
 
     <!-- ================ Main Menu Options ================== -->
@@ -64,7 +63,6 @@
     <string name="undo">לבטל</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Smart Receipts Plus</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">המנויים שלך:</string>
@@ -113,7 +111,7 @@
     <string name="ocr_configuration_scans_remaining">%d :שנותרו (OCR) סריקות אוטומטיות</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">(OCR) סריקות אוטומטיות</string>
-    <string name="ocr_configuration_information">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
+    <string name="ocr_configuration_information">Receipts Go has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos.</string>
     <string name="ocr_configuration_information_line2">We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</string>
     <string name="ocr_is_enabled">\?(OCR) הפעל סריקות אוטומטיות</string>
     <string name="ocr_save_scans_to_improve_results">\?אפשר לנו לשמור תמונות על מנת לשפר את התוצאות</string>
@@ -476,7 +474,7 @@
     <string name="dialog_sql_corrupt_title">הו לא!</string>
     <string name="dialog_sql_corrupt_message">מסד הנתונים שלך פגום. מצב זה קורה לרוב אם יש לך אפליקצית ״הריגת״ מטלות ברקע, אבל הוא יכול להיגרם מכל מיני סיבות. אל תדאג, נוכל לשחזר את המידע שלך.</string>
     <string name="dialog_sql_corrupt_positive">שלח דואר אלקטרוני למפתח על מנת לבקש סיוע</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - מסדי נתונים פגומים</string>
+    <string name="dialog_sql_corrupt_intent_subject">Receipts Go - מסדי נתונים פגומים</string>
     <string name="dialog_sql_corrupt_intent_text">עזרה - מסד הנתונים שלי פגום. כיצד תוכל לעזור לי לשחזר את המידע שלי?</string>
     <string name="dialog_sql_corrupt_chooser">שלח דואר אלקטרוני&#8230;</string>
 
@@ -515,7 +513,7 @@
     <string name="purchase_pending">הרכישה נמצאת במצב ממתין</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">אוהב את Smart Receipts?</string>
+    <string name="rating_tooltip_text">אוהב את Receipts Go?</string>
     <string name="leave_feedback_text">תרצה להשאיר לנו פידבק?</string>
     <string name="apprating_dialog_title">אוהב את %s?</string>
     <string name="apprating_dialog_message">אנא שקול להשאיר ביקורת בחנות האפליקציות. בתור מפתח עצמאי, הביקורות שלך הן אמצעי החשיפה העיקרי שלי ויכולות מאוד לעזור לי לפתח פונקציונאליות נוספת. תודה!</string>

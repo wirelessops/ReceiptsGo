@@ -66,7 +66,7 @@
     <string name="undo">Undo</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Receipts Go Plus</string>
+    <string name="pro_subscription" translatable="false">Receipts Go Plus</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">Your Subscriptions:</string>

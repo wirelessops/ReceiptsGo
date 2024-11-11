@@ -2,8 +2,6 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="sr_app_name">Smart Receipts</string>
-    <string name="sr_app_name_plus">Smart Receipts Plus</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Innstillinger</string>
@@ -65,7 +63,6 @@
     <string name="undo">Angre</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Smart Receipts Plus</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">Ditt abonnement:</string>
@@ -110,7 +107,7 @@
     <string name="ocr_configuration_scans_remaining">OCR gjenstående skanninger: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Automatiske skanninger (OCR):</string>
-    <string name="ocr_configuration_information">Smart Receipts har integrasjon med Taggun for å tilby automatiske skanninger (OCR), som kan hente ut kvitterings metadata som pris, moms, dato, og forhandler navn fra dine bilder.</string>
+    <string name="ocr_configuration_information">Receipts Go har integrasjon med Taggun for å tilby automatiske skanninger (OCR), som kan hente ut kvitterings metadata som pris, moms, dato, og forhandler navn fra dine bilder.</string>
     <string name="ocr_configuration_information_line2">Vi bruker en kombinasjon av Google Vision og maskinlæring for kjapt (ofte i løpet av 5 sekunder eller mindre) levere resultater, som blir mer nøyaktig over tid. Siden disse tjenestene har en per-bruk kostnad, vil vi belaste hver kvitterings skann under.</string>
     <string name="ocr_is_enabled">Aktivere automatiske skanninger(OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Tillatt oss å lagre bilder for å forbedre nøyaktighet?</string>
@@ -343,7 +340,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Logg inn / Opprett konto</string>
-    <string name="login_title">Logg inn med din Smart Receipts konto for å bruke automatiske skanninger (OCR)</string>
+    <string name="login_title">Logg inn med din Receipts Go konto for å bruke automatiske skanninger (OCR)</string>
     <string name="login_field_email_hint">E-post adresse</string>
     <string name="login_field_password_hint">Passord</string>
     <string name="sign_up_button_text">Opprett konto</string>
@@ -467,7 +464,7 @@
     <string name="dialog_sql_corrupt_title">Å nei!</string>
     <string name="dialog_sql_corrupt_message">Din database er ødelagt. Dette skjer ofte dersom du har en oppgaveavslutter app, men det kan også skje av andre grunner. Ingen grunn til bekymring, vi burde kunne gjenopprette det meste av dine data. </string>
     <string name="dialog_sql_corrupt_positive">Send e-post til utvikler for hjelp</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Ødelagt database</string>
+    <string name="dialog_sql_corrupt_intent_subject">Receipts Go - Ødelagt database</string>
     <string name="dialog_sql_corrupt_intent_text">Hjelp - min database ble ødelagt. Hvordan kan du hjelpe å gjenopprette den?</string>
     <string name="dialog_sql_corrupt_chooser">Send e-post&#8230;</string>
 
@@ -506,7 +503,7 @@
     <string name="purchase_pending">Kjøpet er i ventende tilstand</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Liker du Smart Receipts?</string>
+    <string name="rating_tooltip_text">Liker du Receipts Go?</string>
     <string name="leave_feedback_text">Vil du legge igjen en anmeldelse?</string>
     <string name="apprating_dialog_title">Liker du %s?</string>
     <string name="apprating_dialog_message">Vennligst vurder å legge igjen en anmeldelse om det. Som en uavhengig utvikler, er anmeldelsene dine den viktigste eksponeringskilden og hjelper meg virkelig til å fortsette å legge til nye funksjoner. Takk!</string>
