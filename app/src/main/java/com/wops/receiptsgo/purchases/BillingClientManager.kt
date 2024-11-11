@@ -61,6 +61,10 @@ class BillingClientManager @Inject constructor(
             val connected = result.responseCode == BillingClient.BillingResponseCode.OK
             Logger.debug(this, "onBillingSetupFinished, code ${result.responseCode}")
 
+//            queryAllOwnedPurchasesAndSync()
+//                .subscribe({ purchases -> Logger.debug(this, "owned purchases: $purchases") },
+//                    { t -> Logger.error(this, t) })
+
             isConnectedSubject.onNext(connected)
         }
     }
@@ -84,9 +88,9 @@ class BillingClientManager @Inject constructor(
                 }
             }) { Logger.error(this, "Failed to fetch our remote subscriptions") }
 
-        queryAllOwnedPurchasesAndSync()
-            .subscribe({ purchases -> Logger.debug(this, "owned purchases: $purchases") },
-                { t -> Logger.error(this, t) })
+      //  connectBillingClient()
+
+
     }
 
     fun addPurchaseEventListener(listener: PurchaseEventsListener) = listeners.add(listener)
@@ -285,9 +289,9 @@ class BillingClientManager @Inject constructor(
 
         isConnectedSubject.onNext(false)
 
-        if (billingClient.connectionState != BillingClient.ConnectionState.CONNECTING) {
-            billingClient.startConnection(billingClientStateListener)
-        }
+//        if (billingClient.connectionState == BillingClient.ConnectionState.DISCONNECTED) {
+//            billingClient.startConnection(billingClientStateListener)
+//        }
 
         return isConnectedSubject.filter { it }
             .timeout(3L, TimeUnit.SECONDS)
