@@ -215,7 +215,7 @@ class UserPreferenceManager constructor(private val context: Context,
     }
 
     @SuppressLint("CheckResult")
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         userPreferencesSingle
                 .subscribeOn(this.initializationScheduler)
                 .subscribe { userPreferences ->
