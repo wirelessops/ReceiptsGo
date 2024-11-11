@@ -148,9 +148,9 @@ android {
         implementation project(':push')
         implementation project(':automatic_backups')
         implementation project(':oss_licenses')
+        implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_version"))
 
 
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
         implementation "androidx.core:core-ktx:$KTX_VERSION"
         implementation "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
