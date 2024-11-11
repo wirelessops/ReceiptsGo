@@ -25,7 +25,7 @@ class UpsellAdView @Inject constructor(private val analytics: Analytics) : Banne
 
     override fun makeVisible() {
         analytics.record(Events.Purchases.AdUpsellShown)
-        upsellButton?.visibility = View.VISIBLE
+        upsellButton?.visibility = View.GONE
     }
 
     override fun hide() {

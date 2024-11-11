@@ -17,7 +17,8 @@ class MobileAdsImpl @Inject constructor(private val context: Context) : MobileAd
                 .setTestDeviceIds(
                     listOf(
                         AdRequest.DEVICE_ID_EMULATOR,
-                        "152286E4E1351DECFB54AAD85E9FB5E1"
+                        "152286E4E1351DECFB54AAD85E9FB5E1",
+                        "2F3D337014FFE9562D8F99717172A9BE"
                     )
                 )
                 .build()
