@@ -66,7 +66,7 @@
     <string name="undo">Undo</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription" translatable="false">Receipts Go Plus</string>
+    <string name="pro_subscription" translatable="false">Receipts Go Premium Features</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">Your Subscriptions:</string>
@@ -311,13 +311,13 @@
 
     <!-- ===================== backup menu ======================== -->
     <string name="backups">Backups</string>
-    <string name="manual_backup_title">Manual Backups:</string>
+    <string name="manual_backup_title">Manual Backups</string>
     <string name="manual_backup_description">Back up your data to keep your receipts safe! You can restore your data by importing the .SMR backup file, which is generated via the "Backup" button below.</string>
     <string name="manual_backup_export">Backup</string>
     <string name="manual_backup_import">Import</string>
-    <string name="auto_backup_title">Automatic Backups [BETA]:</string>
+    <string name="auto_backup_title">Automatic Backups</string>
     <string name="auto_backup_wifi_only">Use Wi-Fi Only</string>
-    <string name="auto_backup_warning_none">Warning: Automatic backups are not configured!\nYou may be at risk of losing your data.</string>
+    <string name="auto_backup_warning_none" translatable="false">Automatic Backups are returning soon! Join the Beta program via the Play Store for the latest updates and features!</string>
     <string name="auto_backup_warning_drive">Warning: Standard charges may apply for automatic backups over a mobile network.</string>
     <string name="auto_backup_configure">Tap to Configure</string>
     <string name="auto_backup_source_none">None</string>

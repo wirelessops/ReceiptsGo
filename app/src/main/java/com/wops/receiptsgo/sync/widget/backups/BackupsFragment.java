@@ -128,6 +128,12 @@ public class BackupsFragment extends WBFragment implements BackupProviderChangeL
             backupConfigButton.setVisibility(View.GONE);
             wifiOnlyCheckbox.setVisibility(View.GONE);
         }
+
+        // Temporarily remove Automatic Backup Opts
+
+        backupConfigButton.setVisibility(View.GONE);
+        wifiOnlyCheckbox.setVisibility(View.GONE);
+
         exportButton.setOnClickListener(view -> navigationHandler.showDialog(new ExportBackupDialogFragment()));
         importButton.setOnClickListener(view -> {
             final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
