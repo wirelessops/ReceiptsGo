@@ -181,7 +181,8 @@ class NavigationHandler<T : FragmentActivity> @Inject constructor(
                     debug(this, "Creating a PDF view intent with a file scheme")
                     IntentUtils.getLegacyViewIntent(activity, receipt.file, "application/pdf")
                 }
-                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 activity.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(activity, R.string.error_no_pdf_activity_viewer, Toast.LENGTH_LONG).show()
