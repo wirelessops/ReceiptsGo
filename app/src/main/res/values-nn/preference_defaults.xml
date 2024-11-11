@@ -34,7 +34,6 @@
     <bool name="pref_output_print_receipt_comment_by_photo_defaultValue">false</bool>
     <bool name="pref_output_show_total_on_csv_defaultValue">true</bool>
     <bool name="pref_output_receipts_landscape_defaultValue">false</bool>
-    <string name="pref_output_pdf_page_size_defaultValue" translatable="false">@string/pref_output_pdf_page_size_a4_entryValue</string>
     <string name="pref_output_preferred_language_defaultValue">@string/language_en_entry</string>
 
     <!-- ============== Preference Email ================= -->

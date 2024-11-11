@@ -3,7 +3,7 @@
 
     <!-- =================== App Details ===================== -->
     <string name="sr_app_name" translatable="false">Receipts Go</string>
-    <string name="sr_app_name_plus" translatable="false">Receipts Go Plus</string>
+    <string name="sr_app_name_plus" translatable="false">Receipts Go Premium Features</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Settings</string>
@@ -512,7 +512,7 @@
 
     <!-- =================== Payment Methods =================== -->
     <string name="purchase_succeeded">Successfully completed the purchase</string>
-    <string name="purchase_unavailable">Unable to retrieve purchase information</string>
+    <string name="purchase_unavailable">Premium Features Available Soon!</string>
     <string name="purchase_failed">Failed to complete the purchase</string>
     <string name="purchase_pending">The purchase is in a pending state</string>
 
