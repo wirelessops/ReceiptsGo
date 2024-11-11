@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.wops.analytics.log.Logger
+import com.wops.receiptsgo.R
 import com.wops.receiptsgo.ad.AdLoadListener
 import com.wops.receiptsgo.ad.BannerAdView
 import com.google.ads.mediation.admob.AdMobAdapter
