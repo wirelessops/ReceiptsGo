@@ -83,3 +83,13 @@
 -keep class com.google.** { *;}
 -keep interface com.google.** { *;}
 -dontwarn com.google.**
+
+
+-dontwarn org.conscrypt.Conscrypt$Version
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+-dontwarn org.joda.convert.FromString
+-dontwarn org.joda.convert.ToString
+-dontwarn org.openjsse.javax.net.ssl.SSLParameters
+-dontwarn org.openjsse.javax.net.ssl.SSLSocket
+-dontwarn org.openjsse.net.ssl.OpenJSSE
