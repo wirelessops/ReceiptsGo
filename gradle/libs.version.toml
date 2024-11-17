@@ -1,0 +1,130 @@
+[versions]
+androidGradlePlugin = "8.7.1"
+
+# @keep
+minSdk = "21"
+# @keep
+compileSdk = "34"
+# @keep
+targetSdk = "34"
+
+
+kotlin = "1.8.0"
+ksp = "1.8.0-1.0.9"
+
+androidxCore    =        "1.10.0"
+androidxAppcompat       =        "1.6.1"
+androidxCardview        =        "1.0.0"
+androidxConstraintlayout        =        "2.1.4"
+androidxExifinterface   =        "1.3.6"
+androidxLegacy  =        "1.0.0"
+androidxMultidex        =        "2.0.1"
+androidxRecyclerview    =        "1.3.0"
+comGoogleAndroidMaterial        =        "1.8.0"
+comAndroidBillingclient         =        "6.1.0"
+comGoogleApis = "v3-rev197-1.25.0"
+comGoogleHttpClient = "1.40.1"
+
+comSquareupPicasso = "2.8"
+comSquareupOkhttp3 = "4.10.0"
+comSquareupRetrofit2 = "2.9.0"
+comSquareupMoshi = "1.14.0"
+
+comJakewhartonRxbinding3 = "3.1.0"
+
+commonsIo = "2.8.0"
+
+comHadisatrio = "v1.0.1"
+comGithubTapadoo = "7.0.0"
+comTomRoush = "1.8.10.3"
+comGithubBarteksc = "1.9.0"
+comGithubTony19 = "2.0.0"
+
+comHannesdorfmann = "4.3.0"
+comGithubPqpo = "2.1.4"
+orgJoda = "1.0.1"
+
+comGoogleAndroidPlay = "2.0.1"
+comGoogleDagger = "2.45"
+
+orgRobolectric = "4.5.1"
+junit = "4.13.2"
+orgMockito = "3.3.3"
+comNhaarmanMockitokotlin2 = "2.2.0"
+androidxTest = "1.5.0"
+androidxTestEspresso = "3.5.1"
+androidxTestExt = "1.1.5"
+comSquareupLeakcanary = "2.10"
+
+
+googleAnalytics = "18.0.2"
+googleAdmob = "22.2.0"
+
+[libraries]
+
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardview" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "androidxExifinterface" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "androidxLegacy" }
+androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "androidxMultidex" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerview" }
+com-google-android-material = { module = "com.google.android.material:material", version.ref = "comGoogleAndroidMaterial" }
+com-android-billingclient-billing = { module = "com.android.billingclient:billing", version.ref = "comAndroidBillingclient" }
+com-google-apis-api-services-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "comGoogleApis" }
+com-google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "comGoogleHttpClient" }
+com-squareup-picasso = { module = "com.squareup.picasso:picasso", version.ref = "comSquareupPicasso" }
+com-squareup-okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "comSquareupOkhttp3" }
+com-squareup-okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "comSquareupOkhttp3" }
+com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "comSquareupRetrofit2" }
+com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "comSquareupRetrofit2" }
+com-squareup-moshi = { module = "com.squareup.moshi:moshi", version.ref = "comSquareupMoshi" }
+com-squareup-moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "comSquareupMoshi" }
+com-squareup-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "comSquareupMoshi" }
+com-squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "comSquareupRetrofit2" }
+
+com-jakewharton-rxbinding3-rxbinding = { module = "com.jakewharton.rxbinding3:rxbinding", version.ref = "comJakewhartonRxbinding3" }
+com-jakewharton-rxbinding3-rxbinding-appcompat = { module = "com.jakewharton.rxbinding3:rxbinding-appcompat", version.ref = "comJakewhartonRxbinding3" }
+com-squareup-retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "comSquareupRetrofit2" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
+com-hadisatrio-Optional = { module = "com.hadisatrio:Optional", version.ref = "comHadisatrio" }
+com-github-tapadoo-alerter = { module = "com.github.tapadoo:alerter", version.ref = "comGithubTapadoo" }
+com-tom-roush-pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "comTomRoush" }
+com-github-barteksc-pdfium-android = { module = "com.github.barteksc:pdfium-android", version.ref = "comGithubBarteksc" }
+com-github-tony19-logback-android = { module = "com.github.tony19:logback-android", version.ref = "comGithubTony19" }
+
+com-hannesdorfmann-adapterdelegates4-kotlin-dsl-viewbinding = { module = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding", version.ref = "comHannesdorfmann" }
+com-github-pqpo-SmartCropper = { module = "com.github.pqpo:SmartCropper", version.ref = "comGithubPqpo" }
+org-joda-money = { module = "org.joda:joda-money", version.ref = "orgJoda" }
+com-google-android-play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "comGoogleAndroidPlay" }
+com-google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "comGoogleDagger" }
+com-google-dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "comGoogleDagger" }
+
+
+org-robolectric = { module = "org.robolectric:robolectric", version.ref = "orgRobolectric" }
+junit = { module = "junit:junit", version.ref = "junit" }
+org-mockito-core = { module = "org.mockito:mockito-core", version.ref = "orgMockito" }
+com-nhaarman-mockitokotlin2-mockito-kotlin = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", version.ref = "comNhaarmanMockitokotlin2" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspresso" }
+androidx-test-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "androidxTestEspresso" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTestExt" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTest" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTest" }
+androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidxTest" }
+com-squareup-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "comSquareupLeakcanary" }
+com-google-android-gms-play-services-analytics = { module = "com.google.android.gms:play-services-analytics", version.ref = "googleAdmob" }
+com-google-android-gms-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googleAnalytics" }
+
+[plugins]
+
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
