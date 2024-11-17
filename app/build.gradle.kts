@@ -3,7 +3,7 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
-    id("com.github.triplet.play") version "3.8.1"
+    //id("com.github.triplet.play") version "3.8.1"
     id("org.jlleitschuh.gradle.ktlint")
     id("com.google.devtools.ksp")
     //id("com.google.android.gms.oss-licenses-plugin")
@@ -35,10 +35,6 @@ android {
         //testInstrumentationRunnerArguments(clearPackageData: = "com.wops.receiptsgo.test.runner.CrashingRunListener")
     }
     signingConfigs {
-
-        register("debug") {
-            storeFile = file("../keystore/debug.keystore")
-        }
         register("release") {
 
             keyAlias = localProperties["keyAlias"] as String
@@ -58,8 +54,10 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false
-            isTestCoverageEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
             //applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
@@ -67,7 +65,10 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -93,7 +94,7 @@ android {
         "**.properties"
     )
 
-    flavorDimensions("versionType")
+    flavorDimensions += "versionType"
 
     productFlavors {
         create("free") {
@@ -140,14 +141,18 @@ android {
 
 dependencies {
 
-    implementation(fileTree(dir = "libs", include = "*.jar"))
+    implementation(
+        fileTree("libs/") {
+            include("*.jar")
+        }
+    )
     implementation(project(":core"))
     implementation(project(":wbMiniLibrary"))
     implementation(project(":aws"))
     implementation(project(":push"))
     implementation(project(":automatic_backups"))
     implementation(project(":oss_licenses"))
-    implementation(platform(kotlin("bom", version = "1.8.0)"))
+    implementation(platform(kotlin("bom", version = "1.8.0")))
 
 
             implementation (libs.androidx.core.ktx)
@@ -184,7 +189,7 @@ dependencies {
             implementation (libs.com.jakewharton.rxbinding3.rxbinding.appcompat)
             implementation (libs.com.squareup.retrofit2.adapter.rxjava2)
             implementation (libs.commons.io)
-            implementation (libs.com.hadisatrio.Optional)
+            implementation (libs.com.hadisatrio.optional)
             implementation (libs.com.github.tapadoo.alerter)
             implementation (libs.com.tom.roush.pdfbox.android)
             implementation (libs.com.github.barteksc.pdfium.android)
@@ -198,7 +203,7 @@ dependencies {
             api ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0@aar")
 
             implementation (libs.com.hannesdorfmann.adapterdelegates4.kotlin.dsl.viewbinding)
-            implementation (libs.com.github.pqpo.SmartCropper)
+            implementation (libs.com.github.pqpo.smartcropper)
             implementation (libs.org.joda.money)
             implementation (libs.com.google.android.play.review.ktx)
 
@@ -226,10 +231,10 @@ dependencies {
             debugImplementation (libs.com.squareup.leakcanary.android)
 
             // Special dependencies for free flavor
-            freeImplementation (libs.com.google.android.gms.play.services.analytics)
+            "freeImplementation"(libs.com.google.android.gms.play.services.analytics)
 
             // Free ads
-            freeImplementation (libs.com.google.android.gms.play.services.ads)
+            "freeImplementation"(libs.com.google.android.gms.play.services.ads)
 }
 
 

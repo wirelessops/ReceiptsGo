@@ -93,14 +93,14 @@ com-jakewharton-rxbinding3-rxbinding = { module = "com.jakewharton.rxbinding3:rx
 com-jakewharton-rxbinding3-rxbinding-appcompat = { module = "com.jakewharton.rxbinding3:rxbinding-appcompat", version.ref = "comJakewhartonRxbinding3" }
 com-squareup-retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "comSquareupRetrofit2" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
-com-hadisatrio-Optional = { module = "com.hadisatrio:Optional", version.ref = "comHadisatrio" }
+com-hadisatrio-optional = { module = "com.hadisatrio:Optional", version.ref = "comHadisatrio" }
 com-github-tapadoo-alerter = { module = "com.github.tapadoo:alerter", version.ref = "comGithubTapadoo" }
 com-tom-roush-pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "comTomRoush" }
 com-github-barteksc-pdfium-android = { module = "com.github.barteksc:pdfium-android", version.ref = "comGithubBarteksc" }
 com-github-tony19-logback-android = { module = "com.github.tony19:logback-android", version.ref = "comGithubTony19" }
 
 com-hannesdorfmann-adapterdelegates4-kotlin-dsl-viewbinding = { module = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding", version.ref = "comHannesdorfmann" }
-com-github-pqpo-SmartCropper = { module = "com.github.pqpo:SmartCropper", version.ref = "comGithubPqpo" }
+com-github-pqpo-smartcropper = { module = "com.github.pqpo:SmartCropper", version.ref = "comGithubPqpo" }
 org-joda-money = { module = "org.joda:joda-money", version.ref = "orgJoda" }
 com-google-android-play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "comGoogleAndroidPlay" }
 com-google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "comGoogleDagger" }
