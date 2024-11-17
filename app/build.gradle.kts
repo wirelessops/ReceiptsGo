@@ -2,16 +2,16 @@ import java.util.Properties
 import java.io.FileInputStream
 
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.android.application)
     //id("com.github.triplet.play") version "3.8.1"
-    id("org.jlleitschuh.gradle.ktlint")
-    id("com.google.devtools.ksp")
-    //id("com.google.android.gms.oss-licenses-plugin")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.jetbrains.kotlin.plugin.parcelize")
-    id("com.google.firebase.crashlytics")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.ksp)
+    //alias(libs.plugins.com.google.android.gms.oss.licenses.plugin)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.google.services)
 }
 
 val localPropertiesFile = rootProject.file("local.properties")
