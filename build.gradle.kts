@@ -13,8 +13,3 @@ plugins {
 
 
 
-ext {
-    minSdkVersion = 21
-    targetSdkVersion = 34
-    compileSdkVersion = 34
-}
