@@ -152,89 +152,89 @@ dependencies {
     implementation(project(":push"))
     implementation(project(":automatic_backups"))
     implementation(project(":oss_licenses"))
-    implementation(platform(kotlin("bom", version = "1.8.0")))
+    implementation(platform(libs.kotlin.bom))
 
-
-            implementation (libs.androidx.core.ktx)
-            implementation (libs.androidx.appcompat)
-            implementation (libs.androidx.cardview)
-            implementation (libs.androidx.constraintlayout)
-            implementation (libs.androidx.exifinterface)
-            implementation (libs.androidx.legacy.support.v4)
-            implementation (libs.androidx.multidex)
-            implementation (libs.androidx.recyclerview)
-            implementation (libs.com.google.android.material)
-            implementation (libs.com.android.billingclient.billing)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.exifinterface)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.multidex)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.com.google.android.material)
+    implementation(libs.com.android.billingclient.billing)
 
 //                implementation("com.google.apis:google-api-services-drive:$GOOGLE_DRIVE_API_VERSION") {
-//            exclude(group = "org.apache.httpcomponents")
-//        }
-            implementation (libs.com.google.apis.api.services.drive)
-            implementation (libs.com.google.http.client.gson)
-            implementation (libs.com.squareup.picasso)
-            implementation (libs.com.squareup.okhttp3.okhttp)
-            implementation (libs.com.squareup.okhttp3.logging.interceptor)
-            implementation (libs.com.squareup.retrofit2.retrofit)
-            implementation (libs.com.squareup.retrofit2.converter.gson)
-            implementation (libs.com.squareup.moshi)
-            implementation (libs.com.squareup.moshi.adapters)
-            //implementation(libs.com.squareup.moshi.kotlin.codegen)
-            implementation (libs.com.squareup.retrofit2.converter.moshi)
+//noinspection DuplicatePlatformClasses
+//                   exclude(group = "org.apache.httpcomponents")
+//
+//                }
+    implementation(libs.com.google.apis.api.services.drive)
+    implementation(libs.com.google.http.client.gson)
+    implementation(libs.com.squareup.picasso)
+    implementation(libs.com.squareup.okhttp3.okhttp)
+    implementation(libs.com.squareup.okhttp3.logging.interceptor)
+    implementation(libs.com.squareup.retrofit2.retrofit)
+    implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation(libs.com.squareup.moshi)
+    implementation(libs.com.squareup.moshi.adapters)
+    implementation(libs.com.squareup.retrofit2.converter.moshi)
 
-            ksp (libs.com.squareup.moshi.kotlin.codegen)
+    ksp(libs.com.squareup.moshi.kotlin.codegen)
 
 
-            //Rx2
-            implementation (libs.com.jakewharton.rxbinding3.rxbinding)
-            implementation (libs.com.jakewharton.rxbinding3.rxbinding.appcompat)
-            implementation (libs.com.squareup.retrofit2.adapter.rxjava2)
-            implementation (libs.commons.io)
-            implementation (libs.com.hadisatrio.optional)
-            implementation (libs.com.github.tapadoo.alerter)
-            implementation (libs.com.tom.roush.pdfbox.android)
-            implementation (libs.com.github.barteksc.pdfium.android)
-            implementation (libs.com.github.tony19.logback.android)
+    //Rx2
+    implementation(libs.com.jakewharton.rxbinding3.rxbinding)
+    implementation(libs.com.jakewharton.rxbinding3.rxbinding.appcompat)
+    implementation(libs.com.squareup.retrofit2.adapter.rxjava2)
+    implementation(libs.commons.io)
+    implementation(libs.com.hadisatrio.optional)
+    implementation(libs.com.github.tapadoo.alerter)
+    implementation(libs.com.tom.roush.pdfbox.android)
+    implementation(libs.com.github.barteksc.pdfium.android)
+    implementation(libs.com.github.tony19.logback.android)
 
-            // Note: Periodically check for updates here so we can revert to the official version
-            // implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
+    // Note: Periodically check for updates here so we can revert to the official version
+    // implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
-            implementation ("com.github.wbaumann:MPAndroidChart:v3.0.3.3")
+    implementation("com.github.wbaumann:MPAndroidChart:v3.0.3.3")
 
-            api ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0@aar")
+    api(libs.advrecyclerview)
 
-            implementation (libs.com.hannesdorfmann.adapterdelegates4.kotlin.dsl.viewbinding)
-            implementation (libs.com.github.pqpo.smartcropper)
-            implementation (libs.org.joda.money)
-            implementation (libs.com.google.android.play.review.ktx)
+    implementation(libs.com.hannesdorfmann.adapterdelegates4.kotlin.dsl.viewbinding)
+    implementation(libs.com.github.pqpo.smartcropper)
+    implementation(libs.org.joda.money)
+    implementation(libs.com.google.android.play.review.ktx)
 
-            // Dagger
-            kapt (libs.com.google.dagger.compiler)
-            kapt (libs.com.google.dagger.android.processor)
+    // Dagger
+    kapt(libs.com.google.dagger.compiler)
+    kapt(libs.com.google.dagger.android.processor)
 
-            // Unit Tests
-            testImplementation (libs.org.robolectric)
-            testImplementation (libs.junit)
-            testImplementation (libs.org.mockito.core)
-            testImplementation (libs.com.nhaarman.mockitokotlin2.mockito.kotlin)
-            testImplementation (libs.androidx.test.core)
+    // Unit Tests
+    testImplementation(libs.org.robolectric)
+    testImplementation(libs.junit)
+    testImplementation(libs.org.mockito.core)
+    testImplementation(libs.com.nhaarman.mockitokotlin2.mockito.kotlin)
+    testImplementation(libs.androidx.test.core)
 
-            // Espresso Tests
-            androidTestImplementation (libs.androidx.test.espresso.core)
-            androidTestImplementation (libs.androidx.test.espresso.intents)
-            androidTestImplementation (libs.androidx.test.ext.junit)
-            androidTestImplementation (libs.androidx.test.runner)
-            androidTestImplementation (libs.androidx.test.rules)
+    // Espresso Tests
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.intents)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
 
-            //androidTestUtil(libs.androidx.test.orchestrator)
+    //androidTestUtil(libs.androidx.test.orchestrator)
 
-            // Leak Canary
-            debugImplementation (libs.com.squareup.leakcanary.android)
+    // Leak Canary
+    debugImplementation(libs.com.squareup.leakcanary.android)
 
-            // Special dependencies for free flavor
-            "freeImplementation"(libs.com.google.android.gms.play.services.analytics)
+    // Special dependencies for free flavor
+    "freeImplementation"(libs.com.google.android.gms.play.services.analytics)
 
-            // Free ads
-            "freeImplementation"(libs.com.google.android.gms.play.services.ads)
+    // Free ads
+    "freeImplementation"(libs.com.google.android.gms.play.services.ads)
 }
 
 
