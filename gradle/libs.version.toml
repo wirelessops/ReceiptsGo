@@ -49,11 +49,12 @@ comGoogleDagger = "2.45"
 
 orgRobolectric = "4.5.1"
 junit = "4.13.2"
+junitExt = "1.1.5"
 orgMockito = "3.3.3"
 comNhaarmanMockitokotlin2 = "2.2.0"
 androidxTest = "1.5.0"
 androidxTestEspresso = "3.5.1"
-androidxTestExt = "1.1.5"
+
 comSquareupLeakcanary = "2.10"
 
 
@@ -61,6 +62,10 @@ googleAnalytics = "18.0.2"
 googleAdmob = "22.2.0"
 
 [libraries]
+
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
@@ -109,13 +114,14 @@ com-nhaarman-mockitokotlin2-mockito-kotlin = { module = "com.nhaarman.mockitokot
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspresso" }
 androidx-test-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "androidxTestEspresso" }
-androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTestExt" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "junitExt" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTest" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTest" }
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidxTest" }
 com-squareup-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "comSquareupLeakcanary" }
-com-google-android-gms-play-services-analytics = { module = "com.google.android.gms:play-services-analytics", version.ref = "googleAdmob" }
-com-google-android-gms-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googleAnalytics" }
+
+com-google-android-gms-play-services-analytics = { module = "com.google.android.gms:play-services-analytics", version.ref = "googleAnalytics" }
+com-google-android-gms-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googleAdmob" }
 
 [plugins]
 
