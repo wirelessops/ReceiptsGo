@@ -94,14 +94,16 @@ android {
         "**.properties"
     )
 
-    flavorDimensions += "versionType"
+    flavorDimensions += listOf("versionType")
 
     productFlavors {
         create("free") {
             applicationId = "com.wops.receiptsgo"
             dimension = "versionType"
+            isDefault = true
             proguardFile("flavor-not-floss-rules.pro")
             missingDimensionStrategy("isFloss", "notFloss")
+            //matchingFallbacks += listOf("isFloss", "notFloss")
         }
 
         create("plusFlavor") {
@@ -109,12 +111,14 @@ android {
             dimension = "versionType"
             proguardFile("flavor-not-floss-rules.pro")
             missingDimensionStrategy("isFloss", "notFloss")
+            //matchingFallbacks += listOf("isFloss", "notFloss")
         }
 
         create("flossFlavor") {
             applicationId = "com.wops.receiptsgo.floss"
             dimension = "versionType"
             missingDimensionStrategy("isFloss", "floss")
+            //matchingFallbacks += listOf("isFloss")
         }
     }
 
@@ -165,11 +169,6 @@ dependencies {
     implementation(libs.com.google.android.material)
     implementation(libs.com.android.billingclient.billing)
 
-//                implementation("com.google.apis:google-api-services-drive:$GOOGLE_DRIVE_API_VERSION") {
-//noinspection DuplicatePlatformClasses
-//                   exclude(group = "org.apache.httpcomponents")
-//
-//                }
     implementation(libs.com.google.apis.api.services.drive)
     implementation(libs.com.google.http.client.gson)
     implementation(libs.com.squareup.picasso)

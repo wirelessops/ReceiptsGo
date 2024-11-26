@@ -1,8 +1,9 @@
 [versions]
 advrecyclerview = "1.0.0"
-androidGradlePlugin = "8.7.1"
+androidGradlePlugin = "8.7.2"
 
 # @keep
+googleApiClientAndroid = "1.31.1"
 minSdk = "21"
 # @keep
 compileSdk = "34"
@@ -23,7 +24,7 @@ androidxMultidex = "2.0.1"
 androidxRecyclerview = "1.3.0"
 comGoogleAndroidMaterial = "1.8.0"
 comAndroidBillingclient = "6.1.0"
-comGoogleApis = "v3-rev197-1.25.0"
+googleDriveApi = "v3-rev197-1.25.0"
 comGoogleHttpClient = "1.40.1"
 
 comSquareupPicasso = "2.8"
@@ -38,15 +39,15 @@ commonsIo = "2.8.0"
 comHadisatrio = "v1.0.1"
 comGithubTapadoo = "7.0.0"
 comTomRoush = "1.8.10.3"
-comGithubBarteksc = "1.9.0"
-comGithubTony19 = "2.0.0"
+comGithubBartekscPdfium = "1.9.0"
+comGithubTony19Logback = "2.0.0"
 
 comHannesdorfmann = "4.3.0"
 comGithubPqpo = "2.1.4"
 orgJoda = "1.0.1"
 
-comGoogleAndroidPlay = "2.0.1"
-comGoogleDagger = "2.45"
+play-review = "2.0.2"
+dagger = "2.45"
 
 orgRobolectric = "4.5.1"
 junit = "4.13.2"
@@ -58,7 +59,7 @@ androidxTestEspresso = "3.5.1"
 
 comSquareupLeakcanary = "2.10"
 
-googleAnalytics = "18.0.2"
+googleAnalytics = "18.1.1"
 googleAdmob = "22.2.0"
 crashlytics = "2.9.4"
 googleServices = "4.4.2"
@@ -71,6 +72,7 @@ ktlint = "9.4.1"
 
 advrecyclerview = { module = "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview", version.ref = "advrecyclerview" }
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
@@ -86,7 +88,7 @@ androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "andr
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerview" }
 com-google-android-material = { module = "com.google.android.material:material", version.ref = "comGoogleAndroidMaterial" }
 com-android-billingclient-billing = { module = "com.android.billingclient:billing", version.ref = "comAndroidBillingclient" }
-com-google-apis-api-services-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "comGoogleApis" }
+com-google-apis-api-services-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "googleDriveApi" }
 com-google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "comGoogleHttpClient" }
 com-squareup-picasso = { module = "com.squareup.picasso:picasso", version.ref = "comSquareupPicasso" }
 com-squareup-okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "comSquareupOkhttp3" }
@@ -105,15 +107,15 @@ commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 com-hadisatrio-optional = { module = "com.hadisatrio:Optional", version.ref = "comHadisatrio" }
 com-github-tapadoo-alerter = { module = "com.github.tapadoo:alerter", version.ref = "comGithubTapadoo" }
 com-tom-roush-pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "comTomRoush" }
-com-github-barteksc-pdfium-android = { module = "com.github.barteksc:pdfium-android", version.ref = "comGithubBarteksc" }
-com-github-tony19-logback-android = { module = "com.github.tony19:logback-android", version.ref = "comGithubTony19" }
+com-github-barteksc-pdfium-android = { module = "com.github.barteksc:pdfium-android", version.ref = "comGithubBartekscPdfium" }
+com-github-tony19-logback-android = { module = "com.github.tony19:logback-android", version.ref = "comGithubTony19Logback" }
 
 com-hannesdorfmann-adapterdelegates4-kotlin-dsl-viewbinding = { module = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding", version.ref = "comHannesdorfmann" }
 com-github-pqpo-smartcropper = { module = "com.github.pqpo:SmartCropper", version.ref = "comGithubPqpo" }
 org-joda-money = { module = "org.joda:joda-money", version.ref = "orgJoda" }
-com-google-android-play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "comGoogleAndroidPlay" }
-com-google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "comGoogleDagger" }
-com-google-dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "comGoogleDagger" }
+com-google-android-play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "play-review" }
+com-google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+com-google-dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "dagger" }
 
 
 org-robolectric = { module = "org.robolectric:robolectric", version.ref = "orgRobolectric" }
