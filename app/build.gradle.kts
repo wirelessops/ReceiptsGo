@@ -6,7 +6,7 @@ plugins {
     //id("com.github.triplet.play") version "3.8.1"
     alias(libs.plugins.ktlint)
     alias(libs.plugins.ksp)
-    //alias(libs.plugins.com.google.android.gms.oss.licenses.plugin)
+    alias(libs.plugins.oss.licenses)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kapt)
     alias(libs.plugins.kotlin.parcelize)
@@ -158,6 +158,7 @@ dependencies {
     implementation(project(":oss_licenses"))
     implementation(platform(libs.kotlin.bom))
 
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.cardview)
@@ -187,6 +188,7 @@ dependencies {
     implementation(libs.com.jakewharton.rxbinding3.rxbinding)
     implementation(libs.com.jakewharton.rxbinding3.rxbinding.appcompat)
     implementation(libs.com.squareup.retrofit2.adapter.rxjava2)
+
     implementation(libs.commons.io)
     implementation(libs.com.hadisatrio.optional)
     implementation(libs.com.github.tapadoo.alerter)
@@ -230,7 +232,7 @@ dependencies {
     debugImplementation(libs.com.squareup.leakcanary.android)
 
     // Special dependencies for free flavor
-    "freeImplementation"(libs.com.google.android.gms.play.services.analytics)
+   // "freeImplementation"(libs.com.google.android.gms.play.services.analytics)
 
     // Free ads
     "freeImplementation"(libs.com.google.android.gms.play.services.ads)
@@ -240,6 +242,8 @@ dependencies {
 ktlint {
     android.set(true)
 }
+
+
 
 //    lint {
 //        abortOnError = false
