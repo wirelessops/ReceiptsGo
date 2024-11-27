@@ -30,4 +30,4 @@ dependencyResolutionManagement {
 include("app", "aws", "core", "push", "analytics", "automatic_backups", "oss_licenses")
 include("wbMiniLibrary")
 
-rootProject.name = "ReceiptsGo"
+rootProject.name = "receipts-go"
