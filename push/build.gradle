@@ -1,14 +1,16 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kapt)
+}
 
 android {
     compileSdk = libs.versions.compileSdk.get().toInteger()
 
 
     defaultConfig {
-        minSdkVersion libs.versions.minSdk.get().toInteger()
-        targetSdkVersion libs.versions.targetSdk.get().toInteger()
+        minSdk = libs.versions.minSdk.get().toInteger()
+        targetSdk = libs.versions.targetSdk.get().toInteger()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,32 +39,35 @@ android {
 
     productFlavors {
         floss {
-            dimension "isFloss"
+            dimension("isFloss")
         }
 
         notFloss {
-            dimension "isFloss"
+            dimension("isFloss")
         }
     }
-    namespace 'com.wops.push'
+    namespace = "com.wops.push"
 }
 
 dependencies {
-    implementation project(':core')
+    implementation(project(":core"))
 
     // Dagger
-    kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
-    kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+    kapt(libs.com.google.dagger.compiler)
+    kapt(libs.com.google.dagger.android.processor)
 
     // firebase
-    notFlossImplementation "com.google.firebase:firebase-crashlytics:$CRASHLYTICS_VERSION"
+    //notFlossImplementation(platform(libs.firebase.bom))
+    notFlossImplementation(libs.firebase.crashlytics)
     // we must use api here during to this dagger issue https://github.com/google/dagger/issues/970 (stackoverflow https://stackoverflow.com/questions/47124987/dagger-2-cannot-access-retrofit)
-    notFlossApi "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"
+    notFlossApi(libs.firebase.messaging)
+
+   // notFlossApi("com.google.firebase:firebase-iid:21.1.0")
 
     // Unit Tests
-    testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
-    testImplementation "junit:junit:$JUNIT_VERSION"
-    testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
-    testImplementation "androidx.test:core:$ANDROID_TEST_RUNNER_VERSION"
+    testImplementation(libs.org.robolectric)
+    testImplementation(libs.junit)
+    testImplementation(libs.org.mockito.core)
+    testImplementation(libs.com.nhaarman.mockitokotlin2.mockito.kotlin)
+    testImplementation(libs.androidx.test.core)
 }
