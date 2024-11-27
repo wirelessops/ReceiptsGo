@@ -76,6 +76,7 @@ googleAdmob = "22.2.0"
 googleServices = "4.4.2"
 
 comGoogleAndroidGmsOssLicensesPlugin = "0.10.6"
+playServicesOssLicenses = "17.1.0"
 
 ktlint = "9.4.1"
 
@@ -159,6 +160,7 @@ com-squareup-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary
 
 com-google-android-gms-play-services-analytics = { module = "com.google.android.gms:play-services-analytics", version.ref = "googleAnalytics" }
 com-google-android-gms-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googleAdmob" }
+play-services-oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "playServicesOssLicenses" }
 
 [plugins]
 

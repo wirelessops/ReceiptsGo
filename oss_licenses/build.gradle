@@ -50,5 +50,5 @@ android {
 dependencies {
     implementation project(':core')
 
-    //notFlossImplementation "com.google.android.gms:play-services-oss-licenses:$GOOGLE_OSS_VERSION"
+    notFlossImplementation libs.play.services.oss.licenses
 }
