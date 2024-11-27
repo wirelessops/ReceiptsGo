@@ -2,7 +2,7 @@ package com.wops.receiptsgo.di;
 
 import android.content.Context;
 
-import com.google.android.gms.analytics.Tracker;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,11 @@ import com.wops.analytics.Analytics;
 import com.wops.analytics.AnalyticsProvider;
 import com.wops.receiptsgo.ExtraInitializer;
 import com.wops.receiptsgo.ExtraInitializerFreeImpl;
-import com.wops.receiptsgo.R;
+
 import com.wops.receiptsgo.ad.MobileAds;
 import com.wops.receiptsgo.ad.MobileAdsImpl;
 import com.wops.receiptsgo.analytics.AnalyticsManager;
-import com.wops.receiptsgo.analytics.GoogleAnalytics;
+
 import com.wops.receiptsgo.ocr.OcrManager;
 import com.wops.receiptsgo.ocr.OcrManagerImpl;
 import com.wops.receiptsgo.purchases.wallet.DefaultPurchaseWallet;
@@ -50,17 +50,11 @@ public abstract class FlavorModule {
 
     @Provides
     @ApplicationScope
-    public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, Context context, GoogleAnalytics googleAnalytics) {
+    public static Analytics provideAnalytics(UserPreferenceManager userPreferenceManager, Context context) {
         final List<Analytics> defaultAnalytics = new ArrayList<>(new AnalyticsProvider(context).getAnalytics());
-        defaultAnalytics.add(googleAnalytics);
         return new AnalyticsManager(defaultAnalytics, userPreferenceManager);
     }
 
-    @Provides
-    @ApplicationScope
-    public static Tracker provideGoogleAnalyticsTracker(Context context) {
-        return com.google.android.gms.analytics.GoogleAnalytics.getInstance(context).newTracker(R.xml.analytics);
-    }
 
     @Binds
     @ApplicationScope
