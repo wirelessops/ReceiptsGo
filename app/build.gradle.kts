@@ -25,8 +25,8 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1018
-        versionName = "1.1.2"
+        versionCode = 1019
+        versionName = "1.1.3"
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
 
@@ -143,6 +143,7 @@ android {
 //        }
 //        execution = "ANDROIDX_TEST_ORCHESTRATOR"
 //    }
+configurations.forEach { it.exclude(group = "org.apache.httpcomponents") }
 
 dependencies {
 
@@ -238,6 +239,7 @@ dependencies {
     // Free ads
     "freeImplementation"(libs.com.google.android.gms.play.services.ads)
 }
+
 
 
 ktlint {
