@@ -20,7 +20,7 @@ public enum ConfigurableStaticFeature implements Feature {
      * Since Android has a bug on pre-O devices for PDF rendering, this enables "Compat" PDF rendering
      * in which we use our local '.so' libraries for PDF generation
      */
-    CompatPdfRendering(true),
+    CompatPdfRendering(false),
 
     /**
      * Indicates that we should use the production SmartReceipts.co endpoint (ie instead of beta).
