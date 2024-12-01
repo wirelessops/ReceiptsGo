@@ -62,7 +62,7 @@ dependencies {
     api(libs.guava)
 
     // Logger
-    api "org.slf4j:slf4j-api:$SLF4J_VERSION"
+    api(libs.slf4j.api)
 
 
     implementation(libs.firebase.analytics)

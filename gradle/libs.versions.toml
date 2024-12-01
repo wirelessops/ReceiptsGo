@@ -32,13 +32,13 @@ googleApiClientAndroid = "1.31.1"
 comGoogleHttpClient = "1.40.1"
 
 picasso = "2.8"
-okhttp3 = "4.10.0"
-retrofit2 = "2.9.0"
-moshi = "1.14.0"
+okhttp3 = "4.12.0"
+retrofit2 = "2.11.0"
+moshi = "1.15.0"
 
 comJakewhartonRxbinding3 = "3.1.0"
 
-commonsIo = "2.8.0"
+commonsIo = "2.13.0"
 
 comHadisatrio = "v1.0.1"
 comGithubTapadoo = "7.0.0"
@@ -48,7 +48,7 @@ comGithubTony19Logback = "2.0.0"
 
 comHannesdorfmann = "4.3.0"
 comGithubPqpoSmartCropper = "2.1.4"
-orgJoda = "1.0.1"
+jodaMoney = "1.0.5"
 
 play-review = "2.0.2"
 
@@ -64,12 +64,14 @@ androidxTestEspresso = "3.5.1"
 
 comSquareupLeakcanary = "2.10"
 
-googleAnalytics = "18.1.1"
 firebaseBom = "26.2.0"
 
 firebaseAnalytics = "21.2.1"
 firebaseCrashlytics = "18.6.0"
 firebaseMessaging = "21.0.1"
+
+
+slf4jApi = "1.7.30"
 
 googleAdmob = "22.2.0"
 
@@ -137,7 +139,7 @@ com-github-tony19-logback-android = { module = "com.github.tony19:logback-androi
 
 com-hannesdorfmann-adapterdelegates4-kotlin-dsl-viewbinding = { module = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding", version.ref = "comHannesdorfmann" }
 com-github-pqpo-smartcropper = { module = "com.github.pqpo:SmartCropper", version.ref = "comGithubPqpoSmartCropper" }
-org-joda-money = { module = "org.joda:joda-money", version.ref = "orgJoda" }
+org-joda-money = { module = "org.joda:joda-money", version.ref = "jodaMoney" }
 com-google-android-play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "play-review" }
 
 com-google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
@@ -158,9 +160,9 @@ androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxT
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidxTest" }
 com-squareup-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "comSquareupLeakcanary" }
 
-com-google-android-gms-play-services-analytics = { module = "com.google.android.gms:play-services-analytics", version.ref = "googleAnalytics" }
 com-google-android-gms-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googleAdmob" }
 play-services-oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "playServicesOssLicenses" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 
 [plugins]
 
