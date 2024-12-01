@@ -57,7 +57,9 @@ dependencies {
     // firebase
     notFlossImplementation "com.google.firebase:firebase-crashlytics:$CRASHLYTICS_VERSION"
     // we must use api here during to this dagger issue https://github.com/google/dagger/issues/970 (stackoverflow https://stackoverflow.com/questions/47124987/dagger-2-cannot-access-retrofit)
-    notFlossApi "com.google.firebase:firebase-messaging:$FIREBASE_MESSAGING_VERSION"
+
+    notFlossApi(libs.firebase.messaging)
+
 
     // Unit Tests
     testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
