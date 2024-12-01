@@ -1,8 +1,12 @@
 package com.wops.receiptsgo.workers
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.net.Uri
+import android.os.Build
+import android.service.chooser.ChooserAction
 import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.date.DateFormatter
@@ -171,6 +175,27 @@ class EmailAssistant @Inject constructor(
             ).toString()
         )
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
+
+        if(Build.VERSION.SDK_INT >= 38) {
+
+            val shareIntent = Intent.createChooser(emailIntent, null)
+            val customActions = arrayOf(
+                ChooserAction.Builder(
+                    Icon.createWithResource(context, R.drawable.download_24px),
+                    "Save to Downloads",
+                    PendingIntent.getBroadcast(
+                        context,
+                        1,
+                        Intent(Intent.ACTION_VIEW),
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+                    )
+                ).build()
+            )
+            shareIntent.putExtra(Intent.EXTRA_CHOOSER_CUSTOM_ACTIONS, customActions)
+
+            return shareIntent
+
+        }
 
         Logger.debug(this, "Built the send intent {} with extras {}.", emailIntent, emailIntent.extras)
 
