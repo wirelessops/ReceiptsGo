@@ -1,6 +1,7 @@
 [versions]
 advrecyclerview = "1.0.0"
 androidGradlePlugin = "8.7.2"
+awsAndroidSdkCore = "2.65.0"
 crashlyticsGradle = "2.9.4"
 
 # @keep
@@ -8,6 +9,8 @@ minSdk = "21"
 # @keep
 compileSdk = "34"
 # @keep
+rxandroid = "2.1.1"
+rxjava = "2.2.20"
 targetSdk = "34"
 
 
@@ -80,6 +83,8 @@ googleServices = "4.4.2"
 comGoogleAndroidGmsOssLicensesPlugin = "0.10.6"
 playServicesOssLicenses = "17.1.0"
 
+playServicesAuth = "18.1.0"
+
 ktlint = "9.4.1"
 
 [libraries]
@@ -87,7 +92,11 @@ ktlint = "9.4.1"
 advrecyclerview = { module = "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview", version.ref = "advrecyclerview" }
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 
+aws-android-sdk-core = { module = "com.amazonaws:aws-android-sdk-core", version.ref = "awsAndroidSdkCore" }
+aws-android-sdk-s3 = { module = "com.amazonaws:aws-android-sdk-s3", version.ref = "awsAndroidSdkCore" }
 google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+
 
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
@@ -162,6 +171,8 @@ com-squareup-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary
 
 com-google-android-gms-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googleAdmob" }
 play-services-oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "playServicesOssLicenses" }
+rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
+rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 
 [plugins]

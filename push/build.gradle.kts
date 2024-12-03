@@ -5,48 +5,45 @@ plugins {
 }
 
 android {
-    compileSdk = libs.versions.compileSdk.get().toInteger()
-
+    namespace = "com.wops.push"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInteger()
-        targetSdk = libs.versions.targetSdk.get().toInteger()
+        minSdk = libs.versions.minSdk.get().toInt()
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_11
-        sourceCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlin {
         jvmToolchain(11)
     }
 
-    flavorDimensions "isFloss"
-    packagingOptions {
-        resources {
-            excludes += ['META-INF/DEPENDENCIES']
-        }
-    }
-
-
+    flavorDimensions += listOf("isFloss")
     productFlavors {
-        floss {
-            dimension("isFloss")
+        create("floss") {
+            dimension = "isFloss"
         }
-
-        notFloss {
-            dimension("isFloss")
+        create("notFloss") {
+            dimension = "isFloss"
         }
     }
-    namespace = "com.wops.push"
 }
 
 dependencies {
@@ -58,9 +55,9 @@ dependencies {
 
     // firebase
     //notFlossImplementation(platform(libs.firebase.bom))
-    notFlossImplementation(libs.firebase.crashlytics)
+    "notFlossImplementation"(libs.firebase.crashlytics)
     // we must use api here during to this dagger issue https://github.com/google/dagger/issues/970 (stackoverflow https://stackoverflow.com/questions/47124987/dagger-2-cannot-access-retrofit)
-    notFlossApi(libs.firebase.messaging)
+    "notFlossApi"(libs.firebase.messaging)
 
    // notFlossApi("com.google.firebase:firebase-iid:21.1.0")
 
