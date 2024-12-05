@@ -25,8 +25,8 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1019
-        versionName = "1.1.3"
+        versionCode = 1021
+        versionName = "1.1.4"
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
 
@@ -246,7 +246,9 @@ ktlint {
     android.set(true)
 }
 
-
+//tasks.withType<JavaCompile>().configureEach {
+//    options.isDeprecation = true
+//}
 
 //    lint {
 //        abortOnError = false
