@@ -9,8 +9,6 @@ minSdk = "21"
 # @keep
 compileSdk = "34"
 # @keep
-rxandroid = "2.1.1"
-rxjava = "2.2.20"
 targetSdk = "34"
 
 
@@ -57,6 +55,9 @@ play-review = "2.0.2"
 
 dagger = "2.52"
 
+rxandroid = "2.1.1"
+rxjava = "2.2.20"
+
 orgRobolectric = "4.5.1"
 junit = "4.13.2"
 junitExt = "1.1.5"
@@ -86,6 +87,8 @@ playServicesOssLicenses = "17.1.0"
 playServicesAuth = "18.1.0"
 
 ktlint = "9.4.1"
+
+owaspGradlePlugin = "11.1.1"
 
 [libraries]
 
@@ -195,3 +198,5 @@ crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyti
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 
 oss-licenses = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "comGoogleAndroidGmsOssLicensesPlugin" }
+
+owasp-dependency-check = { id = "org.owasp.dependencycheck", version.ref = "owaspGradlePlugin" }
