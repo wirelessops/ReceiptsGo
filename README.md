@@ -1,8 +1,12 @@
 # Receipts Go
 
 > Save receipts, track expenses, and generate reports quickly and easily - all on your Android device. Receipts Go is an Open Source project.
+> 
+> [![Get it on Google Play](https://receiptsgo.app/wp-content/uploads/2024/12/google_play_get_small.png)](https://play.google.com/store/apps/details?id=com.wops.receiptsgo)
 
 ![ReceiptsGo](https://github.com/wirelessops/ReceiptsGo/blob/1f3d2aac10d5e595d393e7ccaf0ab7f342deab5d/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
+
+
 
 Turn your phone into a receipt scanner and expense report generator with Receipts Go! Track your receipts and easily generate beautiful PDF and CSV reports for yourself or your clients.
 
