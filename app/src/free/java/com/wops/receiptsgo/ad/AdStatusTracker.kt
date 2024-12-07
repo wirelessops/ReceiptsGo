@@ -27,10 +27,11 @@ class AdStatusTracker @Inject constructor(private val context: Context,
      * however, it is recommended that we pre-fetch this data from a background thread in App.onCreate.
      */
     fun shouldShowAds() : Boolean {
-        val hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
-                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)
-        val areAdsEnabledLocally = context.getSharedPreferences(AD_PREFERENCES, 0).getBoolean(SHOW_AD, true)
-        return areAdsEnabledLocally && !hasProSubscription
+//        val hasProSubscription = purchaseWallet.hasActivePurchase(InAppPurchase.SmartReceiptsPlus)
+//                || purchaseWallet.hasActivePurchase(InAppPurchase.PremiumSubscriptionPlan)
+//        val areAdsEnabledLocally = context.getSharedPreferences(AD_PREFERENCES, 0).getBoolean(SHOW_AD, true)
+//        return areAdsEnabledLocally && !hasProSubscription
+        return false
     }
 
     companion object {
