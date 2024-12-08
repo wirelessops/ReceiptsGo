@@ -25,6 +25,6 @@ public class ExtraInitializerFreeImpl implements ExtraInitializer {
     @Override
     public void init() {
         // Note: We call this in the background to pre-fetch and cache the results to avoid disk read violations
-        this.executor.execute(adStatusTracker::shouldShowAds);
+        //this.executor.execute(adStatusTracker::shouldShowAds);
     }
 }

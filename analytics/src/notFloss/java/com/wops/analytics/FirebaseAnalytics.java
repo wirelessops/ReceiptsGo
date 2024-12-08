@@ -2,6 +2,8 @@ package com.wops.analytics;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -19,6 +21,10 @@ class FirebaseAnalytics implements Analytics {
     @Inject
     public FirebaseAnalytics(Context context) {
         firebaseAnalytics = com.google.firebase.analytics.FirebaseAnalytics.getInstance(context.getApplicationContext());
+        String testLabSetting = Settings.System.getString(context.getContentResolver(), "firebase.test.lab");
+        if ("true".equals(testLabSetting)) {
+            firebaseAnalytics.getInstance(context.getApplicationContext()).setAnalyticsCollectionEnabled(false);
+        }
     }
 
     @Override

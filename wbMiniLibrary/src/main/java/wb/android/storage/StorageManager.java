@@ -676,6 +676,11 @@ public class StorageManager {
 					file = new File(extractTo, "receipts_backup.db-wal");
 				} else {
 					file = new File(extractTo, entry.getName());
+					String canonicalPath = file.getCanonicalPath();
+				if (!canonicalPath.startsWith(extractTo.getPath())) {
+					throw new SecurityException("Directory does not match expected path: canonicalPath " + canonicalPath);
+				}
+
 				}
 				if (entry.getName().endsWith(".zip"))
 					continue; // Fix in the future. Currently, just ignore nested .zip files

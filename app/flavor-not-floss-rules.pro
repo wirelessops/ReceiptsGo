@@ -84,12 +84,13 @@
 -keep interface com.google.** { *;}
 -dontwarn com.google.**
 
+# OkHttp platform used only on JVM and when Conscrypt and other security providers are available.
+-dontwarn okhttp3.internal.platform.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**
 
--dontwarn org.conscrypt.Conscrypt$Version
--dontwarn org.conscrypt.Conscrypt
--dontwarn org.conscrypt.ConscryptHostnameVerifier
+
+# Joda-Money has no mandatory dependencies. There is a compile-time dependency on Joda-Convert, but this is not required at runtime thanks to the magic of annotations.
 -dontwarn org.joda.convert.FromString
 -dontwarn org.joda.convert.ToString
--dontwarn org.openjsse.javax.net.ssl.SSLParameters
--dontwarn org.openjsse.javax.net.ssl.SSLSocket
--dontwarn org.openjsse.net.ssl.OpenJSSE
