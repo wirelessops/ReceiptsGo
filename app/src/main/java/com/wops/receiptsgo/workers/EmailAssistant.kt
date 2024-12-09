@@ -176,7 +176,7 @@ class EmailAssistant @Inject constructor(
         )
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
 
-        if(Build.VERSION.SDK_INT >= 38) {
+        if(Build.VERSION.SDK_INT >= 34) {
 
             val shareIntent = Intent.createChooser(emailIntent, null)
             val customActions = arrayOf(
