@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -48,7 +53,6 @@
 
         <activity
             android:name=".activities.ReceiptsGoActivity"
-            android:label="@string/sr_app_name"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
@@ -59,13 +63,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Filter for deep linking into the app -->
-            <intent-filter android:label="@string/sr_app_name">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-            </intent-filter>
 
             <!-- Filter to handle action send activities -->
             <intent-filter>
@@ -102,7 +99,7 @@
                     tools:ignore="GoogleAppIndexingUrlError" />
             </intent-filter>
 
-            <!-- A fallback one for zip mime types -->
+            <!-- A fallback one for zip mime types
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -111,7 +108,7 @@
                     android:mimeType="application/zip"
                     android:pathPattern=".*\\.smr"
                     tools:ignore="GoogleAppIndexingUrlError" />
-            </intent-filter>
+            </intent-filter>-->
 
         </activity>
 
@@ -161,6 +158,8 @@
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
+
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
