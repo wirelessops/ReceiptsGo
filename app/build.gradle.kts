@@ -25,8 +25,8 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1021
-        versionName = "1.1.4"
+        versionCode = 1023
+        versionName = "1.2.4"
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
 
