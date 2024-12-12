@@ -2,12 +2,14 @@ package com.wops.receiptsgo.workers.widget
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.AlertDialog.*
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,9 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.widget.SwitchCompat
+import com.google.android.material.snackbar.Snackbar
 import com.wops.analytics.Analytics
 import com.wops.analytics.events.Events
 import com.wops.analytics.log.Logger
@@ -56,6 +61,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     private var csvCheckbox: CheckBox? = null
     private var zipCheckbox: CheckBox? = null
     private var zipWithMetadataCheckbox: CheckBox? = null
+    private var saveToDeviceSwitch: SwitchCompat? = null
 
     private var _binding: GenerateReportLayoutBinding? = null
     private val binding get() = _binding!!
@@ -72,6 +78,9 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
             if (csvCheckbox!!.isChecked) options.add(EmailOptions.CSV)
             if (zipWithMetadataCheckbox!!.isChecked) options.add(EmailOptions.ZIP_WITH_METADATA)
             if (zipCheckbox!!.isChecked) options.add(EmailOptions.ZIP)
+
+            if (saveToDeviceSwitch!!.isChecked) options.add(EmailOptions.SAVE_TO_DEVICE)
+
 
             return@map options
         }
@@ -98,29 +107,66 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
         zipWithMetadataCheckbox = flex.getSubView(activity, root, R.id.dialog_email_checkbox_zip_with_metadata) as CheckBox
         zipCheckbox = binding.dialogEmailCheckboxZip
 
+        saveToDeviceSwitch = binding.generateReportSaveSwitch
+
         binding.generateReportTooltip.setOnClickListener {
             analytics.record(Events.Informational.ConfigureReport)
             navigationHandler.navigateToSettingsScrollToReportSection()
         }
 
 
+           // saveToDeviceSwitch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+        val fabButton: FloatingActionButton? =
+            parentFragment?.view?.findViewById(R.id.fab)
+
         val onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            val drawableEnd: Drawable? = buttonView.compoundDrawablesRelative[2]
-            if (drawableEnd != null) {
-                drawableEnd.mutate()
-                val drawableColor = ContextCompat.getColor(
-                    requireContext(),
-                    if (isChecked) R.color.navigation_active else R.color.navigation_inactive
-                )
-                DrawableCompat.setTint(drawableEnd, drawableColor)
-            }
+            when (buttonView) {
+                saveToDeviceSwitch -> {
+                    try {
+                        val actualUriPermissions = context?.contentResolver?.persistedUriPermissions
+                        val mostRecentUriPermission =
+                            actualUriPermissions?.maxBy { it.persistedTime }
+                                .takeIf { it?.isWritePermission == true }
+                    }
+                    catch (e: NoSuchElementException) { // Thrown by maxBy
+                        buttonView.isChecked = false
+                        Toast.makeText(
+                            context,
+                            getString(R.string.toast_save_to_device_permission_rationale),
+                            Toast.LENGTH_LONG
+                        ).show();
+                        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                        startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE)
+                    }
 
+                    if (buttonView.isChecked) {
+                        fabButton?.setImageResource(R.drawable.download_24px)
+                    } else {
+                        fabButton?.setImageResource(R.drawable.ic_share)
+                    }
+                }
 
-            val bgColor =
-                ContextCompat.getColor(requireContext(), if (isChecked) R.color.selected_card_background else R.color.card_background)
-            val parent: ViewParent = buttonView.parent
-            if (parent is FrameLayout) {
-                parent.setBackgroundColor(bgColor)
+                else -> {
+                    val drawableEnd: Drawable? = buttonView.compoundDrawablesRelative[2]
+                    if (drawableEnd != null) {
+                        drawableEnd.mutate()
+                        val drawableColor = ContextCompat.getColor(
+                            requireContext(),
+                            if (isChecked) R.color.navigation_active else R.color.navigation_inactive
+                        )
+                        DrawableCompat.setTint(drawableEnd, drawableColor)
+                    }
+
+                    val bgColor =
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (isChecked) R.color.selected_card_background else R.color.card_background
+                        )
+                    val parent: ViewParent = buttonView.parent
+                    if (parent is FrameLayout) {
+                        parent.setBackgroundColor(bgColor)
+                    }
+                }
             }
         }
 
@@ -129,6 +175,8 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
         csvCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
         zipCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
         zipWithMetadataCheckbox!!.setOnCheckedChangeListener(onCheckedChangeListener)
+
+        saveToDeviceSwitch!!.setOnCheckedChangeListener(onCheckedChangeListener)
 
         return root
     }
@@ -164,26 +212,53 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
         when (result) {
             is EmailResult.Success -> {
                 binding.progress.visibility = View.GONE
-
-                try {
-                    startActivityForResult(
-                        Intent.createChooser(result.intent, requireContext().getString(R.string.send_email)),
-                        SHARE_REPORT_REQUEST_CODE
+                if (result.uris != null) {
+                    // Files were save to device
+                    Snackbar.make(
+                        binding.root,
+                        "Files saved",
+                        Snackbar.LENGTH_INDEFINITE
                     )
-                } catch (e: ActivityNotFoundException) {
-                    val builder = AlertDialog.Builder(context)
-                    builder.setTitle(R.string.error_no_send_intent_dialog_title)
-                        .setMessage(
-                            requireContext().getString(
-                                R.string.error_no_send_intent_dialog_message,
-                                getParentTrip().directory.absolutePath
-                            )
-                        )
-                        .setPositiveButton(android.R.string.ok) { dialog: DialogInterface, _: Int -> dialog.cancel() }
+                        .setAction("View", View.OnClickListener {
+                            val webIntent: Intent = result.uris.first().let { uri ->
+                                Intent(Intent.ACTION_VIEW, uri)
+                            }.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+
+                            if (result.uris.size > 1) {
+                                var directoryUri = DocumentsContract.buildDocumentUriUsingTree(result.uris.first(),
+                                    DocumentsContract.getTreeDocumentId(result.uris.first()))
+                                webIntent.setDataAndType(directoryUri, "vnd.android.document/directory")
+                            }
+                            startActivity(webIntent)
+                        }
+
+                        ).setActionTextColor(ContextCompat.getColor(requireContext(), R.color.text_on_primary_color))
                         .show()
+                } else {
+                    try {
+
+                        startActivityForResult(
+                            Intent.createChooser(
+                                result.intent,
+                                requireContext().getString(R.string.send_email)
+                            ),
+                            SHARE_REPORT_REQUEST_CODE
+                        )
+                    } catch (e: ActivityNotFoundException) {
+                        val builder = AlertDialog.Builder(context)
+                        builder.setTitle(R.string.error_no_send_intent_dialog_title)
+                            .setMessage(
+                                requireContext().getString(
+                                    R.string.error_no_send_intent_dialog_message,
+                                    getParentTrip().directory.absolutePath
+                                )
+                            )
+                            .setPositiveButton(android.R.string.ok) { dialog: DialogInterface, _: Int -> dialog.cancel() }
+                            .show()
+                    }
                 }
             }
-
             is EmailResult.Error -> {
                 binding.progress.visibility = View.GONE
                 handleGenerationError(result.errorType)
@@ -228,7 +303,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
                     presenter.isLandscapeReportEnabled() -> R.string.report_pdf_error_too_many_columns_message
                     else -> R.string.report_pdf_error_too_many_columns_message_landscape
                 }
-                AlertDialog.Builder(context).setTitle(R.string.report_pdf_error_too_many_columns_title)
+                Builder(context).setTitle(R.string.report_pdf_error_too_many_columns_title)
                     .setMessage(messageId)
                     .setPositiveButton(R.string.report_pdf_error_go_to_settings) { dialog, _ ->
                         dialog.cancel()
@@ -244,6 +319,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
             GenerationErrors.ERROR_MEMORY -> Toast.makeText(context, R.string.report_error_memory, Toast.LENGTH_LONG).show()
 
             GenerationErrors.ERROR_UNDETERMINED -> Toast.makeText(context, R.string.report_error_undetermined, Toast.LENGTH_SHORT).show()
+            GenerationErrors.ERROR_FILE_COPY -> TODO()
         }
     }
 
@@ -259,8 +335,26 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            SHARE_REPORT_REQUEST_CODE -> reportShares.onNext(Unit)
+//        when (requestCode) {
+//            SHARE_REPORT_REQUEST_CODE -> reportShares.onNext(Unit)
+//        }
+
+        if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val directoryUri = data?.data ?: return
+
+            val contentResolver = context?.contentResolver
+            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+            contentResolver?.takePersistableUriPermission(
+                directoryUri,
+                (takeFlags)
+            )
+            saveToDeviceSwitch?.isChecked = true
+            //println(directoryUri)
+
+            //val documentsTree = DocumentFile.fromTreeUri(requireContext(), directoryUri)
+            //println(documentsTree.toString())
         }
     }
 
@@ -271,5 +365,7 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
         }
 
         private const val SHARE_REPORT_REQUEST_CODE = 486
+        private const val OPEN_DIRECTORY_REQUEST_CODE = 1233
+
     }
 }

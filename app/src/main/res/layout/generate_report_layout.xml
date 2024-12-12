@@ -90,7 +90,26 @@
                     style="@style/Widget.SmartReceipts.GenerateCheckBox"
                     android:text="@string/DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA"
                     app:drawableEndCompat="@drawable/ic_zip" />
+
             </FrameLayout>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/generate_report_save_switch"
+                style="@style/Widget.SmartReceipts.GenerateCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:background="@drawable/bg_rounded_rectangle"
+                android:backgroundTint="@color/card_background"
+                android:fontFamily="sans-serif-medium"
+                android:padding="20dp"
+                android:switchPadding="@dimen/padding_large"
+                android:text="@string/save_to_device"
+                android:textColor="@color/text_primary_color"
+
+                />
 
             <Space
                 android:layout_width="match_parent"
