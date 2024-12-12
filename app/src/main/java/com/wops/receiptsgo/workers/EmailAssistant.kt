@@ -202,7 +202,7 @@ class EmailAssistant @Inject constructor(
         )
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
 
-        if(Build.VERSION.SDK_INT >= 34) {
+        if(Build.VERSION.SDK_INT >= 38) {
 
             // Todo: Add Intent.EXTRA_EXCLUDE_COMPONENTS to your intent after calling Intent.createChooser():
 
