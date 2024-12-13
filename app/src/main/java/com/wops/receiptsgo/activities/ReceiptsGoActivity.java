@@ -26,6 +26,8 @@ import com.wops.analytics.events.Events;
 import com.wops.analytics.log.Logger;
 import com.wops.receiptsgo.R;
 import com.wops.receiptsgo.ad.AdPresenter;
+import com.wops.receiptsgo.ad.EmptyBannerAdPresenter;
+import com.wops.receiptsgo.ad.EmptyInterstitialAdPresenter;
 import com.wops.receiptsgo.ad.InterstitialAdPresenter;
 import com.wops.receiptsgo.config.ConfigurationManager;
 import com.wops.receiptsgo.fragments.PermissionAlertDialogFragment;
@@ -66,10 +68,10 @@ public class ReceiptsGoActivity extends AppCompatActivity implements HasAndroidI
         PurchaseEventsListener, IntentImportInformationView, IntentImportProvider, SearchResultKeeper {
 
     @Inject
-    AdPresenter adPresenter;
+    EmptyBannerAdPresenter adPresenter;
 
     @Inject
-    InterstitialAdPresenter interstitialAdPresenter;
+    EmptyInterstitialAdPresenter interstitialAdPresenter;
 
     @Inject
     Flex flex;
