@@ -25,7 +25,6 @@ import com.wops.receiptsgo.utils.ImageUtils;
 /**
  * Used to load pdf files via the native Android {@link PdfRenderer} stack
  */
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class LollipopPdfPDImageXFactory implements PdfPDImageXFactory {
 
     private static final float IMAGE_QUALITY_SCALING_FACTOR = 2.75f;

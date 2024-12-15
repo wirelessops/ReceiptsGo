@@ -44,7 +44,6 @@ commonsIo = "2.13.0"
 comHadisatrio = "v1.0.1"
 comGithubTapadoo = "7.0.0"
 comTomRoushPdfBox = "1.8.10.3"
-comGithubBartekscPdfium = "1.9.0"
 comGithubTony19Logback = "2.0.0"
 
 comHannesdorfmann = "4.3.0"
@@ -146,7 +145,6 @@ commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 com-hadisatrio-optional = { module = "com.hadisatrio:Optional", version.ref = "comHadisatrio" }
 com-github-tapadoo-alerter = { module = "com.github.tapadoo:alerter", version.ref = "comGithubTapadoo" }
 com-tom-roush-pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "comTomRoushPdfBox" }
-com-github-barteksc-pdfium-android = { module = "com.github.barteksc:pdfium-android", version.ref = "comGithubBartekscPdfium" }
 com-github-tony19-logback-android = { module = "com.github.tony19:logback-android", version.ref = "comGithubTony19Logback" }
 
 com-hannesdorfmann-adapterdelegates4-kotlin-dsl-viewbinding = { module = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding", version.ref = "comHannesdorfmann" }

@@ -195,7 +195,6 @@ dependencies {
     implementation(libs.com.hadisatrio.optional)
     implementation(libs.com.github.tapadoo.alerter)
     implementation(libs.com.tom.roush.pdfbox.android)
-    implementation(libs.com.github.barteksc.pdfium.android)
     implementation(libs.com.github.tony19.logback.android)
 
     // Note: Periodically check for updates here so we can revert to the official version

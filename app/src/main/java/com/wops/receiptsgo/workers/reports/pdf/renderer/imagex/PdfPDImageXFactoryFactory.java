@@ -25,14 +25,6 @@ public class PdfPDImageXFactoryFactory {
 
     @NonNull
     public PdfPDImageXFactory get() {
-        if (ConfigurableStaticFeature.CompatPdfRendering.isEnabled(context)) {
-            return new CompatPdfPDImageXFactory(context, pdDocument, file);
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                return new LollipopPdfPDImageXFactory(pdDocument, file);
-            } else {
-                return new CompatPdfPDImageXFactory(context, pdDocument, file);
-            }
-        }
+        return new LollipopPdfPDImageXFactory(pdDocument, file);
     }
 }
