@@ -15,13 +15,13 @@ import com.wops.receiptsgo.ExtraInitializer;
 import com.wops.receiptsgo.ExtraInitializerFreeImpl;
 
 import com.wops.receiptsgo.ad.MobileAds;
-import com.wops.receiptsgo.ad.MobileAdsImpl;
 import com.wops.receiptsgo.ad.NoMobileAds;
 import com.wops.receiptsgo.analytics.AnalyticsManager;
 
 import com.wops.receiptsgo.ocr.OcrManager;
 import com.wops.receiptsgo.ocr.OcrManagerImpl;
-import com.wops.receiptsgo.purchases.wallet.DefaultPurchaseWallet;
+import com.wops.receiptsgo.purchases.NoOpPurchaseManager;
+import com.wops.receiptsgo.purchases.PurchaseManager;
 import com.wops.receiptsgo.purchases.wallet.NoOpPurchaseWallet;
 import com.wops.receiptsgo.purchases.wallet.PurchaseWallet;
 import com.wops.receiptsgo.settings.UserPreferenceManager;
@@ -45,6 +45,10 @@ public abstract class FlavorModule {
     @Binds
     @ApplicationScope
     public abstract PurchaseWallet providePurchaseWallet(NoOpPurchaseWallet defaultPurchaseWallet);
+
+    @Binds
+    @ApplicationScope
+    public abstract PurchaseManager providePurchaseManager(NoOpPurchaseManager purchaseManager);
 
     @Binds
     @ApplicationScope

@@ -123,8 +123,8 @@ public class ReceiptsGoApplication extends Application implements HasAndroidInje
     @Inject
     DateFormatter dateFormatter;
 
-    @Inject
-    SubscriptionsPurchaseTracker subscriptionsPurchaseTracker;
+    //@Inject
+    //SubscriptionsPurchaseTracker subscriptionsPurchaseTracker;
 
     @Inject
     InAppReviewManager inAppReviewManager;
@@ -220,9 +220,9 @@ public class ReceiptsGoApplication extends Application implements HasAndroidInje
         extraInitializer.init();
         currencyInitializer.init();
 
-        subscriptionsPurchaseTracker.initialize()
-                .subscribe(() -> Logger.info(this, "Successfully initialized"),
-                        throwable -> Logger.error(this, "Failed to initialize", throwable));
+//        subscriptionsPurchaseTracker.initialize()
+//                .subscribe(() -> Logger.info(this, "Successfully initialized"),
+//                        throwable -> Logger.error(this, "Failed to initialize", throwable));
 
         PDFBoxResourceLoader.init(getApplicationContext());
 
