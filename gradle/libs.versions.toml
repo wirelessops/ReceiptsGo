@@ -7,9 +7,9 @@ crashlyticsGradle = "2.9.4"
 # @keep
 minSdk = "21"
 # @keep
-compileSdk = "34"
+compileSdk = "35"
 # @keep
-targetSdk = "34"
+targetSdk = "35"
 
 
 kotlin = "1.8.0"
