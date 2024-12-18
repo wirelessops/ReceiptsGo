@@ -1,6 +1,6 @@
 package com.wops.receiptsgo.di;
 
-import com.wops.receiptsgo.ad.AdMobInterstitialAdPresenter;
+
 import com.wops.receiptsgo.ad.AdPresenter;
 import com.wops.receiptsgo.ad.BannerAdPresenter;
 import com.wops.receiptsgo.ad.InterstitialAdPresenter;

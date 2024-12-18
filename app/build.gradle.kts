@@ -235,9 +235,6 @@ dependencies {
 
     // Special dependencies for free flavor
    // "freeImplementation"(libs.com.google.android.gms.play.services.analytics)
-
-    // Free ads
-    "freeImplementation"(libs.com.google.android.gms.play.services.ads)
 }
 
 
