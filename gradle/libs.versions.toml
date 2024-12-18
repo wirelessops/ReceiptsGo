@@ -9,7 +9,7 @@ minSdk = "21"
 # @keep
 compileSdk = "35"
 # @keep
-targetSdk = "35"
+targetSdk = "34"
 
 
 kotlin = "1.8.0"
