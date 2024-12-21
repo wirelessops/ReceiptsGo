@@ -576,4 +576,8 @@
     <!-- ================== Leak Canary ==================== -->
     <string name="leak_canary_test_class_name">com.wops.receiptsgo</string>
 
+    <string name="pref_key_persisted_uri_directory" translatable="false">pref_key_persisted_uri_directory</string>
+    <string name="toast_save_to_device_permission_rationale">This and future files will be saved in this folder</string>
+    <string name="save_to_device">Save to Device</string>
+
 </resources>

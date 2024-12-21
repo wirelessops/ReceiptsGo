@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -338,7 +339,13 @@ public class ReportInfoFragment extends WBFragment implements GenerateNavigator,
             binding.fab.show();
             binding.bottomAppBar.placeholder.setVisibility(View.VISIBLE);
         } else if (position == fragmentPagerAdapter.getGenerateTabPosition()) {
-            binding.fab.setImageResource(R.drawable.ic_share);
+            CompoundButton saveSwitch = binding.getRoot().findViewById(R.id.generate_report_save_switch);
+            if (saveSwitch.isChecked()) {
+                binding.fab.setImageResource(R.drawable.download_24px);
+            }
+            else {
+                binding.fab.setImageResource(R.drawable.ic_share);
+            }
             binding.fab.show();
             binding.bottomAppBar.placeholder.setVisibility(View.VISIBLE);
         }

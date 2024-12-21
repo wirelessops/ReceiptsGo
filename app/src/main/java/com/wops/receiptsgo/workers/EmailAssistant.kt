@@ -1,8 +1,14 @@
 package com.wops.receiptsgo.workers
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.net.Uri
+import android.os.Build
+import android.provider.DocumentsContract
+import android.service.chooser.ChooserAction
+import android.util.Log
 import com.wops.analytics.log.Logger
 import com.wops.receiptsgo.R
 import com.wops.receiptsgo.date.DateFormatter
@@ -18,9 +24,12 @@ import com.wops.receiptsgo.workers.widget.EmailResult
 import com.wops.receiptsgo.workers.widget.GenerationErrors
 import com.wops.core.di.scopes.ApplicationScope
 import com.hadisatrio.optional.Optional
+import com.wops.core.utils.UriUtils
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
@@ -35,7 +44,7 @@ class EmailAssistant @Inject constructor(
 ) {
 
     enum class EmailOptions(val index: Int) {
-        PDF_FULL(0), PDF_IMAGES_ONLY(1), CSV(2), ZIP(3), ZIP_WITH_METADATA(4);
+        PDF_FULL(0), PDF_IMAGES_ONLY(1), CSV(2), ZIP(3), ZIP_WITH_METADATA(4), SAVE_TO_DEVICE(5);
     }
 
     companion object {
@@ -72,7 +81,7 @@ class EmailAssistant @Inject constructor(
     }
 
     fun emailTrip(trip: Trip, options: EnumSet<EmailOptions>): Single<EmailResult> {
-        if (options.isEmpty()) {
+        if (options.singleOrNull() == EmailOptions.SAVE_TO_DEVICE ) {
             return Single.just(EmailResult.Error(GenerationErrors.ERROR_NO_SELECTION))
         }
 
@@ -124,8 +133,29 @@ class EmailAssistant @Inject constructor(
                 }
             }
             else -> {
-                val sendIntent = prepareSendAttachmentsIntent(writerResults.files.filterNotNull(), trip, receipts, distances)
-                EmailResult.Success(sendIntent)
+                if (options.contains(EmailOptions.SAVE_TO_DEVICE)) {
+                    try {
+                        val uriList = copyFilesToDevice(writerResults.files.filterNotNull(), trip, receipts, distances)
+                        Log.d("SaveToDevice", "URL List: $uriList")
+                        EmailResult.Success(uris = uriList)
+                    }
+                    catch (e: Exception) {
+                        e.printStackTrace()
+                        EmailResult.Error(GenerationErrors.ERROR_FILE_COPY)
+
+                    }
+                }
+                else {
+                    val sendIntent = prepareSendAttachmentsIntent(
+                        writerResults.files.filterNotNull(),
+                        trip,
+                        receipts,
+                        distances
+                    )
+                    //val sendIntent = prepareSaveToDeviceIntent(writerResults.files.filterNotNull(), trip, receipts, distances)
+                    EmailResult.Success(sendIntent)
+                }
+
             }
         }
     }
@@ -172,9 +202,111 @@ class EmailAssistant @Inject constructor(
         )
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
 
+        if(Build.VERSION.SDK_INT >= 38) {
+
+            // Todo: Add Intent.EXTRA_EXCLUDE_COMPONENTS to your intent after calling Intent.createChooser():
+
+            val shareIntent = Intent.createChooser(emailIntent, null)
+            val customActions = arrayOf(
+                ChooserAction.Builder(
+                    Icon.createWithResource(context, R.drawable.download_24px),
+                    "Save to Downloads",
+                    PendingIntent.getBroadcast(
+                        context,
+                        1,
+                        Intent(Intent.ACTION_VIEW),
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+                    )
+                ).build()
+            )
+            shareIntent.putExtra(Intent.EXTRA_CHOOSER_CUSTOM_ACTIONS, customActions)
+
+            return shareIntent
+
+        }
+
         Logger.debug(this, "Built the send intent {} with extras {}.", emailIntent, emailIntent.extras)
 
         return emailIntent
     }
 
+    fun prepareSaveToDeviceIntent(attachments: List<File>, trip: Trip, receipts: List<Receipt>, distances: List<Distance>
+    ): Intent {
+
+
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_TITLE, attachments[0].name)
+
+            // Optionally, specify a URI for the directory that should be opened in
+            // the system file picker before your app creates the document.
+            //putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+        //startActivityForResult(intent, 1234)
+        return intent
+
+
+    }
+
+    fun copyFilesToDevice(files: List<File>, trip: Trip, receipts: List<Receipt>, distances: List<Distance>): List<Uri> {
+
+        val contentResolver = context.contentResolver
+        val actualUriPermissions = contentResolver.persistedUriPermissions
+
+
+
+        val mostRecentUriPermissionUri = try {
+            actualUriPermissions.maxBy { it.persistedTime }
+                .takeIf { it?.isWritePermission == true }?.uri
+        }
+        catch (e: NoSuchElementException) {
+                Log.e("uriPersmissions", e.toString())
+            throw e
+            null
+        }
+
+        //val data = files[0].readBytes()
+        val fileName = files[0].name
+        val mimeType = UriUtils.getMimeType(files[0], context)
+        var uriList = mutableListOf<Uri>()
+
+        val docUri = DocumentsContract.buildDocumentUriUsingTree(
+            mostRecentUriPermissionUri,
+            DocumentsContract.getTreeDocumentId(mostRecentUriPermissionUri)
+        )
+        try {
+            files.forEach { file ->
+                val mimeType = UriUtils.getMimeType(file, context)
+
+
+                val fileUri =
+                    DocumentsContract.createDocument(contentResolver, docUri, mimeType, file.name)
+
+                fileUri?.let { contentResolver.openOutputStream(it) }
+                    ?.buffered()
+                    ?.use { it.write(file.readBytes()) }
+
+                if (fileUri != null) uriList.add(fileUri)
+            }
+        }
+        catch (e: IOException) {
+            Log.e("SAF writeFile", e.toString())
+        }
+        catch (e: FileNotFoundException) {
+            Log.e("SAF writeFile", "Could not create document \n$e")
+
+        }
+
+        return uriList
+//        try {
+//            DocumentFile.fromTreeUri(context, mostRecentUriPermissionUri!!)
+//                ?.createFile(mimeType, fileName)
+//                ?.let { contentResolver.openOutputStream(it.uri) }
+//                ?.buffered()
+//                ?.use { it.write(data) }
+
+    }
 }
+
+
