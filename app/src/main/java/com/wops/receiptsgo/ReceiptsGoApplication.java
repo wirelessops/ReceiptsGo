@@ -142,7 +142,7 @@ public class ReceiptsGoApplication extends Application implements HasAndroidInje
         super.onCreate();
 
          if (BuildConfig.DEBUG) {
-             StrictModeConfiguration.enable();
+             //StrictModeConfiguration.enable();
          }
 
         appComponent = DaggerAppComponent.builder()
