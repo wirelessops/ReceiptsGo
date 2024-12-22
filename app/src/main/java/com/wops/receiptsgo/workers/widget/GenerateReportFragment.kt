@@ -8,7 +8,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.storage.StorageManager
 import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
@@ -135,7 +139,13 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
                             getString(R.string.toast_save_to_device_permission_rationale),
                             Toast.LENGTH_LONG
                         ).show();
+                        
                         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+
+                        val initalUri = context?.getFilePickerInitialUri(Environment.DIRECTORY_DOCUMENTS + "/")
+                        initalUri?.let {
+                            intent.putExtra("android.provider.extra.INITIAL_URI", initalUri)
+                        }
                         startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE)
                     }
 
@@ -367,5 +377,33 @@ class GenerateReportFragment : GenerateReportView, WBFragment(), FabClickListene
         private const val SHARE_REPORT_REQUEST_CODE = 486
         private const val OPEN_DIRECTORY_REQUEST_CODE = 1233
 
+
+        // From https://stackoverflow.com/a/77087157
+        private fun Context.getFilePickerInitialUri(directoryPath: String): Uri? {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                // you can't set directory programmatically on Android 7.1 or lower, so just return null
+                return null
+            }
+
+            val rootPath = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                // you can't get the root path from the system on old Android, use a hardcoded string
+                "content://com.android.externalstorage.documents/document/primary%3A"
+            } else {
+                // you can get the root path from the system on Android 10+, get it with intent
+                val storageManager = getSystemService(Context.STORAGE_SERVICE) as StorageManager
+                val testIntent = storageManager.primaryStorageVolume.createOpenDocumentTreeIntent()
+
+                val systemDefaultPath = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    testIntent.getParcelableExtra("android.provider.extra.INITIAL_URI", Uri::class.java)
+                } else {
+                    @Suppress("Deprecation")
+                    testIntent.getParcelableExtra("android.provider.extra.INITIAL_URI")
+                }
+
+                systemDefaultPath.toString().replace("/root/", "/document/") + "%3A"
+            }
+
+            return Uri.parse(rootPath + directoryPath)
+        }
     }
 }
