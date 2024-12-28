@@ -1,0 +1,582 @@
+<resources>
+
+    <!-- =================== App Details ===================== -->
+    <string name="sr_app_name" translatable="false">Receipts Go</string>
+    <string name="sr_app_name_plus" translatable="false">Receipts Go Premium Features</string>
+
+    <!-- ================ Main Menu Options ================== -->
+    <string name="menu_main_settings">Instellingen</string>
+    <string name="menu_main_categories">Categorieën</string>
+    <string name="menu_main_csv">Pas CSV-uitvoer aan</string>
+    <string name="menu_main_pdf">Pas PDF-uitvoer aan</string>
+    <string name="menu_main_ocr_configuration">Automatische Scans (OCR)</string>
+    <string name="menu_main_export">Back-up</string>
+    <string name="menu_main_usage_guide">Handleiding</string>
+    <string name="menu_main_my_account">Mijn Account</string>
+    <string name="menu_main_subscriptions">Abonnementen</string>
+    <string name="menu_main_more">Meer Opties</string>
+
+    <!-- ================ General Strings ================== -->
+    <string name="add">Toevoegen</string>
+    <string name="reorder">Opnieuw ordenen</string>
+    <string name="column_item">Kolom %s</string>
+    <string name="copy">Kopiëren</string>
+    <string name="daily_total">Dagelijks totaal: %s</string>
+    <string name="day">%s dag</string>
+    <string name="days">%s dagen</string>
+    <string name="delete">Verwijderen</string>
+    <string name="delete_item">%s verwijderen\?</string>
+    <string name="delete_sync_information">Alle op afstand gesynchroniseerde gegevens voor dit item worden ook verwijderd.</string>
+    <string name="distance">Afstand</string>
+    <string name="distance_total_item">Totale Afstand: %s</string>
+    <string name="edit">Bewerken</string>
+    <string name="export">Exporteren</string>
+    <string name="feedback">%s - Feedback</string>
+    <string name="image">Afbeelding</string>
+    <string name="import_string">Importeren</string>
+    <string name="import_string_item">Importeer %s</string>
+    <string name="item_code">Code</string>
+    <string name="item_name">Naam</string>
+    <string name="move">Verplaats</string>
+    <string name="move_copy_item">%s verplaatsen/kopiëren\?</string>
+    <string name="next_id">Volgende ID: %d</string>
+    <string name="no">Nee</string>
+    <string name="pdf">PDF</string>
+    <string name="rename">Naam Wijzigen</string>
+    <string name="report">Rapport</string>
+    <string name="report_attached">1 rapport bijgevoegd</string>
+    <string name="reports_attached">%s rapporten bijgevoegd</string>
+    <string name="save">Opslaan</string>
+    <string name="send_email">Bestand mailen…</string>
+    <string name="support">%s - Ondersteuning</string>
+    <string name="total">Totaal</string>
+    <string name="undefined">Ongedefinieerd</string>
+    <string name="update">Update</string>
+    <string name="yes">Ja</string>
+    <string name="yes_as_pdf">Ja - als PDF</string>
+    <string name="share">Delen</string>
+    <string name="reports_title">Rapporten</string>
+    <string name="search_empty">Geen resultaten gevonden</string>
+    <string name="search_hint">U kunt naar rapporten of bonnen zoeken op naam, opmerking, prijs of categorie</string>
+    <string name="item_removed_from_auto_complete">%s verwijderd uit resultaten voor automatisch aanvullen</string>
+    <string name="delete_failed">Resultaat automatisch aanvullen kan niet worden verwijderd</string>
+    <string name="result_restored">Resultaat automatisch voltooien hersteld</string>
+    <string name="result_restore_failed">Resultaat automatisch aanvullen kan niet worden hersteld</string>
+    <string name="undo">Ongedaan maken</string>
+
+    <!-- =============== Subscriptions ================ -->
+    <string name="pro_subscription" translatable="false">Receipts Go Premium Features</string>
+
+    <!-- ============= Subscription Info ============== -->
+    <string name="subscriptions_label">Jouw Abonnementen:</string>
+    <string name="subscription_expiration">Vervaldatum: %s</string>
+
+    <!-- ================ No More Ads ================= -->
+    <string name="missing_ad_suggest_removal_upsell">Bent u de advertenties beu\? Tik om een advertentievrije proefperiode te starten</string>
+
+    <!-- ============= Report Navigation ============== -->
+    <string name="report_info_graphs">Grafieken</string>
+    <string name="report_info_receipts">Bonnen</string>
+    <string name="report_info_distance">Kilometers</string>
+    <string name="report_info_generate">Genereren</string>
+
+    <!-- ============= Report Generation ============== -->
+    <string name="report_header_duration">Van: %1$s t/m %2$s</string>
+    <string name="report_header_receipts_total">Totaal ontvangsten: %s</string>
+    <string name="report_header_receipts_total_tax">Belastingtotaal: %s</string>
+    <string name="report_header_receipts_total_no_tax">Totaal ontvangstbewijzen (zonder belasting): %s</string>
+    <string name="report_header_receipts_total_with_tax">Totaal ontvangstbewijzen (met belasting): %s</string>
+    <string name="report_header_distance_total">Afstandsprijs Totaal: %s</string>
+    <string name="report_header_receipts_total_reimbursable">Eindtotaal (terugbetaalbaar): %s</string>
+    <string name="report_header_grand_total">Eindtotaal: %s</string>
+    <string name="report_header_cost_center">Kostenplaats: %s</string>
+    <string name="report_header_comment">Rapport Opmerking: %s</string>
+    <string name="report_pdf_generation_error">Er is een fout opgetreden bij het genereren van het rapport</string>
+    <string name="report_pdf_error_too_many_columns_title">Te veel kolommen</string>
+    <string name="report_pdf_error_too_many_columns_message">Er is niet genoeg ruimte voor alle kolommen in het rapport. Probeer het aantal kolommen te beperken in Instellingen.</string>
+    <string name="report_pdf_error_too_many_columns_message_landscape">Er is niet genoeg ruimte voor alle kolommen in het rapport. Probeer het aantal kolommen in Instellingen te beperken of gebruik de liggende modus.</string>
+    <string name="report_pdf_error_go_to_settings">Ga naar instellingen</string>
+    <string name="report_error_memory">Fout: onvoldoende geheugen om de afbeeldingen te stempelen. Probeer enkele andere apps te stoppen en probeer het opnieuw.</string>
+    <string name="report_error_undetermined">Er is iets misgegaan bij het genereren van rapporten...</string>
+
+    <!-- ===================== ocr ======================== -->
+    <string name="ocr_informational_tooltip_configure_text">[Optioneel] Automatische scans configureren\? Tik hier.</string>
+    <plurals name="ocr_informational_tooltip_limited_scans_text">
+        <item quantity="one">%d Resterende scan. Tik voor meer.</item>
+        <item quantity="other">%d Resterende scans. Tik voor meer.</item>
+    </plurals>
+    <string name="ocr_status_title">Scan uitvoeren (OCR):</string>
+    <string name="ocr_status_message_uploading_image">Ontvangstbewijs uploaden…</string>
+    <string name="ocr_status_message_performing_scan">Scannen op metagegevens van ontvangstbewijs...</string>
+    <string name="ocr_status_message_fetching_results">Resultaten ophalen…</string>
+    <string name="ocr_configuration_scans_remaining">Resterende OCR-scans: %d</string>
+    <string name="ocr_configuration_my_account">%S</string>
+    <string name="ocr_configuration_welcome">Automatische scans (OCR):</string>
+    <string name="ocr_configuration_information">Receipts Go is geïntegreerd met Taggun om automatische scandiensten (dat wil zeggen OCR) te bieden, waarmee metagegevens van de kwitantie, zoals de prijs, belasting, datum en naam van de verkoper, uit uw foto\'s kunnen worden gehaald.</string>
+    <string name="ocr_configuration_information_line2">We gebruiken een combinatie van Google Vision en Machine Learning om snel (vaak in 5 seconden of minder) resultaten te leveren, die in de loop van de tijd steeds nauwkeuriger zullen worden. Aangezien voor deze diensten een bedrag per gebruik in rekening wordt gebracht, brengen we hieronder voor elke kassabonscan kosten in rekening.</string>
+    <string name="ocr_is_enabled">Automatische scans (OCR) inschakelen\?</string>
+    <string name="ocr_save_scans_to_improve_results">Sta ons toe afbeeldingen op te slaan om de nauwkeurigheid te verbeteren\?</string>
+    <string name="ocr_configuration_available_purchases">Beschikbare aankopen - Tik om te kopen:</string>
+    <string name="ocr_configuration_information_line3">Om OCR uit te proberen, krijgen alle nieuwe gebruikers 2 gratis scans! Houd er rekening mee dat OCR een optionele functie is en op elk moment kan worden uitgeschakeld.</string>
+    <string name="ocr_configuration_subscriptions">Selecteer een abonnement om meer te proberen</string>
+
+    <!-- ================ Categories ================== -->
+    <string name="category_null"><![CDATA[<Categorie>]]></string>
+    <string name="category_null_code">NUL</string>
+    <string name="category_airfare">Vliegticket</string>
+    <string name="category_airfare_code">LUCHTVAART</string>
+    <string name="category_breakfast">Ontbijt</string>
+    <string name="category_breakfast_code">BRFT</string>
+    <string name="category_dinner">Diner</string>
+    <string name="category_dinner_code">DIN</string>
+    <string name="category_entertainment">Amusement</string>
+    <string name="category_entertainment_code">KNO</string>
+    <string name="category_gasoline">Benzine</string>
+    <string name="category_gasoline_code">GAS</string>
+    <string name="category_gift">Geschenk</string>
+    <string name="category_gift_code">GESCHENK</string>
+    <string name="category_hotel">Hotel</string>
+    <string name="category_hotel_code">HTML</string>
+    <string name="category_laundry">De was</string>
+    <string name="category_laundry_code">SALARIS</string>
+    <string name="category_lunch">Lunch</string>
+    <string name="category_lunch_code">LNCH</string>
+    <string name="category_other">Ander</string>
+    <string name="category_other_code">DIVERSEN</string>
+    <string name="category_parking_tolls">Parkeren/Tol</string>
+    <string name="category_parking_tolls_code">PARK</string>
+    <string name="category_postage_shipping">Porto/Verzending</string>
+    <string name="category_postage_shipping_code">NA</string>
+    <string name="category_car_rental">Autoverhuur</string>
+    <string name="category_car_rental_code">RCAR</string>
+    <string name="category_taxi_bus">Taxi/bus</string>
+    <string name="category_taxi_bus_code">TAXI</string>
+    <string name="category_telephone_fax">Telefoon/Fax</string>
+    <string name="category_telephone_fax_code">VEEL</string>
+    <string name="category_tip">Tip</string>
+    <string name="category_tip_code">TIP</string>
+    <string name="category_train">Trein</string>
+    <string name="category_train_code">TRN</string>
+    <string name="category_books_periodicals">Boeken/tijdschriften</string>
+    <string name="category_books_periodicals_code">ZBKP</string>
+    <string name="category_cell_phone">Mobiele telefoon</string>
+    <string name="category_cell_phone_code">ZCEL</string>
+    <string name="category_dues_subscriptions">Contributie/abonnementen</string>
+    <string name="category_dues_subscriptions_code">ZDUE</string>
+    <string name="category_meals_justified">Maaltijden (gerechtvaardigd)</string>
+    <string name="category_meals_justified_code">ZMEO</string>
+    <string name="category_stationery_stations">Stations</string>
+    <string name="category_stationery_stations_code">ZSTS</string>
+    <string name="category_training_fees">Opleidingskosten</string>
+    <string name="category_training_fees_code">ZTRN</string>
+
+    <!-- ================ Img Menu Options =================== -->
+    <string name="menu_receiptimage_retake">Foto opnieuw maken</string>
+    <string name="menu_receiptimage_edit">Foto bewerken</string>
+
+    <!-- ===================== Email ====================== -->
+    <string name="email_body_subject_5mb_warning">De volgende bijlage is groter dan 5 MB en kan mogelijk niet correct worden bijgevoegd: %s</string>
+
+    <!-- ============== Progress Messages ================= -->
+    <string name="progress_import">Uw bestanden importeren…</string>
+    <string name="progress_building_reports">Bouwrapporten…</string>
+
+    <!-- ============== Start Error Messages ================= -->
+    <string name="SD_WARNING">Waarschuwing: Uw SD-kaart is niet beschikbaar of is gekoppeld aan uw computer. Sommige afbeeldingen zijn mogelijk niet toegankelijk. Overschakelen naar interne opslag…</string>
+    <string name="database_error">Fout: Het opslaan van uw bon is mislukt</string>
+    <string name="database_get_error">Fout: Het ophalen van uw gegevens is mislukt. Probeer de app opnieuw te starten.</string>
+    <string name="IMG_OPEN_ERROR">Fout: De afbeelding is momenteel niet toegankelijk of beschadigd. Uw SD-kaart is mogelijk niet beschikbaar of gekoppeld aan uw computer. Als dat niet het geval is, klikt u op de menuknop om de foto opnieuw te maken.</string>
+    <string name="IMG_SAVE_ERROR">Fout: De afbeelding is niet correct opgeslagen</string>
+    <string name="FILE_SAVE_ERROR">Fout: Het bestand kon niet correct worden opgeslagen</string>
+    <string name="ILLEGAL_CHAR_ERROR">Fout: De naam bevat een ongeldig teken</string>
+    <string name="SPACE_ERROR">Fout: De naam mag niet beginnen met een spatie</string>
+    <string name="CALENDAR_TAB_ERROR">Fout: Raak het datumtekstvak aan om de datum in te stellen</string>
+    <string name="DURATION_ERROR">Fout: De startdatum moet vóór de einddatum vallen</string>
+    <string name="EXPORT_ERROR">Fout: Uw gegevens konden niet correct worden geëxporteerd.</string>
+    <string name="IMPORT_ERROR">Fout: Het bestand kan niet worden herkend als importeerbaar</string>
+    <string name="IMPORT_MISSING_ERROR">Fout: Er ontbreken te veel bestanden om te importeren</string>
+    <string name="MOVE_ERROR">Fout: Het is niet gelukt om de bon te verplaatsen</string>
+    <string name="COPY_ERROR">Fout: Het is niet gelukt om de bon te kopiëren</string>
+    <string name="toast_warning_reset_exchange_rate">Waarschuwing: Als u de valuta wijzigt, worden ALLE wisselkoersen opnieuw ingesteld</string>
+    <string name="toast_error_trip_exists">Fout: Er bestaat al een onkostennota met die naam</string>
+
+    <!-- ============== Toast Messages ================= -->
+    <string name="toast_receipt_copy">De bon is succesvol gekopieerd</string>
+    <string name="toast_receipt_move">De bon is succesvol verplaatst</string>
+    <string name="toast_receipt_image_added">Met succes een nieuwe afbeelding toegevoegd aan %s</string>
+    <string name="toast_receipt_image_replaced">Een nieuwe afbeelding voor %s is succesvol vervangen</string>
+    <string name="toast_receipt_pdf_added">Met succes een nieuwe PDF toegevoegd aan %s</string>
+    <string name="toast_receipt_pdf_replaced">Een nieuwe PDF voor %s is succesvol vervangen</string>
+    <string name="toast_no_storage_permissions">Kan bestand niet importeren zonder opslagmachtigingen</string>
+    <string name="toast_import_complete">Alle bestanden zijn succesvol geïmporteerd. Start de app opnieuw.</string>
+    <string name="toast_reorder_hint"><![CDATA[Houd het item lang ingedrukt om het slepen te starten]]></string>
+    <string name="toast_csv_report_distances">Om een CSV-rapport te maken, vinkt u optie %s aan</string>
+    <string name="toast_attachment_error">Kan dit bestand niet toevoegen.</string>
+
+    <!-- ================== Trip Adapter ===================== -->
+    <string name="trip_adapter_list_item_to">%1$s ➝ %2$s</string>
+    <string name="trip_no_data">Het lijkt erop dat u op dit moment geen rapporten hebt gedefinieerd. Probeer op de knop \"+\" (plus) te klikken om te beginnen.</string>
+
+    <!-- ================= Receipt Adapter =================== -->
+    <string name="receipt_no_data">Het lijkt erop dat u nog geen bonnetjes hebt. Probeer op de \"+\" (plus) knop te tikken om te beginnen…</string>
+
+    <!-- ================= Distance Adapter ================== -->
+    <string name="distance_no_data">Het lijkt erop dat je nog geen afstand hebt bijgehouden. Probeer op de \"+\" (plus) knop te klikken om te beginnen.</string>
+    <string name="distance_insert_failed">Fout: Het is niet gelukt om dit afstandsitem te maken. Zorg ervoor dat uw telefoon niet aan uw computer is gekoppeld.</string>
+    <string name="distance_update_failed">Fout: Het is niet gelukt om dit afstandsitem bij te werken. Zorg ervoor dat uw telefoon niet aan uw computer is gekoppeld.</string>
+    <string name="distance_delete_failed">Fout: Het is niet gelukt om dit afstandsitem te verwijderen. Zorg ervoor dat uw telefoon niet aan uw computer is gekoppeld.</string>
+
+    <!-- ================= Trip Actions =================== -->
+
+    <!-- ================= Receipt Actions =================== -->
+    <string name="receipt_action_camera">Afbeelding</string>
+    <string name="receipt_action_text">Alleen tekst</string>
+    <string name="receipt_action_import">Importeren</string>
+
+    <!-- ==================== Cards ========================= -->
+
+    <!-- ================ DIALOG (GENERAL) =================== -->
+    <string name="DIALOG_CANCEL">Annuleren</string>
+
+    <!-- ================= DIALOG_WELCOME ==================== -->
+
+    <!-- ================== DIALOG_EMAIL ===================== -->
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_FULL">Volledig PDF-rapport</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_PDF_IMAGES">PDF-rapport - Geen tabel</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_CSV">CSV-bestand</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP_WITH_METADATA">ZIP - Ontvangstbestanden met metagegevens</string>
+    <string name="DIALOG_EMAIL_CHECKBOX_ZIP">ZIP - Ontvangstbewijzenbestanden</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_SELECTION">Controleer ten minste één rapport</string>
+    <string name="DIALOG_EMAIL_TOAST_NO_RECEIPTS">Er zijn geen ontvangstbewijzen in dit rapport</string>
+    <string name="generate_report_tooltip">Tik om de rapportindelingen te configureren</string>
+    <string name="generate_report_subtitle">Kies wat u wilt genereren</string>
+
+    <!-- ================= DIALOG_SETTINGS =================== -->
+
+
+    <!-- ================= DIALOG_TRIPMENU =================== -->
+    <string name="DIALOG_TRIPMENU_HINT_NAME">Naam</string>
+    <string name="DIALOG_TRIPMENU_HINT_START">Startdatum</string>
+    <string name="DIALOG_TRIPMENU_HINT_END">Einddatum</string>
+    <string name="DIALOG_TRIPMENU_TITLE_NEW">Nieuw kostenrapport</string>
+    <string name="DIALOG_TRIPMENU_TITLE_EDIT">Rapport bewerken</string>
+    <string name="DIALOG_TRIPMENU_TOAST_MISSING_FIELD">Vul alle velden in</string>
+
+    <!-- =============== DIALOG_TRIP_DELETE ================== -->
+    <string name="DIALOG_TRIP_DELETE_POSITIVE_BUTTON">Verwijderen</string>
+
+    <!-- ================= DIALOG_RECEIPTMENU =================== -->
+    <string name="DIALOG_RECEIPTMENU_HINT_NAME">Naam</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_PRICE_SHORT">Prijs</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_TAX">Belasting</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CURRENCY">Munteenheid</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE">Wisselkoers</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE_FAILED">Wisselkoers mislukt. Opnieuw proberen\?</string>
+    <string name="receipt_input_exchanged_result_hint">Basisvalutaprijs</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_DATE">Datum</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_CATEGORY">Categorie</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COMMENT">Opmerking</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_COST_CENTER">Kostenplaats</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_EXPENSABLE">Vergoedbaar\?</string>
+    <string name="DIALOG_RECEIPTMENU_HINT_FULLPAGE">Afbeelding op volledige pagina\?</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW">Nieuwe bon</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_NEW_ID">Nieuwe bon - %d</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT">Bewerken Ontvangstbewijs</string>
+    <string name="DIALOG_RECEIPTMENU_TITLE_EDIT_ID">Bewerken Ontvangstbewijs - %d</string>
+    <string name="DIALOG_RECEIPTMENU_TOAST_BAD_DATE">Waarschuwing: De datum van deze ontvangst valt buiten het opgegeven bereik voor dit rapport</string>
+    <string name="manage_categories">Categorieën beheren</string>
+    <string name="manage_payment_methods">Betaalmethoden beheren</string>
+
+    <!-- ================= DIALOG_RECEIPT_ATTACHMENT =================== -->
+    <string name="receipt_attach_photo">Maak een foto</string>
+    <string name="receipt_attach_image">Kies een foto</string>
+    <string name="receipt_attach_file">Bestand bijvoegen</string>
+
+    <!-- ================= DIALOG_RENAME_BACKUP =================== -->
+    <string name="dialog_rename_text">Nieuwe bestandsnaam</string>
+    <string name="new_filename_empty_error">Nieuwe bestandsnaam mag niet leeg zijn</string>
+
+    <!-- ==================== dialog export / import ====================== -->
+    <string name="dialog_export_title">Uw bonnetjes exporteren\?</string>
+    <string name="dialog_export_text">U kunt uw gegevens opnieuw importeren door te klikken op het .SMR-bestand, dat u genereert door hieronder te klikken.</string>
+    <string name="dialog_export_positive">Exporteren</string>
+    <string name="dialog_import_positive">Importeren</string>
+    <string name="dialog_import_text">Overschrijf alle bestaande gegevens</string>
+    <string name="dialog_export_working">Uw bonnetjes exporteren…</string>
+    <string name="storage_permission_required">Opslagmachtiging vereist</string>
+    <string name="permission_must_be_granted">Er moet opslagmachtiging worden verleend om dit back-upbestand te importeren.</string>
+    <string name="approve_permission">Het importeren van dit back-upbestand kan niet worden uitgevoerd omdat de opslagmachtiging is geweigerd. Wilt u dit goedkeuren in de app-instellingen\?</string>
+    <string name="ok">OK</string>
+
+    <!-- ===================== backup menu ======================== -->
+    <string name="backups">Back-ups</string>
+    <string name="manual_backup_title">Handmatige back-ups</string>
+    <string name="manual_backup_description">Maak een back-up van uw gegevens om uw bonnetjes veilig te houden! U kunt uw gegevens herstellen door het .SMR-back-upbestand te importeren, dat wordt gegenereerd via de onderstaande knop \"Back-up\".</string>
+    <string name="manual_backup_export">Back-up</string>
+    <string name="manual_backup_import">Importeren</string>
+    <string name="auto_backup_title">Automatische back-ups</string>
+    <string name="auto_backup_wifi_only">Gebruik alleen wifi</string>
+    <string name="auto_backup_warning_none" translatable="false">Automatic Backups are returning soon! Join the Beta program via the Play Store for the latest updates and features!</string>
+    <string name="auto_backup_warning_drive">Waarschuwing: Voor automatische back-ups via een mobiel netwerk kunnen standaardkosten in rekening worden gebracht.</string>
+    <string name="auto_backup_configure">Tik om te configureren</string>
+    <string name="auto_backup_source_none">Geen</string>
+    <string name="auto_backup_source_google_drive">Google Drive</string>
+    <string name="existing_backups_title">Bestaande back-ups:</string>
+    <string name="existing_remote_backup_current_device">%s (Uw huidige back-up)</string>
+    <string name="remote_backups_list_item_menu_restore">Herstellen</string>
+    <string name="remote_backups_list_item_menu_download_images">Downloaden naar ZIP</string>
+    <string name="remote_backups_list_item_menu_download_images_debug">[Debug] Download</string>
+
+    <string name="dialog_remote_backup_rename_progress">Uw back-up hernoemen van %s naar %s…</string>
+    <string name="dialog_remote_backup_rename_toast_success">Back-up succesvol hernoemd, lijst wordt nu vernieuwd…</string>
+    <string name="dialog_remote_backup_rename_toast_failure">Het is niet gelukt om deze back-up een andere naam te geven</string>
+
+    <string name="dialog_remote_backup_delete_message">Weet u zeker dat u uw back-up van het %s-apparaat wilt verwijderen\? Deze bewerking kan niet ongedaan worden gemaakt.</string>
+    <string name="dialog_remote_backup_delete_message_this_device">Weet u zeker dat u uw back-up van dit apparaat wilt verwijderen\? Deze bewerking kan niet ongedaan worden gemaakt. Houd er rekening mee dat u automatische back-ups mogelijk wilt uitschakelen nadat deze bewerking is voltooid, anders worden alle lokale gegevens mogelijk opnieuw gesynchroniseerd.</string>
+    <string name="dialog_remote_backup_delete_progress">Uw back-up van het %s-apparaat verwijderen…</string>
+    <string name="dialog_remote_backup_delete_toast_success">Back-up succesvol verwijderd, lijst wordt nu vernieuwd…</string>
+    <string name="dialog_remote_backup_delete_toast_failure">Het verwijderen van deze back-up is mislukt</string>
+    <string name="dialog_remote_backup_download_progress">Afbeeldingen downloaden naar ZIP-bestand…</string>
+
+    <string name="dialog_remote_backup_drive_restore_title">Schijfherstel</string>
+    <string name="dialog_remote_backup_drive_restore_message">We hebben problemen met het synchroniseren van uw gegevens. Om te herstellen, willen we uw Drive-back-up wissen en opnieuw synchroniseren. Als u dit bericht vaak ziet, neem dan contact met ons op voor verdere ondersteuning.</string>
+    <string name="dialog_remote_backup_restore_progress">Clearing your backup to prepare for re-sync&#8230;</string>
+    <string name="dialog_remote_backup_restore_toast_success">Back-up succesvol gewist. Opnieuw synchroniseren…</string>
+    <string name="dialog_remote_backup_restore_toast_failure">Het opnieuw synchroniseren van deze back-up is mislukt</string>
+
+    <string name="automatic_backups_info_dialog_message">Automatic backups are not currently enabled.</string>
+    <string name="automatic_backups_info_dialog_positive">Tik om te configureren</string>
+
+    <string name="drive_sync_error_no_space">Geen beschikbare schijfopslagruimte</string>
+    <string name="drive_sync_error_no_permissions">Tik om schijfmachtigingen te herstellen</string>
+    <string name="drive_sync_error_lost_data">Schijfconfiguratiefout - Tik om te repareren</string>
+
+    <!-- ==============-========== Login ========================== -->
+    <string name="login_toolbar_title">Inloggen / Registreren</string>
+    <string name="login_title">Meld u aan met uw Receipts Go-account om Automatische Scans (OCR) te gaan gebruiken</string>
+    <string name="login_field_email_hint">E-mailadres</string>
+    <string name="login_field_password_hint">Wachtwoord</string>
+    <string name="sign_up_button_text">Aanmelden</string>
+    <string name="login_button_text">Inloggen</string>
+    <string name="login_fields_hint_email">Voer een geldig e-mailadres in:</string>
+    <string name="login_fields_hint_password">Wachtwoorden moeten minimaal 8 tekens lang zijn:</string>
+    <string name="login_fields_hint_valid">Tik hieronder om in te loggen of te registreren:</string>
+    <string name="login_success_toast">Inloggen succesvol</string>
+    <string name="sign_up_success_toast">Aanmelden succesvol</string>
+    <string name="login_failure_toast">Inloggen mislukt</string>
+    <string name="sign_up_failure_toast">Aanmelden mislukt</string>
+    <string name="login_failure_credentials_toast">Fout: Onjuiste gebruikersnaam of wachtwoord</string>
+    <string name="sign_up_failure_account_exists_toast">Fout: Dit e-mailadres bestaat al. Probeer in te loggen.</string>
+    <string name="logout_button_text">Uitloggen</string>
+
+    <!-- ==================== dialog filter ======================= -->
+    <string name="dialog_filter_positive_button">Filter toevoegen</string>
+    <string name="dialog_filter_negative_button">Filter verwijderen</string>
+
+    <!-- ==================== dialog miles ======================== -->
+    <string name="dialog_mileage_title_create">Afstand toevoegen</string>
+    <string name="dialog_mileage_title_update">Afstand bijwerken</string>
+    <string name="dialog_mileage_positive_create">Toevoegen</string>
+    <string name="dialog_mileage_positive_update">Update</string>
+    <string name="dialog_mileage_neutral_delete">Verwijderen</string>
+
+    <!-- ================= RECEIPTMENU_FIELDS =================== -->
+    <string name="RECEIPTMENU_FIELD_NAME">Naam</string>
+    <string name="RECEIPTMENU_FIELD_PRICE">Prijs</string>
+    <string name="RECEIPTMENU_FIELD_PRICE_WITH_CURRENCY">Prijs met valutasymbool</string>
+    <string name="RECEIPTMENU_FIELD_TAX">Belasting</string>
+    <string name="RECEIPTMENU_FIELD_CURRENCY">Munteenheid</string>
+    <string name="RECEIPTMENU_FIELD_DATE">Datum</string>
+    <string name="RECEIPTMENU_FIELD_CATEGORY">Categorie</string>
+    <string name="RECEIPTMENU_FIELD_COMMENT">Opmerking</string>
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_1" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_2" />
+    <string name="RECEIPTMENU_FIELD_EXTRA_EDITTEXT_3" />
+
+    <!-- ================== RECEIPTMENU_TAGS ==================== -->
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_1">extra_edittext_1</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_2">extra_edittext_2</string>
+    <string name="RECEIPTMENU_TAG_EXTRA_EDITTEXT_3">extra_edittext_3</string>
+
+    <!-- ================== TRIP_EDIT_DIALOG ==================== -->
+    <string name="dialog_trip_edit">Rapport bewerken</string>
+    <string name="dialog_trip_delete">Rapport verwijderen</string>
+
+    <!-- ============== CSV/PDF Columns ================== -->
+    <string name="column_item_blank">Lege kolom</string>
+    <string name="column_item_category_code">Categoriecode</string>
+    <string name="column_item_category_name">Categorie Naam</string>
+    <string name="column_item_user_id">Gebruikers-ID</string>
+    <string name="column_item_report_name">Rapportnaam</string>
+    <string name="column_item_report_start_date">Startdatum rapport</string>
+    <string name="column_item_report_end_date">Einddatum rapport</string>
+    <string name="column_item_report_comment">Rapporteer reactie</string>
+    <string name="column_item_report_cost_center">Rapporteer kostenplaats</string>
+    <string name="column_item_image_file_name">Afbeeldingsnaam</string>
+    <string name="column_item_image_path">Afbeeldingspad</string>
+    <string name="column_item_image_hash">Afbeeldingshash - SHA256</string>
+    <!-- **Please note that for flex purposes, some of these use the legacy names above** -->
+    <string name="column_item_receipt_price_minus_tax">Prijs minus belasting</string>
+    <string name="column_item_converted_price_exchange_rate">Prijs (geruild)</string>
+    <string name="column_item_converted_tax_exchange_rate">Belasting (omgewisseld)</string>
+    <string name="column_item_converted_price_plus_tax_exchange_rate">Prijs plus belasting (omgeruild)</string>
+    <string name="column_item_converted_price_minus_tax_exchange_rate">Prijs minus belasting (geruild)</string>
+    <string name="column_item_exchange_rate">Wisselkoers</string>
+    <string name="column_item_pictured">Afgebeeld</string>
+    <string name="column_item_reimbursable">Terugbetaalbaar</string>
+    <string name="column_item_deprecated_expensable" translatable="false">Expensable</string>
+    <string name="column_item_index">Ontvangstbewijs Index</string>
+    <string name="column_item_id">Ontvangstbewijs-ID</string>
+    <string name="column_item_payment_method">Betaalmethode</string>
+
+    <!-- ====================== Distance Report ======================== -->
+    <string name="distance_location_field">Locatie</string>
+    <string name="distance_price_field">Prijs</string>
+    <string name="distance_distance_field">Afstand</string>
+    <string name="distance_rate_field">Tarief</string>
+    <string name="dialog_currency_field">Munteenheid</string>
+    <string name="distance_date_field">Datum</string>
+    <string name="distance_comment_field">Opmerking</string>
+
+    <!-- ====================== Categories Summation Report ======================== -->
+    <string name="category_name_field">Categorie</string>
+    <string name="category_code_field">Categoriecode</string>
+    <string name="category_price_field">Prijs</string>
+    <string name="category_tax_field">Belasting</string>
+    <string name="category_price_exchanged_field">Prijs (geruild)</string>
+
+
+    <string name="receipt_dialog_action_delete">Ontvangstbewijs verwijderen</string>
+    <string name="receipt_dialog_action_move_copy">Verplaatsen/Kopiëren</string>
+    <string name="receipt_dialog_action_swap_up">Omruilen</string>
+    <string name="receipt_dialog_action_swap_down">Omlaag wisselen</string>
+    <string name="receipt_dialog_action_remove_attachment">Bijlage verwijderen</string>
+
+    <string name="dialog_attachment_text">Tik op een bestaande bon om deze %s eraan toe te voegen</string>
+    <string name="receipt_dialog_remove_attachment">Wilt u de bijlage verwijderen\?</string>
+
+    <!-- ================== Preference Dialog ==================== -->
+    <string name="dialog_custom_csv_spinner">Kolomtype</string>
+    <string name="dialog_category_add">Categorie toevoegen</string>
+    <string name="dialog_category_edit">Categorie bewerken</string>
+
+    <!-- ================ Error Feedback ==================== -->
+    <string name="error_no_pdf_activity_viewer">Er kon geen PDF Viewer-applicatie worden gevonden</string>
+    <string name="error_no_send_intent_dialog_title">Geen verzend-app gevonden</string>
+    <string name="error_no_send_intent_dialog_message">We konden geen e-mailapplicatie (of equivalent) op uw telefoon vinden. U kunt uw bestanden vinden in de volgende directory: %s</string>
+    <string name="error_no_file_intent_dialog_title">Fout: Kan geen \"import\"-geïnstalleerde app op uw apparaat vinden</string>
+    <string name="error_no_wifi">Fout: Geen verbinding met wifi</string>
+
+    <!-- ================== ActionBar ===================== -->
+
+    <!-- ================== CSV Table ===================== -->
+
+    <!-- ================== Legacy Camera ==================== -->
+
+    <!-- ================== SQL Corrpution ==================== -->
+    <string name="dialog_sql_corrupt_title">Oh nee!</string>
+    <string name="dialog_sql_corrupt_message">Uw database is beschadigd. Dit gebeurt vaak als u een task killer-app hebt, maar het kan door een paar verschillende dingen worden veroorzaakt. Maak u geen zorgen, we zouden de meeste van uw gegevens moeten kunnen herstellen.</string>
+    <string name="dialog_sql_corrupt_positive">Stuur een e-mail naar de ontwikkelaar voor hulp</string>
+    <string name="dialog_sql_corrupt_intent_subject">Ontvangstbewijzen gaan - Corrupte database</string>
+    <string name="dialog_sql_corrupt_intent_text">Help - mijn database is corrupt. Hoe kunt u mij helpen dingen te herstellen\?</string>
+    <string name="dialog_sql_corrupt_chooser">E-mail verzenden…</string>
+
+    <!-- ======================= Filters ====================== -->
+    <string name="filter_name_and">En</string>
+    <string name="filter_name_not">Niet</string>
+    <string name="filter_name_or">Of</string>
+    <string name="filter_name_receipt_category">Categorie</string>
+    <string name="filter_name_receipt_reimbursable">Is terugbetaalbaar</string>
+    <string name="filter_name_receipt_max_price">Maximale prijs</string>
+    <string name="filter_name_receipt_min_price">Minimale prijs</string>
+    <string name="filter_name_receipt_on_or_after">Op of na</string>
+    <string name="filter_name_receipt_on_or_before">Op of voor</string>
+    <string name="filter_name_receipt_selected">Is geselecteerd</string>
+    <string name="filter_name_trip_ends_on_or_after">Eindigt op of na</string>
+    <string name="filter_name_trip_ends_on_or_before">Eindigt op of voor</string>
+    <string name="filter_name_trip_max_price">Maximale prijs</string>
+    <string name="filter_name_trip_min_price">Minimale prijs</string>
+    <string name="filter_name_trip_starts_on_or_after">Begint op of na</string>
+    <string name="filter_name_trip_starts_on_or_before">Begint op of voor</string>
+
+    <!-- =================== Payment Methods =====+============= -->
+    <string name="payment_method">Betaalmethode</string>
+    <string name="payment_methods">Betaalmethoden</string>
+    <string name="payment_method_add">Betaalmethode toevoegen</string>
+    <string name="payment_method_edit">Betaalmethode bewerken</string>
+    <string name="payment_method_default_cash">Contant geld</string>
+    <string name="payment_method_default_check">Rekening</string>
+    <string name="payment_method_default_personal_card">Persoonlijke kaart</string>
+    <string name="payment_method_default_corporate_card">Bedrijfskaart</string>
+
+    <!-- =================== Payment Methods =================== -->
+    <string name="purchase_succeeded">De aankoop is succesvol afgerond</string>
+    <string name="purchase_unavailable">Premiumfuncties binnenkort beschikbaar!</string>
+    <string name="purchase_failed">Het is niet gelukt om de aankoop te voltooien</string>
+    <string name="purchase_pending">De aankoop is in behandeling</string>
+
+    <!-- ================== App Rating ==================== -->
+    <string name="rating_tooltip_text">Zoals Bonnetjes Gaan\?</string>
+    <string name="leave_feedback_text">Wilt u ons feedback geven\?</string>
+    <string name="apprating_dialog_title">Vind je %s leuk\?</string>
+    <string name="apprating_dialog_message">Overweeg om er een review over te schrijven. Als onafhankelijke ontwikkelaar zijn uw reviews mijn primaire bron van exposure en ze helpen me echt om nieuwe features toe te voegen. Bedankt!</string>
+    <string name="apprating_dialog_negative">Nee bedankt</string>
+    <string name="apprating_dialog_neutral">Misschien later</string>
+    <string name="apprating_dialog_positive">Geef nu een beoordeling!</string>
+
+    <!-- ================== Tooltip messages ==================== -->
+    <string name="tooltip_generate_info_message">Gebruik het tabblad \'Genereren\' om uw rapporten te maken</string>
+    <string name="tooltip_backup_info_message">%d dagen sinds uw laatste back-up</string>
+    <string name="tooltip_no_backups_info_message">Herinnering: maak regelmatig een back-up van uw gegevens</string>
+    <string name="tooltip_import_info_message">Kies alstublieft een ontvangstbewijs voor uw bijlage</string>
+    <string name="tooltip_review_privacy">Tik om uw privacy-instellingen te bekijken</string>
+    <string name="tooltip_automatic_backups_recovery_hint">Heb je eerder automatische back-ups geconfigureerd\? Tik om te herstellen</string>
+    <string name="tooltip_first_report_hint">Welkom! Laten we uw eerste rapportmap maken. Geef het de naam van deze maand, dit jaar, uw huidige zakenreis of wat u maar wilt. Klik vervolgens op het vinkje om het op te slaan en begin met het toevoegen van uw eerste bonnetjes!</string>
+    <string name="tooltip_include_second_tax_hint">Tik om het tweede belastingveld te configureren</string>
+
+    <!-- ================== Graph titles ==================== -->
+    <string name="graphs_no_data">Voeg uw eerste bonnetjes toe om grafieken te bekijken.</string>
+    <string name="graphs_expenditure_by_dates_title">Dagelijkse uitgaven</string>
+    <string name="graphs_expenditure_by_categories_title">Uitgaven per categorie</string>
+    <string name="graphs_expenditure_by_reimbursable_title">Vergoedbaar versus niet-vergoedbaar</string>
+    <string name="graphs_expenditure_by_payment_methods_title">Uitgaven per betaalmethode</string>
+    <string name="graphs_label_reimbursable">Terugbetaalbaar</string>
+    <string name="graphs_label_non_reimbursable">Niet-restitueerbaar</string>
+    <string name="graphs_label_others">Anderen</string>
+
+    <!-- ================== Account Fragment ==================== -->
+    <string name="organization_settings_doesnt_match">Uw huidige instellingen zijn niet gesynchroniseerd met deze organisatie. Tik hier om de organisatie-instellingen toe te passen.</string>
+    <string name="organization_settings_match">Uw huidige instellingen worden gesynchroniseerd met deze organisatie.</string>
+    <string name="organization_apply_error">Er is iets fout gegaan bij het toepassen van de organisatie-instellingen</string>
+    <string name="organization_apply_success">Instellingen zijn succesvol toegepast</string>
+    <string name="logged_in_as">Ingelogd als:</string>
+    <string name="organization_label">Uw organisaties:</string>
+    <string name="organization_update_success">Organisatie succesvol bijgewerkt</string>
+    <string name="organization_update_error">Er is iets misgegaan bij het bijwerken van de organisatie</string>
+    <string name="organization_update">Organisatie-instellingen bijwerken</string>
+
+    <!-- ================== Subscriptions Fragment ==================== -->
+    <string name="subscriptions_choose_title">Kies een plan</string>
+    <string name="subscriptions_detail1">Scan uw bonnetjes automatisch</string>
+    <string name="subscriptions_detail2">Maak een veilige back-up van uw gegevens</string>
+    <string name="subscriptions_detail3">Volledige aanpassing van het rapport</string>
+    <string name="subscriptions_standard_name">Standaard</string>
+    <string name="subscriptions_standard_description">Hoofdfuncties</string>
+    <string name="subscriptions_premium_name">Premie</string>
+    <string name="subscriptions_premium_description">Schakel alle advertenties uit</string>
+    <string name="subscriptions_per_month">per maand</string>
+    <string name="subscriptions_cancel_info">U kunt uw abonnement op elk moment opzeggen<u>in de instellingen</u></string>
+    <string name="subscriptions_your_plan">Jouw plan</string>
+
+    <string name="subscriptions_success_title">Succes!</string>
+    <string name="subscriptions_success_details">Het plan is succesvol gekocht</string>
+    <string name="subscriptions_success_button">Doorgaan</string>
+
+    <!-- ================== Leak Canary ==================== -->
+    <string name="leak_canary_test_class_name">com.wops.receiptsgo</string>
+
+    <string name="pref_key_persisted_uri_directory" translatable="false">pref_key_persisted_uri_directory</string>
+    <string name="toast_save_to_device_permission_rationale">Maak of kies een map om rapporten in op te slaan</string>
+    <string name="save_to_device">Opslaan op apparaat</string>
+
+</resources>
