@@ -76,17 +76,17 @@ class DateFormatter @Inject constructor(private val context: Context,
     @SuppressLint("CheckResult")
     fun initialize() {
         // Pre-fetch our initial date format and separator value to avoid reading this on the UI thread
-        userPreferenceManager.getSingle(UserPreference.General.DateSeparator)
-                .subscribeOn(scheduler)
-                .subscribe { separator ->
-                    this.separator = separator
-                }
-        userPreferenceManager.getSingle(UserPreference.General.DateFormat)
-                .map { getDateFormatOption(it) }
-                .subscribeOn(scheduler)
-                .subscribe { dateFormatOption ->
-                    this.dateFormatOption = dateFormatOption
-                }
+//        userPreferenceManager.getSingle(UserPreference.General.DateSeparator)
+//                .subscribeOn(scheduler)
+//                .subscribe { separator ->
+//                    this.separator = separator
+//                }
+//        userPreferenceManager.getSingle(UserPreference.General.DateFormat)
+//                .map { getDateFormatOption(it) }
+//                .subscribeOn(scheduler)
+//                .subscribe { dateFormatOption ->
+//                    this.dateFormatOption = dateFormatOption
+//                }
 
         // Monitor for future changes to our date separator
         userPreferenceManager.userPreferenceChangeStream
