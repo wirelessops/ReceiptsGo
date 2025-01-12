@@ -65,10 +65,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_tiny"
         android:drawablePadding="@dimen/padding_normal"
-        app:drawableTint="@color/text_secondary_color"
         android:gravity="center_vertical"
         android:text="@string/auto_backup_warning_none"
-        app:drawableStartCompat="@android:drawable/stat_sys_warning" />
+        app:drawableStartCompat="@drawable/cloud_sync_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+        app:drawableTint="@color/text_secondary_color" />
 
     <CheckBox
         android:id="@+id/auto_backup_wifi_only"

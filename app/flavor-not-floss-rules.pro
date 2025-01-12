@@ -1,8 +1,8 @@
 
 
 ##### Our Personal Classes #####
--keep class co.smartreceipts.** { *; }
--dontwarn co.smartreceipts.**
+-keep class com.wops.** { *; }
+-dontwarn com.wops.**
 -keep class wb.android.** { *; }
 -dontwarn wb.android.**
 -keep class wb.receipts.** { *; }
@@ -83,3 +83,14 @@
 -keep class com.google.** { *;}
 -keep interface com.google.** { *;}
 -dontwarn com.google.**
+
+# OkHttp platform used only on JVM and when Conscrypt and other security providers are available.
+-dontwarn okhttp3.internal.platform.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**
+
+
+# Joda-Money has no mandatory dependencies. There is a compile-time dependency on Joda-Convert, but this is not required at runtime thanks to the magic of annotations.
+-dontwarn org.joda.convert.FromString
+-dontwarn org.joda.convert.ToString

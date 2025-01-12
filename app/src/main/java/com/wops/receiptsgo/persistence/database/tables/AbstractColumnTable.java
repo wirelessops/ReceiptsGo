@@ -1,0 +1,192 @@
+package com.wops.receiptsgo.persistence.database.tables;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import androidx.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
+import com.wops.receiptsgo.model.Column;
+import com.wops.receiptsgo.model.ColumnDefinitions;
+import com.wops.receiptsgo.model.ColumnFinder;
+import com.wops.receiptsgo.model.Receipt;
+import com.wops.receiptsgo.persistence.database.defaults.TableDefaultsCustomizer;
+import com.wops.receiptsgo.persistence.database.tables.adapters.ColumnDatabaseAdapter;
+import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByColumn;
+import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByDatabaseDefault;
+import com.wops.receiptsgo.persistence.database.tables.ordering.OrderByOrderingPreference;
+import com.wops.receiptsgo.persistence.database.tables.ordering.OrderingPreferencesManager;
+import com.wops.analytics.log.Logger;
+
+/**
+ * Since our CSV and PDF tables share almost all of the same logic, this class purely acts as a wrapper around
+ * each to centralize where all logic is managed
+ */
+public abstract class AbstractColumnTable extends AbstractSqlTable<Column<Receipt>> {
+
+    public static final String COLUMN_TYPE = "column_type";
+
+    private final int tableExistsSinceDatabaseVersion;
+    private final ColumnDefinitions<Receipt> receiptColumnDefinitions;
+    private final ColumnFinder columnFinder;
+
+    @Deprecated
+    public static final String DEPRECATED_COLUMN_ID_AS_NAME = "id";
+    @Deprecated
+    public static final String DEPRECATED_COLUMN_TYPE_AS_NAME = "type";
+
+
+    public AbstractColumnTable(@NonNull SQLiteOpenHelper sqLiteOpenHelper,
+                               @NonNull String tableName,
+                               int tableExistsSinceDatabaseVersion,
+                               @NonNull ColumnDefinitions<Receipt> columnDefinitions,
+                               @NonNull OrderingPreferencesManager orderingPreferencesManager,
+                               @NonNull Class<? extends Table<?>> tableClass) {
+        super(sqLiteOpenHelper, tableName, new ColumnDatabaseAdapter(columnDefinitions),
+                new OrderByOrderingPreference(orderingPreferencesManager, tableClass, new OrderByColumn(COLUMN_CUSTOM_ORDER_ID, false), new OrderByDatabaseDefault()));
+        this.tableExistsSinceDatabaseVersion = tableExistsSinceDatabaseVersion;
+        receiptColumnDefinitions = Preconditions.checkNotNull(columnDefinitions);
+        columnFinder = (ColumnFinder) columnDefinitions;
+    }
+
+    @Override
+    public synchronized void onCreate(@NonNull SQLiteDatabase db, @NonNull TableDefaultsCustomizer customizer) {
+        super.onCreate(db, customizer);
+        final String columnsTable = "CREATE TABLE " + getTableName() + " ("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_TYPE + " INTEGER DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0, "
+                + AbstractSqlTable.COLUMN_UUID + " TEXT "
+                + ");";
+        Logger.debug(this, columnsTable);
+
+        db.execSQL(columnsTable);
+        insertDefaults(customizer);
+    }
+
+    @Override
+    public synchronized void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion, @NonNull TableDefaultsCustomizer customizer) {
+        super.onUpgrade(db, oldVersion, newVersion, customizer);
+        if (oldVersion <= tableExistsSinceDatabaseVersion) {
+            final String columnsTable = "CREATE TABLE " + getTableName() + " ("
+                    + DEPRECATED_COLUMN_ID_AS_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + DEPRECATED_COLUMN_TYPE_AS_NAME + " TEXT"
+                    + ");";
+            Logger.debug(this, columnsTable);
+
+            db.execSQL(columnsTable);
+            insertDefaults(customizer);
+        }
+        if (oldVersion <= 14) {
+            onUpgradeToAddSyncInformation(db, oldVersion, newVersion);
+        }
+        if (oldVersion <= 15) { // adding custom_order_id column
+            final String addCustomOrderColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
+                    getTableName(), AbstractColumnTable.COLUMN_CUSTOM_ORDER_ID);
+            Logger.debug(this, addCustomOrderColumn);
+            db.execSQL(addCustomOrderColumn);
+        }
+        if (oldVersion <= 17) { // removing unused DEPRECATED_COLUMN_TYPE_AS_NAME column, adding COLUMN_TYPE column
+            // adding new column column_type
+            final String addNewColumn = String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0;",
+                    getTableName(), AbstractColumnTable.COLUMN_TYPE);
+            Logger.debug(this, addNewColumn);
+            db.execSQL(addNewColumn);
+
+            // finding new column types for old values (adding default column if correct type wasn't found)
+            Cursor columnsCursor = null;
+            try {
+                columnsCursor = db.query(getTableName(), new String[]{DEPRECATED_COLUMN_ID_AS_NAME, DEPRECATED_COLUMN_TYPE_AS_NAME, COLUMN_TYPE}, null, null, null, null, null);
+                if (columnsCursor != null && columnsCursor.moveToFirst()) {
+                    final int oldIdIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_ID_AS_NAME);
+                    final int oldTypeAsNameIndex = columnsCursor.getColumnIndex(DEPRECATED_COLUMN_TYPE_AS_NAME);
+
+                    do {
+                        // Fetch our old column id and type
+                        final int oldId = columnsCursor.getInt(oldIdIndex);
+                        final String oldColumnTypeAsNameString = columnsCursor.getString(oldTypeAsNameIndex);
+
+                        // By default, we use the default column as our migration placeholder
+                        int newColumnType = receiptColumnDefinitions.getDefaultInsertColumn().getType();
+
+                        // If we manage to find our old column by name, assign that type as the new type
+                        final int columnTypeByHeaderValue = columnFinder.getColumnTypeByHeaderValue(oldColumnTypeAsNameString);
+                        if (columnTypeByHeaderValue >= 0) {
+                            newColumnType = columnTypeByHeaderValue;
+                        }
+
+                        final ContentValues columnValues = new ContentValues(1);
+                        columnValues.put(COLUMN_TYPE, newColumnType);
+                        Logger.debug(this, "Updating old column header value: {} to new column type {}", oldColumnTypeAsNameString, newColumnType);
+
+                        if (db.update(getTableName(), columnValues, COLUMN_ID + "= ?", new String[]{Integer.toString(oldId)}) == 0) {
+                            Logger.error(this, "Column update error happened");
+                            if (oldId == 0 && newColumnType == 0) {
+                                Logger.error(this, "Non fatal error occurred. Mapping default to default");
+                            } else {
+                                throw new RuntimeException("Column update error happened for (" + oldId + ", " + oldColumnTypeAsNameString + ", " + newColumnType + ")");
+                            }
+                        }
+
+
+                    } while (columnsCursor.moveToNext());
+                }
+            } finally {
+                if (columnsCursor != null) {
+                    columnsCursor.close();
+                }
+            }
+
+            // removing old column type column (rename old table, create new correct table, insert data, drop old table)
+            final String baseColumns = String.format("%s, %s, %s, %s, %s, %s", COLUMN_TYPE, AbstractSqlTable.COLUMN_DRIVE_SYNC_ID,
+                    AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED, AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION,
+                    AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME,
+                    AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID);
+
+            final String renameTable = String.format("ALTER TABLE %s RENAME TO %s;", getTableName(), getTableName() + "_tmp");
+            Logger.debug(this, renameTable);
+            db.execSQL(renameTable);
+
+            final String createNewTable = "CREATE TABLE " + getTableName() + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + COLUMN_TYPE + " INTEGER DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_SYNC_ID + " TEXT, "
+                    + AbstractSqlTable.COLUMN_DRIVE_IS_SYNCED + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_DRIVE_MARKED_FOR_DELETION + " BOOLEAN DEFAULT 0, "
+                    + AbstractSqlTable.COLUMN_LAST_LOCAL_MODIFICATION_TIME + " DATE, "
+                    + AbstractSqlTable.COLUMN_CUSTOM_ORDER_ID + " INTEGER DEFAULT 0"
+                    + ");";
+            Logger.debug(this, createNewTable);
+            db.execSQL(createNewTable);
+
+            final String insertData = "INSERT INTO " + getTableName()
+                    + " (" + COLUMN_ID + ", " + baseColumns + ") "
+                    + "SELECT " + DEPRECATED_COLUMN_ID_AS_NAME + ", " + baseColumns
+                    + " FROM " + getTableName() + "_tmp" + ";";
+            Logger.debug(this, insertData);
+            db.execSQL(insertData);
+
+            final String dropOldTable = "DROP TABLE " + getTableName() + "_tmp" + ";";
+            Logger.debug(this, dropOldTable);
+            db.execSQL(dropOldTable);
+        }
+
+        if (oldVersion <= 18) { // v18 => 19 added UUID column
+            onUpgradeToAddUUID(db, oldVersion);
+        }
+    }
+
+    /**
+     * Passes along a call to insert our "table" defaults to the appropriate sub implementation
+     *
+     * @param customizer the {@link TableDefaultsCustomizer} implementation
+     */
+    protected abstract void insertDefaults(@NonNull TableDefaultsCustomizer customizer);
+
+}

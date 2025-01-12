@@ -1,7 +1,7 @@
 package com.jakewharton.rxbinding2.widget
 
 import androidx.annotation.CheckResult
-import co.smartreceipts.android.date.DateEditText
+import com.wops.receiptsgo.date.DateEditText
 import com.google.common.base.Preconditions
 import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.Observable

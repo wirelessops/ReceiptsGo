@@ -31,7 +31,7 @@
     <string name="original_column_item_reimbursable_en_us_name" translatable="false">Reimbursable</string>
     <string name="original_column_item_index_en_us_name" translatable="false">Receipt Index</string>
     <string name="original_column_item_id_en_us_name" translatable="false">Receipt ID</string>
-    <string name="original_column_item_payment_method_en_us_name">Payment Method</string>
+    <string name="original_column_item_payment_method_en_us_name" translatable="false">Payment Method</string>
 
     <!--Supported languages-->
     <string name="language_en_entry" translatable="false">en</string>

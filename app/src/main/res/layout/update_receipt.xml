@@ -49,7 +49,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
+                <com.wops.receiptsgo.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/receipt_name"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
@@ -93,7 +93,7 @@
                 tools:text="."
                 tools:visibility="visible" />
 
-            <co.smartreceipts.android.widget.ui.OutlinedSpinner
+            <com.wops.receiptsgo.widget.ui.OutlinedSpinner
                 android:id="@+id/receipt_currency"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE"
                 tools:visibility="visible">
 
-                <co.smartreceipts.android.widget.NetworkRequestAwareEditText
+                <com.wops.receiptsgo.widget.NetworkRequestAwareEditText
                     android:id="@+id/receipt_exchange_rate"
                     app:drawableStartCompat="@drawable/ic_exchange_rate_24dp"
                     app:drawableTint="@color/navigation_inactive"
@@ -175,7 +175,7 @@
                 app:layout_constraintTop_toBottomOf="@id/receipt_exchanged_wrapper"
                 app:startIconDrawable="@drawable/ic_business_center_24dp">
 
-                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
+                <com.wops.receiptsgo.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/receipt_tax1"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
@@ -197,7 +197,7 @@
                 app:startIconDrawable="@drawable/ic_business_center_24dp"
                 tools:visibility="visible">
 
-                <co.smartreceipts.android.widget.ui.TextInputAutoCompleteTextView
+                <com.wops.receiptsgo.widget.ui.TextInputAutoCompleteTextView
                     android:id="@+id/receipt_tax2"
                     style="@style/Widget.SmartReceipts.OutlinedEditText"
                     android:completionThreshold="1"
@@ -217,13 +217,13 @@
                 app:startIconContentDescription="@string/DIALOG_RECEIPTMENU_HINT_EXCHANGE_RATE"
                 app:startIconDrawable="@drawable/ic_date_24dp">
 
-                <co.smartreceipts.android.date.DateEditText
+                <com.wops.receiptsgo.date.DateEditText
                     android:id="@+id/receipt_date"
                     style="@style/Widget.SmartReceipts.OutlinedEditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <co.smartreceipts.android.widget.ui.OutlinedSpinner
+            <com.wops.receiptsgo.widget.ui.OutlinedSpinner
                 android:id="@+id/receipt_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <co.smartreceipts.android.widget.ui.OutlinedSpinner
+            <com.wops.receiptsgo.widget.ui.OutlinedSpinner
                 android:id="@+id/receipt_payment_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

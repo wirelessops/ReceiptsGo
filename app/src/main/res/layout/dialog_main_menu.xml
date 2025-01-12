@@ -27,7 +27,7 @@
         android:id="@+id/menu_main_dialog_backup"
         style="@style/Widget.SmartReceipts.TextView.BottomSheetItem.MainMenu"
         android:text="@string/menu_main_export"
-        app:drawableEndCompat="@drawable/ic_backup" />
+        app:drawableEndCompat="@drawable/cloud_sync_24dp_e8eaed_fill0_wght400_grad0_opsz24" />
 
     <TextView
         android:id="@+id/menu_main_dialog_pro_subscription"

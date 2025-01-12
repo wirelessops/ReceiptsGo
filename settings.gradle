@@ -1,2 +1,0 @@
-include ':app', ':aws', ':core', ':push', ':analytics', ':automatic_backups', ':oss_licenses'
-include ':wbMiniLibrary'

@@ -9,7 +9,7 @@
             android:summaryOn="@string/pref_distance_include_price_in_report_summaryOn"
             android:summaryOff="@string/pref_distance_include_price_in_report_summaryOff"
             android:defaultValue="@bool/pref_distance_include_price_in_report_defaultValue"/>
-        <co.smartreceipts.android.settings.widget.DefaultDistanceRatePreference
+        <com.wops.receiptsgo.settings.widget.DefaultDistanceRatePreference
             android:key="@string/pref_distance_rate_key"
             android:title="@string/pref_distance_rate_title"
             android:inputType="number|numberDecimal" />

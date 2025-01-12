@@ -14,7 +14,8 @@ upload_key.jks
 !.idea/dictionaries/
 .gradle/
 build/
-
+*.apk
+*.aab
 smartReceiptsLibrary/*.pdf
 
 
@@ -50,7 +51,6 @@ local.properties
 
 # Translation Tools
 scripts/logs/
-/app/free/release
 /app/*/release
 /app/*/debug
 *.apk

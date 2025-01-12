@@ -2,8 +2,6 @@
 <resources>
 
     <!-- =================== App Details ===================== -->
-    <string name="sr_app_name">Smart Receipts</string>
-    <string name="sr_app_name_plus">Smart Receipts Plus</string>
 
     <!-- ================ Main Menu Options ================== -->
     <string name="menu_main_settings">Configurazione</string>
@@ -66,7 +64,6 @@
     <string name="undo">Disfare</string>
 
     <!-- =============== Subscriptions ================ -->
-    <string name="pro_subscription">Smart Receipts Plus</string>
 
     <!-- ============= Subscription Info ============== -->
     <string name="subscriptions_label">La tua Subscriptions:</string>
@@ -113,7 +110,7 @@
     <string name="ocr_configuration_scans_remaining">Scansioni OCR rimanenti: %d</string>
     <string name="ocr_configuration_my_account">%s</string>
     <string name="ocr_configuration_welcome">Scansioni automatiche (OCR):</string>
-    <string name="ocr_configuration_information">Smart Receipts è integrato con Taggun per fornire servizi di scansione automatica (es. OCR), tramite i quali è possibile estrarre i metadati dalle ricevute come prezzi, imposte,date e denominazione del venditore dalle vostre immagini.</string>
+    <string name="ocr_configuration_information">Receipts Go è integrato con Taggun per fornire servizi di scansione automatica (es. OCR), tramite i quali è possibile estrarre i metadati dalle ricevute come prezzi, imposte,date e denominazione del venditore dalle vostre immagini.</string>
     <string name="ocr_configuration_information_line2">Utiliziamo una combinazione di Google Vision e Machine Learning per fornire velocemente un risultato (spesso in 5 secondi o meno), che diverrà maggiormente accurato con il tempo. A causa del fatto che questi servizi sono a consumo, applicheremo un costo per ciascuna scansione di ricevuta.</string>
     <string name="ocr_is_enabled">Attiva scansione automatica (OCR)?</string>
     <string name="ocr_save_scans_to_improve_results">Autorizzi il salvataggio delle immagini per aumentare l\'accuratezza?</string>
@@ -353,7 +350,7 @@
 
     <!-- ==============-========== Login ========================== -->
     <string name="login_toolbar_title">Log In / Iscrizione</string>
-    <string name="login_title">Log In con l\'account Smart Receipts per iniziare ad utilizzare le scansioni automatiche (OCR)</string>
+    <string name="login_title">Log In con l\'account Receipts Go per iniziare ad utilizzare le scansioni automatiche (OCR)</string>
     <string name="login_field_email_hint">Indirizzo Email</string>
     <string name="login_field_password_hint">Password</string>
     <string name="sign_up_button_text">Iscrizione</string>
@@ -477,7 +474,7 @@
     <string name="dialog_sql_corrupt_title">Oh No!</string>
     <string name="dialog_sql_corrupt_message">Il database si è corrotto. Questo può accadere a causa di una task killerr app, ma può dipendere da molte cose differenti. Non temete, dovremmo poter ripristinare la maggior parte dei dati.</string>
     <string name="dialog_sql_corrupt_positive">Inviare una mail allo sviluppatore per Aiuto</string>
-    <string name="dialog_sql_corrupt_intent_subject">Smart Receipts - Database Corrupted</string>
+    <string name="dialog_sql_corrupt_intent_subject">Receipts Go - Database Corrupted</string>
     <string name="dialog_sql_corrupt_intent_text">Help - my database was corrupted. How can you help me restore things?</string>
     <string name="dialog_sql_corrupt_chooser">Invia Email&#8230;</string>
 
@@ -516,7 +513,7 @@
     <string name="purchase_pending">L\'acquisto è in sospeso</string>
 
     <!-- ================== App Rating ==================== -->
-    <string name="rating_tooltip_text">Vi piace Smart Receipts?</string>
+    <string name="rating_tooltip_text">Vi piace Receipts Go?</string>
     <string name="leave_feedback_text">Volete lasciarci un feedback?</string>
     <string name="apprating_dialog_title">Like %s?</string>
     <string name="apprating_dialog_message">Cortesemente lascia una recensione. Come sviluppatore indipedente le recensioni sono le principali fonti di notorietà ed aiutano concretamente lo sviluppo di nuove funzionalità. Grazie!</string>

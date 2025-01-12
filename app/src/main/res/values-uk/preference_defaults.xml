@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="EMAIL_DATA_SUBJECT">Смарт Чеки - %REPORT_NAME%</string> <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
+    <!-- Note: The item should be "pref_email_default_email_subject_defaultValue" but cannot for legacy flex reasons -->
 
     <string name="pref_receipt_tax1_name_defaultValue">Податок1</string>
     <string name="pref_receipt_tax2_name_defaultValue">Податок2</string>
 
     <!-- ================= Preference Pro ================== -->
-    <string name="pref_pro_pdf_footer_defaultValue">Звіт згенерований за допомогою додатку Смарт Чеки для Android</string>
+    <string name="pref_pro_pdf_footer_defaultValue">Звіт згенерований за допомогою додатку Receipts Go для Android</string>
 
 </resources>

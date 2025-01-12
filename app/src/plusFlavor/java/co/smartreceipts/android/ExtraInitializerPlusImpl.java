@@ -1,4 +1,4 @@
-package co.smartreceipts.android;
+package com.wops.receiptsgo;
 
 import javax.inject.Inject;
 

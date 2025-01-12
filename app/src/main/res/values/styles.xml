@@ -325,7 +325,11 @@
     </style>
 
     <style name="Widget.SmartReceipts.Snackbar" parent="Widget.MaterialComponents.Snackbar">
-        <item name="actionTextColorAlpha">0.5</item>
+
+        <item name="android:backgroundTint">#5037AD</item>
+        <item name="drawableTint">@color/text_on_primary_color</item>
+        <item name="android:textColor">@color/text_on_primary_color</item>
+
     </style>
 
 </resources>

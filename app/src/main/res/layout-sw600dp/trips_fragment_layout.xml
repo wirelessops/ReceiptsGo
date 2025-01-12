@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/trip_tooltip" />
 
-    <co.smartreceipts.android.widget.tooltip.Tooltip
+    <com.wops.receiptsgo.widget.tooltip.Tooltip
         android:id="@+id/trip_tooltip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
