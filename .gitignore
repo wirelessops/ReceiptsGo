@@ -51,3 +51,7 @@ local.properties
 # Translation Tools
 scripts/logs/
 /app/free/release
+/app/*/release
+/app/*/debug
+*.apk
+*.aab
